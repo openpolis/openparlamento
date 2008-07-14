@@ -1,0 +1,10 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppSeduta
+    theme:            default
+
+    list:
+      title:          Elenco sedute
+      display:        [id, data, numero, legislatura, ramo]
+      filters:        [legislatura, ramo]

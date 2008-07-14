@@ -1,0 +1,1 @@
+<?php echo $opp_carica->getOppPolitico()->getCognome().' '.$opp_carica->getOppPolitico()->getNome() ?>

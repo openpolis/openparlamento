@@ -1,0 +1,15 @@
+# default values
+all:
+  pagination:
+    limit:    100
+
+  voto:
+    "1":     "Assente"
+    "2":     "Astenuto"
+    "3":     "Contrario"
+    "4":     "Favorevole"
+    "5":     "In missione"
+    "6":     "Partecipante votazione non valida"
+    "7":     "Presidente di turno"
+    "8":     "Richiedente la votazione e non votante"
+    "9":     "Voto segreto"

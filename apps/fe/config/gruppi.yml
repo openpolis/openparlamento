@@ -1,0 +1,48 @@
+legislatura_15:
+  Senato:
+    - "Alleanza Nazionale"
+    - "D.C. per le autonomie - P. Repubblicano It. - Mov. per l' Autonomie"
+    - "Forza Italia"
+    - "Gruppo Misto"
+    - "Gruppo Per le Autonomie"
+    - "Italia dei valori"
+    - "IU-Verdi-Com"
+    - "L'  Ulivo"
+    - "Lega Nord Padania"
+    - "Popolari - UDEUR"
+    - "Rifondazione comunista - Sinistra europea"
+    - "Sinistra democratica per il socialismo europeo"
+    - "Unione di Centro"
+
+  Camera:
+    - "Alleanza Nazionale"
+    - "Comunisti italiani"
+    - "Democrazia cristiana - Partito socialista"
+    - "Forza Italia"
+    - "Gruppo Misto"
+    - "Italia dei valori"
+    - "L'  Ulivo"
+    - "La rosa nel pugno"
+    - "Lega Nord Padania"
+    - "Popolari - UDEUR"
+    - "Rifondazione comunista - Sinistra europea"
+    - "Sinistra democratica per il socialismo europeo"
+    - "Unione di Centro"
+    - "Verdi"
+
+legislatura_16:
+  Senato:
+    - "Gruppo Misto"
+    - "Italia dei valori"
+    - "Lega Nord Padania"
+    - "Partito Democratico"
+    - "Popolo della Libertà"
+    - "UDC, SVP e Autonomie"
+
+  Camera:
+    - "Gruppo Misto"
+    - "Italia dei valori"
+    - "Lega Nord Padania"
+    - "Partito Democratico"
+    - "Popolo della Libertà"
+    - "Unione di Centro"

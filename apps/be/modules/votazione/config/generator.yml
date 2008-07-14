@@ -1,0 +1,11 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppVotazione
+    theme:            default
+
+    list:
+      title:          Elenco votazioni
+      display:        [_ramo, _data, _legislatura, id, presenti, maggioranza, favorevoli, contrari, astenuti, esito]
+      peer_method:    doSelectJoinOppSeduta
+      filters:        [legislatura, ramo]

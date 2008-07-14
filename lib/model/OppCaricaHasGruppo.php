@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Subclass for representing a row from the 'opp_carica_has_gruppo' table.
+ *
+ * 
+ *
+ * @package lib.model
+ */ 
+class OppCaricaHasGruppo extends BaseOppCaricaHasGruppo
+{
+}

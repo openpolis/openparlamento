@@ -1,0 +1,151 @@
+propel:  
+
+  opp_appoggio:
+    id:
+    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    aka:              { type: varchar(60) }
+    tipologia:        { type: integer }
+    legislatura:      { type: tinyint }
+
+  opp_atto:
+    id:
+    parlamento_id:    { type: integer }
+    tipo_atto_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_tipo_atto, foreignReference: id, onDelete: CASCADE }
+    ramo:             { type: longvarchar }
+    numfase:          { type: integer }
+    legislatura:      { type: integer }
+    data_pres:        { type: date }
+    data_agg:         { type: date }
+    titolo:           { type: longvarchar }
+    iniziativa:       { type: integer }
+    completo:         { type: boolean }
+    descrizione:      { type: longvarchar }
+    seduta:           { type: integer }
+    iter:             { type: varchar(100) }
+    data_iter:        { type: date }
+
+  opp_atto_has_teseo:
+    atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    teseo_id:         { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
+
+  opp_carica:
+    id:                                                   { type: integer, required: true, primaryKey: true, index: true }    # è il content_id di openpolis
+    politico_id:                                          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_politico, foreignReference: id, onDelete: CASCADE }
+    carica:                                               { type: varchar(30) }
+    data_inizio:      { type: date }
+    data_fine:        { type: date }
+    legislatura:                                          { type: tinyint }
+    circoscrizione:                                       { type: varchar(60) }
+    presenze:                                             { type: integer }
+    assenze:                                              { type: integer }
+    missioni:                                             { type: integer }
+    parliament_id:                                        { type: integer }
+    pdl_1:                                                { type: integer }
+    pdl_2:                                                { type: integer }
+    mozione_1:                                            { type: integer }
+    mozione_di_fiducia_1:                                 { type: integer }
+    mozione_ex_art138_comma_2_1:                          { type: integer }
+    interpellanza_1:                                      { type: integer }
+    interpellanza_urgente_1:                              { type: integer }
+    interrogazione_a_risposta_immediata_in_assemblea_1:   { type: integer }
+    interrogazione_a_risposta_orale_1:                    { type: integer }
+    interrogazione_a_risposta_scritta_1:                  { type: integer }
+    interrogazione_a_risposta_immediata_in_commissione_1: { type: integer }
+    interrogazione_a_risposta_in_commissione_1:           { type: integer }
+    risoluzione_in_assemblea_1:                           { type: integer }
+    risoluzione_in_commissione_1:                         { type: integer }
+    risoluzione_in_commissione_conclusiva_di_dibattito_1: { type: integer }
+    odg_in_assemblea_su_bilancio_interno_1:               { type: integer }
+    odg_in_assemblea_su_mozioni_o_altri_atti_1:           { type: integer }
+    odg_in_assemblea_su_pdl_1:                            { type: integer }
+    odg_in_assemblea_su_pdl_di_bilancio_1:                { type: integer }
+    odg_in_commissione_1:                                 { type: integer }
+    odg_su_pdl_di_bilancio_in_commissione_1:              { type: integer }
+    indice:                                               { type: float }
+    scaglione:                                            { type: integer }
+    posizione:                                            { type: integer }
+    media:                                                { type: float }
+
+  opp_carica_has_atto:
+    atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    tipo:             { type: varchar(255) }
+    data:             { type: date }
+    url:              { type: longvarchar }
+
+
+  opp_carica_has_gruppo:
+    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE } 
+    data_inizio:      { type: date }
+    data_fine:        { type: date }
+    ribelle:          { type: integer }
+
+  opp_gruppo:
+    id:
+    nome:             { type: varchar(255) }
+    acronimo:         { type: varchar(80) }
+
+  opp_legislatura_has_gruppo:
+    legislatura:      { type: tinyint, required: true, primaryKey: true, index: true }  
+    ramo:             { type: char, size: 1, required: true, primaryKey: true, index: true }
+    gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
+
+  opp_politico:
+    id:               { type: integer, required: true, primaryKey: true, index: true }    # è il politician_id di openpolis 
+    nome:             { type: varchar(30) }
+    cognome:          { type: varchar(30) }
+
+  opp_seduta:
+    id:
+    data:             { type: date }
+    numero:           { type: integer, required: true }
+    ramo:             { type: char, size: 1, required: true }
+    legislatura:      { type: tinyint, required: true }
+
+  opp_tipo_atto:
+   id:  
+   denominazione:     { type: varchar(60) }
+
+  opp_teseo:
+    id:
+    denominazione:    { type: longvarchar }
+    ns_denominazione: { type: longvarchar }
+    teseott_id:       { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+    tt:               { type: integer }
+
+  opp_teseo_has_teseott:
+   opp_teseo_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
+   opp_teseott_id:    { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+
+  opp_teseott:
+    id:
+    denominazione:    { type: longvarchar }
+    ns_denominazione: { type: longvarchar }
+    teseo_senato:     { type: integer }
+
+  opp_votazione:
+    id:
+    seduta_id:        { type: integer, required: true, index: true, primaryKey: true, foreignTable: opp_seduta, foreignReference: id, onDelete: CASCADE }
+    numero_votazione: { type: tinyint, required: true }   
+    titolo:           { type: longvarchar }
+    presenti:         { type: integer }
+    votanti:          { type: integer }
+    maggioranza:      { type: integer }
+    astenuti:         { type: integer }
+    favorevoli:       { type: integer }
+    contrari:         { type: integer }
+    esito:            { type: varchar(20) }
+    tipologia:        { type: varchar(20) }
+    descrizione:      { type: longvarchar }
+    url:              { type: varchar(255) }
+
+  opp_votazione_has_carica:
+    votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
+    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    voto:             { type: varchar(40) }
+
+  opp_votazione_has_gruppo:
+    votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
+    gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
+    voto:             { type: varchar(40) }

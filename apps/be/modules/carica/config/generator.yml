@@ -1,0 +1,11 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppCarica
+    theme:            default
+
+    list:
+      title:          Elenco Parlamentari
+      display:        [id, _politico, carica, data_inizio, data_fine, legislatura, gruppo, circoscrizione]
+      peer_method:    doSelectJoinOppPolitico
+      filters:        [legislatura, carica]
