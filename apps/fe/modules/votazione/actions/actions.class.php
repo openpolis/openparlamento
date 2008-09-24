@@ -26,7 +26,7 @@ class votazioneActions extends sfActions
 
     $this->risultati = OppVotazioneHasCaricaPeer::doSelectGroupByGruppo($this->getRequestParameter('id'));
 
-    $this->ribelli = $this->votazione->getRibelli();
+    $this->ribelli = $this->votazione->getRibelliList();
 
     //$gruppi = sfYaml::load(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps/fe/config/gruppi.yml');
     //$this->gruppi_votazione = $gruppi['legislatura_'.$this->votazione->getOppSeduta()->getLegislatura()][$this->ramo];	
@@ -98,6 +98,58 @@ class votazioneActions extends sfActions
       		  
     }
   }
+
+  /**
+   * Executes list action
+   *
+   */
+  public function executeList()
+  {
+    $this->processListFilters();
+
+    $this->filters = $this->getUser()->getAttributeHolder()->getAll('opp_votazione/filters');
+	
+	$this->pager = new sfPropelPager('OppVotazione', sfConfig::get('app_pagination_limit'));
+    $c = new Criteria();
+	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+	$this->addListFiltersCriteria($c);
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppSeduta');
+    $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
+	$this->pager->init();
+		
+  }
+  
+  protected function processListFilters()
+  {
+    if ($this->getRequestParameter('legislatura'))
+	  $this->getUser()->setAttribute('legislatura', $this->getRequestParameter('legislatura'));
+	
+	
+	if (!($this->getUser()->hasAttribute('legislatura')))
+	  $this->getUser()->setAttribute('legislatura', 16);
+    
+	if ($this->getRequestParameter('ramo'))
+	  $this->getUser()->setAttribute('ramo', $this->getRequestParameter('ramo'));
+	
+	
+	if (!($this->getUser()->hasAttribute('ramo')))
+	  $this->getUser()->setAttribute('ramo', 'entrambi');
+	    
+  }
+
+  protected function addListFiltersCriteria($c)
+  {
+      if ($this->getUser()->getAttribute('legislatura') != 'tutte')
+        $c->add(OppSedutaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'));
+	  else
+	    $c->add(OppSedutaPeer::LEGISLATURA, NULL, Criteria::NOT_EQUAL);
+	  
+	  if ($this->getUser()->getAttribute('ramo') != 'entrambi')
+        $c->add(OppSedutaPeer::RAMO, $this->getUser()->getAttribute('ramo'));
+  }
+  
 }
 
 ?>

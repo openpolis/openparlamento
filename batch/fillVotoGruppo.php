@@ -11,7 +11,8 @@ sfContext::getInstance();
 
 $c = new Criteria();
 $c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
-$c->add(OppSedutaPeer::LEGISLATURA, '15', Criteria::EQUAL);
+//$c->add(OppSedutaPeer::LEGISLATURA, '15', Criteria::EQUAL);
+$c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
 $votazioni = OppVotazionePeer::doSelect($c);
 
 foreach($votazioni as $votazione)
@@ -33,10 +34,7 @@ foreach($votazioni as $votazione)
 	  	  
 	$voto_gruppo = OppVotazionePeer::doSelectVotoGruppo($votazione->getId(), $gr->getNome());	
 	
-	if ($voto_gruppo=='')
-	  $voto_gruppo='Assente';
-	    
-	$votazioneGruppo = new OppVotazioneHasGruppo;
+    $votazioneGruppo = new OppVotazioneHasGruppo;
     $votazioneGruppo->setVotazioneId($votazione->getId());
     $votazioneGruppo->setGruppoId($gr->getId());
     $votazioneGruppo->setVoto($voto_gruppo);

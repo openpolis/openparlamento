@@ -13,7 +13,7 @@ abstract class BaseOppTeseoPeer {
 	const CLASS_DEFAULT = 'lib.model.OppTeseo';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -21,6 +21,9 @@ abstract class BaseOppTeseoPeer {
 
 	
 	const ID = 'opp_teseo.ID';
+
+	
+	const TIPO_TESEO_ID = 'opp_teseo.TIPO_TESEO_ID';
 
 	
 	const DENOMINAZIONE = 'opp_teseo.DENOMINAZIONE';
@@ -40,18 +43,18 @@ abstract class BaseOppTeseoPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Denominazione', 'NsDenominazione', 'TeseottId', 'Tt', ),
-		BasePeer::TYPE_COLNAME => array (OppTeseoPeer::ID, OppTeseoPeer::DENOMINAZIONE, OppTeseoPeer::NS_DENOMINAZIONE, OppTeseoPeer::TESEOTT_ID, OppTeseoPeer::TT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'denominazione', 'ns_denominazione', 'teseott_id', 'tt', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'TipoTeseoId', 'Denominazione', 'NsDenominazione', 'TeseottId', 'Tt', ),
+		BasePeer::TYPE_COLNAME => array (OppTeseoPeer::ID, OppTeseoPeer::TIPO_TESEO_ID, OppTeseoPeer::DENOMINAZIONE, OppTeseoPeer::NS_DENOMINAZIONE, OppTeseoPeer::TESEOTT_ID, OppTeseoPeer::TT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'tipo_teseo_id', 'denominazione', 'ns_denominazione', 'teseott_id', 'tt', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Denominazione' => 1, 'NsDenominazione' => 2, 'TeseottId' => 3, 'Tt' => 4, ),
-		BasePeer::TYPE_COLNAME => array (OppTeseoPeer::ID => 0, OppTeseoPeer::DENOMINAZIONE => 1, OppTeseoPeer::NS_DENOMINAZIONE => 2, OppTeseoPeer::TESEOTT_ID => 3, OppTeseoPeer::TT => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'denominazione' => 1, 'ns_denominazione' => 2, 'teseott_id' => 3, 'tt' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'TipoTeseoId' => 1, 'Denominazione' => 2, 'NsDenominazione' => 3, 'TeseottId' => 4, 'Tt' => 5, ),
+		BasePeer::TYPE_COLNAME => array (OppTeseoPeer::ID => 0, OppTeseoPeer::TIPO_TESEO_ID => 1, OppTeseoPeer::DENOMINAZIONE => 2, OppTeseoPeer::NS_DENOMINAZIONE => 3, OppTeseoPeer::TESEOTT_ID => 4, OppTeseoPeer::TT => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'tipo_teseo_id' => 1, 'denominazione' => 2, 'ns_denominazione' => 3, 'teseott_id' => 4, 'tt' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -106,6 +109,8 @@ abstract class BaseOppTeseoPeer {
 	{
 
 		$criteria->addSelectColumn(OppTeseoPeer::ID);
+
+		$criteria->addSelectColumn(OppTeseoPeer::TIPO_TESEO_ID);
 
 		$criteria->addSelectColumn(OppTeseoPeer::DENOMINAZIONE);
 
@@ -194,6 +199,34 @@ abstract class BaseOppTeseoPeer {
 	}
 
 	
+	public static function doCountJoinOppTipoTeseo(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
+
+		$rs = OppTeseoPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doCountJoinOppTeseott(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
@@ -218,6 +251,53 @@ abstract class BaseOppTeseoPeer {
 		} else {
 						return 0;
 		}
+	}
+
+
+	
+	public static function doSelectJoinOppTipoTeseo(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppTeseoPeer::addSelectColumns($c);
+		$startcol = (OppTeseoPeer::NUM_COLUMNS - OppTeseoPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		OppTipoTeseoPeer::addSelectColumns($c);
+
+		$c->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppTeseoPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppTipoTeseoPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getOppTipoTeseo(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addOppTeseo($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initOppTeseos();
+				$obj2->addOppTeseo($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
 	}
 
 
@@ -285,6 +365,8 @@ abstract class BaseOppTeseoPeer {
 			$criteria->addSelectColumn($column);
 		}
 
+		$criteria->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
+
 		$criteria->addJoin(OppTeseoPeer::TESEOTT_ID, OppTeseottPeer::ID);
 
 		$rs = OppTeseoPeer::doSelectRS($criteria, $con);
@@ -308,8 +390,13 @@ abstract class BaseOppTeseoPeer {
 		OppTeseoPeer::addSelectColumns($c);
 		$startcol2 = (OppTeseoPeer::NUM_COLUMNS - OppTeseoPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
+		OppTipoTeseoPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + OppTipoTeseoPeer::NUM_COLUMNS;
+
 		OppTeseottPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + OppTeseottPeer::NUM_COLUMNS;
+		$startcol4 = $startcol3 + OppTeseottPeer::NUM_COLUMNS;
+
+		$c->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
 
 		$c->addJoin(OppTeseoPeer::TESEOTT_ID, OppTeseottPeer::ID);
 
@@ -327,7 +414,7 @@ abstract class BaseOppTeseoPeer {
 
 
 					
-			$omClass = OppTeseottPeer::getOMClass();
+			$omClass = OppTipoTeseoPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -337,9 +424,202 @@ abstract class BaseOppTeseoPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getOppTeseott(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getOppTipoTeseo(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addOppTeseo($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initOppTeseos();
+				$obj2->addOppTeseo($obj1);
+			}
+
+
+					
+			$omClass = OppTeseottPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getOppTeseott(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addOppTeseo($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initOppTeseos();
+				$obj3->addOppTeseo($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptOppTipoTeseo(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppTeseoPeer::TESEOTT_ID, OppTeseottPeer::ID);
+
+		$rs = OppTeseoPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptOppTeseott(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppTeseoPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
+
+		$rs = OppTeseoPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptOppTipoTeseo(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppTeseoPeer::addSelectColumns($c);
+		$startcol2 = (OppTeseoPeer::NUM_COLUMNS - OppTeseoPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		OppTeseottPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + OppTeseottPeer::NUM_COLUMNS;
+
+		$c->addJoin(OppTeseoPeer::TESEOTT_ID, OppTeseottPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppTeseoPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppTeseottPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getOppTeseott(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addOppTeseo($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initOppTeseos();
+				$obj2->addOppTeseo($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptOppTeseott(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppTeseoPeer::addSelectColumns($c);
+		$startcol2 = (OppTeseoPeer::NUM_COLUMNS - OppTeseoPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		OppTipoTeseoPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + OppTipoTeseoPeer::NUM_COLUMNS;
+
+		$c->addJoin(OppTeseoPeer::TIPO_TESEO_ID, OppTipoTeseoPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppTeseoPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppTipoTeseoPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getOppTipoTeseo(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addOppTeseo($obj1);
+					break;
 				}
 			}
 
@@ -406,6 +686,9 @@ abstract class BaseOppTeseoPeer {
 			$comparison = $criteria->getComparison(OppTeseoPeer::ID);
 			$selectCriteria->add(OppTeseoPeer::ID, $criteria->remove(OppTeseoPeer::ID), $comparison);
 
+			$comparison = $criteria->getComparison(OppTeseoPeer::TIPO_TESEO_ID);
+			$selectCriteria->add(OppTeseoPeer::TIPO_TESEO_ID, $criteria->remove(OppTeseoPeer::TIPO_TESEO_ID), $comparison);
+
 			$comparison = $criteria->getComparison(OppTeseoPeer::TESEOTT_ID);
 			$selectCriteria->add(OppTeseoPeer::TESEOTT_ID, $criteria->remove(OppTeseoPeer::TESEOTT_ID), $comparison);
 
@@ -456,10 +739,12 @@ abstract class BaseOppTeseoPeer {
 
 				$vals[0][] = $value[0];
 				$vals[1][] = $value[1];
+				$vals[2][] = $value[2];
 			}
 
 			$criteria->add(OppTeseoPeer::ID, $vals[0], Criteria::IN);
-			$criteria->add(OppTeseoPeer::TESEOTT_ID, $vals[1], Criteria::IN);
+			$criteria->add(OppTeseoPeer::TIPO_TESEO_ID, $vals[1], Criteria::IN);
+			$criteria->add(OppTeseoPeer::TESEOTT_ID, $vals[2], Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -513,12 +798,13 @@ abstract class BaseOppTeseoPeer {
 	}
 
 	
-	public static function retrieveByPK( $id, $teseott_id, $con = null) {
+	public static function retrieveByPK( $id, $tipo_teseo_id, $teseott_id, $con = null) {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 		$criteria = new Criteria();
 		$criteria->add(OppTeseoPeer::ID, $id);
+		$criteria->add(OppTeseoPeer::TIPO_TESEO_ID, $tipo_teseo_id);
 		$criteria->add(OppTeseoPeer::TESEOTT_ID, $teseott_id);
 		$v = OppTeseoPeer::doSelect($criteria, $con);
 

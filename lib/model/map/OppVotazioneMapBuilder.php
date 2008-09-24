@@ -54,11 +54,17 @@ class OppVotazioneMapBuilder {
 
 		$tMap->addColumn('ESITO', 'Esito', 'string', CreoleTypes::VARCHAR, false, 20);
 
+		$tMap->addColumn('RIBELLI', 'Ribelli', 'int', CreoleTypes::INTEGER, false, null);
+
+		$tMap->addColumn('MARGINE', 'Margine', 'int', CreoleTypes::INTEGER, false, null);
+
 		$tMap->addColumn('TIPOLOGIA', 'Tipologia', 'string', CreoleTypes::VARCHAR, false, 20);
 
 		$tMap->addColumn('DESCRIZIONE', 'Descrizione', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('URL', 'Url', 'string', CreoleTypes::VARCHAR, false, 255);
+
+		$tMap->addColumn('FINALE', 'Finale', 'int', CreoleTypes::INTEGER, true, null);
 
 	} 
 } 

@@ -1,3 +1,15 @@
+#ddl:
+#  url:   /ddl/:id
+#  param: { module: ddl, action: index }
+
+argomenti:
+  url:   /argomenti
+  param: { module: argomento, action: list }
+
+votazioni:
+  url:   /votazioni/:legislatura/:ramo/:page
+  param: { module: votazione, action: list, legislatura: 16, ramo: entrambi, page: 1, display: false }
+
 votazione:
   url:   /votazione/:id
   param: { module: votazione, action: index }

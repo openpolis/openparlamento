@@ -34,6 +34,8 @@ class OppTeseoMapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 
+		$tMap->addForeignPrimaryKey('TIPO_TESEO_ID', 'TipoTeseoId', 'int' , CreoleTypes::INTEGER, 'opp_tipo_teseo', 'ID', true, null);
+
 		$tMap->addColumn('DENOMINAZIONE', 'Denominazione', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('NS_DENOMINAZIONE', 'NsDenominazione', 'string', CreoleTypes::LONGVARCHAR, false, null);

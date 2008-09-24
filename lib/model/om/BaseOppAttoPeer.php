@@ -59,10 +59,10 @@ abstract class BaseOppAttoPeer {
 	const SEDUTA = 'opp_atto.SEDUTA';
 
 	
-	const ITER = 'opp_atto.ITER';
+	const PRED = 'opp_atto.PRED';
 
 	
-	const DATA_ITER = 'opp_atto.DATA_ITER';
+	const SUCC = 'opp_atto.SUCC';
 
 	
 	private static $phpNameMap = null;
@@ -70,17 +70,17 @@ abstract class BaseOppAttoPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ParlamentoId', 'TipoAttoId', 'Ramo', 'Numfase', 'Legislatura', 'DataPres', 'DataAgg', 'Titolo', 'Iniziativa', 'Completo', 'Descrizione', 'Seduta', 'Iter', 'DataIter', ),
-		BasePeer::TYPE_COLNAME => array (OppAttoPeer::ID, OppAttoPeer::PARLAMENTO_ID, OppAttoPeer::TIPO_ATTO_ID, OppAttoPeer::RAMO, OppAttoPeer::NUMFASE, OppAttoPeer::LEGISLATURA, OppAttoPeer::DATA_PRES, OppAttoPeer::DATA_AGG, OppAttoPeer::TITOLO, OppAttoPeer::INIZIATIVA, OppAttoPeer::COMPLETO, OppAttoPeer::DESCRIZIONE, OppAttoPeer::SEDUTA, OppAttoPeer::ITER, OppAttoPeer::DATA_ITER, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'parlamento_id', 'tipo_atto_id', 'ramo', 'numfase', 'legislatura', 'data_pres', 'data_agg', 'titolo', 'iniziativa', 'completo', 'descrizione', 'seduta', 'iter', 'data_iter', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ParlamentoId', 'TipoAttoId', 'Ramo', 'Numfase', 'Legislatura', 'DataPres', 'DataAgg', 'Titolo', 'Iniziativa', 'Completo', 'Descrizione', 'Seduta', 'Pred', 'Succ', ),
+		BasePeer::TYPE_COLNAME => array (OppAttoPeer::ID, OppAttoPeer::PARLAMENTO_ID, OppAttoPeer::TIPO_ATTO_ID, OppAttoPeer::RAMO, OppAttoPeer::NUMFASE, OppAttoPeer::LEGISLATURA, OppAttoPeer::DATA_PRES, OppAttoPeer::DATA_AGG, OppAttoPeer::TITOLO, OppAttoPeer::INIZIATIVA, OppAttoPeer::COMPLETO, OppAttoPeer::DESCRIZIONE, OppAttoPeer::SEDUTA, OppAttoPeer::PRED, OppAttoPeer::SUCC, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'parlamento_id', 'tipo_atto_id', 'ramo', 'numfase', 'legislatura', 'data_pres', 'data_agg', 'titolo', 'iniziativa', 'completo', 'descrizione', 'seduta', 'pred', 'succ', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ParlamentoId' => 1, 'TipoAttoId' => 2, 'Ramo' => 3, 'Numfase' => 4, 'Legislatura' => 5, 'DataPres' => 6, 'DataAgg' => 7, 'Titolo' => 8, 'Iniziativa' => 9, 'Completo' => 10, 'Descrizione' => 11, 'Seduta' => 12, 'Iter' => 13, 'DataIter' => 14, ),
-		BasePeer::TYPE_COLNAME => array (OppAttoPeer::ID => 0, OppAttoPeer::PARLAMENTO_ID => 1, OppAttoPeer::TIPO_ATTO_ID => 2, OppAttoPeer::RAMO => 3, OppAttoPeer::NUMFASE => 4, OppAttoPeer::LEGISLATURA => 5, OppAttoPeer::DATA_PRES => 6, OppAttoPeer::DATA_AGG => 7, OppAttoPeer::TITOLO => 8, OppAttoPeer::INIZIATIVA => 9, OppAttoPeer::COMPLETO => 10, OppAttoPeer::DESCRIZIONE => 11, OppAttoPeer::SEDUTA => 12, OppAttoPeer::ITER => 13, OppAttoPeer::DATA_ITER => 14, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'parlamento_id' => 1, 'tipo_atto_id' => 2, 'ramo' => 3, 'numfase' => 4, 'legislatura' => 5, 'data_pres' => 6, 'data_agg' => 7, 'titolo' => 8, 'iniziativa' => 9, 'completo' => 10, 'descrizione' => 11, 'seduta' => 12, 'iter' => 13, 'data_iter' => 14, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ParlamentoId' => 1, 'TipoAttoId' => 2, 'Ramo' => 3, 'Numfase' => 4, 'Legislatura' => 5, 'DataPres' => 6, 'DataAgg' => 7, 'Titolo' => 8, 'Iniziativa' => 9, 'Completo' => 10, 'Descrizione' => 11, 'Seduta' => 12, 'Pred' => 13, 'Succ' => 14, ),
+		BasePeer::TYPE_COLNAME => array (OppAttoPeer::ID => 0, OppAttoPeer::PARLAMENTO_ID => 1, OppAttoPeer::TIPO_ATTO_ID => 2, OppAttoPeer::RAMO => 3, OppAttoPeer::NUMFASE => 4, OppAttoPeer::LEGISLATURA => 5, OppAttoPeer::DATA_PRES => 6, OppAttoPeer::DATA_AGG => 7, OppAttoPeer::TITOLO => 8, OppAttoPeer::INIZIATIVA => 9, OppAttoPeer::COMPLETO => 10, OppAttoPeer::DESCRIZIONE => 11, OppAttoPeer::SEDUTA => 12, OppAttoPeer::PRED => 13, OppAttoPeer::SUCC => 14, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'parlamento_id' => 1, 'tipo_atto_id' => 2, 'ramo' => 3, 'numfase' => 4, 'legislatura' => 5, 'data_pres' => 6, 'data_agg' => 7, 'titolo' => 8, 'iniziativa' => 9, 'completo' => 10, 'descrizione' => 11, 'seduta' => 12, 'pred' => 13, 'succ' => 14, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, )
 	);
 
@@ -161,9 +161,9 @@ abstract class BaseOppAttoPeer {
 
 		$criteria->addSelectColumn(OppAttoPeer::SEDUTA);
 
-		$criteria->addSelectColumn(OppAttoPeer::ITER);
+		$criteria->addSelectColumn(OppAttoPeer::PRED);
 
-		$criteria->addSelectColumn(OppAttoPeer::DATA_ITER);
+		$criteria->addSelectColumn(OppAttoPeer::SUCC);
 
 	}
 

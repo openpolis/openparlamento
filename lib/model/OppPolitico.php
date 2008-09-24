@@ -142,12 +142,11 @@ class OppPolitico extends BaseOppPolitico
 
     while ($rs1->next())
     {
-      if($rs1->getString(2)!=sfConfig::get('app_voto_1') && $rs1->getString(2)!=sfConfig::get('app_voto_5') && 
-         $rs1->getString(2)!=sfConfig::get('app_voto_6') && $rs1->getString(2)!=sfConfig::get('app_voto_7') && 
-         $rs1->getString(2)!=sfConfig::get('app_voto_8') && $rs1->getString(2)!=sfConfig::get('app_voto_9') )
+	  if ($rs1->getString(2)=='Astenuto' || $rs1->getString(2)=='Contrario' || $rs1->getString(2)=='Favorevole')
+      
       {
-        if($rs1->getString(2)!=$esiti_gruppo[$rs1->getInt(1)])
-          $count++;  
+        if($esiti_gruppo[$rs1->getInt(1)]!='' && $rs1->getString(2)!=$esiti_gruppo[$rs1->getInt(1)])
+          $count++;
       }
     }
     return $count;    

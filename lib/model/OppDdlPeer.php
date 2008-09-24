@@ -9,4 +9,7 @@
  */ 
 class OppDdlPeer extends BaseOppDdlPeer
 {
+  
 }
+
+?>

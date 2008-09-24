@@ -42,5 +42,7 @@ class OppSedutaMapBuilder {
 
 		$tMap->addColumn('LEGISLATURA', 'Legislatura', 'int', CreoleTypes::TINYINT, true, null);
 
+		$tMap->addColumn('URL', 'Url', 'string', CreoleTypes::VARCHAR, false, 255);
+
 	} 
 } 

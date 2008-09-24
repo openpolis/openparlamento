@@ -53,7 +53,7 @@ class OppVotazione extends BaseOppVotazione
     return $n;
   }
   
-  public function getRibelli()
+  public function getRibelliList()
   {
 
     $risultati = OppVotazioneHasCaricaPeer::doSelectGroupByGruppo($this->getId());

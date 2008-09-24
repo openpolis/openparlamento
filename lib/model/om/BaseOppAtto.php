@@ -61,14 +61,26 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 
 	
-	protected $iter;
+	protected $pred;
 
 
 	
-	protected $data_iter;
+	protected $succ;
 
 	
 	protected $aOppTipoAtto;
+
+	
+	protected $collOppAttoHasIters;
+
+	
+	protected $lastOppAttoHasIterCriteria = null;
+
+	
+	protected $collOppAttoHasSedes;
+
+	
+	protected $lastOppAttoHasSedeCriteria = null;
 
 	
 	protected $collOppAttoHasTeseos;
@@ -81,6 +93,24 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 	
 	protected $lastOppCaricaHasAttoCriteria = null;
+
+	
+	protected $collOppInterventos;
+
+	
+	protected $lastOppInterventoCriteria = null;
+
+	
+	protected $collOppLegges;
+
+	
+	protected $lastOppLeggeCriteria = null;
+
+	
+	protected $collOppVotazioneHasAttos;
+
+	
+	protected $lastOppVotazioneHasAttoCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -210,32 +240,17 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getIter()
+	public function getPred()
 	{
 
-		return $this->iter;
+		return $this->pred;
 	}
 
 	
-	public function getDataIter($format = 'Y-m-d')
+	public function getSucc()
 	{
 
-		if ($this->data_iter === null || $this->data_iter === '') {
-			return null;
-		} elseif (!is_int($this->data_iter)) {
-						$ts = strtotime($this->data_iter);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [data_iter] as date/time value: " . var_export($this->data_iter, true));
-			}
-		} else {
-			$ts = $this->data_iter;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
+		return $this->succ;
 	}
 
 	
@@ -302,8 +317,8 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 	public function setNumfase($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
 		}
 
 		if ($this->numfase !== $v) {
@@ -427,33 +442,30 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setIter($v)
+	public function setPred($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
 		}
 
-		if ($this->iter !== $v) {
-			$this->iter = $v;
-			$this->modifiedColumns[] = OppAttoPeer::ITER;
+		if ($this->pred !== $v) {
+			$this->pred = $v;
+			$this->modifiedColumns[] = OppAttoPeer::PRED;
 		}
 
 	} 
 	
-	public function setDataIter($v)
+	public function setSucc($v)
 	{
 
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [data_iter] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
 		}
-		if ($this->data_iter !== $ts) {
-			$this->data_iter = $ts;
-			$this->modifiedColumns[] = OppAttoPeer::DATA_ITER;
+
+		if ($this->succ !== $v) {
+			$this->succ = $v;
+			$this->modifiedColumns[] = OppAttoPeer::SUCC;
 		}
 
 	} 
@@ -470,7 +482,7 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 			$this->ramo = $rs->getString($startcol + 3);
 
-			$this->numfase = $rs->getInt($startcol + 4);
+			$this->numfase = $rs->getString($startcol + 4);
 
 			$this->legislatura = $rs->getInt($startcol + 5);
 
@@ -488,9 +500,9 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 			$this->seduta = $rs->getInt($startcol + 12);
 
-			$this->iter = $rs->getString($startcol + 13);
+			$this->pred = $rs->getInt($startcol + 13);
 
-			$this->data_iter = $rs->getDate($startcol + 14, null);
+			$this->succ = $rs->getInt($startcol + 14);
 
 			$this->resetModified();
 
@@ -573,6 +585,22 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collOppAttoHasIters !== null) {
+				foreach($this->collOppAttoHasIters as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppAttoHasSedes !== null) {
+				foreach($this->collOppAttoHasSedes as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collOppAttoHasTeseos !== null) {
 				foreach($this->collOppAttoHasTeseos as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -583,6 +611,30 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 			if ($this->collOppCaricaHasAttos !== null) {
 				foreach($this->collOppCaricaHasAttos as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppInterventos !== null) {
+				foreach($this->collOppInterventos as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppLegges !== null) {
+				foreach($this->collOppLegges as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppVotazioneHasAttos !== null) {
+				foreach($this->collOppVotazioneHasAttos as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -638,6 +690,22 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 			}
 
 
+				if ($this->collOppAttoHasIters !== null) {
+					foreach($this->collOppAttoHasIters as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppAttoHasSedes !== null) {
+					foreach($this->collOppAttoHasSedes as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 				if ($this->collOppAttoHasTeseos !== null) {
 					foreach($this->collOppAttoHasTeseos as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -648,6 +716,30 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 				if ($this->collOppCaricaHasAttos !== null) {
 					foreach($this->collOppCaricaHasAttos as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppInterventos !== null) {
+					foreach($this->collOppInterventos as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppLegges !== null) {
+					foreach($this->collOppLegges as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppVotazioneHasAttos !== null) {
+					foreach($this->collOppVotazioneHasAttos as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -712,10 +804,10 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 				return $this->getSeduta();
 				break;
 			case 13:
-				return $this->getIter();
+				return $this->getPred();
 				break;
 			case 14:
-				return $this->getDataIter();
+				return $this->getSucc();
 				break;
 			default:
 				return null;
@@ -740,8 +832,8 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 			$keys[10] => $this->getCompleto(),
 			$keys[11] => $this->getDescrizione(),
 			$keys[12] => $this->getSeduta(),
-			$keys[13] => $this->getIter(),
-			$keys[14] => $this->getDataIter(),
+			$keys[13] => $this->getPred(),
+			$keys[14] => $this->getSucc(),
 		);
 		return $result;
 	}
@@ -797,10 +889,10 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 				$this->setSeduta($value);
 				break;
 			case 13:
-				$this->setIter($value);
+				$this->setPred($value);
 				break;
 			case 14:
-				$this->setDataIter($value);
+				$this->setSucc($value);
 				break;
 		} 	}
 
@@ -822,8 +914,8 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[10], $arr)) $this->setCompleto($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setDescrizione($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setSeduta($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setIter($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setDataIter($arr[$keys[14]]);
+		if (array_key_exists($keys[13], $arr)) $this->setPred($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setSucc($arr[$keys[14]]);
 	}
 
 	
@@ -844,8 +936,8 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(OppAttoPeer::COMPLETO)) $criteria->add(OppAttoPeer::COMPLETO, $this->completo);
 		if ($this->isColumnModified(OppAttoPeer::DESCRIZIONE)) $criteria->add(OppAttoPeer::DESCRIZIONE, $this->descrizione);
 		if ($this->isColumnModified(OppAttoPeer::SEDUTA)) $criteria->add(OppAttoPeer::SEDUTA, $this->seduta);
-		if ($this->isColumnModified(OppAttoPeer::ITER)) $criteria->add(OppAttoPeer::ITER, $this->iter);
-		if ($this->isColumnModified(OppAttoPeer::DATA_ITER)) $criteria->add(OppAttoPeer::DATA_ITER, $this->data_iter);
+		if ($this->isColumnModified(OppAttoPeer::PRED)) $criteria->add(OppAttoPeer::PRED, $this->pred);
+		if ($this->isColumnModified(OppAttoPeer::SUCC)) $criteria->add(OppAttoPeer::SUCC, $this->succ);
 
 		return $criteria;
 	}
@@ -909,13 +1001,21 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 		$copyObj->setSeduta($this->seduta);
 
-		$copyObj->setIter($this->iter);
+		$copyObj->setPred($this->pred);
 
-		$copyObj->setDataIter($this->data_iter);
+		$copyObj->setSucc($this->succ);
 
 
 		if ($deepCopy) {
 									$copyObj->setNew(false);
+
+			foreach($this->getOppAttoHasIters() as $relObj) {
+				$copyObj->addOppAttoHasIter($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getOppAttoHasSedes() as $relObj) {
+				$copyObj->addOppAttoHasSede($relObj->copy($deepCopy));
+			}
 
 			foreach($this->getOppAttoHasTeseos() as $relObj) {
 				$copyObj->addOppAttoHasTeseo($relObj->copy($deepCopy));
@@ -923,6 +1023,18 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 
 			foreach($this->getOppCaricaHasAttos() as $relObj) {
 				$copyObj->addOppCaricaHasAtto($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getOppInterventos() as $relObj) {
+				$copyObj->addOppIntervento($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getOppLegges() as $relObj) {
+				$copyObj->addOppLegge($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getOppVotazioneHasAttos() as $relObj) {
+				$copyObj->addOppVotazioneHasAtto($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -979,6 +1091,216 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aOppTipoAtto;
+	}
+
+	
+	public function initOppAttoHasIters()
+	{
+		if ($this->collOppAttoHasIters === null) {
+			$this->collOppAttoHasIters = array();
+		}
+	}
+
+	
+	public function getOppAttoHasIters($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasIterPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppAttoHasIters === null) {
+			if ($this->isNew()) {
+			   $this->collOppAttoHasIters = array();
+			} else {
+
+				$criteria->add(OppAttoHasIterPeer::ATTO_ID, $this->getId());
+
+				OppAttoHasIterPeer::addSelectColumns($criteria);
+				$this->collOppAttoHasIters = OppAttoHasIterPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppAttoHasIterPeer::ATTO_ID, $this->getId());
+
+				OppAttoHasIterPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppAttoHasIterCriteria) || !$this->lastOppAttoHasIterCriteria->equals($criteria)) {
+					$this->collOppAttoHasIters = OppAttoHasIterPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppAttoHasIterCriteria = $criteria;
+		return $this->collOppAttoHasIters;
+	}
+
+	
+	public function countOppAttoHasIters($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasIterPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppAttoHasIterPeer::ATTO_ID, $this->getId());
+
+		return OppAttoHasIterPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppAttoHasIter(OppAttoHasIter $l)
+	{
+		$this->collOppAttoHasIters[] = $l;
+		$l->setOppAtto($this);
+	}
+
+
+	
+	public function getOppAttoHasItersJoinOppIter($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasIterPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppAttoHasIters === null) {
+			if ($this->isNew()) {
+				$this->collOppAttoHasIters = array();
+			} else {
+
+				$criteria->add(OppAttoHasIterPeer::ATTO_ID, $this->getId());
+
+				$this->collOppAttoHasIters = OppAttoHasIterPeer::doSelectJoinOppIter($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppAttoHasIterPeer::ATTO_ID, $this->getId());
+
+			if (!isset($this->lastOppAttoHasIterCriteria) || !$this->lastOppAttoHasIterCriteria->equals($criteria)) {
+				$this->collOppAttoHasIters = OppAttoHasIterPeer::doSelectJoinOppIter($criteria, $con);
+			}
+		}
+		$this->lastOppAttoHasIterCriteria = $criteria;
+
+		return $this->collOppAttoHasIters;
+	}
+
+	
+	public function initOppAttoHasSedes()
+	{
+		if ($this->collOppAttoHasSedes === null) {
+			$this->collOppAttoHasSedes = array();
+		}
+	}
+
+	
+	public function getOppAttoHasSedes($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasSedePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppAttoHasSedes === null) {
+			if ($this->isNew()) {
+			   $this->collOppAttoHasSedes = array();
+			} else {
+
+				$criteria->add(OppAttoHasSedePeer::ATTO_ID, $this->getId());
+
+				OppAttoHasSedePeer::addSelectColumns($criteria);
+				$this->collOppAttoHasSedes = OppAttoHasSedePeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppAttoHasSedePeer::ATTO_ID, $this->getId());
+
+				OppAttoHasSedePeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppAttoHasSedeCriteria) || !$this->lastOppAttoHasSedeCriteria->equals($criteria)) {
+					$this->collOppAttoHasSedes = OppAttoHasSedePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppAttoHasSedeCriteria = $criteria;
+		return $this->collOppAttoHasSedes;
+	}
+
+	
+	public function countOppAttoHasSedes($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasSedePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppAttoHasSedePeer::ATTO_ID, $this->getId());
+
+		return OppAttoHasSedePeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppAttoHasSede(OppAttoHasSede $l)
+	{
+		$this->collOppAttoHasSedes[] = $l;
+		$l->setOppAtto($this);
+	}
+
+
+	
+	public function getOppAttoHasSedesJoinOppSede($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppAttoHasSedePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppAttoHasSedes === null) {
+			if ($this->isNew()) {
+				$this->collOppAttoHasSedes = array();
+			} else {
+
+				$criteria->add(OppAttoHasSedePeer::ATTO_ID, $this->getId());
+
+				$this->collOppAttoHasSedes = OppAttoHasSedePeer::doSelectJoinOppSede($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppAttoHasSedePeer::ATTO_ID, $this->getId());
+
+			if (!isset($this->lastOppAttoHasSedeCriteria) || !$this->lastOppAttoHasSedeCriteria->equals($criteria)) {
+				$this->collOppAttoHasSedes = OppAttoHasSedePeer::doSelectJoinOppSede($criteria, $con);
+			}
+		}
+		$this->lastOppAttoHasSedeCriteria = $criteria;
+
+		return $this->collOppAttoHasSedes;
 	}
 
 	
@@ -1189,6 +1511,321 @@ abstract class BaseOppAtto extends BaseObject  implements Persistent {
 		$this->lastOppCaricaHasAttoCriteria = $criteria;
 
 		return $this->collOppCaricaHasAttos;
+	}
+
+	
+	public function initOppInterventos()
+	{
+		if ($this->collOppInterventos === null) {
+			$this->collOppInterventos = array();
+		}
+	}
+
+	
+	public function getOppInterventos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+			   $this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+				OppInterventoPeer::addSelectColumns($criteria);
+				$this->collOppInterventos = OppInterventoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+				OppInterventoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+					$this->collOppInterventos = OppInterventoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+		return $this->collOppInterventos;
+	}
+
+	
+	public function countOppInterventos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+		return OppInterventoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppIntervento(OppIntervento $l)
+	{
+		$this->collOppInterventos[] = $l;
+		$l->setOppAtto($this);
+	}
+
+
+	
+	public function getOppInterventosJoinOppCarica($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+				$this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppCarica($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+			if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppCarica($criteria, $con);
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+
+		return $this->collOppInterventos;
+	}
+
+
+	
+	public function getOppInterventosJoinOppSede($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+				$this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppSede($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppInterventoPeer::ATTO_ID, $this->getId());
+
+			if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppSede($criteria, $con);
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+
+		return $this->collOppInterventos;
+	}
+
+	
+	public function initOppLegges()
+	{
+		if ($this->collOppLegges === null) {
+			$this->collOppLegges = array();
+		}
+	}
+
+	
+	public function getOppLegges($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppLeggePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppLegges === null) {
+			if ($this->isNew()) {
+			   $this->collOppLegges = array();
+			} else {
+
+				$criteria->add(OppLeggePeer::ATTO_ID, $this->getId());
+
+				OppLeggePeer::addSelectColumns($criteria);
+				$this->collOppLegges = OppLeggePeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppLeggePeer::ATTO_ID, $this->getId());
+
+				OppLeggePeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppLeggeCriteria) || !$this->lastOppLeggeCriteria->equals($criteria)) {
+					$this->collOppLegges = OppLeggePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppLeggeCriteria = $criteria;
+		return $this->collOppLegges;
+	}
+
+	
+	public function countOppLegges($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppLeggePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppLeggePeer::ATTO_ID, $this->getId());
+
+		return OppLeggePeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppLegge(OppLegge $l)
+	{
+		$this->collOppLegges[] = $l;
+		$l->setOppAtto($this);
+	}
+
+	
+	public function initOppVotazioneHasAttos()
+	{
+		if ($this->collOppVotazioneHasAttos === null) {
+			$this->collOppVotazioneHasAttos = array();
+		}
+	}
+
+	
+	public function getOppVotazioneHasAttos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppVotazioneHasAttos === null) {
+			if ($this->isNew()) {
+			   $this->collOppVotazioneHasAttos = array();
+			} else {
+
+				$criteria->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
+
+				OppVotazioneHasAttoPeer::addSelectColumns($criteria);
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
+
+				OppVotazioneHasAttoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppVotazioneHasAttoCriteria) || !$this->lastOppVotazioneHasAttoCriteria->equals($criteria)) {
+					$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppVotazioneHasAttoCriteria = $criteria;
+		return $this->collOppVotazioneHasAttos;
+	}
+
+	
+	public function countOppVotazioneHasAttos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
+
+		return OppVotazioneHasAttoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppVotazioneHasAtto(OppVotazioneHasAtto $l)
+	{
+		$this->collOppVotazioneHasAttos[] = $l;
+		$l->setOppAtto($this);
+	}
+
+
+	
+	public function getOppVotazioneHasAttosJoinOppVotazione($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppVotazioneHasAttos === null) {
+			if ($this->isNew()) {
+				$this->collOppVotazioneHasAttos = array();
+			} else {
+
+				$criteria->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
+
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelectJoinOppVotazione($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
+
+			if (!isset($this->lastOppVotazioneHasAttoCriteria) || !$this->lastOppVotazioneHasAttoCriteria->equals($criteria)) {
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelectJoinOppVotazione($criteria, $con);
+			}
+		}
+		$this->lastOppVotazioneHasAttoCriteria = $criteria;
+
+		return $this->collOppVotazioneHasAttos;
 	}
 
 } 

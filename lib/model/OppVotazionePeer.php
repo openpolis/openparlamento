@@ -20,7 +20,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	$c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
 	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
 	
-	$c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente', Criteria::NOT_EQUAL);	
+	//$c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente', Criteria::NOT_EQUAL);	
 	$c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $votazione_id, Criteria::EQUAL);
 	$c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
 	
@@ -33,7 +33,10 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	
 	while ($rs->next())
     {
-	  return $rs->getString(1);
+	  if ($rs->getString(1)=='Astenuto' || $rs->getString(1)=='Contrario' || $rs->getString(1)=='Favorevole')
+	    return $rs->getString(1);
+	  else
+	    return '';
 	}
 	
   }  

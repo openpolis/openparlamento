@@ -519,6 +519,41 @@ abstract class BaseOppTeseott extends BaseObject  implements Persistent {
 		$l->setOppTeseott($this);
 	}
 
+
+	
+	public function getOppTeseosJoinOppTipoTeseo($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppTeseoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppTeseos === null) {
+			if ($this->isNew()) {
+				$this->collOppTeseos = array();
+			} else {
+
+				$criteria->add(OppTeseoPeer::TESEOTT_ID, $this->getId());
+
+				$this->collOppTeseos = OppTeseoPeer::doSelectJoinOppTipoTeseo($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppTeseoPeer::TESEOTT_ID, $this->getId());
+
+			if (!isset($this->lastOppTeseoCriteria) || !$this->lastOppTeseoCriteria->equals($criteria)) {
+				$this->collOppTeseos = OppTeseoPeer::doSelectJoinOppTipoTeseo($criteria, $con);
+			}
+		}
+		$this->lastOppTeseoCriteria = $criteria;
+
+		return $this->collOppTeseos;
+	}
+
 	
 	public function initOppTeseoHasTeseotts()
 	{

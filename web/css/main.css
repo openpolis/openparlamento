@@ -27,3 +27,6 @@ body
 }
 
 .ribelli{ background-color:#CFCFCF}
+
+ul.menu { margin-bottom:50px }
+ul.menu li { display:inline; margin-left:20px; font-size:1.1em; list-style-type:none; }

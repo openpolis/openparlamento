@@ -40,7 +40,7 @@ class OppAttoMapBuilder {
 
 		$tMap->addColumn('RAMO', 'Ramo', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
-		$tMap->addColumn('NUMFASE', 'Numfase', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('NUMFASE', 'Numfase', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('LEGISLATURA', 'Legislatura', 'int', CreoleTypes::INTEGER, false, null);
 
@@ -58,9 +58,9 @@ class OppAttoMapBuilder {
 
 		$tMap->addColumn('SEDUTA', 'Seduta', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('ITER', 'Iter', 'string', CreoleTypes::VARCHAR, false, 100);
+		$tMap->addColumn('PRED', 'Pred', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('DATA_ITER', 'DataIter', 'int', CreoleTypes::DATE, false, null);
+		$tMap->addColumn('SUCC', 'Succ', 'int', CreoleTypes::INTEGER, false, null);
 
 	} 
 } 

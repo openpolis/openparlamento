@@ -13,6 +13,10 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 
 	
+	protected $tipo_teseo_id;
+
+
+	
 	protected $denominazione;
 
 
@@ -26,6 +30,9 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 	
 	protected $tt;
+
+	
+	protected $aOppTipoTeseo;
 
 	
 	protected $aOppTeseott;
@@ -53,6 +60,13 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 	{
 
 		return $this->id;
+	}
+
+	
+	public function getTipoTeseoId()
+	{
+
+		return $this->tipo_teseo_id;
 	}
 
 	
@@ -94,6 +108,24 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		if ($this->id !== $v) {
 			$this->id = $v;
 			$this->modifiedColumns[] = OppTeseoPeer::ID;
+		}
+
+	} 
+	
+	public function setTipoTeseoId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->tipo_teseo_id !== $v) {
+			$this->tipo_teseo_id = $v;
+			$this->modifiedColumns[] = OppTeseoPeer::TIPO_TESEO_ID;
+		}
+
+		if ($this->aOppTipoTeseo !== null && $this->aOppTipoTeseo->getId() !== $v) {
+			$this->aOppTipoTeseo = null;
 		}
 
 	} 
@@ -164,19 +196,21 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 			$this->id = $rs->getInt($startcol + 0);
 
-			$this->denominazione = $rs->getString($startcol + 1);
+			$this->tipo_teseo_id = $rs->getInt($startcol + 1);
 
-			$this->ns_denominazione = $rs->getString($startcol + 2);
+			$this->denominazione = $rs->getString($startcol + 2);
 
-			$this->teseott_id = $rs->getInt($startcol + 3);
+			$this->ns_denominazione = $rs->getString($startcol + 3);
 
-			$this->tt = $rs->getInt($startcol + 4);
+			$this->teseott_id = $rs->getInt($startcol + 4);
+
+			$this->tt = $rs->getInt($startcol + 5);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 6; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OppTeseo object", $e);
 		}
@@ -234,6 +268,13 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 
 												
+			if ($this->aOppTipoTeseo !== null) {
+				if ($this->aOppTipoTeseo->isModified()) {
+					$affectedRows += $this->aOppTipoTeseo->save($con);
+				}
+				$this->setOppTipoTeseo($this->aOppTipoTeseo);
+			}
+
 			if ($this->aOppTeseott !== null) {
 				if ($this->aOppTeseott->isModified()) {
 					$affectedRows += $this->aOppTeseott->save($con);
@@ -306,6 +347,12 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 
 												
+			if ($this->aOppTipoTeseo !== null) {
+				if (!$this->aOppTipoTeseo->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aOppTipoTeseo->getValidationFailures());
+				}
+			}
+
 			if ($this->aOppTeseott !== null) {
 				if (!$this->aOppTeseott->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aOppTeseott->getValidationFailures());
@@ -356,15 +403,18 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getDenominazione();
+				return $this->getTipoTeseoId();
 				break;
 			case 2:
-				return $this->getNsDenominazione();
+				return $this->getDenominazione();
 				break;
 			case 3:
-				return $this->getTeseottId();
+				return $this->getNsDenominazione();
 				break;
 			case 4:
+				return $this->getTeseottId();
+				break;
+			case 5:
 				return $this->getTt();
 				break;
 			default:
@@ -378,10 +428,11 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		$keys = OppTeseoPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getDenominazione(),
-			$keys[2] => $this->getNsDenominazione(),
-			$keys[3] => $this->getTeseottId(),
-			$keys[4] => $this->getTt(),
+			$keys[1] => $this->getTipoTeseoId(),
+			$keys[2] => $this->getDenominazione(),
+			$keys[3] => $this->getNsDenominazione(),
+			$keys[4] => $this->getTeseottId(),
+			$keys[5] => $this->getTt(),
 		);
 		return $result;
 	}
@@ -401,15 +452,18 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setDenominazione($value);
+				$this->setTipoTeseoId($value);
 				break;
 			case 2:
-				$this->setNsDenominazione($value);
+				$this->setDenominazione($value);
 				break;
 			case 3:
-				$this->setTeseottId($value);
+				$this->setNsDenominazione($value);
 				break;
 			case 4:
+				$this->setTeseottId($value);
+				break;
+			case 5:
 				$this->setTt($value);
 				break;
 		} 	}
@@ -420,10 +474,11 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		$keys = OppTeseoPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setDenominazione($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setNsDenominazione($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setTeseottId($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setTt($arr[$keys[4]]);
+		if (array_key_exists($keys[1], $arr)) $this->setTipoTeseoId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setDenominazione($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setNsDenominazione($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setTeseottId($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setTt($arr[$keys[5]]);
 	}
 
 	
@@ -432,6 +487,7 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		$criteria = new Criteria(OppTeseoPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(OppTeseoPeer::ID)) $criteria->add(OppTeseoPeer::ID, $this->id);
+		if ($this->isColumnModified(OppTeseoPeer::TIPO_TESEO_ID)) $criteria->add(OppTeseoPeer::TIPO_TESEO_ID, $this->tipo_teseo_id);
 		if ($this->isColumnModified(OppTeseoPeer::DENOMINAZIONE)) $criteria->add(OppTeseoPeer::DENOMINAZIONE, $this->denominazione);
 		if ($this->isColumnModified(OppTeseoPeer::NS_DENOMINAZIONE)) $criteria->add(OppTeseoPeer::NS_DENOMINAZIONE, $this->ns_denominazione);
 		if ($this->isColumnModified(OppTeseoPeer::TESEOTT_ID)) $criteria->add(OppTeseoPeer::TESEOTT_ID, $this->teseott_id);
@@ -446,6 +502,7 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		$criteria = new Criteria(OppTeseoPeer::DATABASE_NAME);
 
 		$criteria->add(OppTeseoPeer::ID, $this->id);
+		$criteria->add(OppTeseoPeer::TIPO_TESEO_ID, $this->tipo_teseo_id);
 		$criteria->add(OppTeseoPeer::TESEOTT_ID, $this->teseott_id);
 
 		return $criteria;
@@ -458,7 +515,9 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 		$pks[0] = $this->getId();
 
-		$pks[1] = $this->getTeseottId();
+		$pks[1] = $this->getTipoTeseoId();
+
+		$pks[2] = $this->getTeseottId();
 
 		return $pks;
 	}
@@ -469,7 +528,9 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 
 		$this->setId($keys[0]);
 
-		$this->setTeseottId($keys[1]);
+		$this->setTipoTeseoId($keys[1]);
+
+		$this->setTeseottId($keys[2]);
 
 	}
 
@@ -500,6 +561,7 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 		$copyObj->setNew(true);
 
 		$copyObj->setId(NULL); 
+		$copyObj->setTipoTeseoId(NULL); 
 		$copyObj->setTeseottId(NULL); 
 	}
 
@@ -519,6 +581,36 @@ abstract class BaseOppTeseo extends BaseObject  implements Persistent {
 			self::$peer = new OppTeseoPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function setOppTipoTeseo($v)
+	{
+
+
+		if ($v === null) {
+			$this->setTipoTeseoId(NULL);
+		} else {
+			$this->setTipoTeseoId($v->getId());
+		}
+
+
+		$this->aOppTipoTeseo = $v;
+	}
+
+
+	
+	public function getOppTipoTeseo($con = null)
+	{
+				include_once 'lib/model/om/BaseOppTipoTeseoPeer.php';
+
+		if ($this->aOppTipoTeseo === null && ($this->tipo_teseo_id !== null)) {
+
+			$this->aOppTipoTeseo = OppTipoTeseoPeer::retrieveByPK($this->tipo_teseo_id, $con);
+
+			
+		}
+		return $this->aOppTipoTeseo;
 	}
 
 	

@@ -13,7 +13,7 @@ abstract class BaseOppVotazionePeer {
 	const CLASS_DEFAULT = 'lib.model.OppVotazione';
 
 	
-	const NUM_COLUMNS = 14;
+	const NUM_COLUMNS = 17;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -53,6 +53,12 @@ abstract class BaseOppVotazionePeer {
 	const ESITO = 'opp_votazione.ESITO';
 
 	
+	const RIBELLI = 'opp_votazione.RIBELLI';
+
+	
+	const MARGINE = 'opp_votazione.MARGINE';
+
+	
 	const TIPOLOGIA = 'opp_votazione.TIPOLOGIA';
 
 	
@@ -62,23 +68,26 @@ abstract class BaseOppVotazionePeer {
 	const URL = 'opp_votazione.URL';
 
 	
+	const FINALE = 'opp_votazione.FINALE';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'SedutaId', 'NumeroVotazione', 'Titolo', 'Presenti', 'Votanti', 'Maggioranza', 'Astenuti', 'Favorevoli', 'Contrari', 'Esito', 'Tipologia', 'Descrizione', 'Url', ),
-		BasePeer::TYPE_COLNAME => array (OppVotazionePeer::ID, OppVotazionePeer::SEDUTA_ID, OppVotazionePeer::NUMERO_VOTAZIONE, OppVotazionePeer::TITOLO, OppVotazionePeer::PRESENTI, OppVotazionePeer::VOTANTI, OppVotazionePeer::MAGGIORANZA, OppVotazionePeer::ASTENUTI, OppVotazionePeer::FAVOREVOLI, OppVotazionePeer::CONTRARI, OppVotazionePeer::ESITO, OppVotazionePeer::TIPOLOGIA, OppVotazionePeer::DESCRIZIONE, OppVotazionePeer::URL, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'seduta_id', 'numero_votazione', 'titolo', 'presenti', 'votanti', 'maggioranza', 'astenuti', 'favorevoli', 'contrari', 'esito', 'tipologia', 'descrizione', 'url', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'SedutaId', 'NumeroVotazione', 'Titolo', 'Presenti', 'Votanti', 'Maggioranza', 'Astenuti', 'Favorevoli', 'Contrari', 'Esito', 'Ribelli', 'Margine', 'Tipologia', 'Descrizione', 'Url', 'Finale', ),
+		BasePeer::TYPE_COLNAME => array (OppVotazionePeer::ID, OppVotazionePeer::SEDUTA_ID, OppVotazionePeer::NUMERO_VOTAZIONE, OppVotazionePeer::TITOLO, OppVotazionePeer::PRESENTI, OppVotazionePeer::VOTANTI, OppVotazionePeer::MAGGIORANZA, OppVotazionePeer::ASTENUTI, OppVotazionePeer::FAVOREVOLI, OppVotazionePeer::CONTRARI, OppVotazionePeer::ESITO, OppVotazionePeer::RIBELLI, OppVotazionePeer::MARGINE, OppVotazionePeer::TIPOLOGIA, OppVotazionePeer::DESCRIZIONE, OppVotazionePeer::URL, OppVotazionePeer::FINALE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'seduta_id', 'numero_votazione', 'titolo', 'presenti', 'votanti', 'maggioranza', 'astenuti', 'favorevoli', 'contrari', 'esito', 'ribelli', 'margine', 'tipologia', 'descrizione', 'url', 'finale', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SedutaId' => 1, 'NumeroVotazione' => 2, 'Titolo' => 3, 'Presenti' => 4, 'Votanti' => 5, 'Maggioranza' => 6, 'Astenuti' => 7, 'Favorevoli' => 8, 'Contrari' => 9, 'Esito' => 10, 'Tipologia' => 11, 'Descrizione' => 12, 'Url' => 13, ),
-		BasePeer::TYPE_COLNAME => array (OppVotazionePeer::ID => 0, OppVotazionePeer::SEDUTA_ID => 1, OppVotazionePeer::NUMERO_VOTAZIONE => 2, OppVotazionePeer::TITOLO => 3, OppVotazionePeer::PRESENTI => 4, OppVotazionePeer::VOTANTI => 5, OppVotazionePeer::MAGGIORANZA => 6, OppVotazionePeer::ASTENUTI => 7, OppVotazionePeer::FAVOREVOLI => 8, OppVotazionePeer::CONTRARI => 9, OppVotazionePeer::ESITO => 10, OppVotazionePeer::TIPOLOGIA => 11, OppVotazionePeer::DESCRIZIONE => 12, OppVotazionePeer::URL => 13, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'seduta_id' => 1, 'numero_votazione' => 2, 'titolo' => 3, 'presenti' => 4, 'votanti' => 5, 'maggioranza' => 6, 'astenuti' => 7, 'favorevoli' => 8, 'contrari' => 9, 'esito' => 10, 'tipologia' => 11, 'descrizione' => 12, 'url' => 13, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SedutaId' => 1, 'NumeroVotazione' => 2, 'Titolo' => 3, 'Presenti' => 4, 'Votanti' => 5, 'Maggioranza' => 6, 'Astenuti' => 7, 'Favorevoli' => 8, 'Contrari' => 9, 'Esito' => 10, 'Ribelli' => 11, 'Margine' => 12, 'Tipologia' => 13, 'Descrizione' => 14, 'Url' => 15, 'Finale' => 16, ),
+		BasePeer::TYPE_COLNAME => array (OppVotazionePeer::ID => 0, OppVotazionePeer::SEDUTA_ID => 1, OppVotazionePeer::NUMERO_VOTAZIONE => 2, OppVotazionePeer::TITOLO => 3, OppVotazionePeer::PRESENTI => 4, OppVotazionePeer::VOTANTI => 5, OppVotazionePeer::MAGGIORANZA => 6, OppVotazionePeer::ASTENUTI => 7, OppVotazionePeer::FAVOREVOLI => 8, OppVotazionePeer::CONTRARI => 9, OppVotazionePeer::ESITO => 10, OppVotazionePeer::RIBELLI => 11, OppVotazionePeer::MARGINE => 12, OppVotazionePeer::TIPOLOGIA => 13, OppVotazionePeer::DESCRIZIONE => 14, OppVotazionePeer::URL => 15, OppVotazionePeer::FINALE => 16, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'seduta_id' => 1, 'numero_votazione' => 2, 'titolo' => 3, 'presenti' => 4, 'votanti' => 5, 'maggioranza' => 6, 'astenuti' => 7, 'favorevoli' => 8, 'contrari' => 9, 'esito' => 10, 'ribelli' => 11, 'margine' => 12, 'tipologia' => 13, 'descrizione' => 14, 'url' => 15, 'finale' => 16, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, )
 	);
 
 	
@@ -154,11 +163,17 @@ abstract class BaseOppVotazionePeer {
 
 		$criteria->addSelectColumn(OppVotazionePeer::ESITO);
 
+		$criteria->addSelectColumn(OppVotazionePeer::RIBELLI);
+
+		$criteria->addSelectColumn(OppVotazionePeer::MARGINE);
+
 		$criteria->addSelectColumn(OppVotazionePeer::TIPOLOGIA);
 
 		$criteria->addSelectColumn(OppVotazionePeer::DESCRIZIONE);
 
 		$criteria->addSelectColumn(OppVotazionePeer::URL);
+
+		$criteria->addSelectColumn(OppVotazionePeer::FINALE);
 
 	}
 

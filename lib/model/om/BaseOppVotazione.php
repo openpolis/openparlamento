@@ -53,6 +53,14 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 
 
 	
+	protected $ribelli;
+
+
+	
+	protected $margine;
+
+
+	
 	protected $tipologia;
 
 
@@ -63,8 +71,24 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 	
 	protected $url;
 
+
+	
+	protected $finale = 0;
+
 	
 	protected $aOppSeduta;
+
+	
+	protected $collOppPolicyHasVotaziones;
+
+	
+	protected $lastOppPolicyHasVotazioneCriteria = null;
+
+	
+	protected $collOppVotazioneHasAttos;
+
+	
+	protected $lastOppVotazioneHasAttoCriteria = null;
 
 	
 	protected $collOppVotazioneHasCaricas;
@@ -162,6 +186,20 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 	}
 
 	
+	public function getRibelli()
+	{
+
+		return $this->ribelli;
+	}
+
+	
+	public function getMargine()
+	{
+
+		return $this->margine;
+	}
+
+	
 	public function getTipologia()
 	{
 
@@ -180,6 +218,13 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 	{
 
 		return $this->url;
+	}
+
+	
+	public function getFinale()
+	{
+
+		return $this->finale;
 	}
 
 	
@@ -341,6 +386,34 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setRibelli($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->ribelli !== $v) {
+			$this->ribelli = $v;
+			$this->modifiedColumns[] = OppVotazionePeer::RIBELLI;
+		}
+
+	} 
+	
+	public function setMargine($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->margine !== $v) {
+			$this->margine = $v;
+			$this->modifiedColumns[] = OppVotazionePeer::MARGINE;
+		}
+
+	} 
+	
 	public function setTipologia($v)
 	{
 
@@ -383,6 +456,20 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setFinale($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->finale !== $v || $v === 0) {
+			$this->finale = $v;
+			$this->modifiedColumns[] = OppVotazionePeer::FINALE;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -409,17 +496,23 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 
 			$this->esito = $rs->getString($startcol + 10);
 
-			$this->tipologia = $rs->getString($startcol + 11);
+			$this->ribelli = $rs->getInt($startcol + 11);
 
-			$this->descrizione = $rs->getString($startcol + 12);
+			$this->margine = $rs->getInt($startcol + 12);
 
-			$this->url = $rs->getString($startcol + 13);
+			$this->tipologia = $rs->getString($startcol + 13);
+
+			$this->descrizione = $rs->getString($startcol + 14);
+
+			$this->url = $rs->getString($startcol + 15);
+
+			$this->finale = $rs->getInt($startcol + 16);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 14; 
+						return $startcol + 17; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OppVotazione object", $e);
 		}
@@ -496,6 +589,22 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collOppPolicyHasVotaziones !== null) {
+				foreach($this->collOppPolicyHasVotaziones as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppVotazioneHasAttos !== null) {
+				foreach($this->collOppVotazioneHasAttos as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collOppVotazioneHasCaricas !== null) {
 				foreach($this->collOppVotazioneHasCaricas as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -560,6 +669,22 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collOppPolicyHasVotaziones !== null) {
+					foreach($this->collOppPolicyHasVotaziones as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppVotazioneHasAttos !== null) {
+					foreach($this->collOppVotazioneHasAttos as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 				if ($this->collOppVotazioneHasCaricas !== null) {
 					foreach($this->collOppVotazioneHasCaricas as $referrerFK) {
@@ -629,13 +754,22 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 				return $this->getEsito();
 				break;
 			case 11:
-				return $this->getTipologia();
+				return $this->getRibelli();
 				break;
 			case 12:
-				return $this->getDescrizione();
+				return $this->getMargine();
 				break;
 			case 13:
+				return $this->getTipologia();
+				break;
+			case 14:
+				return $this->getDescrizione();
+				break;
+			case 15:
 				return $this->getUrl();
+				break;
+			case 16:
+				return $this->getFinale();
 				break;
 			default:
 				return null;
@@ -658,9 +792,12 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 			$keys[8] => $this->getFavorevoli(),
 			$keys[9] => $this->getContrari(),
 			$keys[10] => $this->getEsito(),
-			$keys[11] => $this->getTipologia(),
-			$keys[12] => $this->getDescrizione(),
-			$keys[13] => $this->getUrl(),
+			$keys[11] => $this->getRibelli(),
+			$keys[12] => $this->getMargine(),
+			$keys[13] => $this->getTipologia(),
+			$keys[14] => $this->getDescrizione(),
+			$keys[15] => $this->getUrl(),
+			$keys[16] => $this->getFinale(),
 		);
 		return $result;
 	}
@@ -710,13 +847,22 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 				$this->setEsito($value);
 				break;
 			case 11:
-				$this->setTipologia($value);
+				$this->setRibelli($value);
 				break;
 			case 12:
-				$this->setDescrizione($value);
+				$this->setMargine($value);
 				break;
 			case 13:
+				$this->setTipologia($value);
+				break;
+			case 14:
+				$this->setDescrizione($value);
+				break;
+			case 15:
 				$this->setUrl($value);
+				break;
+			case 16:
+				$this->setFinale($value);
 				break;
 		} 	}
 
@@ -736,9 +882,12 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[8], $arr)) $this->setFavorevoli($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setContrari($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setEsito($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setTipologia($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setDescrizione($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setUrl($arr[$keys[13]]);
+		if (array_key_exists($keys[11], $arr)) $this->setRibelli($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setMargine($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setTipologia($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setDescrizione($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setUrl($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setFinale($arr[$keys[16]]);
 	}
 
 	
@@ -757,9 +906,12 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(OppVotazionePeer::FAVOREVOLI)) $criteria->add(OppVotazionePeer::FAVOREVOLI, $this->favorevoli);
 		if ($this->isColumnModified(OppVotazionePeer::CONTRARI)) $criteria->add(OppVotazionePeer::CONTRARI, $this->contrari);
 		if ($this->isColumnModified(OppVotazionePeer::ESITO)) $criteria->add(OppVotazionePeer::ESITO, $this->esito);
+		if ($this->isColumnModified(OppVotazionePeer::RIBELLI)) $criteria->add(OppVotazionePeer::RIBELLI, $this->ribelli);
+		if ($this->isColumnModified(OppVotazionePeer::MARGINE)) $criteria->add(OppVotazionePeer::MARGINE, $this->margine);
 		if ($this->isColumnModified(OppVotazionePeer::TIPOLOGIA)) $criteria->add(OppVotazionePeer::TIPOLOGIA, $this->tipologia);
 		if ($this->isColumnModified(OppVotazionePeer::DESCRIZIONE)) $criteria->add(OppVotazionePeer::DESCRIZIONE, $this->descrizione);
 		if ($this->isColumnModified(OppVotazionePeer::URL)) $criteria->add(OppVotazionePeer::URL, $this->url);
+		if ($this->isColumnModified(OppVotazionePeer::FINALE)) $criteria->add(OppVotazionePeer::FINALE, $this->finale);
 
 		return $criteria;
 	}
@@ -819,15 +971,29 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 
 		$copyObj->setEsito($this->esito);
 
+		$copyObj->setRibelli($this->ribelli);
+
+		$copyObj->setMargine($this->margine);
+
 		$copyObj->setTipologia($this->tipologia);
 
 		$copyObj->setDescrizione($this->descrizione);
 
 		$copyObj->setUrl($this->url);
 
+		$copyObj->setFinale($this->finale);
+
 
 		if ($deepCopy) {
 									$copyObj->setNew(false);
+
+			foreach($this->getOppPolicyHasVotaziones() as $relObj) {
+				$copyObj->addOppPolicyHasVotazione($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getOppVotazioneHasAttos() as $relObj) {
+				$copyObj->addOppVotazioneHasAtto($relObj->copy($deepCopy));
+			}
 
 			foreach($this->getOppVotazioneHasCaricas() as $relObj) {
 				$copyObj->addOppVotazioneHasCarica($relObj->copy($deepCopy));
@@ -891,6 +1057,216 @@ abstract class BaseOppVotazione extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aOppSeduta;
+	}
+
+	
+	public function initOppPolicyHasVotaziones()
+	{
+		if ($this->collOppPolicyHasVotaziones === null) {
+			$this->collOppPolicyHasVotaziones = array();
+		}
+	}
+
+	
+	public function getOppPolicyHasVotaziones($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppPolicyHasVotazionePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppPolicyHasVotaziones === null) {
+			if ($this->isNew()) {
+			   $this->collOppPolicyHasVotaziones = array();
+			} else {
+
+				$criteria->add(OppPolicyHasVotazionePeer::VOTAZIONE_ID, $this->getId());
+
+				OppPolicyHasVotazionePeer::addSelectColumns($criteria);
+				$this->collOppPolicyHasVotaziones = OppPolicyHasVotazionePeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppPolicyHasVotazionePeer::VOTAZIONE_ID, $this->getId());
+
+				OppPolicyHasVotazionePeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppPolicyHasVotazioneCriteria) || !$this->lastOppPolicyHasVotazioneCriteria->equals($criteria)) {
+					$this->collOppPolicyHasVotaziones = OppPolicyHasVotazionePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppPolicyHasVotazioneCriteria = $criteria;
+		return $this->collOppPolicyHasVotaziones;
+	}
+
+	
+	public function countOppPolicyHasVotaziones($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppPolicyHasVotazionePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppPolicyHasVotazionePeer::VOTAZIONE_ID, $this->getId());
+
+		return OppPolicyHasVotazionePeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppPolicyHasVotazione(OppPolicyHasVotazione $l)
+	{
+		$this->collOppPolicyHasVotaziones[] = $l;
+		$l->setOppVotazione($this);
+	}
+
+
+	
+	public function getOppPolicyHasVotazionesJoinOppPolicy($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppPolicyHasVotazionePeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppPolicyHasVotaziones === null) {
+			if ($this->isNew()) {
+				$this->collOppPolicyHasVotaziones = array();
+			} else {
+
+				$criteria->add(OppPolicyHasVotazionePeer::VOTAZIONE_ID, $this->getId());
+
+				$this->collOppPolicyHasVotaziones = OppPolicyHasVotazionePeer::doSelectJoinOppPolicy($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppPolicyHasVotazionePeer::VOTAZIONE_ID, $this->getId());
+
+			if (!isset($this->lastOppPolicyHasVotazioneCriteria) || !$this->lastOppPolicyHasVotazioneCriteria->equals($criteria)) {
+				$this->collOppPolicyHasVotaziones = OppPolicyHasVotazionePeer::doSelectJoinOppPolicy($criteria, $con);
+			}
+		}
+		$this->lastOppPolicyHasVotazioneCriteria = $criteria;
+
+		return $this->collOppPolicyHasVotaziones;
+	}
+
+	
+	public function initOppVotazioneHasAttos()
+	{
+		if ($this->collOppVotazioneHasAttos === null) {
+			$this->collOppVotazioneHasAttos = array();
+		}
+	}
+
+	
+	public function getOppVotazioneHasAttos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppVotazioneHasAttos === null) {
+			if ($this->isNew()) {
+			   $this->collOppVotazioneHasAttos = array();
+			} else {
+
+				$criteria->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->getId());
+
+				OppVotazioneHasAttoPeer::addSelectColumns($criteria);
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->getId());
+
+				OppVotazioneHasAttoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppVotazioneHasAttoCriteria) || !$this->lastOppVotazioneHasAttoCriteria->equals($criteria)) {
+					$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppVotazioneHasAttoCriteria = $criteria;
+		return $this->collOppVotazioneHasAttos;
+	}
+
+	
+	public function countOppVotazioneHasAttos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->getId());
+
+		return OppVotazioneHasAttoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppVotazioneHasAtto(OppVotazioneHasAtto $l)
+	{
+		$this->collOppVotazioneHasAttos[] = $l;
+		$l->setOppVotazione($this);
+	}
+
+
+	
+	public function getOppVotazioneHasAttosJoinOppAtto($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppVotazioneHasAttoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppVotazioneHasAttos === null) {
+			if ($this->isNew()) {
+				$this->collOppVotazioneHasAttos = array();
+			} else {
+
+				$criteria->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->getId());
+
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->getId());
+
+			if (!isset($this->lastOppVotazioneHasAttoCriteria) || !$this->lastOppVotazioneHasAttoCriteria->equals($criteria)) {
+				$this->collOppVotazioneHasAttos = OppVotazioneHasAttoPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		}
+		$this->lastOppVotazioneHasAttoCriteria = $criteria;
+
+		return $this->collOppVotazioneHasAttos;
 	}
 
 	

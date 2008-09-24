@@ -683,6 +683,9 @@ abstract class BaseOppCaricaHasAttoPeer {
 			$comparison = $criteria->getComparison(OppCaricaHasAttoPeer::CARICA_ID);
 			$selectCriteria->add(OppCaricaHasAttoPeer::CARICA_ID, $criteria->remove(OppCaricaHasAttoPeer::CARICA_ID), $comparison);
 
+			$comparison = $criteria->getComparison(OppCaricaHasAttoPeer::TIPO);
+			$selectCriteria->add(OppCaricaHasAttoPeer::TIPO, $criteria->remove(OppCaricaHasAttoPeer::TIPO), $comparison);
+
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -730,10 +733,12 @@ abstract class BaseOppCaricaHasAttoPeer {
 
 				$vals[0][] = $value[0];
 				$vals[1][] = $value[1];
+				$vals[2][] = $value[2];
 			}
 
 			$criteria->add(OppCaricaHasAttoPeer::ATTO_ID, $vals[0], Criteria::IN);
 			$criteria->add(OppCaricaHasAttoPeer::CARICA_ID, $vals[1], Criteria::IN);
+			$criteria->add(OppCaricaHasAttoPeer::TIPO, $vals[2], Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -787,13 +792,14 @@ abstract class BaseOppCaricaHasAttoPeer {
 	}
 
 	
-	public static function retrieveByPK( $atto_id, $carica_id, $con = null) {
+	public static function retrieveByPK( $atto_id, $carica_id, $tipo, $con = null) {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 		$criteria = new Criteria();
 		$criteria->add(OppCaricaHasAttoPeer::ATTO_ID, $atto_id);
 		$criteria->add(OppCaricaHasAttoPeer::CARICA_ID, $carica_id);
+		$criteria->add(OppCaricaHasAttoPeer::TIPO, $tipo);
 		$v = OppCaricaHasAttoPeer::doSelect($criteria, $con);
 
 		return !empty($v) ? $v[0] : null;

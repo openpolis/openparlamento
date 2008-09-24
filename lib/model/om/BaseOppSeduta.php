@@ -27,6 +27,10 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 	
 	protected $legislatura;
 
+
+	
+	protected $url;
+
 	
 	protected $collOppVotaziones;
 
@@ -87,6 +91,13 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 	{
 
 		return $this->legislatura;
+	}
+
+	
+	public function getUrl()
+	{
+
+		return $this->url;
 	}
 
 	
@@ -163,6 +174,20 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setUrl($v)
+	{
+
+						if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->url !== $v) {
+			$this->url = $v;
+			$this->modifiedColumns[] = OppSedutaPeer::URL;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -177,11 +202,13 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 
 			$this->legislatura = $rs->getInt($startcol + 4);
 
+			$this->url = $rs->getString($startcol + 5);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 5; 
+						return $startcol + 6; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OppSeduta object", $e);
 		}
@@ -339,6 +366,9 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 			case 4:
 				return $this->getLegislatura();
 				break;
+			case 5:
+				return $this->getUrl();
+				break;
 			default:
 				return null;
 				break;
@@ -354,6 +384,7 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 			$keys[2] => $this->getNumero(),
 			$keys[3] => $this->getRamo(),
 			$keys[4] => $this->getLegislatura(),
+			$keys[5] => $this->getUrl(),
 		);
 		return $result;
 	}
@@ -384,6 +415,9 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 			case 4:
 				$this->setLegislatura($value);
 				break;
+			case 5:
+				$this->setUrl($value);
+				break;
 		} 	}
 
 	
@@ -396,6 +430,7 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[2], $arr)) $this->setNumero($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setRamo($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setLegislatura($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setUrl($arr[$keys[5]]);
 	}
 
 	
@@ -408,6 +443,7 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(OppSedutaPeer::NUMERO)) $criteria->add(OppSedutaPeer::NUMERO, $this->numero);
 		if ($this->isColumnModified(OppSedutaPeer::RAMO)) $criteria->add(OppSedutaPeer::RAMO, $this->ramo);
 		if ($this->isColumnModified(OppSedutaPeer::LEGISLATURA)) $criteria->add(OppSedutaPeer::LEGISLATURA, $this->legislatura);
+		if ($this->isColumnModified(OppSedutaPeer::URL)) $criteria->add(OppSedutaPeer::URL, $this->url);
 
 		return $criteria;
 	}
@@ -445,6 +481,8 @@ abstract class BaseOppSeduta extends BaseObject  implements Persistent {
 		$copyObj->setRamo($this->ramo);
 
 		$copyObj->setLegislatura($this->legislatura);
+
+		$copyObj->setUrl($this->url);
 
 
 		if ($deepCopy) {

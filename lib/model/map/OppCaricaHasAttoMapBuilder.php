@@ -36,7 +36,7 @@ class OppCaricaHasAttoMapBuilder {
 
 		$tMap->addForeignPrimaryKey('CARICA_ID', 'CaricaId', 'int' , CreoleTypes::INTEGER, 'opp_carica', 'ID', true, null);
 
-		$tMap->addColumn('TIPO', 'Tipo', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addPrimaryKey('TIPO', 'Tipo', 'string', CreoleTypes::VARCHAR, true, 255);
 
 		$tMap->addColumn('DATA', 'Data', 'int', CreoleTypes::DATE, false, null);
 

@@ -454,4 +454,39 @@ abstract class BaseOppPolitico extends BaseObject  implements Persistent {
 		$l->setOppPolitico($this);
 	}
 
+
+	
+	public function getOppCaricasJoinOppTipoCarica($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppCaricaPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppCaricas === null) {
+			if ($this->isNew()) {
+				$this->collOppCaricas = array();
+			} else {
+
+				$criteria->add(OppCaricaPeer::POLITICO_ID, $this->getId());
+
+				$this->collOppCaricas = OppCaricaPeer::doSelectJoinOppTipoCarica($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppCaricaPeer::POLITICO_ID, $this->getId());
+
+			if (!isset($this->lastOppCaricaCriteria) || !$this->lastOppCaricaCriteria->equals($criteria)) {
+				$this->collOppCaricas = OppCaricaPeer::doSelectJoinOppTipoCarica($criteria, $con);
+			}
+		}
+		$this->lastOppCaricaCriteria = $criteria;
+
+		return $this->collOppCaricas;
+	}
+
 } 

@@ -1,9 +1,69 @@
-select opp_politico.cognome, opp_politico.nome, opp_gruppo.nome, opp_carica.circoscrizione, opp_votazione_has_carica.voto 
-FROM opp_votazione_has_carica 
-INNER JOIN opp_carica_has_gruppo ON opp_carica_has_gruppo.carica_id=opp_votazione_has_carica.carica_id 
-INNER JOIN opp_gruppo ON opp_gruppo.id=opp_carica_has_gruppo.gruppo_id 
-INNER JOIN opp_carica ON opp_carica.id=opp_votazione_has_carica.carica_id 
-INNER JOIN opp_politico ON opp_politico.id=opp_carica.politico_id 
-WHERE opp_votazione_has_carica.votazione_id='18725' AND opp_carica_has_gruppo.data_inizio<='2008-06-05' 
-AND (opp_carica_has_gruppo.data_fine>='2008-06-05' OR opp_carica_has_gruppo.data_fine IS NULL) 
-ORDER BY opp_politico.cognome ASC;
+SET FOREIGN_KEY_CHECKS = 0;
+
+#-----------------------------------------------------------------------------
+#-- opp_policy
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_policy`;
+
+
+CREATE TABLE `opp_policy`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`titolo` VARCHAR(255),
+	`descrizione` TEXT,
+	`provvisoria` INTEGER,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- opp_policy_has_votazione
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_policy_has_votazione`;
+
+
+CREATE TABLE `opp_policy_has_votazione`
+(
+	`policy_id` INTEGER  NOT NULL,
+	`votazione_id` INTEGER  NOT NULL,
+	`voto` VARCHAR(25),
+	`strong` INTEGER,
+	PRIMARY KEY (`policy_id`,`votazione_id`),
+	KEY `opp_policy_has_votazione_policy_id_index`(`policy_id`),
+	KEY `opp_policy_has_votazione_votazione_id_index`(`votazione_id`),
+	CONSTRAINT `opp_policy_has_votazione_FK_1`
+		FOREIGN KEY (`policy_id`)
+		REFERENCES `opp_policy` (`id`)
+		ON DELETE CASCADE,
+	CONSTRAINT `opp_policy_has_votazione_FK_2`
+		FOREIGN KEY (`votazione_id`)
+		REFERENCES `opp_votazione` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- opp_votazione_has_atto
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_votazione_has_atto`;
+
+
+CREATE TABLE `opp_votazione_has_atto`
+(
+	`votazione_id` INTEGER  NOT NULL,
+	`atto_id` INTEGER  NOT NULL,
+	PRIMARY KEY (`votazione_id`,`atto_id`),
+	KEY `opp_votazione_has_atto_votazione_id_index`(`votazione_id`),
+	KEY `opp_votazione_has_atto_atto_id_index`(`atto_id`),
+	CONSTRAINT `opp_votazione_has_atto_FK_1`
+		FOREIGN KEY (`votazione_id`)
+		REFERENCES `opp_votazione` (`id`)
+		ON DELETE CASCADE,
+	CONSTRAINT `opp_votazione_has_atto_FK_2`
+		FOREIGN KEY (`atto_id`)
+		REFERENCES `opp_atto` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+SET FOREIGN_KEY_CHECKS = 1;

@@ -14,6 +14,12 @@ class defaultActions extends sfActions
    * Executes index action
    *
    */
+  
+  public function executeIndex()
+  {
+  
+  }
+  /*
   public function executeIndex()
   {
     $this->processFilters();
@@ -31,12 +37,13 @@ class defaultActions extends sfActions
 	$this->pager->init();
 		
   }
-  
+  */
   public function executeError404()
   {
     //return $this->redirect('@homepage');
   }
-
+  
+  /*
   protected function processFilters()
   {
     if ($this->getRequestParameter('legislatura'))
@@ -65,6 +72,7 @@ class defaultActions extends sfActions
 	  if ($this->getUser()->getAttribute('ramo') != 'entrambi')
         $c->add(OppSedutaPeer::RAMO, $this->getUser()->getAttribute('ramo'));
   }
+  */
 
 }
 

@@ -17,6 +17,10 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 
 	
+	protected $tipo_carica_id;
+
+
+	
 	protected $carica;
 
 
@@ -53,90 +57,6 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 
 	
-	protected $pdl_1;
-
-
-	
-	protected $pdl_2;
-
-
-	
-	protected $mozione_1;
-
-
-	
-	protected $mozione_di_fiducia_1;
-
-
-	
-	protected $mozione_ex_art138_comma_2_1;
-
-
-	
-	protected $interpellanza_1;
-
-
-	
-	protected $interpellanza_urgente_1;
-
-
-	
-	protected $interrogazione_a_risposta_immediata_in_assemblea_1;
-
-
-	
-	protected $interrogazione_a_risposta_orale_1;
-
-
-	
-	protected $interrogazione_a_risposta_scritta_1;
-
-
-	
-	protected $interrogazione_a_risposta_immediata_in_commissione_1;
-
-
-	
-	protected $interrogazione_a_risposta_in_commissione_1;
-
-
-	
-	protected $risoluzione_in_assemblea_1;
-
-
-	
-	protected $risoluzione_in_commissione_1;
-
-
-	
-	protected $risoluzione_in_commissione_conclusiva_di_dibattito_1;
-
-
-	
-	protected $odg_in_assemblea_su_bilancio_interno_1;
-
-
-	
-	protected $odg_in_assemblea_su_mozioni_o_altri_atti_1;
-
-
-	
-	protected $odg_in_assemblea_su_pdl_1;
-
-
-	
-	protected $odg_in_assemblea_su_pdl_di_bilancio_1;
-
-
-	
-	protected $odg_in_commissione_1;
-
-
-	
-	protected $odg_su_pdl_di_bilancio_in_commissione_1;
-
-
-	
 	protected $indice;
 
 
@@ -155,6 +75,9 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 	protected $aOppPolitico;
 
 	
+	protected $aOppTipoCarica;
+
+	
 	protected $collOppAppoggios;
 
 	
@@ -171,6 +94,12 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 	
 	protected $lastOppCaricaHasGruppoCriteria = null;
+
+	
+	protected $collOppInterventos;
+
+	
+	protected $lastOppInterventoCriteria = null;
 
 	
 	protected $collOppVotazioneHasCaricas;
@@ -196,6 +125,13 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 	{
 
 		return $this->politico_id;
+	}
+
+	
+	public function getTipoCaricaId()
+	{
+
+		return $this->tipo_carica_id;
 	}
 
 	
@@ -292,153 +228,6 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getPdl1()
-	{
-
-		return $this->pdl_1;
-	}
-
-	
-	public function getPdl2()
-	{
-
-		return $this->pdl_2;
-	}
-
-	
-	public function getMozione1()
-	{
-
-		return $this->mozione_1;
-	}
-
-	
-	public function getMozioneDiFiducia1()
-	{
-
-		return $this->mozione_di_fiducia_1;
-	}
-
-	
-	public function getMozioneExArt138Comma21()
-	{
-
-		return $this->mozione_ex_art138_comma_2_1;
-	}
-
-	
-	public function getInterpellanza1()
-	{
-
-		return $this->interpellanza_1;
-	}
-
-	
-	public function getInterpellanzaUrgente1()
-	{
-
-		return $this->interpellanza_urgente_1;
-	}
-
-	
-	public function getInterrogazioneARispostaImmediataInAssemblea1()
-	{
-
-		return $this->interrogazione_a_risposta_immediata_in_assemblea_1;
-	}
-
-	
-	public function getInterrogazioneARispostaOrale1()
-	{
-
-		return $this->interrogazione_a_risposta_orale_1;
-	}
-
-	
-	public function getInterrogazioneARispostaScritta1()
-	{
-
-		return $this->interrogazione_a_risposta_scritta_1;
-	}
-
-	
-	public function getInterrogazioneARispostaImmediataInCommissione1()
-	{
-
-		return $this->interrogazione_a_risposta_immediata_in_commissione_1;
-	}
-
-	
-	public function getInterrogazioneARispostaInCommissione1()
-	{
-
-		return $this->interrogazione_a_risposta_in_commissione_1;
-	}
-
-	
-	public function getRisoluzioneInAssemblea1()
-	{
-
-		return $this->risoluzione_in_assemblea_1;
-	}
-
-	
-	public function getRisoluzioneInCommissione1()
-	{
-
-		return $this->risoluzione_in_commissione_1;
-	}
-
-	
-	public function getRisoluzioneInCommissioneConclusivaDiDibattito1()
-	{
-
-		return $this->risoluzione_in_commissione_conclusiva_di_dibattito_1;
-	}
-
-	
-	public function getOdgInAssembleaSuBilancioInterno1()
-	{
-
-		return $this->odg_in_assemblea_su_bilancio_interno_1;
-	}
-
-	
-	public function getOdgInAssembleaSuMozioniOAltriAtti1()
-	{
-
-		return $this->odg_in_assemblea_su_mozioni_o_altri_atti_1;
-	}
-
-	
-	public function getOdgInAssembleaSuPdl1()
-	{
-
-		return $this->odg_in_assemblea_su_pdl_1;
-	}
-
-	
-	public function getOdgInAssembleaSuPdlDiBilancio1()
-	{
-
-		return $this->odg_in_assemblea_su_pdl_di_bilancio_1;
-	}
-
-	
-	public function getOdgInCommissione1()
-	{
-
-		return $this->odg_in_commissione_1;
-	}
-
-	
-	public function getOdgSuPdlDiBilancioInCommissione1()
-	{
-
-		return $this->odg_su_pdl_di_bilancio_in_commissione_1;
-	}
-
-	
 	public function getIndice()
 	{
 
@@ -495,6 +284,24 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		if ($this->aOppPolitico !== null && $this->aOppPolitico->getId() !== $v) {
 			$this->aOppPolitico = null;
+		}
+
+	} 
+	
+	public function setTipoCaricaId($v)
+	{
+
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->tipo_carica_id !== $v) {
+			$this->tipo_carica_id = $v;
+			$this->modifiedColumns[] = OppCaricaPeer::TIPO_CARICA_ID;
+		}
+
+		if ($this->aOppTipoCarica !== null && $this->aOppTipoCarica->getId() !== $v) {
+			$this->aOppTipoCarica = null;
 		}
 
 	} 
@@ -631,300 +438,6 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setPdl1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->pdl_1 !== $v) {
-			$this->pdl_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::PDL_1;
-		}
-
-	} 
-	
-	public function setPdl2($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->pdl_2 !== $v) {
-			$this->pdl_2 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::PDL_2;
-		}
-
-	} 
-	
-	public function setMozione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->mozione_1 !== $v) {
-			$this->mozione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::MOZIONE_1;
-		}
-
-	} 
-	
-	public function setMozioneDiFiducia1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->mozione_di_fiducia_1 !== $v) {
-			$this->mozione_di_fiducia_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::MOZIONE_DI_FIDUCIA_1;
-		}
-
-	} 
-	
-	public function setMozioneExArt138Comma21($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->mozione_ex_art138_comma_2_1 !== $v) {
-			$this->mozione_ex_art138_comma_2_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1;
-		}
-
-	} 
-	
-	public function setInterpellanza1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interpellanza_1 !== $v) {
-			$this->interpellanza_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERPELLANZA_1;
-		}
-
-	} 
-	
-	public function setInterpellanzaUrgente1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interpellanza_urgente_1 !== $v) {
-			$this->interpellanza_urgente_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERPELLANZA_URGENTE_1;
-		}
-
-	} 
-	
-	public function setInterrogazioneARispostaImmediataInAssemblea1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interrogazione_a_risposta_immediata_in_assemblea_1 !== $v) {
-			$this->interrogazione_a_risposta_immediata_in_assemblea_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1;
-		}
-
-	} 
-	
-	public function setInterrogazioneARispostaOrale1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interrogazione_a_risposta_orale_1 !== $v) {
-			$this->interrogazione_a_risposta_orale_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1;
-		}
-
-	} 
-	
-	public function setInterrogazioneARispostaScritta1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interrogazione_a_risposta_scritta_1 !== $v) {
-			$this->interrogazione_a_risposta_scritta_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1;
-		}
-
-	} 
-	
-	public function setInterrogazioneARispostaImmediataInCommissione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interrogazione_a_risposta_immediata_in_commissione_1 !== $v) {
-			$this->interrogazione_a_risposta_immediata_in_commissione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1;
-		}
-
-	} 
-	
-	public function setInterrogazioneARispostaInCommissione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->interrogazione_a_risposta_in_commissione_1 !== $v) {
-			$this->interrogazione_a_risposta_in_commissione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1;
-		}
-
-	} 
-	
-	public function setRisoluzioneInAssemblea1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->risoluzione_in_assemblea_1 !== $v) {
-			$this->risoluzione_in_assemblea_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1;
-		}
-
-	} 
-	
-	public function setRisoluzioneInCommissione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->risoluzione_in_commissione_1 !== $v) {
-			$this->risoluzione_in_commissione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1;
-		}
-
-	} 
-	
-	public function setRisoluzioneInCommissioneConclusivaDiDibattito1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->risoluzione_in_commissione_conclusiva_di_dibattito_1 !== $v) {
-			$this->risoluzione_in_commissione_conclusiva_di_dibattito_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1;
-		}
-
-	} 
-	
-	public function setOdgInAssembleaSuBilancioInterno1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_in_assemblea_su_bilancio_interno_1 !== $v) {
-			$this->odg_in_assemblea_su_bilancio_interno_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1;
-		}
-
-	} 
-	
-	public function setOdgInAssembleaSuMozioniOAltriAtti1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_in_assemblea_su_mozioni_o_altri_atti_1 !== $v) {
-			$this->odg_in_assemblea_su_mozioni_o_altri_atti_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1;
-		}
-
-	} 
-	
-	public function setOdgInAssembleaSuPdl1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_in_assemblea_su_pdl_1 !== $v) {
-			$this->odg_in_assemblea_su_pdl_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1;
-		}
-
-	} 
-	
-	public function setOdgInAssembleaSuPdlDiBilancio1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_in_assemblea_su_pdl_di_bilancio_1 !== $v) {
-			$this->odg_in_assemblea_su_pdl_di_bilancio_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1;
-		}
-
-	} 
-	
-	public function setOdgInCommissione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_in_commissione_1 !== $v) {
-			$this->odg_in_commissione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_IN_COMMISSIONE_1;
-		}
-
-	} 
-	
-	public function setOdgSuPdlDiBilancioInCommissione1($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->odg_su_pdl_di_bilancio_in_commissione_1 !== $v) {
-			$this->odg_su_pdl_di_bilancio_in_commissione_1 = $v;
-			$this->modifiedColumns[] = OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1;
-		}
-
-	} 
-	
 	public function setIndice($v)
 	{
 
@@ -981,79 +494,39 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 			$this->politico_id = $rs->getInt($startcol + 1);
 
-			$this->carica = $rs->getString($startcol + 2);
+			$this->tipo_carica_id = $rs->getInt($startcol + 2);
 
-			$this->data_inizio = $rs->getDate($startcol + 3, null);
+			$this->carica = $rs->getString($startcol + 3);
 
-			$this->data_fine = $rs->getDate($startcol + 4, null);
+			$this->data_inizio = $rs->getDate($startcol + 4, null);
 
-			$this->legislatura = $rs->getInt($startcol + 5);
+			$this->data_fine = $rs->getDate($startcol + 5, null);
 
-			$this->circoscrizione = $rs->getString($startcol + 6);
+			$this->legislatura = $rs->getInt($startcol + 6);
 
-			$this->presenze = $rs->getInt($startcol + 7);
+			$this->circoscrizione = $rs->getString($startcol + 7);
 
-			$this->assenze = $rs->getInt($startcol + 8);
+			$this->presenze = $rs->getInt($startcol + 8);
 
-			$this->missioni = $rs->getInt($startcol + 9);
+			$this->assenze = $rs->getInt($startcol + 9);
 
-			$this->parliament_id = $rs->getInt($startcol + 10);
+			$this->missioni = $rs->getInt($startcol + 10);
 
-			$this->pdl_1 = $rs->getInt($startcol + 11);
+			$this->parliament_id = $rs->getInt($startcol + 11);
 
-			$this->pdl_2 = $rs->getInt($startcol + 12);
+			$this->indice = $rs->getFloat($startcol + 12);
 
-			$this->mozione_1 = $rs->getInt($startcol + 13);
+			$this->scaglione = $rs->getInt($startcol + 13);
 
-			$this->mozione_di_fiducia_1 = $rs->getInt($startcol + 14);
+			$this->posizione = $rs->getInt($startcol + 14);
 
-			$this->mozione_ex_art138_comma_2_1 = $rs->getInt($startcol + 15);
-
-			$this->interpellanza_1 = $rs->getInt($startcol + 16);
-
-			$this->interpellanza_urgente_1 = $rs->getInt($startcol + 17);
-
-			$this->interrogazione_a_risposta_immediata_in_assemblea_1 = $rs->getInt($startcol + 18);
-
-			$this->interrogazione_a_risposta_orale_1 = $rs->getInt($startcol + 19);
-
-			$this->interrogazione_a_risposta_scritta_1 = $rs->getInt($startcol + 20);
-
-			$this->interrogazione_a_risposta_immediata_in_commissione_1 = $rs->getInt($startcol + 21);
-
-			$this->interrogazione_a_risposta_in_commissione_1 = $rs->getInt($startcol + 22);
-
-			$this->risoluzione_in_assemblea_1 = $rs->getInt($startcol + 23);
-
-			$this->risoluzione_in_commissione_1 = $rs->getInt($startcol + 24);
-
-			$this->risoluzione_in_commissione_conclusiva_di_dibattito_1 = $rs->getInt($startcol + 25);
-
-			$this->odg_in_assemblea_su_bilancio_interno_1 = $rs->getInt($startcol + 26);
-
-			$this->odg_in_assemblea_su_mozioni_o_altri_atti_1 = $rs->getInt($startcol + 27);
-
-			$this->odg_in_assemblea_su_pdl_1 = $rs->getInt($startcol + 28);
-
-			$this->odg_in_assemblea_su_pdl_di_bilancio_1 = $rs->getInt($startcol + 29);
-
-			$this->odg_in_commissione_1 = $rs->getInt($startcol + 30);
-
-			$this->odg_su_pdl_di_bilancio_in_commissione_1 = $rs->getInt($startcol + 31);
-
-			$this->indice = $rs->getFloat($startcol + 32);
-
-			$this->scaglione = $rs->getInt($startcol + 33);
-
-			$this->posizione = $rs->getInt($startcol + 34);
-
-			$this->media = $rs->getFloat($startcol + 35);
+			$this->media = $rs->getFloat($startcol + 15);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 36; 
+						return $startcol + 16; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating OppCarica object", $e);
 		}
@@ -1118,6 +591,13 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 				$this->setOppPolitico($this->aOppPolitico);
 			}
 
+			if ($this->aOppTipoCarica !== null) {
+				if ($this->aOppTipoCarica->isModified()) {
+					$affectedRows += $this->aOppTipoCarica->save($con);
+				}
+				$this->setOppTipoCarica($this->aOppTipoCarica);
+			}
+
 
 						if ($this->isModified()) {
 				if ($this->isNew()) {
@@ -1147,6 +627,14 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 			if ($this->collOppCaricaHasGruppos !== null) {
 				foreach($this->collOppCaricaHasGruppos as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collOppInterventos !== null) {
+				foreach($this->collOppInterventos as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1204,6 +692,12 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aOppTipoCarica !== null) {
+				if (!$this->aOppTipoCarica->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aOppTipoCarica->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = OppCaricaPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
@@ -1228,6 +722,14 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 				if ($this->collOppCaricaHasGruppos !== null) {
 					foreach($this->collOppCaricaHasGruppos as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collOppInterventos !== null) {
+					foreach($this->collOppInterventos as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1267,105 +769,45 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 				return $this->getPoliticoId();
 				break;
 			case 2:
-				return $this->getCarica();
+				return $this->getTipoCaricaId();
 				break;
 			case 3:
-				return $this->getDataInizio();
+				return $this->getCarica();
 				break;
 			case 4:
-				return $this->getDataFine();
+				return $this->getDataInizio();
 				break;
 			case 5:
-				return $this->getLegislatura();
+				return $this->getDataFine();
 				break;
 			case 6:
-				return $this->getCircoscrizione();
+				return $this->getLegislatura();
 				break;
 			case 7:
-				return $this->getPresenze();
+				return $this->getCircoscrizione();
 				break;
 			case 8:
-				return $this->getAssenze();
+				return $this->getPresenze();
 				break;
 			case 9:
-				return $this->getMissioni();
+				return $this->getAssenze();
 				break;
 			case 10:
-				return $this->getParliamentId();
+				return $this->getMissioni();
 				break;
 			case 11:
-				return $this->getPdl1();
+				return $this->getParliamentId();
 				break;
 			case 12:
-				return $this->getPdl2();
-				break;
-			case 13:
-				return $this->getMozione1();
-				break;
-			case 14:
-				return $this->getMozioneDiFiducia1();
-				break;
-			case 15:
-				return $this->getMozioneExArt138Comma21();
-				break;
-			case 16:
-				return $this->getInterpellanza1();
-				break;
-			case 17:
-				return $this->getInterpellanzaUrgente1();
-				break;
-			case 18:
-				return $this->getInterrogazioneARispostaImmediataInAssemblea1();
-				break;
-			case 19:
-				return $this->getInterrogazioneARispostaOrale1();
-				break;
-			case 20:
-				return $this->getInterrogazioneARispostaScritta1();
-				break;
-			case 21:
-				return $this->getInterrogazioneARispostaImmediataInCommissione1();
-				break;
-			case 22:
-				return $this->getInterrogazioneARispostaInCommissione1();
-				break;
-			case 23:
-				return $this->getRisoluzioneInAssemblea1();
-				break;
-			case 24:
-				return $this->getRisoluzioneInCommissione1();
-				break;
-			case 25:
-				return $this->getRisoluzioneInCommissioneConclusivaDiDibattito1();
-				break;
-			case 26:
-				return $this->getOdgInAssembleaSuBilancioInterno1();
-				break;
-			case 27:
-				return $this->getOdgInAssembleaSuMozioniOAltriAtti1();
-				break;
-			case 28:
-				return $this->getOdgInAssembleaSuPdl1();
-				break;
-			case 29:
-				return $this->getOdgInAssembleaSuPdlDiBilancio1();
-				break;
-			case 30:
-				return $this->getOdgInCommissione1();
-				break;
-			case 31:
-				return $this->getOdgSuPdlDiBilancioInCommissione1();
-				break;
-			case 32:
 				return $this->getIndice();
 				break;
-			case 33:
+			case 13:
 				return $this->getScaglione();
 				break;
-			case 34:
+			case 14:
 				return $this->getPosizione();
 				break;
-			case 35:
+			case 15:
 				return $this->getMedia();
 				break;
 			default:
@@ -1380,40 +822,20 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getPoliticoId(),
-			$keys[2] => $this->getCarica(),
-			$keys[3] => $this->getDataInizio(),
-			$keys[4] => $this->getDataFine(),
-			$keys[5] => $this->getLegislatura(),
-			$keys[6] => $this->getCircoscrizione(),
-			$keys[7] => $this->getPresenze(),
-			$keys[8] => $this->getAssenze(),
-			$keys[9] => $this->getMissioni(),
-			$keys[10] => $this->getParliamentId(),
-			$keys[11] => $this->getPdl1(),
-			$keys[12] => $this->getPdl2(),
-			$keys[13] => $this->getMozione1(),
-			$keys[14] => $this->getMozioneDiFiducia1(),
-			$keys[15] => $this->getMozioneExArt138Comma21(),
-			$keys[16] => $this->getInterpellanza1(),
-			$keys[17] => $this->getInterpellanzaUrgente1(),
-			$keys[18] => $this->getInterrogazioneARispostaImmediataInAssemblea1(),
-			$keys[19] => $this->getInterrogazioneARispostaOrale1(),
-			$keys[20] => $this->getInterrogazioneARispostaScritta1(),
-			$keys[21] => $this->getInterrogazioneARispostaImmediataInCommissione1(),
-			$keys[22] => $this->getInterrogazioneARispostaInCommissione1(),
-			$keys[23] => $this->getRisoluzioneInAssemblea1(),
-			$keys[24] => $this->getRisoluzioneInCommissione1(),
-			$keys[25] => $this->getRisoluzioneInCommissioneConclusivaDiDibattito1(),
-			$keys[26] => $this->getOdgInAssembleaSuBilancioInterno1(),
-			$keys[27] => $this->getOdgInAssembleaSuMozioniOAltriAtti1(),
-			$keys[28] => $this->getOdgInAssembleaSuPdl1(),
-			$keys[29] => $this->getOdgInAssembleaSuPdlDiBilancio1(),
-			$keys[30] => $this->getOdgInCommissione1(),
-			$keys[31] => $this->getOdgSuPdlDiBilancioInCommissione1(),
-			$keys[32] => $this->getIndice(),
-			$keys[33] => $this->getScaglione(),
-			$keys[34] => $this->getPosizione(),
-			$keys[35] => $this->getMedia(),
+			$keys[2] => $this->getTipoCaricaId(),
+			$keys[3] => $this->getCarica(),
+			$keys[4] => $this->getDataInizio(),
+			$keys[5] => $this->getDataFine(),
+			$keys[6] => $this->getLegislatura(),
+			$keys[7] => $this->getCircoscrizione(),
+			$keys[8] => $this->getPresenze(),
+			$keys[9] => $this->getAssenze(),
+			$keys[10] => $this->getMissioni(),
+			$keys[11] => $this->getParliamentId(),
+			$keys[12] => $this->getIndice(),
+			$keys[13] => $this->getScaglione(),
+			$keys[14] => $this->getPosizione(),
+			$keys[15] => $this->getMedia(),
 		);
 		return $result;
 	}
@@ -1436,105 +858,45 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 				$this->setPoliticoId($value);
 				break;
 			case 2:
-				$this->setCarica($value);
+				$this->setTipoCaricaId($value);
 				break;
 			case 3:
-				$this->setDataInizio($value);
+				$this->setCarica($value);
 				break;
 			case 4:
-				$this->setDataFine($value);
+				$this->setDataInizio($value);
 				break;
 			case 5:
-				$this->setLegislatura($value);
+				$this->setDataFine($value);
 				break;
 			case 6:
-				$this->setCircoscrizione($value);
+				$this->setLegislatura($value);
 				break;
 			case 7:
-				$this->setPresenze($value);
+				$this->setCircoscrizione($value);
 				break;
 			case 8:
-				$this->setAssenze($value);
+				$this->setPresenze($value);
 				break;
 			case 9:
-				$this->setMissioni($value);
+				$this->setAssenze($value);
 				break;
 			case 10:
-				$this->setParliamentId($value);
+				$this->setMissioni($value);
 				break;
 			case 11:
-				$this->setPdl1($value);
+				$this->setParliamentId($value);
 				break;
 			case 12:
-				$this->setPdl2($value);
-				break;
-			case 13:
-				$this->setMozione1($value);
-				break;
-			case 14:
-				$this->setMozioneDiFiducia1($value);
-				break;
-			case 15:
-				$this->setMozioneExArt138Comma21($value);
-				break;
-			case 16:
-				$this->setInterpellanza1($value);
-				break;
-			case 17:
-				$this->setInterpellanzaUrgente1($value);
-				break;
-			case 18:
-				$this->setInterrogazioneARispostaImmediataInAssemblea1($value);
-				break;
-			case 19:
-				$this->setInterrogazioneARispostaOrale1($value);
-				break;
-			case 20:
-				$this->setInterrogazioneARispostaScritta1($value);
-				break;
-			case 21:
-				$this->setInterrogazioneARispostaImmediataInCommissione1($value);
-				break;
-			case 22:
-				$this->setInterrogazioneARispostaInCommissione1($value);
-				break;
-			case 23:
-				$this->setRisoluzioneInAssemblea1($value);
-				break;
-			case 24:
-				$this->setRisoluzioneInCommissione1($value);
-				break;
-			case 25:
-				$this->setRisoluzioneInCommissioneConclusivaDiDibattito1($value);
-				break;
-			case 26:
-				$this->setOdgInAssembleaSuBilancioInterno1($value);
-				break;
-			case 27:
-				$this->setOdgInAssembleaSuMozioniOAltriAtti1($value);
-				break;
-			case 28:
-				$this->setOdgInAssembleaSuPdl1($value);
-				break;
-			case 29:
-				$this->setOdgInAssembleaSuPdlDiBilancio1($value);
-				break;
-			case 30:
-				$this->setOdgInCommissione1($value);
-				break;
-			case 31:
-				$this->setOdgSuPdlDiBilancioInCommissione1($value);
-				break;
-			case 32:
 				$this->setIndice($value);
 				break;
-			case 33:
+			case 13:
 				$this->setScaglione($value);
 				break;
-			case 34:
+			case 14:
 				$this->setPosizione($value);
 				break;
-			case 35:
+			case 15:
 				$this->setMedia($value);
 				break;
 		} 	}
@@ -1546,40 +908,20 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setPoliticoId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setCarica($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setDataInizio($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setDataFine($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setLegislatura($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setCircoscrizione($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setPresenze($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setAssenze($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setMissioni($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setParliamentId($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setPdl1($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setPdl2($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setMozione1($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setMozioneDiFiducia1($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setMozioneExArt138Comma21($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setInterpellanza1($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setInterpellanzaUrgente1($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setInterrogazioneARispostaImmediataInAssemblea1($arr[$keys[18]]);
-		if (array_key_exists($keys[19], $arr)) $this->setInterrogazioneARispostaOrale1($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setInterrogazioneARispostaScritta1($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setInterrogazioneARispostaImmediataInCommissione1($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setInterrogazioneARispostaInCommissione1($arr[$keys[22]]);
-		if (array_key_exists($keys[23], $arr)) $this->setRisoluzioneInAssemblea1($arr[$keys[23]]);
-		if (array_key_exists($keys[24], $arr)) $this->setRisoluzioneInCommissione1($arr[$keys[24]]);
-		if (array_key_exists($keys[25], $arr)) $this->setRisoluzioneInCommissioneConclusivaDiDibattito1($arr[$keys[25]]);
-		if (array_key_exists($keys[26], $arr)) $this->setOdgInAssembleaSuBilancioInterno1($arr[$keys[26]]);
-		if (array_key_exists($keys[27], $arr)) $this->setOdgInAssembleaSuMozioniOAltriAtti1($arr[$keys[27]]);
-		if (array_key_exists($keys[28], $arr)) $this->setOdgInAssembleaSuPdl1($arr[$keys[28]]);
-		if (array_key_exists($keys[29], $arr)) $this->setOdgInAssembleaSuPdlDiBilancio1($arr[$keys[29]]);
-		if (array_key_exists($keys[30], $arr)) $this->setOdgInCommissione1($arr[$keys[30]]);
-		if (array_key_exists($keys[31], $arr)) $this->setOdgSuPdlDiBilancioInCommissione1($arr[$keys[31]]);
-		if (array_key_exists($keys[32], $arr)) $this->setIndice($arr[$keys[32]]);
-		if (array_key_exists($keys[33], $arr)) $this->setScaglione($arr[$keys[33]]);
-		if (array_key_exists($keys[34], $arr)) $this->setPosizione($arr[$keys[34]]);
-		if (array_key_exists($keys[35], $arr)) $this->setMedia($arr[$keys[35]]);
+		if (array_key_exists($keys[2], $arr)) $this->setTipoCaricaId($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setCarica($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setDataInizio($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setDataFine($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setLegislatura($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setCircoscrizione($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setPresenze($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setAssenze($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setMissioni($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setParliamentId($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setIndice($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setScaglione($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setPosizione($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setMedia($arr[$keys[15]]);
 	}
 
 	
@@ -1589,6 +931,7 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(OppCaricaPeer::ID)) $criteria->add(OppCaricaPeer::ID, $this->id);
 		if ($this->isColumnModified(OppCaricaPeer::POLITICO_ID)) $criteria->add(OppCaricaPeer::POLITICO_ID, $this->politico_id);
+		if ($this->isColumnModified(OppCaricaPeer::TIPO_CARICA_ID)) $criteria->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica_id);
 		if ($this->isColumnModified(OppCaricaPeer::CARICA)) $criteria->add(OppCaricaPeer::CARICA, $this->carica);
 		if ($this->isColumnModified(OppCaricaPeer::DATA_INIZIO)) $criteria->add(OppCaricaPeer::DATA_INIZIO, $this->data_inizio);
 		if ($this->isColumnModified(OppCaricaPeer::DATA_FINE)) $criteria->add(OppCaricaPeer::DATA_FINE, $this->data_fine);
@@ -1598,27 +941,6 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(OppCaricaPeer::ASSENZE)) $criteria->add(OppCaricaPeer::ASSENZE, $this->assenze);
 		if ($this->isColumnModified(OppCaricaPeer::MISSIONI)) $criteria->add(OppCaricaPeer::MISSIONI, $this->missioni);
 		if ($this->isColumnModified(OppCaricaPeer::PARLIAMENT_ID)) $criteria->add(OppCaricaPeer::PARLIAMENT_ID, $this->parliament_id);
-		if ($this->isColumnModified(OppCaricaPeer::PDL_1)) $criteria->add(OppCaricaPeer::PDL_1, $this->pdl_1);
-		if ($this->isColumnModified(OppCaricaPeer::PDL_2)) $criteria->add(OppCaricaPeer::PDL_2, $this->pdl_2);
-		if ($this->isColumnModified(OppCaricaPeer::MOZIONE_1)) $criteria->add(OppCaricaPeer::MOZIONE_1, $this->mozione_1);
-		if ($this->isColumnModified(OppCaricaPeer::MOZIONE_DI_FIDUCIA_1)) $criteria->add(OppCaricaPeer::MOZIONE_DI_FIDUCIA_1, $this->mozione_di_fiducia_1);
-		if ($this->isColumnModified(OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1)) $criteria->add(OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1, $this->mozione_ex_art138_comma_2_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERPELLANZA_1)) $criteria->add(OppCaricaPeer::INTERPELLANZA_1, $this->interpellanza_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERPELLANZA_URGENTE_1)) $criteria->add(OppCaricaPeer::INTERPELLANZA_URGENTE_1, $this->interpellanza_urgente_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1)) $criteria->add(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1, $this->interrogazione_a_risposta_immediata_in_assemblea_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1)) $criteria->add(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1, $this->interrogazione_a_risposta_orale_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1)) $criteria->add(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1, $this->interrogazione_a_risposta_scritta_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1)) $criteria->add(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1, $this->interrogazione_a_risposta_immediata_in_commissione_1);
-		if ($this->isColumnModified(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1)) $criteria->add(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1, $this->interrogazione_a_risposta_in_commissione_1);
-		if ($this->isColumnModified(OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1)) $criteria->add(OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1, $this->risoluzione_in_assemblea_1);
-		if ($this->isColumnModified(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1)) $criteria->add(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1, $this->risoluzione_in_commissione_1);
-		if ($this->isColumnModified(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1)) $criteria->add(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1, $this->risoluzione_in_commissione_conclusiva_di_dibattito_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1)) $criteria->add(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1, $this->odg_in_assemblea_su_bilancio_interno_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1)) $criteria->add(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1, $this->odg_in_assemblea_su_mozioni_o_altri_atti_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1)) $criteria->add(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1, $this->odg_in_assemblea_su_pdl_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1)) $criteria->add(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1, $this->odg_in_assemblea_su_pdl_di_bilancio_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_IN_COMMISSIONE_1)) $criteria->add(OppCaricaPeer::ODG_IN_COMMISSIONE_1, $this->odg_in_commissione_1);
-		if ($this->isColumnModified(OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1)) $criteria->add(OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1, $this->odg_su_pdl_di_bilancio_in_commissione_1);
 		if ($this->isColumnModified(OppCaricaPeer::INDICE)) $criteria->add(OppCaricaPeer::INDICE, $this->indice);
 		if ($this->isColumnModified(OppCaricaPeer::SCAGLIONE)) $criteria->add(OppCaricaPeer::SCAGLIONE, $this->scaglione);
 		if ($this->isColumnModified(OppCaricaPeer::POSIZIONE)) $criteria->add(OppCaricaPeer::POSIZIONE, $this->posizione);
@@ -1634,6 +956,7 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		$criteria->add(OppCaricaPeer::ID, $this->id);
 		$criteria->add(OppCaricaPeer::POLITICO_ID, $this->politico_id);
+		$criteria->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica_id);
 
 		return $criteria;
 	}
@@ -1647,6 +970,8 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		$pks[1] = $this->getPoliticoId();
 
+		$pks[2] = $this->getTipoCaricaId();
+
 		return $pks;
 	}
 
@@ -1657,6 +982,8 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 		$this->setId($keys[0]);
 
 		$this->setPoliticoId($keys[1]);
+
+		$this->setTipoCaricaId($keys[2]);
 
 	}
 
@@ -1682,48 +1009,6 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		$copyObj->setParliamentId($this->parliament_id);
 
-		$copyObj->setPdl1($this->pdl_1);
-
-		$copyObj->setPdl2($this->pdl_2);
-
-		$copyObj->setMozione1($this->mozione_1);
-
-		$copyObj->setMozioneDiFiducia1($this->mozione_di_fiducia_1);
-
-		$copyObj->setMozioneExArt138Comma21($this->mozione_ex_art138_comma_2_1);
-
-		$copyObj->setInterpellanza1($this->interpellanza_1);
-
-		$copyObj->setInterpellanzaUrgente1($this->interpellanza_urgente_1);
-
-		$copyObj->setInterrogazioneARispostaImmediataInAssemblea1($this->interrogazione_a_risposta_immediata_in_assemblea_1);
-
-		$copyObj->setInterrogazioneARispostaOrale1($this->interrogazione_a_risposta_orale_1);
-
-		$copyObj->setInterrogazioneARispostaScritta1($this->interrogazione_a_risposta_scritta_1);
-
-		$copyObj->setInterrogazioneARispostaImmediataInCommissione1($this->interrogazione_a_risposta_immediata_in_commissione_1);
-
-		$copyObj->setInterrogazioneARispostaInCommissione1($this->interrogazione_a_risposta_in_commissione_1);
-
-		$copyObj->setRisoluzioneInAssemblea1($this->risoluzione_in_assemblea_1);
-
-		$copyObj->setRisoluzioneInCommissione1($this->risoluzione_in_commissione_1);
-
-		$copyObj->setRisoluzioneInCommissioneConclusivaDiDibattito1($this->risoluzione_in_commissione_conclusiva_di_dibattito_1);
-
-		$copyObj->setOdgInAssembleaSuBilancioInterno1($this->odg_in_assemblea_su_bilancio_interno_1);
-
-		$copyObj->setOdgInAssembleaSuMozioniOAltriAtti1($this->odg_in_assemblea_su_mozioni_o_altri_atti_1);
-
-		$copyObj->setOdgInAssembleaSuPdl1($this->odg_in_assemblea_su_pdl_1);
-
-		$copyObj->setOdgInAssembleaSuPdlDiBilancio1($this->odg_in_assemblea_su_pdl_di_bilancio_1);
-
-		$copyObj->setOdgInCommissione1($this->odg_in_commissione_1);
-
-		$copyObj->setOdgSuPdlDiBilancioInCommissione1($this->odg_su_pdl_di_bilancio_in_commissione_1);
-
 		$copyObj->setIndice($this->indice);
 
 		$copyObj->setScaglione($this->scaglione);
@@ -1748,6 +1033,10 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 				$copyObj->addOppCaricaHasGruppo($relObj->copy($deepCopy));
 			}
 
+			foreach($this->getOppInterventos() as $relObj) {
+				$copyObj->addOppIntervento($relObj->copy($deepCopy));
+			}
+
 			foreach($this->getOppVotazioneHasCaricas() as $relObj) {
 				$copyObj->addOppVotazioneHasCarica($relObj->copy($deepCopy));
 			}
@@ -1758,6 +1047,7 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 
 		$copyObj->setId(NULL); 
 		$copyObj->setPoliticoId(NULL); 
+		$copyObj->setTipoCaricaId(NULL); 
 	}
 
 	
@@ -1806,6 +1096,36 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 			
 		}
 		return $this->aOppPolitico;
+	}
+
+	
+	public function setOppTipoCarica($v)
+	{
+
+
+		if ($v === null) {
+			$this->setTipoCaricaId(NULL);
+		} else {
+			$this->setTipoCaricaId($v->getId());
+		}
+
+
+		$this->aOppTipoCarica = $v;
+	}
+
+
+	
+	public function getOppTipoCarica($con = null)
+	{
+				include_once 'lib/model/om/BaseOppTipoCaricaPeer.php';
+
+		if ($this->aOppTipoCarica === null && ($this->tipo_carica_id !== null)) {
+
+			$this->aOppTipoCarica = OppTipoCaricaPeer::retrieveByPK($this->tipo_carica_id, $con);
+
+			
+		}
+		return $this->aOppTipoCarica;
 	}
 
 	
@@ -2086,6 +1406,146 @@ abstract class BaseOppCarica extends BaseObject  implements Persistent {
 		$this->lastOppCaricaHasGruppoCriteria = $criteria;
 
 		return $this->collOppCaricaHasGruppos;
+	}
+
+	
+	public function initOppInterventos()
+	{
+		if ($this->collOppInterventos === null) {
+			$this->collOppInterventos = array();
+		}
+	}
+
+	
+	public function getOppInterventos($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+			   $this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+				OppInterventoPeer::addSelectColumns($criteria);
+				$this->collOppInterventos = OppInterventoPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+				OppInterventoPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+					$this->collOppInterventos = OppInterventoPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+		return $this->collOppInterventos;
+	}
+
+	
+	public function countOppInterventos($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+		return OppInterventoPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addOppIntervento(OppIntervento $l)
+	{
+		$this->collOppInterventos[] = $l;
+		$l->setOppCarica($this);
+	}
+
+
+	
+	public function getOppInterventosJoinOppAtto($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+				$this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+			if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+
+		return $this->collOppInterventos;
+	}
+
+
+	
+	public function getOppInterventosJoinOppSede($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppInterventoPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppInterventos === null) {
+			if ($this->isNew()) {
+				$this->collOppInterventos = array();
+			} else {
+
+				$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppSede($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppInterventoPeer::CARICA_ID, $this->getId());
+
+			if (!isset($this->lastOppInterventoCriteria) || !$this->lastOppInterventoCriteria->equals($criteria)) {
+				$this->collOppInterventos = OppInterventoPeer::doSelectJoinOppSede($criteria, $con);
+			}
+		}
+		$this->lastOppInterventoCriteria = $criteria;
+
+		return $this->collOppInterventos;
 	}
 
 	

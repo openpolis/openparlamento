@@ -13,7 +13,7 @@ abstract class BaseOppSedutaPeer {
 	const CLASS_DEFAULT = 'lib.model.OppSeduta';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,23 +35,26 @@ abstract class BaseOppSedutaPeer {
 	const LEGISLATURA = 'opp_seduta.LEGISLATURA';
 
 	
+	const URL = 'opp_seduta.URL';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Data', 'Numero', 'Ramo', 'Legislatura', ),
-		BasePeer::TYPE_COLNAME => array (OppSedutaPeer::ID, OppSedutaPeer::DATA, OppSedutaPeer::NUMERO, OppSedutaPeer::RAMO, OppSedutaPeer::LEGISLATURA, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'data', 'numero', 'ramo', 'legislatura', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Data', 'Numero', 'Ramo', 'Legislatura', 'Url', ),
+		BasePeer::TYPE_COLNAME => array (OppSedutaPeer::ID, OppSedutaPeer::DATA, OppSedutaPeer::NUMERO, OppSedutaPeer::RAMO, OppSedutaPeer::LEGISLATURA, OppSedutaPeer::URL, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'data', 'numero', 'ramo', 'legislatura', 'url', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Data' => 1, 'Numero' => 2, 'Ramo' => 3, 'Legislatura' => 4, ),
-		BasePeer::TYPE_COLNAME => array (OppSedutaPeer::ID => 0, OppSedutaPeer::DATA => 1, OppSedutaPeer::NUMERO => 2, OppSedutaPeer::RAMO => 3, OppSedutaPeer::LEGISLATURA => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'data' => 1, 'numero' => 2, 'ramo' => 3, 'legislatura' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Data' => 1, 'Numero' => 2, 'Ramo' => 3, 'Legislatura' => 4, 'Url' => 5, ),
+		BasePeer::TYPE_COLNAME => array (OppSedutaPeer::ID => 0, OppSedutaPeer::DATA => 1, OppSedutaPeer::NUMERO => 2, OppSedutaPeer::RAMO => 3, OppSedutaPeer::LEGISLATURA => 4, OppSedutaPeer::URL => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'data' => 1, 'numero' => 2, 'ramo' => 3, 'legislatura' => 4, 'url' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -114,6 +117,8 @@ abstract class BaseOppSedutaPeer {
 		$criteria->addSelectColumn(OppSedutaPeer::RAMO);
 
 		$criteria->addSelectColumn(OppSedutaPeer::LEGISLATURA);
+
+		$criteria->addSelectColumn(OppSedutaPeer::URL);
 
 	}
 

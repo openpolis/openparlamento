@@ -440,6 +440,7 @@ abstract class BaseOppCaricaHasAtto extends BaseObject  implements Persistent {
 
 		$criteria->add(OppCaricaHasAttoPeer::ATTO_ID, $this->atto_id);
 		$criteria->add(OppCaricaHasAttoPeer::CARICA_ID, $this->carica_id);
+		$criteria->add(OppCaricaHasAttoPeer::TIPO, $this->tipo);
 
 		return $criteria;
 	}
@@ -453,6 +454,8 @@ abstract class BaseOppCaricaHasAtto extends BaseObject  implements Persistent {
 
 		$pks[1] = $this->getCaricaId();
 
+		$pks[2] = $this->getTipo();
+
 		return $pks;
 	}
 
@@ -464,13 +467,13 @@ abstract class BaseOppCaricaHasAtto extends BaseObject  implements Persistent {
 
 		$this->setCaricaId($keys[1]);
 
+		$this->setTipo($keys[2]);
+
 	}
 
 	
 	public function copyInto($copyObj, $deepCopy = false)
 	{
-
-		$copyObj->setTipo($this->tipo);
 
 		$copyObj->setData($this->data);
 
@@ -481,6 +484,7 @@ abstract class BaseOppCaricaHasAtto extends BaseObject  implements Persistent {
 
 		$copyObj->setAttoId(NULL); 
 		$copyObj->setCaricaId(NULL); 
+		$copyObj->setTipo(NULL); 
 	}
 
 	

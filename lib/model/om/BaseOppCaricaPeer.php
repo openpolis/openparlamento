@@ -13,7 +13,7 @@ abstract class BaseOppCaricaPeer {
 	const CLASS_DEFAULT = 'lib.model.OppCarica';
 
 	
-	const NUM_COLUMNS = 36;
+	const NUM_COLUMNS = 16;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -24,6 +24,9 @@ abstract class BaseOppCaricaPeer {
 
 	
 	const POLITICO_ID = 'opp_carica.POLITICO_ID';
+
+	
+	const TIPO_CARICA_ID = 'opp_carica.TIPO_CARICA_ID';
 
 	
 	const CARICA = 'opp_carica.CARICA';
@@ -53,69 +56,6 @@ abstract class BaseOppCaricaPeer {
 	const PARLIAMENT_ID = 'opp_carica.PARLIAMENT_ID';
 
 	
-	const PDL_1 = 'opp_carica.PDL_1';
-
-	
-	const PDL_2 = 'opp_carica.PDL_2';
-
-	
-	const MOZIONE_1 = 'opp_carica.MOZIONE_1';
-
-	
-	const MOZIONE_DI_FIDUCIA_1 = 'opp_carica.MOZIONE_DI_FIDUCIA_1';
-
-	
-	const MOZIONE_EX_ART138_COMMA_2_1 = 'opp_carica.MOZIONE_EX_ART138_COMMA_2_1';
-
-	
-	const INTERPELLANZA_1 = 'opp_carica.INTERPELLANZA_1';
-
-	
-	const INTERPELLANZA_URGENTE_1 = 'opp_carica.INTERPELLANZA_URGENTE_1';
-
-	
-	const INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1 = 'opp_carica.INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1';
-
-	
-	const INTERROGAZIONE_A_RISPOSTA_ORALE_1 = 'opp_carica.INTERROGAZIONE_A_RISPOSTA_ORALE_1';
-
-	
-	const INTERROGAZIONE_A_RISPOSTA_SCRITTA_1 = 'opp_carica.INTERROGAZIONE_A_RISPOSTA_SCRITTA_1';
-
-	
-	const INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1 = 'opp_carica.INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1';
-
-	
-	const INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1 = 'opp_carica.INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1';
-
-	
-	const RISOLUZIONE_IN_ASSEMBLEA_1 = 'opp_carica.RISOLUZIONE_IN_ASSEMBLEA_1';
-
-	
-	const RISOLUZIONE_IN_COMMISSIONE_1 = 'opp_carica.RISOLUZIONE_IN_COMMISSIONE_1';
-
-	
-	const RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1 = 'opp_carica.RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1';
-
-	
-	const ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1 = 'opp_carica.ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1';
-
-	
-	const ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1 = 'opp_carica.ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1';
-
-	
-	const ODG_IN_ASSEMBLEA_SU_PDL_1 = 'opp_carica.ODG_IN_ASSEMBLEA_SU_PDL_1';
-
-	
-	const ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1 = 'opp_carica.ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1';
-
-	
-	const ODG_IN_COMMISSIONE_1 = 'opp_carica.ODG_IN_COMMISSIONE_1';
-
-	
-	const ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1 = 'opp_carica.ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1';
-
-	
 	const INDICE = 'opp_carica.INDICE';
 
 	
@@ -133,18 +73,18 @@ abstract class BaseOppCaricaPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'PoliticoId', 'Carica', 'DataInizio', 'DataFine', 'Legislatura', 'Circoscrizione', 'Presenze', 'Assenze', 'Missioni', 'ParliamentId', 'Pdl1', 'Pdl2', 'Mozione1', 'MozioneDiFiducia1', 'MozioneExArt138Comma21', 'Interpellanza1', 'InterpellanzaUrgente1', 'InterrogazioneARispostaImmediataInAssemblea1', 'InterrogazioneARispostaOrale1', 'InterrogazioneARispostaScritta1', 'InterrogazioneARispostaImmediataInCommissione1', 'InterrogazioneARispostaInCommissione1', 'RisoluzioneInAssemblea1', 'RisoluzioneInCommissione1', 'RisoluzioneInCommissioneConclusivaDiDibattito1', 'OdgInAssembleaSuBilancioInterno1', 'OdgInAssembleaSuMozioniOAltriAtti1', 'OdgInAssembleaSuPdl1', 'OdgInAssembleaSuPdlDiBilancio1', 'OdgInCommissione1', 'OdgSuPdlDiBilancioInCommissione1', 'Indice', 'Scaglione', 'Posizione', 'Media', ),
-		BasePeer::TYPE_COLNAME => array (OppCaricaPeer::ID, OppCaricaPeer::POLITICO_ID, OppCaricaPeer::CARICA, OppCaricaPeer::DATA_INIZIO, OppCaricaPeer::DATA_FINE, OppCaricaPeer::LEGISLATURA, OppCaricaPeer::CIRCOSCRIZIONE, OppCaricaPeer::PRESENZE, OppCaricaPeer::ASSENZE, OppCaricaPeer::MISSIONI, OppCaricaPeer::PARLIAMENT_ID, OppCaricaPeer::PDL_1, OppCaricaPeer::PDL_2, OppCaricaPeer::MOZIONE_1, OppCaricaPeer::MOZIONE_DI_FIDUCIA_1, OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1, OppCaricaPeer::INTERPELLANZA_1, OppCaricaPeer::INTERPELLANZA_URGENTE_1, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1, OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1, OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1, OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1, OppCaricaPeer::ODG_IN_COMMISSIONE_1, OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1, OppCaricaPeer::INDICE, OppCaricaPeer::SCAGLIONE, OppCaricaPeer::POSIZIONE, OppCaricaPeer::MEDIA, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'politico_id', 'carica', 'data_inizio', 'data_fine', 'legislatura', 'circoscrizione', 'presenze', 'assenze', 'missioni', 'parliament_id', 'pdl_1', 'pdl_2', 'mozione_1', 'mozione_di_fiducia_1', 'mozione_ex_art138_comma_2_1', 'interpellanza_1', 'interpellanza_urgente_1', 'interrogazione_a_risposta_immediata_in_assemblea_1', 'interrogazione_a_risposta_orale_1', 'interrogazione_a_risposta_scritta_1', 'interrogazione_a_risposta_immediata_in_commissione_1', 'interrogazione_a_risposta_in_commissione_1', 'risoluzione_in_assemblea_1', 'risoluzione_in_commissione_1', 'risoluzione_in_commissione_conclusiva_di_dibattito_1', 'odg_in_assemblea_su_bilancio_interno_1', 'odg_in_assemblea_su_mozioni_o_altri_atti_1', 'odg_in_assemblea_su_pdl_1', 'odg_in_assemblea_su_pdl_di_bilancio_1', 'odg_in_commissione_1', 'odg_su_pdl_di_bilancio_in_commissione_1', 'indice', 'scaglione', 'posizione', 'media', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PoliticoId', 'TipoCaricaId', 'Carica', 'DataInizio', 'DataFine', 'Legislatura', 'Circoscrizione', 'Presenze', 'Assenze', 'Missioni', 'ParliamentId', 'Indice', 'Scaglione', 'Posizione', 'Media', ),
+		BasePeer::TYPE_COLNAME => array (OppCaricaPeer::ID, OppCaricaPeer::POLITICO_ID, OppCaricaPeer::TIPO_CARICA_ID, OppCaricaPeer::CARICA, OppCaricaPeer::DATA_INIZIO, OppCaricaPeer::DATA_FINE, OppCaricaPeer::LEGISLATURA, OppCaricaPeer::CIRCOSCRIZIONE, OppCaricaPeer::PRESENZE, OppCaricaPeer::ASSENZE, OppCaricaPeer::MISSIONI, OppCaricaPeer::PARLIAMENT_ID, OppCaricaPeer::INDICE, OppCaricaPeer::SCAGLIONE, OppCaricaPeer::POSIZIONE, OppCaricaPeer::MEDIA, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'politico_id', 'tipo_carica_id', 'carica', 'data_inizio', 'data_fine', 'legislatura', 'circoscrizione', 'presenze', 'assenze', 'missioni', 'parliament_id', 'indice', 'scaglione', 'posizione', 'media', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PoliticoId' => 1, 'Carica' => 2, 'DataInizio' => 3, 'DataFine' => 4, 'Legislatura' => 5, 'Circoscrizione' => 6, 'Presenze' => 7, 'Assenze' => 8, 'Missioni' => 9, 'ParliamentId' => 10, 'Pdl1' => 11, 'Pdl2' => 12, 'Mozione1' => 13, 'MozioneDiFiducia1' => 14, 'MozioneExArt138Comma21' => 15, 'Interpellanza1' => 16, 'InterpellanzaUrgente1' => 17, 'InterrogazioneARispostaImmediataInAssemblea1' => 18, 'InterrogazioneARispostaOrale1' => 19, 'InterrogazioneARispostaScritta1' => 20, 'InterrogazioneARispostaImmediataInCommissione1' => 21, 'InterrogazioneARispostaInCommissione1' => 22, 'RisoluzioneInAssemblea1' => 23, 'RisoluzioneInCommissione1' => 24, 'RisoluzioneInCommissioneConclusivaDiDibattito1' => 25, 'OdgInAssembleaSuBilancioInterno1' => 26, 'OdgInAssembleaSuMozioniOAltriAtti1' => 27, 'OdgInAssembleaSuPdl1' => 28, 'OdgInAssembleaSuPdlDiBilancio1' => 29, 'OdgInCommissione1' => 30, 'OdgSuPdlDiBilancioInCommissione1' => 31, 'Indice' => 32, 'Scaglione' => 33, 'Posizione' => 34, 'Media' => 35, ),
-		BasePeer::TYPE_COLNAME => array (OppCaricaPeer::ID => 0, OppCaricaPeer::POLITICO_ID => 1, OppCaricaPeer::CARICA => 2, OppCaricaPeer::DATA_INIZIO => 3, OppCaricaPeer::DATA_FINE => 4, OppCaricaPeer::LEGISLATURA => 5, OppCaricaPeer::CIRCOSCRIZIONE => 6, OppCaricaPeer::PRESENZE => 7, OppCaricaPeer::ASSENZE => 8, OppCaricaPeer::MISSIONI => 9, OppCaricaPeer::PARLIAMENT_ID => 10, OppCaricaPeer::PDL_1 => 11, OppCaricaPeer::PDL_2 => 12, OppCaricaPeer::MOZIONE_1 => 13, OppCaricaPeer::MOZIONE_DI_FIDUCIA_1 => 14, OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1 => 15, OppCaricaPeer::INTERPELLANZA_1 => 16, OppCaricaPeer::INTERPELLANZA_URGENTE_1 => 17, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1 => 18, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1 => 19, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1 => 20, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1 => 21, OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1 => 22, OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1 => 23, OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1 => 24, OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1 => 25, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1 => 26, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1 => 27, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1 => 28, OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1 => 29, OppCaricaPeer::ODG_IN_COMMISSIONE_1 => 30, OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1 => 31, OppCaricaPeer::INDICE => 32, OppCaricaPeer::SCAGLIONE => 33, OppCaricaPeer::POSIZIONE => 34, OppCaricaPeer::MEDIA => 35, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'politico_id' => 1, 'carica' => 2, 'data_inizio' => 3, 'data_fine' => 4, 'legislatura' => 5, 'circoscrizione' => 6, 'presenze' => 7, 'assenze' => 8, 'missioni' => 9, 'parliament_id' => 10, 'pdl_1' => 11, 'pdl_2' => 12, 'mozione_1' => 13, 'mozione_di_fiducia_1' => 14, 'mozione_ex_art138_comma_2_1' => 15, 'interpellanza_1' => 16, 'interpellanza_urgente_1' => 17, 'interrogazione_a_risposta_immediata_in_assemblea_1' => 18, 'interrogazione_a_risposta_orale_1' => 19, 'interrogazione_a_risposta_scritta_1' => 20, 'interrogazione_a_risposta_immediata_in_commissione_1' => 21, 'interrogazione_a_risposta_in_commissione_1' => 22, 'risoluzione_in_assemblea_1' => 23, 'risoluzione_in_commissione_1' => 24, 'risoluzione_in_commissione_conclusiva_di_dibattito_1' => 25, 'odg_in_assemblea_su_bilancio_interno_1' => 26, 'odg_in_assemblea_su_mozioni_o_altri_atti_1' => 27, 'odg_in_assemblea_su_pdl_1' => 28, 'odg_in_assemblea_su_pdl_di_bilancio_1' => 29, 'odg_in_commissione_1' => 30, 'odg_su_pdl_di_bilancio_in_commissione_1' => 31, 'indice' => 32, 'scaglione' => 33, 'posizione' => 34, 'media' => 35, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PoliticoId' => 1, 'TipoCaricaId' => 2, 'Carica' => 3, 'DataInizio' => 4, 'DataFine' => 5, 'Legislatura' => 6, 'Circoscrizione' => 7, 'Presenze' => 8, 'Assenze' => 9, 'Missioni' => 10, 'ParliamentId' => 11, 'Indice' => 12, 'Scaglione' => 13, 'Posizione' => 14, 'Media' => 15, ),
+		BasePeer::TYPE_COLNAME => array (OppCaricaPeer::ID => 0, OppCaricaPeer::POLITICO_ID => 1, OppCaricaPeer::TIPO_CARICA_ID => 2, OppCaricaPeer::CARICA => 3, OppCaricaPeer::DATA_INIZIO => 4, OppCaricaPeer::DATA_FINE => 5, OppCaricaPeer::LEGISLATURA => 6, OppCaricaPeer::CIRCOSCRIZIONE => 7, OppCaricaPeer::PRESENZE => 8, OppCaricaPeer::ASSENZE => 9, OppCaricaPeer::MISSIONI => 10, OppCaricaPeer::PARLIAMENT_ID => 11, OppCaricaPeer::INDICE => 12, OppCaricaPeer::SCAGLIONE => 13, OppCaricaPeer::POSIZIONE => 14, OppCaricaPeer::MEDIA => 15, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'politico_id' => 1, 'tipo_carica_id' => 2, 'carica' => 3, 'data_inizio' => 4, 'data_fine' => 5, 'legislatura' => 6, 'circoscrizione' => 7, 'presenze' => 8, 'assenze' => 9, 'missioni' => 10, 'parliament_id' => 11, 'indice' => 12, 'scaglione' => 13, 'posizione' => 14, 'media' => 15, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, )
 	);
 
 	
@@ -202,6 +142,8 @@ abstract class BaseOppCaricaPeer {
 
 		$criteria->addSelectColumn(OppCaricaPeer::POLITICO_ID);
 
+		$criteria->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
+
 		$criteria->addSelectColumn(OppCaricaPeer::CARICA);
 
 		$criteria->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
@@ -219,48 +161,6 @@ abstract class BaseOppCaricaPeer {
 		$criteria->addSelectColumn(OppCaricaPeer::MISSIONI);
 
 		$criteria->addSelectColumn(OppCaricaPeer::PARLIAMENT_ID);
-
-		$criteria->addSelectColumn(OppCaricaPeer::PDL_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::PDL_2);
-
-		$criteria->addSelectColumn(OppCaricaPeer::MOZIONE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::MOZIONE_DI_FIDUCIA_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::MOZIONE_EX_ART138_COMMA_2_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERPELLANZA_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERPELLANZA_URGENTE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_ASSEMBLEA_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_ORALE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_SCRITTA_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IMMEDIATA_IN_COMMISSIONE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::INTERROGAZIONE_A_RISPOSTA_IN_COMMISSIONE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::RISOLUZIONE_IN_ASSEMBLEA_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::RISOLUZIONE_IN_COMMISSIONE_CONCLUSIVA_DI_DIBATTITO_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_BILANCIO_INTERNO_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_MOZIONI_O_ALTRI_ATTI_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_IN_ASSEMBLEA_SU_PDL_DI_BILANCIO_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_IN_COMMISSIONE_1);
-
-		$criteria->addSelectColumn(OppCaricaPeer::ODG_SU_PDL_DI_BILANCIO_IN_COMMISSIONE_1);
 
 		$criteria->addSelectColumn(OppCaricaPeer::INDICE);
 
@@ -377,6 +277,34 @@ abstract class BaseOppCaricaPeer {
 
 
 	
+	public static function doCountJoinOppTipoCarica(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
+
+		$rs = OppCaricaPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
 	public static function doSelectJoinOppPolitico(Criteria $c, $con = null)
 	{
 		$c = clone $c;
@@ -424,6 +352,53 @@ abstract class BaseOppCaricaPeer {
 
 
 	
+	public static function doSelectJoinOppTipoCarica(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+				if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppCaricaPeer::addSelectColumns($c);
+		$startcol = (OppCaricaPeer::NUM_COLUMNS - OppCaricaPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+		OppTipoCaricaPeer::addSelectColumns($c);
+
+		$c->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppCaricaPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppTipoCaricaPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj2 = new $cls();
+			$obj2->hydrate($rs, $startcol);
+
+			$newObject = true;
+			foreach($results as $temp_obj1) {
+				$temp_obj2 = $temp_obj1->getOppTipoCarica(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+										$temp_obj2->addOppCarica($obj1); 					break;
+				}
+			}
+			if ($newObject) {
+				$obj2->initOppCaricas();
+				$obj2->addOppCarica($obj1); 			}
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
 	public static function doCountJoinAll(Criteria $criteria, $distinct = false, $con = null)
 	{
 		$criteria = clone $criteria;
@@ -441,6 +416,8 @@ abstract class BaseOppCaricaPeer {
 		}
 
 		$criteria->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+
+		$criteria->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
 
 		$rs = OppCaricaPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -466,7 +443,12 @@ abstract class BaseOppCaricaPeer {
 		OppPoliticoPeer::addSelectColumns($c);
 		$startcol3 = $startcol2 + OppPoliticoPeer::NUM_COLUMNS;
 
+		OppTipoCaricaPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + OppTipoCaricaPeer::NUM_COLUMNS;
+
 		$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+
+		$c->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
 
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
@@ -495,6 +477,199 @@ abstract class BaseOppCaricaPeer {
 				$temp_obj2 = $temp_obj1->getOppPolitico(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addOppCarica($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initOppCaricas();
+				$obj2->addOppCarica($obj1);
+			}
+
+
+					
+			$omClass = OppTipoCaricaPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj3 = new $cls();
+			$obj3->hydrate($rs, $startcol3);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj3 = $temp_obj1->getOppTipoCarica(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj3->addOppCarica($obj1); 					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj3->initOppCaricas();
+				$obj3->addOppCarica($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doCountJoinAllExceptOppPolitico(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
+
+		$rs = OppCaricaPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doCountJoinAllExceptOppTipoCarica(Criteria $criteria, $distinct = false, $con = null)
+	{
+				$criteria = clone $criteria;
+
+				$criteria->clearSelectColumns()->clearOrderByColumns();
+		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT_DISTINCT);
+		} else {
+			$criteria->addSelectColumn(OppCaricaPeer::COUNT);
+		}
+
+				foreach($criteria->getGroupByColumns() as $column)
+		{
+			$criteria->addSelectColumn($column);
+		}
+
+		$criteria->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+
+		$rs = OppCaricaPeer::doSelectRS($criteria, $con);
+		if ($rs->next()) {
+			return $rs->getInt(1);
+		} else {
+						return 0;
+		}
+	}
+
+
+	
+	public static function doSelectJoinAllExceptOppPolitico(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppCaricaPeer::addSelectColumns($c);
+		$startcol2 = (OppCaricaPeer::NUM_COLUMNS - OppCaricaPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		OppTipoCaricaPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + OppTipoCaricaPeer::NUM_COLUMNS;
+
+		$c->addJoin(OppCaricaPeer::TIPO_CARICA_ID, OppTipoCaricaPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppCaricaPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppTipoCaricaPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getOppTipoCarica(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addOppCarica($obj1);
+					break;
+				}
+			}
+
+			if ($newObject) {
+				$obj2->initOppCaricas();
+				$obj2->addOppCarica($obj1);
+			}
+
+			$results[] = $obj1;
+		}
+		return $results;
+	}
+
+
+	
+	public static function doSelectJoinAllExceptOppTipoCarica(Criteria $c, $con = null)
+	{
+		$c = clone $c;
+
+								if ($c->getDbName() == Propel::getDefaultDB()) {
+			$c->setDbName(self::DATABASE_NAME);
+		}
+
+		OppCaricaPeer::addSelectColumns($c);
+		$startcol2 = (OppCaricaPeer::NUM_COLUMNS - OppCaricaPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
+
+		OppPoliticoPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + OppPoliticoPeer::NUM_COLUMNS;
+
+		$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+
+
+		$rs = BasePeer::doSelect($c, $con);
+		$results = array();
+
+		while($rs->next()) {
+
+			$omClass = OppCaricaPeer::getOMClass();
+
+			$cls = Propel::import($omClass);
+			$obj1 = new $cls();
+			$obj1->hydrate($rs);
+
+			$omClass = OppPoliticoPeer::getOMClass();
+
+
+			$cls = Propel::import($omClass);
+			$obj2  = new $cls();
+			$obj2->hydrate($rs, $startcol2);
+
+			$newObject = true;
+			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
+				$temp_obj1 = $results[$j];
+				$temp_obj2 = $temp_obj1->getOppPolitico(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+					$newObject = false;
+					$temp_obj2->addOppCarica($obj1);
+					break;
 				}
 			}
 
@@ -563,6 +738,9 @@ abstract class BaseOppCaricaPeer {
 			$comparison = $criteria->getComparison(OppCaricaPeer::POLITICO_ID);
 			$selectCriteria->add(OppCaricaPeer::POLITICO_ID, $criteria->remove(OppCaricaPeer::POLITICO_ID), $comparison);
 
+			$comparison = $criteria->getComparison(OppCaricaPeer::TIPO_CARICA_ID);
+			$selectCriteria->add(OppCaricaPeer::TIPO_CARICA_ID, $criteria->remove(OppCaricaPeer::TIPO_CARICA_ID), $comparison);
+
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -610,10 +788,12 @@ abstract class BaseOppCaricaPeer {
 
 				$vals[0][] = $value[0];
 				$vals[1][] = $value[1];
+				$vals[2][] = $value[2];
 			}
 
 			$criteria->add(OppCaricaPeer::ID, $vals[0], Criteria::IN);
 			$criteria->add(OppCaricaPeer::POLITICO_ID, $vals[1], Criteria::IN);
+			$criteria->add(OppCaricaPeer::TIPO_CARICA_ID, $vals[2], Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -667,13 +847,14 @@ abstract class BaseOppCaricaPeer {
 	}
 
 	
-	public static function retrieveByPK( $id, $politico_id, $con = null) {
+	public static function retrieveByPK( $id, $politico_id, $tipo_carica_id, $con = null) {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 		$criteria = new Criteria();
 		$criteria->add(OppCaricaPeer::ID, $id);
 		$criteria->add(OppCaricaPeer::POLITICO_ID, $politico_id);
+		$criteria->add(OppCaricaPeer::TIPO_CARICA_ID, $tipo_carica_id);
 		$v = OppCaricaPeer::doSelect($criteria, $con);
 
 		return !empty($v) ? $v[0] : null;
