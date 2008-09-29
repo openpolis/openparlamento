@@ -43,13 +43,21 @@ class ddlActions extends sfActions
 	
 	$this->iter_completo = $this->ddl->getIterCompleto();
 	
-	$this->argomenti = OppAttoPeer::doSelectArgomenti($pred);
+	$this->tesei = OppAttoPeer::doSelectTeseo($pred);
 	
 	$this->lettura_parlamentare_precedente = null;
 	
 	$leggi=$this->ddl->getOppLegges();
 	if (count($leggi)>0) $this->legge=$leggi[0];
 	else $this->legge="";	
+	/*
+	$quale_atto=$this->getTuttiSucc($this->ddl->getId());
+	if (count($quale_atto)==0) $leggi=$this->ddl->getOppLegges();
+	else $leggi=$quale_atto[count($quale_atto)-1]->getOppLegges();
+	
+	if (count($leggi)>0) $this->legge=$leggi[0];
+	else $this->legge="";
+	*/
 	 
 	if($this->ddl->getPred())
 	{

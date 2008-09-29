@@ -53,7 +53,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	return $relatori;
   }
   
-  public static function doSelectArgomenti($pred)
+  public static function doSelectTeseo($pred)
   {
     $argomenti = array(); 
 	

@@ -213,11 +213,11 @@
 <?php endif; ?>
 <br /><br />
 
-<?php if(count($argomenti)!=0): ?>
-  <b>Argomenti</b>
+<?php if(count($tesei)!=0): ?>
+  <b>Teseo</b>
   <br />
-  <?php foreach($argomenti as $id => $argomento): ?>
-    <?php echo link_to($argomento.' ('.$id.')', '#') ?>
+  <?php foreach($tesei as $id => $teseo): ?>
+    <?php echo link_to($teseo.' ('.$id.')', '#') ?>
     <br />
   <?php endforeach; ?>
   <br /><br />

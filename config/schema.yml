@@ -155,8 +155,8 @@ propel:
     tt:               { type: integer }
 
   opp_teseo_has_teseott:
-   opp_teseo_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
-   opp_teseott_id:    { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+   teseo_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
+   teseott_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
 
   opp_teseott:
     id:

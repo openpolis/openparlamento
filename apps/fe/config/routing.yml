@@ -6,6 +6,14 @@ argomenti:
   url:   /argomenti
   param: { module: argomento, action: list }
 
+argomento:
+  url:   /argomento/:id
+  param: { module: argomento, action: index }
+
+teseo:
+  url:   /teseo/:id
+  param: { module: teseo, action: index }
+
 votazioni:
   url:   /votazioni/:legislatura/:ramo/:page
   param: { module: votazione, action: list, legislatura: 16, ramo: entrambi, page: 1, display: false }

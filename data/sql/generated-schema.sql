@@ -496,17 +496,17 @@ DROP TABLE IF EXISTS `opp_teseo_has_teseott`;
 
 CREATE TABLE `opp_teseo_has_teseott`
 (
-	`opp_teseo_id` INTEGER  NOT NULL,
-	`opp_teseott_id` INTEGER  NOT NULL,
-	PRIMARY KEY (`opp_teseo_id`,`opp_teseott_id`),
-	KEY `opp_teseo_has_teseott_opp_teseo_id_index`(`opp_teseo_id`),
-	KEY `opp_teseo_has_teseott_opp_teseott_id_index`(`opp_teseott_id`),
+	`teseo_id` INTEGER  NOT NULL,
+	`teseott_id` INTEGER  NOT NULL,
+	PRIMARY KEY (`teseo_id`,`teseott_id`),
+	KEY `opp_teseo_has_teseott_teseo_id_index`(`teseo_id`),
+	KEY `opp_teseo_has_teseott_teseott_id_index`(`teseott_id`),
 	CONSTRAINT `opp_teseo_has_teseott_FK_1`
-		FOREIGN KEY (`opp_teseo_id`)
+		FOREIGN KEY (`teseo_id`)
 		REFERENCES `opp_teseo` (`id`)
 		ON DELETE CASCADE,
 	CONSTRAINT `opp_teseo_has_teseott_FK_2`
-		FOREIGN KEY (`opp_teseott_id`)
+		FOREIGN KEY (`teseott_id`)
 		REFERENCES `opp_teseott` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
