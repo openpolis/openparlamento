@@ -27,7 +27,6 @@ class parlamentareActions extends sfActions
     $this->pager->setResultArray($this->voti);
     $this->pager->setPage($this->getRequestParameter('page',1));
     $this->pager->init();
-		
   }
   
   public function executeList()
@@ -51,8 +50,6 @@ class parlamentareActions extends sfActions
 	 $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
 	 $c->addSelectColumn(OppCaricaPeer::MEDIA);
 	 $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-	 #$c->add(OppCaricaPeer::LEGISLATURA, 16, Criteria::EQUAL);
-	 #$c->add(OppCaricaPeer::CARICA, 'Deputato', Criteria::EQUAL);
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);
      $this->parlamentari = OppCaricaPeer::doSelectRS($c);

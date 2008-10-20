@@ -36,9 +36,9 @@ class OppPolitico extends BaseOppPolitico
 	
 	$c->add(OppCaricaPeer::POLITICO_ID, $this->getId(), Criteria::EQUAL);
 	
-	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppCaricaHasGruppoPeer::DATA_INIZIO.'<='.OppSedutaPeer::DATA, Criteria::CUSTOM);
+	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppSedutaPeer::DATA, Criteria::LESS_EQUAL);
 	
-	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppCaricaHasGruppoPeer::DATA_FINE.'>='.OppSedutaPeer::DATA, Criteria::CUSTOM);
+	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppSedutaPeer::DATA, Criteria::GREATER_EQUAL);
 	$cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
 	$cton1->addOr($cton2);
     $c->add($cton1);
@@ -61,7 +61,7 @@ class OppPolitico extends BaseOppPolitico
 	  	  
 	  $voti[$rs->getInt(1)] = array('ramo' => ($rs->getString(2)=='C' ? 'Camera' : 'Senato'), 
 	                                'legislatura' => $rs->getString(3), 
-									'data' => $rs->getDate(4), 
+									'data' => $rs->getDate(4, 'Y-m-d'), 
 	                                'titolo' => str_replace(';NULL', '', $rs->getString(5)),
 	                                'voto' => $rs->getString(6), 'voto_gruppo' => $rs->getString(9), 
 									'esito' => Text::decodeEsito($rs->getString(7)) );
@@ -85,6 +85,7 @@ class OppPolitico extends BaseOppPolitico
     $esiti_gruppo = array();
 	$count = 0;
 	
+	//determinazione voto esito gruppo nel periodo considerato
     $c = new Criteria();
 	$c->clearSelectColumns();
 	$c->addSelectColumn(OppVotazionePeer::ID);
@@ -97,10 +98,12 @@ class OppPolitico extends BaseOppPolitico
 	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
 	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
 	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+	
 	if($data_fine!='') 
 	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
 	
 	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_inizio, Criteria::GREATER_EQUAL);
+	
 	if($data_fine!='') 
 	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
 	
@@ -109,6 +112,7 @@ class OppPolitico extends BaseOppPolitico
 	$c->addGroupByColumn(OppVotazioneHasCaricaPeer::VOTO);
 	$c->addAscendingOrderByColumn(OppVotazionePeer::ID);
 	$c->addDescendingOrderByColumn('CONT');
+	
 	$rs = OppVotazionePeer::doSelectRS($c);
 	
 	while ($rs->next())
@@ -149,6 +153,7 @@ class OppPolitico extends BaseOppPolitico
           $count++;
       }
     }
+	
     return $count;    
   }
     

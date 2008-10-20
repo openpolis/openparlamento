@@ -15,30 +15,70 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	$c->clearSelectColumns();
 	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
 	$c->addAsColumn('CONT', 'COUNT(*)');
-		
+	
 	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
+	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID, Criteria::INNER_JOIN);	
+	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);	
 	$c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
 	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
+		
+	$c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente', Criteria::NOT_EQUAL);	
 	
-	//$c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente', Criteria::NOT_EQUAL);	
+	$cton1 = $c->getNewCriterion(OppVotazioneHasCaricaPeer::VOTO, 'Favorevole', Criteria::EQUAL);
+	$cton2 = $c->getNewCriterion(OppVotazioneHasCaricaPeer::VOTO, 'Contrario', Criteria::EQUAL);
+	$cton1->addOr($cton2);
+    $cton3 = $c->getNewCriterion(OppVotazioneHasCaricaPeer::VOTO, 'Astenuto', Criteria::EQUAL);
+	$cton1->addOr($cton3);
+    
+    $c->add($cton1);
+    
 	$c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $votazione_id, Criteria::EQUAL);
 	$c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
 	
+	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppSedutaPeer::DATA, Criteria::LESS_EQUAL);
+	$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppSedutaPeer::DATA, Criteria::GREATER_EQUAL);
+	$cton5 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+    $cton4->addOr($cton5);
+    $c->add($cton4);
+	
 	$c->addGroupByColumn(OppVotazioneHasCaricaPeer::VOTO);
 	$c->addDescendingOrderByColumn('CONT');
-	$c->setLimit(1);
+	$c->setLimit(2);
 	
 	$rs = OppCaricaPeer::doSelectRS($c);
-		
 	
-	while ($rs->next())
+	$voto = 'nv';
+	
+    $voti = array();
+	
+	$i = 0;
+    while ($rs->next())
     {
-	  if ($rs->getString(1)=='Astenuto' || $rs->getString(1)=='Contrario' || $rs->getString(1)=='Favorevole')
-	    return $rs->getString(1);
-	  else
-	    return '';
-	}
+      $voti[$i] = array('voto' => $rs->getString(1), 'numero' => $rs->getInt(2));
+      $i++;
+    }
+    
 	
+    if($voti[0]['numero'] != $voti[1]['numero']) 
+      $voto = $voti[0]['voto'];    
+   
+     return $voto;
+  }
+  
+  public static function doSelectCountVotazioniPerPeriodo($data_inizio, $data_fine, $legislatura, $ramo)
+  {
+    $c = new Criteria();
+	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer, Criteria::LEFT_JOIN);
+	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
+	$c->add(OppSedutaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
+	if($data_inizio!='') 
+	  $c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATHER_EQUAL);
+	
+	if($data_fine!='') 
+	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
+		
+	return $count = OppVotazione::doCount($c);
   }  
 }
 ?>

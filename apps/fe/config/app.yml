@@ -1,7 +1,7 @@
 # default values
 all:
   pagination:
-    limit:    100
+    limit:    10000
 
   voto:
     "1":     "Assente"

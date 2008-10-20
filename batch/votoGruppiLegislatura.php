@@ -8,17 +8,14 @@ define('SF_DEBUG',       false);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
-if ($argv[1])
-{
-  print "elaborazione votazione: " . $argv[1] . "...\n";
-  $c = new Criteria();
-  $c->add(OppVotazionePeer::ID, $argv[1], Criteria::EQUAL);
-  $votazione = OppVotazionePeer::doSelectOne($c);
+$c = new Criteria();
+$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
+$c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+$votazioni = OppVotazionePeer::doSelect($c);
   
-  if($votazione)
- 
-  { 
-    
+foreach($votazioni as $votazione)
+{ 
+    //print "elaborazione votazione: " . $votazione->getId() . "...\n";
     
 	$c = new Criteria();
     $c->add(OppSedutaPeer::ID, $votazione->getSedutaId(), Criteria::EQUAL);
@@ -45,14 +42,8 @@ if ($argv[1])
 	  
 	  print $gr->getNome().": ".$voto_gruppo."\n";	  
 	}	
-  }
-  else
-    print "votazione non trovata";
 }
-else
-{
-  print "identificativo votazione non inserito";
-}
+
 
 print("done.\n");
 

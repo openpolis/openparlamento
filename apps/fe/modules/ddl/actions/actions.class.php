@@ -34,7 +34,7 @@ class ddlActions extends sfActions
 	  $pred_1=$this->ddl->getId();
     }	  
 		
-        $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
+    $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
 	$this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
 	$this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
 	$this->commissioni = $this->ddl->getCommissioni();

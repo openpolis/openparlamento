@@ -27,7 +27,7 @@ class OppAtto extends BaseOppAtto
 	while ($rs->next())
     {
 	  if($rs->get(1)!='0000-00-00')
-	    $status[$rs->getDate(1)] = $rs->getString(2);
+	    $status[$rs->getDate(1, 'Y-m-d')] = $rs->getString(2);
 	  else
 	    $status[1] = $rs->getString(2);	
 	}  
@@ -53,7 +53,7 @@ class OppAtto extends BaseOppAtto
 	while ($rs->next())
     {
 	  if($rs->get(1)!='0000-00-00')
-	    $iter[$rs->getString(2)] = $rs->getDate(1);
+	    $iter[$rs->getString(2)] = $rs->getDate(1, 'Y-m-d');
       else
 	    $iter[1] = $rs->getString(2);			
 	}  
@@ -84,7 +84,7 @@ class OppAtto extends BaseOppAtto
 	while ($rs->next())
     {
 	 
-	    $rappresentazioni[$x][1] = $rs->getDate(1);
+	    $rappresentazioni[$x][1] = $rs->getDate(1, 'Y-m-d');
 	    $rappresentazioni[$x][2] = $rs->getString(2);
 	    $rappresentazioni[$x][3] = $rs->getString(3);
 	    $rappresentazioni[$x][4] = $rs->getString(4);
@@ -143,7 +143,7 @@ class OppAtto extends BaseOppAtto
 	
 	while ($rs->next())
     {
-      $interventi[$rs->getInt(1)] = array('politico_id' => $rs->getInt(2), 'nome' => $rs->getString(3), 'cognome' => $rs->getString(4), 'data' => $rs->getDate(5), 'tipo' => $rs->getString(6), 'link' => $rs->getString(7), 'ramo' => $rs->getString(8), 'denominazione' => $rs->getString(9) );  	
+      $interventi[$rs->getInt(1)] = array('politico_id' => $rs->getInt(2), 'nome' => $rs->getString(3), 'cognome' => $rs->getString(4), 'data' => $rs->getDate(5, 'Y-m-d'), 'tipo' => $rs->getString(6), 'link' => $rs->getString(7), 'ramo' => $rs->getString(8), 'denominazione' => $rs->getString(9) );  	
 	}
 	
 	return $interventi;

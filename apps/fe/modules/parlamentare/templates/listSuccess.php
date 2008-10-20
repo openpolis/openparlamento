@@ -39,25 +39,33 @@
 	<td><?php echo $parlamentari->getString(5) ?></td>
 	<td>
 	  <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>
+	  
 	  <?php $rib_count=0 ?>
+	  <?php $presenze_totali = 0 ?>
 	  <?php foreach($gruppi as $nome => $gruppo): ?>
+	    
+	    <?php $presenze = OppCaricaPeer::doSelectPresenzePerGruppo($parlamentari->getInt(1), format_date($gruppo['data_inizio'], 'yyyy-MM-dd'), format_date($gruppo['data_fine'], 'yyyy-MM-dd')) ?>
+	    
 	    <?php $rib_count = $rib_count + $gruppo['ribelle'] ?>
+		
 		<?php if($gruppo['data_fine']): ?>
 		  <?php printf('(dal %s al %s: %s)', format_date($gruppo['data_inizio'], 'dd/MM/yyyy'), format_date($gruppo['data_fine'], 'dd/MM/yyyy'), $nome ) ?>
 	    <?php else: ?>
 		  <?php print $nome ?>
 	    <?php endif; ?>
+	    <?php $presenze_totali = $presenze_totali + $presenze ?>
 	  <?php endforeach; ?>
+	
 	</td>
 	<td>
-	  <?php if($parlamentari->getString(6)!=0): ?>
-	    <?php printf('%d su %d votazioni (%01.2f %%)', $rib_count, $parlamentari->getString(6), number_format($rib_count/$parlamentari->getString(6) *100,2)) ?>
+	  <?php if($presenze_totali!=0): ?>
+	    <?php printf('%d su %d votazioni (%01.2f %%)', $rib_count, $presenze_totali, number_format($rib_count/$presenze_totali *100,2)) ?>
 	  <?php else: ?>
 	    <?php print('0 su 0 votazioni (0%)') ?>
 	  <?php endif; ?>
 	</td>
 	<td>
-	  <?php printf('%d su %d votazioni (%01.2f %%)', $parlamentari->getString(6), $numero_votazioni, number_format($parlamentari->getString(6)/$numero_votazioni *100,2)) ?>
+	  <?php printf('%d su %d votazioni (%01.2f %%)', $presenze_totali, $numero_votazioni, number_format($presenze_totali/$numero_votazioni *100,2)) ?>
 	</td>
 	<td>
 	  <?php printf('%01.2f',$parlamentari->getFloat(7) ) ?><br />

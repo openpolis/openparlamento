@@ -27,7 +27,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 	
 	while ($rs->next())
     {
-	  $gruppi[$rs->getString(1)] = array('data_inizio' => $rs->getDate(2), 'data_fine' => $rs->getDate(3), 'gruppo_id' => $rs->getInt(4), 'ribelle' => $rs->getInt(5) );
+	  $gruppi[$rs->getString(1)] = array('data_inizio' => $rs->getDate(2, 'Y-m-d'), 'data_fine' => $rs->getDate(3, 'Y-m-d'), 'gruppo_id' => $rs->getInt(4), 'ribelle' => $rs->getInt(5) );
 	}	
     
 	return $gruppi;

@@ -17,7 +17,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	
 	while ($rs->next())
     {
-	  $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5).' - '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
+	  $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
 	}
 	return $primi_firmatari;
 	
@@ -33,7 +33,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	
 	while ($rs->next())
     {
-	  $co_firmatari[$rs->getInt(1)]=$rs->getDate(5).' - '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')';  
+	  $co_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')';  
 	}
     
 	return $co_firmatari;
