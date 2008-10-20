@@ -1,0 +1,370 @@
+= sfPropelActAsRatableBehaviorPlugin =
+
+This plugin aims at providing rating capabilities to any Propel object with the 
+help of a dedicated Propel behavior.   
+
+[[Image(rating_capture.png, right)]]
+
+== Installation ==
+
+To install the plugin, run this command within your symfony project :
+
+{{{
+symfony plugin-install http://plugins.symfony-project.com/sfPropelActAsRatableBehaviorPlugin
+}}}
+
+The source code is also available:
+ * [source:plugins/sfPropelActAsRatableBehaviorPlugin from the code browser]
+ * [http://svn.symfony-project.com/plugins/sfPropelActAsRatableBehaviorPlugin/ from the SVN repository] 
+   (please always use a tagged version in production)
+   
+=== SVN repository ===
+
+The plugin is also available through the Symfony SVN repository.
+
+Stable versions are available in the 
+[http://svn.symfony-project.com/plugins/sfPropelActAsRatableBehaviorPlugin/tags tags] 
+folder, experimental ones in the 
+[http://svn.symfony-project.com/plugins/sfPropelActAsRatableBehaviorPlugin/branches branches] 
+one and the current alpha in the 
+[http://svn.symfony-project.com/plugins/sfPropelActAsRatableBehaviorPlugin/trunk trunk].
+
+'''Caution: Never use the trunk version in a production environment.'''
+
+== Configuration ==
+
+To activate this Propel behavior in Symfony, you must first activate behaviors 
+in your propel.ini file :
+
+{{{
+propel.builder.addBehaviors = true
+}}}
+
+In one (or more) of your existing model object classes, apply the behavior. Eg. 
+for an {{{Article}}} Propel model class:
+
+{{{
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add('Article', array('sfPropelActAsRatableBehavior'));
+}}}
+
+You can fine-tune behavior with optional parameters, see the 
+[#Behavioroptionalparameters advanced configuration section].
+
+Once your model configured, you have to rebuild it:
+
+{{{
+symfony propel-build-all
+}}}
+
+And clear the cache :
+
+{{{
+symfony cc
+}}}
+
+== Advanced configuration ==
+
+=== Behavior optional parameters ===
+
+{{{
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add(
+  'Article', 
+  array('sfPropelActAsRatableBehavior' =>
+        array('max_rating'      => 10,              // Max rating value for an Article
+              'rating_field'    => 'AverageRating', // refers to ArticlePeer::AVERAGE_RATING
+              'reference_field' => 'Reference')));  // refers to ArticlePeer::REFERENCE
+}}}
+
+ * The {{{max_rating}}} parameter sets the maximum rating available for an object 
+   (this must be an integer greater than 0 - default is 5)
+ * The {{{rating_field}}} parameter, which refer to a {{{float}}} 
+   column in phpName format of your ratable object table which will store cached 
+   value of actual rating for the object. Useful for queries performances and 
+   sorting ;)
+ * The {{{reference_field}}} parameter sets the name of the field where you 
+   store the identifier of the object to rate. By default, the plugin will use
+   the primary key of the object. You must return an integer fo referencing a
+   custom identifier.
+
+=== Ensure rating consistency ===
+
+A clean way to ensure rating consistency is to associate a rating to a unique 
+identified user reference stored server side, typically the primary key of a 
+user record in your database.
+
+If no user reference can be retrieved, the plugin will rely on cookies, but you 
+should consider this alternative solution with caution, as cookies are easily 
+deletable by the user.
+
+=== User reference retrieval configuration ===
+
+By default, the plugin will search for an [wiki:sfGuardPlugin sfGuardPlugin] 
+installation to retrieve authenticated user primary key. If you are using sfGuard, 
+you have nothing more to configure.
+
+If you don't use sfGuard, you can specify the way a unique user reference (eg. 
+primary key) will be retrieved, using these available plugin settings in your 
+{{{app.yml}}} file:
+
+ * You can specify a PHP function, eg. {{{get_connected_user_id()}}}:
+
+{{{
+  rating:
+    user_id_getter:      get_connected_user_id  
+}}}
+
+ * Or a static method of a PHP class, eg. 
+   {{{MyCustomUtilsClass::getConnectedUserId()}}}:
+
+{{{
+  rating:
+    user_id_getter:      [MyCustomUtilsClass, getConnectedUserId]
+}}}
+
+The return value of these calls should always be the primary key of your 
+connected user.
+
+== Using the Ajax rating system ==
+
+This plugin provides an Ajax-based rating system, with pretty stars to click on.
+You must note that this web module is provided for illustration purpose, it has
+weak chances to fit exactly your project needs.
+
+[[Image(rating_capture.png)]]
+
+To activate this feature, you must enable the {{{sfRating}}} module in the 
+{{{config/settings.yml}}} file of the app you want to use the helper in :
+
+{{{
+all:
+  .settings:
+    enabled_modules:        [default, sfRating]
+}}}
+
+If you are under Microsoft Windows, you also have to manually copy the {{{./web}}} 
+directory of the plugin in the {{{%SF_ROOT_DIR%/web}}} directory of your project
+and rename it to {{{sfPropelActAsRatableBehaviorPlugin}}}. Then you will have 
+this on the filesytem :
+
+{{{
+project_root
+  [...]
+  web
+    sfPropelActAsRatableBehaviorPlugin
+      css
+        sf_rating.css
+      images
+        alt_star.gif
+}}}
+
+Then, you can use the {{{sf_rater}}} helper in any of your templates:
+
+{{{
+<?php sfLoader::loadHelpers('sfRating') ?>
+<?php echo sf_rater($article) ?>
+}}}
+
+== Using the rating details display component ==
+
+[[Image(RatingDetails.png, right)]]
+
+Just call the component from any of your templates:
+
+{{{
+<?php include_component('sfRating', 'ratingDetails', array('object' => $article) ?>
+}}}
+
+== API Usage ==
+
+Note: In below examples, {{{$user_id}}} is a string representing a 
+unique reference to a user, eg. if you're using the sfGuardPlugin, 
+{{{sfContext::getInstance()->getUser()->getGuardUser()->getId()}}}.
+
+If you don't provide this parameter, the 
+[#Userreferenceretrievalconfiguration configured user reference retrieval configuration]
+will apply.
+
+To set a rating for a given user:
+
+{{{
+$article->setRating(10, $user_id);
+}}}
+
+To test if the object has already been rated :
+
+{{{
+$article->hasBeenRated();
+}}}
+
+To test if the object has already been rated by a particular user:
+
+{{{
+$article->hasBeenRatedByUser($user_id);
+}}}
+
+To retrieve user rating for this object :
+
+{{{
+$article->getUserRating($user_id);
+}}}
+
+To get the average rating of the object :
+
+{{{
+$article->getRating([$precision]);
+}}}
+
+Note: If you have concerns about performances, you will better use the cached 
+value of rating stored in the {{{rating_column}}} you configured previously.
+
+To retrieve the maximum possible rating for an object (which you have defined in
+the {{{max_rating}}} behavior optional parameter - default is 5) :
+
+{{{
+$article->getMaxRating();
+}}}
+
+To clear user rating :
+
+{{{
+$article->clearUserRating($user_id);
+}}}
+
+To retrieve rating details :
+
+{{{
+$details = $article->getRatingDetails();
+}}}
+
+Results will be this form:
+
+{{{
+array(
+  2 => 12, // 12 people has rated the object 2
+  5 => 7   // 7 people has rated the object 5
+)
+}}}
+
+You can also retrieve details for all available ratings:
+
+{{{
+$full_details = $article->getRatingDetails(true);
+}}}
+
+Results will be this form:
+
+{{{
+array(
+  1 => 0,  // Nobody has rated the object 1
+  2 => 12, // 12 people has rated the object 2
+  3 => 0,  // Nobody has rated the object 3
+  4 => 0,  // Nobody has rated the object 4
+  5 => 7,  // 7 people has rated the object 5
+)
+}}}
+
+To clear all ratings for the object :
+
+{{{
+$article->clearRatings();
+}}}
+
+== Unit testing ==
+
+The plugin is provided with a test suite located in the {{{./test}}} directory. 
+To run the tests, type this line from the root of your project :
+
+{{{
+$ php plugins/sfPropelActAsRatableBehaviorPlugin/test/unit/sfPropelActAsRatableBehaviorTest.php
+}}}
+
+Note that you have to provide a Propel test object class name to run the test in the test file:
+
+{{{
+define('TEST_CLASS', 'Article');
+}}}
+
+== Uninstallation ==
+
+{{{
+symfony plugin-uninstall symfony/sfPropelActAsRatableBehaviorPlugin
+}}}
+
+You will need to remove the behavior to all your model, then rebuild your model
+and purge your cache.
+
+== TODO ==
+
+ * Add functional tests
+ 
+== Changelog ==
+
+=== 2007-10-29 | v0.7.1 ===
+
+ * Ratable model objects instances references are now tokenized in the session 
+   and are no more passed as request parameters
+
+=== 2007-09-23 | v0.7 ===
+
+ * big behavior refactoring, with model and API BC (sorry for that, but it is 
+   *much* better now)
+ * removed ugly reference field configuration and behavior methods, now we use 
+   object {{{getPrimaryKey()}}} method: fast, portable and reliable
+ * removed sfPropelActAsRatableBehavior::isRatable() buggy method
+ * added Fabian Lange patch to allow ratings details retrieval (thanks!)
+ * added a component to display rating details graphically
+ * removed all IP address handling related stuff (unsecure when passed as parameters)
+ * ratings storing in dedicated column in ratable object table (submitted by Vojtech 
+   Rysanek - thanks!) 
+ * added i18n strings management
+
+=== 2007-09-12 | v0.6.2 ===
+
+ * Reference keys are now stored as a md5 hash
+ * Corrected custom reference keys handling bug in Ajax rater widget
+ * Added a {{{isRatable}}} static method in behavior class
+ * Some bugs corrected
+
+=== 2007-09-09 | v0.6.1 ===
+
+ * Added a way to specify a custom reference field to identify a ratable Propel object
+ * Added ability to set the maximum rating for an object when the behavior is added
+ * Key length as also been decreased to avoid a strange MySQL bug on KEY length
+ * Added unit tests
+
+=== 2007-09-07 | v0.6.0 ===
+
+ * Added an AJAX rating system as a helper
+ * Added constant MAX_RATING management for consistency control in ratable model class
+ * Moved int fields to varchar for storing unique user reference descriptor
+     (eg. storing the IP address, an email, a md5 hash, etc.)
+ * {{{sfRatings}}} table has been renamed to {{{sf_ratings}}}: you have to 
+     rebuild your SQL files and insert them in your DB if you upgrade from 
+     0.5.0. Hopefully, one day we'll have a migration system in Symfony core...
+ * Removed configuration file to set up Propel object to unit test in the test
+     suite
+
+=== 2007-09-05 | v0.5.0 ===
+
+ * Initial release
+
+== Maintener ==
+
+This plugin is maintened by [http://prendreuncafe.com Nicolas Perriault] 
+({{{nperriault}}} -> {{{gmail.com}}})
+
+Feel free to send feture request, enhancement suggestion or idealy a patch.
+ 
+== Credits ==
+
+ * The eye-candy star-based Ajax system is based on the great work of 
+ Komodomedia:
+ http://komodomedia.com/blog/samples/star_rating/example2.htm

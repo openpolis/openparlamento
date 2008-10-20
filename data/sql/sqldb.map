@@ -1,2 +1,8 @@
 # Sqlfile -> Database map
 generated-schema.sql=propel
+generated-sfPropelActAsTaggableBehaviorPlugin-schema.sql=propel
+generated-sfPropelActAsCommentableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsCommentableBehaviorPlugin-schema.sql=propel
+generated-sfPropelActAsRatableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsVotableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsTaggableBehaviorPlugin-schema.sql=propel

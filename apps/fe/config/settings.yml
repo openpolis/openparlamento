@@ -20,6 +20,17 @@ test:
     no_script_name:         off
     etag:                   off
 
+all:
+    prototype_web_dir:      ''         # Prototype library for Javascript helpers is loaded from web/js/prototype.js
+    .settings:
+      i18n:                 on         
+      enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppTagging, deppCommenting]
+    .actions:                               
+      login_module:           sfGuardAuth   
+      login_action:           signin        
+      secure_module:          sfGuardAuth   
+      secure_action:          secure        
+    
 #all:
 #  .actions:
 #    default_module:         default   # Default module and action to be called when

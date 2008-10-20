@@ -1,16 +1,22 @@
 propel:  
 
+  opp_opinable:
+    id:
+    atto_id:          { type: integer, required: false, index: true, foreignTable: opp_atto, foreignReference: id, inDelete: CASCADE }
+    votazione_id:     { type: integer, required: false, index: true, foreignTable: opp_votazione, foreignReference: id, inDelete: CASCADE }
+
   opp_appoggio:
     id:
-    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     aka:              { type: varchar(60) }
     tipologia:        { type: integer }
     legislatura:      { type: tinyint }
 
+
   opp_atto:
     id:
     parlamento_id:    { type: integer }
-    tipo_atto_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_tipo_atto, foreignReference: id, onDelete: CASCADE }
+    tipo_atto_id:     { type: integer, required: true, index: true, foreignTable: opp_tipo_atto, foreignReference: id, onDelete: CASCADE }
     ramo:             { type: longvarchar }
     numfase:          { type: varchar(255) }
     legislatura:      { type: integer }
@@ -23,11 +29,13 @@ propel:
     seduta:           { type: integer }
     pred:             { type: integer }
     succ:             { type: integer }
+    voto_medio:       { type: float }
+    nb_commenti:      { type: integer, required: true, default: 0 }
 
   opp_atto_has_iter:
     id:
-    atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
-    iter_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_iter, foreignReference: id, onDelete: CASCADE }
+    atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    iter_id:          { type: integer, required: true, index: true, foreignTable: opp_iter, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
 
   opp_atto_has_sede:
@@ -40,9 +48,9 @@ propel:
     teseo_id:         { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
 
   opp_carica:
-    id:               { type: integer, required: true, primaryKey: true, index: true }    # � il content_id di openpolis
-    politico_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_politico, foreignReference: id, onDelete: CASCADE }
-    tipo_carica_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_tipo_carica, foreignReference: id, onDelete: CASCADE }
+    id:               { type: integer, required: true, primaryKey: true, index: true }    # e' il content_id di openpolis.op_institution_charge
+    politico_id:      { type: integer, required: true, index: true, foreignTable: opp_politico, foreignReference: id, onDelete: CASCADE }
+    tipo_carica_id:   { type: integer, required: true, index: true, foreignTable: opp_tipo_carica, foreignReference: id }
     carica:           { type: varchar(30) }
     data_inizio:      { type: date }
     data_fine:        { type: date }
@@ -71,6 +79,7 @@ propel:
     data_fine:        { type: date }
     ribelle:          { type: integer }
 
+    
   opp_documento:
     id:
     atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
@@ -81,8 +90,6 @@ propel:
     file_name:        { type: varchar(32) }
     url:              { type: varchar(1024) }
     
-
-
   opp_gruppo:
     id:
     nome:             { type: varchar(255) }
@@ -90,11 +97,11 @@ propel:
 
   opp_intervento:
     id:
-    atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
-    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    sede_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     tipologia:        { type: varchar(255) }
-    url:              { type: varchar(255) }
+    url:              { type: longvarchar }
     data:             { type: date }
     numero:           { type: integer }
     ap:               { type: tinyint }
@@ -106,7 +113,7 @@ propel:
 
   opp_legge:
     id:
-    atto_id:         { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    atto_id:         { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
     numero:          { type: integer }
     data:            { type: date }
     url:             { type: longvarchar }
@@ -130,7 +137,7 @@ propel:
     strong:           { type: boolean }
 
   opp_politico:
-    id:               { type: integer, required: true, primaryKey: true, index: true }    # � il politician_id di openpolis 
+    id:               { type: integer, required: true, primaryKey: true, index: true }    # e' il politician_id di openpolis 
     nome:             { type: varchar(30) }
     cognome:          { type: varchar(30) }
 
@@ -148,7 +155,7 @@ propel:
     numero:           { type: integer, required: true }
     ramo:             { type: char, size: 1, required: true }
     legislatura:      { type: tinyint, required: true }
-    url:              { type: varchar(255) }
+    url:              { type: longvarchar }
 
   opp_tipo_atto:
    id:  
@@ -160,10 +167,10 @@ propel:
 
   opp_teseo:
     id:
-    tipo_teseo_id:    { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_tipo_teseo, foreignReference: id, onDelete: CASCADE }
+    tipo_teseo_id:    { type: integer, required: true, index: true, foreignTable: opp_tipo_teseo, foreignReference: id }
     denominazione:    { type: longvarchar }
     ns_denominazione: { type: longvarchar }
-    teseott_id:       { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+    teseott_id:       { type: integer }
     tt:               { type: integer }
 
   opp_teseo_has_teseott:
@@ -180,10 +187,27 @@ propel:
     id:
     tipo:             { type: varchar(50) }
 
+
+  opp_user: 
+    id:                   { type: integer, required: true, index: unique, primaryKey: true }
+    first_name:           { type: varchar(100) }
+    last_name:            { type: varchar(100) }
+    nickname:             { type: varchar(16) }
+    email:                { type: varchar(100), required: true, default: '' }
+    picture:              { type: varbinary }
+    url_personal_website: { type: varchar(255) }
+    notes:                { type: longvarchar }
+    has_paypal:           { type: integer, default: 0 }
+    public_name:          { type: tinyint, required: true, default: 1 }
+    votes:                { type: integer, default: 0 }
+    comments:             { type: integer, default: 0 }
+    discussions:          { type: integer, default: 0 }
+    last_contribution:    { type: timestamp }
+
   opp_votazione:
     id:
-    seduta_id:        { type: integer, required: true, index: true, primaryKey: true, foreignTable: opp_seduta, foreignReference: id, onDelete: CASCADE }
-    numero_votazione: { type: tinyint, required: true }   
+    seduta_id:        { type: integer, required: true, index: true, foreignTable: opp_seduta, foreignReference: id, onDelete: CASCADE }
+    numero_votazione: { type: smallint, required: true }   
     titolo:           { type: longvarchar }
     presenti:         { type: integer }
     votanti:          { type: integer }
@@ -198,6 +222,8 @@ propel:
     descrizione:      { type: longvarchar }
     url:              { type: varchar(255) }
     finale:           { type: integer, required: true, default: 0 }
+    nb_commenti:      { type: integer, required: true, default: 0 }
+    
 
   opp_votazione_has_atto:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
@@ -212,3 +238,15 @@ propel:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
     gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(40) }
+    
+  sf_test_object:
+    _attributes:       { phpName: sfTestObject }
+    id:
+    name:              { type: varchar(50), required: true, default: 'Nessun nome' }
+    sf_comment_count:  { type: integer, required: true, default: 0 }
+
+  sf_test_votable:
+    _attributes:       { phpName: sfTestVotable }
+    id:
+    title:             { type: varchar(50), required: true, default: 'Nessun titolo' }
+    voto_medio:        { type: float }

@@ -1,5 +1,6 @@
-<?php use_helper('Date') ?>
- 
+<?php use_helper('Date', 'I18N', 'deppVoting') ?>
+
+<a name="top"></a> 
 <h1>Pagina DDL</h1>
 <br />
 
@@ -24,6 +25,30 @@
 <?php break; ?>
 <?php endswitch; ?>
 <br /><br />
+
+<!-- partial per la visualizzazione e l'edit-in-place dei tags associati al ddl -->
+<?php echo include_component('deppTagging', 'edit', array('content' => $ddl)); ?>
+
+<!-- blocco voting -->
+<?php echo depp_voting_block($ddl) ?>
+
+<!-- blocco dei commenti -->
+<div id="comments-block">
+    <hr />
+
+    <a href="#top" class="go-top">torna su</a>
+    <a name="comments"></a>
+    <?php include_partial('deppCommenting/commentsList', array('content' => $ddl)) ?>
+
+    <hr/>
+
+    <?php include_component('deppCommenting', 'addComment',  
+                            array('content' => $ddl,
+                                  'read_only' => sfConfig::get('app_comments_enabled', false),
+                                  'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+
+    <hr/>
+</div>
 
 <?php if(count($primi_firmatari)!=0): ?>
 <b>Primi firmatari</b>

@@ -1,0 +1,88 @@
+= sfCaptcha plugin =
+
+The `sfCaptchaPlugin` is a symfony plugin that provides captcha functionality based on JpGraph library.
+
+It gives you the lib (incl. jpgraph antispam) and the module to secure your symfony forms in a minute with a good captcha.
+
+== Installation ==
+
+  * Install the plugin
+  
+  {{{
+    symfony plugin-install http://plugins.symfony-project.com/sfCaptchaPlugin
+  }}}
+  
+  * Enable one or more modules in your `settings.yml` (optional)
+    * sfCaptcha
+
+  {{{
+    all:
+      .settings:
+        enabled_modules:      [default, sfCaptcha]
+  }}}
+
+  * Put JpGraph core and antispam extension into lib folder or modify in
+    Captcha.class.php the following line:
+
+    * require_once 'jpgraph/jpgraph_antispam.php';
+
+  * Clear you cache
+  
+  {{{
+    symfony cc
+  }}}
+
+=== Secure your application ===
+
+To secure a symfony form:
+
+  * Optionally add the following routing rules to `routing.yml`
+
+  {{{
+    sf_captcha:
+      url:   /captcha
+      param: { module: sfCaptcha, action: index }
+  }}}
+
+  * Put the following lines inside of your form
+
+      <img src="<?php echo url_for('@sf_captcha'); ?>" />&nbsp;&nbsp;
+      <?php echo input_tag('captcha'); ?>
+
+  * Put the following code into your form's validator yml file:
+
+        methods:
+          post:            [ captcha ]
+
+        names:
+  	  captcha:
+	    required:      Yes
+	    required_msg:  You should specify Turing number
+	    validators:    captchaValidator
+
+
+	captchaValidator:
+	  class:         captchaValidator
+	  param:
+	    error: You should specify valid Turing number
+
+  * Put the following code into the action which is for the form where captcha
+    has to be presented:
+
+        $g = new Captcha();
+        $this->getUser()->setAttribute('captcha', $g->generate());
+
+  * If you want to customize your captcha phrase please modify the following 
+    method in lib/Captcha.class.php:
+
+    	public function generate() {
+      	  $this->iData = '';
+      	  for ($i = 0; $i < 5; ++$i) 
+ 	    $this->iData .= chr(ord('1') + rand(0,8));
+
+      	  return $this->iData;	
+    	}
+
+  * You're done. Now, if you try to access a secured form, you will be asked to type in captcha.
+
+== TODO ==

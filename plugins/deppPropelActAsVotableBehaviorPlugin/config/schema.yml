@@ -1,0 +1,14 @@
+propel:
+  _attributes:        { package: plugins.deppPropelActAsVotableBehaviorPlugin.lib.model }
+
+  sf_votings:
+    _attributes:      { phpName: sfVoting, package: plugins.deppPropelActAsVotableBehaviorPlugin.lib.model }
+    id:
+    votable_model:    { type: varchar, size: 50, required: true }
+    votable_id:       { type: integer, required: true }
+    user_id:          { type: integer }
+    voting:           { type: integer, required: true, default: 1 }
+    _indexes:
+      votable_index:  [votable_model, votable_id, user_id]
+
+  

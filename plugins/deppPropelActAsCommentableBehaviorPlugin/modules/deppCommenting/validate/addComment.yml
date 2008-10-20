@@ -1,0 +1,32 @@
+fillin:
+  enabled: false
+  
+fields:
+  name:
+    required:
+      msg: "Il nome &egrave; obbligatorio"
+    sfStringValidator:
+      min: 4
+      min_error: "Devi inserire un nome pi&ugrave; lungo: minimo 4 caratteri"
+      max: 100
+      max_error: "Devi inserire un nome pi&ugrave; breve: al massimo 100 caratteri"
+  mail:
+    required:
+      msg: "L'email &egrave; obbligatoria"
+    sfEmailValidator:
+      email_error: "Indirizzo email non valido"
+
+  text:
+    required:
+      msg: "Il contenuto del commento &egrave; obbligatorio"
+    sfStringValidator:
+      min: 4
+      min_error: "Il contenuto deve essere pi&ugrave; lungo: minimo 4 caratteri"
+
+      <?php if (!sfContext::getInstance()->getUser()->isAuthenticated() && sfConfig::get("app_comment_automoderation") === 'captcha') echo "  captcha:\n    required:\n      msg:  'Dovresti specificare il captcha'\n    captchaValidator:\n"; ?>
+
+validators:
+    captchaValidator:
+        class:         captchaValidator
+        param:
+            error: "Dovresti specificare il captcha esatto"

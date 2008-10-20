@@ -1,0 +1,16 @@
+# these config parameters can be overridden by the parameters in the class mixin specification
+
+all:
+  deppPropelActAsTaggableBehaviorPlugin:    
+    anonymous_tagging:    true              # tagging is an anonymous activity
+
+    # the followings are only taken into account 
+    # if the allows_anonymous_tagging is set to false
+
+    # who is allowed (credentials) to remove all the tags
+    tagging_removal_credentials: {}         # - credentials a user needs in order to remove the tags
+
+    # for authenticated users, what kind of tags they can remove
+    allows_tagging_removal:      'all'      # - all:  a user can modify all tags
+                                            # - self: a user can modify his own tags
+    

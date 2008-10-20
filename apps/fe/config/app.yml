@@ -1,5 +1,63 @@
 # default values
 all:
+  # remote guard host
+  remote_guard_host:      'lapgu.guard.openpolis.it'
+
+  # cookies
+  cookies:
+    path:                 '/'
+    domain:               'openpolis.it'
+    sso_name:             'opSSO'
+    remember_name:        'opRemember'
+    remember_key_expiration_age: 604800 # (7 days)
+
+  deppPropelActAsTaggableBehaviorPlugin:
+    anonymous_tagging:           false
+    allows_tagging_removal:      'self'
+    tagging_removal_credentials: ['moderator']
+    use_unique_triple_values:    true
+      
+  deppPropelActAsCommentableBehaviorPlugin:    
+    namespaces:
+      frontend:       
+      backend:        administrator
+    count:
+      enabled:        true
+      method:         setsfCommentCount
+      namespace:      frontend
+    user:
+      enabled:        true
+      cu_id_method:   getId
+      class:          OppUser
+      name_method:    __toString
+      email_method:   getEmail
+      website_method: getUrlPersonalWebsite
+    allowed_tags:
+      a:              <a>
+      blockquote:     <blockquote>
+      code:           <code>
+      em:             <em>
+      i:              <i>
+      p:              <p>
+      strong:         <strong>
+
+
+
+  comments:                enabled
+  comments_use_ajax:       true
+  comment_automoderation:  'captcha'    # comment automoderation; possible values are:
+                                        # on: comments are not published until a moderator accepts them
+                                        # first_post: the first comment of a user must be accepted, 
+                                        #             subsequent posts are accepted automatically
+                                        # off: comments are automatically accepted and published
+                                        # captcha: comments are accepted and published, but requires a captcha (requires sfCaptcha)
+  comment_mail_alert:      'on'         # send an email to the moderator when a content is posted. 
+                                        # Possible values are:                                     
+                                        # on: send an email for every posted comment               
+                                        # moderated: send an email for every automoderated comment 
+                                        # off: never send emails                                   
+
+
   pagination:
     limit:    10000
 

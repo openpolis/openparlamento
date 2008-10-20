@@ -1,0 +1,17 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      sfComment
+    theme:            default
+
+    list:
+      title: Comments list
+      filters: [created_at, is_public]
+      sort:             [created_at, desc]
+      layout: stacked
+      params: %%_comment%%
+      display: [author_name, author_email, text, created_at] 
+      actions: [ ]
+      object_actions: 
+        togglePublish: { name: publish/unpublish, action: togglePublish, icon: '/deppPropelActAsCommentableBehaviorPlugin/images/comment.png' }
+        _delete: ~

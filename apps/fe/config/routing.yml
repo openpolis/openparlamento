@@ -30,6 +30,10 @@ parlamentare:
   url:   /parlamentare/:id
   param: { module: parlamentare, action: index }
 
+sf_captcha:
+  url:   /captcha/:rk
+  param: { module: sfCaptcha, action: index, rk: 0 }
+
 # default rules
 homepage:
   url:   /

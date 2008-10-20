@@ -114,4 +114,11 @@ class OppVotazione extends BaseOppVotazione
   
     
 }
-?>
+
+sfPropelBehavior::add('OppVotazione', array('deppPropelActAsTaggableBehavior'));
+sfPropelBehavior::add('OppVotazione', array('deppPropelActAsCommentableBehavior'));
+sfPropelBehavior::add(
+  'OppVotazione', 
+  array('sfPropelActAsRatableBehavior' =>
+        array('max_rating'      => 10,              
+              'rating_field'    => 'VotoMedio')));

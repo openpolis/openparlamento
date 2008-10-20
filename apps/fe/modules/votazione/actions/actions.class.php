@@ -150,6 +150,7 @@ class votazioneActions extends sfActions
         $c->add(OppSedutaPeer::RAMO, $this->getUser()->getAttribute('ramo'));
   }
   
+  
 }
 
 ?>

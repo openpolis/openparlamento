@@ -1,0 +1,58 @@
+= sfPropelSqlDiffPlugin =
+[[PageOutline]]
+
+sfPropelSqlDiff plugin generate diff.sql file, which contains difference beetween schema.yml and current database structure.
+
+== Description ==
+It provides new symfony task - propel-build-sql-diff which will create file diff.sql with ALTER TABLE statements, whitch will make current database structure 
+exactly as it described schema.yml without deleting data in tables as it does propel-build-sql task.
+
+Currently it handles:
+ - creation and deletion of tables/fields/indexes/foreign keys
+ - changing fields/indexes/foreign keys
+
+Plugin is in beta state now. It is tested only for mysql. You can discuss it at [http://www.symfony-project.org/forum/index.php/t/10679/ thread in symfony forum]
+
+== Installation ==
+
+  {{{
+  symfony plugin-install http://plugins.symfony-project.com/sfPropelSqlDiffPlugin
+  symfony cc
+  }}}
+
+== Usage ==
+
+After making changes in schema.yml
+  {{{
+  symfony propel-build-sql-diff frontend
+  }}}
+(first parameter is application name, second, if not ommited, environment)[[BR]]
+Then you can find sql file at data/sql/diff.sql
+
+To execute diff.sql
+  {{{
+  symfony propel-insert-sql-diff frontend
+  }}}
+  
+To run model rebuild and apply database changes to database 
+  {{{
+  symfony propel-update-all frontend
+  }}}
+
+== Changelog ==
+
+=== 0.1.3 ===
+
+ * symfony 1.1 compatible
+ 
+=== 0.1.2 ===
+
+ * added task propel-update-all
+ * fixed problem with short open tags
+ * fixed problem with "foreign key constraint fails" error during diff.sql execution
+ 
+=== 0.1.1 ===
+
+ * added task propel-insert-sql-diff
+ * fixed php notices
+ * fixed problem with default values like ''

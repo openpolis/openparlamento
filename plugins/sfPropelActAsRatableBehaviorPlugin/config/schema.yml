@@ -1,0 +1,14 @@
+propel:
+  _attributes:        { package: plugins.sfPropelActAsRatableBehaviorPlugin.lib.model }
+
+  sf_ratings:
+    _attributes:      { phpName: sfRating, package: plugins.sfPropelActAsRatableBehaviorPlugin.lib.model }
+    id:
+    ratable_model:    { type: varchar, size: 50, required: true }
+    ratable_id:       { type: integer, required: true }
+    user_id:          { type: integer }
+    rating:           { type: integer, required: true, default: 1 }
+    _indexes:
+      ratable_index:  [ratable_model, ratable_id, user_id]
+
+  

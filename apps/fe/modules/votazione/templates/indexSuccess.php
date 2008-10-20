@@ -1,4 +1,4 @@
-<?php use_helper('Date') ?>
+<?php use_helper('Date', 'sfRating') ?>
 
 <h1><?php echo $ramo ?></h1>
 <h2>Legislatura <?php echo $votazione->getOppSeduta()->getLegislatura() ?></h2>
@@ -9,6 +9,32 @@
 <h3>esito: <?php echo $votazione->getEsito() ?></h3>
 <h4><?php echo link_to('fonte', $votazione->getUrl(), array('target'=>'_blank')) ?></h4>
 <br />
+
+
+<!-- partial per la visualizzazione e l'edit-in-place dei tags associati al ddl -->
+<?php echo include_component('deppTagging', 'edit', array('content' => $votazione)); ?>
+
+<!-- blocco rating -->
+<?php echo sf_rater($votazione) ?>
+
+<!-- blocco dei commenti -->
+<div id="comments-block">
+    <hr />
+
+    <a href="#top" class="go-top">torna su</a>
+    <a name="comments"></a>
+    <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>
+
+    <hr/>
+
+    <?php include_component('deppCommenting', 'addComment',  
+                            array('content' => $votazione,
+                                  'read_only' => sfConfig::get('app_comments_enabled', false),
+                                  'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+
+    <hr/>
+</div>
+
 
 <?php include_partial('gruppi', array('votazione' => $votazione, 'risultati' => $risultati)) ?> 
 <br />

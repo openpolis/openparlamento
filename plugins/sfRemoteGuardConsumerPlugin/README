@@ -1,0 +1,94 @@
+= sfRemoteGuardConsumerPlugin plugin =
+
+== Introduction ==
+This is part of a simple Single Sign On solution for symfony.
+A Single Sign On solution allows users to login into one site of a given pool and keep the authentication and permissions on all the other sites of the pool (shared login).
+
+This solution is based on two plugins: 
+ * sfRemoteGuardConsumerPlugin
+ * sfRemoteGuardProviderPlugin
+ 
+One site plays the Provider role, allowing users managing and remotely providing authentication and permissions to all other sites.
+All other sites play the Consumer role.
+
+The 'sfRemoteGuardConsumerPlugin' allows a consumer site to connect to a RemoteGuardProvider service, delegating the verification of username and password and the handling of user profiles and credentials.
+This means that an application can be part of a single sign on solution without having any user-related tables or modules.
+
+The plugin allows the user to log in, using the "remember me" check box.
+If the user checks this box, then the shared login expires after a timeout (7 days, but can be modified in app.yml), or after an explicit sign out.
+If the user does not check the box, it still has a shared login, but it expires as soon as the browser is closed.
+
+A RemoteGuardProvider service is basically an extended version of the sfGuardPlugin, allowing users authentication and credential handling as usual (user, group, role, remember, profile, ...), and exposing a very simple HTTP API:
+ * /getUser/$username/$password/$remember/$attrs
+ * /getUserByRememberKey/$key/attrs
+If the user is found in the system, the provider sends back an XML containing all the user infos that will allow the sfRemoteGuardConsumer plugin to successfully sign the user into the system.
+Among the infos returned by the RemoteGuardProvider web services:
+ * the permissions array
+ * the user attributes defined in the $attrs variable (|-separated) (sfGuardUserPeer::getName)
+ * the remember key (only the GetUser method)
+ 
+The sfRemoteGuardProviderPlugin is an implementation of this service, in symfony (see details).
+
+
+
+== Installation ==
+  * Install the plugin
+  
+  {{{
+    symfony plugin-install http://symfony-plugins.depp.it/sfRemoteGuardConsumerPlugin.tgz
+  }}}
+  
+  * Enable the plugin modules in your `settings.yml` (enable test just to see if it's working)
+    {{{
+      all:
+        .settings:
+          enabled_modules:      [default, sfGuardAuth, test]
+        .actions:                               
+          login_module:           sfGuardAuth   
+          login_action:           signin        
+          secure_module:          sfGuardAuth   
+          secure_action:          secure        
+          
+    }}}
+  
+  * Add the RemoteGuardProvider host name and some cookies definitions to the app.yml
+  {{{
+    all:
+      # remote guard host
+      remote_guard_host:      'guard.mydomain.it'
+
+      # cookies
+      cookies:
+        path:                 '/'
+        domain:               'mydomain.it'
+        sso_name:             'mySSO'
+        remember_name:        'myRemember'
+        remember_key_expiration_age: 604800 # (7 days)
+  }}}
+
+  * Modify your User class in the application's lib/myUser.class.php
+  {{{
+    class myUser extends sfRemoteGuardSecurityUser
+    {
+     ... 
+    }
+  }}}
+
+  * Activate the remember and the sso filter in filter.yml
+  {{{
+    # filter that checks if a remember cookie exists and automatically logs the user in
+    rememberFilter:
+      class: sfRemoteGuardRememberFilter
+
+    # filter that cheks if an sso cookie exists and automatically logs the user in
+    ssoFilter:
+      class: sfRemoteGuardSsoFilter  
+  }}}
+
+  * Clear you cache
+
+  {{{
+    symfony cc
+  }}}
+
+  * You're done.

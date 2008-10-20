@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit>
+        <source>You have already voted</source>
+        <target>Hai già votato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Anonymous voting is not allowed</source>
+        <target>I voti anonimi non sono permessi</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you for your vote</source>
+        <target>Grazie per aver votato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you</source>
+        <target>Grazie</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Take your vote back</source>
+        <target>Ritira il tuo voto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Total votings</source>
+        <target>Voti totali</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

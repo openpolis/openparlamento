@@ -1,0 +1,33 @@
+all:
+  deppPropelActAsCommentableBehaviorPlugin:    
+    namespaces:
+      frontend:       
+      backend:        administrator
+    count:
+      enabled:        true
+      method:         setsfCommentCount
+      namespace:      frontend
+    user:
+      enabled:        true
+      cu_id_method:   getId
+      class:          OppUser
+      name_method:    __toString
+      website_method: getUrlPersonalWebsite
+    allowed_tags:
+      a:              <a>
+      blockquote:     <blockquote>
+      code:           <code>
+      em:             <em>
+      i:              <i>
+      p:              <p>
+      strong:         <strong>
+
+            
+    # text field cleaning parameters (default values)
+    # strip_tag is used by default
+    # use_htmlpurifier:     false  
+    # htmlpurifier_path, in case it is used, by default it is SF_ROOT_DIR/lib/htmlpurifier/library/
+    # htmlpurifier_path:    SF_ROOT/lib/htmlpurifier/library/
+    # allowed_tags:         ~
+      
+    

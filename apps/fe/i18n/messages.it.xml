@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit id="1">
+        <source>Leave a reply</source>
+        <target>Lascia un commento</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Comments are closed</source>
+        <target>I commenti a questo contenuto sono chiusi</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Your comment has been submitted and is awaiting moderation</source>
+        <target>Il tuo commento è stato inviato ed è in attesa di moderazione</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Your name (at least %1% letters)</source>
+        <target>Il tuo nome (almeno %1% lettere)</target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>Take your vote back</source>
+        <target>Ritira il tuo voto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Total votings</source>
+        <target>Voti totali</target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>

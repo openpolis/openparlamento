@@ -4,6 +4,29 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 #-----------------------------------------------------------------------------
+#-- opp_opinable
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_opinable`;
+
+
+CREATE TABLE `opp_opinable`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`atto_id` INTEGER,
+	`votazione_id` INTEGER,
+	PRIMARY KEY (`id`),
+	KEY `opp_opinable_atto_id_index`(`atto_id`),
+	KEY `opp_opinable_votazione_id_index`(`votazione_id`),
+	CONSTRAINT `opp_opinable_FK_1`
+		FOREIGN KEY (`atto_id`)
+		REFERENCES `opp_atto` (`id`),
+	CONSTRAINT `opp_opinable_FK_2`
+		FOREIGN KEY (`votazione_id`)
+		REFERENCES `opp_votazione` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
 #-- opp_appoggio
 #-----------------------------------------------------------------------------
 
@@ -17,7 +40,7 @@ CREATE TABLE `opp_appoggio`
 	`aka` VARCHAR(60),
 	`tipologia` INTEGER,
 	`legislatura` TINYINT,
-	PRIMARY KEY (`id`,`carica_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_appoggio_carica_id_index`(`carica_id`),
 	CONSTRAINT `opp_appoggio_FK_1`
 		FOREIGN KEY (`carica_id`)
@@ -49,7 +72,9 @@ CREATE TABLE `opp_atto`
 	`seduta` INTEGER,
 	`pred` INTEGER,
 	`succ` INTEGER,
-	PRIMARY KEY (`id`,`tipo_atto_id`),
+	`voto_medio` FLOAT,
+	`nb_commenti` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`id`),
 	KEY `opp_atto_tipo_atto_id_index`(`tipo_atto_id`),
 	CONSTRAINT `opp_atto_FK_1`
 		FOREIGN KEY (`tipo_atto_id`)
@@ -70,7 +95,7 @@ CREATE TABLE `opp_atto_has_iter`
 	`atto_id` INTEGER  NOT NULL,
 	`iter_id` INTEGER  NOT NULL,
 	`data` DATE,
-	PRIMARY KEY (`id`,`atto_id`,`iter_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_atto_has_iter_atto_id_index`(`atto_id`),
 	KEY `opp_atto_has_iter_iter_id_index`(`iter_id`),
 	CONSTRAINT `opp_atto_has_iter_FK_1`
@@ -157,7 +182,7 @@ CREATE TABLE `opp_carica`
 	`scaglione` INTEGER,
 	`posizione` INTEGER,
 	`media` FLOAT,
-	PRIMARY KEY (`id`,`politico_id`,`tipo_carica_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_carica_id_index`(`id`),
 	KEY `opp_carica_politico_id_index`(`politico_id`),
 	KEY `opp_carica_tipo_carica_id_index`(`tipo_carica_id`),
@@ -168,7 +193,6 @@ CREATE TABLE `opp_carica`
 	CONSTRAINT `opp_carica_FK_2`
 		FOREIGN KEY (`tipo_carica_id`)
 		REFERENCES `opp_tipo_carica` (`id`)
-		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -227,6 +251,31 @@ CREATE TABLE `opp_carica_has_gruppo`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
+#-- opp_documento
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_documento`;
+
+
+CREATE TABLE `opp_documento`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`atto_id` INTEGER  NOT NULL,
+	`data` DATE,
+	`titolo` VARCHAR(512),
+	`testo` TEXT,
+	`file_pdf` MEDIUMBLOB,
+	`file_name` VARCHAR(32),
+	`url` VARCHAR(1024),
+	PRIMARY KEY (`id`),
+	KEY `opp_documento_atto_id_index`(`atto_id`),
+	CONSTRAINT `opp_documento_FK_1`
+		FOREIGN KEY (`atto_id`)
+		REFERENCES `opp_atto` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
 #-- opp_gruppo
 #-----------------------------------------------------------------------------
 
@@ -255,11 +304,11 @@ CREATE TABLE `opp_intervento`
 	`carica_id` INTEGER  NOT NULL,
 	`sede_id` INTEGER  NOT NULL,
 	`tipologia` VARCHAR(255),
-	`url` VARCHAR(255),
+	`url` TEXT,
 	`data` DATE,
 	`numero` INTEGER,
 	`ap` TINYINT,
-	PRIMARY KEY (`id`,`atto_id`,`carica_id`,`sede_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_intervento_atto_id_index`(`atto_id`),
 	KEY `opp_intervento_carica_id_index`(`carica_id`),
 	KEY `opp_intervento_sede_id_index`(`sede_id`),
@@ -307,7 +356,7 @@ CREATE TABLE `opp_legge`
 	`data` DATE,
 	`url` TEXT,
 	`gu` TEXT,
-	PRIMARY KEY (`id`,`atto_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_legge_atto_id_index`(`atto_id`),
 	CONSTRAINT `opp_legge_FK_1`
 		FOREIGN KEY (`atto_id`)
@@ -427,7 +476,7 @@ CREATE TABLE `opp_seduta`
 	`numero` INTEGER  NOT NULL,
 	`ramo` CHAR(1)  NOT NULL,
 	`legislatura` TINYINT  NOT NULL,
-	`url` VARCHAR(255),
+	`url` TEXT,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -472,19 +521,13 @@ CREATE TABLE `opp_teseo`
 	`tipo_teseo_id` INTEGER  NOT NULL,
 	`denominazione` TEXT,
 	`ns_denominazione` TEXT,
-	`teseott_id` INTEGER  NOT NULL,
+	`teseott_id` INTEGER,
 	`tt` INTEGER,
-	PRIMARY KEY (`id`,`tipo_teseo_id`,`teseott_id`),
+	PRIMARY KEY (`id`),
 	KEY `opp_teseo_tipo_teseo_id_index`(`tipo_teseo_id`),
-	KEY `opp_teseo_teseott_id_index`(`teseott_id`),
 	CONSTRAINT `opp_teseo_FK_1`
 		FOREIGN KEY (`tipo_teseo_id`)
 		REFERENCES `opp_tipo_teseo` (`id`)
-		ON DELETE CASCADE,
-	CONSTRAINT `opp_teseo_FK_2`
-		FOREIGN KEY (`teseott_id`)
-		REFERENCES `opp_teseott` (`id`)
-		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -542,6 +585,33 @@ CREATE TABLE `opp_tipo_teseo`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
+#-- opp_user
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_user`;
+
+
+CREATE TABLE `opp_user`
+(
+	`id` INTEGER  NOT NULL,
+	`first_name` VARCHAR(100),
+	`last_name` VARCHAR(100),
+	`nickname` VARCHAR(16),
+	`email` VARCHAR(100) default '' NOT NULL,
+	`picture` MEDIUMBLOB,
+	`url_personal_website` VARCHAR(255),
+	`notes` TEXT,
+	`has_paypal` INTEGER default 0,
+	`public_name` TINYINT default 1 NOT NULL,
+	`votes` INTEGER default 0,
+	`comments` INTEGER default 0,
+	`discussions` INTEGER default 0,
+	`last_contribution` DATETIME,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `opp_user_id_unique` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
 #-- opp_votazione
 #-----------------------------------------------------------------------------
 
@@ -552,7 +622,7 @@ CREATE TABLE `opp_votazione`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`seduta_id` INTEGER  NOT NULL,
-	`numero_votazione` TINYINT  NOT NULL,
+	`numero_votazione` SMALLINT  NOT NULL,
 	`titolo` TEXT,
 	`presenti` INTEGER,
 	`votanti` INTEGER,
@@ -567,7 +637,8 @@ CREATE TABLE `opp_votazione`
 	`descrizione` TEXT,
 	`url` VARCHAR(255),
 	`finale` INTEGER default 0 NOT NULL,
-	PRIMARY KEY (`id`,`seduta_id`),
+	`nb_commenti` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`id`),
 	KEY `opp_votazione_seduta_id_index`(`seduta_id`),
 	CONSTRAINT `opp_votazione_FK_1`
 		FOREIGN KEY (`seduta_id`)
@@ -647,6 +718,36 @@ CREATE TABLE `opp_votazione_has_gruppo`
 		FOREIGN KEY (`gruppo_id`)
 		REFERENCES `opp_gruppo` (`id`)
 		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- sf_test_object
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sf_test_object`;
+
+
+CREATE TABLE `sf_test_object`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) default 'Nessun nome' NOT NULL,
+	`sf_comment_count` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- sf_test_votable
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `sf_test_votable`;
+
+
+CREATE TABLE `sf_test_votable`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`title` VARCHAR(50) default 'Nessun titolo' NOT NULL,
+	`voto_medio` FLOAT,
+	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

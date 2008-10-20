@@ -1,0 +1,27 @@
+propel:
+  _attributes:        { package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
+
+  sf_tag:
+    _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
+    id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
+    name:             varchar(100)
+    is_triple:        boolean
+    triple_namespace: varchar(100)
+    triple_key:       varchar(100)
+    triple_value:     varchar(100)
+    _indexes:
+      name:           [name]
+      triple1:        [triple_namespace]
+      triple2:        [triple_key]
+      triple3:        [triple_value]
+
+  sf_tagging:
+    _attributes:      { phpName: Tagging, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
+    id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
+    tag_id:           { type: integer, required: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
+    taggable_model:   varchar(30)
+    taggable_id:      integer
+    user_id:          { type: integer }
+    _indexes:
+      tag:            [tag_id]
+      taggable:       [taggable_model, taggable_id]

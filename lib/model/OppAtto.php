@@ -163,4 +163,23 @@ class OppAtto extends BaseOppAtto
     
 }
 
-?>
+
+sfPropelBehavior::add(
+  'OppAtto', 
+  array('deppPropelActAsTaggableBehavior' => 
+        array()));
+
+sfPropelBehavior::add(
+  'OppAtto', 
+  array('deppPropelActAsCommentableBehavior' =>
+        array('count_cache_enabled'   => true,
+              'count_cache_method'    => 'setNbCommenti')));
+              
+sfPropelBehavior::add(
+  'OppAtto', 
+  array('deppPropelActAsVotableBehavior' =>
+        array('voting_range'    => 1,              
+              'voting_field'    => 'VotoMedio',
+              'neutral_position'=> false,
+              'anonymous_voting'=> false )));
+

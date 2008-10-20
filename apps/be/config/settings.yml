@@ -20,6 +20,11 @@ test:
     no_script_name:         off
     etag:                   off
 
+all:
+  .settings:
+    enabled_modules:      [default, deppCommentingAdmin]
+  
+
 #all:
 #  .actions:
 #    default_module:         default   # Default module and action to be called when

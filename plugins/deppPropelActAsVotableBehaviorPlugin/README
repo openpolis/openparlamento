@@ -1,0 +1,310 @@
+= deppPropelActAsVotableBehaviorPlugin =
+This is a port of the sfPropelActAsRatableBehaviorPlugin by Nicolas Perriault.
+
+This plugin is a Propel Behavior that makes any Propel object votable.
+By **votable**, we intend that the user can vote ***in favour*** or ***against*** the object.
+The **voting range** (-1 to 1, by default) is the range of opinions that the user can express.   
+
+== Installation ==
+
+To install the plugin, run this command within your symfony project :
+
+{{{
+symfony plugin-install http://symfony-plugins.depp.it/deppPropelActAsVotableBehaviorPlugin
+}}}
+
+The source code is also available:
+ * TODO
+   [http://?????????/deppPropelActAsVotableBehaviorPlugin/ from the SVN repository] 
+   (please always use a tagged version in production)
+   
+
+== Configuration ==
+
+To activate this Propel behavior in Symfony, you must first activate behaviors 
+in your propel.ini file :
+
+{{{
+propel.builder.addBehaviors = true
+}}}
+
+In one (or more) of your existing model object classes, apply the behavior. Eg. 
+for an {{{Article}}} Propel model class:
+
+{{{
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add('Article', array('deppPropelActAsVotableBehavior'));
+}}}
+
+You can fine-tune behavior with optional parameters, see the 
+[#Behavioroptionalparameters advanced configuration section].
+
+Once your model configured, you have to rebuild it:
+
+{{{
+symfony propel-build-all
+}}}
+
+And clear the cache :
+
+{{{
+symfony cc
+}}}
+
+== Advanced configuration ==
+
+=== Behavior optional parameters ===
+
+{{{
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add(
+  'Article', 
+  array('deppPropelActAsVotableBehavior' =>
+        array('voting_range'    => 3,               // from -3 to +3, the user can express stronger opinions
+              'neutral_position'=> true,            // the neutral position counts (don't know)
+              'rating_field'    => 'AverageRating', // refers to ArticlePeer::AVERAGE_RATING
+              'reference_field' => 'Reference')));  // refers to ArticlePeer::REFERENCE
+}}}
+
+ * The {{{voting_range}}} parameter sets the range of opinions available for an object 
+   (this must be an integer, greater than 0)
+   An integer of 3 means that the user can express opinions in the range -3 to 3
+ * The {{{neutral_position}}} parameter states wether the neutral opinion (0) is 
+   to be considered a possible opinion for users or not 
+ * The {{{rating_field}}} parameter, which refer to a {{{float}}} 
+   column in phpName format of your ratable object table which will store cached 
+   value of actual rating for the object. Useful for queries performances and 
+   sorting ;)
+ * The {{{reference_field}}} parameter sets the name of the field where you 
+   store the identifier of the object to rate. By default, the plugin will use
+   the primary key of the object. You must return an integer fo referencing a
+   custom identifier.
+
+=== Ensure rating consistency ===
+
+A clean way to ensure rating consistency is to associate a rating to a unique 
+identified user reference stored server side, typically the primary key of a 
+user record in your database.
+
+If no user reference can be retrieved, the plugin will rely on cookies, but you 
+should consider this alternative solution with caution, as cookies are easily 
+deletable by the user.
+
+=== User reference retrieval configuration ===
+
+By default, the plugin will search for an [wiki:sfGuardPlugin sfGuardPlugin] 
+installation to retrieve authenticated user primary key. If you are using sfGuard, 
+you have nothing more to configure.
+
+Also, if a getId() method has already been defined in the custom sfUser class, 
+that method is expected to return the currently authenticated user's ID, and thus
+it will be automatically used.
+
+If you don't use one of these methods, you can specify the way a unique user reference (eg. 
+primary key) will be retrieved, using these available plugin settings in your 
+{{{app.yml}}} file:
+
+ * You can specify a PHP function, eg. {{{get_connected_user_id()}}}:
+
+{{{
+  rating:
+    user_id_getter:      get_connected_user_id  
+}}}
+
+ * Or a static method of a PHP class, eg. 
+   {{{MyCustomUtilsClass::getConnectedUserId()}}}:
+
+{{{
+  rating:
+    user_id_getter:      [MyCustomUtilsClass, getConnectedUserId]
+}}}
+
+The return value of these calls should always be the primary key of your 
+connected user.
+
+== Using the Ajax voting system ==
+
+This plugin provides an Ajax-based voting system, with pretty stars to click on.
+You must note that this web module is provided for illustration purpose, it has
+weak chances to fit exactly your project needs.
+
+To activate this feature, you must enable the {{{sfVoting}}} module in the 
+{{{config/settings.yml}}} file of the app you want to use the helper in :
+
+{{{
+all:
+  .settings:
+    enabled_modules:        [default, sfVoting]
+}}}
+
+If you are under Microsoft Windows, you also have to manually copy the {{{./web}}} 
+directory of the plugin in the {{{%SF_ROOT_DIR%/web}}} directory of your project
+and rename it to {{{deppPropelActAsVotableBehaviorPlugin}}}. Then you will have 
+this on the filesytem :
+
+{{{
+project_root
+  [...]
+  web
+    deppPropelActAsVotableBehaviorPlugin
+      css
+        sf_rating.css
+      images
+        alt_star.gif
+}}}
+
+Then, you can use the {{{sf_voter}}} helper in any of your templates:
+
+{{{
+<?php sfLoader::loadHelpers('sfRating') ?>
+<?php echo sf_voter($article) ?>
+}}}
+
+== Using the voting details display component ==
+
+Just call the component from any of your templates:
+
+{{{
+<?php include_component('sfVoting', 'votingDetails', array('object' => $article) ?>
+}}}
+
+== API Usage ==
+
+Note: In below examples, {{{$user_id}}} is a string representing a 
+unique reference to a user, eg. if you're using the sfGuardPlugin, 
+{{{sfContext::getInstance()->getUser()->getGuardUser()->getId()}}}.
+
+If you don't provide this parameter, the 
+[#Userreferenceretrievalconfiguration configured user reference retrieval configuration]
+will apply.
+
+To allow a given user to vote for an article
+{{{
+$article->setVoting(1, $user_id);
+}}}
+
+To test if the object has already been voted :
+{{{
+$article->hasBeenVoted();
+}}}
+
+To test if the object has already been voted by a particular user:
+{{{
+$article->hasBeenVotedByUser($user_id);
+}}}
+
+To retrieve user's voting for this object :
+{{{
+$article->getUserVoting($user_id);
+}}}
+
+To get the average rating of the object :
+{{{
+$article->getVoting([$precision]);
+}}}
+
+Note: If you have concerns about performances, you will better use the cached 
+value of rating stored in the {{{rating_column}}} you configured previously.
+
+To retrieve the maximum possible range of votes for an object (which you have defined in
+the {{{voting_range}}} behavior optional parameter - default is 1) :
+{{{
+$article->getVoteRanging();
+}}}
+
+To clear user rating :
+{{{
+$article->clearUserVoting($user_id);
+}}}
+
+To retrieve rating details :
+{{{
+$details = $article->getVotingDetails();
+}}}
+
+Results will have this form (suppose, you have a range of 3: moderately, normally, strongly):
+{{{
+array(
+   2  => 12, // 12 people have voted in favour of the article
+  -1  => 7   // 7 people have voted moderately against the article
+)
+}}}
+
+You can also retrieve details for all available ratings:
+{{{
+$full_details = $article->getVotingDetails(true);
+}}}
+
+Results will be this form:
+{{{
+array(
+  -3 => 0,  // Nobody has voted strongly against
+  -2 => 0,  // Nobody has voted against
+  -1 => 7,  // 7 people have voted moderately against
+   0 => 0,  // Nobody has a neutral opinion
+   1 => 0,  // Nobody has voted moderately in favour
+   2 => 12, // 12 people have voted in favour
+   3 => 0,  // Nobody has voted strongly in favour
+)
+}}}
+
+To clear all votings for the object :
+
+{{{
+$article->clearVotings();
+}}}
+
+== Unit testing ==
+
+The plugin is provided with a test suite located in the {{{./test}}} directory. 
+To run the tests, type this line from the root of your project :
+
+{{{
+$ php plugins/deppPropelActAsVotableBehaviorPlugin/test/unit/deppPropelActAsVotableBehaviorTest.php
+}}}
+
+Note that you have to provide a Propel test object class name to run the test in the test file:
+
+{{{
+define('TEST_CLASS', 'Article');
+}}}
+
+== Uninstallation ==
+
+{{{
+symfony plugin-uninstall symfony/deppPropelActAsVotableBehaviorPlugin
+}}}
+
+You will need to remove the behavior to all your model, then rebuild your model
+and purge your cache.
+
+== TODO ==
+
+ * Add functional tests
+ 
+== Changelog ==
+
+=== 2008-10-08 | v0.1 ===
+
+ * Initial porting from the sfPropelActAsRatableBehaviorPlugin
+
+== Maintener ==
+
+This plugin is maintened by Guglielmo Celata
+({{{guglielmo.celata}}} -> {{{gmail.com}}})
+
+Feel free to send feture request, enhancement suggestion or idealy a patch.
+ 
+== Credits ==
+ * The whole plugin is a pretty lame rewrite of the already well-functioning sfPropelActAsRatableBehaviorPlugin
+   by Nicolas Perriault
+
+ * The eye-candy star-based Ajax system is based on the great work of 
+ Komodomedia:
+ http://komodomedia.com/blog/samples/star_rating/example2.htm

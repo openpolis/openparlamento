@@ -30,8 +30,8 @@ class ddlActions extends sfActions
     }  
     else
     {
-	  $pred = $this->ddl->getId();
-	  $pred_1=$this->ddl->getId();
+  	  $pred = $this->ddl->getId();
+  	  $pred_1=$this->ddl->getId();
     }	  
 		
     $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
@@ -39,41 +39,41 @@ class ddlActions extends sfActions
 	$this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
 	$this->commissioni = $this->ddl->getCommissioni();
 	
-	$this->status = $this->ddl->getStatus();
+  	$this->status = $this->ddl->getStatus();
 	
-	$this->iter_completo = $this->ddl->getIterCompleto();
+  	$this->iter_completo = $this->ddl->getIterCompleto();
 	
-	$this->tesei = OppAttoPeer::doSelectTeseo($pred);
+  	$this->tesei = OppAttoPeer::doSelectTeseo($pred);
 	
-	$this->lettura_parlamentare_precedente = null;
+  	$this->lettura_parlamentare_precedente = null;
 	
-	$leggi=$this->ddl->getOppLegges();
-	if (count($leggi)>0) $this->legge=$leggi[0];
-	else $this->legge="";	
-	/*
-	$quale_atto=$this->getTuttiSucc($this->ddl->getId());
-	if (count($quale_atto)==0) $leggi=$this->ddl->getOppLegges();
-	else $leggi=$quale_atto[count($quale_atto)-1]->getOppLegges();
+  	$leggi=$this->ddl->getOppLegges();
+  	if (count($leggi)>0) $this->legge=$leggi[0];
+  	else $this->legge="";	
+  	/*
+  	$quale_atto=$this->getTuttiSucc($this->ddl->getId());
+  	if (count($quale_atto)==0) $leggi=$this->ddl->getOppLegges();
+  	else $leggi=$quale_atto[count($quale_atto)-1]->getOppLegges();
 	
-	if (count($leggi)>0) $this->legge=$leggi[0];
-	else $this->legge="";
-	*/
+  	if (count($leggi)>0) $this->legge=$leggi[0];
+  	else $this->legge="";
+  	*/
 	 
-	if($this->ddl->getPred())
-	{
-	  $c = new Criteria();
-          $c->add(OppAttoPeer::ID, $this->ddl->getPred(), Criteria::EQUAL );
-	  $this->lettura_parlamentare_precedente = OppAttoPeer::doSelectOne($c);
-	}
+  	if($this->ddl->getPred())
+  	{
+  	  $c = new Criteria();
+            $c->add(OppAttoPeer::ID, $this->ddl->getPred(), Criteria::EQUAL );
+  	  $this->lettura_parlamentare_precedente = OppAttoPeer::doSelectOne($c);
+  	}
 	
-	$this->lettura_parlamentare_successiva = null;
+  	$this->lettura_parlamentare_successiva = null;
 	
-	if($this->ddl->getSucc())
-	{
-	  $c = new Criteria();
-          $c->add(OppAttoPeer::ID, $this->ddl->getSucc(), Criteria::EQUAL );
-	  $this->lettura_parlamentare_successiva = OppAttoPeer::doSelectOne($c);
-	}
+  	if($this->ddl->getSucc())
+  	{
+  	  $c = new Criteria();
+            $c->add(OppAttoPeer::ID, $this->ddl->getSucc(), Criteria::EQUAL );
+  	  $this->lettura_parlamentare_successiva = OppAttoPeer::doSelectOne($c);
+  	}
 	
     $c = new Criteria();
     $c->add(OppVotazionePeer::ID, $this->ddl->getIdVotazioni(), Criteria::IN);
@@ -81,7 +81,7 @@ class ddlActions extends sfActions
     $c->addDescendingOrderByColumn(OppVotazionePeer::FINALE);
     $this->votazioni = OppVotazionePeer::doSelectJoinOppSeduta($c);
 	
-	$this->interventi = $this->ddl->getInterventi();
+  	$this->interventi = $this->ddl->getInterventi();
 	
      //PER RAPPRESENTAZIONE ITER
      // Tutti i PRED
@@ -101,8 +101,6 @@ class ddlActions extends sfActions
         $this->rappresentazioni_succ = '';
         
      $this->rappresentazioni_this=$this->ddl->getIterRappresentazioni(array($this->ddl->getId()));   
-        
-        
      
   }
 
@@ -130,7 +128,7 @@ class ddlActions extends sfActions
      * Executes protected method
    * for ALL pred
    */
-     protected function getTuttiPred($pred)
+  protected function getTuttiPred($pred)
   {
     $all_pred= array();	
     
@@ -178,14 +176,15 @@ class ddlActions extends sfActions
   {
     $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_pagination_limit'));
     $c = new Criteria();
-	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
-	$this->pager->setCriteria($c);
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
+  	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
 	
-	$this->news = OppAttoPeer::doSelectNews();
+	  $this->news = OppAttoPeer::doSelectNews();
   }
+
  
 }

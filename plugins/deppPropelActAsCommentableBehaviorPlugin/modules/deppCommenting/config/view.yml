@@ -1,0 +1,6 @@
+addCommentSuccess:
+  javascripts:    [prototype]
+
+addCommentAjax:
+  has_layout:     off
+  javascripts:    [prototype]

@@ -1,0 +1,1 @@
+sfRemoteGuardConsumer test OK!

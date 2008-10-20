@@ -1,0 +1,122 @@
+/**
+ * Based on http://komodomedia.com/blog/samples/star_rating/example2.htm
+ * Styles for the star rater 
+ */
+table.rating_details_table td.sf_rating_bar_bg {
+	background: lightblue;
+}
+
+table.rating_details_table div {
+	background: blue;
+}
+
+.star-rating{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	height: 25px;
+	position:relative;
+	overflow:hidden;
+	background: url(../images/alt_star.gif) top left repeat-x;		
+}
+.star-rating li{
+	padding: 0;
+	margin: 0;
+	width: 25px;
+	height: 25px;
+	/*\*/
+	float: left;
+	/* */
+}
+.star-rating li a{
+	display: block;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;		
+	text-decoration: none;
+	text-indent: -9000px;
+	z-index: 20;
+	position: absolute;
+	padding: 0;
+	overflow: hidden;
+}
+.star-rating li a:hover{
+	background: url(../images/alt_star.gif) left bottom;
+	z-index: 2;
+	left: 0;
+	border:none;
+}
+.star-rating a.r1star{
+	left: 0;
+}
+.star-rating a.r1star:hover{
+	width:25px;
+}
+.star-rating a.r2stars{
+	left:25px;
+}
+.star-rating a.r2stars:hover{
+	width: 50px;
+}
+.star-rating a.r3stars{
+	left: 50px;
+}
+.star-rating a.r3stars:hover{
+	width: 75px;
+}
+.star-rating a.r4stars{
+	left: 75px;
+}	
+.star-rating a.r4stars:hover{
+	width: 100px;
+}
+.star-rating a.r5stars{
+	left: 100px;
+}
+.star-rating a.r5stars:hover{
+	width: 125px;
+}
+.star-rating a.r6stars{
+	left: 125px;
+}
+.star-rating a.r6stars:hover{
+	width: 150px;
+}
+.star-rating a.r7stars{
+	left: 150px;
+}
+.star-rating a.r7stars:hover{
+	width: 175px;
+}
+.star-rating a.r8stars{
+	left: 175px;
+}
+.star-rating a.r8stars:hover{
+	width: 200px;
+}
+.star-rating a.r9stars{
+	left: 200px;
+}
+.star-rating a.r9stars:hover{
+	width: 225px;
+}
+.star-rating a.r10stars{
+	left: 225px;
+}
+.star-rating a.r10stars:hover{
+	width: 250px;
+}
+.star-rating li.current-rating{
+	background: url(../images/alt_star.gif) left center;
+	position: absolute;
+	height: 25px;
+	display: block;
+	text-indent: -9000px;
+	z-index: 1;
+	left:0px;
+}
+
+/* remove halo effect in firefox   */
+a:active{
+	outline: none;
+}

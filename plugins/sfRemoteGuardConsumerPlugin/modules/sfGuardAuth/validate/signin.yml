@@ -1,0 +1,19 @@
+methods:
+  post: [username, password]
+
+names:
+  username:
+    required:         true
+    required_msg:     Your username is required
+    validators:       [userValidator]
+
+  password:
+    required:         true
+    required_msg:     Your password is required
+
+userValidator:
+    class:            sfRemoteGuardLoginValidator
+    param:
+      password_field: password
+      remember_field: remember
+      login_error: "questo account non esiste o la password &egrave; errata"
