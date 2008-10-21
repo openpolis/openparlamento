@@ -1,10 +1,5 @@
 propel:  
 
-  opp_opinable:
-    id:
-    atto_id:          { type: integer, required: false, index: true, foreignTable: opp_atto, foreignReference: id, inDelete: CASCADE }
-    votazione_id:     { type: integer, required: false, index: true, foreignTable: opp_votazione, foreignReference: id, inDelete: CASCADE }
-
   opp_appoggio:
     id:
     carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
@@ -46,6 +41,7 @@ propel:
   opp_atto_has_teseo:
     atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
     teseo_id:         { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
+
 
   opp_carica:
     id:               { type: integer, required: true, primaryKey: true, index: true }    # e' il content_id di openpolis.op_institution_charge
@@ -176,6 +172,11 @@ propel:
   opp_teseo_has_teseott:
    teseo_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseo, foreignReference: id, onDelete: CASCADE }
    teseott_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+
+  opp_tag_has_tt:
+    tag_id:          { type: integer, required: true, primaryKey: true, index: true }
+    teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+
 
   opp_teseott:
     id:

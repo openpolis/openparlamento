@@ -4,11 +4,12 @@ propel:
   sf_tag:
     _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
     id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
-    name:             varchar(100)
-    is_triple:        boolean
+    name:             varchar(255)
+    is_tmp:           { type: tinyint, required: true, default: 1 }
+    is_triple:        { type: tinyint }
     triple_namespace: varchar(100)
     triple_key:       varchar(100)
-    triple_value:     varchar(100)
+    triple_value:     varchar(255)
     _indexes:
       name:           [name]
       triple1:        [triple_namespace]

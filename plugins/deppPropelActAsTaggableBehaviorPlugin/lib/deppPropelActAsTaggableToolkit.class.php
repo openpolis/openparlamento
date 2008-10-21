@@ -92,7 +92,7 @@ class deppPropelActAsTaggableToolkit
    */
   public static function extractTriple($tag)
   {
-    $match = preg_match('/^([A-Za-z][A-Za-z0-9_]*):([A-Za-z][A-Za-z0-9_]*)=(.*)$/', $tag, $triple);
+    $match = preg_match('/^([A-Za-z][A-Za-z0-9_]*):([A-Za-z0-9_]*)=(.*)$/', $tag, $triple);
 
     if ($match)
     {
@@ -303,10 +303,10 @@ class deppPropelActAsTaggableToolkit
     foreach ($definitions as $key => $tags)
     {
       foreach ($tags as $tag)
-        $str .= content_tag('span', $tag, array('class' => $key)) . " ";
+        $str .= content_tag('span', $tag, array('class' => $key)) . ", ";
     }
     
-    return trim($str);
+    return trim($str, ", ");
   }
   
 }

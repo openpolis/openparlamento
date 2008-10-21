@@ -13,11 +13,12 @@ DROP TABLE IF EXISTS `sf_tag`;
 CREATE TABLE `sf_tag`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(100),
-	`is_triple` INTEGER,
+	`name` VARCHAR(255),
+	`is_tmp` TINYINT default 1 NOT NULL,
+	`is_triple` TINYINT,
 	`triple_namespace` VARCHAR(100),
 	`triple_key` VARCHAR(100),
-	`triple_value` VARCHAR(100),
+	`triple_value` VARCHAR(255),
 	PRIMARY KEY (`id`),
 	KEY `name`(`name`),
 	KEY `triple1`(`triple_namespace`),
@@ -40,7 +41,6 @@ CREATE TABLE `sf_tagging`
 	`taggable_id` INTEGER,
 	`user_id` INTEGER,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `user_ind` (`tag_id`, `taggable_model`, `taggable_id`),
 	KEY `tag`(`tag_id`),
 	KEY `taggable`(`taggable_model`, `taggable_id`),
 	CONSTRAINT `sf_tagging_FK_1`

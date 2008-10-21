@@ -4,29 +4,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 #-----------------------------------------------------------------------------
-#-- opp_opinable
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `opp_opinable`;
-
-
-CREATE TABLE `opp_opinable`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`atto_id` INTEGER,
-	`votazione_id` INTEGER,
-	PRIMARY KEY (`id`),
-	KEY `opp_opinable_atto_id_index`(`atto_id`),
-	KEY `opp_opinable_votazione_id_index`(`votazione_id`),
-	CONSTRAINT `opp_opinable_FK_1`
-		FOREIGN KEY (`atto_id`)
-		REFERENCES `opp_atto` (`id`),
-	CONSTRAINT `opp_opinable_FK_2`
-		FOREIGN KEY (`votazione_id`)
-		REFERENCES `opp_votazione` (`id`)
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
 #-- opp_appoggio
 #-----------------------------------------------------------------------------
 
@@ -549,6 +526,26 @@ CREATE TABLE `opp_teseo_has_teseott`
 		REFERENCES `opp_teseo` (`id`)
 		ON DELETE CASCADE,
 	CONSTRAINT `opp_teseo_has_teseott_FK_2`
+		FOREIGN KEY (`teseott_id`)
+		REFERENCES `opp_teseott` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- opp_tag_has_tt
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `opp_tag_has_tt`;
+
+
+CREATE TABLE `opp_tag_has_tt`
+(
+	`tag_id` INTEGER  NOT NULL,
+	`teseott_id` INTEGER  NOT NULL,
+	PRIMARY KEY (`tag_id`,`teseott_id`),
+	KEY `opp_tag_has_tt_tag_id_index`(`tag_id`),
+	KEY `opp_tag_has_tt_teseott_id_index`(`teseott_id`),
+	CONSTRAINT `opp_tag_has_tt_FK_1`
 		FOREIGN KEY (`teseott_id`)
 		REFERENCES `opp_teseott` (`id`)
 		ON DELETE CASCADE

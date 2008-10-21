@@ -296,6 +296,7 @@ class deppPropelActAsTaggableBehavior
       $tags = array_map(array('deppPropelActAsTaggableToolkit', 'extractTriple'), $tags);
       $pattern = array('tag', 'namespace', 'key', 'value');
 
+
       foreach ($pattern as $key => $value)
       {
         if (isset($options[$value]))
@@ -313,6 +314,7 @@ class deppPropelActAsTaggableBehavior
           $tags = $tags_array;
         }
       }
+
 
       $return = (isset($options['return']) && in_array($options['return'], $pattern)) ? $options['return'] : 'all';
 
@@ -342,6 +344,7 @@ class deppPropelActAsTaggableBehavior
         $tags = implode(', ', $tags);
       }
     }
+
 
     return $tags;
   }

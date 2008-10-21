@@ -17,6 +17,10 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 
 	
+	protected $is_tmp = 1;
+
+
+	
 	protected $is_triple;
 
 
@@ -55,6 +59,13 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	{
 
 		return $this->name;
+	}
+
+	
+	public function getIsTmp()
+	{
+
+		return $this->is_tmp;
 	}
 
 	
@@ -118,8 +129,30 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setIsTmp($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->is_tmp !== $v || $v === 1) {
+			$this->is_tmp = $v;
+			$this->modifiedColumns[] = TagPeer::IS_TMP;
+		}
+
+	} 
+	
 	public function setIsTriple($v)
 	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
 
 		if ($this->is_triple !== $v) {
 			$this->is_triple = $v;
@@ -184,19 +217,21 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 			$this->name = $rs->getString($startcol + 1);
 
-			$this->is_triple = $rs->getBoolean($startcol + 2);
+			$this->is_tmp = $rs->getInt($startcol + 2);
 
-			$this->triple_namespace = $rs->getString($startcol + 3);
+			$this->is_triple = $rs->getInt($startcol + 3);
 
-			$this->triple_key = $rs->getString($startcol + 4);
+			$this->triple_namespace = $rs->getString($startcol + 4);
 
-			$this->triple_value = $rs->getString($startcol + 5);
+			$this->triple_key = $rs->getString($startcol + 5);
+
+			$this->triple_value = $rs->getString($startcol + 6);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 6; 
+						return $startcol + 7; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Tag object", $e);
 		}
@@ -379,15 +414,18 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				return $this->getName();
 				break;
 			case 2:
-				return $this->getIsTriple();
+				return $this->getIsTmp();
 				break;
 			case 3:
-				return $this->getTripleNamespace();
+				return $this->getIsTriple();
 				break;
 			case 4:
-				return $this->getTripleKey();
+				return $this->getTripleNamespace();
 				break;
 			case 5:
+				return $this->getTripleKey();
+				break;
+			case 6:
 				return $this->getTripleValue();
 				break;
 			default:
@@ -402,10 +440,11 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getID(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getIsTriple(),
-			$keys[3] => $this->getTripleNamespace(),
-			$keys[4] => $this->getTripleKey(),
-			$keys[5] => $this->getTripleValue(),
+			$keys[2] => $this->getIsTmp(),
+			$keys[3] => $this->getIsTriple(),
+			$keys[4] => $this->getTripleNamespace(),
+			$keys[5] => $this->getTripleKey(),
+			$keys[6] => $this->getTripleValue(),
 		);
 		return $result;
 	}
@@ -428,15 +467,18 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				$this->setName($value);
 				break;
 			case 2:
-				$this->setIsTriple($value);
+				$this->setIsTmp($value);
 				break;
 			case 3:
-				$this->setTripleNamespace($value);
+				$this->setIsTriple($value);
 				break;
 			case 4:
-				$this->setTripleKey($value);
+				$this->setTripleNamespace($value);
 				break;
 			case 5:
+				$this->setTripleKey($value);
+				break;
+			case 6:
 				$this->setTripleValue($value);
 				break;
 		} 	}
@@ -448,10 +490,11 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setID($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setIsTriple($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setTripleNamespace($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setTripleKey($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setTripleValue($arr[$keys[5]]);
+		if (array_key_exists($keys[2], $arr)) $this->setIsTmp($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsTriple($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setTripleNamespace($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setTripleKey($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setTripleValue($arr[$keys[6]]);
 	}
 
 	
@@ -461,6 +504,7 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(TagPeer::ID)) $criteria->add(TagPeer::ID, $this->id);
 		if ($this->isColumnModified(TagPeer::NAME)) $criteria->add(TagPeer::NAME, $this->name);
+		if ($this->isColumnModified(TagPeer::IS_TMP)) $criteria->add(TagPeer::IS_TMP, $this->is_tmp);
 		if ($this->isColumnModified(TagPeer::IS_TRIPLE)) $criteria->add(TagPeer::IS_TRIPLE, $this->is_triple);
 		if ($this->isColumnModified(TagPeer::TRIPLE_NAMESPACE)) $criteria->add(TagPeer::TRIPLE_NAMESPACE, $this->triple_namespace);
 		if ($this->isColumnModified(TagPeer::TRIPLE_KEY)) $criteria->add(TagPeer::TRIPLE_KEY, $this->triple_key);
@@ -496,6 +540,8 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	{
 
 		$copyObj->setName($this->name);
+
+		$copyObj->setIsTmp($this->is_tmp);
 
 		$copyObj->setIsTriple($this->is_triple);
 

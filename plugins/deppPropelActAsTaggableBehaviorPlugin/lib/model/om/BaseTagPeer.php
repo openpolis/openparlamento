@@ -13,7 +13,7 @@ abstract class BaseTagPeer {
 	const CLASS_DEFAULT = 'plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.Tag';
 
 	
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 7;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -24,6 +24,9 @@ abstract class BaseTagPeer {
 
 	
 	const NAME = 'sf_tag.NAME';
+
+	
+	const IS_TMP = 'sf_tag.IS_TMP';
 
 	
 	const IS_TRIPLE = 'sf_tag.IS_TRIPLE';
@@ -43,18 +46,18 @@ abstract class BaseTagPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ID', 'Name', 'IsTriple', 'TripleNamespace', 'TripleKey', 'TripleValue', ),
-		BasePeer::TYPE_COLNAME => array (TagPeer::ID, TagPeer::NAME, TagPeer::IS_TRIPLE, TagPeer::TRIPLE_NAMESPACE, TagPeer::TRIPLE_KEY, TagPeer::TRIPLE_VALUE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'is_triple', 'triple_namespace', 'triple_key', 'triple_value', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('ID', 'Name', 'IsTmp', 'IsTriple', 'TripleNamespace', 'TripleKey', 'TripleValue', ),
+		BasePeer::TYPE_COLNAME => array (TagPeer::ID, TagPeer::NAME, TagPeer::IS_TMP, TagPeer::IS_TRIPLE, TagPeer::TRIPLE_NAMESPACE, TagPeer::TRIPLE_KEY, TagPeer::TRIPLE_VALUE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'is_tmp', 'is_triple', 'triple_namespace', 'triple_key', 'triple_value', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'Name' => 1, 'IsTriple' => 2, 'TripleNamespace' => 3, 'TripleKey' => 4, 'TripleValue' => 5, ),
-		BasePeer::TYPE_COLNAME => array (TagPeer::ID => 0, TagPeer::NAME => 1, TagPeer::IS_TRIPLE => 2, TagPeer::TRIPLE_NAMESPACE => 3, TagPeer::TRIPLE_KEY => 4, TagPeer::TRIPLE_VALUE => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'is_triple' => 2, 'triple_namespace' => 3, 'triple_key' => 4, 'triple_value' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'Name' => 1, 'IsTmp' => 2, 'IsTriple' => 3, 'TripleNamespace' => 4, 'TripleKey' => 5, 'TripleValue' => 6, ),
+		BasePeer::TYPE_COLNAME => array (TagPeer::ID => 0, TagPeer::NAME => 1, TagPeer::IS_TMP => 2, TagPeer::IS_TRIPLE => 3, TagPeer::TRIPLE_NAMESPACE => 4, TagPeer::TRIPLE_KEY => 5, TagPeer::TRIPLE_VALUE => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'is_tmp' => 2, 'is_triple' => 3, 'triple_namespace' => 4, 'triple_key' => 5, 'triple_value' => 6, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
 	
@@ -111,6 +114,8 @@ abstract class BaseTagPeer {
 		$criteria->addSelectColumn(TagPeer::ID);
 
 		$criteria->addSelectColumn(TagPeer::NAME);
+
+		$criteria->addSelectColumn(TagPeer::IS_TMP);
 
 		$criteria->addSelectColumn(TagPeer::IS_TRIPLE);
 

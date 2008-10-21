@@ -22,8 +22,13 @@ class deppTaggingActions extends BasedeppTaggingActions
       // store tags passed in the input field and teseo tags into DB
   	  $teseo_triple_tags = $content->getTags(array('is_triple' => true,
                                                    'namespace' => 'teseo',
-                                                   'key'       => 'tag',
                                                    'return'    => 'tag'));
+   	  $geo_triple_tags = $content->getTags(array('is_triple' => true,
+                                                 'namespace' => 'geoteseo',
+                                                 'return'    => 'tag'));
+      $teseo_triple_tags = array_merge($teseo_triple_tags, $geo_triple_tags);
+                                                   
+                                                   
       $tags_as_string = deppPropelActAsTaggableToolkit::transformTagStringIntoTripleString(strip_tags($this->getRequestParameter('usertags')), 'user', 'tag');
       $teseo_triple_tags_as_string = deppPropelActAsTaggableToolkit::getTagsAsString($teseo_triple_tags); 
       $complete_tags_string = $tags_as_string . 
@@ -37,7 +42,6 @@ class deppTaggingActions extends BasedeppTaggingActions
 
       // get all tags, forcing the cache override (directly from the DB)
       $tags = $content->getTags(array('is_triple' => true,
-                                      #'namespace' => 'user',
                                       'key'       => 'tag',
                                       'return'    => 'value'),
                                 true);
@@ -63,8 +67,11 @@ class deppTaggingActions extends BasedeppTaggingActions
 
   	  $teseo_tags = $content->getTags(array('is_triple' => true,
   	                                        'namespace' => 'teseo',
-                                            'key'       => 'tag',
                                             'return'    => 'value'));
+  	  $geo_tags = $content->getTags(array('is_triple' => true,
+	                                        'namespace' => 'geoteseo',
+                                          'return'    => 'value'));
+      $teseo_tags = array_merge($teseo_tags, $geo_tags);
 
       // set the value to be returned by AJAX
       // it's the visible string, with <spam> tags  

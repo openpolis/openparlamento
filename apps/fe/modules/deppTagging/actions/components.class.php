@@ -44,8 +44,13 @@ class deppTaggingComponents extends BasedeppTaggingComponents
 
 	  $teseo_tags = $this->content->getTags(array('is_triple' => true,
                                                 'namespace' => 'teseo',
-                                                'key'       => 'tag',
                                                 'return'    => 'value'));
+
+	  $geo_tags = $this->content->getTags(array('is_triple' => true,
+                                              'namespace' => 'geoteseo',
+                                              'return'    => 'value'));
+    $teseo_tags = array_merge($teseo_tags, $geo_tags);
+
 
     $user_tags = array();
     $this->editable_tags_as_string = deppPropelActAsTaggableToolkit::getTagsAsString($tags);
