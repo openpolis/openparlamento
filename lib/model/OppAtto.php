@@ -163,7 +163,6 @@ class OppAtto extends BaseOppAtto
     
 }
 
-
 sfPropelBehavior::add(
   'OppAtto', 
   array('deppPropelActAsTaggableBehavior' => 
@@ -182,4 +181,3 @@ sfPropelBehavior::add(
               'voting_field'    => 'VotoMedio',
               'neutral_position'=> false,
               'anonymous_voting'=> false )));
-

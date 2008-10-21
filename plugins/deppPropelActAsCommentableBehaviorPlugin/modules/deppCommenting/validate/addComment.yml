@@ -23,7 +23,7 @@ fields:
       min: 4
       min_error: "Il contenuto deve essere pi&ugrave; lungo: minimo 4 caratteri"
 
-      <?php if (!sfContext::getInstance()->getUser()->isAuthenticated() && sfConfig::get("app_comment_automoderation") === "captcha") echo "  captcha:\n    required:\n      msg:  'Dovresti specificare il captcha'\n    captchaValidator:\n"; ?>
+<?php if (!sfContext::getInstance()->getUser()->isAuthenticated() && sfConfig::get("app_comment_automoderation") === 'captcha') echo "  captcha:\n    required:\n      msg:  'Dovresti specificare il captcha'\n    captchaValidator:\n"; ?>
 
 validators:
   captchaValidator:
