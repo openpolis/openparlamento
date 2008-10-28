@@ -1,0 +1,14 @@
+propel:
+  _attributes:      { package: plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model }
+
+  sf_monitoring:
+    _attributes:    { phpName: Monitoring, package: plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model }
+    id:
+    monitorable_model:    { type: varchar, size: 50, required: true }
+    monitorable_id:       { type: integer, required: true }
+    user_id:              { type: integer }
+    created_at:
+    _indexes:
+      monitorable_index:  [monitorable_model, monitorable_id, user_id]
+
+  

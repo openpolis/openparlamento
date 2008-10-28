@@ -1,47 +1,38 @@
 <?php
 
 
-abstract class BaseTagPeer {
+abstract class BaseMonitoringPeer {
 
 	
 	const DATABASE_NAME = 'propel';
 
 	
-	const TABLE_NAME = 'sf_tag';
+	const TABLE_NAME = 'sf_monitoring';
 
 	
-	const CLASS_DEFAULT = 'plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.Tag';
+	const CLASS_DEFAULT = 'plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.Monitoring';
 
 	
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 5;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 
 	
-	const ID = 'sf_tag.ID';
+	const ID = 'sf_monitoring.ID';
 
 	
-	const NAME = 'sf_tag.NAME';
+	const MONITORABLE_MODEL = 'sf_monitoring.MONITORABLE_MODEL';
 
 	
-	const N_MONITORING_USERS = 'sf_tag.N_MONITORING_USERS';
+	const MONITORABLE_ID = 'sf_monitoring.MONITORABLE_ID';
 
 	
-	const IS_TMP = 'sf_tag.IS_TMP';
+	const USER_ID = 'sf_monitoring.USER_ID';
 
 	
-	const IS_TRIPLE = 'sf_tag.IS_TRIPLE';
-
-	
-	const TRIPLE_NAMESPACE = 'sf_tag.TRIPLE_NAMESPACE';
-
-	
-	const TRIPLE_KEY = 'sf_tag.TRIPLE_KEY';
-
-	
-	const TRIPLE_VALUE = 'sf_tag.TRIPLE_VALUE';
+	const CREATED_AT = 'sf_monitoring.CREATED_AT';
 
 	
 	private static $phpNameMap = null;
@@ -49,31 +40,31 @@ abstract class BaseTagPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ID', 'Name', 'NMonitoringUsers', 'IsTmp', 'IsTriple', 'TripleNamespace', 'TripleKey', 'TripleValue', ),
-		BasePeer::TYPE_COLNAME => array (TagPeer::ID, TagPeer::NAME, TagPeer::N_MONITORING_USERS, TagPeer::IS_TMP, TagPeer::IS_TRIPLE, TagPeer::TRIPLE_NAMESPACE, TagPeer::TRIPLE_KEY, TagPeer::TRIPLE_VALUE, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'n_monitoring_users', 'is_tmp', 'is_triple', 'triple_namespace', 'triple_key', 'triple_value', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'MonitorableModel', 'MonitorableId', 'UserId', 'CreatedAt', ),
+		BasePeer::TYPE_COLNAME => array (MonitoringPeer::ID, MonitoringPeer::MONITORABLE_MODEL, MonitoringPeer::MONITORABLE_ID, MonitoringPeer::USER_ID, MonitoringPeer::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'monitorable_model', 'monitorable_id', 'user_id', 'created_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'Name' => 1, 'NMonitoringUsers' => 2, 'IsTmp' => 3, 'IsTriple' => 4, 'TripleNamespace' => 5, 'TripleKey' => 6, 'TripleValue' => 7, ),
-		BasePeer::TYPE_COLNAME => array (TagPeer::ID => 0, TagPeer::NAME => 1, TagPeer::N_MONITORING_USERS => 2, TagPeer::IS_TMP => 3, TagPeer::IS_TRIPLE => 4, TagPeer::TRIPLE_NAMESPACE => 5, TagPeer::TRIPLE_KEY => 6, TagPeer::TRIPLE_VALUE => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'n_monitoring_users' => 2, 'is_tmp' => 3, 'is_triple' => 4, 'triple_namespace' => 5, 'triple_key' => 6, 'triple_value' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'MonitorableModel' => 1, 'MonitorableId' => 2, 'UserId' => 3, 'CreatedAt' => 4, ),
+		BasePeer::TYPE_COLNAME => array (MonitoringPeer::ID => 0, MonitoringPeer::MONITORABLE_MODEL => 1, MonitoringPeer::MONITORABLE_ID => 2, MonitoringPeer::USER_ID => 3, MonitoringPeer::CREATED_AT => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'monitorable_model' => 1, 'monitorable_id' => 2, 'user_id' => 3, 'created_at' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	
 	public static function getMapBuilder()
 	{
-		include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/map/TagMapBuilder.php';
-		return BasePeer::getMapBuilder('plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.map.TagMapBuilder');
+		include_once 'plugins/deppPropelActAsMonitorableBehaviorPlugin/lib/model/map/MonitoringMapBuilder.php';
+		return BasePeer::getMapBuilder('plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.map.MonitoringMapBuilder');
 	}
 	
 	public static function getPhpNameMap()
 	{
 		if (self::$phpNameMap === null) {
-			$map = TagPeer::getTableMap();
+			$map = MonitoringPeer::getTableMap();
 			$columns = $map->getColumns();
 			$nameMap = array();
 			foreach ($columns as $column) {
@@ -107,33 +98,27 @@ abstract class BaseTagPeer {
 	
 	public static function alias($alias, $column)
 	{
-		return str_replace(TagPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(MonitoringPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	
 	public static function addSelectColumns(Criteria $criteria)
 	{
 
-		$criteria->addSelectColumn(TagPeer::ID);
+		$criteria->addSelectColumn(MonitoringPeer::ID);
 
-		$criteria->addSelectColumn(TagPeer::NAME);
+		$criteria->addSelectColumn(MonitoringPeer::MONITORABLE_MODEL);
 
-		$criteria->addSelectColumn(TagPeer::N_MONITORING_USERS);
+		$criteria->addSelectColumn(MonitoringPeer::MONITORABLE_ID);
 
-		$criteria->addSelectColumn(TagPeer::IS_TMP);
+		$criteria->addSelectColumn(MonitoringPeer::USER_ID);
 
-		$criteria->addSelectColumn(TagPeer::IS_TRIPLE);
-
-		$criteria->addSelectColumn(TagPeer::TRIPLE_NAMESPACE);
-
-		$criteria->addSelectColumn(TagPeer::TRIPLE_KEY);
-
-		$criteria->addSelectColumn(TagPeer::TRIPLE_VALUE);
+		$criteria->addSelectColumn(MonitoringPeer::CREATED_AT);
 
 	}
 
-	const COUNT = 'COUNT(sf_tag.ID)';
-	const COUNT_DISTINCT = 'COUNT(DISTINCT sf_tag.ID)';
+	const COUNT = 'COUNT(sf_monitoring.ID)';
+	const COUNT_DISTINCT = 'COUNT(DISTINCT sf_monitoring.ID)';
 
 	
 	public static function doCount(Criteria $criteria, $distinct = false, $con = null)
@@ -142,9 +127,9 @@ abstract class BaseTagPeer {
 
 				$criteria->clearSelectColumns()->clearOrderByColumns();
 		if ($distinct || in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->addSelectColumn(TagPeer::COUNT_DISTINCT);
+			$criteria->addSelectColumn(MonitoringPeer::COUNT_DISTINCT);
 		} else {
-			$criteria->addSelectColumn(TagPeer::COUNT);
+			$criteria->addSelectColumn(MonitoringPeer::COUNT);
 		}
 
 				foreach($criteria->getGroupByColumns() as $column)
@@ -152,7 +137,7 @@ abstract class BaseTagPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$rs = TagPeer::doSelectRS($criteria, $con);
+		$rs = MonitoringPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
 			return $rs->getInt(1);
 		} else {
@@ -164,7 +149,7 @@ abstract class BaseTagPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = TagPeer::doSelect($critcopy, $con);
+		$objects = MonitoringPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -173,15 +158,15 @@ abstract class BaseTagPeer {
 	
 	public static function doSelect(Criteria $criteria, $con = null)
 	{
-		return TagPeer::populateObjects(TagPeer::doSelectRS($criteria, $con));
+		return MonitoringPeer::populateObjects(MonitoringPeer::doSelectRS($criteria, $con));
 	}
 	
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseTagPeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BaseMonitoringPeer:addDoSelectRS:addDoSelectRS') as $callable)
     {
-      call_user_func($callable, 'BaseTagPeer', $criteria, $con);
+      call_user_func($callable, 'BaseMonitoringPeer', $criteria, $con);
     }
 
 
@@ -191,7 +176,7 @@ abstract class BaseTagPeer {
 
 		if (!$criteria->getSelectColumns()) {
 			$criteria = clone $criteria;
-			TagPeer::addSelectColumns($criteria);
+			MonitoringPeer::addSelectColumns($criteria);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -203,7 +188,7 @@ abstract class BaseTagPeer {
 	{
 		$results = array();
 	
-				$cls = TagPeer::getOMClass();
+				$cls = MonitoringPeer::getOMClass();
 		$cls = Propel::import($cls);
 				while($rs->next()) {
 		
@@ -223,16 +208,16 @@ abstract class BaseTagPeer {
 	
 	public static function getOMClass()
 	{
-		return TagPeer::CLASS_DEFAULT;
+		return MonitoringPeer::CLASS_DEFAULT;
 	}
 
 	
 	public static function doInsert($values, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseTagPeer:doInsert:pre') as $callable)
+    foreach (sfMixer::getCallables('BaseMonitoringPeer:doInsert:pre') as $callable)
     {
-      $ret = call_user_func($callable, 'BaseTagPeer', $values, $con);
+      $ret = call_user_func($callable, 'BaseMonitoringPeer', $values, $con);
       if (false !== $ret)
       {
         return $ret;
@@ -248,7 +233,7 @@ abstract class BaseTagPeer {
 			$criteria = clone $values; 		} else {
 			$criteria = $values->buildCriteria(); 		}
 
-		$criteria->remove(TagPeer::ID); 
+		$criteria->remove(MonitoringPeer::ID); 
 
 				$criteria->setDbName(self::DATABASE_NAME);
 
@@ -262,9 +247,9 @@ abstract class BaseTagPeer {
 		}
 
 		
-    foreach (sfMixer::getCallables('BaseTagPeer:doInsert:post') as $callable)
+    foreach (sfMixer::getCallables('BaseMonitoringPeer:doInsert:post') as $callable)
     {
-      call_user_func($callable, 'BaseTagPeer', $values, $con, $pk);
+      call_user_func($callable, 'BaseMonitoringPeer', $values, $con, $pk);
     }
 
     return $pk;
@@ -274,9 +259,9 @@ abstract class BaseTagPeer {
 	public static function doUpdate($values, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseTagPeer:doUpdate:pre') as $callable)
+    foreach (sfMixer::getCallables('BaseMonitoringPeer:doUpdate:pre') as $callable)
     {
-      $ret = call_user_func($callable, 'BaseTagPeer', $values, $con);
+      $ret = call_user_func($callable, 'BaseMonitoringPeer', $values, $con);
       if (false !== $ret)
       {
         return $ret;
@@ -292,8 +277,8 @@ abstract class BaseTagPeer {
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; 
-			$comparison = $criteria->getComparison(TagPeer::ID);
-			$selectCriteria->add(TagPeer::ID, $criteria->remove(TagPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(MonitoringPeer::ID);
+			$selectCriteria->add(MonitoringPeer::ID, $criteria->remove(MonitoringPeer::ID), $comparison);
 
 		} else { 			$criteria = $values->buildCriteria(); 			$selectCriteria = $values->buildPkeyCriteria(); 		}
 
@@ -302,9 +287,9 @@ abstract class BaseTagPeer {
 		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
 	
 
-    foreach (sfMixer::getCallables('BaseTagPeer:doUpdate:post') as $callable)
+    foreach (sfMixer::getCallables('BaseMonitoringPeer:doUpdate:post') as $callable)
     {
-      call_user_func($callable, 'BaseTagPeer', $values, $con, $ret);
+      call_user_func($callable, 'BaseMonitoringPeer', $values, $con, $ret);
     }
 
     return $ret;
@@ -318,7 +303,7 @@ abstract class BaseTagPeer {
 		}
 		$affectedRows = 0; 		try {
 									$con->begin();
-			$affectedRows += BasePeer::doDeleteAll(TagPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(MonitoringPeer::TABLE_NAME, $con);
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -331,16 +316,16 @@ abstract class BaseTagPeer {
 	 public static function doDelete($values, $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(TagPeer::DATABASE_NAME);
+			$con = Propel::getConnection(MonitoringPeer::DATABASE_NAME);
 		}
 
 		if ($values instanceof Criteria) {
-			$criteria = clone $values; 		} elseif ($values instanceof Tag) {
+			$criteria = clone $values; 		} elseif ($values instanceof Monitoring) {
 
 			$criteria = $values->buildPkeyCriteria();
 		} else {
 						$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(TagPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(MonitoringPeer::ID, (array) $values, Criteria::IN);
 		}
 
 				$criteria->setDbName(self::DATABASE_NAME);
@@ -359,13 +344,13 @@ abstract class BaseTagPeer {
 	}
 
 	
-	public static function doValidate(Tag $obj, $cols = null)
+	public static function doValidate(Monitoring $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(TagPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(TagPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(MonitoringPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(MonitoringPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -381,11 +366,11 @@ abstract class BaseTagPeer {
 
 		}
 
-		$res =  BasePeer::doValidate(TagPeer::DATABASE_NAME, TagPeer::TABLE_NAME, $columns);
+		$res =  BasePeer::doValidate(MonitoringPeer::DATABASE_NAME, MonitoringPeer::TABLE_NAME, $columns);
     if ($res !== true) {
         $request = sfContext::getInstance()->getRequest();
         foreach ($res as $failed) {
-            $col = TagPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
+            $col = MonitoringPeer::translateFieldname($failed->getColumn(), BasePeer::TYPE_COLNAME, BasePeer::TYPE_PHPNAME);
             $request->setError($col, $failed->getMessage());
         }
     }
@@ -400,12 +385,12 @@ abstract class BaseTagPeer {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 
-		$criteria = new Criteria(TagPeer::DATABASE_NAME);
+		$criteria = new Criteria(MonitoringPeer::DATABASE_NAME);
 
-		$criteria->add(TagPeer::ID, $pk);
+		$criteria->add(MonitoringPeer::ID, $pk);
 
 
-		$v = TagPeer::doSelect($criteria, $con);
+		$v = MonitoringPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -422,8 +407,8 @@ abstract class BaseTagPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria();
-			$criteria->add(TagPeer::ID, $pks, Criteria::IN);
-			$objs = TagPeer::doSelect($criteria, $con);
+			$criteria->add(MonitoringPeer::ID, $pks, Criteria::IN);
+			$objs = MonitoringPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -431,11 +416,11 @@ abstract class BaseTagPeer {
 } 
 if (Propel::isInit()) {
 			try {
-		BaseTagPeer::getMapBuilder();
+		BaseMonitoringPeer::getMapBuilder();
 	} catch (Exception $e) {
 		Propel::log('Could not initialize Peer: ' . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
-			require_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/map/TagMapBuilder.php';
-	Propel::registerMapBuilder('plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.map.TagMapBuilder');
+			require_once 'plugins/deppPropelActAsMonitorableBehaviorPlugin/lib/model/map/MonitoringMapBuilder.php';
+	Propel::registerMapBuilder('plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.map.MonitoringMapBuilder');
 }

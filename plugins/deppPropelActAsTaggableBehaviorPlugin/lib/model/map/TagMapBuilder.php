@@ -36,6 +36,8 @@ class TagMapBuilder {
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
+		$tMap->addColumn('N_MONITORING_USERS', 'NMonitoringUsers', 'int', CreoleTypes::INTEGER, true, null);
+
 		$tMap->addColumn('IS_TMP', 'IsTmp', 'int', CreoleTypes::TINYINT, true, null);
 
 		$tMap->addColumn('IS_TRIPLE', 'IsTriple', 'int', CreoleTypes::TINYINT, false, null);

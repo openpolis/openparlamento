@@ -5,6 +5,7 @@ propel:
     _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
     id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
     name:             varchar(255)
+    n_monitoring_users: { type: integer, required: true, default: 0 }
     is_tmp:           { type: tinyint, required: true, default: 1 }
     is_triple:        { type: tinyint }
     triple_namespace: varchar(100)

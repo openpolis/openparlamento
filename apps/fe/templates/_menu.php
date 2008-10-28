@@ -7,6 +7,7 @@
   <li><?php echo link_to('Comunit&agrave;', '#') ?></li>
 
   <?php if ($sf_user->isAuthenticated()): ?>
+    <li><?php echo link_to('Monitoring', 'monitoring') ?></li>
     <li>ciao, <?php echo $sf_user->getFirstname() ?>&nbsp;(<?php echo link_to('Logout', 'logout') ?>)</li>
   <?php else: ?>
     <?php if ($this->getContext()->getModuleName() != 'sfGuardAuth'): ?>
