@@ -1,9 +1,10 @@
 <?php echo use_helper('Javascript'); ?>
 
+<?php echo include_component('monitoring', 'submenu', array('current' => 'tags')); ?>
 
-<h2>I tuoi tag</h2>
+<h2>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects() ?></span>)</h2>
 <ul id="my_tags">
-  <li id="ok" style="display:none"></li>
+  <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects() ?></li>
   <?php foreach ($my_tags as $my_tag): ?>
     <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
       <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>
@@ -55,6 +56,11 @@ refresh_mytags_observers = function(){
     remover.observe('click', function(event) {
       var elt = Event.element(event);
       unselect_tag(elt.up());
+      var id = elt.up().id.split('_').last();
+      removed = $('tag_'+id);
+      removed.className = '';
+      removed.title = 'click per aggiungere ai tuoi tag';
+      
     });  
   });
 };
@@ -75,7 +81,7 @@ cached_drill_down = function(el){
     var url = "<?php echo url_for('monitoring/ajaxTagsForTopTerm'); ?>?tt_id=" + id;
     new Ajax.Updater($('top_term_tags_' + id), url, {
       evalScripts: true,
-      onComplete: setTimeout('refresh_tags_container(\'top_term_tags_'+id+'\')', 300)
+      onComplete: setTimeout('refresh_tags_container(\'top_term_tags_'+id+'\')', 500)
     });
     
   } else {
@@ -117,14 +123,14 @@ select_tag = function(el){
         el.className = 'selected';
         el.title = 'click per rimuovere dai tuoi tag';
         $('my_tags').update(transport.responseText);
+        refresh_mytags_observers();
+        $('my_remaining_tags').innerHTML = $('ok').innerHTML;
       }
       else
       {
         alert(transport.responseText);
       } 
-    }, 
-    onComplete: setTimeout('refresh_mytags_observers()', 500)
-    
+    }
   }); 
 };
 
@@ -140,7 +146,8 @@ unselect_tag = function(el){
         el.className = '';
         el.title = 'click per aggiungere ai tuoi tag';
         $('my_tags').update(transport.responseText);
-        setTimeout('refresh_mytags_observers()', 1000);
+        refresh_mytags_observers();
+        $('my_remaining_tags').innerHTML = $('ok').innerHTML;
       }
       else
       {

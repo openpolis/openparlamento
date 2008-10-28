@@ -12,6 +12,7 @@
 </head>
 <body>
 <div><?php include_partial('global/menu') ?></div>
+
 <?php echo $sf_data->getRaw('sf_content') ?>
 
 </body>
