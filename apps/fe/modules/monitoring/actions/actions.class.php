@@ -22,7 +22,7 @@ class monitoringActions extends sfActions
   public function executeTags()
   {
     // embed javascripts for edit-in-place and auto-completer
-	  $response = sfContext::getInstance()->getResponse();
+    $response = sfContext::getInstance()->getResponse();
     $response->addJavascript('prototype.js');
     $response->addJavascript('effects.js');
     $response->addJavascript('controls.js');
