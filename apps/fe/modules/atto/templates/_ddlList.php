@@ -9,7 +9,7 @@
 </tr>
 <?php foreach ($pager->getResults() as $ddl): ?>
   <tr>
-    <td><?php echo link_to($ddl->getRamo().'.'.$ddl->getNumfase().' '.$ddl->getTitolo(), 'ddl/index?id='.$ddl->getId()) ?></td>  	
+    <td><?php echo link_to($ddl->getRamo().'.'.$ddl->getNumfase().' '.$ddl->getTitolo(), 'atto/ddlIndex?id='.$ddl->getId()) ?></td>  	
     <td></td>
     <td>
       <?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>
@@ -19,13 +19,13 @@
   <tr>
     <td align="center" colspan='3'>
       <?php if ($pager->haveToPaginate()): ?>
-        <?php echo link_to('<<', 'ddl/list?page=1') ?>
-        <?php echo link_to('<', 'ddl/list?page='.$pager->getPreviousPage()) ?>
+        <?php echo link_to('<<', 'atto/ddlList?page=1') ?>
+        <?php echo link_to('<', 'atto/ddlList?page='.$pager->getPreviousPage()) ?>
         <?php foreach ($pager->getLinks() as $page): ?>
-          <?php echo link_to_unless($page == $pager->getPage(), $page, 'ddl/list?page='.$page) ?>
+          <?php echo link_to_unless($page == $pager->getPage(), $page, 'atto/ddlList?page='.$page) ?>
         <?php endforeach; ?>
-        <?php echo link_to('>', 'ddl/list?page='.$pager->getNextPage()) ?>
-          <?php echo link_to('>>', 'ddl/list?page='.$pager->getLastPage()) ?>
+        <?php echo link_to('>', 'atto/ddlList?page='.$pager->getNextPage()) ?>
+          <?php echo link_to('>>', 'atto/ddlList?page='.$pager->getLastPage()) ?>
         <?php endif; ?>    	
     </td>
   </tr>

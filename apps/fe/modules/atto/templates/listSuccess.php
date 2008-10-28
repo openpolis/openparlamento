@@ -2,4 +2,4 @@
 
 <?php include_partial('filter') ?>
 
-<?php include_partial('ddlList', array('pager' => $pager)) ?>
+<?php include_partial('list', array('pager' => $pager)) ?>

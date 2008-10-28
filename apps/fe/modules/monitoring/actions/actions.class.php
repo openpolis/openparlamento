@@ -29,7 +29,8 @@ class monitoringActions extends sfActions
     
     // fetch current user profile
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    
+    sflogger::getInstance()->info('xxx: ' . $this->opp_user->getId());   
+ 
     // fetch teseo top_terms
     $this->teseo_tts = OppTeseottPeer::doSelect(new Criteria());
     
