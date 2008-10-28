@@ -65,6 +65,7 @@ class OppPolitico extends BaseOppPolitico
 	                                'titolo' => str_replace(';NULL', '', $rs->getString(5)),
 	                                'voto' => $rs->getString(6), 'voto_gruppo' => $rs->getString(9), 
 									'esito' => Text::decodeEsito($rs->getString(7)) );
+									
 		   
 	}
 		
