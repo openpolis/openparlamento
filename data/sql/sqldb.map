@@ -6,3 +6,5 @@ generated-deppPropelActAsCommentableBehaviorPlugin-schema.sql=propel
 generated-sfPropelActAsRatableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsVotableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsTaggableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsBookmarkableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsMonitorableBehaviorPlugin-schema.sql=propel

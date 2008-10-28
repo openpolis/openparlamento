@@ -204,6 +204,8 @@ propel:
     comments:             { type: integer, default: 0 }
     discussions:          { type: integer, default: 0 }
     last_contribution:    { type: timestamp }
+    n_monitored_objects:  { type: integer, default: 0 }
+    n_max_monitorables:   { type: integer, default: 5 }
 
   opp_votazione:
     id:
@@ -251,3 +253,10 @@ propel:
     id:
     title:             { type: varchar(50), required: true, default: 'Nessun titolo' }
     voto_medio:        { type: float }
+
+  sf_test_monitorable:
+    _attributes:         { phpName: sfTestMonitorable }
+    id:
+    title:               { type: varchar(50), required: true, default: 'Titolo' }
+    n_monitoring_users:  { type: integer, required: true, default: 0 }
+    
