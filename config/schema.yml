@@ -152,6 +152,8 @@ propel:
     ramo:             { type: char, size: 1, required: true }
     legislatura:      { type: tinyint, required: true }
     url:              { type: longvarchar }
+    is_imported:      { type: tinyint, required: true, default: 0 }
+    
 
   opp_tipo_atto:
    id:  
@@ -190,22 +192,25 @@ propel:
 
 
   opp_user: 
-    id:                   { type: integer, required: true, index: unique, primaryKey: true }
-    first_name:           { type: varchar(100) }
-    last_name:            { type: varchar(100) }
-    nickname:             { type: varchar(16) }
-    email:                { type: varchar(100), required: true, default: '' }
-    picture:              { type: varbinary }
-    url_personal_website: { type: varchar(255) }
-    notes:                { type: longvarchar }
-    has_paypal:           { type: integer, default: 0 }
-    public_name:          { type: tinyint, required: true, default: 1 }
-    votes:                { type: integer, default: 0 }
-    comments:             { type: integer, default: 0 }
-    discussions:          { type: integer, default: 0 }
-    last_contribution:    { type: timestamp }
-    n_monitored_objects:  { type: integer, default: 0 }
-    n_max_monitorables:   { type: integer, default: 5 }
+    id:                      { type: integer, required: true, index: unique, primaryKey: true }
+    first_name:              { type: varchar(100) }
+    last_name:               { type: varchar(100) }
+    nickname:                { type: varchar(16) }
+    email:                   { type: varchar(100), required: true, default: '' }
+    picture:                 { type: varbinary }
+    url_personal_website:    { type: varchar(255) }
+    notes:                   { type: longvarchar }
+    has_paypal:              { type: integer, default: 0 }
+    public_name:             { type: tinyint, required: true, default: 1 }
+    votes:                   { type: integer, default: 0 }
+    comments:                { type: integer, default: 0 }
+    discussions:             { type: integer, default: 0 }
+    last_contribution:       { type: timestamp }
+    n_monitored_tests:       { type: integer, default: 0 }
+    n_monitored_tags:        { type: integer, default: 0 }
+    n_max_monitored_tags:    { type: integer, default: 5 }
+    n_monitored_objects:     { type: integer, default: 0 }
+    n_max_monitored_objects: { type: integer, default: 5 }
 
   opp_votazione:
     id:
@@ -226,6 +231,7 @@ propel:
     url:              { type: varchar(255) }
     finale:           { type: integer, required: true, default: 0 }
     nb_commenti:      { type: integer, required: true, default: 0 }
+    is_imported:      { type: tinyint, required: true, default: 0 }
     
 
   opp_votazione_has_atto:
