@@ -10,7 +10,7 @@ abstract class BaseMonitoringPeer {
 	const TABLE_NAME = 'sf_monitoring';
 
 	
-	const CLASS_DEFAULT = 'plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.Monitoring';
+	const CLASS_DEFAULT = 'plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.Monitoring';
 
 	
 	const NUM_COLUMNS = 5;
@@ -57,8 +57,8 @@ abstract class BaseMonitoringPeer {
 	
 	public static function getMapBuilder()
 	{
-		include_once 'plugins/deppPropelActAsMonitorableBehaviorPlugin/lib/model/map/MonitoringMapBuilder.php';
-		return BasePeer::getMapBuilder('plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.map.MonitoringMapBuilder');
+		include_once 'plugins/deppPropelMonitoringBehaviorsPlugin/lib/model/map/MonitoringMapBuilder.php';
+		return BasePeer::getMapBuilder('plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.map.MonitoringMapBuilder');
 	}
 	
 	public static function getPhpNameMap()
@@ -421,6 +421,6 @@ if (Propel::isInit()) {
 		Propel::log('Could not initialize Peer: ' . $e->getMessage(), Propel::LOG_ERR);
 	}
 } else {
-			require_once 'plugins/deppPropelActAsMonitorableBehaviorPlugin/lib/model/map/MonitoringMapBuilder.php';
-	Propel::registerMapBuilder('plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.map.MonitoringMapBuilder');
+			require_once 'plugins/deppPropelMonitoringBehaviorsPlugin/lib/model/map/MonitoringMapBuilder.php';
+	Propel::registerMapBuilder('plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.map.MonitoringMapBuilder');
 }

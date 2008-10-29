@@ -1,8 +1,8 @@
 propel:
-  _attributes:      { package: plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model }
+  _attributes:      { package: plugins.deppPropelMonitoringBehaviorsPlugin.lib.model }
 
   sf_monitoring:
-    _attributes:    { phpName: Monitoring, package: plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model }
+    _attributes:    { phpName: Monitoring, package: plugins.deppPropelMonitoringBehaviorsPlugin.lib.model }
     id:
     monitorable_model:    { type: varchar, size: 50, required: true }
     monitorable_id:       { type: integer, required: true }

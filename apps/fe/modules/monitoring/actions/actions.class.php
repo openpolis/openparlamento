@@ -35,7 +35,7 @@ class monitoringActions extends sfActions
     $this->teseo_tts = OppTeseottPeer::doSelect(new Criteria());
     
     // fetch tags I am monitoring
-    $this->my_tags = self:: _getMyTags($this->getUser()->getId());
+    $this->my_tags = self:: _getMyTags();
   }
   
   public function executeAjaxTagsForTopTerm()
@@ -43,7 +43,7 @@ class monitoringActions extends sfActions
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
 
-    $this->my_tags = self::_getMyTags($this->getUser()->getId());
+    $this->my_tags = self::_getMyTags();
     
     $top_term_id = $this->getRequestParameter('tt_id');
     $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
@@ -57,23 +57,28 @@ class monitoringActions extends sfActions
     // fetch current user profile
     $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     
+
+    // fetch the tag to add
+    $tag_id = $this->getRequestParameter('tag_id');
+    $tag = TagPeer::retrieveByPK($tag_id);
+
     // check if the user can add a new tag to the monitored pool
-    $this->remaining_tags = $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects();
+    $c = new Criteria();
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, 'Tag');
+    $this->remaining_tags = $opp_user->getNMaxMonitorables() - $opp_user->countMonitoredObjects($c);
     if ($this->remaining_tags == 0){
       $this->renderText('Hai terminato i tag monitorabili, acquistane di più!');
       return sfView::NONE;
     }
 
-    // add the tag to the monitored pool
-    $tag_id = $this->getRequestParameter('tag_id');
-    $tag = TagPeer::retrieveByPK($tag_id);
+    // add the tag to the monitorable pool
     $tag->addMonitoring($this->getUser()->getId());
 
     // decrease the number of tags the user can add
     $this->remaining_tags --;
     
     // fetch the monitored pool
-    $this->my_tags = self::_getMyTags($this->getUser()->getId());
+    $this->my_tags = self::_getMyTags();
     $this->setTemplate('ajaxMyTags');
   }
 
@@ -88,22 +93,25 @@ class monitoringActions extends sfActions
     $tag->removeMonitoring($this->getUser()->getId());
 
     // fetch current user profile and the number of tags the user can still add to the pool
+    $c = new Criteria();
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, 'Tag');
     $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    $this->remaining_tags = $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects();
+    $this->remaining_tags = $opp_user->getNMaxMonitorables() - $opp_user->countMonitoredObjects($c);
 
     // fetch the monitored pool
-    $this->my_tags = self::_getMyTags($this->getUser()->getId());
+    $this->my_tags = self::_getMyTags();
     $this->setTemplate('ajaxMyTags');
   }
 
 
   // fetch tags I am monitoring
-  protected static function _getMyTags($user_id)
+  protected static function _getMyTags()
   {
     // fetch tags I am monitoring
+    $opp_user = OppUserPeer::retrieveByPK(sfContext::getInstance()->getUser()->getId());
     $c = new Criteria();
     $c->add(MonitoringPeer::MONITORABLE_MODEL, 'Tag');
-    return deppPropelActAsMonitorableBehavior::getMonitoredObjects($user_id, $c);    
+    return $opp_user->getMonitoredObjects($c);    
   }
   
 

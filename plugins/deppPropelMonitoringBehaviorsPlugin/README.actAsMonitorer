@@ -1,0 +1,146 @@
+= deppPropelActAsMonitorerBehaviorPlugin =
+
+[[PageOutline(2-6, Table of contents)]]
+
+This plugin is a Propel Behavior that makes any Propel object a monitorer of monitorable.
+This is usually attached to a User model, in order to count how many objects (and which ones) the user
+is actually monitoring.
+
+This plugin needs the [wiki:deppPropelActAsMonitorableBehaviorPlugin actAsMonitorable] plugin.
+
+== Installation ==
+
+
+To install the plugin, run this command within your symfony project :
+
+{{{
+symfony plugin-install http://symfony-plugins.depp.it/deppPropelActAsMonitorerBehaviorPlugin
+}}}
+
+The source code is also available:
+ * TODO
+   [http://?????????/deppPropelActAsMonitorerBehaviorPlugin/ from the SVN repository] 
+   (please always use a tagged version in production)
+   
+
+== Configuration ==
+
+To activate this Propel behavior in Symfony, you must first activate behaviors 
+in your propel.ini file :
+
+{{{
+propel.builder.addBehaviors = true
+}}}
+
+In one (or more) of your existing model object classes, apply the behavior. Eg. 
+for a {{{User}}} Propel model class:
+
+{{{
+#!php
+<?php
+class User extends BaseUser
+{
+}
+sfPropelBehavior::add('User', array('deppPropelActAsMonitorerBehavior'));
+}}}
+
+You can fine-tune behavior with optional parameters, see the 
+[#Behavioroptionalparameters advanced configuration section].
+
+Once your model configured, you have to rebuild it:
+
+{{{
+symfony propel-build-all
+}}}
+
+And clear the cache :
+
+{{{
+symfony cc
+}}}
+
+== Advanced configuration ==
+
+=== Behavior optional parameters ===
+
+{{{
+#!php
+<?php
+class User extends BaseUser
+{
+}
+sfPropelBehavior::add(
+  'User', 
+  array('deppPropelActAsMonitorerBehavior' =>
+        array('count_monitored_field'     => 'NMonitoredObjects', // refers to UserPeer::N_MONITORED_OBJECTS
+              'reference_field'           => 'Reference',         // refers to UserPeer::REFERENCE
+              )));
+}}}
+
+ * The {{{count_monitored_field}}} parameter, which refer to an {{{unsigned integer}}} 
+   column in phpName format of the User table, will store cached 
+   values of the actual number of objects monitored by a user. 
+   Useful for queries performances and to check whether a maximum number has been reached
+ * The {{{reference_field}}} parameter sets the name of the field where you 
+   store the identifier of the monitorer. By default, the plugin will use
+   the primary key. You must return an integer for referencing a
+   custom identifier.
+
+== API  ==
+
+Note: In below examples, {{{$criteria}}} is a Criteria propel object,
+that may filter on object types, or perform joins, sorting and other operations.
+
+If you don't provide this parameter, an empty Criteria object will be used and 
+all records will be returned.
+
+So, it's up to the application using the plugin, to correctly set the Criteria value.
+
+{{{ 
+#!php
+<?php
+ $user->getMonitoredObjects($criteria)           // array   - list of objects (id) monitored by the user 
+ $user->countMonitoredObjects($criteria)         // int     - number of objects monitored by the user
+ $user->isMonitoring($object_model, $object_id)  // boolean - whether the user is monitoring this object or not
+}}}
+
+
+== Unit testing ==
+
+The plugin is tested through the script
+{{{
+$ php plugins/deppPropelActAsMonitorerBehaviorPlugin/test/unit/deppPropelActAsMonitorerBehaviorTest.php
+}}}
+
+Note that you have to provide a Propel test object class name to run the test in the test file:
+
+{{{
+define('TEST_CLASS', 'sfTestMonitorer');
+}}}
+
+
+== Uninstallation ==
+
+{{{
+symfony plugin-uninstall symfony/deppPropelActAsMonitorerBehaviorPlugin
+}}}
+
+You will need to remove the behavior to all your model, then rebuild your model
+and purge your cache.
+
+== TODO ==
+ * Add common tests with the [wiki:deppPropelActAsMonitorableBehaviorPlugin actAsMonitorable] plugin
+
+== Changelog ==
+
+=== 2008-10-24 | v0.1 ===
+
+ * First version (splito from) the [wiki:deppPropelActAsMonitorableBehaviorPlugin actAsMonitorable] plugin
+
+== Maintener ==
+
+This plugin is maintened by Guglielmo Celata
+({{{guglielmo.celata}}} -> {{{gmail.com}}})
+
+Feel free to send features requests, enhancement suggestions or ideally a patch.
+

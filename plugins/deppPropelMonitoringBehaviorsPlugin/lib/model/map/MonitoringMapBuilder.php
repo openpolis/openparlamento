@@ -5,7 +5,7 @@
 class MonitoringMapBuilder {
 
 	
-	const CLASS_NAME = 'plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model.map.MonitoringMapBuilder';
+	const CLASS_NAME = 'plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.map.MonitoringMapBuilder';
 
 	
 	private $dbMap;

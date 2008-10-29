@@ -21,5 +21,11 @@ class OppUser extends BaseOppUser
     }
   }
   
-  
 }
+
+sfPropelBehavior::add(
+  'OppUser', 
+  array('deppPropelActAsMonitorerBehavior' =>
+        array('count_monitored_objects_field' => 'NMonitoredObjects', // refers to UserPeer::N_MONITORED_OBJECTS
+              )));
+

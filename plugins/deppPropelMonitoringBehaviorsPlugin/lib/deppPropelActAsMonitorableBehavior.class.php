@@ -41,8 +41,11 @@ class deppPropelActAsMonitorableBehavior
     $ret = $monitoring_object->save();
     
     // update the caches
-    self::setCountMonitoredObjectsToUser($object, $this->countMonitoredObjects($object, $user_id, null, true), $user_id);
-    self::setCountMonitoringUsersToObject($object, $this->countMonitoringUsers($object, true));
+    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), $user_id);
+    $c = new Criteria();
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
+    deppPropelActAsMonitorerBehavior::setCachedCountMonitoredObjects($user, $user->countMonitoredObjects($c, true));
+    self::setCachedCountMonitoringUsers($object, $this->countMonitoringUsers($object, true));
   }
 
   /**
@@ -67,8 +70,11 @@ class deppPropelActAsMonitorableBehavior
     $ret = MonitoringPeer::doDelete($c);
     
     // update the caches
-    self::setCountMonitoredObjectsToUser($object, $this->countMonitoredObjects($object, $user_id, null, true), $user_id);
-    self::setCountMonitoringUsersToObject($object, $this->countMonitoringUsers($object, true));
+    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), $user_id);
+    $c = new Criteria();
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
+    deppPropelActAsMonitorerBehavior::setCachedCountMonitoredObjects($user, $user->countMonitoredObjects( $c, true));
+    self::setCachedCountMonitoringUsers($object, $this->countMonitoringUsers($object, true));
 
     // return the removed object
     return $ret;
@@ -115,7 +121,8 @@ class deppPropelActAsMonitorableBehavior
     $monitoring = array();
     foreach ($monitoring_recs as $rec)
     {
-      $monitoring []= call_user_func_array(array($this->getUserProfileModel($object) . "Peer", 'retrieveByPK'), $rec->getUserId());
+      $monitoring []= call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), 
+                                           $rec->getUserId());
     }
     return $monitoring;
     
@@ -135,16 +142,12 @@ class deppPropelActAsMonitorableBehavior
   {
     if ($override_cache == false)
     {
-      $field = self::getCountMonitoringUsersField($object);
-      if (!is_null($field)) 
-      {
-        $getter = 'get'.$field;
-        if (method_exists($object, $getter))
-        {
-          return $object->$getter();
-        }
+      try {
+        $res =  self::getCachedCountMonitoringUsers($object);        
+      } catch (deppPropelActAsMonitorableException $e) {
+        sfLogger::getInstance()->warning($e);
+        $override_cache = true;              
       }
-      $override_cache = true;      
     }
     
     if ($override_cache == true)
@@ -152,91 +155,26 @@ class deppPropelActAsMonitorableBehavior
       $c = new Criteria();
       $c->add(MonitoringPeer::MONITORABLE_ID, $this->getReferenceKey($object));
       $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
-      return MonitoringPeer::doCount($c);      
+      $res = MonitoringPeer::doCount($c);      
+      try {        
+        self::setCachedCountMonitoringUsers($object, $res);
+      } catch (deppPropelActAsMonitorableException $e) {
+        sfLogger::getInstance()->warning($e); 
+      } 
     }
+
+    return $res;           
+
   }
 
 
-  /**
-   * Retrieve a list of objects monitored by the user
-   *
-   * @return array of Objects
-   * @param  BaseObject  $object
-   * @param  int         $user_id  User primary key
-   * @param  Criteria    $criteria an additional criteria
-   **/
-  public static function getMonitoredObjects($user_id, $criteria = null)
+
+  protected function getMonitorerModel(BaseObject $object)
   {
-    if (is_null($user_id) or trim((string)$user_id) === '')
-    {
-      throw new deppPropelActAsMonitorableException('Impossible to retrieve the objects monitored by a user with no user primary key provided');
-    }
-    
-    // handle criteria
-    if (!is_null($criteria))
-      $c = clone $criteria;
-    else
-      $c = new Criteria();
-      
-    $c->add(MonitoringPeer::USER_ID, $user_id);
-    
-    $monitoring_recs = MonitoringPeer::doSelect($c);
-    $monitored = array();
-    foreach ($monitoring_recs as $rec)
-    {
-      $monitored []= call_user_func_array(array($rec->getMonitorableModel() . "Peer", 'retrieveByPK'), $rec->getMonitorableId());
-    }
-    return $monitored;
+    return sfConfig::get(
+      sprintf('propel_behavior_deppPropelActAsMonitorableBehavior_%s_monitorer_model', 
+              get_class($object)));
   }
-
-  /**
-   * Retrieve a list of objects monitored by th user
-   * a Criteria can be specified, if the override_cache is set to true
-   * the number of objects is taken from the cache, if possible
-   * and read from the DB if specifically asked or if the cache does not exist
-   *
-   * @return int
-   * @param  BaseObject  $object
-   * @param  int         $user_id  User primary key
-   * @param  Criteria    $criteria an additional criteria
-   * @param  boolean     $override_cache - wether to override cache or not
-   **/
-  public function countMonitoredObjects(BaseObject $object, $user_id, $criteria = null, $override_cache = false)
-  {
-    if (is_null($user_id) or trim((string)$user_id) === '')
-    {
-      throw new deppPropelActAsMonitorableException('Impossible to retrieve the objects monitored by a user with no user primary key provided');
-    }
-    
-    if ($override_cache == false)
-    {
-      $field = self::getCountMonitoredObjectsField($object);
-      if (!is_null($field) && isset($user)) 
-      {
-        $setter = 'set'.$field;
-        if (method_exists($user, $setter))
-        {
-          $ret = $user->$setter($value);
-          return $user->save();
-        }
-      }
-      $override_cache = true;      
-    }
-    
-    if ($override_cache == true)
-    {
-      if (!is_null($criteria))
-        $c = clone $criteria;
-      else
-        $c = new Criteria();
-
-      $c->add(MonitoringPeer::USER_ID, $user_id);
-
-      return MonitoringPeer::doCount($c);      
-    }
-    
-  }
-
 
 
   /**
@@ -280,66 +218,17 @@ class deppPropelActAsMonitorableBehavior
     }
   }
   
+
   
-  /**
-   * Sets cached counting of objects monitored by a user into the user table
-   * 
-   * @param  BaseObject  $object
-   * @param  float       $value
-   */
-  protected static function setCountMonitoredObjectsToUser(BaseObject $object, $value, $user_id)
-  {
-    $user_profile_model_peer = self::getUserProfileModel($object) . 'Peer';
-    if (!is_null($user_profile_model_peer) && is_callable(array($user_profile_model_peer, 'retrieveByPK'), $user_id))
-      $user = call_user_func(array($user_profile_model_peer, 'retrieveByPK'), $user_id);
-
-    $field = self::getCountMonitoredObjectsField($object);
-    if (!is_null($field) && isset($user)) 
-    {
-      $setter = 'set'.$field;
-      if (method_exists($user, $setter))
-      {
-        $ret = $user->$setter($value);
-        return $user->save();
-      }
-    }
-  } 
   
-  /**
-   * Retrieves count_monitored_objects_field phpName from configuration
-   * 
-   * @param  BaseObject  $object
-   * @return mixed
-   */
-  protected static function getCountMonitoredObjectsField(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsMonitorableBehavior_%s_count_monitored_objects_field', 
-              get_class($object)));
-  }
   
-
-  /**
-   * Retrieves user_profile_model phpName from configuration
-   * 
-   * @param  BaseObject  $object
-   * @return mixed
-   */
-  protected static function getUserProfileModel(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsMonitorableBehavior_%s_user_profile_model', 
-              get_class($object)));
-  }
-
-
   /**
    * Sets cached number of users monitoring an object into the object table
    * 
    * @param  BaseObject  $object
    * @param  float       $value
    */
-  protected static function setCountMonitoringUsersToObject(BaseObject $object, $value)
+  public static function setCachedCountMonitoringUsers(BaseObject $object, $value)
   {
     $field = self::getCountMonitoringUsersField($object);
     if (!is_null($field)) 
@@ -351,6 +240,34 @@ class deppPropelActAsMonitorableBehavior
         return $object->save();
       }
     }
+    
+    throw new deppPropelActAsMonitorableException(
+        'Could not set the cached count monitoring users');
+    
+  } 
+
+
+  /**
+   * Gets cached number of users monitoring an object into the object table
+   * 
+   * @param  BaseObject  $object
+   */
+  public static function getCachedCountMonitoringUsers(BaseObject $object)
+  {
+    
+    
+    $field = self::getCountMonitoringUsersField($object);
+    if (!is_null($field)) 
+    {
+      $getter = 'get'.$field;
+      if (method_exists($object, $getter))
+      {
+        return $object->$getter();
+      }
+    }
+    
+    throw new deppPropelActAsMonitorableException(
+      'Could not get the cached count monitoring users');
   } 
   
   /**
@@ -384,19 +301,21 @@ class deppPropelActAsMonitorableBehavior
       MonitoringPeer::doDelete($c);
 
       // updates the cache
+      $c_type = new Criteria();
+      $c_type->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
+      
       foreach ($monitoring_users as $user)
       {
-        self::setCountMonitoredObjectsToUser($object, $this->countMonitoredObjects($object, $user->getId(), null, true), $user->getId());        
+        $nobjects = $user->countMonitoredObjects($c_type, true);
       }
-    
-      self::setCountMonitoringUsersToObject($object, $this->countMonitoringUsers($object), true);
-      
+          
     }
     catch (Exception $e)
     {
       throw new deppPropelActAsMonitorableException(
         'Unable to delete monitorable object related records');
     }
+
   }
   
 

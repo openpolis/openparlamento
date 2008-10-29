@@ -5,7 +5,7 @@
  *
  * 
  *
- * @package plugins.deppPropelActAsMonitorableBehaviorPlugin.lib.model
+ * @package plugins.deppPropelMonitoringBehaviorsPlugin.lib.model
  */ 
 class MonitoringPeer extends BaseMonitoringPeer
 {
