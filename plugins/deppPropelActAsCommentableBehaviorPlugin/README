@@ -1,62 +1,70 @@
-# deppPropelActAsCommentableBehaviorPlugin
+= deppPropelActAsCommentableBehaviorPlugin =
+[[PageOutline(2-6, Table of contents)]]
 
-## Introduction
+== Introduction ==
 
 This behavior permits to attach comments to Propel objects.
 No comment modules are included, to decouple it from the view.
 A plugin containing comment modules will be developed in the future.
 
-## Features
+== Features ==
 
-  * add/remove comment(s) on an object
-  * configurable usage of the htmlpurifier library, to clean the comment text against XSS
-  * unit-tested
-  * comment namespaces (separate comments for the front-office and the back-office, for instance)
+ * add/remove comment(s) on an object
+ * configurable usage of the htmlpurifier library, to clean the comment text against XSS
+ * unit-tested
+ * comment namespaces (separate comments for the front-office and the back-office, for instance)
 
 
-## Philosophy of the stuff
+== Philosophy of the stuff ==
 
-  * commentable objects must have a primary key
-  * comments can only be attached on objects that have already been saved
-  * comments are saved when applied (not when the object is saved)
+ * commentable objects must have a primary key
+ * comments can only be attached on objects that have already been saved
+ * comments are saved when applied (not when the object is saved)
 
-## Installation and usage
+== Installation and usage ==
 
-  * go to your project's root
+ * go to your project's root
 
-  * Install the plugin:
-
+ * Install the plugin:
+{{{
         ./symfony plugin-install http://symfonyPlugins.depp.it/deppPropelActAsCommentableBehaviorPlugin
+}}}
+ * if not already done, enable behaviors in config/propel.ini:
+{{{
+   propel.builder.addBehaviors = true
+}}}
 
-  * if not already done, enable behaviors in config/propel.ini:
-
-        propel.builder.addBehaviors = true
-
-  * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
-
+ * edit the classes that you want to make taggable. For instance, for lib/model/Post.php:
+{{{
+#!php
+<?php
         class Post extends BasePost
         {
         }
 
         deppPropelBehavior::add('Post', array('deppPropelActAsCommentableBehavior'));
+}}}
 
-  * rebuild the model:
-
+ * rebuild the model:
+{{{
         ./symfony propel-build-all
-        
-    in order not to destroy already existing data, you can use, with a bit of attention,
-    the sfPropelSqlDiff plugin, and do this:
+}}}        
+   in order not to destroy already existing data, you can use, with a bit of attention,
+   the sfPropelSqlDiff plugin, and do this:
+{{{
         ./symfony propel-build-sql-diff
         ./symfony propel-install-sql-diff (attention to rename of fields, since they're dropped and re-created)
         ./symfony propel-build-model
+}}}
 
-  * clear the cache:
-  
+ * clear the cache:
+{{{  
         ./symfony cc
+}}}
 
-
-  * read the app.sample.yml in the config directory of the plugin and add the lines you want:
-    as an example
+ * read the app.sample.yml in the config directory of the plugin and add the lines you want:
+   as an example
+{{{
         all:
           deppPropelActAsCommentableBehaviorPlugin:
             allowed_tags:
@@ -80,77 +88,70 @@ A plugin containing comment modules will be developed in the future.
               name_method:    __toString
               email_method:   getEmail
               website_method: getUrlPersonalWebsite
+}}}
 
-
-### Optional settings
+=== Optional settings ===
 
 The plugin has been designed to allow comments from authenticated users, as
 well as anonymous users. But this is typcally a choice made in the comment modules.
 This plugin is nonetheless structured in order to connect authenticated users' comments
-to the user table, so you can specify the user table and its primary key in the **user** section.
+to the user table, so you can specify the user table and its primary key in the '''user''' section.
 
-  * the **allowed_tags** rule fixes the list of allowed html tags in the comment
- field. All the other html tags will be removed by HTMLPurifier or by the php strip_tags function.
- You can decide wether to use the HTMLPurifier library, which is far more protected against XSS.
- But you can use this library only if it has already been installed 
- (and you have to specify the path in the app.yml file)
+  * the '''allowed_tags''' rule fixes the list of allowed html tags in the comment field. All the other html tags will be removed by HTMLPurifier or by the php strip_tags function. You can decide wether to use the HTMLPurifier library, which is far more protected against XSS. But you can use this library only if it has already been installed (and you have to specify the path in the app.yml file)
 
-  * the **count** rules are useful for optimizing objects sorting on their
-  comments count. See the paragraph "Retrieving one object's comments number"
-  for more details.
+  * the '''count''' rules are useful for optimizing objects sorting on their comments count. See the paragraph "Retrieving one object's comments number" for more details.
 
-  * the **namespaces** parameter lists the namespaces for which a security
- check must be made:
-   * when a namespace is listed under the **namespaces** parameter, its value
-   represents the required credentials for writing in it.
-   * If you use namespaces in your comments, please make sure  that you fill
-   this parameter accordingly to your needs. For instance, if your application
-   provide back-office internal comments, you won't want a normal front-office
-   user being able to add comments on the back-office.
-   * You can of course use your own namespaces names (ie., "backend"
- and "frontend" are not compulsory names).
+  * the '''namespaces''' parameter lists the namespaces for which a security check must be made:
+   * when a namespace is listed under the '''namespace''' parameter, its value represents the required credentials for writing in it.
+   * If you use namespaces in your comments, please make sure  that you fill this parameter accordingly to your needs. For instance, if your application provide back-office internal comments, you won't want a normal front-office user being able to add comments on the back-office.
+   * You can of course use your own namespaces names (ie., ''backend'' and ''frontend'' are not compulsory names).
 
-  * the **user** rules will tweak the way the plugin handles comments from
- authenticated users:
-   * **enabled** : if comments sent by authenticated user are related to the user model
-   * **cu_id_method** : name of a method of your user's class, that permits to
-   get the authenticated user id. Usually, you will have to define this method
-   in the myUser.class.php file.
-   * **class** : class associated to the users.
-   * **name_method** : name of a method that outputs the name of a user (an
-   instance of the class defined two lines before)
-   * **email_method** : name of a method that outputs the email of a user
-   * **website_method** : name of a method that outputs the website of a user
+  * the '''user''' rules will tweak the way the plugin handles comments from authenticated users:
+   * '''enabled''' : if comments sent by authenticated user are related to the user model
+   * '''cu_id_method''' : name of a method of your user's class, that permits to get the authenticated user id. Usually, you will have to define this method in the myUser.class.php file.
+   * '''class''' : class associated to the users.
+   * '''name_method''' : name of a method that outputs the name of a user (an instance of the class defined two lines before)
+   * '''email_method''' : name of a method that outputs the email of a user
+   * '''website_method''' : name of a method that outputs the website of a user
    
 
-## Usage
+== Usage ==
 
 
-### Attaching comments to a commentable object
+=== Attaching comments to a commentable object ===
 
 Consider a Propel "Post" class:
-
+{{{
+#!php
+<?php
     class Post extends BasePost
     {
     }
 
     deppPropelBehavior::add('Post', array('deppPropelActAsCommentableBehavior'));
+}}}
 
 When the deppPropelActAsCommentableBehaviorPlugin is applied to the Post class,
 that class automagically gets commentable:
-
+{{{
+#!php
+<?php
     $post = new Post();
     // blah
     $post->save();
     $post->addComment('This is a cool comment.');
-    $post->addComment(array('title' => 'this is a cool title', 'text' => 'this is a cool comment', 'author_id' => sfContext::getInstance()->getUser()->getUserId()));
+    $post->addComment(array('title' => 'this is a cool title', 
+                            'text' => 'this is a cool comment', 
+                            'author_id' => sfContext::getInstance()->getUser()->getUserId()));
     $post->addComment(array('This is a cool comment.', 'this is one other comment'));
+}}}
 
-
-### Retrieving one object's comments
+=== Retrieving one object's comments ===
 
 It is possible to retrieve comments from a commentable object:
-
+{{{
+#!php
+<?php
     $post = PostPeer::retrieveByPk(1);
     $comments = $post->getComments();
 
@@ -158,31 +159,41 @@ It is possible to retrieve comments from a commentable object:
     {
       echo '<p>'.$comment->getText().'</p>';
     }
+}}}
 
-### Removing one object's comment
+=== Removing one object's comment ===
 
 Of course, comments can also be removed:
-
+{{{
+#!php
+<?php
     $post = PostPeer::retrieveByPk(1);
     $post->removeComment(12);
     $post->clearComments();
+}}}
 
-### Retrieving one object's comments number
+=== Retrieving one object's comments number ===
 It is rather easy to retrieve the number of comments attached to one object:
-
+{{{
+#!php
+<?php
     $post = PostPeer::retrieveByPk(1);
     $nb_comments = $post->getNbComments();
+}}}
 
 In order to retrieve all the comments in one specific namespace, simply add a
 "namespace" parameter:
-
+{{{
+#!php
+<?php
     $post = PostPeer::retrieveByPk(1);
     $nb_comments = $post->getNbComments(array('namespace' => 'frontend'));
+}}}
 
 One common problem is about sorting objects by their number of comments. For
 the moment, the plugin does not propose any immediate solution, so you will have
 to join with the comments table:
-
+{{{
     SELECT `post.title`,
            `post.text`,
            COUNT(`sf_comment.id`) as `count`
@@ -191,6 +202,7 @@ to join with the comments table:
           AND `sf_comment.commentable_model`='post'
           GROUP BY (`sf_comment.commentable_id`)
     SORT BY `count` DESC;
+}}}
 
 However, a trick is available in the plugin: if you create a column named
 "sf_comment_count" (or something else, depending on your app.yml configuration)
@@ -198,67 +210,63 @@ in the commentable model, its value will be updated each time a new comment is
 added using the ``addComment()`` method.
 
 Several ``app.yml`` parameters are involved in this trick:
-
+{{{
     count:
       enabled:        true               # whether or not the method must be called for updating the comments count
-      method:         setSfCommentCount  # name of the method to call in order to update the comments count. If you call the comments count column "gerard", simply put "setGerard" on this line
-      namespace:      frontend           # namespaces of the comments that have to be counted (usefull for frontend counts). If you don't use namespaces, don't fill this line.
-
+      method:         setSfCommentCount  # name of the method to call in order to update the comments count. 
+                                         # If you call the comments count column "gerard", simply put "setGerard" on this line
+      namespace:      frontend           # namespaces of the comments that have to be counted 
+                                         # (usefull for frontend counts). If you don't use namespaces, don't fill this line.
+}}}
 
 With this trick, sorting objects by their comment numbers is rather straightforward:
-
+{{{
+#!php
+<?php
     $c = new Criteria();
     $c->addDescendingOrderByColumn(PostPeer::SF_COMMENT_COUNT);
     $posts = PostPeer::doSelect($c);
+}}}
 
-
-## API
+== API ==
 
 The behavior implement the following methods:
 
-  * **addComment($comment)** - Adds a comment to the object. The "comment"
- param can be an associative array (in which each element represents one of the
- comment properties), or an array of associative arrays. In this case, it adds
- all the comments to the object.
-  * **clearComments()** - Deletes all the comments attached to the object
-  * **getComments($options = array())** - Returns the list of the comments
- attached to the object. The options array may contain several restriction
- options: namespace, order. The Criteria may be used to programmatically
- restrict the results.
-  * **getNbComments()** - Returns the number of the comments attached to the
-  object. The options array may contain several restriction options: namespace,
-  order. The Criteria may be used to programmatically restrict the results.
-  * **removeComment($comment_id)** - Removes one comment from the object.
+  * '''addComment($comment)''' - Adds a comment to the object. The "comment" param can be an associative array (in which each element represents one of the comment properties), or an array of associative arrays. In this case, it adds all the comments to the object.
+  * '''clearComments()''' - Deletes all the comments attached to the object
+  * '''getComments($options = array())''' - Returns the list of the comments attached to the object. The options array may contain several restriction options: namespace, order. The Criteria may be used to programmatically restrict the results.
+  * '''getNbComments()''' - Returns the number of the comments attached to the object. The options array may contain several restriction options: namespace, order. The Criteria may be used to programmatically restrict the results.
+  * '''removeComment($comment_id)''' - Removes one comment from the object.
 
-## Unit testing
+== Unit testing ==
 
 The plugin has been unit-tested. The tests are located in test/deppPropelActAsCommentableBehaviorTest.php. 
 If you want to run them:
 
   * install the plugin
-  * configure a model for using it, for instance "Post", or a TestObject, in order not to destroy data
-    the TestObject must have a Name field
+  * configure a model for using it, for instance "Post", or a TestObject, in order not to destroy data the TestObject must have a Name field
   * edit this file and, if required, modify the application name and the TEST_CLASS constant, line 3:
-
+{{{
+#!php
+<?php
         define('TEST_CLASS', 'Post');
-
+}}}
   * run the tests:
-
+{{{
         php plugins/deppPropelActAsCommentableBehaviorPlugin/test/functional/deppPropelActAsCommentableBehaviorTest.php
+}}}
 
-
-## License and credits
+== License and credits ==
 
 The plugin is a simplification of the sfPropelActAsCommentableBehaviorPlugin, by Xavier Lacot
 
 This plugin is licensed under the MIT license. You can contact the maintainer at 
-[guglielmo@depp.it](http://guglielmo.celata.com/).
+[guglielmo => depp.it](http://guglielmo.celata.com/).
 
 
-## Changelog
+== Changelog ==
 
-### version 0.1 - 2009-10-03
+=== version 0.1 - 2008-10-03 ===
 
 Initial public release. Features comments attachment to heterogene Propel objects.
 
-## Roadmap / Wishlist

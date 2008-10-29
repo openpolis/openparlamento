@@ -208,9 +208,11 @@ propel:
     last_contribution:       { type: timestamp }
     n_monitored_tests:       { type: integer, default: 0 }
     n_monitored_tags:        { type: integer, default: 0 }
-    n_max_monitored_tags:    { type: integer, default: 5 }
+    n_monitored_attos:       { type: integer, default: 0 }
+    n_monitored_politicos:   { type: integer, default: 0 }
     n_monitored_objects:     { type: integer, default: 0 }
-    n_max_monitored_objects: { type: integer, default: 5 }
+    n_max_monitored_tags:    { type: integer, default: 5 }
+    n_max_monitored_items:   { type: integer, default: 10 }
 
   opp_votazione:
     id:

@@ -2,9 +2,9 @@
 
 <?php echo include_component('monitoring', 'submenu', array('current' => 'tags')); ?>
 
-<h2>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects() ?></span>)</h2>
+<h2>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></span>)</h2>
 <ul id="my_tags">
-  <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitorables() - $opp_user->getNMonitoredObjects() ?></li>
+  <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></li>
   <?php foreach ($my_tags as $my_tag): ?>
     <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
       <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>

@@ -26,6 +26,11 @@
 <?php endswitch; ?>
 <br /><br />
 
+<!-- partial per la gestione del monitoring di questo atto -->
+<?php echo include_component('monitoring', 'manageItem', 
+                             array('item_pk' => $ddl->getPrimaryKey(), 
+                                   'item_model' => get_class($ddl))); ?>
+
 <!-- partial per la visualizzazione e l'edit-in-place dei tags associati al ddl -->
 <?php echo include_component('deppTagging', 'edit', array('content' => $ddl)); ?>
 

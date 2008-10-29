@@ -159,4 +159,15 @@ class OppPolitico extends BaseOppPolitico
   }
     
 }
-?>
+
+// add the ActAsMonitorable behavior
+// the field OppUserPeer::N_MONITORED_POLITICOS 
+// holds the number of objects of this type monitored
+sfPropelBehavior::add(
+  'OppPolitico', 
+  array('deppPropelActAsMonitorableBehavior' =>
+        array('count_monitoring_users_field'  => 'NMonitoringUsers',    // refers to ArticlePeer::N_MONITORING_USERS
+              'monitorer_model'               => 'OppUser',             // user profile model (to set the cache)
+              'count_monitored_objects_field' => 'NMonitoredPoliticos', // refers to OppUserPeer::N_MONITORED_ATTOS
+       )));
+

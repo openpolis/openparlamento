@@ -8,3 +8,4 @@ generated-deppPropelActAsVotableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsTaggableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsBookmarkableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsMonitorableBehaviorPlugin-schema.sql=propel
+generated-deppPropelMonitoringBehaviorsPlugin-schema.sql=propel

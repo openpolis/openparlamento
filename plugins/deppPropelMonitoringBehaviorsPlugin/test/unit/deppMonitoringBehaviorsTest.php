@@ -82,13 +82,13 @@ $obj1->save();
 $user = call_user_func_array($monitorer_callable, $user_id);
 
 $t->ok($obj1->countMonitoringUsers() == 0, 'a new object has no monitoring users.');
-$t->ok($user->countMonitoredObjects($c) == 0, 'the user is monitoring no objects.');
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 0, 'the user is monitoring no objects.');
 $t->ok($obj1->isMonitoredByUser($user_id) == false, 'the user is not monitoring the first object');
-$t->ok($user->isMonitoring(TEST_MONITORABLE, $obj1->getReferenceKey()) == false, 'same test, from the user perspective');
+$t->ok($user->isMonitoring(TEST_MONITORABLE, $obj1->getPrimaryKey()) == false, 'same test, from the user perspective');
 
 
 $t->diag('Make default user monitors the object');
-$obj1->addMonitoring($user_id);
+$obj1->addMonitoringUser($user_id);
 $t->ok($obj1->countMonitoringUsers() == 1, 'a user is now monitoring.');
 
 // once a change is made in the cache (through the addMonitoring)
@@ -97,18 +97,18 @@ $t->ok($obj1->countMonitoringUsers() == 1, 'a user is now monitoring.');
 unset($user);
 $user = call_user_func_array($monitorer_callable, $user_id);
 
-$t->ok($user->countMonitoredObjects($c) == 1, 'the user is monitoring one object');
-$t->ok($obj1->isMonitoredByUser($user_id) == true, 'the user is monitoring the first object');
-$t->ok($user->isMonitoring(TEST_MONITORABLE, $obj1->getReferenceKey()) == true, 'same test, from the user perspective');
 
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 1, 'the user is monitoring one object');
+$t->ok($obj1->isMonitoredByUser($user_id) == true, 'the user is monitoring the first object');
+$t->ok($user->isMonitoring(TEST_MONITORABLE, $obj1->getPrimaryKey()) == true, 'same test, from the user perspective');
 
 $t->diag('Test the caches');
 $t->ok($obj1->countMonitoringUsers() == $obj1->countMonitoringUsers(true), 'the cache for the number of monitoring users is working');
-$t->ok($user->countMonitoredObjects($c) == $user->countMonitoredObjects($c, true), 'the cache for the number of monitored objects is working');
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == $user->countMonitoredObjects(TEST_MONITORABLE, null, true), 'the cache for the number of monitored objects is working');
  
 
 $t->diag('Make another user monitors the object');
-$obj1->addMonitoring($other_user_id);
+$obj1->addMonitoringUser($other_user_id);
 $t->ok($obj1->countMonitoringUsers() == 2, 'two users are now monitoring.');
 $monitoring_users = $obj1->getMonitoringUsers();
 foreach ($monitoring_users as $usr)
@@ -121,16 +121,16 @@ $t->diag('Create another object');
 $obj2 = _create_object('Secondo oggetto di test');
 $obj2->save();
 
-$obj2->addMonitoring($user_id);
+$t->diag('Add monitoring from the user\'s perspective');
+$user->addMonitoredObject(get_class($obj2), $obj2->getId());
 
 unset($user);
 $user = call_user_func_array($monitorer_callable, $user_id);
 
-$t->ok($user->countMonitoredObjects($c) == 2, 'the user is now monitoring two objects');
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 2, 'the user is now monitoring two objects');
 
-$monitored_objects = $user->getMonitoredObjects($c);
+$monitored_objects = $user->getMonitoredObjects(TEST_MONITORABLE);
 $getter = TEST_METHOD_GETTER;
-
 foreach ($monitored_objects as $obj)
 {
   $t->diag($obj->getId() . ": " . $obj->$getter());
@@ -141,16 +141,16 @@ $obj2->delete();
 unset($user);
 $user = call_user_func_array($monitorer_callable, $user_id);
 
-$t->ok($user->countMonitoredObjects($c) == 1, 'the user is now monitoring one object again');
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 1, 'the user is now monitoring one object again');
 
 $t->diag('Remove the other user\'s monitor');
-$obj1->removeMonitoring($other_user_id);
+$obj1->removeMonitoringUser($other_user_id);
 $t->ok($obj1->countMonitoringUsers() == 1, 'one user left now monitoring.');
 
 unset($user);
 $user = call_user_func_array($monitorer_callable, $user_id);
 
-$t->ok($user->countMonitoredObjects($c) == 1, 'the user is always monitoring one object');
+$t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 1, 'the user is always monitoring one object');
 
 
 $t->diag('Remove the first  object (resetting)');

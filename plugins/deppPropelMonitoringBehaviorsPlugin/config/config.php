@@ -17,12 +17,11 @@ sfPropelBehavior::registerHooks('deppPropelActAsMonitorableBehavior', array (
 ));
 
 sfPropelBehavior::registerMethods('deppPropelActAsMonitorableBehavior', array (
-  array('deppPropelActAsMonitorableBehavior', 'addMonitoring'),
-  array('deppPropelActAsMonitorableBehavior', 'removeMonitoring'),  
+  array('deppPropelActAsMonitorableBehavior', 'addMonitoringUser'),
+  array('deppPropelActAsMonitorableBehavior', 'removeMonitoringUser'),  
   array('deppPropelActAsMonitorableBehavior', 'isMonitoredByUser'),
   array('deppPropelActAsMonitorableBehavior', 'getMonitoringUsers'),  
   array('deppPropelActAsMonitorableBehavior', 'countMonitoringUsers'),  
-  array('deppPropelActAsMonitorableBehavior', 'getReferenceKey'),  
 ));                 
 
 
@@ -35,6 +34,8 @@ sfPropelBehavior::registerHooks('deppPropelActAsMonitorerBehavior', array (
 ));
 
 sfPropelBehavior::registerMethods('deppPropelActAsMonitorerBehavior', array (
+  array('deppPropelActAsMonitorerBehavior', 'addMonitoredObject'),  
+  array('deppPropelActAsMonitorerBehavior', 'removeMonitoredObject'),  
   array('deppPropelActAsMonitorerBehavior', 'getMonitoredObjects'),  
   array('deppPropelActAsMonitorerBehavior', 'countMonitoredObjects'),  
   array('deppPropelActAsMonitorerBehavior', 'isMonitoring'),
