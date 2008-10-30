@@ -9,19 +9,139 @@
  */ 
 class OppAttoPeer extends BaseOppAttoPeer
 {
+
+  /**
+   * transform an array of objects into an array of Primary Keys
+   *
+   * @return void
+   * @author Guglielmo Celata
+   **/
+  public static function transformIntoPKs($objects)
+  {
+    // creates a callback function able to invoke the object's getPrimaryKey method
+    $getPK_callback = create_function('$e', 'return call_user_func(array($e, "getPrimaryKey"));');
+    return array_map($getPK_callback, $objects);
+  }
+    
+  /**
+   * returns the Atto objects that are indirectly monitored by a user, 
+   * that monitors at least one tag with which the object has been tagged
+   *
+   * @param  OppUser
+   * @param  OppTipoAtto - if give, acts as a filter
+   * @return array of objects
+   * @author Guglielmo Celata
+   **/
+  public static function doSelectIndirectlyMonitoredByUser($user, $type = null)
+  {
+    if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
+    
+    // build the array of monitored tags_ids
+    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag'));
+      
+    // fetch all acts tagged with the monitored tags (indirect monitoring)
+    $c = new Criteria();
+    if ($type instanceof OppTipoAtto)
+    {
+      $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
+      $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());
+    }
+    $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+    $c->add(TaggingPeer::TAG_ID, $my_monitored_tags_pks, Criteria::IN);
+    $indirectly_monitored_acts = OppAttoPeer::doSelect($c);
+    unset($c);
+    
+    return $indirectly_monitored_acts;
+    
+  }
+  
+  /**
+   * returns the Atto objects that are indirectly monitored by a user, 
+   * joined with the Tags Objects themselves
+   *
+   * @param  OppUser
+   * @param  OppTipoAtto - if give, acts as a filter
+   * @return array of objects
+   * @author Guglielmo Celata
+   **/
+  public static function doSelectIndirectlyMonitoredByUserJoinTags($user, $type = null)
+  {
+    if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
+    
+    // build the array of monitored tags_ids
+    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag'));
+      
+    // fetch all acts tagged with the monitored tags (indirect monitoring)
+    $c = new Criteria();
+    if ($type instanceof OppTipoAtto)
+    {
+      $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
+      $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());
+    }
+    $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+    $c->add(TaggingPeer::TAG_ID, $my_monitored_tags_pks, Criteria::IN);
+    $indirectly_monitored_acts = OppAttoPeer::doSelect($c);
+    unset($c);
+    
+    // add 
+    foreach ($indirectly_monitored_acts as $monitored_act)
+    {
+      
+    }
+    
+    return $indirectly_monitored_acts;
+    
+  }
+  
+  
+  /**
+   * returns the Atto objects that are directly monitored by a user, 
+   *
+   * @param  OppUser
+   * @param  OppTipoAtto - if give, acts as a filter
+   * @return array of objects
+   * @author Guglielmo Celata
+   **/
+  public static function doSelectDirectlyMonitoredByUser($user, $type = null)
+  {
+    
+    if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
+
+    if ($type instanceof OppTipoAtto)
+    {
+      $c = new Criteria();
+      $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
+      $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());      
+    }
+
+    // fetch directly monitored acts PKs
+    $directly_monitored_acts_pks = self::transformIntoPKs($user->getMonitoredObjects('OppAtto', $c));
+    
+    // return objects
+    return self::retrieveByPKs($directly_monitored_acts_pks);
+    
+  }
+
+  public static function merge($items1, $items2)
+  {
+    // merge directly and indirectly monitored acts types
+    $items_pks = array_merge(self::transformIntoPKs($items1), self::transformIntoPKs($items2));
+    return self::retrieveByPKs($items_pks);
+  }
+  
+  
   public static function doSelectPrimiFirmatari($pred)
   {
     $primi_firmatari = array();
 	
     $rs = OppAttoPeer::getRecordsetFirmatari($pred, 'P');
 	
-	while ($rs->next())
+	  while ($rs->next())
     {
 	  $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
-	}
-	return $primi_firmatari;
+	  }
+	  return $primi_firmatari;
 	
-
   }
   
   
@@ -29,14 +149,14 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     $co_firmatari = array();
 	
-	$rs = OppAttoPeer::getRecordsetFirmatari($pred, 'C');
+	  $rs = OppAttoPeer::getRecordsetFirmatari($pred, 'C');
 	
-	while ($rs->next())
+	  while ($rs->next())
     {
-	  $co_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')';  
-	}
+	    $co_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')';  
+	  }
     
-	return $co_firmatari;
+	  return $co_firmatari;
   }
   
    public static function doSelectRelatori($pred)

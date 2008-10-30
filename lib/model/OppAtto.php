@@ -9,6 +9,52 @@
  */ 
 class OppAtto extends BaseOppAtto
 {
+  protected $collIMTags;
+  protected $lastIMTagsCriteria = null;
+  
+  /**
+   * returns the Tags (TaggingsJoinTag) that makes the object indirectly monitored
+   *
+   * @return Tagging objects (with Tag infoz)
+   * @author Guglielmo Celata
+   **/
+  public function getIndirectlyMonitoringTags($user_id, $criteria = null, $con = null)
+	{
+		include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/om/BaseTaggingPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collIMTags === null) {
+			if ($this->isNew()) {
+				$this->collIMTags = array();
+			} else {
+				$criteria->addJoin(TaggingPeer::TAG_ID, TagPeer::ID);
+				$criteria->addJoin(MonitoringPeer::MONITORABLE_ID, TagPeer::ID);
+  			$criteria->add(TaggingPeer::TAGGABLE_ID, $this->getId());
+				$criteria->add(MonitoringPeer::USER_ID, $user_id);
+				$this->collIMTags = TagPeer::doSelect($criteria, $con);
+			}
+		} else {
+			$criteria->addJoin(TaggingPeer::TAG_ID, TagPeer::ID);
+			$criteria->addJoin(MonitoringPeer::MONITORABLE_ID, TagPeer::ID);
+			$criteria->add(TaggingPeer::TAGGABLE_ID, $this->getId());
+			$criteria->add(MonitoringPeer::USER_ID, $user_id);
+
+			if (!isset($this->lastIMTagsCriteria) || !$this->lastIMTagsCriteria->equals($criteria)) {
+				$this->collIMTags = TagPeer::doSelect($criteria, $con);
+			}
+		}
+		$this->lastIMTagsCriteria = $criteria;
+
+		return $this->collIMTags;
+	}
+	
+  
   public function getStatus()
   {
     $status = array();

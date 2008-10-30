@@ -72,20 +72,31 @@ class deppPropelActAsMonitorerBehavior
     else
       $c = new Criteria();
 
+    $c->add(MonitoringPeer::USER_ID, $this->getReferenceKey($user));
+
     if (!is_null($object_model))
     {
+      // get the name of the ID field for this object's model
+      $obj_id_field = call_user_func_array(array($object_model . "Peer", 'translateFieldName'), 
+                                           array('id', BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME));
+                                           
+      // build the join, using the parametric object_model's id name
+      $c->addJoin(MonitoringPeer::MONITORABLE_ID, $obj_id_field);
       $c->add(MonitoringPeer::MONITORABLE_MODEL, $object_model);
+      $monitored = call_user_func_array(array($object_model . "Peer", 'doSelect'), 
+                                        array($c));
+    } else {
+      $monitoring_recs = MonitoringPeer::doSelect($c);
+      $monitored = array();
+      foreach ($monitoring_recs as $rec)
+      {
+        $monitored []= call_user_func_array(array($rec->getMonitorableModel() . "Peer", 'retrieveByPK'), 
+                                            array($rec->getMonitorableId()));
+      }      
     }
       
-    $c->add(MonitoringPeer::USER_ID, $this->getReferenceKey($user));
-    
-    $monitoring_recs = MonitoringPeer::doSelect($c);
-    $monitored = array();
-    foreach ($monitoring_recs as $rec)
-    {
-      $monitored []= call_user_func_array(array($rec->getMonitorableModel() . "Peer", 'retrieveByPK'), $rec->getMonitorableId());
-    }
     return $monitored;
+    
   }
 
   /**

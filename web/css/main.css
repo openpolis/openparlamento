@@ -77,18 +77,26 @@ form#comment-form input.text[readonly='readonly'] { color: #999;}
 
 
 #top_terms_drill_down div.tags ul { margin-bottom:10px }
+#monitored_acts .acts ul li {
+  margin-left:10px; font-size:1.1em; list-style-type:none;   
+}
+#monitored_acts .acts li span.tag { color: darkgreen; font-style: italic; }
+
 #top_terms_drill_down div.tags ul li, ul#my_tags li{ 
   display:inline; margin-left:20px; font-size:1.1em; list-style-type:none; 
 }
-#top_terms_drill_down div.tags ul li:hover, ul#my_tags span.tag:hover, ul#my_tags span.remover:hover {
+#top_terms_drill_down div.tags ul li:hover, 
+#monitored_acts .acts ul span.title:hover,
+ul#my_tags span.tag:hover, ul#my_tags span.remover:hover {
   cursor:pointer; color: darkred; text-decoration: underline;
 }
 ul#my_tags li span.remover {
   display: none;
 }
 
+
 #top_terms_drill_down div.tags ul li.selected { color: #aaa;}
 
 #top_terms_drill_down div.top_term { font-size: 12px; font-weight: bold;}
-#top_terms_drill_down div.top_term:hover { cursor:pointer; color: darkblue; text-decoration: underline; background-color: #ccc;}
+#top_terms_drill_down div.top_term:hover, #monitored_acts h3.type:hover { cursor:pointer; color: darkblue; text-decoration: underline; background-color: #ccc;}
 
