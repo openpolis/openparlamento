@@ -22,13 +22,16 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
     return array_map($getPK_callback, $objects);
   }
 
-  public static function doSelectIndirectlyMonitoredByUser($user)
-  {
+  public static function doSelectIndirectlyMonitoredByUser($user, $criteria=null)
+  {    
+   
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
     
     // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag'));
-      
+    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
+
+    
+    
     // fetch all acts types tagged with the monitored tags (indirect monitoring)
     $c = new Criteria();
     $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
@@ -37,18 +40,18 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
     $c->addGroupByColumn(OppAttoPeer::TIPO_ATTO_ID);
     $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelect($c);
     unset($c);
-    
+
     return $indirectly_monitored_acts_types;
     
   }
   
-  public static function doSelectDirectlyMonitoredByUser($user)
+  public static function doSelectDirectlyMonitoredByUser($user, $criteria=null)
   {
     
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
 
     // fetch directly monitored acts
-    $directly_monitored_acts_pks = self::transformIntoPKs($user->getMonitoredObjects('OppAtto'));
+    $directly_monitored_acts_pks = self::transformIntoPKs($user->getMonitoredObjects('OppAtto', $criteria));
     
     // fetch types of acts directly monitored
     $c = new Criteria();

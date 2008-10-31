@@ -32,12 +32,12 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectIndirectlyMonitoredByUser($user, $type = null)
+  public static function doSelectIndirectlyMonitoredByUser($user, $type = null, $criteria = null)
   {
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
     
     // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag'));
+    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
       
     // fetch all acts tagged with the monitored tags (indirect monitoring)
     $c = new Criteria();
@@ -64,13 +64,13 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectIndirectlyMonitoredByUserJoinTags($user, $type = null)
+  public static function doSelectIndirectlyMonitoredByUserJoinTags($user, $type = null, $criteria = null)
   {
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
     
     // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag'));
-      
+    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
+    
     // fetch all acts tagged with the monitored tags (indirect monitoring)
     $c = new Criteria();
     if ($type instanceof OppTipoAtto)
@@ -82,12 +82,6 @@ class OppAttoPeer extends BaseOppAttoPeer
     $c->add(TaggingPeer::TAG_ID, $my_monitored_tags_pks, Criteria::IN);
     $indirectly_monitored_acts = OppAttoPeer::doSelect($c);
     unset($c);
-    
-    // add 
-    foreach ($indirectly_monitored_acts as $monitored_act)
-    {
-      
-    }
     
     return $indirectly_monitored_acts;
     
@@ -106,10 +100,10 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
+    $c = new Criteria();
 
     if ($type instanceof OppTipoAtto)
     {
-      $c = new Criteria();
       $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
       $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());      
     }

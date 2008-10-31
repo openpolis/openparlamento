@@ -46,13 +46,28 @@ class monitoringActions extends sfActions
     $response->addJavascript('controls.js');
     
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    
-    $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($user);
-    $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($user);
+    $filter_tag_id = $this->getRequestParameter('filter_tag_id');
+    if ($filter_tag_id)
+    {
+      $tag_filtering_criteria = new Criteria();
+      $tag_filtering_criteria->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $tag_filtering_criteria->add(TagPeer::ID, $filter_tag_id);
+    } else
+      $tag_filtering_criteria = null;
+    $this->tag_filter = TagPeer::retrieveByPK($filter_tag_id);
+
+    $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($user, $tag_filtering_criteria);
+    if (is_null($tag_filtering_criteria))
+      $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($user);
+    else
+      $directly_monitored_acts_types = array();
 
     $this->monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types, 
                                                          $directly_monitored_acts_types);
+                                                         
+    $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
+
 
 
   public function executeAjaxTagsForTopTerm()
@@ -66,25 +81,6 @@ class monitoringActions extends sfActions
     $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
   }
 
-  public function executeAjaxActsForType()
-  {
-    $isAjax = $this->getRequest()->isXmlHttpRequest();
-    //if (!$isAjax) return sfView::noAjax;
-
-    $this->user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-
-    $type_id = $this->getRequestParameter('type_id');
-    $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, 
-                                                                                OppTipoAttoPeer::retrieveByPK($type_id));
-    $directly_monitored_acts = OppAttoPeer::doSelectDirectlyMonitoredByUser($this->user, 
-                                                                            OppTipoAttoPeer::retrieveByPK($type_id));
-
-    $this->monitored_acts = OppAttoPeer::merge($indirectly_monitored_acts, $directly_monitored_acts);
-
-    $this->my_monitored_tags_pks = OppAttoPeer::transformIntoPKs($this->user->getMonitoredObjects('Tag'));
-    
-  }
-  
   public function executeAjaxAddTagToMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();

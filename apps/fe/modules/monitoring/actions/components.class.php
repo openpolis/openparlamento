@@ -36,6 +36,24 @@ class monitoringComponents extends sfComponents
     }
   }
   
+  
+  public function executeActsForType()
+  {
+    $this->user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+    $type = OppTipoAttoPeer::retrieveByPK($this->type_id);
+    
+    $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, $type, $this->tag_filtering_criteria);
+    if (is_null($this->tag_filtering_criteria))
+      $directly_monitored_acts = OppAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $type);
+    else
+      $directly_monitored_acts = array();
+
+    $this->monitored_acts = OppAttoPeer::merge($indirectly_monitored_acts, $directly_monitored_acts);
+    
+    $this->my_monitored_tags_pks = OppAttoPeer::transformIntoPKs($this->user->getMonitoredObjects('Tag'));
+  }
+  
 }
 
 ?>

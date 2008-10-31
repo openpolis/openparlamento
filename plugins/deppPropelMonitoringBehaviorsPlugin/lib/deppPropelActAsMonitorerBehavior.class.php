@@ -66,11 +66,13 @@ class deppPropelActAsMonitorerBehavior
    **/
   public function getMonitoredObjects(BaseObject $user, $object_model = null, $criteria = null)
   {
+
     // handle criteria
     if (!is_null($criteria))
       $c = clone $criteria;
     else
       $c = new Criteria();
+
 
     $c->add(MonitoringPeer::USER_ID, $this->getReferenceKey($user));
 
@@ -83,6 +85,7 @@ class deppPropelActAsMonitorerBehavior
       // build the join, using the parametric object_model's id name
       $c->addJoin(MonitoringPeer::MONITORABLE_ID, $obj_id_field);
       $c->add(MonitoringPeer::MONITORABLE_MODEL, $object_model);
+
       $monitored = call_user_func_array(array($object_model . "Peer", 'doSelect'), 
                                         array($c));
     } else {

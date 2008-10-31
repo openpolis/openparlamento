@@ -13,6 +13,24 @@ class OppAtto extends BaseOppAtto
   protected $lastIMTagsCriteria = null;
   
   /**
+   * returns an OppIter object, that is the last iter assigned to the object
+   * order criterion, by date
+   *
+   * @return OppIter object
+   * @author Guglielmo Celata
+   **/
+  public function getLastIter()
+  {
+    $c = new Criteria();
+    $c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
+    $iters = $this->getOppAttoHasItersJoinOppIter($c);
+    if (count($iters))
+      return $iters[0];
+    else
+      return null;
+  }
+  
+  /**
    * returns the Tags (TaggingsJoinTag) that makes the object indirectly monitored
    *
    * @return Tagging objects (with Tag infoz)

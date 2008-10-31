@@ -3,10 +3,18 @@
 
 <div id="monitored_acts">
   <h2>Elenco degli atti monitorati</h2>
+  
+  <?php if ($tag_filtering_criteria): ?>
+    &Egrave; attivo il filtro sul tag <?php echo $tag_filter->getTripleValue() ?>. <?php echo link_to('Rimuovi il filtro', 'monitoring/acts') ?>
+  <?php endif ?>
 
   <?php foreach ($monitored_acts_types as $type): ?>
     <h3 id="type_<?php echo $type->getId();?>" class="type">Atti di tipo <?php echo $type->getDenominazione(); ?></h3>
-    <div id="type_acts_<?php echo $type->getId();?>" class="acts" style="display:none"></div>
+    <div id="type_acts_<?php echo $type->getId();?>" class="acts">
+      <?php echo include_component('monitoring', 'actsForType', 
+                                   array('type_id' => $type->getId(), 
+                                         'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
+    </div>
   <?php endforeach ?>
 </div>
 
