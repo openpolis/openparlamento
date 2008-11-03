@@ -82,7 +82,7 @@ propel:
     data:             { type: date }
     titolo:           { type: varchar(512) }
     testo:            { type: longvarchar }
-    file_pdf:         { type: varbinary }
+    file_pdf:         { type: longvarbinary }
     url_testo:        { type: varchar(1024) }
     url_pdf:          { type: varchar(1024) }
     
