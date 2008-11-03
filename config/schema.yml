@@ -83,8 +83,8 @@ propel:
     titolo:           { type: varchar(512) }
     testo:            { type: longvarchar }
     file_pdf:         { type: varbinary }
-    file_name:        { type: varchar(32) }
-    url:              { type: varchar(1024) }
+    url_testo:        { type: varchar(1024) }
+    url_pdf:          { type: varchar(1024) }
     
   opp_gruppo:
     id:
