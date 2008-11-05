@@ -20,23 +20,20 @@
 
 
 
-
+<!-- slider jQuery per gli atti e le notizie relative -->
 <script type="text/javascript" language="javascript">
 //<![CDATA[
 
 jQuery.noConflict();
 (function($){
+  
   // acts slider
   $('.type').click( function(){
     var id = $(this).get(0).id.split('_').pop();
-    var acts = $('#type_acts_' + id);
-    if (acts.get(0).style.display == 'none')
-      acts.slideDown();
-    else
-      acts.slideUp();
+    $(this).parent().find("#type_acts_" + id).slideToggle("slow");
   });
   
-  // news cached-sliders
+  // news cached-slider (only does ajax request once)
   $('#monitored_acts .acts li span.title').click( function(){
     $this = $(this);
     var id = $this.parent().get(0).id.split('_').pop();
@@ -46,7 +43,7 @@ jQuery.noConflict();
     {
       $.get(url, { act_id: id },
         function(data){
-          $this.parent().append('<div class="news">' + data + '</div>');
+          $this.parent().append('<div class="news">' + data + '</div>').css('display', 'none').slideDown();
           $this.data('news_loaded', true);
           $this.unbind('click').click( function(){
             $(this).parent().find("div.news").slideToggle("slow");

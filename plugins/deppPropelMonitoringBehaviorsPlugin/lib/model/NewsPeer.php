@@ -11,13 +11,24 @@ class NewsPeer extends BaseNewsPeer
 {
   
 
+  public static function countNewsForAct($act_id)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(self::RELATED_MONITORABLE_ID, $act_id);
+      
+    return self::doCount($c);
+  }
 
-  public static function getNewsForAct($act_id)
+  public static function getNewsForAct($act_id, $limit = 0)
   {
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
     $c->add(self::RELATED_MONITORABLE_ID, $act_id);
     $c->addAscendingOrderByColumn(self::DATE);
+    if ($limit > 0)
+      $c->setLimit(10);
+      
     return self::doSelect($c);
   }
 

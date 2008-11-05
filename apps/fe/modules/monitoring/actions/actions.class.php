@@ -86,7 +86,11 @@ class monitoringActions extends sfActions
     if (!$isAjax) return sfView::noAjax;
 
     $act_id = $this->getRequestParameter('act_id');
-    $this->news = NewsPeer::getNewsForAct($act_id);
+    $n_news = NewsPeer::countNewsForAct($act_id);
+    $this->news = NewsPeer::getNewsForAct($act_id, $limit = 10);
+    $this->has_more = 0;
+    if ($n_news > count($this->news))
+      $this->has_more = $n_news - count($this->news);
   }
 
   public function executeAjaxAddTagToMyMonitoredTags()

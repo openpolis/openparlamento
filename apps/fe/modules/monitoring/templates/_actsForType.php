@@ -9,7 +9,7 @@
           <span class="tag"><?php echo link_to(strtolower($tag->getTripleValue()), 'monitoring/acts?filter_tag_id=' . $tag->getPrimaryKey()) ?></span>
         <?php endforeach; ?>          
       <?php endif; ?>
-      <span class="title"  title="click per vedere le notizie (TODO)"><?php echo $act->getTitolo() ?></span>
+      <span class="title" title="click per vedere le notizie"><?php echo $act->getTitolo() ?></span>
       <?php if ($act->getLastIter() instanceof OppAttoHasIter): ?>
         <span class="iter"> -
           <?php echo $act->getLastIter()->getOppIter()->getFase() ?>

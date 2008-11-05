@@ -7,5 +7,8 @@
       data relativa: <?php echo $n->getDate() ?>
     </li>
   <?php endforeach ?>
+  <?php if ($has_more>0): ?>
+    <li><?php echo link_to("visualizza le altre $has_more notizie", '#') ?></li>
+  <?php endif ?>
 </ul>
 
