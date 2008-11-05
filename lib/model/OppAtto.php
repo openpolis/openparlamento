@@ -224,8 +224,10 @@ class OppAtto extends BaseOppAtto
 	$c->addDescendingOrderByColumn('tipo');
 	return OppAttoHasSedePeer::doSelectJoinOppSede($c);
   }
-    
+
 }
+
+
 
 
 sfPropelBehavior::add(
@@ -257,3 +259,10 @@ sfPropelBehavior::add(
               'count_monitored_objects_field' => 'NMonitoredAttos',   // refers to OppUserPeer::N_MONITORED_ATTOS
        )));
 
+sfPropelBehavior::add(
+  'OppAtto',
+  array('deppPropelActAsNewsGeneratorBehavior' =>
+        array('monitorable_models' => array( 'OppAtto' => 'self'),
+              'date_method'        => 'DataPres',
+              'priority'           => '1',
+        )));

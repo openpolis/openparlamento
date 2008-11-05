@@ -10,5 +10,16 @@ propel:
     created_at:
     _indexes:
       monitorable_index:  [monitorable_model, monitorable_id, user_id]
+      
+  sf_news_cache:
+    _attributes:    { phpName: News, package: plugins.deppPropelMonitoringBehaviorsPlugin.lib.model }
+    id:
+    created_at:
+    generator_model:           { type: varchar(50), required: true }
+    generator_id:              { type: integer }
+    related_monitorable_model: { type: varchar(50), required: true }
+    related_monitorable_id:    { type: integer }
+    date:                      { type: timestamp }
+    priority:                  { type: integer, required: true, default: 0 }
 
   

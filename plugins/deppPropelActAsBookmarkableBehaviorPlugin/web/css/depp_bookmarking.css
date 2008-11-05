@@ -1,0 +1,12 @@
+ul#bookmarking-items li {display: inline;}
+
+ul#bookmarking-details li {list-style:none; clear: both; padding: 2px 0;}
+
+ul#bookmarking-details li div { float: left;}
+ul#bookmarking-details li div.value { width: 2em; text-align: right; padding-right: 0.2em;}
+ul#bookmarking-details li div.bookmarks {}
+ul#bookmarking-details li div.percentage-bar { background-color: #777; margin-bottom: 3px; border: 1px solid gray;border: 1px solid gray; }
+ul#bookmarking-details li div.percentage-value { }
+
+div#total-bookmarkings span.label {font-weight: bold;}
+div#bookmarking-results div#closing {clear: both;}

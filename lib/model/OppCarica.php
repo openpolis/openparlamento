@@ -46,4 +46,10 @@ class OppCarica extends BaseOppCarica
   }
 }
 
-?>
+sfPropelBehavior::add(
+  'OppCarica',
+  array('deppPropelActAsNewsGeneratorBehavior' =>
+        array('monitorable_models' => array( 'OppPolitico' => 'getOppPolitico'),
+              'date_method'        => 'DataInizio',
+              'priority'           => '1',
+        )));

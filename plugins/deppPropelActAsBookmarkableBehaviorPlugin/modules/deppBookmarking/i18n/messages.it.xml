@@ -1,0 +1,31 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit>
+        <source>You have already bookmarked</source>
+        <target>Hai già marcato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Anonymous bookmarking is not allowed</source>
+        <target>I bookmark anonimi non sono permessi</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you for your bookmark</source>
+        <target>Grazie per aver marcato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you</source>
+        <target>Grazie</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Take your bookmark back</source>
+        <target>Ritira il tuo bookmark</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Total bookmarkings</source>
+        <target>Bookmark totali</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

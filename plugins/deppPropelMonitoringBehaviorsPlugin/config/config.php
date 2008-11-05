@@ -40,3 +40,23 @@ sfPropelBehavior::registerMethods('deppPropelActAsMonitorerBehavior', array (
   array('deppPropelActAsMonitorerBehavior', 'countMonitoredObjects'),  
   array('deppPropelActAsMonitorerBehavior', 'isMonitoring'),
 ));                 
+
+
+/**
+ * hooks and methods for the actAsGenerator behavior
+ *
+ **/
+sfPropelBehavior::registerHooks('deppPropelActAsNewsGeneratorBehavior', array (
+  ':delete:pre' => array ('deppPropelActAsNewsGeneratorBehavior', 'preDelete'),
+  ':save:pre' => array ('deppPropelActAsNewsGeneratorBehavior', 'preSave'),
+  ':save:post' => array ('deppPropelActAsNewsGeneratorBehavior', 'postSave'),
+));
+
+sfPropelBehavior::registerMethods('deppPropelActAsNewsGeneratorBehavior', array (
+  array('deppPropelActAsNewsGeneratorBehavior', 'generateNews'),    
+  array('deppPropelActAsNewsGeneratorBehavior', 'getGeneratedNews'),
+  array('deppPropelActAsNewsGeneratorBehavior', 'getNewsDate'),    
+  array('deppPropelActAsNewsGeneratorBehavior', 'getNewsPriority'),      
+  array('deppPropelActAsNewsGeneratorBehavior', 'getRelatedMonitorableObjects'),  
+  array('deppPropelActAsNewsGeneratorBehavior', 'getRelatedMonitorableObject'),  
+));                 

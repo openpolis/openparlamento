@@ -10,6 +10,7 @@
 class OppTeseottPeer extends BaseOppTeseottPeer
 {
   
+  
   public static function retrieveTagsFromTTPK($id)
   {
     $c = new Criteria();

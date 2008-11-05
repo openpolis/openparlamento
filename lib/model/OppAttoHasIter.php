@@ -9,4 +9,20 @@
  */ 
 class OppAttoHasIter extends BaseOppAttoHasIter
 {
+  public $priority_override = 0;
+  
+  public function save($con = null)
+  {
+    if ($this->getOppIter()->getConcluso() == 1)
+      $this->priority_override = 1;
+    parent::save();
+  }
 }
+
+sfPropelBehavior::add(
+  'OppAttoHasIter',
+  array('deppPropelActAsNewsGeneratorBehavior' =>
+        array('monitorable_models' => array( 'OppAtto' => 'getOppAtto'),
+              'date_method'        => 'Data',
+              'priority'           => '2',
+        )));

@@ -41,9 +41,7 @@ class monitoringActions extends sfActions
   {
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();
-    $response->addJavascript('prototype.js');
-    $response->addJavascript('effects.js');
-    $response->addJavascript('controls.js');
+    $response->addJavascript('jquery.js');
     
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     $filter_tag_id = $this->getRequestParameter('filter_tag_id');
@@ -79,6 +77,16 @@ class monitoringActions extends sfActions
     
     $top_term_id = $this->getRequestParameter('tt_id');
     $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
+  }
+
+
+  public function executeAjaxNewsForAct()
+  {
+    $isAjax = $this->getRequest()->isXmlHttpRequest();
+    if (!$isAjax) return sfView::noAjax;
+
+    $act_id = $this->getRequestParameter('act_id');
+    $this->news = NewsPeer::getNewsForAct($act_id);
   }
 
   public function executeAjaxAddTagToMyMonitoredTags()

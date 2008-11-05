@@ -9,6 +9,7 @@
  */ 
 class OppVotazione extends BaseOppVotazione
 {
+  
   public function getTitolo()
   {
     return str_replace( ';NULL', '', preg_replace("<a([^\'\n]+)\/a>",'${2}',$this->titolo) );

@@ -10,3 +10,11 @@
 class OppCaricaHasGruppo extends BaseOppCaricaHasGruppo
 {
 }
+
+sfPropelBehavior::add(
+  'OppCaricaHasGruppo',
+  array('deppPropelActAsNewsGeneratorBehavior' =>
+        array('monitorable_models' => array( 'OppPolitico' => array('getOppCarica', 'getOppPolitico')),
+              'date_method'        => 'DataInizio',
+              'priority'           => '2',
+        )));

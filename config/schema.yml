@@ -265,6 +265,13 @@ propel:
   sf_test_monitorable:
     _attributes:         { phpName: sfTestMonitorable }
     id:
-    title:               { type: varchar(50), required: true, default: 'Titolo' }
+    title:               { type: varchar(50), required: true, default: 'Titolo monitorabile' }
     n_monitoring_users:  { type: integer, required: true, default: 0 }
+    
+  sf_test_generator:
+    _attributes:         { phpName: sfTestGenerator }
+    id:
+    title:               { type: varchar(50), required: true, default: 'Titolo generatore'}
+    test_date:           { type: timestamp }
+    monitorable_id:      { type: integer, required: true, index: true, foreignTable: sf_test_monitorable, foreignReference: id, onDelete: CASCADE }
     

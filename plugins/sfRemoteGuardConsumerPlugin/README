@@ -11,21 +11,21 @@ This solution is based on two plugins:
 One site plays the Provider role, allowing users managing and remotely providing authentication and permissions to all other sites.
 All other sites play the Consumer role.
 
-The 'sfRemoteGuardConsumerPlugin' allows a consumer site to connect to a RemoteGuardProvider service, delegating the verification of username and password and the handling of user profiles and credentials.
+The 'sfRemoteGuardConsumerPlugin' allows a consumer site to connect to a !RemoteGuardProvider service, delegating the verification of username and password and the handling of user profiles and credentials.
 This means that an application can be part of a single sign on solution without having any user-related tables or modules.
 
 The plugin allows the user to log in, using the "remember me" check box.
 If the user checks this box, then the shared login expires after a timeout (7 days, but can be modified in app.yml), or after an explicit sign out.
 If the user does not check the box, it still has a shared login, but it expires as soon as the browser is closed.
 
-A RemoteGuardProvider service is basically an extended version of the sfGuardPlugin, allowing users authentication and credential handling as usual (user, group, role, remember, profile, ...), and exposing a very simple HTTP API:
+A !RemoteGuardProvider service is basically an extended version of the sfGuardPlugin, allowing users authentication and credential handling as usual (user, group, role, remember, profile, ...), and exposing a very simple HTTP API:
  * /getUser/$username/$password/$remember/$attrs
  * /getUserByRememberKey/$key/attrs
 If the user is found in the system, the provider sends back an XML containing all the user infos that will allow the sfRemoteGuardConsumer plugin to successfully sign the user into the system.
-Among the infos returned by the RemoteGuardProvider web services:
+Among the infos returned by the !RemoteGuardProvider web services:
  * the permissions array
  * the user attributes defined in the $attrs variable (|-separated) (sfGuardUserPeer::getName)
- * the remember key (only the GetUser method)
+ * the remember key (only the !GetUser method)
  
 The sfRemoteGuardProviderPlugin is an implementation of this service, in symfony (see details).
 
@@ -51,7 +51,7 @@ The sfRemoteGuardProviderPlugin is an implementation of this service, in symfony
           
     }}}
   
-  * Add the RemoteGuardProvider host name and some cookies definitions to the app.yml
+  * Add the !RemoteGuardProvider host name and some cookies definitions to the app.yml
   {{{
     all:
       # remote guard host

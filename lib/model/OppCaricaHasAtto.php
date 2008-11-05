@@ -10,3 +10,12 @@
 class OppCaricaHasAtto extends BaseOppCaricaHasAtto
 {
 }
+
+sfPropelBehavior::add(
+  'OppCaricaHasAtto',
+  array('deppPropelActAsNewsGeneratorBehavior' =>
+        array('monitorable_models' => array( 'OppAtto' => 'getOppAtto',
+                                             'OppPolitico' => array('getOppCarica', 'getOppPolitico')),
+              'date_method'        => 'Data',
+              'priority'           => '2',
+        )));

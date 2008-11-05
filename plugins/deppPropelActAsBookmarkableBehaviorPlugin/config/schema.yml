@@ -1,0 +1,14 @@
+propel:
+  _attributes:        { package: plugins.deppPropelActAsBookmarkableBehaviorPlugin.lib.model }
+
+  sf_bookmarkings:
+    _attributes:      { phpName: sfBookmarking, package: plugins.deppPropelActAsBookmarkableBehaviorPlugin.lib.model }
+    id:
+    bookmarkable_model:    { type: varchar, size: 50, required: true }
+    bookmarkable_id:       { type: integer, required: true }
+    user_id:               { type: integer }
+    bookmarking:           { type: integer, required: true, default: 1 }
+    _indexes:
+      bookmarkable_index:  [bookmarkable_model, bookmarkable_id, user_id]
+
+  

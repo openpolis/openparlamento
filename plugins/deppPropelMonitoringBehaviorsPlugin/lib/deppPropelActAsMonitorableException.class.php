@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the deppPropelActAsMonitorableBehavior package.
+ * This file is part of the deppPropelMonitoringBehaviors package.
  *
  * (c) 2008 Guglielmo Celata <guglielmo.celata@gmail.com>
  *

@@ -1,0 +1,241 @@
+= deppPropelActAsBookmarkableBehaviorPlugin =
+This is a tiny variation of the sfPropelActAsVotableBehaviorPlugin.
+
+This plugin is a Propel Behavior that makes any Propel object bookmarkable.
+By ''bookmarkable'', we intend that the user can bookmark the object '''positively''' or '''negatively'''.
+The meaning of positive bookmarking and of negative bookmarking is left to the application using the plugin.
+
+== Installation ==
+
+To install the plugin, run this command within your symfony project :
+
+{{{
+symfony plugin-install http://symfony-plugins.depp.it/deppPropelActAsBookmarkableBehaviorPlugin
+}}}
+
+
+The source code is also available:
+ * TODO
+   [http://?????????/deppPropelActAsBookmarkableBehaviorPlugin/ from the SVN repository] 
+   (please always use a tagged version in production)
+   
+
+== Configuration ==
+
+To activate this Propel behavior in Symfony, you must first activate behaviors 
+in your propel.ini file :
+
+{{{
+propel.builder.addBehaviors = true
+}}}
+
+In one (or more) of your existing model object classes, apply the behavior. Eg. 
+for an {{{Article}}} Propel model class:
+
+{{{
+<?php
+#!php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add('Article', array('deppPropelActAsBookmarkableBehavior'));
+}}}
+
+You can fine-tune behavior with optional parameters, see the 
+[#Behavioroptionalparameters advanced configuration section].
+
+Once your model configured, you have to rebuild it:
+
+{{{
+symfony propel-build-all
+}}}
+
+And clear the cache :
+
+{{{
+symfony cc
+}}}
+
+== Advanced configuration ==
+
+=== Behavior optional parameters ===
+
+{{{
+#!php
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add(
+  'Article', 
+  array('deppPropelActAsBookmarkableBehavior' =>
+        array('reference_field' => 'Reference')));  // refers to ArticlePeer::REFERENCE
+}}}
+
+ * The {{{reference_field}}} parameter sets the name of the field where you 
+   store the identifier of the object to bookmark. By default, the plugin will use
+   the primary key of the object. You must return an integer for referencing a
+   custom identifier.
+
+=== User reference retrieval configuration ===
+
+By default, the plugin will search for an [wiki:sfGuardPlugin sfGuardPlugin] 
+installation to retrieve authenticated user primary key. If you are using sfGuard, 
+you have nothing more to configure.
+
+Also, if a getId() method has already been defined in the custom sfUser class, 
+that method is expected to return the currently authenticated user's ID, and thus
+it will be automatically used.
+
+If you don't use one of these methods, you can specify the way a unique user reference (eg. 
+primary key) will be retrieved, using these available plugin settings in your 
+{{{app.yml}}} file:
+
+ * You can specify a PHP function, eg. {{{get_connected_user_id()}}}:
+
+{{{
+  bookmarking:
+    user_id_getter:      get_connected_user_id  
+}}}
+
+ * Or a static method of a PHP class, eg. 
+{{{
+#!php
+<?php
+  MyCustomUtilsClass::getConnectedUserId()
+}}}
+
+{{{
+  bookmarking:
+    user_id_getter:      [MyCustomUtilsClass, getConnectedUserId]
+}}}
+
+The return value of these calls should always be the primary key of your 
+connected user.
+
+== Using the Ajax bookmarking system ==
+
+This plugin provides a pretty lame Ajax-based bookmarking system.
+You must note that this web module is provided for illustration purpose, it has
+weak chances to fit exactly your project needs.
+
+To activate this feature, you must enable the {{{sfBookmarking}}} module in the 
+{{{config/settings.yml}}} file of the app you want to use the helper in :
+
+{{{
+all:
+  .settings:
+    enabled_modules:        [default, sfBookmarking]
+}}}
+
+If you are under Microsoft Windows, you also have to manually copy the {{{./web}}} 
+directory of the plugin in the {{{%SF_ROOT_DIR%/web}}} directory of your project
+and rename it to {{{deppPropelActAsBookmarkableBehaviorPlugin}}}. Then you will have 
+this on the filesytem :
+
+{{{
+project_root
+  [...]
+  web
+    deppPropelActAsBookmarkableBehaviorPlugin
+      css
+        sf_rating.css
+      images
+        alt_star.gif
+}}}
+
+Then, you can use the {{{sf_bookmark}}} helper in any of your templates:
+
+{{{
+#!php
+
+
+<?php sfLoader::loadHelpers('sfBookmarking') ?>
+<?php echo sf_bookmarkr($article) ?>
+}}}
+
+
+== API Usage ==
+Note: In below examples, {{{$user_id}}} is a string representing a 
+unique reference to a user, eg. if you're using the sfGuardPlugin, 
+{{{sfContext::getInstance()->getUser()->getGuardUser()->getId()}}}.
+
+If you don't provide this parameter, the 
+[#Userreferenceretrievalconfiguration configured user reference retrieval configuration]
+will apply.
+
+The API is extremely simple and doesn't take into account the meaning of positive and negative bookmarking, that is given in the application.
+Only logged user can bookmark an object, but the control if a user is logged is left to the application. 
+The methods of the behavior requires a valid user_id.
+{{{
+#!php
+<?php
+ addPositiveBookmark($user_id)                   // void    - add a bookmark to the object
+ addNegativeBookmark($user_id)           
+ removeBookmark($user_id)                        // object  - remove bookmark from an object
+ userHasPositivelyBookmarked($user_id)           // array   - retrieves objects bookmarked by user
+ userHasNegativelyBookmarked($user_id)           
+ isPositivelyBookmarkedByUser($user_id)          // boolean - returns whether the user has bookmarked the object
+ isNegativelyBookmarkedByUser($user_id)          
+ isPositivelyBookmarkedBy()                      // array   - retrieves the users that bookmarked the object
+ isNegativelyBookmarkedBy()                      
+ setBookmarking($value, $user_id)                // void    - allows a given user to set a bookmark for this object (allowed values: 1, -1)
+ getUserBookmarking($user_id)                    // int     - returns the value of the bookmarking that the user set for this object
+ getBookmarkingFullDetails()                     // hash    - returns detailed summary of how many users bookmarked the object      
+                                                 //             Results will have this form:
+                                                 //               array(
+                                                 //                1  => 12, // 12 people have bookmarked the article positively
+                                                 //               -1  =>  4  //  4 people have bookmarked the article negatively
+                                                 //               )
+ clearBookmarkings()                             // void    - clears all bookmargings from an object (both positive and negative)
+}}}
+
+== Unit testing ==
+The plugin is provided with a test suite located in the {{{./test}}} directory. 
+To run the tests, type this line from the root of your project :
+
+{{{
+$ php plugins/deppPropelActAsBookmarkableBehaviorPlugin/test/unit/deppPropelActAsBookmarkableBehaviorTest.php
+}}}
+
+Note that you have to provide a Propel test object class name to run the test in the test file:
+
+{{{
+define('TEST_CLASS', 'Article');
+}}}
+
+== Uninstallation ==
+{{{
+symfony plugin-uninstall symfony/deppPropelActAsBookmarkableBehaviorPlugin
+}}}
+
+You will need to remove the behavior to all your model, then rebuild your model
+and purge your cache.
+
+
+== TODO ==
+
+ * Add functional tests
+ 
+== Changelog ==
+
+=== 2008-11-01 | v0.1 ===
+
+ * Copied from the deppPropelActAsVotableBehaviorPlugin, changed voting into bookmarking, 
+   README file rewritten and uni-tested
+
+== Maintener ==
+
+This plugin is maintened by Guglielmo Celata
+({{{guglielmo.celata}}} -> {{{gmail.com}}})
+
+Feel free to send feture request, enhancement suggestion or idealy a patch.
+ 
+== Credits ==
+ * The whole plugin is a pretty lame rewrite of the already well-functioning sfPropelActAsRatableBehaviorPlugin
+   by Nicolas Perriault
+
+ * The eye-candy star-based Ajax system is based on the great work of 
+ Komodomedia:
+ http://komodomedia.com/blog/samples/star_rating/example2.htm
+

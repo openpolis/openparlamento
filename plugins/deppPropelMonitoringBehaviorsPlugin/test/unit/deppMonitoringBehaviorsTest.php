@@ -3,6 +3,8 @@
 // Define your test Propel classes with behaviors applied
 define('TEST_MONITORABLE', 'sfTestMonitorable');
 define('TEST_MONITORER', 'OppUser');
+define('TEST_GENERATOR', 'sfTestGenerator');
+
 
 // Define a setter and a getter methods for the monitorable, other than primary key
 define('TEST_METHOD_SETTER', 'setTitle');
@@ -56,7 +58,7 @@ $monitorer_callable = array(TEST_MONITORER.'Peer', 'retrieveByPK');
 
 
 // start tests
-$t = new lime_test(15, new lime_output_color());
+$t = new lime_test(16, new lime_output_color());
 
 $t->diag('deppMonitoringBehaviorsPlugin API unit test');
 
@@ -76,7 +78,7 @@ foreach ($existing_records as $rec)
 
 
 $t->diag('Create a test object');
-$obj1 = _create_object('Primo oggetto di test');
+$obj1 = _create_object('Primo oggetto di test', TEST_MONITORABLE);
 $obj1->save();
 
 $user = call_user_func_array($monitorer_callable, $user_id);
@@ -118,7 +120,7 @@ foreach ($monitoring_users as $usr)
 
 
 $t->diag('Create another object');
-$obj2 = _create_object('Secondo oggetto di test');
+$obj2 = _create_object('Secondo oggetto di test', TEST_MONITORABLE);
 $obj2->save();
 
 $t->diag('Add monitoring from the user\'s perspective');
@@ -153,17 +155,35 @@ $user = call_user_func_array($monitorer_callable, $user_id);
 $t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 1, 'the user is always monitoring one object');
 
 
+
+
+// test news generator
+$t->diag('Create a generator object');
+$obj3 = _create_object('Generatore di test', TEST_GENERATOR);
+$obj3->setMonitorableId($obj1->getPrimaryKey());
+$obj3->setTestDate('2008-11-02');
+$obj3->save();
+
+$generated_news = $obj3->getGeneratedNews();
+$t->ok(count($generated_news) == 1, "One news was generated");
+$single_news = $generated_news[0];
+
+$t->diag("Data: " . $single_news->getDate());
+$t->diag("Priority: " . $single_news->getPriority());
+
 $t->diag('Remove the first  object (resetting)');
 $obj1->delete();
+
+$t->diag('Remove the generator  object (news should be removed, too)');
+$obj3->delete();
 
 $t->diag('Tests terminated');
 
 
 
-// test object creation
-function _create_object($string = 'Default title')
+// test objects creation
+function _create_object($string = 'Default title', $classname = TEST_MONITORABLE)
 {
-  $classname = TEST_MONITORABLE;
   $method = TEST_METHOD_SETTER;
   
   if (!class_exists($classname))
@@ -176,3 +196,4 @@ function _create_object($string = 'Default title')
   $obj->$method($string);
   return $obj;
 }
+

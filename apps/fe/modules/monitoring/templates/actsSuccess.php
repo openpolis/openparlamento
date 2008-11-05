@@ -18,42 +18,44 @@
   <?php endforeach ?>
 </div>
 
+
+
+
 <script type="text/javascript" language="javascript">
 //<![CDATA[
 
-// assegnazione degli observer corretti ai top term
-var top_terms = $$('.type');
-top_terms.each( function(el) {
-  el.observe('click', function(event) {
-    var elt = Event.element(event);
-    cached_drill_down(elt);
-  })  
-});
-
-
-//  script per la gestione del drill down dei top terms 
-//  il drill down è cached, nel senso che, se non viene trovato, allora
-//  è richiesto via ajax al server, altrimenti viene chiuso o aperto
-cached_drill_down = function(el){
-  var id = el.id.split('_').last();
-  var acts_ul = $$('#type_acts_' + id + ' ul');
-  var acts = $('type_acts_' + id);
-  if (acts_ul == '')
-  {
-    var url = "<?php echo url_for('monitoring/ajaxActsForType'); ?>?type_id=" + id;
-    new Ajax.Updater($('type_acts_' + id), url, {
-      evalScripts: true,
-      // onComplete: setTimeout('refresh_tags_container(\'top_term_tags_'+id+'\')', 500)
-    });
-    acts.style.display = 'block';
-  } else {
-    if (acts.style.display == 'none')
-      acts.style.display = 'block';
+jQuery.noConflict();
+(function($){
+  // acts slider
+  $('.type').click( function(){
+    var id = $(this).get(0).id.split('_').pop();
+    var acts = $('#type_acts_' + id);
+    if (acts.get(0).style.display == 'none')
+      acts.slideDown();
     else
-      acts.style.display = 'none';
-  }
-};
-
+      acts.slideUp();
+  });
+  
+  // news cached-sliders
+  $('#monitored_acts .acts li span.title').click( function(){
+    $this = $(this);
+    var id = $this.parent().get(0).id.split('_').pop();
+    var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";
+    var news = $('monitored_acts .acts li#' + id + ' div.news');
+    if (!$this.data('news_loaded'))
+    {
+      $.get(url, { act_id: id },
+        function(data){
+          $this.parent().append('<div class="news">' + data + '</div>');
+          $this.data('news_loaded', true);
+          $this.unbind('click').click( function(){
+            $(this).parent().find("div.news").slideToggle("slow");
+          });
+        })      
+    }
+      
+  });  
+})(jQuery);
 
 
 //]]>

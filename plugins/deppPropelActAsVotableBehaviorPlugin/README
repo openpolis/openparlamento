@@ -2,8 +2,8 @@
 This is a port of the sfPropelActAsRatableBehaviorPlugin by Nicolas Perriault.
 
 This plugin is a Propel Behavior that makes any Propel object votable.
-By **votable**, we intend that the user can vote ***in favour*** or ***against*** the object.
-The **voting range** (-1 to 1, by default) is the range of opinions that the user can express.   
+By ''votable'', we intend that the user can vote '''in favour''' or '''against''' the object.
+The ''voting range'' (-1 to 1, by default) is the range of opinions that the user can express.   
 
 == Installation ==
 
@@ -32,6 +32,7 @@ In one (or more) of your existing model object classes, apply the behavior. Eg.
 for an {{{Article}}} Propel model class:
 
 {{{
+#!php
 <?php
 class Article extends BaseArticle
 {
@@ -59,6 +60,7 @@ symfony cc
 === Behavior optional parameters ===
 
 {{{
+#!php
 <?php
 class Article extends BaseArticle
 {
@@ -68,7 +70,7 @@ sfPropelBehavior::add(
   array('deppPropelActAsVotableBehavior' =>
         array('voting_range'    => 3,               // from -3 to +3, the user can express stronger opinions
               'neutral_position'=> true,            // the neutral position counts (don't know)
-              'rating_field'    => 'AverageRating', // refers to ArticlePeer::AVERAGE_RATING
+              'voting_field'    => 'Averagevoting', // refers to ArticlePeer::AVERAGE_voting
               'reference_field' => 'Reference')));  // refers to ArticlePeer::REFERENCE
 }}}
 
@@ -77,18 +79,18 @@ sfPropelBehavior::add(
    An integer of 3 means that the user can express opinions in the range -3 to 3
  * The {{{neutral_position}}} parameter states wether the neutral opinion (0) is 
    to be considered a possible opinion for users or not 
- * The {{{rating_field}}} parameter, which refer to a {{{float}}} 
+ * The {{{voting_field}}} parameter, which refer to a {{{float}}} 
    column in phpName format of your ratable object table which will store cached 
-   value of actual rating for the object. Useful for queries performances and 
+   value of actual voting for the object. Useful for queries performances and 
    sorting ;)
  * The {{{reference_field}}} parameter sets the name of the field where you 
    store the identifier of the object to rate. By default, the plugin will use
    the primary key of the object. You must return an integer fo referencing a
    custom identifier.
 
-=== Ensure rating consistency ===
+=== Ensure voting consistency ===
 
-A clean way to ensure rating consistency is to associate a rating to a unique 
+A clean way to ensure voting consistency is to associate a voting to a unique 
 identified user reference stored server side, typically the primary key of a 
 user record in your database.
 
@@ -113,7 +115,7 @@ primary key) will be retrieved, using these available plugin settings in your
  * You can specify a PHP function, eg. {{{get_connected_user_id()}}}:
 
 {{{
-  rating:
+  voting:
     user_id_getter:      get_connected_user_id  
 }}}
 
@@ -121,7 +123,7 @@ primary key) will be retrieved, using these available plugin settings in your
    {{{MyCustomUtilsClass::getConnectedUserId()}}}:
 
 {{{
-  rating:
+  voting:
     user_id_getter:      [MyCustomUtilsClass, getConnectedUserId]
 }}}
 
@@ -130,7 +132,7 @@ connected user.
 
 == Using the Ajax voting system ==
 
-This plugin provides an Ajax-based voting system, with pretty stars to click on.
+This plugin provides a basic Ajax-based voting system.
 You must note that this web module is provided for illustration purpose, it has
 weak chances to fit exactly your project needs.
 
@@ -154,7 +156,7 @@ project_root
   web
     deppPropelActAsVotableBehaviorPlugin
       css
-        sf_rating.css
+        sf_voting.css
       images
         alt_star.gif
 }}}
@@ -162,7 +164,7 @@ project_root
 Then, you can use the {{{sf_voter}}} helper in any of your templates:
 
 {{{
-<?php sfLoader::loadHelpers('sfRating') ?>
+<?php sfLoader::loadHelpers('sfvoting') ?>
 <?php echo sf_voter($article) ?>
 }}}
 
@@ -204,13 +206,13 @@ To retrieve user's voting for this object :
 $article->getUserVoting($user_id);
 }}}
 
-To get the average rating of the object :
+To get the average voting of the object :
 {{{
 $article->getVoting([$precision]);
 }}}
 
 Note: If you have concerns about performances, you will better use the cached 
-value of rating stored in the {{{rating_column}}} you configured previously.
+value of voting stored in the {{{voting_column}}} you configured previously.
 
 To retrieve the maximum possible range of votes for an object (which you have defined in
 the {{{voting_range}}} behavior optional parameter - default is 1) :
@@ -218,12 +220,12 @@ the {{{voting_range}}} behavior optional parameter - default is 1) :
 $article->getVoteRanging();
 }}}
 
-To clear user rating :
+To clear user voting :
 {{{
 $article->clearUserVoting($user_id);
 }}}
 
-To retrieve rating details :
+To retrieve voting details :
 {{{
 $details = $article->getVotingDetails();
 }}}
@@ -236,7 +238,7 @@ array(
 )
 }}}
 
-You can also retrieve details for all available ratings:
+You can also retrieve details for all available votings:
 {{{
 $full_details = $article->getVotingDetails(true);
 }}}
@@ -307,4 +309,4 @@ Feel free to send feture request, enhancement suggestion or idealy a patch.
 
  * The eye-candy star-based Ajax system is based on the great work of 
  Komodomedia:
- http://komodomedia.com/blog/samples/star_rating/example2.htm
+ http://komodomedia.com/blog/samples/star_voting/example2.htm
