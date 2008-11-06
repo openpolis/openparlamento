@@ -1,0 +1,9 @@
+fillin:
+  enabled: true
+  param:
+    name: edit_page
+
+fields:
+  content:
+    required:
+      msg: The content cannot be left blank. Please enter some text...

@@ -7,6 +7,9 @@
 <h2><?php echo ($ddl->getRamo().'.'.$ddl->getNumfase().' '.$ddl->getTitolo()) ?></h2>
 <br />
 
+<!-- partial per la descrizione wiki -->
+<?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $ddl->getId())); ?>
+
 <b><?php echo link_to('Testo del DDL', 'http://www.senato.it/leg/'.$ddl->getLegislatura().'/BGT/Schede/Ddliter/testi/'.$ddl->getParlamentoId().'_testi.htm', array('target' => '_blank')) ?></b>
 <br /><br />
 

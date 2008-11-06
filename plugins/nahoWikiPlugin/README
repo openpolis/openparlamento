@@ -1,0 +1,327 @@
+= nahoWikiplugin - Wiki for symfony =
+
+== Overview ==
+
+This plugin allows you to embed a wiki within your symfony application with the following features:
+  - Create/edit pages with full versionning
+  - Basic permissions management
+  - Basic security features
+  - History of changes
+  - Graphical and unified diff between two given revisions
+  - Preview changes before saving
+  - Internal links, supporting namespaces
+  - Interwiki links
+  - Automatically generated table of contents
+  - Breadcrumbs
+  - Configurable
+  - Fully extendable
+  - A bunch of helpers to provide total integration in your application
+
+Most features have been inspired from [http://www.splitbrain.org/projects/dokuwiki DokuWiki] (e.g. namespaces and Interwiki work the same way).
+
+It is not aimed at replacing full-featured wiki packages, but offers a lightweight alternative for when you build a website that has to contain a simple wiki. It is very easy to configure and adapt, so it should fulfill most basic wiki requirements.
+
+Please note that this plugin is in active development. If you want to help and improve it, please contact Nicolas Chambrier.
+
+== Screenshots ==
+
+[[Image(nahoWikiplugin_1.png, 30%)]]  
+[[Image(nahoWikiplugin_2.png, 30%)]]  
+[[Image(nahoWikiplugin_3.png, 30%)]] 
+
+== Requirements ==
+
+The prerequisites for using the `nahoWiki` plugin are:
+ - As the plugin doesn't contain a user management module, the project where you install it must have a table managing authors, or users (whatever the name), and the related Propel class must have a `__toString()` method. Both these conditions are satisfied by the [http://trac.symfony-project.com/trac/wiki/sfGuardPlugin sfGuardPlugin], so installing this plugin is a good choice.
+ - You need the [http://trac.symfony-project.com/trac/wiki/sfMarkdownPlugin sfMarkdownPlugin] which will provide the ability to convert from wiki syntax to XHTML contents.
+
+== Installation ==
+
+=== PEAR Install ===
+
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+{{{
+$ php symfony plugin-install http://plugins.symfony-project.com/nahoWikiplugin
+}}}
+
+=== SVN Install ===
+
+If your project is not under subversion yet, you can simply checkout the plugin in your plugins directory:
+{{{
+$ svn co http://svn.symfony-project.com/plugins/nahoWikiplugin/trunk plugins/nahoWikiplugin
+}}}
+
+If your project is under version control, you can use the svn:externals property:
+{{{
+$ svn propedit svn:externals plugins
+}}}
+and add the following line:
+{{{
+nahoWikiplugin http://svn.symfony-project.com/plugins/nahoWikiplugin/trunk plugins/nahoWikiplugin
+}}}
+
+After you installed `nahoWikiplugin` this way, you must copy (or symlink) `plugins/nahoWikiplugin/web` to `web/nahoWikiplugin`.
+
+== General instructions ==
+
+Rebuild the model as you are used to, to create the new tables needed by the plugin.
+{{{
+$ php symfony propel-build-all # Be careful, this command will erase all the existing tables of your model
+}}}
+
+Clear the cache to enable the autoloading to find the new classes:
+{{{
+$ php symfony cc
+}}}
+
+You can load the included fixtures to start using the forum with test data.
+{{{
+$ php symfony propel-load-data frontend plugins/nahoWikiplugin/data/fixtures
+}}}
+
+Enable the new `nahoWiki`  module in your application, via the `settings.yml` file.
+{{{
+// in myproject/apps/frontend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [..., nahoWiki]
+}}}
+
+Start using the plugin by browsing to the frontend module's default page:
+{{{
+http://myproject/frontend_dev.php/nahoWiki
+}}}
+
+== Slots ==
+
+The templates of the `nahoWiki` module define some slots that you can use inside your layout:
+  - wiki_page_actions : For the current page actions
+  - wiki_page_name : Name of the current page
+  - wiki_breadcrumbs : For the wiki breadcrumbs
+
+If you want to insert the actions menu or the breadcrumbs in your layout at the place you exactly want, simply disable the auto-inclusion of it (see app.yml configuration) and include the corresponding slot in your layout.
+
+Here is an example layout (in this example, options `include_page_actions` and `include_page_name` have been disabled in app.yml):
+
+{{{
+...
+<body>
+
+<div class="my-menus">
+  <?php include_slot('wiki_page_actions') ?>
+</div>
+
+<h1><?php include_slot('wiki_page_name') ?></h1>
+
+<?php echo $sf_data->getRaw('sf_content') ?>
+
+</body>
+</html>
+}}}
+
+== Configuration ==
+
+=== Schema customization ===
+
+If you install the `sfPropelAlternativeSchemaPlugin`, you can customize this plugin's schema by creating a `nahoWikiPlugin_schema.custom.yml` file under your project's `config/` directory. This allows you to customize the connection name, table names, etc… Refer to the [http://trac.symfony-project.com/wiki/sfPropelAlternativeSchemaPluginsfPropelAlternativeSchemaPlugin README file] for more information.
+
+=== Extending model, actions, or templates ===
+
+If you want to extend a class of the model, just create an empty file `lib/model/nahoWikiClass.php`, which will contain:
+{{{
+<?php
+
+class nahoWikiClass extends PluginnahoWikiClass {
+
+  // Here I add my own features, or override existing ones
+
+}
+}}}
+
+If you want to extend the actions, the process is similar: create a file named `modules/nahoWiki/actions/actions.class.php` in your app's directory:
+{{{
+<?php
+
+// autoloading for plugin lib actions is broken as at symfony-1.0.2
+require_once(sfConfig::get('sf_plugins_dir'). '/nahoWikiPlugin/modules/nahoWiki/lib/BasenahoWikiActions.class.php');
+
+class nahoWikiActions extends BasenahoWikiActions
+{
+
+  // Here I add my own features, or override existing ones
+
+}
+}}}
+
+To override a template file named `plugins/nahoWikiplugin/modules/nahoWiki/templates/theTemplate.php`, just copy it to `modules/nahoWiki/templates/theTemplate.php` in your app's folder, and then edit the copied file: it will be the one used by Symfony to render the pages.
+In most cases, you will want to override `_page_actions.php` or `_breadcrumbs.php`, or `_toc.php`. Templates have been smartly exploded, you should be able to customize the rendering with a few efforts.
+
+=== Using another Wiki renderer ===
+
+The default engine is [http://daringfireball.net/projects/markdown Markdown] (if `sfMarkdownPlugin` is not installed, no conversion at all is done). If you want to use another engine, just override the method `nahoWikiContentPeer::doConvert($content)`.
+
+Create a file named `lib/model/nahoWikiContentPeer.php`:
+{{{
+<?php
+
+class nahoWikiContentPeer extends PluginnahoWikiContentPeer {
+
+  public static function doConvert($content)
+  {
+    // Return converted $content from Wiki-syntax to XHTML
+    // Default behaviour is : return sfMarkdown::doConvert($content)
+  }
+
+}
+}}}
+
+=== app.yml ===
+
+Some of the features of the plugin can be altered by configuration. To do so, add some of the following lines to your application's `app.yml`:
+
+{{{
+all:
+  nahoWikiPlugin:
+    # General config
+    start_page:             index         # Default start page
+    pagename_format:        "a-z0-9\-_"   # Pagename authorized characters (format compatible with PCRE)
+    ns_separator:           ":"           # Namespace separator character
+    max_breadcrumbs:        5             # Maximum number of links stored in the breadcrumbs
+    breadcrumbs_separator:  " » "         # Separator between breadcrumbs items
+    include_breadcrumbs:    on            # Include breadcrumbs slot (disable if you include the slot in your layout) ?
+    include_actions:        on            # Include actions list slot (disable if you include the slot in your layout) ?
+    include_pagename:       on            # Display page's name when viewing content ?
+    include_toc:            on            # Display Table of Contents at top of every page
+    routes_register:        on            # Enable embedded routing rules ?
+    wrap_class:             nahoWiki      # All pages are wrapped into a <div class="..."> tag. This is its class name.
+
+    # Rendering for internal links, you may need to customize the *_model options if you change rendering engine
+    internal_links:             ["[[%name% %title%]]", "[[%name%]]"]
+    internal_link_model:        "[%title%](%link%)"
+    internal_link_broken_model: "[%title%(?)](%link%)"
+    interwiki_links:             ["[[%key%>%name% %title%]]", "[[%key%>%name%]]"]
+    interwiki_link_model:        "[![%alttext%](%image%) %title%](%link%)"
+
+    # Regular expressions replacements *before* conversion
+    replace_before:     []
+      # - { from: "/a pcre mask/i", to: "something" }  # replace "a pcre mask" with "something"
+
+    # Regular expressions replacements *after* conversion
+    replace_after:     []
+      # - { from: "/a pcre mask/i", to: "something" }  # replace "a pcre mask" with "something"
+
+    # Strip some tags (and their contents) for security (this comes after conversion)
+    strip_tags:  [script, embed, object]
+
+    # Permissions
+    credentials_edit:      []           # Credentials required to be able to edit a page
+    allow_anonymous_edit:  no           # Are anonymous (not authenticated) users able to edit a page ?
+}}}
+
+=== Routing rules ===
+
+The plugin comes with the following default rules. You can prevent those routes to be added by disabling the option `routes_register`, and add your own routing rules.
+
+Here are the default rules:
+{{{
+wiki_home:
+  url:   /wiki
+  param: { module: nahoWiki, action: index }
+
+wiki_view:
+  url:   /wiki/view/:page
+  param: { module: nahoWiki, action: view }
+
+wiki_view_revision:
+  url:   /wiki/view/:page/:revision
+  param: { module: nahoWiki, action: view }
+
+wiki_edit:
+  url:   /wiki/edit/:page
+  param: { module: nahoWiki, action: edit }
+
+wiki_edit_revision:
+  url:   /wiki/edit/:page/:revision
+  param: { module: nahoWiki, action: edit }
+
+wiki_history:
+  url:   /wiki/history/:page
+  param: { module: nahoWiki, action: history }
+
+wiki_diff:
+  url:   /wiki/diff
+  param: { module: nahoWiki, action: diff }
+
+wiki_index:
+  url:   /wiki/index
+  param: { module: nahoWiki, action: browse }
+}}}
+
+=== Look and Feel ===
+
+The `nahoWiki` module comes with a default stylesheet. You can choose to use your own stylesheet instead of the default one. To do so, you must create an empty `nahoWiki` module inside your application with just one `config/view.yml` file in it, with the following content:
+
+{{{
+all:
+  stylesheets: [-/nahoWikiPlugin/css/default.css, myCustomStylesheet]
+}}}
+
+== nahoWiki specific features ==
+
+=== Helpers ===
+
+nahoWiki provides a bunch of helpers to help you integrate the wiki in your application.
+
+You can insert links to wiki pages, anywhere in your application :
+
+  - link_to_diff($text, $page_name, $rev1, $rev2, $mode = 'inline')
+  - link_to_raw_diff($text, $page_name, $rev1, $rev2, $mode = 'unified')
+  - url_for_wiki($page_name, $revision = null)
+  - link_to_wiki($text, $page_name, $options = array(), $revision = null)
+  - url_for_wiki_user($username, $revision = null)
+  - link_to_wiki_user($text, $username, $options = array(), $revision = null)
+  - url_for_wiki_discuss($page_name, $revision = null)
+  - link_to_wiki_discuss($text, $page_name, $options = array(), $revision = null)
+
+You can even insert the content of a wiki page using `include_wiki` :
+
+  - include_wiki($page_name, $revision = null, $options = array())
+  - get_wiki($page_name, $revision = null, $options = array())
+
+The last two helpers are just shortcuts to use nahoWiki component.
+
+=== Interwiki ===
+
+nahoWiki provides basic support for Interwiki.
+
+The main syntax is `[[Key>PageName Title]]`, and it outputs a link to the page "PageName" of the wiki named "Key", preceded by a nice icon telling the user this is an Interwiki link.
+
+If the file named `web/nahoWikiPlugin/images/interwiki/key.gif` exists (or `.png` or `.jpg`) it will be used, else we use the generic `interwiki.png` [[Image(source:plugins/nahoWikiPlugin/trunk/web/images/interwiki.png, image/x-trac-wiki)]]
+
+To add a new Interwiki, just create a file named `interwiki.yml` in your app's folder, and add the key you want :
+
+{{{
+all:
+  Key: "http://UrlOfTheWiki?page="
+}}}
+
+The page name provided in the link is just added to the corresponding URL.
+
+=== Internal links ===
+
+The syntax for internal links is `[[PageName Title]]`.
+
+Page names support namespaces.
+
+If an internal link points to a unexisting page, it's show to the user, using different models : `internal_link_model` for links to existing pages, `internal_link_broken_model` for links to unexisting pages.
+
+==== Namespaces ====
+
+Namespaces work just the same way than [http://www.splitbrain.org/projects/dokuwiki DokuWiki]
+
+== TODO ==
+
+ * User manual for advanced features (mainly namespaces and interwiki)
+ * Add admin modules
+ * Add ACL (fine grained permissions management)
+ * Support multilingual versions of a page

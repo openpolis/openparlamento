@@ -67,6 +67,11 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	  $this->setAttribute('hash', (string)$xml_user->hash, 'subscriber');
 	  
 	}
+	
+	public function __toString()
+	{
+	  return $this->getAttribute('name', '', 'subscriber');
+	}
   
 	protected function generateRandomKey($user, $len = 40)
   {

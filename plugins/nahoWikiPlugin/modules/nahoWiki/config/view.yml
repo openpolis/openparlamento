@@ -1,0 +1,2 @@
+all:
+  stylesheets: [/nahoWikiPlugin/css/default.css]

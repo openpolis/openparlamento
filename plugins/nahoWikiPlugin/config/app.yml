@@ -1,0 +1,37 @@
+#all:
+#  nahoWikiPlugin:
+#    # General config
+#    start_page:             index         # Default start page
+#    pagename_format:        "a-z0-9\-_"   # Pagename authorized characters (format compatible with PCRE)
+#    ns_separator:           ":"           # Namespace separator character
+#    max_breadcrumbs:        5             # Maximum number of links stored in the breadcrumbs
+#    breadcrumbs_separator:  " » "         # Separator between breadcrumbs items
+#    include_breadcrumbs:    on            # Include breadcrumbs slot (disable if you include the slot in your layout) ?
+#    include_actions:        on            # Include actions list slot (disable if you include the slot in your layout) ?
+#    include_pagename:       on            # Display page's name when viewing content ?
+#    include_toc:            on            # Display Table of Contents at top of every page
+#    routes_register:        on            # Enable embedded routing rules ?
+#    wrap_class:             nahoWiki      # All pages are wrapped in a <div class="..."> tag. This is its class name.
+#
+#    # Rendering for internal links, you may need to customize the *_model options if you change rendering engine
+#    internal_links:              ["[[%name% %title%]]", "[[%name%]]"]
+#    internal_link_model:         "[%title%](%link%)"
+#    internal_link_broken_model:  "[%title%(?)](%link%)"
+#    interwiki_links:             ["[[%key%>%name% %title%]]", "[[%key%>%name%]]"]
+#    interwiki_link_model:        "[![%alttext%](%image%) %title%](%link%)"
+#
+#    # Regular expressions replacements *before* conversion
+#    replace_before:     []
+#      # - { from: "/a pcre mask/i", to: "something" }  # replace "a pcre mask" with "something"
+#      # Example for typos : [{from: '/"(.*?)"/', to: '«$1»'}, {from: '/-+>/', to: '&rarr;'}, {from: '/<-+/', to: '&larr;'}]
+#
+#    # Regular expressions replacements *after* conversion
+#    replace_after:     []
+#      # - { from: "/a pcre mask/i", to: "something" }  # replace "a pcre mask" with "something"
+#
+#    # Strip some tags (and their contents) for security (this comes after conversion)
+#    strip_tags:  [script, embed, object]
+#
+#    # Permissions
+#    credentials_edit:      []  # Credentials required to be able to edit a page
+#    allow_anonymous_edit:  no  # Are anonymous (not authenticated) users able to edit a page ?
