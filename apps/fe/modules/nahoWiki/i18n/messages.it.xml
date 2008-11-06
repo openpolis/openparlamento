@@ -1,0 +1,72 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit>
+        <source>Edit</source>
+        <target>Modifica</target>
+      </trans-unit>
+      <trans-unit>
+        <source>History</source>
+        <target>Cronologia</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Back to content</source>
+        <target>Torna alla scheda</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Edit a page</source>
+        <target>Modifica il contenuto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You are not allowed to access this page.</source>
+        <target>Non hai i permessi di accesso a questo contenuto.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You are currently editing an old revision of this page. If you save these changes, all changed made since this revision will be lost !!</source>
+        <target>Stai modificando una versione vecchia di questo contenuto. Se salvi i cambiamenti, tutti i cambiamenti fatti a partire da questa versione, andranno persi!!</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Don't you want to edit the latest version of this page ?</source>
+        <target>Vuoi modificare l'ultima versione?</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You are not authenticated. Your IP address will be stored : %ip%.</source>
+        <target>Non sei loggato. Verrà mostrato il tuo IP: %ip%.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You are authenticated. Your username will be stored : %username%.</source>
+        <target>Sei loggato. Verrà mostrato il tuo username: %username%.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comment</source>
+        <target>Un commento che descrive brevemente questa modifica</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Save changes</source>
+        <target>Salva e torna alla scheda</target>
+      </trans-unit>
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+      <trans-unit>
+        <source></source>
+        <target></target>
+      </trans-unit>
+
+    </body>
+  </file>
+</xliff>

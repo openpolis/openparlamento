@@ -93,13 +93,10 @@ class nahoWikiActions extends BasenahoWikiActions
       if (!$this->getRequestParameter('request-preview')) {
         $this->page->save();
         
-        $this->redirect('nahoWiki/view?page=' . $this->page->getName());
-        
-        /* sostituire con questo per redirezionare alla scheda
-          $referer = $this->getUser()->getAttribute('referer', 'nahoWiki/view?page=' . $this->page->getName());
-          $this->getUser()->getAttributeHolder()->remove('referer');
-          $this->redirect($referer);
-        */
+        // $this->redirect('nahoWiki/view?page=' . $this->page->getName());
+        $referer = $this->getUser()->getAttribute('referer', 'nahoWiki/view?page=' . $this->page->getName());
+        $this->getUser()->getAttributeHolder()->remove('referer');
+        $this->redirect($referer);
       }
     }
     

@@ -101,3 +101,8 @@ ul#my_tags li span.remover {
 #top_terms_drill_down div.top_term { font-size: 12px; font-weight: bold;}
 #top_terms_drill_down div.top_term:hover, #monitored_acts h3.type:hover { cursor:pointer; color: darkblue; text-decoration: underline; background-color: #ccc;}
 
+#wiki-content { margin-left: 20px; }
+#wiki-edit { margin-top: 10px; }
+.nahoWiki form#edit_page.wiki-form {width: 50%; float:left;}
+.wmd-preview {width: 48%; float: right; margin-top: 50px; height: 280px; overflow: auto; font-size: 12px;}
+

@@ -1,0 +1,186 @@
+= sfMarkdownPlugin =
+
+== Overview ==
+
+sfMarkdownPlugin is a Symfony plugin. It allows you to parse and converts text written with Markdown sintax into HTML.
+
+Markdown is a lightweight markup language, originally created by John Gruber and Aaron Swartz, which aims for maximum readability and "publishability" of both its input and output forms, taking many cues from existing conventions for marking up plain text in email.
+You can find more details about Markdown thanks to [http://en.wikipedia.org/wiki/Markdown Wikipedia] and [http://daringfireball.net/projects/markdown/ John Gruber]. 
+
+== Installation ==
+
+You can install sfMarkdown plugin both via PEAR (recommended) package manager or manually.
+
+=== PEAR installation ===
+
+ 1. The easiest way to install sfMarkdown plugin is to use PEAR package manager.
+
+ {{{
+ $ symfony plugin-install http://plugins.symfony-project.com/sfMarkdownPlugin
+ }}}
+
+ 2. Now clear the cache with symfony clear-cache command
+
+ {{{
+ $ symfony cc
+ }}}
+
+=== Manual installation ===
+
+ 1. Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory
+
+ 2. Now clear the cache with symfony clear-cache command
+
+ {{{
+ $ symfony cc
+ }}}
+
+
+== Configuration ==
+
+sfMarkdown plugin comes with 3 additional sf_ configuration properties.
+In most cases you don't need to change them but, if you do, here's a quick reference.
+
+ 1. ´sf_markdown_plugin_dir´ holds sfMarkdown plugin directory. By default its value is a folder called ´sfMarkdown´ within your default symfony project plugin directory.
+ 
+ 2. ´sf_markdown_parser_lib´ holds the path to Markdown parser library.
+ 
+ 3. ´sf_markdown_parser´ holds the name of PHP Markdown parser class. By default its value is ´MarkdownExtra_Parser´, a free PHP Markdown parser available at http://www.michelf.com/projects/php-markdown/ . If you want to switch to classic ´Markdown_Parser´ simply overwrite this configuration with ´Markdown_Parser´.
+ 
+''Note''. To change a configuration '''don't change sfMarkdown configuration file''' but overwrite the variable at application/module level via Symfony settings.yml configuration file or with ´sfConfig::set()´ statement.
+
+
+== Usage ==
+
+sfMarkdown plugin provides both a PHP class and a new set of Helpers.
+Helpers are intended to be used only inside a Symfony template while the class can be instantiated and called everywhere in your Symfony application.
+
+=== sfMarkdown class  ===
+
+sfMarkdown class currently provides both static and not static methods to do basically the same things.
+In the future, not static methods will give you more power while static methods will exist only for the purpose of providing a quick way to parse and convert a text to HTML.
+
+For the moment, you just need to remember two methods.
+
+ 1. ´sfMarkdown::doConvert($text)´ converts a text to HTML and returns it
+ 
+ 2. ´sfMarkdown::doConvertFile($file)´ converts a file to HTML and returns it
+
+For instance, let's have a look to how you can recode the following [http://www.symfony-project.com/askeet Askeet] action.
+
+{{{
+    public function executeAbout()
+    {
+      require_once('markdown.php');
+
+      $file = sfConfig::get('sf_data_dir').'/content/about_'.$this->getUser()->getCulture().'.txt';
+      if (!is_readable($file))
+      {
+        $file = sfConfig::get('sf_data_dir').'/content/about_en.txt';
+      }
+
+      $this->html = markdown(file_get_contents($file));
+
+      $this->getResponse()->setTitle('askeet! &raquo; about');
+    }    
+}}}
+
+First, we rewrite the action using ´sfMarkdown::doConvert()´ method.
+
+{{{
+    public function executeAbout()
+    {
+      $file = sfConfig::get('sf_data_dir').'/content/about_'.$this->getUser()->getCulture().'.txt';
+      if (!is_readable($file))
+      {
+        $file = sfConfig::get('sf_data_dir').'/content/about_en.txt';
+      }
+
+      $this->html = sfMarkdown::doConvert(file_get_contents($file));
+
+      $this->getResponse()->setTitle('askeet! &raquo; about');
+    }    
+}}}
+
+Yeah, cool but the can do better.
+Let's call ´sfMarkdown::doConvertFile()´ and let this method handling the job to read and parse the file.
+
+{{{
+    public function executeAbout()
+    {
+      $file = sfConfig::get('sf_data_dir').'/content/about_'.$this->getUser()->getCulture().'.txt';
+      if (!is_readable($file))
+      {
+        $file = sfConfig::get('sf_data_dir').'/content/about_en.txt';
+      }
+
+      $this->html = sfMarkdown::doConvertFile($file);
+
+      $this->getResponse()->setTitle('askeet! &raquo; about');
+    }    
+}}}
+
+Don't forget that ´sfMarkdown::doConvertFile()´ may throw a ´sfMarkdownException()´ if ´$file´ doesn't exist or isn't readable!
+
+
+=== MarkdownHelpers ===
+
+Before using MarkdownHelpers you need to load them with ´use_helper´statement.
+
+{{{
+    <?php use_helper('Markdown'); ?>
+}}}
+
+Now you can call available helpers in your template.
+For instance, the following code parse and include a Markdown text fragment into your template.
+
+{{{
+    <?php $string = <<<EOF
+    # This is a tile
+    
+    And this is a wonderful text paragraph written with **Markdown sintax**.
+    EOF; ?>
+    
+    <?php include_markdown_text($string); ?>
+}}}
+
+Here's the HTML output
+
+{{{
+    <h1>This is a title</h1>
+    
+    <p>And this is a wonderful text paragraph written with <strong>Markdown sintax</strong>.</p>
+}}}
+
+
+== Changelog ==
+
+2007-11-27: 0.1.1 alpha
+
+ * Updated: PHP Markdown 1.1.7
+
+2007-07-22: 0.1.0 alpha
+
+ * Initial release
+
+
+== Contacts ==
+
+If you have any questions or feedback feel free to contact me at [mailto:weppos@weppos.net weppos@weppos.net].
+For any bug these are the best ways to contact me (in order of preference)
+
+ * via email
+ * via [http://groups.google.com/group/symfony-devs symfony user group] 
+ 
+ 
+Please include sfMarkdownPlugin in the email subject.
+This will help me tracking the conversation.
+
+
+== License ==
+
+For the full copyright and license information, please view the LICENSE file that was distributed with this source code.
+
+
+== Attachments ==
+

@@ -43,8 +43,8 @@ all:
 
   nahoWikiPlugin:
     include_breadcrumbs:    off            # Include breadcrumbs slot (disable if you include the slot in your layout) ?
-#    include_actions:        on            # Include actions list slot (disable if you include the slot in your layout) ?
     include_pagename:       off            # Display page's name when viewing content ?
+    include_toc:            off            # Display Table of Contents at top of every page
 
   comments:                enabled
   comments_use_ajax:       true
