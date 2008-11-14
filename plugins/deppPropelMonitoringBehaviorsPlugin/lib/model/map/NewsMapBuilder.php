@@ -38,7 +38,7 @@ class NewsMapBuilder {
 
 		$tMap->addColumn('GENERATOR_MODEL', 'GeneratorModel', 'string', CreoleTypes::VARCHAR, true, 50);
 
-		$tMap->addColumn('GENERATOR_ID', 'GeneratorId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('GENERATOR_PRIMARY_KEYS', 'GeneratorPrimaryKeys', 'string', CreoleTypes::VARCHAR, false, 512);
 
 		$tMap->addColumn('RELATED_MONITORABLE_MODEL', 'RelatedMonitorableModel', 'string', CreoleTypes::VARCHAR, true, 50);
 
@@ -47,6 +47,10 @@ class NewsMapBuilder {
 		$tMap->addColumn('DATE', 'Date', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 		$tMap->addColumn('PRIORITY', 'Priority', 'int', CreoleTypes::INTEGER, true, null);
+
+		$tMap->addColumn('TIPO_ATTO_ID', 'TipoAttoId', 'int', CreoleTypes::INTEGER, false, null);
+
+		$tMap->addColumn('DATA_PRESENTAZIONE_ATTO', 'DataPresentazioneAtto', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 	} 
 } 

@@ -16,5 +16,5 @@ sfPropelBehavior::add(
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'OppPolitico' => array('getOppCarica', 'getOppPolitico')),
               'date_method'        => 'DataInizio',
-              'priority'           => '2',
+              'priority'           => '1',
         )));

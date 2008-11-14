@@ -34,6 +34,26 @@ class deppPropelActAsNewsGeneratorBehavior
     return NewsPeer::getNewsGeneratedByGenerator($object);
   }
   
+
+  public function getPrimaryKeysArray(BaseObject $object)
+  {
+    // get table map and columns map for this generator
+    $model_table = call_user_func(get_class($object).'Peer::getTableMap'); 
+    $model_columns = $model_table->getColumns();
+
+    // find and store primary keys
+    $pks = array();
+    foreach($model_columns as $column){
+      if ($column->isPrimaryKey())
+      {
+        $column_php_name = $column->getPhpName();
+        $column_getter = 'get'.$column_php_name;
+        $pks[$column_php_name] = $object->$column_getter();
+      }
+    }
+    
+    return $pks;
+  }
   
   /**
    * create as many news as the number of monitorable objects related to the 
@@ -51,12 +71,22 @@ class deppPropelActAsNewsGeneratorBehavior
     {
       $n = new News();
       $n->setGeneratorModel(get_class($object));
-      $n->setGeneratorId($object->getPrimaryKey());
+      $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray($object)));
       $n->setRelatedMonitorableModel(get_class($obj));
       $n->setRelatedMonitorableId($obj->getPrimaryKey());      
       
       // the following methods store data related to the generating object in the cache
       // only data needed to sort, sum, average, or count, are cached
+
+      if ($obj instanceof OppAtto)
+      {
+        $n->setTipoAttoId($obj->getOppTipoAtto()->getId());
+        $n->setDataPresentazioneAtto($obj->getDataPres());
+      }
+      
+      if ($object->getCreatedAt() != null)
+        $n->setCreatedAt($object->getCreatedAt());
+      
       $n->setDate($object->getNewsDate());
       if (!is_null($priority))
         $n->setPriority($priority);
@@ -136,10 +166,24 @@ class deppPropelActAsNewsGeneratorBehavior
     $method =  sfConfig::get(
       sprintf('propel_behavior_deppPropelActAsNewsGeneratorBehavior_%s_date_method', 
               get_class($object)), null);
+
     if (!is_null($method))
-    {      
-      $getter = "get" . $method;
-      return $object->$getter($format);
+    {
+      if (is_array($method))
+      {
+        // the date is retrieved through a chain of methods
+        $res = $object;
+        foreach ($method as $chain_method)
+        {
+          $res = $res->$chain_method();
+        }
+      }
+      else
+      {
+        $getter = "get" . $method;
+        $res = $object->$getter($format);      
+      }
+      return $res;
     } else
       return null;
   }

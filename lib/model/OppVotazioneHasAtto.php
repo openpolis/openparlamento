@@ -24,5 +24,6 @@ sfPropelBehavior::add(
   'OppVotazioneHasAtto',
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'OppAtto' => 'getOppAtto'),
+              'date_method'        => array( 'getOppVotazione', 'getOppSeduta', 'getData'),
               'priority'           => '2',
         )));

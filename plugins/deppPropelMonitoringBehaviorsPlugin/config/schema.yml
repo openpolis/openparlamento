@@ -15,11 +15,12 @@ propel:
     _attributes:    { phpName: News, package: plugins.deppPropelMonitoringBehaviorsPlugin.lib.model }
     id:
     created_at:
-    generator_model:           { type: varchar(50), required: true }
-    generator_id:              { type: integer }
-    related_monitorable_model: { type: varchar(50), required: true }
+    generator_model:           { type: varchar(50), required: true, index: multiple }
+    generator_primary_keys:    { type: varchar(512) }
+    related_monitorable_model: { type: varchar(50), required: true, index: multiple }
     related_monitorable_id:    { type: integer }
-    date:                      { type: timestamp }
-    priority:                  { type: integer, required: true, default: 0 }
-
-  
+    date:                      { type: timestamp, index: multiple }
+    priority:                  { type: integer, required: true, default: 0, index: multiple }
+    tipo_atto_id:              { type: integer, index: multiple }
+    data_presentazione_atto:   { type: timestamp, index: multiple }
+      

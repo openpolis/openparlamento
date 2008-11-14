@@ -1,3 +1,6 @@
+dev:
+  remote_guard_host:      'lapgu.guard.openpolis.it'
+  
 # default values
 all:
   # remote guard host

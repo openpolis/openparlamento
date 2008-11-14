@@ -10,7 +10,32 @@
 class NewsPeer extends BaseNewsPeer
 {
   
+  public static function countHomeNews()
+  {
+    $c = self::getHomeNewsCriteria();
+    return self::doCount($c);
+  }
 
+  public static function getHomeNewsGroupedByDayRS()
+  {
+    $c = self::getHomeNewsCriteria();
+    $c->clearSelectColumns();
+    $c->addSelectColumn(self::DATE);
+    $c->addAsColumn('numNews', 'count('.self::DATE.')');
+    $c->addGroupByColumn(self::DATE);
+    $c->addDescendingOrderByColumn(self::DATE);
+    
+    return self::doSelectRS($c);
+  }
+
+  public static function getHomeNewsCriteria()
+  {
+    $c = new Criteria();
+    $c->add(self::PRIORITY, 1);
+
+    return $c;
+  }
+  
   public static function countNewsForAct($act_id)
   {
     $c = new Criteria();

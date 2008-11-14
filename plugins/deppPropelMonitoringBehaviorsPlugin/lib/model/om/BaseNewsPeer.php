@@ -13,7 +13,7 @@ abstract class BaseNewsPeer {
 	const CLASS_DEFAULT = 'plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.News';
 
 	
-	const NUM_COLUMNS = 8;
+	const NUM_COLUMNS = 10;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -29,7 +29,7 @@ abstract class BaseNewsPeer {
 	const GENERATOR_MODEL = 'sf_news_cache.GENERATOR_MODEL';
 
 	
-	const GENERATOR_ID = 'sf_news_cache.GENERATOR_ID';
+	const GENERATOR_PRIMARY_KEYS = 'sf_news_cache.GENERATOR_PRIMARY_KEYS';
 
 	
 	const RELATED_MONITORABLE_MODEL = 'sf_news_cache.RELATED_MONITORABLE_MODEL';
@@ -44,23 +44,29 @@ abstract class BaseNewsPeer {
 	const PRIORITY = 'sf_news_cache.PRIORITY';
 
 	
+	const TIPO_ATTO_ID = 'sf_news_cache.TIPO_ATTO_ID';
+
+	
+	const DATA_PRESENTAZIONE_ATTO = 'sf_news_cache.DATA_PRESENTAZIONE_ATTO';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'GeneratorModel', 'GeneratorId', 'RelatedMonitorableModel', 'RelatedMonitorableId', 'Date', 'Priority', ),
-		BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::CREATED_AT, NewsPeer::GENERATOR_MODEL, NewsPeer::GENERATOR_ID, NewsPeer::RELATED_MONITORABLE_MODEL, NewsPeer::RELATED_MONITORABLE_ID, NewsPeer::DATE, NewsPeer::PRIORITY, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'generator_model', 'generator_id', 'related_monitorable_model', 'related_monitorable_id', 'date', 'priority', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'GeneratorModel', 'GeneratorPrimaryKeys', 'RelatedMonitorableModel', 'RelatedMonitorableId', 'Date', 'Priority', 'TipoAttoId', 'DataPresentazioneAtto', ),
+		BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::CREATED_AT, NewsPeer::GENERATOR_MODEL, NewsPeer::GENERATOR_PRIMARY_KEYS, NewsPeer::RELATED_MONITORABLE_MODEL, NewsPeer::RELATED_MONITORABLE_ID, NewsPeer::DATE, NewsPeer::PRIORITY, NewsPeer::TIPO_ATTO_ID, NewsPeer::DATA_PRESENTAZIONE_ATTO, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'generator_model', 'generator_primary_keys', 'related_monitorable_model', 'related_monitorable_id', 'date', 'priority', 'tipo_atto_id', 'data_presentazione_atto', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'GeneratorModel' => 2, 'GeneratorId' => 3, 'RelatedMonitorableModel' => 4, 'RelatedMonitorableId' => 5, 'Date' => 6, 'Priority' => 7, ),
-		BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::CREATED_AT => 1, NewsPeer::GENERATOR_MODEL => 2, NewsPeer::GENERATOR_ID => 3, NewsPeer::RELATED_MONITORABLE_MODEL => 4, NewsPeer::RELATED_MONITORABLE_ID => 5, NewsPeer::DATE => 6, NewsPeer::PRIORITY => 7, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'generator_model' => 2, 'generator_id' => 3, 'related_monitorable_model' => 4, 'related_monitorable_id' => 5, 'date' => 6, 'priority' => 7, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'GeneratorModel' => 2, 'GeneratorPrimaryKeys' => 3, 'RelatedMonitorableModel' => 4, 'RelatedMonitorableId' => 5, 'Date' => 6, 'Priority' => 7, 'TipoAttoId' => 8, 'DataPresentazioneAtto' => 9, ),
+		BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::CREATED_AT => 1, NewsPeer::GENERATOR_MODEL => 2, NewsPeer::GENERATOR_PRIMARY_KEYS => 3, NewsPeer::RELATED_MONITORABLE_MODEL => 4, NewsPeer::RELATED_MONITORABLE_ID => 5, NewsPeer::DATE => 6, NewsPeer::PRIORITY => 7, NewsPeer::TIPO_ATTO_ID => 8, NewsPeer::DATA_PRESENTAZIONE_ATTO => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'generator_model' => 2, 'generator_primary_keys' => 3, 'related_monitorable_model' => 4, 'related_monitorable_id' => 5, 'date' => 6, 'priority' => 7, 'tipo_atto_id' => 8, 'data_presentazione_atto' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	
@@ -120,7 +126,7 @@ abstract class BaseNewsPeer {
 
 		$criteria->addSelectColumn(NewsPeer::GENERATOR_MODEL);
 
-		$criteria->addSelectColumn(NewsPeer::GENERATOR_ID);
+		$criteria->addSelectColumn(NewsPeer::GENERATOR_PRIMARY_KEYS);
 
 		$criteria->addSelectColumn(NewsPeer::RELATED_MONITORABLE_MODEL);
 
@@ -129,6 +135,10 @@ abstract class BaseNewsPeer {
 		$criteria->addSelectColumn(NewsPeer::DATE);
 
 		$criteria->addSelectColumn(NewsPeer::PRIORITY);
+
+		$criteria->addSelectColumn(NewsPeer::TIPO_ATTO_ID);
+
+		$criteria->addSelectColumn(NewsPeer::DATA_PRESENTAZIONE_ATTO);
 
 	}
 

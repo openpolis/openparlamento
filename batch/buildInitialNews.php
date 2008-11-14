@@ -24,17 +24,17 @@ sfContext::getInstance();
 // uncomment to clean all news
 NewsPeer::doDeleteAll();
 
-// define all news generators and the corresponding date fields (null = no field)
-$generators = array('OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
+// define all news generators and the corresponding date fields (null = no field) for sorting purposes
+$generators = array(//'OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
                     'OppVotazioneHasAtto' => null,
-                    'OppDocumento'        => OppDocumentoPeer::DATA,
+                    //'OppDocumento'        => OppDocumentoPeer::DATA,
                     'OppAttoHasIter'      => OppAttoHasIterPeer::DATA, 
-                    'OppAttoHasSede'      => null,
-                    'OppIntervento'       => OppInterventoPeer::DATA,
-                    'OppAtto'             => OppAttoPeer::DATA_PRES,
+                    //'OppAttoHasSede'      => null,
+                    //'OppIntervento'       => OppInterventoPeer::DATA,
+                    //'OppAtto'             => OppAttoPeer::DATA_PRES,
                     'OppCaricaHasGruppo'  => OppCaricaHasGruppoPeer::DATA_INIZIO,
-                    'OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
-                    'OppCarica'           => OppCaricaPeer::DATA_INIZIO);
+                    'OppCarica'           => OppCaricaPeer::DATA_INIZIO,
+                    );
 
 $tot_cnt = 0;
 foreach ($generators as $model => $date_field)
@@ -66,7 +66,7 @@ foreach ($generators as $model => $date_field)
   $c->clearSelectColumns();
   foreach ($pks as $pk) 
     $c->addSelectColumn($pk->getFullyQualifiedName());
-    
+        
   // get raw records, without populating objects, in order to be faster and lighter
   $acts_rs = call_user_func_array(array($model.'Peer', 'doSelectRS'), array($c));    
   $cnt = 0;
@@ -84,7 +84,12 @@ foreach ($generators as $model => $date_field)
     // then destroys it, in order to release memory
     $act = call_user_func_array(array($model.'Peer', 'retrieveByPK'), $pk_values);
     try{
-      $act->generateNews();      
+      // exceptions
+      if ($model == 'OppVotazioneHasAtto' && $act->getOppVotazione()->getFinale()==1 ||
+          $model == 'OppAttoHasIter' && $act->getOppIter()->getConcluso()==1 && $act->getOppIter()->getFase()!='CONCLUSO')
+        $act->generateNews(1);
+      else
+        $act->generateNews();      
     } catch (Exception $e) {
       echo "Exception: " . $e->getMessage() . "\n";
     }

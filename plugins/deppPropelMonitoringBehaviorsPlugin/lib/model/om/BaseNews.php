@@ -21,7 +21,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 
 	
-	protected $generator_id;
+	protected $generator_primary_keys;
 
 
 	
@@ -38,6 +38,14 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 	
 	protected $priority = 0;
+
+
+	
+	protected $tipo_atto_id;
+
+
+	
+	protected $data_presentazione_atto;
 
 	
 	protected $alreadyInSave = false;
@@ -82,10 +90,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getGeneratorId()
+	public function getGeneratorPrimaryKeys()
 	{
 
-		return $this->generator_id;
+		return $this->generator_primary_keys;
 	}
 
 	
@@ -129,6 +137,35 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	{
 
 		return $this->priority;
+	}
+
+	
+	public function getTipoAttoId()
+	{
+
+		return $this->tipo_atto_id;
+	}
+
+	
+	public function getDataPresentazioneAtto($format = 'Y-m-d H:i:s')
+	{
+
+		if ($this->data_presentazione_atto === null || $this->data_presentazione_atto === '') {
+			return null;
+		} elseif (!is_int($this->data_presentazione_atto)) {
+						$ts = strtotime($this->data_presentazione_atto);
+			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [data_presentazione_atto] as date/time value: " . var_export($this->data_presentazione_atto, true));
+			}
+		} else {
+			$ts = $this->data_presentazione_atto;
+		}
+		if ($format === null) {
+			return $ts;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $ts);
+		} else {
+			return date($format, $ts);
+		}
 	}
 
 	
@@ -181,18 +218,18 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setGeneratorId($v)
+	public function setGeneratorPrimaryKeys($v)
 	{
 
 		
 		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
 		}
 
-		if ($this->generator_id !== $v) {
-			$this->generator_id = $v;
-			$this->modifiedColumns[] = NewsPeer::GENERATOR_ID;
+		if ($this->generator_primary_keys !== $v) {
+			$this->generator_primary_keys = $v;
+			$this->modifiedColumns[] = NewsPeer::GENERATOR_PRIMARY_KEYS;
 		}
 
 	} 
@@ -262,6 +299,39 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setTipoAttoId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->tipo_atto_id !== $v) {
+			$this->tipo_atto_id = $v;
+			$this->modifiedColumns[] = NewsPeer::TIPO_ATTO_ID;
+		}
+
+	} 
+	
+	public function setDataPresentazioneAtto($v)
+	{
+
+		if ($v !== null && !is_int($v)) {
+			$ts = strtotime($v);
+			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [data_presentazione_atto] from input: " . var_export($v, true));
+			}
+		} else {
+			$ts = $v;
+		}
+		if ($this->data_presentazione_atto !== $ts) {
+			$this->data_presentazione_atto = $ts;
+			$this->modifiedColumns[] = NewsPeer::DATA_PRESENTAZIONE_ATTO;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -272,7 +342,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 			$this->generator_model = $rs->getString($startcol + 2);
 
-			$this->generator_id = $rs->getInt($startcol + 3);
+			$this->generator_primary_keys = $rs->getString($startcol + 3);
 
 			$this->related_monitorable_model = $rs->getString($startcol + 4);
 
@@ -282,11 +352,15 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 			$this->priority = $rs->getInt($startcol + 7);
 
+			$this->tipo_atto_id = $rs->getInt($startcol + 8);
+
+			$this->data_presentazione_atto = $rs->getTimestamp($startcol + 9, null);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 8; 
+						return $startcol + 10; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating News object", $e);
 		}
@@ -461,7 +535,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 				return $this->getGeneratorModel();
 				break;
 			case 3:
-				return $this->getGeneratorId();
+				return $this->getGeneratorPrimaryKeys();
 				break;
 			case 4:
 				return $this->getRelatedMonitorableModel();
@@ -474,6 +548,12 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 				break;
 			case 7:
 				return $this->getPriority();
+				break;
+			case 8:
+				return $this->getTipoAttoId();
+				break;
+			case 9:
+				return $this->getDataPresentazioneAtto();
 				break;
 			default:
 				return null;
@@ -488,11 +568,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCreatedAt(),
 			$keys[2] => $this->getGeneratorModel(),
-			$keys[3] => $this->getGeneratorId(),
+			$keys[3] => $this->getGeneratorPrimaryKeys(),
 			$keys[4] => $this->getRelatedMonitorableModel(),
 			$keys[5] => $this->getRelatedMonitorableId(),
 			$keys[6] => $this->getDate(),
 			$keys[7] => $this->getPriority(),
+			$keys[8] => $this->getTipoAttoId(),
+			$keys[9] => $this->getDataPresentazioneAtto(),
 		);
 		return $result;
 	}
@@ -518,7 +600,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 				$this->setGeneratorModel($value);
 				break;
 			case 3:
-				$this->setGeneratorId($value);
+				$this->setGeneratorPrimaryKeys($value);
 				break;
 			case 4:
 				$this->setRelatedMonitorableModel($value);
@@ -532,6 +614,12 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			case 7:
 				$this->setPriority($value);
 				break;
+			case 8:
+				$this->setTipoAttoId($value);
+				break;
+			case 9:
+				$this->setDataPresentazioneAtto($value);
+				break;
 		} 	}
 
 	
@@ -542,11 +630,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCreatedAt($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setGeneratorModel($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setGeneratorId($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setGeneratorPrimaryKeys($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setRelatedMonitorableModel($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setRelatedMonitorableId($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setDate($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setPriority($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTipoAttoId($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setDataPresentazioneAtto($arr[$keys[9]]);
 	}
 
 	
@@ -557,11 +647,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(NewsPeer::ID)) $criteria->add(NewsPeer::ID, $this->id);
 		if ($this->isColumnModified(NewsPeer::CREATED_AT)) $criteria->add(NewsPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(NewsPeer::GENERATOR_MODEL)) $criteria->add(NewsPeer::GENERATOR_MODEL, $this->generator_model);
-		if ($this->isColumnModified(NewsPeer::GENERATOR_ID)) $criteria->add(NewsPeer::GENERATOR_ID, $this->generator_id);
+		if ($this->isColumnModified(NewsPeer::GENERATOR_PRIMARY_KEYS)) $criteria->add(NewsPeer::GENERATOR_PRIMARY_KEYS, $this->generator_primary_keys);
 		if ($this->isColumnModified(NewsPeer::RELATED_MONITORABLE_MODEL)) $criteria->add(NewsPeer::RELATED_MONITORABLE_MODEL, $this->related_monitorable_model);
 		if ($this->isColumnModified(NewsPeer::RELATED_MONITORABLE_ID)) $criteria->add(NewsPeer::RELATED_MONITORABLE_ID, $this->related_monitorable_id);
 		if ($this->isColumnModified(NewsPeer::DATE)) $criteria->add(NewsPeer::DATE, $this->date);
 		if ($this->isColumnModified(NewsPeer::PRIORITY)) $criteria->add(NewsPeer::PRIORITY, $this->priority);
+		if ($this->isColumnModified(NewsPeer::TIPO_ATTO_ID)) $criteria->add(NewsPeer::TIPO_ATTO_ID, $this->tipo_atto_id);
+		if ($this->isColumnModified(NewsPeer::DATA_PRESENTAZIONE_ATTO)) $criteria->add(NewsPeer::DATA_PRESENTAZIONE_ATTO, $this->data_presentazione_atto);
 
 		return $criteria;
 	}
@@ -596,7 +688,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 		$copyObj->setGeneratorModel($this->generator_model);
 
-		$copyObj->setGeneratorId($this->generator_id);
+		$copyObj->setGeneratorPrimaryKeys($this->generator_primary_keys);
 
 		$copyObj->setRelatedMonitorableModel($this->related_monitorable_model);
 
@@ -605,6 +697,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		$copyObj->setDate($this->date);
 
 		$copyObj->setPriority($this->priority);
+
+		$copyObj->setTipoAttoId($this->tipo_atto_id);
+
+		$copyObj->setDataPresentazioneAtto($this->data_presentazione_atto);
 
 
 		$copyObj->setNew(true);

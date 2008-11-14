@@ -45,6 +45,8 @@
 <?php endif ?>
 
 <script type="text/javascript">
+//<![CDATA[
+
   wmd_options = {
 		// format sent to the server.  Use "Markdown" to return the markdown source.
 		output: "Markdown",
@@ -58,8 +60,8 @@
 		// option to automatically add WMD to the first textarea found.  See apiExample.html for usage.
 		autostart: true
 	};
+
+//]]>
 </script>
-
 <div class="wmd-preview" style="float:right"></div>
-
 <script type="text/javascript" language="javascript" src="/js/wmd/wmd.js"></script>

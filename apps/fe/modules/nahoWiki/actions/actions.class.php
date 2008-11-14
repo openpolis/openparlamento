@@ -70,6 +70,10 @@ class nahoWikiActions extends BasenahoWikiActions
     $this->setPage();
     $this->forward404Unless($this->page);
     $this->forward403Unless($this->canView); 
+   
+    // embed javascripts for advanced javascripts
+    $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('jquery.js');
     
     // Generate the username (this is done by the Revision model)
     $tmp_revision = new nahoWikiRevision;
