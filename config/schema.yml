@@ -20,7 +20,7 @@ propel:
     titolo:           { type: longvarchar }
     iniziativa:       { type: integer }
     completo:         { type: boolean }
-    descrizione:      { type: longvarchar }
+    descrizione:      { type: clob }
     seduta:           { type: integer }
     pred:             { type: integer }
     succ:             { type: integer }
