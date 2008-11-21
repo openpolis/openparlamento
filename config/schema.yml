@@ -86,8 +86,8 @@ propel:
     atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
     titolo:           { type: varchar(512) }
-    testo:            { type: longvarchar }
-    file_pdf:         { type: longvarbinary }
+    testo:            { type: clob }
+    file_pdf:         { type: blob }
     url_testo:        { type: varchar(1024) }
     url_pdf:          { type: varchar(1024) }
     created_at:
