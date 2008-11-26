@@ -41,11 +41,19 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 
 	
-	protected $tipo_atto_id;
+	protected $tipo_atto;
 
 
 	
 	protected $data_presentazione_atto;
+
+
+	
+	protected $ramo_votazione;
+
+
+	
+	protected $sede_intervento_id;
 
 	
 	protected $alreadyInSave = false;
@@ -140,10 +148,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getTipoAttoId()
+	public function getTipoAtto()
 	{
 
-		return $this->tipo_atto_id;
+		return $this->tipo_atto;
 	}
 
 	
@@ -166,6 +174,20 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		} else {
 			return date($format, $ts);
 		}
+	}
+
+	
+	public function getRamoVotazione()
+	{
+
+		return $this->ramo_votazione;
+	}
+
+	
+	public function getSedeInterventoId()
+	{
+
+		return $this->sede_intervento_id;
 	}
 
 	
@@ -299,18 +321,18 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setTipoAttoId($v)
+	public function setTipoAtto($v)
 	{
 
 		
 		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
 		}
 
-		if ($this->tipo_atto_id !== $v) {
-			$this->tipo_atto_id = $v;
-			$this->modifiedColumns[] = NewsPeer::TIPO_ATTO_ID;
+		if ($this->tipo_atto !== $v) {
+			$this->tipo_atto = $v;
+			$this->modifiedColumns[] = NewsPeer::TIPO_ATTO;
 		}
 
 	} 
@@ -328,6 +350,38 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if ($this->data_presentazione_atto !== $ts) {
 			$this->data_presentazione_atto = $ts;
 			$this->modifiedColumns[] = NewsPeer::DATA_PRESENTAZIONE_ATTO;
+		}
+
+	} 
+	
+	public function setRamoVotazione($v)
+	{
+
+		
+		
+		if ($v !== null && !is_string($v)) {
+			$v = (string) $v; 
+		}
+
+		if ($this->ramo_votazione !== $v) {
+			$this->ramo_votazione = $v;
+			$this->modifiedColumns[] = NewsPeer::RAMO_VOTAZIONE;
+		}
+
+	} 
+	
+	public function setSedeInterventoId($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->sede_intervento_id !== $v) {
+			$this->sede_intervento_id = $v;
+			$this->modifiedColumns[] = NewsPeer::SEDE_INTERVENTO_ID;
 		}
 
 	} 
@@ -352,15 +406,19 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 			$this->priority = $rs->getInt($startcol + 7);
 
-			$this->tipo_atto_id = $rs->getInt($startcol + 8);
+			$this->tipo_atto = $rs->getString($startcol + 8);
 
 			$this->data_presentazione_atto = $rs->getTimestamp($startcol + 9, null);
+
+			$this->ramo_votazione = $rs->getString($startcol + 10);
+
+			$this->sede_intervento_id = $rs->getInt($startcol + 11);
 
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 10; 
+						return $startcol + 12; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating News object", $e);
 		}
@@ -550,10 +608,16 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 				return $this->getPriority();
 				break;
 			case 8:
-				return $this->getTipoAttoId();
+				return $this->getTipoAtto();
 				break;
 			case 9:
 				return $this->getDataPresentazioneAtto();
+				break;
+			case 10:
+				return $this->getRamoVotazione();
+				break;
+			case 11:
+				return $this->getSedeInterventoId();
 				break;
 			default:
 				return null;
@@ -573,8 +637,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			$keys[5] => $this->getRelatedMonitorableId(),
 			$keys[6] => $this->getDate(),
 			$keys[7] => $this->getPriority(),
-			$keys[8] => $this->getTipoAttoId(),
+			$keys[8] => $this->getTipoAtto(),
 			$keys[9] => $this->getDataPresentazioneAtto(),
+			$keys[10] => $this->getRamoVotazione(),
+			$keys[11] => $this->getSedeInterventoId(),
 		);
 		return $result;
 	}
@@ -615,10 +681,16 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 				$this->setPriority($value);
 				break;
 			case 8:
-				$this->setTipoAttoId($value);
+				$this->setTipoAtto($value);
 				break;
 			case 9:
 				$this->setDataPresentazioneAtto($value);
+				break;
+			case 10:
+				$this->setRamoVotazione($value);
+				break;
+			case 11:
+				$this->setSedeInterventoId($value);
 				break;
 		} 	}
 
@@ -635,8 +707,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[5], $arr)) $this->setRelatedMonitorableId($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setDate($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setPriority($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTipoAttoId($arr[$keys[8]]);
+		if (array_key_exists($keys[8], $arr)) $this->setTipoAtto($arr[$keys[8]]);
 		if (array_key_exists($keys[9], $arr)) $this->setDataPresentazioneAtto($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setRamoVotazione($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setSedeInterventoId($arr[$keys[11]]);
 	}
 
 	
@@ -652,8 +726,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(NewsPeer::RELATED_MONITORABLE_ID)) $criteria->add(NewsPeer::RELATED_MONITORABLE_ID, $this->related_monitorable_id);
 		if ($this->isColumnModified(NewsPeer::DATE)) $criteria->add(NewsPeer::DATE, $this->date);
 		if ($this->isColumnModified(NewsPeer::PRIORITY)) $criteria->add(NewsPeer::PRIORITY, $this->priority);
-		if ($this->isColumnModified(NewsPeer::TIPO_ATTO_ID)) $criteria->add(NewsPeer::TIPO_ATTO_ID, $this->tipo_atto_id);
+		if ($this->isColumnModified(NewsPeer::TIPO_ATTO)) $criteria->add(NewsPeer::TIPO_ATTO, $this->tipo_atto);
 		if ($this->isColumnModified(NewsPeer::DATA_PRESENTAZIONE_ATTO)) $criteria->add(NewsPeer::DATA_PRESENTAZIONE_ATTO, $this->data_presentazione_atto);
+		if ($this->isColumnModified(NewsPeer::RAMO_VOTAZIONE)) $criteria->add(NewsPeer::RAMO_VOTAZIONE, $this->ramo_votazione);
+		if ($this->isColumnModified(NewsPeer::SEDE_INTERVENTO_ID)) $criteria->add(NewsPeer::SEDE_INTERVENTO_ID, $this->sede_intervento_id);
 
 		return $criteria;
 	}
@@ -698,9 +774,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 		$copyObj->setPriority($this->priority);
 
-		$copyObj->setTipoAttoId($this->tipo_atto_id);
+		$copyObj->setTipoAtto($this->tipo_atto);
 
 		$copyObj->setDataPresentazioneAtto($this->data_presentazione_atto);
+
+		$copyObj->setRamoVotazione($this->ramo_votazione);
+
+		$copyObj->setSedeInterventoId($this->sede_intervento_id);
 
 
 		$copyObj->setNew(true);

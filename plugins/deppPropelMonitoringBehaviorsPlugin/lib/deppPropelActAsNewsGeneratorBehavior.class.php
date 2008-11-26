@@ -35,6 +35,13 @@ class deppPropelActAsNewsGeneratorBehavior
   }
   
 
+  /**
+   * return an array of primary keys for the object
+   *
+   * @param  BaseObject object - the object
+   * @return associative array of primary keys (col_name => id_value)
+   * @author Guglielmo Celata
+   **/
   public function getPrimaryKeysArray(BaseObject $object)
   {
     // get table map and columns map for this generator
@@ -66,7 +73,6 @@ class deppPropelActAsNewsGeneratorBehavior
   {
     // fetch the monitorable objects related to this generator
     $monitorable_objects = $this->getRelatedMonitorableObjects($object);
-
     foreach($monitorable_objects as $obj)
     {
       $n = new News();
@@ -80,7 +86,7 @@ class deppPropelActAsNewsGeneratorBehavior
 
       if ($obj instanceof OppAtto)
       {
-        $n->setTipoAttoId($obj->getOppTipoAtto()->getId());
+        $n->setTipoAtto($obj->getOppTipoAtto()->getTipo());
         $n->setDataPresentazioneAtto($obj->getDataPres());
       }
       
@@ -92,6 +98,7 @@ class deppPropelActAsNewsGeneratorBehavior
         $n->setPriority($priority);
       else
         $n->setPriority($object->getNewsPriority());
+
       $n->save();
     }
   }
@@ -228,6 +235,7 @@ class deppPropelActAsNewsGeneratorBehavior
   /**
    * Intercepts the save method
    * and generates a news in the sf_news_cache table.
+   * For VotazioneHasAtto and Intervento, generate group news
    *
    * @return void
    * @author Guglielmo Celata
@@ -236,10 +244,20 @@ class deppPropelActAsNewsGeneratorBehavior
   {
     if ($this->wasNew === true)
     {
-      if (isset($object->priority_override) && $object->priority_override > 0)
-        $object->generateNews($object->priority_override);
+      // allow news_generation_skipping
+      if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;
+      
+      // OppVotazioneHasAttos and OppInterventos, when not override, generate group news
+      if ($object instanceof OppVotazioneHasAtto && !$object->priority_override || 
+          $object instanceof OppIntervento)
+        $object->generateUnlessAlreadyHasGroupNews();        
       else
-        $object->generateNews();
+      {
+        if (isset($object->priority_override) && $object->priority_override > 0)
+          $object->generateNews($object->priority_override);
+        else
+          $object->generateNews();        
+      }
         
       unset($this->wasNew);    
     }
@@ -256,14 +274,14 @@ class deppPropelActAsNewsGeneratorBehavior
     try
     {
       $c = new Criteria();
-      $c->add(NewsPeer::GENERATOR_ID, $object->getPrimaryKey());
-      $c->add(NewsPeer::GENERATOR_MODEL, get_class($object));
+      $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($object));
+      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $object->getPrimaryKey());
       NewsPeer::doDelete($c);          
     }
     catch (Exception $e)
     {
-      throw new deppPropelActAsNewsGeneratException(
-        'Unable to delete monitorable object related records');
+      throw new deppPropelActAsNewsGeneratorException(
+        'Unable to delete related monitorable object records');
     }
 
   }

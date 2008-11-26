@@ -18,7 +18,7 @@ class BasedeppTaggingActions extends sfActions
     $tags_as_string = deppPropelActAsTaggableToolkit::getTagsAsString(strip_tags($this->getRequestParameter('usertags')));
 
     // a setTags remove the tags and add them back
-    $content->setTags(tags_string);
+    $content->setTags(tags_as_string);
     $content->save();
 
     // get all tags, forcing the cache override (directly from the DB)

@@ -2,8 +2,8 @@
 require_once(dirname(__FILE__).'/../../../../../plugins/deppPropelActAsTaggableBehaviorPlugin/modules/deppTagging/lib/BasedeppTaggingActions.class.php');
 
 /**
-  * deppPropelActAsTaggableBehaviorPlugin actions. 
-  * Feel free to override this class in your dedicated app module.
+ * deppPropelActAsTaggableBehaviorPlugin actions. 
+ * Feel free to override this class in your dedicated app module.
  *
  * @package    plugins
  * @subpackage deppPropelActAsTaggableBehaviorPlugin
@@ -12,84 +12,148 @@ require_once(dirname(__FILE__).'/../../../../../plugins/deppPropelActAsTaggableB
 class deppTaggingActions extends BasedeppTaggingActions
 {
 
-    public function executeEditAjax()
+  public function executeUsertagsAutocomplete() {
+		$this->my_str = $this->getRequestParameter('value');
+
+		$c = new Criteria();
+		$c->add(TagPeer::TRIPLE_VALUE, $this->my_str."%", Criteria::LIKE);
+		$c->setLimit(10);
+		$this->tags = TagPeer::getAll($c, array('is_triple' => true, 
+		                                        'return' => 'value'));
+
+	}
+
+
+  public function executeAddAjax()
+  {
+    // fetch request parameters and taggable content
+    $content_id = $this->getRequestParameter('content_id');
+    $content_peer = $this->getRequestParameter('content_type') . 'Peer';
+    $content = call_user_func(array($content_peer, 'retrieveByPK'), $content_id);
+    $usertags = strip_tags($this->getRequestParameter('usertags'));
+
+    // transform tag values into triple names
+    // add the tag to the associated tag pool
+    $tags_names = $this->_getNamesFromValues($usertags);
+    $content->addTag($tags_names);
+    $content->save();
+
+    $this->_fetchTags($content);
+    
+    
+    $this->setTemplate('ajaxAssociatedTags');
+  }
+
+
+
+  public function executeAjaxRemoveTagFromAssociatedTags()
+  {
+    $isAjax = $this->getRequest()->isXmlHttpRequest();
+    if (!$isAjax) return sfView::noAjax;
+
+    // identify the content
+    $content_id = $this->getRequestParameter('content_id');
+    $content_peer = $this->getRequestParameter('content_type') . 'Peer';
+    $content = call_user_func(array($content_peer, 'retrieveByPK'), $content_id);
+
+    // remove the tag from the associated tag pool
+    $tag_name = $this->getRequestParameter('tag_name');
+    $content->removeTag($tag_name);
+    $content->save();
+
+    $this->_fetchTags($content);
+    
+    $this->setTemplate('ajaxAssociatedTags');
+  }
+
+  /**
+   * transform a list of tag values into an array of tag names
+   * the criterion is the following:
+   * - a tag value that is not already among the triple_values in sf_tag, gets the user:tag ns and key
+   * - a tag value that is already existing, gets its own ns and key
+   *
+   * it is assumed that the triple_value field is unique, which is not the case for the plugin,
+   * but can safely be assumed so thanks to this function 
+   * (no user will ever be able to insert an already existing tag with ns=user)
+   *
+   * @param  String
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  private function _getNamesFromValues($values)
+  {
+    $tagvalues = explode(",", $values);
+    $tagnames = array();
+    foreach ($tagvalues as $tagvalue)
     {
-      // fetch request parameters and taggable content
-      $content_id = $this->getRequestParameter('content_id');
-      $content_peer = $this->getRequestParameter('content_type') . 'Peer';
-      $content = call_user_func(array($content_peer, 'retrieveByPK'), $content_id);
-
-      // store tags passed in the input field and teseo tags into DB
-  	  $teseo_triple_tags = $content->getTags(array('is_triple' => true,
-                                                   'namespace' => 'teseo',
-                                                   'return'    => 'tag'));
-   	  $geo_triple_tags = $content->getTags(array('is_triple' => true,
-                                                 'namespace' => 'geoteseo',
-                                                 'return'    => 'tag'));
-      $teseo_triple_tags = array_merge($teseo_triple_tags, $geo_triple_tags);
-                                                   
-                                                   
-      $tags_as_string = deppPropelActAsTaggableToolkit::transformTagStringIntoTripleString(strip_tags($this->getRequestParameter('usertags')), 'user', 'tag');
-      $teseo_triple_tags_as_string = deppPropelActAsTaggableToolkit::getTagsAsString($teseo_triple_tags); 
-      $complete_tags_string = $tags_as_string . 
-        ( count($teseo_triple_tags)>0 ?", $teseo_triple_tags_as_string":'') ;
-
-      // a setTags remove the tags and add them back
-      // but it's only possible to remove others' tags while moderator (it's embedded in the save() method)
-      // and a moderator always has others' tags in the input field
-      $content->setTags($complete_tags_string);
-      $content->save();
-
-      // get all tags, forcing the cache override (directly from the DB)
-      $tags = $content->getTags(array('is_triple' => true,
-                                      'key'       => 'tag',
-                                      'return'    => 'value'),
-                                true);
-
-      // if necessary, get users' tags
-      $anonymous_tagging =  sfConfig::get(
-        sprintf('propel_behavior_deppPropelActAsTaggableBehavior_%s_anonymous_tagging', 
-                get_class($content)),
-        sfConfig::get('app_deppPropelActAsTaggableBehaviorPlugin_anonymous_tagging', true));
-      $user = @sfContext::getInstance()->getUser();
-
-      $user_tags = array();
-      $user_id = deppPropelActAsTaggableToolkit::getUserId();
-      if (!$anonymous_tagging && $user->isAuthenticated() &&
-          !is_null($user_id) && $user_id !== '')
+      $c = new Criteria();
+      $c->add(TagPeer::TRIPLE_VALUE, $tagvalue);
+      $tag = TagPeer::doSelectOne($c);
+      if ($tag instanceof Tag)
       {
-    	  $user_tags = $content->getUserTags(array('is_triple' => true,
-                                                 'namespace' => 'user',
-                                                 'key'       => 'tag',
-                                                 'return'    => 'value'),
-                                            $user_id);      
-      } 	
-
-  	  $teseo_tags = $content->getTags(array('is_triple' => true,
-  	                                        'namespace' => 'teseo',
-                                            'return'    => 'value'));
-  	  $geo_tags = $content->getTags(array('is_triple' => true,
-	                                        'namespace' => 'geoteseo',
-                                          'return'    => 'value'));
-      $teseo_tags = array_merge($teseo_tags, $geo_tags);
-
-      // set the value to be returned by AJAX
-      // it's the visible string, with <spam> tags  
-      $this->value = deppPropelActAsTaggableToolkit::getTagsAsTaggedString(
-          array('other' => array_diff($tags, $user_tags, $teseo_tags),
-                'user'  => $user_tags,
-                'teseo' => $teseo_tags));
+        $tagnames []= $tag->getName();
+      } else {
+        $tagnames []= deppPropelActAsTaggableToolkit::transformTagStringIntoTripleString($tagvalue, 'user', 'tag');
+      }
     }
+    
+    return implode(",", $tagnames);
+    
+  }
 
-    public function executeEditableTagsAutocomplete() {
-  		$this->my_str = $this->getRequestParameter('value');
+  private function _fetchTags($content)
+  {
+    // read some config parameters and defaults
+    $anonymous_tagging =  sfConfig::get(
+      sprintf('propel_behavior_deppPropelActAsTaggableBehavior_%s_anonymous_tagging', 
+              get_class($content)),
+      sfConfig::get('app_deppPropelActAsTaggableBehaviorPlugin_anonymous_tagging', true));
+    $allows_tagging_removal =  sfConfig::get(
+      sprintf('propel_behavior_deppPropelActAsTaggableBehavior_%s_allows_tagging_removal', 
+              get_class($content)),
+      sfConfig::get('app_deppPropelActAsTaggableBehaviorPlugin_allows_tagging_removal', 'all'));
+    $tagging_removal_credentials =  sfConfig::get(
+      sprintf('propel_behavior_deppPropelActAsTaggableBehavior_%s_tagging_removal_credentials', 
+              get_class($content)),
+      sfConfig::get('app_deppPropelActAsTaggableBehaviorPlugin_tagging_removal_credentials', array()));
 
-  		$c = new Criteria();
-  		$c->add(TagPeer::TRIPLE_VALUE, $this->my_str."%", Criteria::LIKE);
-  		$this->tags = TagPeer::getAll($c, array('is_triple' => true, 
-  		                                        'key'       => 'tag', 
-  		                                        'return' => 'value'));
 
-  	}
+    // fetch the associated tags
+    $this->tags = $content->getTags(array('is_triple' => true));
+
+    // sono considerati teseo_tags tutti i tag con ns teseo e geoteseo
+	  $teseo_tags = $content->getTags(array('is_triple' => true,
+                                          'namespace' => 'teseo',
+                                          'return'    => 'value'));
+
+	  $geo_tags = $content->getTags(array('is_triple' => true,
+                                        'namespace' => 'geoteseo',
+                                        'return'    => 'value'));
+    $this->teseo_tags = array_merge($teseo_tags, $geo_tags);
+
+
+    // tag aggiunti da utenti reali (user_id in not null)
+	  $this->user_tags = $content->getUserTags(array('is_triple' => true,
+                                                   'return'    => 'value'));
+                                                   
+    // i removable_tags sono quelli aggiunti dagli utenti (di default)
+    $this->removable_tags = $this->user_tags;
+    
+    // tag aggiunti dall'utente loggato e override eventuale dei removable_tags 
+    // (se la configurazione lo prevede)
+    $this->my_tags = array(); 
+    $user = @sfContext::getInstance()->getUser();
+    $user_id = deppPropelActAsTaggableToolkit::getUserId();
+    if (!$anonymous_tagging && $user->isAuthenticated() &&
+        !is_null($user_id) && $user_id !== '')
+    {
+  	  $this->my_tags = $content->getUserTags(array('is_triple' => true,
+                                                   'return'    => 'value'),
+                                                   $user_id);
+      if ($allows_tagging_removal == 'self' &&
+          !$user->hasCredential($tagging_removal_credentials, false))      
+        $this->removable_tags = $this->my_tags;
+    }
+  }
 
 }

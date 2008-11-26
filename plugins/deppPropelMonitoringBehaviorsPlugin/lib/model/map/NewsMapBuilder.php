@@ -48,9 +48,13 @@ class NewsMapBuilder {
 
 		$tMap->addColumn('PRIORITY', 'Priority', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('TIPO_ATTO_ID', 'TipoAttoId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('TIPO_ATTO', 'TipoAtto', 'string', CreoleTypes::CHAR, false, 1);
 
 		$tMap->addColumn('DATA_PRESENTAZIONE_ATTO', 'DataPresentazioneAtto', 'int', CreoleTypes::TIMESTAMP, false, null);
+
+		$tMap->addColumn('RAMO_VOTAZIONE', 'RamoVotazione', 'string', CreoleTypes::CHAR, false, 1);
+
+		$tMap->addColumn('SEDE_INTERVENTO_ID', 'SedeInterventoId', 'int', CreoleTypes::INTEGER, false, null);
 
 	} 
 } 

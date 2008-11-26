@@ -55,6 +55,7 @@ sfPropelBehavior::registerHooks('deppPropelActAsNewsGeneratorBehavior', array (
 sfPropelBehavior::registerMethods('deppPropelActAsNewsGeneratorBehavior', array (
   array('deppPropelActAsNewsGeneratorBehavior', 'generateNews'),    
   array('deppPropelActAsNewsGeneratorBehavior', 'getGeneratedNews'),
+  array('deppPropelActAsNewsGeneratorBehavior', 'getPrimaryKeysArray'),
   array('deppPropelActAsNewsGeneratorBehavior', 'getNewsDate'),    
   array('deppPropelActAsNewsGeneratorBehavior', 'getNewsPriority'),      
   array('deppPropelActAsNewsGeneratorBehavior', 'getRelatedMonitorableObjects'),  

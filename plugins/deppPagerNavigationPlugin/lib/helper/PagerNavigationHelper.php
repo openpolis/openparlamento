@@ -127,8 +127,8 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links=5)
     if ($pager->getPage() != 1)
     {
       if ($has_first_last)
-        $navigation .= link_to(image_tag('/sf/images/sf_admin/first.png', 'align=absmiddle&alt=Primo'), $uri.'1');
-      $navigation .= link_to(image_tag('/sf/images/sf_admin/previous.png', 'align=absmiddle&alt=Precedente'), $uri.$pager->getPreviousPage()).'&nbsp;';
+        $navigation .= link_to(image_tag('/images/first.png', 'align=absmiddle alt=Primo'), $uri.'1');
+      $navigation .= link_to(image_tag('/images/previous.png', 'align=absmiddle alt=Precedente'), $uri.$pager->getPreviousPage()).'&nbsp;';
     }
  
     // Pages one by one
@@ -142,9 +142,9 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links=5)
     // Next and last page
     if ($pager->getPage() != $pager->getLastPage())
     {
-      $navigation .= '&nbsp;'.link_to(image_tag('/sf/images/sf_admin/next.png', 'align=absmiddle&alt=Successivo'), $uri.$pager->getNextPage());
+      $navigation .= '&nbsp;'.link_to(image_tag('/images/next.png', 'align=absmiddle alt=Successivo'), $uri.$pager->getNextPage());
       if ($has_first_last)
-        $navigation .= link_to(image_tag('/sf/images/sf_admin/last.png', 'align=absmiddle&alt=Ultimo'), $uri.$pager->getLastPage());
+        $navigation .= link_to(image_tag('/images/last.png', 'align=absmiddle alt=Ultimo'), $uri.$pager->getLastPage());
     }
  
   }

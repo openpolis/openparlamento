@@ -54,7 +54,6 @@ div.autocomplete ul li {
   display:block;
   margin:0;
   padding:2px;
-  height: 1.2em;
   cursor:pointer;
 }
 
@@ -105,4 +104,16 @@ ul#my_tags li span.remover {
 #wiki-edit { margin-top: 10px; }
 .nahoWiki form#edit_page.wiki-form {width: 50%; float:left;}
 .wmd-preview {width: 48%; float: right; margin-top: 50px; height: 280px; overflow: auto; font-size: 12px;}
+
+
+#tag_show { display: inline; }
+#tag_show div { display: inline; padding: 2px;}
+#tag_show div.teseo { background-color: #fdd; }
+#tag_show div.user { background-color: #dfd;}
+#tag_show div.my { background-color: #ddf;}
+#tag_edit { margin-top: 7px; }
+#tag_show span.tag:hover, #tag_show span.remover:hover {
+  cursor:pointer; color: darkblue; text-decoration: underline;
+}
+
 

@@ -157,7 +157,7 @@ $t->ok($user->countMonitoredObjects(TEST_MONITORABLE) == 1, 'the user is always 
 
 
 
-// test news generator
+// test news generators
 $t->diag('Create a generator object');
 $obj3 = _create_object('Generatore di test', TEST_GENERATOR);
 $obj3->setMonitorableId($obj1->getPrimaryKey());

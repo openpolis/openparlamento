@@ -8,6 +8,23 @@
  * file that was distributed with this source code.
  */
 
+
+function get_classes_for_tag($tag, $teseo_tags, $user_tags, $my_tags)
+{
+  $classes = array();
+  if (in_array($tag, $teseo_tags)) $classes[]= 'teseo';
+  if (in_array($tag, $user_tags)) $classes []= 'user';
+  if (in_array($tag, $my_tags)) $classes []= 'my';
+  return implode(" ", $classes);
+}
+
+function is_removable($tag, $removable_tags)
+{
+  if (in_array($tag, $removable_tags)) return true;
+  else return false;
+}
+
+
 /**
  * Generates a tag cloud from a tags array.
  *

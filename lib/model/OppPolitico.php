@@ -157,6 +157,25 @@ class OppPolitico extends BaseOppPolitico
 	
     return $count;    
   }
+  
+  
+  public function delete($con=null)
+  {
+    try
+    {
+      $c = new Criteria();
+      $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppPolitico');
+      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getPrimaryKey());
+      NewsPeer::doDelete($c);          
+    }
+    catch (Exception $e)
+    {
+      throw new deppPropelActAsNewsGeneratorException(
+        'Unable to delete related monitorable object records');
+    }
+    
+    parent::delete($con);
+  }
     
 }
 

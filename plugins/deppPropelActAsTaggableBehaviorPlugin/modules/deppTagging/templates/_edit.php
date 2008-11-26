@@ -1,4 +1,4 @@
-<?php echo use_helper('Javascript') ?>
+ <?php echo use_helper('Javascript') ?>
 
 
 <div id="tag_associati" style="margin-bottom: 20px">

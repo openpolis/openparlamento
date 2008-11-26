@@ -54,6 +54,40 @@ quelle da Elenco (p. 2) e quelle da foglia (p. 3). Le eccezioni sono:
  * raggruppamenti: per le votazioni e gli interventi, è considerata una notizia interessante quando almeno una votazione 
  o un intervento sono accaduti, non ogni votazione o intervento (che sarebbe un overflow di informazioni).
  * live: nelle foglie, le notizie live vanno aggiunte a quelle cached, (merge)
+ 
+### Raggruppamenti
+Per le votazioni e gli interventi, la notizia è se ce ne sia stato almeno uno. 
+ * Votazioni: 
+   * è una notizia con priorità 1 se si è votato, in un certo giorno, in una sede (camera o senato)
+     questa notizia con priorità 1 non deve apparire nella foglia (è un'eccezione?)
+   * è una notizia con priorità 2 se si è votato, in un certo giorno, in una sede, su atti di un certo tipo
+   * è una notizia legata a un atto, con priorità 3, ogni votazione, in quel giorno, su quell'atto (non importa di quanti politici) 
+   * è una notizia legata a un politico, con priorità 3, se il politico, in quel giorno, ha votato (non importa quanti atti)
+ * Interventi:
+   * è una notizia con priorità 1 se c'è stato un intervento, in un certo giorno, in una sede
+   * è una notizia con priorità 2 se c'è stato un intervento, in un certo giorno, in una sede, su atti di un certo tipo 
+   * è notizia legata a un atto, con priorità 3, se ci sono stati, in quel giorno, interventi su quell'atto
+   * è notizia legata a un politico, con priorità 3, se è intervenuto almeno una volta in quel giorno
+
+Nelle pagine degli elenchi ddl o altri atti, vanno incluse le notizie con priorità <= 2, ma, per le votazioni, 
+solo quelle con priorità 2. Quindi:
+`
+ (GeneratorModel != 'OppVotazioneHasAtto' AND Priority <= 2) OR 
+ (GeneratorModel == 'OppVotazioneHasAtto' AND Priority == 2)
+`
+   
+Per cachare questo tipo di notizie, è inutile inserire tutti i record generati da OppAttoHasVotazione o OppIntervento.
+Basta inserire un solo record, che marca la notizia e che deve essere controllata in seguito. E' un pò più lunga e onerosa
+la generazione della notizia, ma il numero di record in sf_news_cache è ridotto al minimo.
+
+Si può modificare la generateNews(), aggiungendo un override in OppVotazioneHasAtto e OppIntervento, 
+così come è stato fatto per le votazioni finali e gli iter conclusivi. (nel metodo save, perché la generateNews non si 
+può overridare).
+
+In questo modo il plugin non viene toccato dalle eccezioni, che era il criterio per cui è stato implementato
+l'override del metodo save.
+
+Quindi parto da OppVotazioneHasAtto.
 
 Note sull’estrazione delle notizie
 ----------------------------------

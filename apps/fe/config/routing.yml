@@ -10,6 +10,10 @@ argomento:
   url:   /argomento/:id
   param: { module: argomento, action: index }
 
+tag:
+  url:  /tag/:tag_name
+  param: { module: argomento, action: index }
+
 teseo:
   url:   /teseo/:id
   param: { module: teseo, action: index }

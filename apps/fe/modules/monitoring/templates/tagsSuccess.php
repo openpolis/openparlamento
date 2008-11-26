@@ -36,23 +36,34 @@ top_terms.each( function(el) {
   })  
 });
 
-
+/**
+ * Assegna observer per eventi dei my_tags
+ */
 refresh_mytags_observers = function(){
   var lis = $$('#my_tags li');
   lis.each( function(el) {
+    // per l'elemento nascosto, skip 
     if (el.descendants().length == 0) return;
-    remover = el.firstDescendant();
-    tag = remover.next();
-    tag.observe('click', function(event) {
-      var elt = Event.element(event);
-      alert('Notizie presto!');
-    });  
+    
+    // mouseover e mouseout su elemento, mostrano la X della rimozione
     el.observe('mouseover', function(event) {
       el.firstDescendant().style.display = 'inline';
     });
     el.observe('mouseout', function(event) {
       el.firstDescendant().style.display = 'none';
     });
+
+    // identifica remover e tag
+    remover = el.firstDescendant();
+    tag = remover.next();
+
+    // TODO: click sul tag, mostra le notizie
+    tag.observe('click', function(event) {
+      var elt = Event.element(event);
+      alert('Notizie presto!');
+    });  
+
+    // click sulla X per rimuovere il tag dai miei tag
     remover.observe('click', function(event) {
       var elt = Event.element(event);
       unselect_tag(elt.up());

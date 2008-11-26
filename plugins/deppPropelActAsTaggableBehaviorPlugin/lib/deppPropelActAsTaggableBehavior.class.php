@@ -210,6 +210,7 @@ class deppPropelActAsTaggableBehavior
     }
   }
 
+
   /**
    * Retrieves from the database tags that have been atached to the object.
    * Once loaded, this saved tags list is cached and updated in memory.
@@ -252,14 +253,13 @@ class deppPropelActAsTaggableBehavior
 
   /**
    * Retrieves from the database tags that have been attached to the object by a user
+   * If the user_id parameter is not passed, then retrieve all tags attached by the users (user_id is not null)
    *
    * @param      BaseObject  $object
    * @param      integer     $user_id
    */
-  private function getUserSavedTags(BaseObject $object, $user_id)
-  {
-    $user_id = deppPropelActAsTaggableToolkit::getUserId();
-    
+  private function getUserSavedTags(BaseObject $object, $user_id = null)
+  {    
     $c = new Criteria();
     $c->add(TaggingPeer::TAGGABLE_ID, $object->getPrimaryKey());
     $c->add(TaggingPeer::TAGGABLE_MODEL, get_class($object));
@@ -267,6 +267,8 @@ class deppPropelActAsTaggableBehavior
     if (!is_null($user_id) && $user_id != '')
     {
       $c->add(TaggingPeer::USER_ID, $user_id);
+    } else {
+      $c->add(TaggingPeer::USER_ID, null, Criteria::ISNOTNULL);
     }
     $saved_tags = TagPeer::doSelect($c);
     $tags = array();
@@ -357,7 +359,7 @@ class deppPropelActAsTaggableBehavior
    * @param      Array       $options
    * @param      integer     $user_id
    */
-  public function getUserTags(BaseObject $object, $options = array(), $user_id)
+  public function getUserTags(BaseObject $object, $options = array(), $user_id = null)
   {
     $tags = $this->getUserSavedTags($object, $user_id);
 

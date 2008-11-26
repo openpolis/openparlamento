@@ -17,7 +17,12 @@ class argomentoActions extends sfActions
   public function executeIndex()
   {
     $c = new Criteria();
-    $c->add(OppTeseottPeer::ID, $this->getRequestParameter('id'), Criteria::EQUAL );
+
+    if ($this->hasRequestParameter('id'))
+      $c->add(OppTeseottPeer::ID, $this->getRequestParameter('id') );
+    elseif ($this->hasRequestParameter('tag_name'))
+      $c->add(sfTagPeer::NAME, $this->getRequestParameter('tag_name') );
+    
     $this->argomento = OppTeseottPeer::doSelectOne($c);
     $this->forward404Unless($this->argomento);
 
