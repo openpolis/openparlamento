@@ -6,9 +6,9 @@ generator:
 
     fields:
       n_monitoring_users: {name: "N Monitor"}
-      triple_namespace:   {name: "Namespace"}
-      triple_key:         {name: "Key"}
-      triple_value:       {name: "Tag"}
+      triple_namespace:   {name: "Namespace", params: "disabled=true"}
+      triple_key:         {name: "Key", params: "disabled=true"}
+      triple_value:       {name: "Tag", params: "disabled=true"}
       associated_tts_list:     {name: "Teseo TT"}
 
     list:
@@ -17,6 +17,8 @@ generator:
       filters:         [triple_namespace, triple_value]
       object_actions:
         _edit:         -
+      actions:
+        _create:      none
 
     edit: 
       title:           "Modifica tel Tag %%triple_value%% (%%triple_namespace%%)"
@@ -25,7 +27,7 @@ generator:
         "Top Terms":   [_associated_tts_list, tag_tt]
       fields: 
         name: 
-          params:      size=116x3
+          params:      size=116x3 disabled=true
         associated_tts_list: 
           name:        "Top Term associati"
         tag_tt:          

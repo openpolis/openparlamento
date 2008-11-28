@@ -12,11 +12,10 @@ generator:
       filters:        [denominazione]
       object_actions:
         _edit:        -
-
     edit: 
       title:          "Modifica del TopTerm %%denominazione%%"
       display:        [denominazione, _associated_tags]
       fields: 
         associated_tags:  { name: "Tag associati"}
         denominazione: 
-          params:     size=116x3
+          params:     "size=116x3 disabled=true"
