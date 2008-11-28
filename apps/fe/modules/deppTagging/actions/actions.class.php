@@ -34,13 +34,14 @@ class deppTaggingActions extends BasedeppTaggingActions
 
     // transform tag values into triple names
     // add the tag to the associated tag pool
-    $tags_names = $this->_getNamesFromValues($usertags);
-    $content->addTag($tags_names);
-    $content->save();
+    if ($usertags != '')
+    {
+      $tags_names = $this->_getNamesFromValues($usertags);
+      $content->addTag($tags_names);
+      $content->save();      
+    }
 
     $this->_fetchTags($content);
-    
-    
     $this->setTemplate('ajaxAssociatedTags');
   }
 
