@@ -15,7 +15,7 @@ class OppAttoHasIter extends BaseOppAttoHasIter
   {
     if ($this->getOppIter()->getConcluso() == 1 && $this->getOppIter()->getFase() != 'CONCLUSO')
       $this->priority_override = 1;
-    parent::save();
+    return parent::save();
   }
 }
 

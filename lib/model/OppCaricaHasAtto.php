@@ -17,7 +17,7 @@ class OppCaricaHasAtto extends BaseOppCaricaHasAtto
       $this->skip_news_generation = true;
     }
     
-    parent::save();
+    $res = parent::save();
     
     // force generation of another news related to politico in any case
     $n = new News();
@@ -34,6 +34,7 @@ class OppCaricaHasAtto extends BaseOppCaricaHasAtto
 
     $n->save();
     
+    return $res;
 
   }
   
