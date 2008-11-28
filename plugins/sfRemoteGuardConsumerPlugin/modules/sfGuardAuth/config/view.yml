@@ -1,0 +1,3 @@
+default:
+  stylesheets:    [main, admin, /sfRemoteGuardConsumerPlugin/css/style]
+  

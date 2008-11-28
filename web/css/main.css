@@ -31,8 +31,6 @@ body
 ul.menu { margin-bottom:50px }
 ul.menu li { display:inline; margin-left:20px; font-size:1.1em; list-style-type:none; }
 
-
-
 div.autocomplete {
   margin:0px;
   padding:0px;
@@ -59,20 +57,6 @@ div.autocomplete ul li {
 
 form#comment-form input.text { width: 200px; margin-bottom: 4px;}
 form#comment-form input.text[readonly='readonly'] { color: #999;}
-
-
-
-#sf_guard_auth_form {margin-top: 100px; width: 400px; margin-left: auto; margin-right: auto;}
-#sf_guard_auth_form .title {text-align: center; font-weight: bold;  font-size: 18px;}
-#sf_guard_auth_form .form-row {margin:8px;}
-  #sf_guard_auth_form .form-row label {display: block; width: 120px; float: left; text-align: right; padding-top: 6px; padding-right: 10px;  font-size: 
-14px;}
-#sf_guard_auth_form .form-row input {height: 20px; width: 205px; border: 1px solid gray; padding: 3px;  font-size: 16px;}
-#sf_guard_auth_form fieldset { margin-bottom: 10px; border: 0px;}
-#sf_guard_auth_remember label { padding-top: 0px !important;}
-#sf_guard_auth_forgot_password { margin-left: 1em; }
-#sf_guard_auth_form input[type=submit] {font-size: 14px; margin-left: 100px;}
-#sf_guard_auth_form .form_error {font-size: 10px; color: red; margin-bottom: 5px;}
 
 
 #top_terms_drill_down div.tags ul { margin-bottom:10px }
@@ -115,5 +99,6 @@ ul#my_tags li span.remover {
 #tag_show span.tag:hover, #tag_show span.remover:hover {
   cursor:pointer; color: darkblue; text-decoration: underline;
 }
+
 
 

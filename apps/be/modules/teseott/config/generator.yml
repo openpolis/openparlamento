@@ -1,0 +1,22 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppTeseott
+    theme:            default
+
+    fields:
+
+    list:
+      title:          "Elenco dei TopTerms Teseo"
+      display:        [=denominazione]
+      filters:        [denominazione]
+      object_actions:
+        _edit:        -
+
+    edit: 
+      title:          "Modifica del TopTerm %%denominazione%%"
+      display:        [denominazione, _associated_tags]
+      fields: 
+        associated_tags:  { name: "Tag associati"}
+        denominazione: 
+          params:     size=116x3

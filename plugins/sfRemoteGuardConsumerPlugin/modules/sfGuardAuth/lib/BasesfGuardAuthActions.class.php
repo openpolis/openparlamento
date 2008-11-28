@@ -22,10 +22,10 @@ class BasesfGuardAuthActions extends sfActions
     $user = $this->getUser();
     if ($this->getRequest()->getMethod() == sfRequest::POST)
     {
-      $referer = $user->getAttribute('referer', $this->getRequest()->getReferer());
-      $user->getAttributeHolder()->remove('referer');
+      $redirect_url = $user->getAttribute('redirect_url', $this->getRequest()->getReferer());
+      $user->getAttributeHolder()->remove('redirect_url');
 
-      $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $referer);
+      $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $redirect_url);
 
       $this->redirect('' != $signin_url ? $signin_url : '@homepage');
     }
@@ -43,9 +43,10 @@ class BasesfGuardAuthActions extends sfActions
         return sfView::NONE;
       }
 
-      if (!$user->hasAttribute('referer'))
+
+      if (!$user->hasAttribute('redirect_url') || trim($user->getAttribute('redirect_url')) == '')
       {
-        $user->setAttribute('referer', $this->getRequest()->getUri());
+        $user->setAttribute('redirect_url', $this->getRequest()->getReferer());
       }
 
       if ($this->getModuleName() != ($module = sfConfig::get('sf_login_module')))
@@ -60,7 +61,6 @@ class BasesfGuardAuthActions extends sfActions
   public function executeSignout()
   {
     $this->getUser()->signOut();
-
     $signout_url = sfConfig::get('app_sf_guard_plugin_success_signout_url', $this->getRequest()->getReferer());
 
     $this->redirect('' != $signout_url ? $signout_url : '@homepage');

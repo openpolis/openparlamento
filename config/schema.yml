@@ -183,8 +183,26 @@ propel:
    teseott_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
 
   opp_tag_has_tt:
-    tag_id:          { type: integer, required: true, primaryKey: true, index: true }
+    tag_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
     teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
+
+  # dummy, to have the admin generator work 
+  sf_tag:
+    _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
+    id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
+    name:             varchar(255)
+    n_monitoring_users: { type: integer, required: true, default: 0 }
+    is_tmp:           { type: tinyint, required: true, default: 1 }
+    is_triple:        { type: tinyint }
+    triple_namespace: varchar(100)
+    triple_key:       varchar(100)
+    triple_value:     varchar(255)
+    _uniques:
+      name:           [name]
+    _indexes:
+      triple1:        [triple_namespace]
+      triple2:        [triple_key]
+      triple3:        [triple_value]
 
 
   opp_teseott:

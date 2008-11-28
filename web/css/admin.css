@@ -1,0 +1,52 @@
+ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input
+{ margin: 0; padding: 0; }
+a img,:link img,:visited img { border: none; }
+
+a
+{
+  text-decoration: none;
+}
+
+a:hover
+{
+  text-decoration: underline;
+}
+
+body, td
+{
+  margin: 0;
+  padding: 0;
+  font-family: Arial, Verdana, sans-serif;
+  font-size: 11px;
+  background-color: #fff;
+}
+
+body
+{
+  padding: 20px;
+}
+
+
+ul#main_menu {margin-bottom: 10px; float: left;}
+ul#main_menu li {display:inline; padding: 3px;}
+ul#main_menu li.selected {color: #254B71; background-color: #B5BEC7; border: 1px solid #ECECE4;}
+
+#logout {float:right;}
+#logout .nick {font-weight: bold; color: grey;}
+
+#loginbox {margin-top: 100px; width: 400px; margin-left: auto; margin-right: auto;}
+#loginbox .title {text-align: center; font-weight: bold;  font-size: 18px;}
+#loginbox .field {margin:8px;}
+#loginbox .field label {display: block; width: 100px; float: left; text-align: right; padding-top: 6px; padding-right: 10px;  font-size: 14px;}
+#loginbox .field input {height: 20px; width: 150px; border: 1px solid gray; padding: 3px;  font-size: 16px;}
+#loginbox .butt {text-align: center;}
+#loginbox .butt input {font-size: 14px;}
+#loginbox .form_error {font-size: 10px; color: red; margin-bottom: 5px;}
+
+#main_content {margin-top: 20px; clear: both;}
+
+
+#sf_admin_container select.sf_admin_multiple, 
+#sf_admin_container select.sf_admin_multiple-selected {
+  width:30em!important;
+}

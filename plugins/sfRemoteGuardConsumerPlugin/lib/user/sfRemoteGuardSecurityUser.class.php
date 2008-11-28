@@ -89,7 +89,8 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	public function signOut()
 	{
 	  $this->getAttributeHolder()->removeNamespace('subscriber');
-	  
+	  $this->getAttributeHolder()->remove('redirect_url');
+    
 	  $this->setAuthenticated(false);
 	  $this->clearCredentials();
 	  

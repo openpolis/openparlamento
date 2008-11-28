@@ -5,8 +5,8 @@ default:
   metas:
     title:        OPENPARLAMENTO
     robots:       index, follow
-    description:  Un progetto di Openpolis
-    keywords:     Openparlamento, Openpolis
+    description:  Il progetto Openpolis per il monitoring del Parlamento
+    keywords:     Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento
     language:     it
 
   stylesheets:    [main]

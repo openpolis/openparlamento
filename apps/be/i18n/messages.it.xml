@@ -1,0 +1,91 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit id="1">
+        <source>Actions</source>
+        <target>Azioni</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Associated</source>
+        <target>Associate</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Unassociated</source>
+        <target>Non Associate</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>list</source>
+        <target>lista</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>save</source>
+        <target>salva</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>save and add</source>
+        <target>salva e aggiungi</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>delete</source>
+        <target>elimina</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>filters</source>
+        <target>filtri</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>filter</source>
+        <target>applica</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>create</source>
+        <target>aggiungi</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>edit</source>
+        <target>modifica</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>[0] no result|[1] 1 result|(1,+Inf] %1% results</source>
+        <target>[0] nessun risultato|[1] 1 risultato|(1,+Inf] %1% risultati</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>First</source>
+        <target>Primo</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Last</source>
+        <target>Ultimo</target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source>Previous</source>
+        <target>Precedente</target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>Next</source>
+        <target>Successivo</target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source>NOT AVAILABLE</source>
+        <target>NON DISPONIBILE</target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source>First name</source>
+        <target>Nome</target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source>Last name</source>
+        <target>Cognome</target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source>Is administrator</source>
+        <target>E' amministratore</target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source>Are you sure?</source>
+        <target>Sei sicuro?</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,0 +1,34 @@
+generator:
+  class:               sfPropelAdminGenerator
+  param:
+    model_class:       Tag
+    theme:             default
+
+    fields:
+      n_monitoring_users: {name: "N Monitor"}
+      triple_namespace:   {name: "Namespace"}
+      triple_key:         {name: "Key"}
+      triple_value:       {name: "Tag"}
+      associated_tts_list:     {name: "Teseo TT"}
+
+    list:
+      title:           "Elenco dei Tag"
+      display:         [=triple_value, n_monitoring_users, triple_namespace, _associated_tts_list]
+      filters:         [triple_namespace, triple_value]
+      object_actions:
+        _edit:         -
+
+    edit: 
+      title:           "Modifica tel Tag %%triple_value%% (%%triple_namespace%%)"
+      display:        
+        "Tag":         [name, triple_namespace, triple_key, triple_value]
+        "Top Terms":   [_associated_tts_list, tag_tt]
+      fields: 
+        name: 
+          params:      size=116x3
+        associated_tts_list: 
+          name:        "Top Term associati"
+        tag_tt:          
+          name:        "Modifica associatzioni"
+          type:        admin_double_list
+          params:      size=15 through_class=OppTagHasTt

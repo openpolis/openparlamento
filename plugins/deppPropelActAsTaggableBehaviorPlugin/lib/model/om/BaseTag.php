@@ -40,10 +40,10 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	protected $triple_value;
 
 	
-	protected $collTaggings;
+	protected $collOppTagHasTts;
 
 	
-	protected $lastTaggingCriteria = null;
+	protected $lastOppTagHasTtCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -361,8 +361,8 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->collTaggings !== null) {
-				foreach($this->collTaggings as $referrerFK) {
+			if ($this->collOppTagHasTts !== null) {
+				foreach($this->collOppTagHasTts as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -410,8 +410,8 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collTaggings !== null) {
-					foreach($this->collTaggings as $referrerFK) {
+				if ($this->collOppTagHasTts !== null) {
+					foreach($this->collOppTagHasTts as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -595,8 +595,8 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->getTaggings() as $relObj) {
-				$copyObj->addTagging($relObj->copy($deepCopy));
+			foreach($this->getOppTagHasTts() as $relObj) {
+				$copyObj->addOppTagHasTt($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -625,17 +625,17 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initTaggings()
+	public function initOppTagHasTts()
 	{
-		if ($this->collTaggings === null) {
-			$this->collTaggings = array();
+		if ($this->collOppTagHasTts === null) {
+			$this->collOppTagHasTts = array();
 		}
 	}
 
 	
-	public function getTaggings($criteria = null, $con = null)
+	public function getOppTagHasTts($criteria = null, $con = null)
 	{
-				include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/om/BaseTaggingPeer.php';
+				include_once 'lib/model/om/BaseOppTagHasTtPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -644,36 +644,36 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collTaggings === null) {
+		if ($this->collOppTagHasTts === null) {
 			if ($this->isNew()) {
-			   $this->collTaggings = array();
+			   $this->collOppTagHasTts = array();
 			} else {
 
-				$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+				$criteria->add(OppTagHasTtPeer::TAG_ID, $this->getID());
 
-				TaggingPeer::addSelectColumns($criteria);
-				$this->collTaggings = TaggingPeer::doSelect($criteria, $con);
+				OppTagHasTtPeer::addSelectColumns($criteria);
+				$this->collOppTagHasTts = OppTagHasTtPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+				$criteria->add(OppTagHasTtPeer::TAG_ID, $this->getID());
 
-				TaggingPeer::addSelectColumns($criteria);
-				if (!isset($this->lastTaggingCriteria) || !$this->lastTaggingCriteria->equals($criteria)) {
-					$this->collTaggings = TaggingPeer::doSelect($criteria, $con);
+				OppTagHasTtPeer::addSelectColumns($criteria);
+				if (!isset($this->lastOppTagHasTtCriteria) || !$this->lastOppTagHasTtCriteria->equals($criteria)) {
+					$this->collOppTagHasTts = OppTagHasTtPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastTaggingCriteria = $criteria;
-		return $this->collTaggings;
+		$this->lastOppTagHasTtCriteria = $criteria;
+		return $this->collOppTagHasTts;
 	}
 
 	
-	public function countTaggings($criteria = null, $distinct = false, $con = null)
+	public function countOppTagHasTts($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/om/BaseTaggingPeer.php';
+				include_once 'lib/model/om/BaseOppTagHasTtPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -682,16 +682,51 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+		$criteria->add(OppTagHasTtPeer::TAG_ID, $this->getID());
 
-		return TaggingPeer::doCount($criteria, $distinct, $con);
+		return OppTagHasTtPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addTagging(Tagging $l)
+	public function addOppTagHasTt(OppTagHasTt $l)
 	{
-		$this->collTaggings[] = $l;
+		$this->collOppTagHasTts[] = $l;
 		$l->setTag($this);
+	}
+
+
+	
+	public function getOppTagHasTtsJoinOppTeseott($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseOppTagHasTtPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collOppTagHasTts === null) {
+			if ($this->isNew()) {
+				$this->collOppTagHasTts = array();
+			} else {
+
+				$criteria->add(OppTagHasTtPeer::TAG_ID, $this->getID());
+
+				$this->collOppTagHasTts = OppTagHasTtPeer::doSelectJoinOppTeseott($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(OppTagHasTtPeer::TAG_ID, $this->getID());
+
+			if (!isset($this->lastOppTagHasTtCriteria) || !$this->lastOppTagHasTtCriteria->equals($criteria)) {
+				$this->collOppTagHasTts = OppTagHasTtPeer::doSelectJoinOppTeseott($criteria, $con);
+			}
+		}
+		$this->lastOppTagHasTtCriteria = $criteria;
+
+		return $this->collOppTagHasTts;
 	}
 
 

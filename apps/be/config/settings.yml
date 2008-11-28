@@ -22,7 +22,13 @@ test:
 
 all:
   .settings:
-    enabled_modules:      [default, deppCommentingAdmin]
+    i18n:                 on         
+    enabled_modules:      [default, sfGuardAuth, deppCommentingAdmin]
+  .actions:                               
+    login_module:         sfGuardAuth   
+    login_action:         signin        
+    secure_module:        sfGuardAuth   
+    secure_action:        secure        
   
 
 #all:

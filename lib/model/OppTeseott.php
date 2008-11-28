@@ -9,6 +9,10 @@
  */ 
 class OppTeseott extends BaseOppTeseott
 {
+  public function __toString()
+  {
+    return $this->getDenominazione();
+  }
 
   public function getTags()
   {
