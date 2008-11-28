@@ -6,9 +6,9 @@ generator:
 
     fields:
       n_monitoring_users: {name: "N Monitor"}
-      triple_namespace:   {name: "Namespace", params: "disabled=true"}
-      triple_key:         {name: "Key", params: "disabled=true"}
-      triple_value:       {name: "Tag", params: "disabled=true"}
+      triple_namespace:   {name: "Namespace"}
+      triple_key:         {name: "Key"}
+      triple_value:       {name: "Tag"}
       associated_tts_list:     {name: "Teseo TT"}
 
     list:
@@ -17,6 +17,7 @@ generator:
       filters:         [triple_namespace, triple_value]
       object_actions:
         _edit:         -
+        _delete:       -
       actions:
         _create:      none
 
@@ -26,6 +27,9 @@ generator:
         "Tag":         [name, triple_namespace, triple_key, triple_value]
         "Top Terms":   [_associated_tts_list, tag_tt]
       fields: 
+        triple_namespace:   {name: "Namespace", params: "disabled=true"}
+        triple_key:         {name: "Key", params: "disabled=true"}
+        triple_value:       {name: "Tag", params: "disabled=true"}
         name: 
           params:      size=116x3 disabled=true
         associated_tts_list: 
