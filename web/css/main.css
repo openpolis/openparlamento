@@ -61,9 +61,14 @@ form#comment-form input.text[readonly='readonly'] { color: #999;}
 
 #top_terms_drill_down div.tags ul { margin-bottom:10px }
 #monitored_acts .acts ul li {
-  margin-left:10px; font-size:1.1em; list-style-type:none;   
+  margin-left:10px; list-style-type:none;   
 }
-#monitored_acts .acts li span.tag a, #monitored_acts .acts li span.tag a:hover { color: darkgreen; font-style: italic; }
+#monitored_acts .acts ul li span {
+  font-size:1.2em; 
+}
+#monitored_acts .acts li span.tag a, #monitored_acts .acts li span.tag a:hover { 
+  color: darkgreen; font-style: italic; 
+}
 
 #top_terms_drill_down div.tags ul li, ul#my_tags li{ 
   display:inline; margin-left:20px; font-size:1.1em; list-style-type:none; 
@@ -101,4 +106,15 @@ ul#my_tags li span.remover {
 }
 
 
+#monitored_acts div.news ul li{ 
+  margin-left:20px; font-size:1.0em; list-style-type:none; 
+}
+
+#monitored_acts .politician span.name {
+  font-size: 1.2em;
+}
+
+#monitored_acts .politician span.name:hover {
+  cursor:pointer; color: darkblue; text-decoration: underline;
+}
 

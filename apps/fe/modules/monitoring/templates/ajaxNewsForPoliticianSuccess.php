@@ -11,4 +11,3 @@
     <li><?php echo link_to("visualizza le altre $has_more notizie", '#') ?></li>
   <?php endif ?>
 </ul>
-

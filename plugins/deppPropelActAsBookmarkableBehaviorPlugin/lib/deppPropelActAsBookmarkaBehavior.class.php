@@ -10,8 +10,9 @@
 ?>
 <?php
 /**
- * This Propel behavior aims at allowing the user to express opinions on any Propel
- * object
+ * This Propel behavior aims at allowing the user to bookmark any Propel
+ * object in a positive or negative weay
+ * 
  *
  * @package    plugins
  * @subpackage bookmarking 
@@ -23,50 +24,36 @@
 class deppPropelActAsBookmarkableBehavior
 {
   
-  /**
-   * Default bookmarking range
-   */
-  const DEFAULT_BOOKMARKING_RANGE = 1;
+  public function countPositiveBookmarkings(BaseObject $object)
+  {
+    return self::_countBookmarkings($object, '+');
+  }
 
-  /**
-   * Maximum bookmarking range
-   */
-  const MAX_BOOKMARKING_RANGE = 10;
+  public function countNegativeBookmarkings(BaseObject $object)
+  {
+    return self::_countBookmarkings($object, '-');
+  }
   
   /**
-   * Default float precision (average)
-   */
-  const DEFAULT_PRECISION = 2;
-  
-  /**
-   * Counts bookmarkings made on given bookmarkable object.
+   * Counts how many bookmarkings have been made on the given bookmarkable object.
    * 
    * @param  BaseObject  $object
+   * @param  char(1)     +|- type of bookmarking
    * @return int
    */
-  public function countBookmarkings(BaseObject $object)
+  protected static function _countBookmarkings(BaseObject $object, $type)
   {
+    if ($type != '+' && $type != '-')
+      throw new deppPropelActAsBookmarkableException('Type can only be + or -');
+
     $c = new Criteria();
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_ID, $object->getReferenceKey());
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_MODEL, get_class($object));
+    $c->add(sfBookmarkingPeer::BOOKMARKING, ($type == '+'?1:-1));
     return sfBookmarkingPeer::doCount($c);
   }
 
-  /**
-   * Retrieves configured float precision for bookmarkings
-   * 
-   * @param  int  $default_precision
-   * @return int
-   */
-  protected static function getPrecision($default_precision = null)
-  {
-    if (is_null($default_precision))
-    {
-      $default_precision = self::DEFAULT_PRECISION;
-    }
-    return sfConfig::get('app_bookmarking_precision', $default_precision);
-  }
-  
+
   /**
    * Retrieves an existing bookmarking object, or return a new empty one
    *
@@ -75,7 +62,7 @@ class deppPropelActAsBookmarkableBehavior
    * @return sfBookmarking
    * @throws deppPropelActAsBookmarkableException
    **/
-  protected static function getOrCreate(BaseObject $object, $user_id = null)
+  protected static function getOrCreate(BaseObject $object, $user_id)
   {
     if ($object->isNew())
     {
@@ -84,7 +71,7 @@ class deppPropelActAsBookmarkableBehavior
     
     if (is_null($user_id))
     {
-      return new sfBookmarking();
+      throw new deppPropelActAsBookmarkableException('Anonymous bookmarking not allowed');
     }
     
     $c = new Criteria();
@@ -106,7 +93,6 @@ class deppPropelActAsBookmarkableBehavior
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_ID, $object->getReferenceKey());
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_MODEL, get_class($object));
     $ret = sfBookmarkingPeer::doDelete($c);
-    self::setBookmarkingToObject($object, 0);
     return $ret;
   }
 
@@ -115,20 +101,22 @@ class deppPropelActAsBookmarkableBehavior
    *
    * @param  BaseObject  $object
    * @param  mixed       $user_id  User primary key
+   * @param  char(1)     +|- type of bookmarking
    **/
-  public function clearUserBookmarking(BaseObject $object, $user_id)
+  private static function _clearUserBookmarking(BaseObject $object, $type, $user_id)
   {
+    if ($type != '+' && $type != '-')
+      throw new deppPropelActAsBookmarkableException('Type can only be + or -');
+
     if (is_null($user_id) or trim((string)$user_id) === '')
-    {
       throw new deppPropelActAsBookmarkableException('Impossible to clear a user bookmarking with no user primary key provided');
-    }
     
     $c = new Criteria();
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_ID, $object->getReferenceKey());
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_MODEL, get_class($object));
     $c->add(sfBookmarkingPeer::USER_ID, $user_id);
+    $c->add(sfBookmarkingPeer::BOOKMARKING, ($type == '+'?1:-1));
     $ret = sfBookmarkingPeer::doDelete($c);
-    self::setBookmarkingToObject($object, $this->getBookmarking($object, self::getPrecision(), true));
     return $ret;
   }
 
@@ -163,77 +151,6 @@ class deppPropelActAsBookmarkableBehavior
     $c->add(sfBookmarkingPeer::BOOKMARKABLE_MODEL, get_class($object));
     $c->add(sfBookmarkingPeer::USER_ID, $user_id);
     return (sfBookmarkingPeer::doCount($c) > 0);
-  }
-  
-  /**
-   * Retrieves bookmarking range for given object
-   * 
-   * @param  BaseObject  $object  Propel object instance
-   * @return int
-   * @throws deppPropelActAsBookmarkableException
-   */
-  public function getBookmarkingRange(BaseObject $object)
-  {
-    
-    $bookmarking_range = sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_bookmarking_range', 
-             get_class($object)));
- 
-    if (is_null($bookmarking_range))
-    {
-      $bookmarking_range = @constant(get_class($object).'::DEFAULT_BOOKMARKING_RANGE');
-    }
- 
-    if (!is_int($bookmarking_range))
-    {
-      throw new deppPropelActAsBookmarkableException(
-        'The bookmarking_range parameter must be an integer');
-    }
-    
-    if (is_float($bookmarking_range) && floor($bookmarking_range) != $bookmarking_range) // yeah, php typing sucks...
-    {
-      throw new deppPropelActAsBookmarkableException(
-        sprintf('You cannot type %s::BOOKMARKING_RANGE as float (you provided "%s")', 
-                get_class($object),
-                $bookmarking_range));
-    }
-    
-    if ($bookmarking_range > self::MAX_BOOKMARKING_RANGE)
-    {
-      throw new deppPropelActAsBookmarkableException(
-        'The bookmarking_range parameter must be an integer smaller than ' . self::MAX_BOOKMARKING_RANGE);
-    }
-    
-    return $bookmarking_range;
-  }
-  
-
-  /**
-   * Return if the neutral position is allowed
-   *
-   * by default, the neutral position is allowed
-   * @param  BaseObject $object
-   * @return boolean
-   * @author Guglielmo Celata
-   **/
-  public function allowsNeutralPosition(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_neutral_position', get_class($object)), true);
-  }
-  
-  /**
-   * Return if the anonymous user can bookmark
-   *
-   * by default, only registered user can bookmark
-   * @param  BaseObject $object
-   * @return boolean
-   * @author Guglielmo Celata
-   **/
-  public function allowsAnonymousBookmarking(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_anonymous_bookmarking', get_class($object)), false);
   }
   
 
@@ -478,61 +395,5 @@ class deppPropelActAsBookmarkableBehavior
     }
   }
   
-  /*
-   * Contributed by Vojtech Rysanek
-   */
-  
-  /**
-   * Retrieves bookmarking_field phpName from configuration
-   * 
-   * @param  BaseObject  $object
-   * @return mixed
-   */
-  protected static function getObjectBookmarkingField(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_bookmarking_field', 
-              get_class($object)));
-  }
-  
-  /**
-   * Sets cached bookmarking
-   * 
-   * @param  BaseObject  $object
-   * @param  float       $value
-   */
-  protected static function setBookmarkingToObject(BaseObject $object, $value)
-  {
-    $field = self::getObjectBookmarkingField($object);
-    if (!is_null($field)) 
-    {
-      $setter = 'set'.$field;
-      if (method_exists($object, $setter))
-      {
-        $ret = $object->$setter($value);
-        return $object->save();
-      }
-    }
-  } 
-  
-  /**
-   * Return cached bookmarking from object
-   * 
-   * @param  BaseObject  $object
-   * @return float
-   */
-  protected static function getBookmarkingToObject(BaseObject $object)
-  {
-    $field = self::getObjectBookmarkingField($object);
-    if (!is_null($field)) 
-    {
-      $getter = 'get'.$field; 
-      if (method_exists($object, $getter))
-      {
-        return $object->$getter();
-      }
-    }
-    return null;
-  }
 
 }

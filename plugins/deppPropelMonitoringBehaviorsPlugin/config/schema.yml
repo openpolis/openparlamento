@@ -18,7 +18,7 @@ propel:
     generator_model:           { type: varchar(50), required: true, index: multiple }
     generator_primary_keys:    { type: varchar(512) }
     related_monitorable_model: { type: varchar(50), required: true, index: multiple }
-    related_monitorable_id:    { type: integer }
+    related_monitorable_id:    { type: integer, index: multiple }
     date:                      { type: timestamp, index: multiple }
     priority:                  { type: integer, required: true, default: 0, index: multiple }
     tipo_atto:                 { type: char, size: 1, index: multiple }

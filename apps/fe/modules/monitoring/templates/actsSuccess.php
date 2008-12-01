@@ -38,7 +38,6 @@ jQuery.noConflict();
     $this = $(this);
     var id = $this.parent().get(0).id.split('_').pop();
     var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";
-    var news = $('monitored_acts .acts li#' + id + ' div.news');
     if (!$this.data('news_loaded'))
     {
       $.get(url, { act_id: id },

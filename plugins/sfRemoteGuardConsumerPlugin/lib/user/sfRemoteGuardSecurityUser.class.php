@@ -65,6 +65,7 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	  $this->setAttribute('name', (string)$xml_user->name, 'subscriber');
 	  $this->setAttribute('firstname', (string)$xml_user->firstname, 'subscriber');
 	  $this->setAttribute('hash', (string)$xml_user->hash, 'subscriber');
+	  $this->setAttribute('last_login', (string)$xml_user->last_login, 'subscriber');
 	  
 	}
 	

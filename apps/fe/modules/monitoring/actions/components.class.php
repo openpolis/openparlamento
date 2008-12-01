@@ -11,10 +11,10 @@ class monitoringComponents extends sfComponents
 {
   public function executeSubmenu()
   {
-    $this->sub_menu_items = array('tags' => 'Argomenti',
-                                  'acts' => 'Atti',
-                                  'politicians' => 'Politici',
-                                  'bookmarks' => 'Preferiti');
+    $this->sub_menu_items = array('news' => 'Le tue notizie',
+                                  'acts' => 'DDL e Atti monitorati',
+                                  'politicians' => 'Parlamentari monitorati',
+                                  'tags' => 'Gestione argomenti');
   }
   
   
@@ -29,8 +29,6 @@ class monitoringComponents extends sfComponents
       {
         $monitored = $user->countMonitoredObjects('OppAtto') + $user->countMonitoredObjects('OppPolitico');
         $this->remaining_items = $user->getNMaxMonitoredItems() - $monitored;
-        
-        
       }
       $this->is_monitoring = $user->isMonitoring($this->item_model, $this->item_pk);
     }

@@ -14,7 +14,15 @@
         <span class="iter"> -
           <?php echo $act->getLastIter()->getOppIter()->getFase() ?>
           - <?php echo $act->getLastIter()->getData() ?>
-        </span>        
+        </span>  
+        <?php if ($user->isMonitoring('OppAtto', $act->getPrimaryKey())): ?>
+          <span>
+            <?php 
+                echo link_to('Smetti di monitorare', 
+                             'monitoring/removeItemFromMyMonitoredItems?item_model=OppAtto&item_pk='.$act->getPrimaryKey()) ?>
+         </span>
+        <?php endif ?>
+              
       <?php endif ?>
     </li>
   <?php endforeach ?>

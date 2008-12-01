@@ -64,8 +64,10 @@ all:
                                         # off: never send emails                                   
 
 
+  news_dropdown_limit: 7
+  
   pagination:
-    limit:    10000
+    limit:    100
 
   voto:
     "1":     "Assente"

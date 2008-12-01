@@ -26,7 +26,7 @@ class Tag extends BaseTag
 
   public function getTaggedWith($options = array())
   {
-    return TagPeer::getTaggedWith($this->getName());
+    return TagPeer::getTaggedWith($this->getName(), $options);
   }
 }
 

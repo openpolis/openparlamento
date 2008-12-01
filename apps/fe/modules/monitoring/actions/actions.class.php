@@ -16,27 +16,19 @@ class monitoringActions extends sfActions
    */
   public function executeIndex()
   {
-    $this->forward('monitoring', 'tags');
+    $this->forward('monitoring', 'news');
+  }
+    
+  public function executeNews()
+  {
+    $c = NewsPeer::getMyMonitoredItemsNewsCriteria();
+    
+    $this->pager = new sfPropelPager('News', sfConfig::get('app_pagination_limit'));
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+  	$this->pager->init();
   }
   
-  public function executeTags()
-  {
-    // embed javascripts for advanced javascripts
-    $response = sfContext::getInstance()->getResponse();
-    $response->addJavascript('prototype.js');
-    $response->addJavascript('effects.js');
-    $response->addJavascript('controls.js');
-    
-    // fetch current user profile
-    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
- 
-    // fetch teseo top_terms
-    $this->teseo_tts = OppTeseottPeer::doSelect(new Criteria());
-    
-    // fetch tags I am monitoring
-    $this->my_tags = self:: _getMyTags();
-  }
-
   public function executeActs()
   {
     // embed javascripts for advanced javascripts
@@ -66,7 +58,35 @@ class monitoringActions extends sfActions
     $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
 
+  public function executePoliticians()
+  {
+    // embed javascripts for advanced javascripts
+    $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('jquery.js');
 
+    // fetch current user profile
+    $this->user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->my_last_login = $this->getUser()->getAttribute('last_login', null, 'subscriber');
+    $this->monitored_politicians = $this->user->getMonitoredObjects('OppPolitico');
+  }
+
+  public function executeTags()
+  {
+    // embed javascripts for advanced javascripts
+    $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('prototype.js');
+    $response->addJavascript('effects.js');
+    $response->addJavascript('controls.js');
+    
+    // fetch current user profile
+    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+ 
+    // fetch teseo top_terms
+    $this->teseo_tts = OppTeseottPeer::doSelect(new Criteria());
+    
+    // fetch tags I am monitoring
+    $this->my_tags = self:: _getMyTags();
+  }
 
   public function executeAjaxTagsForTopTerm()
   {
@@ -79,18 +99,31 @@ class monitoringActions extends sfActions
     $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
   }
 
-
   public function executeAjaxNewsForAct()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
 
     $act_id = $this->getRequestParameter('act_id');
-    $n_news = NewsPeer::countNewsForAct($act_id);
-    $this->news = NewsPeer::getNewsForAct($act_id, $limit = 10);
+    $this->_fetchNewsForItem('OppAtto', $act_id);
+  }
+
+  public function executeAjaxNewsForPolitician()
+  {
+    $isAjax = $this->getRequest()->isXmlHttpRequest();
+    if (!$isAjax) return sfView::noAjax;
+
+    $politician_id = $this->getRequestParameter('politician_id');
+    $this->_fetchNewsForItem('OppPolitico', $politician_id);
+  }
+
+  private function _fetchNewsForItem($type, $item_id)
+  {
+    $n_news = NewsPeer::countNewsForItem($type, $item_id);
+    $this->news = NewsPeer::getNewsForItem($type, $item_id, sfConfig::get('app_news_dropdown_limit', 10));
     $this->has_more = 0;
     if ($n_news > count($this->news))
-      $this->has_more = $n_news - count($this->news);
+      $this->has_more = $n_news - count($this->news);    
   }
 
   public function executeAjaxAddTagToMyMonitoredTags()
@@ -143,7 +176,6 @@ class monitoringActions extends sfActions
     $this->setTemplate('ajaxMyTags');
   }
 
-
   public function executeAjaxAddItemToMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
@@ -176,13 +208,28 @@ class monitoringActions extends sfActions
     $this->setTemplate('ajaxManageItem');
     
   }
-  
-  
+    
   public function executeAjaxRemoveItemFromMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    // if (!$isAjax) return sfView::noAjax;
+    if (!$isAjax) return sfView::noAjax;
     
+    $this->_removeItemFromMyMonitoredItems();
+    
+    $this->setTemplate('ajaxManageItem');
+    
+  }
+
+  public function executeRemoveItemFromMyMonitoredItems()
+  {
+    $this->_removeItemFromMyMonitoredItems();
+    
+    // redirect back to referer
+    $this->redirect($this->getRequest()->getReferer());    
+  }
+
+  private function _removeItemFromMyMonitoredItems()
+  {
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
 
@@ -192,9 +239,7 @@ class monitoringActions extends sfActions
     if ($is_monitoring) 
     {
       $user->removeMonitoredObject($this->item_model, $this->item_pk);
-    }  
-    $this->setTemplate('ajaxManageItem');
-    
+    }      
   }
   
   // fetch tags I am monitoring
@@ -205,5 +250,4 @@ class monitoringActions extends sfActions
     return $opp_user->getMonitoredObjects('Tag');    
   }
   
-
 }
