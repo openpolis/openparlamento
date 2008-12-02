@@ -1,5 +1,5 @@
 dev:
-  remote_guard_host:      'lapgu.guard.openpolis.it'
+  remote_guard_host:      'accesso.openpolis.it'
   
 # default values
 all:

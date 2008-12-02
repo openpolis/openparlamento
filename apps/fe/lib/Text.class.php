@@ -90,16 +90,16 @@ class Text
         if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return $atto->getTitolo()." - ".Text::shorten($descrizione, 150);
+            return strip_tags(Text::shorten($descrizione, 150));
           else
             return $atto->getTitolo();
         }    
         else
         {  
           if($action=='list')
-            return $atto->getRamo().'.'.$atto->getNumfase().' '.$atto->getTitolo();
+            return $atto->getNumfase().' '.$atto->getTitolo();
           else  
-            return $atto->getRamo().'.'.$atto->getNumfase().' '.$atto->getTitolo()." - ".Text::shorten($descrizione, 150);
+            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 150));
         }
         break;  
     }

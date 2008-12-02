@@ -7,6 +7,12 @@ propel:
     name:             { type: varchar, size: 255, index: unique }
     latest_revision:  { type: integer, required: true, default: 1 }
   
+  naho_wiki_content:
+    _attributes:      { phpName: nahoWikiContent }
+    id:               ~
+    content:          { type: longvarchar } # uncompressed content
+    gz_content:       { type: blob } # compressed content
+
   naho_wiki_revision:
     _attributes:      { phpName: nahoWikiRevision }
     created_at:       ~
@@ -16,8 +22,3 @@ propel:
     comment:          { type: varchar, size: 255 }
     content_id:       { type: integer, foreignTable: naho_wiki_content, foreignReference: id, required: true, onDelete: cascade, primaryKey: true }
   
-  naho_wiki_content:
-    _attributes:      { phpName: nahoWikiContent }
-    id:               ~
-    content:          { type: longvarchar } # uncompressed content
-    gz_content:       { type: blob } # compressed content

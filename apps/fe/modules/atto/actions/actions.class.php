@@ -29,12 +29,12 @@ class attoActions extends sfActions
   }
 
   /**
-  * Executes Ddl list action
+  * Executes Disegno di legge list action
   *
   */
-  public function executeDdlList()
+  public function executeDisegnoList()
   {
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_pagination_limit'));
+    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
     $c = new Criteria();
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
@@ -42,8 +42,64 @@ class attoActions extends sfActions
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
-
-    $this->news = OppAttoPeer::doSelectNews();
+    
+    //$this->news = OppAttoPeer::doSelectNews();
+  }
+  
+  /**
+  * Executes Decreto di legge list action
+  *
+  */
+  public function executeDecretoList()
+  {
+    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelect');
+    $this->pager->init();
+    
+    
+  }
+  
+  /**
+  * Executes Decreto legislativo list action
+  *
+  */
+  public function executeDecretoLegislativoList()
+  {
+    $decreti_legislativi_ids = array('15','16','17');
+    
+    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
+    $this->pager->init();
+  }
+  
+  /**
+  * Executes Atto non legislativo list action
+  *
+  */
+  public function executeAttoNonLegislativoList()
+  {
+    $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
+    
+    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
+    $this->pager->init();
+    
+    
   }
 
   /**
@@ -109,7 +165,7 @@ class attoActions extends sfActions
   	if($this->atto->getSucc())
   	{
   	  $c = new Criteria();
-            $c->add(OppAttoPeer::ID, $this->atto->getSucc(), Criteria::EQUAL );
+      $c->add(OppAttoPeer::ID, $this->atto->getSucc(), Criteria::EQUAL );
   	  $this->lettura_parlamentare_successiva = OppAttoPeer::doSelectOne($c);
   	}
 	

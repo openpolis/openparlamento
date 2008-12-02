@@ -24,7 +24,6 @@ class monitoringComponents extends sfComponents
     {
       $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
       
-      
       if ($user->getNMaxMonitoredItems())
       {
         $monitored = $user->countMonitoredObjects('OppAtto') + $user->countMonitoredObjects('OppPolitico');

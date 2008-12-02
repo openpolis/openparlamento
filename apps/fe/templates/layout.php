@@ -4,16 +4,23 @@
 
 <?php include_http_metas() ?>
 <?php include_metas() ?>
-
 <?php include_title() ?>
 
 <link rel="shortcut icon" href="/favicon.ico" />
-
 </head>
 <body>
-<div><?php include_partial('global/menu') ?></div>
-
-<?php echo $sf_data->getRaw('sf_content') ?>
-
+  <div id="wrapper">
+    <div id="header">
+      <div id="tools">
+        <?php include_partial('global/tools') ?>	  
+	  </div>
+	  <div id="navigation">	
+        <?php include_partial('global/navigation') ?>
+	  </div>
+	</div>
+    <?php echo $sf_data->getRaw('sf_content') ?>
+	<?php include_partial('global/footer') ?>
+  </div>
+  <script type="text/javascript">jQuery.noConflict();</script>
 </body>
 </html>

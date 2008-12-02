@@ -109,10 +109,10 @@ class votazioneActions extends sfActions
 
     $this->filters = $this->getUser()->getAttributeHolder()->getAll('opp_votazione/filters');
 	
-	$this->pager = new sfPropelPager('OppVotazione', sfConfig::get('app_pagination_limit'));
+    $this->pager = new sfPropelPager('OppVotazione', 25);
     $c = new Criteria();
-	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-	$this->addListFiltersCriteria($c);
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+    $this->addListFiltersCriteria($c);
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppSeduta');

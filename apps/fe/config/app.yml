@@ -1,5 +1,5 @@
 dev:
-  remote_guard_host:      'lapgu.guard.openpolis.it'
+  remote_guard_host:      'accesso.openpolis.it'
   
 # default values
 all:
@@ -61,8 +61,10 @@ all:
                                         # Possible values are:                                     
                                         # on: send an email for every posted comment               
                                         # moderated: send an email for every automoderated comment 
-                                        # off: never send emails                                   
+                                        # off: never send emails
 
+  atto:
+    pagination_limit:  25
 
   news_dropdown_limit: 7
   
@@ -79,3 +81,7 @@ all:
     "7":     "Presidente di turno"
     "8":     "Richiedente la votazione e non votante"
     "9":     "Voto segreto"
+
+  iter_id:
+    "decaduto":    "14"
+    "convertito":  "63"

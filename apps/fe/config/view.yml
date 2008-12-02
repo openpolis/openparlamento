@@ -9,9 +9,9 @@ default:
     keywords:     Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento
     language:     it
 
-  stylesheets:    [main]
+  stylesheets:    [screen, combobox_openpolis]
 
-  javascripts:    []
+  javascripts:    [fe/jquery-1.2.6.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
 
   has_layout:     on
   layout:         layout

@@ -52,6 +52,9 @@ class parlamentareActions extends sfActions
 	 $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);
+	 
+	 $c->setLimit(50);
+	 
      $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 	 
 	 $c = new Criteria();

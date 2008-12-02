@@ -21,13 +21,13 @@ class OppVotazione extends BaseOppVotazione
     switch(strtolower($this->esito))
     {
       case 'appr.':
-        return 'approvata';
+        return 'APPROVATA';
         break;
       case 'annu.':
-        return 'annullata';
+        return 'ANNULLATA';
         break;
       case 'resp.':
-        return 'respinta';
+        return 'RESPINTA';
         break;
       default:
         return $this->esito;

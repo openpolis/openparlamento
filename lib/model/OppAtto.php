@@ -80,7 +80,7 @@ class OppAtto extends BaseOppAtto
     $c = new Criteria();
 	$c->clearSelectColumns();
 	$c->addSelectColumn(OppAttoHasIterPeer::DATA);
-	$c->addSelectColumn(OppIterPeer::FASE);
+	$c->addSelectColumn(OppIterPeer::ID);
 	$c->add(OppAttoHasIterPeer::ATTO_ID, $this->getId(), Criteria::EQUAL);
 	$c->addJoin(OppAttoHasIterPeer::ITER_ID, OppIterPeer::ID, Criteria::LEFT_JOIN);
 	$c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
@@ -91,9 +91,9 @@ class OppAtto extends BaseOppAtto
 	while ($rs->next())
     {
 	  if($rs->get(1)!='0000-00-00')
-	    $status[$rs->getDate(1, 'Y-m-d')] = $rs->getString(2);
+	    $status[$rs->getDate(1, 'Y-m-d')] = $rs->getInt(2);
 	  else
-	    $status[1] = $rs->getString(2);	
+	    $status[1] = $rs->getInt(2);	
 	}  
   
     return $status;
@@ -212,6 +212,22 @@ class OppAtto extends BaseOppAtto
 	
 	return $interventi;
   
+  }
+  
+  public function getInterventiCount()
+  {
+    $c = new Criteria();
+    $c->clearSelectColumns();
+    $c->addSelectColumn(OppInterventoPeer::ID);
+    $c->addJoin(OppInterventoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
+	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
+	$c->addJoin(OppInterventoPeer::SEDE_ID, OppSedePeer::ID, Criteria::LEFT_JOIN);	
+    $c->add(OppInterventoPeer::ATTO_ID, $this->getId(), Criteria::EQUAL);
+    $c->addDescendingOrderByColumn(OppInterventoPeer::DATA);
+	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);   
+	$count = OppInterventoPeer::doCount($c);
+			
+	return $count;
   }
   
   public function getCommissioni()
