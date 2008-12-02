@@ -256,14 +256,18 @@ sfPropelBehavior::add(
 
 sfPropelBehavior::add(
   'OppAtto', 
-  array('deppPropelActAsTaggableBehavior' => 
-        array()));
+  array('deppPropelActAsTaggableBehavior' => array()));
 
 sfPropelBehavior::add(
   'OppAtto', 
   array('deppPropelActAsCommentableBehavior' =>
         array('count_cache_enabled'   => true,
               'count_cache_method'    => 'setNbCommenti')));
+
+
+sfPropelBehavior::add(
+  'OppAtto', 
+  array('deppPropelActAsBookmarkableBehavior' => array()));
 
 // add the ActAsMonitorable behavior
 // the field OppUserPeer::N_MONITORED_ATTOS of objects of this type monitored

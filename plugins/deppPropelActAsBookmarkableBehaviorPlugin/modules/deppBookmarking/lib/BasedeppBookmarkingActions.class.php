@@ -1,197 +1,73 @@
 <?php
 /**
  * deppPropelActAsBookmarkableBehaviorPlugin base actions.
- * 
+ *
+ * This is an easy User Interface to bookmark objects
+ * After bookmarking (or unbookmarking), the flow is redirected to the referer
+ *
+ * If a more advanced UI is needed, then an override is required
+ *
  * @package    plugins
  * @subpackage bookmarking 
  */
 class BasedeppBookmarkingActions extends sfActions
 {
   
+  
   /**
-   * Here we will initiate system messages translatable strings
-   * 
+   * pre-execution: 
+   *  - get the request parameters, 
+   *  - check if the user has the 'right' to bookmark, 
+   *  - prepare variables
    */
   public function preExecute()
   {
-    parent::preExecute();
-    sfLoader::loadHelpers('I18N');
-    $this->messages = array(
-      'already_bookmarked'    => __('You have already bookmarked'),
-      'missing_params'   => __('Parameters are missing to retrieve ratable object'),
-      'post_only'        => __('POST requests only'),
-      'bookmarkable_error'    => __('Unable to retrieve bookmarkable object: %s'),
-      'anonymous_not_allowed' => __('Anonymous bookmarking is not allowed'),
-      'thank_you'        => __('Thank you for your bookmark'),
-      'thank_unbookmark'     => __('Thank you'),
-      'thank_you_update' => __('Thanks for updating your bookmark'),
-      'user_error'       => __('A problem has occured, sorry for the inconvenience'),
-    );
+    $item_model = $this->getRequestParameter('item_model');
+    $item_pk = $this->getRequestParameter('item_pk');
+  
+    $this->user_id = deppPropelActAsBookmarkableToolkit::getUserId();
+    $user = OppUserPeer::retrieveByPK($this->user_id);
+
+    $this->item = deppPropelActAsBookmarkableToolkit::retrieveBookmarkableObject($item_model, $item_pk);
   }
 
-  /**
-   * <p>Revoke a bookmark from an object. This action is typically executed from an AJAX 
-   * request.</p>
-   * 
-   * @see  deppPropelActAsBookmarkableBehavior API
-   */
-  public function executeUnbookmark()
+  
+  public function executePositiveBookmark()
   {
-    if ($this->getRequest()->getMethod() !== sfRequest::POST)
-    {
-      return $this->renderText($this->messages['post_only']);
-    }
-
-    // Retrieve parameters from request
-    $token  = $this->getRequestParameter('token');
-    $this->domid  = $this->getRequestParameter('domid');
-    
-    // Retrieve ratable propel object
-    if (is_null($token))
-    {
-      return $this->renderFatalError($this->messages['missing_params']);
-    }
-
-    $object = deppPropelActAsBookmarkableBehaviorToolkit::retrieveFromToken($token);
-    
-    if (is_null($object))
-    {
-      return $this->renderFatalError($this->message['bookmarkable_error']);
-    }
-
-    $user_id = deppPropelActAsBookmarkableBehaviorToolkit::getUserId();
-    if ((is_null($user_id) || $user_id == '') && !$object->allowsAnonymousBookmarking())
-    {
-      return $this->renderFatalError($this->message['anonymous_not_allowed']);      
-    }
-    
-    $object->clearUserBookmarking($user_id);
-    $this->message = $this->messages['thank_unbookmark'];              
-    $this->object = $object;
+    $this->forward404Unless(!$this->item->hasBeenPositivelyBookmarked($this->user_id));
+    $this->item->setPositiveBookmarking($this->user_id);    
   }
   
-  /**
-   * <p>Bookmark a propel object. This action is typically executed from an AJAX 
-   * request.</p>
-   * 
-   * @see  deppPropelActAsBookmarkableBehavior API
-   */
-  public function executeBookmark()
+  public function executePositiveUnbookmark()
   {
-
-    
-    try
-    {
-      if ($this->getRequest()->getMethod() !== sfRequest::POST)
-      {
-        return $this->renderText($this->messages['post_only']);
-      }
-      
-      // Retrieve parameters from request
-      $token  = $this->getRequestParameter('token');
-      $bookmarking = $this->getRequestParameter('bookmarking');
-      $this->domid  = $this->getRequestParameter('domid');
-
-      
-      // Retrieve ratable propel object
-      if (is_null($token) or is_null($bookmarking))
-      {
-        return $this->renderFatalError($this->messages['missing_params']);
-      }
-      
-      $object = deppPropelActAsBookmarkableBehaviorToolkit::retrieveFromToken($token);
-      
-      if (is_null($object))
-      {
-        return $this->renderFatalError($this->message['bookmarkable_error']);
-      }
-      
-      // User retrieval
-      $user_id = deppPropelActAsBookmarkableBehaviorToolkit::getUserId();
-      if (is_null($user_id) || $user_id == '')
-      {
-        if (!$object->allowsAnonymousBookmarking())
-        {
-          $msg = $this->messages['anonymous_not_allowed'];
-          sfLogger::getInstance()->warning($msg);
-          return $this->renderText($msg);
-        }
-        else
-        {
-          // anonymous bookmarks are allowed and are cookie based
-          $cookie_name = sprintf('%s_%s', sfConfig::get('app_bookmarking_cookie_prefix', 'bookmarking'), $token);
-          if (!is_null($this->getRequest()->getCookie($cookie_name)))
-          {
-            $message = $this->messages['already_bookmarked'];
-          }
-          else
-          {
-            if (!$object->allowsNeutralPosition() && $bookmarking == 0)
-            {
-              $msg = $this->messages['neutral_not_allowed'];
-              sfLogger::getInstance()->warning($msg);
-              return $this->renderText($msg);
-            }
-            else 
-            {
-              $object->setBookmarking((int) $bookmarking);
-              $cookie_ttl = sfConfig::get('app_bookmarking_cookie_ttl', (86400*365*10));
-              $cookie_expires = date('Y-m-d H:m:i', time() + $cookie_ttl);
-              $this->getResponse()->setCookie($cookie_name, (int)$bookmarking, $cookie_expires);
-              $message = $this->messages['thank_you'];              
-            }
-          }          
-        }
-      }
-      else
-      {
-        $already_bookmarked = $object->hasBeenBokmarkedByUser($user_id);
-        if ($already_bookmarked)
-        {
-          $message = $this->messages['already_bookmarked'];
-        }
-        else
-        {
-          if (!$object->allowsNeutralPosition() && $bookmarking == 0)
-          {
-            $msg = $this->messages['neutral_not_allowed'];
-            sfLogger::getInstance()->warning($msg);
-            return $this->renderText($msg);
-          }
-          else
-          {
-            $object->setBookmarking((int) $bookmarking, $user_id);
-            $message = $this->messages['thank_you'];          
-          }          
-        }
-      }
-      
-      $this->object = $object;
-      $this->bookmarking = $object->getBookmarking();
-      $this->message = $message;
-    }
-    catch (Exception $e)
-    {
-      return $this->renderFatalError($e->getMessage());
-    }
+    $this->forward404Unless($this->item->hasBeenPositivelyBookmarked($this->user_id));
+    $this->item->removePositiveBookmarking($this->user_id);
   }
   
-  
-  
-  
-  /**
-   * This methods will returns a basic user error message while logging a 
-   * complete one if provided in the debug log file 
-   * 
-   * @param string  $log_info  Log information message
-   */
-  protected function renderFatalError($log_info = null)
+  public function executeNegativeBookmark()
   {
-    if (!is_null($log_info))
-    {
-      sfLogger::getInstance()->warning('Bookmarking error: '.$log_info);
-    }
-    return $this->renderText($this->messages['user_error']);
+    $this->forward404Unless(!$this->item->hasBeenNegativelyBookmarked($this->user_id));
+    $this->item->setNegativeBookmarking($this->user_id);
   }
   
+  public function executeNegativeUnbookmark()
+  {
+    $this->forward404Unless($this->item->hasBeenNegativelyBookmarked($this->user_id));
+    $this->item->removeNegativeBookmarking($this->user_id);
+  }
+    
+  /**
+   * post-execution
+   *  - redirect to the referer page
+   *
+   * @return void
+   * @author Guglielmo Celata
+   **/
+  public function postExecute()
+  {
+    // redirect back to referer
+    $this->redirect($this->getRequest()->getReferer());        
+  }
+  
+    
 }

@@ -15,7 +15,7 @@ $response->addJavascript('prototype.js');
 
 
 /**
- * Return the HTML code the div containing the bookmarkr tool
+ * Return the HTML code of the div containing the positive bookmarker tool
  * If the user has already bookmarked, then a message appears
  * 
  * @param  BaseObject  $object   Propel object instance to bookmark
@@ -23,9 +23,58 @@ $response->addJavascript('prototype.js');
  * @param  array       $options  Array of HTML options to apply on the HTML list
  * @return string
  **/
-function depp_bookmarking_block($object, $domid='depp-bookmarkr-block', $options = array())
+function depp_positive_bookmarking_block($object, $domid='depp-positive-bookmarker-block', $options = array())
 {
-  return content_tag('div', depp_bookmarkr($object, $domid, '', $options), array('id' => $domid));
+  return content_tag('div', depp_positive_bookmarker($object, $domid, '', $options), array('id' => $domid));
+}
+
+function depp_positive_bookmarker($object, $domid='depp-positive-bookmarker-block', $message='', $options=array())
+{
+  if (is_null($object))
+  {
+    sfLogger::getInstance()->debug('A NULL object cannot be bookmarked');
+    return '';
+  }
+  
+  $user_id = deppPropelActAsBookmarkableToolkit::getUserId();
+  // anonymous bookmarks
+  if ( (is_null($user_id) || $user_id == '') && !$object->allowsAnonymousBookmarking())
+  {
+    sfLogger::getInstance()->debug('anonymous bookmarking not allowed');
+    return '';
+  }
+ 
+  $options = _parse_attributes($options);
+  if (!isset($options['id']))
+  {
+    $options = array_merge($options, array('id' => 'bookmarking-items'));
+  }
+
+  // already bookmarked 
+  if ($object->hasBeenPositivelyBookmarked($user_id))
+  {
+
+    $message .=  "&nbsp;" . 
+                 link_to_remote(__('Remove from favourites'),
+                    array('url'  => sprintf('deppBookmarking/ajaxPositiveUnbookmark?model=%s&id=%d',
+                          get_class($object), $object->getBookmarkableReferenceKey()),
+                          'update'  => $domid,
+                          'script'  => true,
+                          'complete' => visual_effect('appear', $domid).
+                                        visual_effect('highlight', $domid)));
+  } else {
+    $message .= '&nbsp;' . 
+                link_to_remote(__('Add to favourites'), 
+                  array('url'      => sprintf('deppBookmarking/ajaxPositiveBookmark?model=%s&id=%d', 
+                        get_class($object), $object->getBookmarkableReferenceKey()),
+                        'update'   => $domid,
+                        'script'   => true,
+                        'complete' => visual_effect('appear', $domid).
+                                      visual_effect('highlight', $domid)));        
+  }
+  
+  return $message;
+  
 }
 
 /**
@@ -38,7 +87,7 @@ function depp_bookmarking_block($object, $domid='depp-bookmarkr-block', $options
  * @param  array       $options  Array of HTML options to apply on the HTML list
  * @return string
  **/
-function depp_bookmarkr($object, $domid='depp-bookmarkr-block', $message='', $options = array())
+function depp_bookmarker($object, $domid='depp-bookmarker-block', $message='', $options = array())
 {
 
 

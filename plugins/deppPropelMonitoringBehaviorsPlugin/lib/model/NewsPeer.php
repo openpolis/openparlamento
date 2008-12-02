@@ -371,7 +371,6 @@ class NewsPeer extends BaseNewsPeer
         array_push($monitored_hash[get_class($obj)], $obj->getId());
       if (get_class($obj) == 'Tag')
       {
-        sfLogger::getInstance()->info('xxx: ' . $obj->getId());
         $tagged_with = $obj->getTaggedWith();
         foreach ($tagged_with as $tagged_obj) {
           array_push($monitored_hash[get_class($tagged_obj)], $tagged_obj->getId());

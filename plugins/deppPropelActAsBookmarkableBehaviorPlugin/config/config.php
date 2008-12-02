@@ -13,14 +13,14 @@ sfPropelBehavior::registerHooks('deppPropelActAsBookmarkableBehavior', array (
 ));
 
 sfPropelBehavior::registerMethods('deppPropelActAsBookmarkableBehavior', array (
-  array('deppPropelActAsBookmarkableBehavior', 'allowsAnonymousBookmarking'),  
-  array('deppPropelActAsBookmarkableBehavior', 'setBookmarking'),
-  array('deppPropelActAsBookmarkableBehavior', 'getBookmarking'),
-  array('deppPropelActAsBookmarkableBehavior', 'getBookmarkingDetails'),
-  array('deppPropelActAsBookmarkableBehavior', 'getReferenceKey'),
-  array('deppPropelActAsBookmarkableBehavior', 'getUserBookmarking'),
-  array('deppPropelActAsBookmarkableBehavior', 'hasBeenBokmarked'),
-  array('deppPropelActAsBookmarkableBehavior', 'hasBeenBokmarkedByUser'),
-  array('deppPropelActAsBookmarkableBehavior', 'clearBookmarkings'),
-  array('deppPropelActAsBookmarkableBehavior', 'clearUserBookmarking'),
+  array('deppPropelActAsBookmarkableBehavior', 'getBookmarkableReferenceKey'),  
+  array('deppPropelActAsBookmarkableBehavior', 'countPositiveBookmarkings'),
+  array('deppPropelActAsBookmarkableBehavior', 'countNegativeBookmarkings'),
+  array('deppPropelActAsBookmarkableBehavior', 'removeAllBookmarkings'),
+  array('deppPropelActAsBookmarkableBehavior', 'removePositiveBookmarking'),
+  array('deppPropelActAsBookmarkableBehavior', 'removeNegativeBookmarking'),
+  array('deppPropelActAsBookmarkableBehavior', 'hasBeenPositivelyBookmarked'),
+  array('deppPropelActAsBookmarkableBehavior', 'hasBeenNegativelyBookmarked'),
+  array('deppPropelActAsBookmarkableBehavior', 'setPositiveBookmarking'),
+  array('deppPropelActAsBookmarkableBehavior', 'setNegativeBookmarking'),
 ));                 

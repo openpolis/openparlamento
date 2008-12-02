@@ -16,7 +16,7 @@
  * @subpackage bookmarking
  * @author Guglielmo Celata
  */
-class deppPropelActAsBookmarkableBehaviorToolkit 
+class deppPropelActAsBookmarkableToolkit 
 {
 
   /**
@@ -66,39 +66,6 @@ class deppPropelActAsBookmarkableBehaviorToolkit
   }
   
   /**
-   * Add a token to available ones in the user session and return generated 
-   * token
-   * 
-   * @author Nicolas Perriault
-   * @param  string  $object_model
-   * @param  int     $object_id
-   * @return string
-   */
-  public static function addTokenToSession($object_model, $object_id)
-  {
-    $session = sfContext::getInstance()->getUser();
-    $token = self::generateToken($object_model, $object_id);
-    $tokens = $session->getAttribute('tokens', array(), 'sf_bookmarkables');
-    $tokens = array($token => array($object_model, $object_id)) + $tokens;
-    $tokens = array_slice($tokens, 0, sfConfig::get('app_bookmarking_max_tokens', 10));
-    $session->setAttribute('tokens', $tokens, 'sf_bookmarkables');
-    return $token;
-  }
-  
-  /**
-   * Generates token representing a ratable object from its model and its id
-   * 
-   * @author Nicolas Perriault
-   * @param  string  $object_model
-   * @param  int     $object_id
-   * @return string
-   */
-  public static function generateToken($object_model, $object_id)
-  {
-    return md5(sprintf('%s-%s-%s', $object_model, $object_id, sfConfig::get('app_bookmarking_salt', 'v0t4bl3')));
-  }
-  
-  /**
    * Returns true if the passed model name is bookmarkable
    * 
    * @author     Xavier Lacot
@@ -114,7 +81,7 @@ class deppPropelActAsBookmarkableBehaviorToolkit
 
     if (!is_string($model))
     {
-      throw new Exception('The param passed to the metod isBookmarkable must be a string.');
+      throw new Exception('The param passed to the metod isBookmarkable must be either an object or a string.');
     }
 
     if (!class_exists($model))
@@ -123,7 +90,7 @@ class deppPropelActAsBookmarkableBehaviorToolkit
     }
 
     $base_class = sprintf('Base%s', $model);
-    return !is_null(sfMixer::getCallable($base_class.':setBookmarking'));
+    return !is_null(sfMixer::getCallable($base_class.':getBookmarkableReferenceKey'));
   }
 
   /**
@@ -150,7 +117,7 @@ class deppPropelActAsBookmarkableBehaviorToolkit
         throw new Exception(sprintf('Unable to retrieve %s with primary key %s', $object_model, $object_id));
       }
 
-      if (!deppPropelActAsBookmarkableBehaviorToolkit::isBookmarkable($object))
+      if (!self::isBookmarkable($object))
       {
         throw new Exception(sprintf('Class %s does not have the bookmarkable behavior', $object_model));
       }
@@ -163,23 +130,5 @@ class deppPropelActAsBookmarkableBehaviorToolkit
     }
   }
   
-  /**
-   * Retrieve bookmarkable object instance from token
-   * 
-   * @author Nicolas Perriault
-   * @param  string  $token
-   * @return BaseObject
-   */
-  public static function retrieveFromToken($token)
-  {
-    $session = sfContext::getInstance()->getUser();
-    $tokens = $session->getAttribute('tokens', array(), 'sf_bookmarkables');
-    if (array_key_exists($token, $tokens) && is_array($tokens[$token]) && class_exists($tokens[$token][0]))
-    {
-      $object_model = $tokens[$token][0];
-      $object_id    = $tokens[$token][1];
-      return self::retrieveBookmarkableObject($object_model, $object_id);
-    } else return null;
-  }
 
 }

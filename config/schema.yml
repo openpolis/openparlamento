@@ -186,7 +186,8 @@ propel:
     tag_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
     teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
 
-  # dummy, to have the admin generator work 
+  # dummy (or patch), to have the admin generator work 
+  # the package param is important, since the classes must be generated in the plugins directory
   sf_tag:
     _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
     id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
@@ -281,6 +282,11 @@ propel:
     id:
     name:              { type: varchar(50), required: true, default: 'Nessun nome' }
     sf_comment_count:  { type: integer, required: true, default: 0 }
+
+  sf_test_bookmarkable:
+    _attributes:       { phpName: sfTestBookmarkable }
+    id:
+    title:             { type: varchar(50), required: true, default: 'Nessun titolo' }
 
   sf_test_votable:
     _attributes:       { phpName: sfTestVotable }

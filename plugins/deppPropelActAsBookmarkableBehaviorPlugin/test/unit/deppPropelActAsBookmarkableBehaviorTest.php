@@ -45,47 +45,26 @@ $method_getter = TEST_METHOD_GETTER;
 $method_setter = TEST_METHOD_SETTER;
 
 
-
 // start tests
-$t = new lime_test(27, new lime_output_color());
+$t = new lime_test(22, new lime_output_color());
 
 $t->diag('deppPropelActAsBookmarkableBehaviorPlugin API unit test');
 
 $t->diag('Tests beginning');
 
-// clean the database
-sfBookmarkingPeer::doDeleteAll();
-call_user_func(array(_create_object()->getPeer(), 'doDeleteAll'));
-
+// cleanup the DB 
+// remove all objects of type TEST_CLASS, and, 
+// by CASCADE-emulation all the records in sf_bookmarkings
+$test_recs = call_user_func(array(_create_object()->getPeer(), 'doSelect'), new Criteria());
+foreach ($test_recs as $test_rec) {
+  $test_rec->delete();
+}
 
 // an object is created and a test on the countBookmarkings and getBookmarking values is performed
 $obj1 = _create_object();
-$t->ok($obj1->countBookmarkings() == 0, 'a new object has no bookmarkings.');
-$t->ok($obj1->getBookmarking() == 0.0, 'a new object has an average bookmark of 0');
+$t->ok($obj1->countPositiveBookmarkings() == 0, 'countPositiveBookmarkings() - a new object has no positive bookmarkings.');
+$t->ok($obj1->countNegativeBookmarkings() == 0, 'countNegativeBookmarkings() - a new object has no negative bookmarkings.');
 $obj1->save();
-
-
-$obj2 = _create_object();
-$obj2->save();
-
-
-// Override any existing bookmarking_range parameter
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_bookmarking_range', 
-            get_class($obj1)), 2);
-$t->is($obj1->getBookmarkingRange(), 2, 'getBookmarkingRange() read the bookmarking_range parameter (changed at runtime)');
-
-// control if the neutral position is accepted
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_neutral_position', 
-            get_class($obj1)), true);
-$t->is($obj1->allowsNeutralPosition(), true, 'allowsNeutralPosition() returns if the neutral position is allowed or not');
-
-// control if anonymous bookmarking is accepted
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_anonymous_bookmarking', 
-            get_class($obj1)), true);
-$t->is($obj1->allowsAnonymousBookmarking(), true, 'allowsAnonymousBookmarking() returns if anonymous bookmarking is allowed or not');
 
 
 // define three users
@@ -93,151 +72,78 @@ $user_1_id = 1;
 $user_2_id = 4;
 $user_3_id = 6;
 
-// first user tries to express an opinion outside the bookmarking range
+$t->diag("Object1 is bookmarked by user1 and user2, positively and negatively resp.");
+
+// first user bookmarks the first object positively
 try
 {
-  $obj1->setBookmarking(10, $user_1_id);
-  $t->fail('setBookmarking() It is possible to overrate an object :(');
+  $obj1->setPositiveBookmarking($user_1_id);
+  $t->pass('setPositiveBookmarking() obj1 was positively bookmarked by user1');
 }
 catch (Exception $e)
 {
-  $t->pass('setBookmarking() It is impossible to overrate an object');
+  $t->fail('setPositiveBookmarking() obj1 could not be positively bookmarked by user1 ' . $e->getMessage());
 }
+$t->ok($obj1->countPositiveBookmarkings() == 1, 'countPositiveBookmarkings() - obj1 has one positive bookmarking.');
 
-
-// first user bookmarks inside the bookmarking range with a positive
+// second user bookmarks the first object negatively
 try
 {
-  $obj1->setBookmarking(1, $user_1_id);
-  $t->pass('setBookmarking() a bookmark inside the bookmarking_range is accepted');
+  $obj1->setNegativeBookmarking($user_2_id);
+  $t->pass('setNegativeBookmarking() obj2 was negatively bookmarked by user2');
 }
 catch (Exception $e)
 {
-  $t->fail('setBookmarking() a bookmark inside the bookmarking-range should be accepted (but it\'s not) ' . $e->getMessage());
+  $t->fail('setNegativeBookmarking() obj1 could not be negatively bookmarked by user2 ' . $e->getMessage());
 }
+$t->ok($obj1->countNegativeBookmarkings() == 1, 'countNegativeBookmarkings() - obj1 has one negative bookmarking.');
 
-// second user bookmarks inside the bookmarking range with a negative
+
+$t->diag("User3 bookmarks negatively object1, then remove the bookmarking");
+$obj1->setNegativeBookmarking($user_3_id);
+$t->ok($obj1->countNegativeBookmarkings() == 2, 'countNegativeBookmarkings() - obj1 has two negative bookmarkings.');
+// second user bookmarks the first object negatively
 try
 {
-  $obj1->setBookmarking(-2, $user_2_id);
-  $t->pass('setBookmarking() a bookmark inside the bookmarking_range is accepted');
+  $obj1->removeNegativeBookmarking($user_3_id);
+  $t->pass('removeNegativeBookmarking() - a negative bookmark on obj1 was removed by user3');
 }
 catch (Exception $e)
 {
-  $t->fail('setBookmarking() a bookmark inside the bookmarking-range should be accepted (but it\'s not) ' . $e->getMessage());
+  $t->fail('removeNegativeBookmarking() - a negative bookmark on obj1 could not be removed by user3');
 }
+$t->ok($obj1->countNegativeBookmarkings() == 1, 'countNegativeBookmarkings() - obj1 has one negative bookmarking.');
 
-// test the countBookmarking() method
-$t->ok($obj1->countBookmarkings()==2, 'countBookmarkings() counts two bookmarks');
-
-// test the getBookmarking() method (-0.5)
-$t->ok($obj1->getBookmarking()==-0.5, 'getBookmarking() the average of the two bookmarks for object one is -0.5');
-
-// test wether objects have been bookmarked at all
-$t->ok($obj1->hasBeenBokmarked() == true, 'hasBeenBokmarked() obj1 has been bookmarked');
-$t->ok($obj2->hasBeenBokmarked() == false, 'hasBeenBokmarked() obj2 has NOT been bookmarked');
-
-// test wether objects have been bookmarked by a user
-$t->ok($obj1->hasBeenBokmarkedByUser($user_1_id) == true, 'hasBeenBokmarkedByUser() obj1 has been bookmarked by user1');
-$t->ok($obj1->hasBeenBokmarkedByUser($user_3_id) == false, 'hasBeenBokmarkedByUser() obj1 has NOT been bookmarked by user3');
-
-// test the bookmarkingDetails() function
-$bookmarking_details = $obj1->getBookmarkingDetails();
-$t->ok($bookmarking_details[1] == 1 && $bookmarking_details[-2] == 1, 'getBookmarkingDetails() simple bookmarking details for the previous bookmarking are correctly extracted');
-$t->ok(array_key_exists(2, $bookmarking_details) == false, 'getBookmarkingDetails() simple bookmarking details do not contain keys for unexpressed opinions');
-
-// test the bookmarkingDetails(true) method, that extracts details for all possible keys
-$full_bookmarking_details = $obj1->getBookmarkingDetails(true);
-$t->ok($full_bookmarking_details[0] == 0 && $bookmarking_details[1] == 1, 'getBookmarkingDetails() full bookmarking details for the previous bookmarking are correctly extracted');
-
-// test the getUserBookmarking() method
-$t->ok($obj1->getUserBookmarking($user_1_id) == 1, "getUserBookmarking() first user bookmarked 1");
-$t->ok($obj1->getUserBookmarking($user_2_id) == -2, "getUserBookmarking() second user bookmarked -2");
-// second user bookmarks inside the bookmarking range with a negative
-try
-{
-  $null_user = $obj1->getUserBookmarking(null);
-  $t->fail('getUserBookmarking() when a user is not passed (null), an exception should be raised');
-}
-catch (Exception $e)
-{
-  $t->pass('getUserBookmarking() when a user is not passed, an exception is raised');
-}
-
-// test the getReferenceKey() method
-sfConfig::set(
-    sprintf('propel_behavior_sfPropelActAsRatableBehavior_%s_reference_field', 
-            get_class($obj1)), '');
-$t->is($obj1->getReferenceKey(), $obj1->getPrimaryKey(), 'getReferenceKey() get the primary key as default');
+$t->ok($obj1->hasBeenPositivelyBookmarked($user_1_id) == true, 'hasBeenPositivelyBookmarked() - obj1 was positively bookmarked by user 1');
+$t->ok($obj1->hasBeenNegativelyBookmarked($user_1_id) == false, 'hasBeenNegativelyBookmarked() - obj1 was NOT negatively bookmarked by user 1');
+$t->ok($obj1->hasBeenPositivelyBookmarked($user_2_id) == false, 'hasBeenPositivelyBookmarked() - obj1 was NOT positively bookmarked by user 1');
+$t->ok($obj1->hasBeenNegativelyBookmarked($user_2_id) == true, 'hasBeenNegativelyBookmarked() - obj1 was negatively bookmarked by user 1');
+$t->ok($obj1->hasBeenNegativelyBookmarked($user_3_id) == false, 'hasBeenNegativelyBookmarked() - obj1 was NOT negatively bookmarked by user 1');
 
 
-// thest the clearUserBookmarking() method
-$res = $obj1->clearUserBookmarking($user_1_id);
-$t->ok($obj1->hasBeenBokmarkedByUser($user_1_id) == false, 'clearUserBookmarking() remove bookmarkings of an user from an object');
+$t->diag('List of bookmarked objects');
+$bookmarked_ids = sfBookmarkingPeer::getAllPositivelyBookmarkedIds($user_1_id);
+$t->ok($bookmarked_ids[TEST_CLASS][0] == $obj1->getId(), 'sfBookmarkingPeer::getAllPositivelyBookmarkedIds() - is working');
+$bookmarked_ids = sfBookmarkingPeer::getAllPositivelyBookmarkedIds($user_2_id);
+$t->ok($bookmarked_ids == array(), 'sfBookmarkingPeer::getAllPositivelyBookmarkedIds() - empty case scenario');
 
-// thest the clearBookmarkings() method
-$res = $obj1->clearBookmarkings();
-$t->ok($obj1->hasBeenBokmarked() == false, 'clearBookmarkings() remove all bookmarkings from an object');
+$bookmarked_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($user_2_id);
+$t->ok($bookmarked_ids[TEST_CLASS][0] == $obj1->getId(), 'sfBookmarkingPeer::getAllNegativelyBookmarkedIds() - is working');
+$bookmarked_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($user_1_id);
+$t->ok($bookmarked_ids == array(), 'sfBookmarkingPeer::getAllNegativelyBookmarkedIds() - empty case scenario');
 
+$bookmarked_objs = sfBookmarkingPeer::getAllPositivelyBookmarked($user_1_id);
+$t->ok($bookmarked_objs[0] == $obj1, 'sfBookmarkingPeer::getAllPositivelyBookmarked() - is working');
 
-// anonymous bookmark allowed
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_anonymous_bookmarking', 
-            get_class($obj1)), true);
-try
-{
-  $obj1->setBookmarking(1);
-  $t->pass('setBookmarking() an anonymous bookmark is set, when allowed');
-}
-catch (Exception $e)
-{
-  $t->fail('setBookmarking() an anonymous bookmark could not be set, even if allowed');
-}
+$bookmarked_objs = sfBookmarkingPeer::getAllNegativelyBookmarked($user_2_id);
+$t->ok($bookmarked_objs[0] == $obj1, 'sfBookmarkingPeer::getAllNegativelyBookmarked() - is working');
 
-// anonymous bookmark not allowed
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_anonymous_bookmarking', 
-            get_class($obj1)), false);
-try
-{
-  $obj1->setBookmarking(1);
-  $t->fail('setBookmarking() an anonymous bookmark is set, even if it should not');
-}
-catch (Exception $e)
-{
-  $t->pass('setBookmarking() an anonymous bookmark is NOT set, when not allowed');
-}
+$bookmarked_objs = sfBookmarkingPeer::getAllPositivelyBookmarked($user_2_id);
+$t->ok($bookmarked_objs == array(), 'sfBookmarkingPeer::getAllPositivelyBookmarked() - empty case');
 
-
-// first user tries to express the neutral opinion, when allowed
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_neutral_position', 
-            get_class($obj1)), true);
-try
-{
-  $obj1->setBookmarking(0, $user_1_id);
-  $t->pass('setBookmarking() a neutral opinion was accepted, when allowed');
-}
-catch (Exception $e)
-{
-  $t->fail('setBookmarking() a neutral opinion could not be accepted, even if allowed');
-}
-
-
-// first user tries to express the neutral opinion, when not allowed
-sfConfig::set(
-    sprintf('propel_behavior_deppPropelActAsBookmarkableBehavior_%s_neutral_position', 
-            get_class($obj1)), false);
-try
-{
-  $obj1->setBookmarking(0, $user_1_id);
-  $t->fail('setBookmarking() a neutral opinion was accepted, even when not allowed');
-}
-catch (Exception $e)
-{
-  $t->pass('setBookmarking() a neutral opinion is NOT accepted, when not allowed');
-}
-
+$t->diag('List of some toolkit methods');
+$t->ok(deppPropelActAsBookmarkableToolkit::isBookmarkable(TEST_CLASS) == true,
+       'deppPropelActAsBookmarkableToolkit::isBookmarkable() - is working');
 
 $t->diag('Tests terminated');
 

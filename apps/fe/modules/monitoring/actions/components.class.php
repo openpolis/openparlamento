@@ -50,6 +50,16 @@ class monitoringComponents extends sfComponents
     
     $this->my_monitored_tags_pks = OppAttoPeer::transformIntoPKs($this->user->getMonitoredObjects('Tag'));
   }
+
+  public function executeActLine()
+  {
+    $user_pk = $this->user->getPrimaryKey();
+    $act_pk = $this->act->getPrimaryKey();
+    $this->act_has_been_positively_bookmarked = $this->act->hasBeenPositivelyBookmarked($user_pk);
+    $this->act_has_been_negatively_bookmarked = $this->act->hasBeenNegativelyBookmarked($user_pk);
+    $this->act_pk = $this->act->getBookmarkableReferenceKey();
+    $this->user_is_monitoring_act = $this->user->isMonitoring('OppAtto', $act_pk);
+  }
   
 }
 

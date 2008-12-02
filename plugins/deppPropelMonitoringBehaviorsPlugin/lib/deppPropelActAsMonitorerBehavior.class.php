@@ -56,6 +56,45 @@ class deppPropelActAsMonitorerBehavior
     return $monitored->removeMonitoringUser($this->getReferenceKey($user));
   }
 
+
+  /**
+   * Retrieve a list of pk's of object of a given type, monitored by the user
+   * This is used to lighten and speed up the extraction of monitored objects
+   *
+   * @return array of Objects
+   * @param  BaseObject  $user
+   * @param  String      $object_model   - define the type of objects
+   * @param  Criteria    $criteria an additional criteria
+   **/
+  public function getMonitoredPks(BaseObject $user, $object_model, $criteria = null)
+  {
+    // handle criteria
+    if (!is_null($criteria))
+      $c = clone $criteria;
+    else
+      $c = new Criteria();
+
+    $c->add(MonitoringPeer::USER_ID, $this->getReferenceKey($user));
+    // get the name of the ID field for this object's model
+    $obj_id_field = call_user_func_array(array($object_model . "Peer", 'translateFieldName'), 
+                                         array('id', BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME));
+                                         
+    // build the join criteria using the parametric object_model's id name
+    // and extracting only the id
+    $c->clearSelectColumns();
+    $c->addSelectColumn($obj_id_field);
+    $c->addJoin(MonitoringPeer::MONITORABLE_ID, $obj_id_field);
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, $object_model);
+
+    $monitored_pks = array();
+    $monitored_rs = call_user_func_array(array($object_model . "Peer", 'doSelectRS'), array($c));
+    while ($monitored_rs->next())
+      $monitored_pks []= $monitored_rs->getInt(1);
+    
+    return $monitored_pks;
+    
+  }
+
   /**
    * Retrieve a list of objects monitored by the user
    *

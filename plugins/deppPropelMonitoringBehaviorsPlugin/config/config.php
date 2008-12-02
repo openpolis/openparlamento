@@ -36,6 +36,7 @@ sfPropelBehavior::registerHooks('deppPropelActAsMonitorerBehavior', array (
 sfPropelBehavior::registerMethods('deppPropelActAsMonitorerBehavior', array (
   array('deppPropelActAsMonitorerBehavior', 'addMonitoredObject'),  
   array('deppPropelActAsMonitorerBehavior', 'removeMonitoredObject'),  
+  array('deppPropelActAsMonitorerBehavior', 'getMonitoredPks'),  
   array('deppPropelActAsMonitorerBehavior', 'getMonitoredObjects'),  
   array('deppPropelActAsMonitorerBehavior', 'countMonitoredObjects'),  
   array('deppPropelActAsMonitorerBehavior', 'isMonitoring'),
