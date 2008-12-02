@@ -3,8 +3,8 @@
           <tr> 
             <th scope="col">decreto legge:</th>
             <th scope="col">stato:</th>  
-            <th scope="col">DDL di conversione:</th>
-            <th scope="col">voti e commenti degli utenti:</th>
+            <th scope="col">DDL di<br />conversione:</th>
+            <th scope="col">voti e commenti<br />degli utenti:</th>
           </tr>
         </thead>
 	   
@@ -21,7 +21,12 @@
               </th>
               <td><?php include_partial('statoDecreto', array('ddl' => $ddl)) ?></td>
               <td><?php include_component('atto', 'ddlConversione', array('ddl' => $ddl)) ?></td>  
-  	          <td></td>	
+  	          <td>
+                <div class="user-stats-column">
+                  <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>
+                  <p><?php echo link_to('1.130 <strong>commenti</strong>', '#') ?></p>
+                </div>
+              </td>	
             </tr>
           <?php endforeach; ?>
         </tbody>

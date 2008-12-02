@@ -1,9 +1,9 @@
 <p class="last-update">data di ultimo aggiornamento: <strong>25-11-2008</strong></p>
-<form action="#" id="search-ddl" >
+<?php echo form_tag('#', array("id"=>"search-ddl")) ?>
   <h6>nei deputati</h6>
   <fieldset id="search-ddl-fbox">
     <input type="text" id="search-ddl-field" class="blur" />
-    <input type="image" id="search-ddl-go" src="imgs/btn-cerca-small.png" alt="cerca"  />
+    <?php echo submit_image_tag('btn-cerca-small.png', array('id' => 'search-ddl-go', 'alt' => 'cerca' )) ?>
     <div class="search-ddl-type-container">
       <div id="search-ddl-type" style="display: none;">
         <input name="search-ddl-type" id="search-ddl-0" type="radio" value="0" checked="checked" />

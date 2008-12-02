@@ -15,7 +15,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 	
 	$c = new Criteria();
 	$c->clearSelectColumns();
-	$c->addSelectColumn(OppGruppoPeer::NOME);
+	$c->addSelectColumn(OppGruppoPeer::ACRONIMO);
 	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
 	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_FINE);
 	$c->addSelectColumn(OppCaricaHasGruppoPeer::GRUPPO_ID);

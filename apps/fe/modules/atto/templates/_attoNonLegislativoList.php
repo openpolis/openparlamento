@@ -2,9 +2,9 @@
   <thead>
     <tr>
       <th scope="col">atto:</th>
-      <th scope="col">ultimo aggiornamento:</th>
-      <th scope="col">interventi in Parlamento:</th>
-      <th scope="col">voti e commenti degli utenti:</th>
+      <th scope="col">ultimo<br />aggiornamento:</th>
+      <th scope="col">interventi in<br />Parlamento:</th>
+      <th scope="col">voti e commenti<br />degli utenti:</th>
     </tr>
   </thead>
 
@@ -22,7 +22,12 @@
         </th>  	
         <td><?php include_component('atto', 'statoAttoNonLegislativo', array('ddl' => $ddl)) ?></td>
         <td><?php echo $ddl->getInterventiCount() ?></td>
-        <td></td>	
+        <td>
+          <div class="user-stats-column">
+            <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>
+            <p><?php echo link_to('1.130 <strong>commenti</strong>', '#') ?></p>
+          </div>
+        </td>
       </tr>
     <?php endforeach; ?>
   </tbody>

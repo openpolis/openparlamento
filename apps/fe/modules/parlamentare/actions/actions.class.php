@@ -46,6 +46,8 @@ class parlamentareActions extends sfActions
 	 $c->addSelectColumn(OppPoliticoPeer::NOME);
 	 $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
 	 $c->addSelectColumn(OppCaricaPeer::PRESENZE);
+	 $c->addSelectColumn(OppCaricaPeer::ASSENZE);
+	 $c->addSelectColumn(OppCaricaPeer::MISSIONI);
 	 $c->addSelectColumn(OppCaricaPeer::INDICE);
 	 $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
 	 $c->addSelectColumn(OppCaricaPeer::MEDIA);
@@ -53,9 +55,9 @@ class parlamentareActions extends sfActions
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	 $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);
 	 
-	 $c->setLimit(50);
+	 $c->setLimit(100);
 	 
-     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 	 
 	 $c = new Criteria();
 	 $c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);

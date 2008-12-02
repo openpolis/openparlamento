@@ -2,8 +2,8 @@
   <thead>
     <tr> 
       <th scope="col">decreto legislativo:</th>
-      <th scope="col">DDL collegato:</th>
-      <th scope="col">voti e commenti degli utenti:</th>
+      <th scope="col">DDL<br />collegato:</th>
+      <th scope="col">voti e commenti<br />degli utenti:</th>
     </tr>
   </thead>
 
@@ -20,7 +20,12 @@
           </p>  
         </th>  	
         <td>da fare</td>
-        <td></td>	
+        <td>
+          <div class="user-stats-column">
+            <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>
+            <p><?php echo link_to('1.130 <strong>commenti</strong>', '#') ?></p>
+          </div>
+        </td>	
       </tr>
     <?php endforeach; ?>
   </tbody>  		  

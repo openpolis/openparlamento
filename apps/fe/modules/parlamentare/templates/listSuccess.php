@@ -5,7 +5,7 @@
 <div id="content" class="tabbed float-container">
   <div id="main">
     <div class="W25_100 float-right">
-      <?php include_partial('parlamentareSearch') ?>     
+      <?php include_partial('parlamentareRightColumn') ?>     
     </div>
     <div class="W73_100 float-left">	
       <?php include_partial('wiki') ?>       
