@@ -4,7 +4,7 @@
 <br /><br />
 
 <div id="container">
-  <h4>Teseo:</h4>
+  <h4>Tag:</h4>
   <?php foreach($tesei as $teseo): ?>
     <?php echo link_to_remote($teseo->getDenominazione(), array(
       'update' => 'container',

@@ -27,6 +27,7 @@ class argomentoActions extends sfActions
     $this->forward404Unless($this->argomento);
 
     $this->tesei = $this->argomento->getTeseos();
+   
 	
 	$this->teseo_id = array();
 	foreach ($this->tesei as $teseo)
