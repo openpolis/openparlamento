@@ -21,6 +21,8 @@
     <?php echo $sf_data->getRaw('sf_content') ?>
 	<?php include_partial('global/footer') ?>
   </div>
+  <!--
   <script type="text/javascript">jQuery.noConflict();</script>
+  -->
 </body>
 </html>

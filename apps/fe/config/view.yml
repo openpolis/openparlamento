@@ -11,7 +11,7 @@ default:
 
   stylesheets:    [screen, combobox_openpolis]
 
-  javascripts:    [fe/jquery-1.2.6.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  javascripts:    []
 
   has_layout:     on
   layout:         layout
