@@ -1,11 +1,9 @@
-<ul class="menu">
+<ul id="content-tabs" class="float-container tools-container">
   <?php foreach ($sub_menu_items as $key => $value): ?>
-    <li>
-    <?php if ($current == $key): ?>
-      <?php echo $value ?>
-    <?php else: ?>
-      <?php echo link_to($value, 'monitoring/'.$key) ?></li>
-    <?php endif; ?>
+    <li class="<?php echo ($current == $key?'current':'') ?>">
+      <h2>
+        <?php echo link_to($value, 'monitoring/'.$key) ?>
+      </h2>
   </li>    
   <?php endforeach ?>
 </ul>

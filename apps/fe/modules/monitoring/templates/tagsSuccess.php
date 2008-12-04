@@ -2,26 +2,32 @@
 
 <?php echo include_component('monitoring', 'submenu', array('current' => 'tags')); ?>
 
-<h2>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></span>)</h2>
-<ul id="my_tags">
-  <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></li>
-  <?php foreach ($my_tags as $my_tag): ?>
-    <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
-      <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>
-      <span class="tag" title="clicca qui per visualizzare le notizie relative"><?php echo $my_tag->getTripleValue() ?></span>
-    </li>
-  <?php endforeach ?>
-</ul>
+<div id="content" class="tabbed float-container">
+  <div id="main" class="monitoring">
+
+    <h3>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></span>)</h3>
+    <ul id="my_tags">
+      <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></li>
+      <?php foreach ($my_tags as $my_tag): ?>
+        <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
+          <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>
+          <span class="tag" title="clicca qui per visualizzare le notizie relative"><?php echo $my_tag->getTripleValue() ?></span>
+        </li>
+      <?php endforeach ?>
+    </ul>
 
 
-<h2>Elenco dei top-term</h2>
-<div id="top_terms_drill_down">
-  <?php foreach ($teseo_tts as $top_term): ?>
-    <div id="top_term_<?php echo $top_term->getId();?>" class="top_term">
-      <?php echo $top_term->getDenominazione() ?>
+    <h3>Elenco dei top-term</h3>
+    <div id="top_terms_drill_down">
+      <?php foreach ($teseo_tts as $top_term): ?>
+        <div id="top_term_<?php echo $top_term->getId();?>" class="top_term">
+          <?php echo $top_term->getDenominazione() ?>
+        </div>
+        <div id="top_term_tags_<?php echo $top_term->getId();?>" class="tags" style="display:none"></div>
+      <?php endforeach ?>
     </div>
-    <div id="top_term_tags_<?php echo $top_term->getId();?>" class="tags" style="display:none"></div>
-  <?php endforeach ?>
+
+  </div>
 </div>
 
 <script type="text/javascript" language="javascript">

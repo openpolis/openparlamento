@@ -1,21 +1,24 @@
 <?php echo include_component('monitoring', 'submenu', array('current' => 'acts')); ?>
 
+<div id="content" class="tabbed float-container">
+  <div id="main" class="monitored_acts monitoring">
 
-<div id="monitored_acts">
-  <h2>Elenco degli atti monitorati</h2>
-  
-  <?php if ($tag_filtering_criteria): ?>
-    &Egrave; attivo il filtro sul tag <?php echo $tag_filter->getTripleValue() ?>. <?php echo link_to('Rimuovi il filtro', 'monitoring/acts') ?>
-  <?php endif ?>
+    <h3>Elenco degli atti monitorati</h3>
 
-  <?php foreach ($monitored_acts_types as $type): ?>
-    <h3 id="type_<?php echo $type->getId();?>" class="type">Atti di tipo <?php echo $type->getDenominazione(); ?></h3>
-    <div id="type_acts_<?php echo $type->getId();?>" class="acts">
-      <?php echo include_component('monitoring', 'actsForType', 
-                                   array('type_id' => $type->getId(), 
-                                         'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
-    </div>
-  <?php endforeach ?>
+    <?php if ($tag_filtering_criteria): ?>
+      &Egrave; attivo il filtro sul tag <?php echo $tag_filter->getTripleValue() ?>. <?php echo link_to('Rimuovi il filtro', 'monitoring/acts') ?>
+    <?php endif ?>
+
+    <?php foreach ($monitored_acts_types as $type): ?>
+      <h4 id="type_<?php echo $type->getId();?>" class="type">Atti di tipo <?php echo $type->getDenominazione(); ?></h4>
+      <div id="type_acts_<?php echo $type->getId();?>" class="acts">
+        <?php echo include_component('monitoring', 'actsForType', 
+                                     array('type_id' => $type->getId(), 
+                                           'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
+      </div>
+    <?php endforeach ?>
+
+  </div>
 </div>
 
 
@@ -34,7 +37,7 @@ jQuery.noConflict();
   });
   
   // news cached-slider (only does ajax request once)
-  $('#monitored_acts .acts li span.title').click( function(){
+  $('.monitored_acts .acts li span.title').click( function(){
     $this = $(this);
     var id = $this.parent().get(0).id.split('_').pop();
     var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";

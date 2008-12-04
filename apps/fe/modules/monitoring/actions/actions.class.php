@@ -71,7 +71,7 @@ class monitoringActions extends sfActions
   }
 
   public function executeTags()
-  {
+  { 
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();
     $response->addJavascript('prototype.js');
