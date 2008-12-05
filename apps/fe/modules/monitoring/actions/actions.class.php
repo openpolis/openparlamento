@@ -29,6 +29,34 @@ class monitoringActions extends sfActions
   	$this->pager->init();
   }
   
+  public function executeFavouriteActs()
+  {
+    // embed javascripts for advanced javascripts
+    $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('jquery.js');
+    
+    // calcola l'utente e l'id
+    $this->user_id = $this->getUser()->getId();
+    $this->user = OppUserPeer::retrieveByPK($this->user_id);
+    
+    // estrae gli atti favoriti
+    $this->favourite_acts = sfBookmarkingPeer::getAllPositivelyBookmarked($this->user_id);
+  }
+
+  public function executeBlockedActs()
+  {
+    // embed javascripts for advanced javascripts
+    $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('jquery.js');
+    
+    // calcola l'utente e l'id
+    $this->user_id = $this->getUser()->getId();
+    $this->user = OppUserPeer::retrieveByPK($this->user_id);
+    
+    // estrae gli atti favoriti
+    $this->blocked_acts = sfBookmarkingPeer::getAllNegativelyBookmarked($this->user_id);    
+  }
+  
   public function executeActs()
   {
     // embed javascripts for advanced javascripts
@@ -41,13 +69,13 @@ class monitoringActions extends sfActions
     // legge i filtri dalla request
     $this->filters = array();
     if ($this->hasRequestParameter('filter_tag_id') &&
-        $this->getRequestParameter('filter_tag_id') != 0)
+        $this->getRequestParameter('filter_tag_id') != '0')
     {
       $this->filters['tag_id'] = $this->getRequestParameter('filter_tag_id');
       $this->filter_tag = TagPeer::retrieveByPK($this->filters['tag_id']);      
     }
     if ($this->hasRequestParameter('filter_act_type_id') &&
-        $this->getRequestParameter('filter_act_type_id') != 0)
+        $this->getRequestParameter('filter_act_type_id') != '0')
     {
       $this->filters['act_type_id'] = $this->getRequestParameter('filter_act_type_id');      
     }

@@ -32,10 +32,10 @@
       <span class="title" title="click per vedere le notizie"><?php echo $act->getTitolo() ?></span>
       
       <!--  ultimo iter con data -->
-      <?php if ($act->getLastIter() instanceof OppAttoHasIter): ?>
+      <?php if (!is_null($act->getStatoCod())): ?>
         <span class="iter"> -
-          <?php echo $act->getLastIter()->getOppIter()->getFase() ?>
-          - <?php echo $act->getLastIter()->getData() ?>
+          <?php echo $act->getStatoFase() ?>
+          - <?php echo $act->getStatoLastDate() ?>
         </span>  
       <?php endif ?>
 

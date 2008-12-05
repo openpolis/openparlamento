@@ -11,6 +11,10 @@
                                 'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
                                 'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
+   
+    <div><?php echo link_to('mostra solo preferiti', 'monitoring/favouriteActs') ?></div>
+    <div><?php echo link_to('mostra atti <i>bloccati</i>', 'monitoring/blockedActs') ?></div>
+    
     <h3>Elenco degli atti monitorati</h3>
 
 

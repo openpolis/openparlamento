@@ -56,7 +56,7 @@ class OppVotazioneHasAtto extends BaseOppVotazioneHasAtto
     {
       $this->priority_override = 1;
     }
-    parent::save();
+    return parent::save();
 
   }
   

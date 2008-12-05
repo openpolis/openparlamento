@@ -45,23 +45,31 @@ class monitoringComponents extends sfComponents
     {
       if (is_null($act_filtering_criteria))
         $act_filtering_criteria = new Criteria();
+      
       $act_filtering_criteria->add(OppAttoPeer::RAMO, $this->filters['act_ramo']);
     }
     if (array_key_exists('act_stato', $this->filters))
     {
       if (is_null($act_filtering_criteria))
         $act_filtering_criteria = new Criteria();
-      if ($this->filters['act_stato'] == 0)
-        $act_filtering_criteria->add(OppAttoPeer::COMPLETO, null, Criteria::ISNULL);      
-      else
-        $act_filtering_criteria->add(OppAttoPeer::COMPLETO, $this->filters['act_stato']);      
+      
+      $act_filtering_criteria->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
+    }
+
+    $blocked_items_pks = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($this->user_id);
+    if (array_key_exists('OppAtto', $blocked_items_pks))
+    {
+      if (is_null($act_filtering_criteria))
+        $act_filtering_criteria = new Criteria();
+      $blocked_acts_pks = $blocked_items_pks['OppAtto'];
+      $act_filtering_criteria->add(OppAttoPeer::ID, $blocked_acts_pks, Criteria::NOT_IN);
     }
 
     $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, 
       $this->type, $this->tag_filtering_criteria, $this->my_monitored_tags_pks, $act_filtering_criteria);
     
     if (!array_key_exists('tag_id', $this->filters))
-      $directly_monitored_acts = OppAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type);
+      $directly_monitored_acts = OppAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type, $act_filtering_criteria);
     else
       $directly_monitored_acts = array();
     

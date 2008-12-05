@@ -31,7 +31,7 @@ form#comment-form input.text[readonly='readonly'] { color: #999;}
 
 #top_terms_drill_down div.tags ul { margin-bottom:10px }
 .monitored_acts .acts ul li {
-  margin-left:10px; list-style-type:none;   
+  margin-left:10px; margin-top: 5px; list-style-type:none;   
 }
 .monitored_acts .acts ul li span {
   font-size:1.2em; 
