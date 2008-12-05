@@ -19,6 +19,9 @@ propel:
     data_agg:         { type: date }
     titolo:           { type: longvarchar }
     iniziativa:       { type: integer }
+    stato_cod:        { type: char, size: 2, index: multiple }
+    stato_fase:       { type: varchar(255) }
+    stato_last_date:  { type: timestamp }
     completo:         { type: boolean }
     descrizione:      { type: clob }
     seduta:           { type: integer }
@@ -113,6 +116,7 @@ propel:
     id:
     fase:             { type: varchar(255) }
     concluso:         { type: boolean }
+    cache_cod:        { type: char, size: 2 }
 
   opp_legge:
     id:
