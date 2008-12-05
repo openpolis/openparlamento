@@ -1,2 +1,5 @@
 all:
   stylesheets:    [monitoring]
+
+actsSuccess:
+  javascripts:    [fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]

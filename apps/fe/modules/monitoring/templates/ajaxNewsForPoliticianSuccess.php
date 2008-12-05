@@ -1,6 +1,7 @@
 <ul>
   <?php foreach ($news as $n): ?>
-    <li id="news_<?php echo $n->getId()?>">
+    <li id="news_<?php echo $n->getId()?>" 
+        class="<?php echo date('U', strtotime($n->getCreatedAt())) > date('U', strtotime($sf_user->getAttribute('last_login', null, 'subscriber')))?'new':''?>">
       <?php echo $n->getCreatedAt() ?> - 
       generata da <?php echo $n->getGeneratorModel() ?> 
       collegata a <?php echo $n->getRelatedMonitorableModel() ?> (<?php echo $n->getRelatedMonitorableId() ?>)

@@ -3,20 +3,26 @@
 <div id="content" class="tabbed float-container">
   <div id="main" class="monitored_acts monitoring">
 
+    <?php include_partial('actsFilter',
+                          array('tags' => $all_monitored_tags,
+                                'types' => $all_monitored_acts_types, 
+                                'selected_tag_id' => array_key_exists('tag_id', $filters)?$filters['tag_id']:0,
+                                'selected_act_type_id' => array_key_exists('act_type_id', $filters)?$filters['act_type_id']:0,                                
+                                'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
+                                'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
+
     <h3>Elenco degli atti monitorati</h3>
 
-    <?php if ($tag_filtering_criteria): ?>
-      &Egrave; attivo il filtro sul tag <?php echo $tag_filter->getTripleValue() ?>. <?php echo link_to('Rimuovi il filtro', 'monitoring/acts') ?>
-    <?php endif ?>
 
     <?php foreach ($monitored_acts_types as $type): ?>
-      <h4 id="type_<?php echo $type->getId();?>" class="type">Atti di tipo <?php echo $type->getDenominazione(); ?></h4>
-      <div id="type_acts_<?php echo $type->getId();?>" class="acts">
-        <?php echo include_component('monitoring', 'actsForType', 
-                                     array('type_id' => $type->getId(), 
-                                           'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
-      </div>
+      <?php echo include_component('monitoring', 'actsForType', 
+                                   array('user' => $user, 'user_id' => $user_id,
+                                         'my_monitored_tags_pks' => $my_monitored_tags_pks,
+                                         'type' => $type,
+                                         'filters' => $filters,
+                                         'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
     <?php endforeach ?>
+
 
   </div>
 </div>

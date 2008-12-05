@@ -9,18 +9,6 @@
  */ 
 class OppTipoAttoPeer extends BaseOppTipoAttoPeer
 {
-  /**
-   * transform an array of objects into an array of Primary Keys
-   *
-   * @return void
-   * @author Guglielmo Celata
-   **/
-  private static function transformIntoPKs($objects)
-  {
-    // creates a callback function able to invoke the object's getPrimaryKey method
-    $getPK_callback = create_function('$e', 'return call_user_func(array($e, "getPrimaryKey"));');
-    return array_map($getPK_callback, $objects);
-  }
 
   public static function doSelectIndirectlyMonitoredByUser($user, $criteria=null)
   {    
@@ -28,9 +16,7 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
     
     // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
-
-    
+    $my_monitored_tags_pks = Util::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
     
     // fetch all acts types tagged with the monitored tags (indirect monitoring)
     $c = new Criteria();
@@ -51,7 +37,7 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
 
     // fetch directly monitored acts
-    $directly_monitored_acts_pks = self::transformIntoPKs($user->getMonitoredObjects('OppAtto', $criteria));
+    $directly_monitored_acts_pks = Util::transformIntoPKs($user->getMonitoredObjects('OppAtto', $criteria));
     
     // fetch types of acts directly monitored
     $c = new Criteria();
@@ -68,7 +54,7 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
   public static function merge($items1, $items2)
   {
     // merge directly and indirectly monitored acts types
-    $items_pks = array_merge(self::transformIntoPKs($items1), self::transformIntoPKs($items2));
+    $items_pks = array_merge(Util::transformIntoPKs($items1), Util::transformIntoPKs($items2));
     return self::retrieveByPKs($items_pks);
   }
   

@@ -22,6 +22,8 @@ sfPropelBehavior::registerMethods('deppPropelActAsMonitorableBehavior', array (
   array('deppPropelActAsMonitorableBehavior', 'isMonitoredByUser'),
   array('deppPropelActAsMonitorableBehavior', 'getMonitoringUsers'),  
   array('deppPropelActAsMonitorableBehavior', 'countMonitoringUsers'),  
+  array('deppPropelActAsMonitorableBehavior', 'getNNewNews'),
+  array('deppPropelActAsMonitorableBehavior', 'getLastNews'),
 ));                 
 
 

@@ -21,36 +21,6 @@ class OppPolitico extends BaseOppPolitico
     return $this->getNome() . " " . strtoupper($this->getCognome());
   }
   
-  /**
-   * number of new news related to the politician
-   * a new news is a news that has been created after the specified last login timestamp
-   *
-   * @return integer
-   * @author Guglielmo Celata
-   **/
-  public function getNNewNews($last_login)
-  {
-    $c = new Criteria();
-    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($this));
-    $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getId());
-    $c->add(NewsPeer::CREATED_AT, $last_login , Criteria::GREATER_THAN);
-    return NewsPeer::doCount($c);
-  }
-  
-  /**
-   * last news (ordered by creation time) related to the politician
-   *
-   * @return date(d/m/Y h:m)
-   * @author Guglielmo Celata
-   **/
-  public function getLastNews()
-  {
-    $c = new Criteria();
-    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($this));
-    $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getId());
-    $c->addDescendingOrderByColumn(NewsPeer::CREATED_AT);
-    return NewsPeer::doSelectOne($c);   
-  }
   
   public function getVoti($page=1)
   {

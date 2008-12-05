@@ -9,20 +9,6 @@
  */ 
 class OppAttoPeer extends BaseOppAttoPeer
 {
-
-  /**
-   * transform an array of objects into an array of Primary Keys
-   *
-   * @return void
-   * @author Guglielmo Celata
-   **/
-  public static function transformIntoPKs($objects)
-  {
-    // creates a callback function able to invoke the object's getPrimaryKey method
-    $getPK_callback = create_function('$e', 'return call_user_func(array($e, "getPrimaryKey"));');
-    return array_map($getPK_callback, $objects);
-  }
-    
   /**
    * returns the Atto objects that are indirectly monitored by a user, 
    * that monitors at least one tag with which the object has been tagged
@@ -32,15 +18,19 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectIndirectlyMonitoredByUser($user, $type = null, $criteria = null)
+  public static function doSelectIndirectlyMonitoredByUser($user, $type = null, $tag_criteria = null, $my_monitored_tags_pks = null, $act_criteria = null)
   {
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
+
+    // build the array of monitored tags_ids if it is not passed as a param
+    if (is_null($my_monitored_tags_pks))
+      $my_monitored_tags_pks = $user->getMonitoredPks('Tag', $criteria);
     
-    // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
-      
     // fetch all acts tagged with the monitored tags (indirect monitoring)
-    $c = new Criteria();
+    if (is_null($act_criteria))
+      $c = new Criteria();
+    else
+      $c = clone $act_criteria;
     if ($type instanceof OppTipoAtto)
     {
       $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
@@ -64,15 +54,19 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectIndirectlyMonitoredByUserJoinTags($user, $type = null, $criteria = null)
+  public static function doSelectIndirectlyMonitoredByUserJoinTags($user, $type = null, $tag_criteria = null, $my_monitored_tags_pks = null, $act_criteria = null)
   {
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
     
-    // build the array of monitored tags_ids
-    $my_monitored_tags_pks = self::transformIntoPKs($user->getMonitoredObjects('Tag', $criteria));
+    // build the array of monitored tags_ids if it is not passed as a param
+    if (is_null($my_monitored_tags_pks))
+      $my_monitored_tags_pks = $user->getMonitoredPks('Tag', $tag_criteria);
     
     // fetch all acts tagged with the monitored tags (indirect monitoring)
-    $c = new Criteria();
+    if (is_null($act_criteria))
+      $c = new Criteria();
+    else
+      $c = clone $act_criteria;
     if ($type instanceof OppTipoAtto)
     {
       $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
@@ -92,15 +86,20 @@ class OppAttoPeer extends BaseOppAttoPeer
    * returns the Atto objects that are directly monitored by a user, 
    *
    * @param  OppUser
-   * @param  OppTipoAtto - if give, acts as a filter
+   * @param  OppTipoAtto - if given, acts as a filter
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectDirectlyMonitoredByUser($user, $type = null)
+  public static function doSelectDirectlyMonitoredByUser($user, $type = null, $act_criteria = null)
   {
     
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
-    $c = new Criteria();
+
+    // fetch all acts tagged with the monitored tags (indirect monitoring)
+    if (is_null($act_criteria))
+      $c = new Criteria();
+    else
+      $c = clone $act_criteria;
 
     if ($type instanceof OppTipoAtto)
     {
@@ -109,7 +108,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     }
 
     // fetch directly monitored acts PKs
-    $directly_monitored_acts_pks = self::transformIntoPKs($user->getMonitoredObjects('OppAtto', $c));
+    $directly_monitored_acts_pks = $user->getMonitoredPks('OppAtto', $c);
     
     // return objects
     return self::retrieveByPKs($directly_monitored_acts_pks);
@@ -119,7 +118,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   public static function merge($items1, $items2)
   {
     // merge directly and indirectly monitored acts types
-    $items_pks = array_merge(self::transformIntoPKs($items1), self::transformIntoPKs($items2));
+    $items_pks = array_merge(Util::transformIntoPKs($items1), Util::transformIntoPKs($items2));
     return self::retrieveByPKs($items_pks);
   }
   

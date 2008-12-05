@@ -345,7 +345,7 @@ class NewsPeer extends BaseNewsPeer
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, $item_type);
     $c->add(self::RELATED_MONITORABLE_ID, $item_id);
-    $c->addAscendingOrderByColumn(self::DATE);
+    $c->addDescendingOrderByColumn(self::CREATED_AT);
     if ($limit > 0)
       $c->setLimit(10);
       

@@ -74,9 +74,10 @@ class deppPropelActAsMonitorerBehavior
     else
       $c = new Criteria();
 
+
     $c->add(MonitoringPeer::USER_ID, $this->getReferenceKey($user));
     // get the name of the ID field for this object's model
-    $obj_id_field = call_user_func_array(array($object_model . "Peer", 'translateFieldName'), 
+    $obj_id_field = call_user_func_array(array("Base" . $object_model . "Peer", 'translateFieldName'), 
                                          array('id', BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME));
                                          
     // build the join criteria using the parametric object_model's id name
@@ -106,6 +107,7 @@ class deppPropelActAsMonitorerBehavior
   public function getMonitoredObjects(BaseObject $user, $object_model = null, $criteria = null)
   {
 
+
     // handle criteria
     if (!is_null($criteria))
       $c = clone $criteria;
@@ -117,10 +119,11 @@ class deppPropelActAsMonitorerBehavior
 
     if (!is_null($object_model))
     {
+
       // get the name of the ID field for this object's model
-      $obj_id_field = call_user_func_array(array($object_model . "Peer", 'translateFieldName'), 
-                                           array('id', BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME));
-                                           
+        $obj_id_field = call_user_func_array(array('Base' . $object_model . "Peer", 'translateFieldName'), 
+                                             array('id', BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME));        
+
       // build the join, using the parametric object_model's id name
       $c->addJoin(MonitoringPeer::MONITORABLE_ID, $obj_id_field);
       $c->add(MonitoringPeer::MONITORABLE_MODEL, $object_model);

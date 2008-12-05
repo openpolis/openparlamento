@@ -296,6 +296,39 @@ class deppPropelActAsMonitorableBehavior
     unset($a);
     return $res;
   }
+  
+  
+  
+  /**
+   * number of new news related to the politician
+   * a new news is a news that has been created after the specified last login timestamp
+   *
+   * @return integer
+   * @author Guglielmo Celata
+   **/
+  public function getNNewNews(BaseObject $object, $last_login)
+  {
+    $c = new Criteria();
+    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($object));
+    $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getReferenceKey($object));
+    $c->add(NewsPeer::CREATED_AT, $last_login , Criteria::GREATER_THAN);
+    return NewsPeer::doCount($c);
+  }
+  
+  /**
+   * last news (ordered by creation time) related to the politician
+   *
+   * @return date(d/m/Y h:m)
+   * @author Guglielmo Celata
+   **/
+  public function getLastNews(BaseObject $object)
+  {
+    $c = new Criteria();
+    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($object));
+    $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getReferenceKey($object));
+    $c->addDescendingOrderByColumn(NewsPeer::CREATED_AT);
+    return NewsPeer::doSelectOne($c);   
+  }
     
   /**
    * Deletes all monitoring for a monitorable object (delete cascade emulation)

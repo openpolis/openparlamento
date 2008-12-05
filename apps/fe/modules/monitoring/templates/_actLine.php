@@ -5,10 +5,10 @@
         <span class="positive_bookmarking">
           <?php if (!$act_has_been_positively_bookmarked): ?>
             <?php echo link_to('Aggiungi ai preferiti', 
-                               'deppBookmarking/positiveBookmark?item_model=OppAtto&item_pk='.$act_pk) ?>          
+                               'deppBookmarking/positiveBookmark?item_model=OppAtto&item_pk='.$act_id) ?>          
           <?php else: ?>
             <?php echo link_to('Rimuovi dai preferiti', 
-                               'deppBookmarking/positiveUnbookmark?item_model=OppAtto&item_pk='.$act_pk) ?>          
+                               'deppBookmarking/positiveUnbookmark?item_model=OppAtto&item_pk='.$act_id) ?>          
           <?php endif; ?>
         </span>        
       <?php else: ?>
@@ -53,10 +53,10 @@
           <span class="negative_bookmarking">
             <?php if (!$act_has_been_negatively_bookmarked): ?>
               <?php echo link_to('Smetti di monitorare', 
-                                 'deppBookmarking/negativeBookmark?item_model=OppAtto&item_pk=' . $act_pk) ?>          
+                                 'deppBookmarking/negativeBookmark?item_model=OppAtto&item_pk=' . $act_id) ?>          
             <?php else: ?>
               <?php echo link_to('Ri-aggiungi ai monitorati', 
-                                 'deppBookmarking/negativeUnbookmark?item_model=OppAtto&item_pk=' . $act_pk) ?>          
+                                 'deppBookmarking/negativeUnbookmark?item_model=OppAtto&item_pk=' . $act_id) ?>          
             <?php endif; ?>
           </span>
         <?php endif ?>

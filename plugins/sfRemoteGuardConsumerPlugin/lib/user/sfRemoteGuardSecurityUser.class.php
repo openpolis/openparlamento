@@ -65,8 +65,21 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	  $this->setAttribute('name', (string)$xml_user->name, 'subscriber');
 	  $this->setAttribute('firstname', (string)$xml_user->firstname, 'subscriber');
 	  $this->setAttribute('hash', (string)$xml_user->hash, 'subscriber');
-	  $this->setAttribute('last_login', (string)$xml_user->last_login, 'subscriber');
 	  
+	  // read the last_login ts from the xml (it comes from the DB)
+	  $this->setAttribute('last_login', (string)$xml_user->last_login, 'subscriber');
+
+    // store the new last_login ts (now) in the DB
+    $remote_guard_host = sfConfig::get('app_remote_guard_host', 'guard.openpolis.it' ); 
+    $set_last_login_url = "http://$remote_guard_host/index.php/setLastLogin/" . (string)$xml_user->hash . 
+                          "/" .  urlencode(date('Y-m-d H:i:s'));
+    $xml = simplexml_load_file($set_last_login_url);
+    
+    // go home if something really wrong happens (could not write last_login to db)
+    if (!$xml->ok instanceof SimpleXMLElement)
+      sfLogger::getInstance()->info('xxx: not ok: ' . (string)$xml->error);
+    //else
+    //  sfLogger::getInstance()->info('xxx: ok: ' . (string)$xml->ok);    
 	}
 	
 	public function __toString()

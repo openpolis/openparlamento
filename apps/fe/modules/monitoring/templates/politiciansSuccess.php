@@ -1,3 +1,5 @@
+<?php echo use_helper('I18n'); ?>
+
 <?php echo include_component('monitoring', 'submenu', array('current' => 'politicians')); ?>
 
 <div id="content" class="tabbed float-container">
@@ -10,12 +12,17 @@
         <div class="politician">
           <span class="name"><?php echo $politician; ?></span>
           <span class="info">
-            <?php echo $politician->getNNewNews(0) ?> nuove,
-            ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y h:i') ?>
+            <?php echo format_number_choice( 
+              '[0]|[1]1 nuova|(1,+Inf]%1% nuove', 
+              array('%1%' => $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
+              $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
+            ?> 
+            - ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y h:i') ?> - 
           </span>
           <span>
-          <?php echo link_to('rimuovi dal monitoraggio', 
-                             'monitoring/removeItemFromMyMonitoredItems?item_model=OppPolitico&item_pk='.$politician->getPrimaryKey()) ?>
+          <?php echo link_to('rimuovi dal monitoraggio',                                        
+                             'monitoring/removeItemFromMyMonitoredItems?item_model=OppPolitico&item_pk=' .
+                             $politician->getPrimaryKey()) ?>
           </span>
         </div>
       </div>

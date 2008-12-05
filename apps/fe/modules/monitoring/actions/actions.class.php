@@ -35,26 +35,74 @@ class monitoringActions extends sfActions
     $response = sfContext::getInstance()->getResponse();
     $response->addJavascript('jquery.js');
     
-    $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    $filter_tag_id = $this->getRequestParameter('filter_tag_id');
-    if ($filter_tag_id)
+    $this->user_id = $this->getUser()->getId();
+    $this->user = OppUserPeer::retrieveByPK($this->user_id);
+
+    // legge i filtri dalla request
+    $this->filters = array();
+    if ($this->hasRequestParameter('filter_tag_id') &&
+        $this->getRequestParameter('filter_tag_id') != 0)
+    {
+      $this->filters['tag_id'] = $this->getRequestParameter('filter_tag_id');
+      $this->filter_tag = TagPeer::retrieveByPK($this->filters['tag_id']);      
+    }
+    if ($this->hasRequestParameter('filter_act_type_id') &&
+        $this->getRequestParameter('filter_act_type_id') != 0)
+    {
+      $this->filters['act_type_id'] = $this->getRequestParameter('filter_act_type_id');      
+    }
+    if ($this->hasRequestParameter('filter_act_ramo') &&
+        $this->getRequestParameter('filter_act_ramo') != '0')
+    {
+      $this->filters['act_ramo'] = $this->getRequestParameter('filter_act_ramo');      
+    }
+    if ($this->hasRequestParameter('filter_act_stato') &&
+        $this->getRequestParameter('filter_act_stato') != '0')
+    {
+      $this->filters['act_stato'] = $this->getRequestParameter('filter_act_stato');      
+    }
+    
+    // definisce il criterio di filtri sui tag
+    if (array_key_exists('tag_id', $this->filters))
     {
       $tag_filtering_criteria = new Criteria();
       $tag_filtering_criteria->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
-      $tag_filtering_criteria->add(TagPeer::ID, $filter_tag_id);
+      $tag_filtering_criteria->add(TagPeer::ID, $this->filters['tag_id']);
     } else
       $tag_filtering_criteria = null;
-    $this->tag_filter = TagPeer::retrieveByPK($filter_tag_id);
 
-    $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($user, $tag_filtering_criteria);
-    if (is_null($tag_filtering_criteria))
-      $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($user);
-    else
-      $directly_monitored_acts_types = array();
+    // estrae tutti gli atti monitorati dall'utente, per costruire la select
+    $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
+    
+    // estrae gli atti monitorati, con l'eventuale filtro
+    $this->my_monitored_tags_pks = $this->user->getMonitoredPks('Tag', $tag_filtering_criteria);
 
-    $this->monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types, 
-                                                         $directly_monitored_acts_types);
-                                                         
+
+    // estrae tutti i tipi di atti monitorati dall'utente (senza filtri), per la select
+    $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, $this->type);
+    $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type);
+
+    $this->all_monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types,
+                                                             $directly_monitored_acts_types);      
+
+    // filtro sui tipi di atti
+    if (array_key_exists('act_type_id', $this->filters))
+    {
+      $this->monitored_acts_types = array(OppTipoAttoPeer::retrieveByPK($this->filters['act_type_id']));
+    } else {
+      $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user,
+         $this->type, $tag_filtering_criteria);
+
+      if (is_null($tag_filtering_criteria))
+        $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($this->user,
+           $this->type);
+      else
+        $directly_monitored_acts_types = array();
+
+      $this->monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types,
+         $directly_monitored_acts_types);      
+    }
+
     $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
 

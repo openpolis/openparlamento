@@ -89,3 +89,4 @@ ul#my_tags li span.remover {
   cursor:pointer; color: darkblue; text-decoration: underline;
 }
 
+.news ul li.new { font-weight: bold;}
