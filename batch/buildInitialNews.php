@@ -25,13 +25,13 @@ sfContext::getInstance();
 NewsPeer::doDeleteAll();
 
 // define all news generators and the corresponding date fields (null = no field) for sorting purposes
-$generators = array(//'OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
+$generators = array('OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
                     'OppVotazioneHasAtto' => null,
-                    //'OppDocumento'        => OppDocumentoPeer::DATA,
+                    'OppDocumento'        => OppDocumentoPeer::DATA,
                     'OppAttoHasIter'      => OppAttoHasIterPeer::DATA, 
-                    //'OppAttoHasSede'      => null,
-                    //'OppIntervento'       => OppInterventoPeer::DATA,
-                    //'OppAtto'             => OppAttoPeer::DATA_PRES,
+                    'OppAttoHasSede'      => null,
+                    'OppIntervento'       => OppInterventoPeer::DATA,
+                    'OppAtto'             => OppAttoPeer::DATA_PRES,
                     'OppCaricaHasGruppo'  => OppCaricaHasGruppoPeer::DATA_INIZIO,
                     'OppCarica'           => OppCaricaPeer::DATA_INIZIO,
                     );

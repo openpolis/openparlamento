@@ -21,7 +21,7 @@ propel:
     related_monitorable_id:    { type: integer, index: multiple }
     date:                      { type: timestamp, index: multiple }
     priority:                  { type: integer, required: true, default: 0, index: multiple }
-    tipo_atto:                 { type: char, size: 1, index: multiple }
+    tipo_atto_id:              { type: integer, index: multiple }
     data_presentazione_atto:   { type: timestamp, index: multiple }
     ramo_votazione:            { type: char, size: 1, index: multiple }
     sede_intervento_id:        { type: integer, index: multiple }

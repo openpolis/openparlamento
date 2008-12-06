@@ -352,17 +352,14 @@ class NewsPeer extends BaseNewsPeer
     return self::doSelect($c);
   }
 
-  public static function getMyMonitoredItemsNewsCriteria()
+  public static function getMyMonitoredItemsNewsCriteria($monitored_objects)
   {
     $opp_user = OppUserPeer::retrieveByPK(sfContext::getInstance()->getUser()->getId());
-    return self::getUserMonitoredItemsNewsCriteria($opp_user);
+    return self::getUserMonitoredItemsNewsCriteria($opp_user, $monitored_objects);
   }
 
-  public static function getUserMonitoredItemsNewsCriteria($user)
-  {
-    // fetch degli oggetti monitorati
-    $monitored_objects = $user->getMonitoredObjects();    
-    
+  public static function getUserMonitoredItemsNewsCriteria($user, $monitored_objects)
+  {    
     // costruzione dell'array associativo tipo_oggetto => array_di_id
     $monitored_hash = array('OppAtto' => array(), 'OppPolitico' => array());
     foreach ($monitored_objects as $obj)

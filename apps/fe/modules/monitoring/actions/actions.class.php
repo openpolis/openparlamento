@@ -21,7 +21,47 @@ class monitoringActions extends sfActions
     
   public function executeNews()
   {
-    $c = NewsPeer::getMyMonitoredItemsNewsCriteria();
+    $this->user_id = $this->getUser()->getId();
+    $this->user = OppUserPeer::retrieveByPK($this->user_id);
+
+    // legge i filtri dalla request
+    $this->filters = array();
+
+    // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
+    if ($this->hasRequestParameter('filter_tag_id') &&
+        $this->getRequestParameter('filter_tag_id') != '0')
+    {
+      $this->filters['tag_id'] = $this->getRequestParameter('filter_tag_id');
+      $filter_criteria = new Criteria();
+      $filter_criteria->add(TagPeer::ID, $this->filters['tag_id']);
+      $monitored_objects = $this->user->getMonitoredObjects('Tag', $filter_criteria);
+    } else
+      $monitored_objects = $this->user->getMonitoredObjects();
+
+    // criterio di selezione delle news dagli oggetti monitorati    
+    $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
+
+    if ($this->hasRequestParameter('filter_act_type_id') &&
+        $this->getRequestParameter('filter_act_type_id') != '0')
+    {
+      $this->filters['act_type_id'] = $this->getRequestParameter('filter_act_type_id');
+      $c->add(NewsPeer::TIPO_ATTO_ID, $this->filters['act_type_id']);
+    }
+    if ($this->hasRequestParameter('filter_act_ramo') &&
+        $this->getRequestParameter('filter_act_ramo') != '0')
+    {
+      $this->filters['act_ramo'] = $this->getRequestParameter('filter_act_ramo');      
+      $c->add(NewsPeer::RAMO_VOTAZIONE, $this->filters['act_ramo']);
+    }
+
+    // estrae tutti gli atti monitorati dall'utente, per costruire la select
+    $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
+
+    // estrae tutti i tipi di atti monitorati dall'utente (senza filtri), per la select
+    $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, $this->type);
+    $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type);
+    $this->all_monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types,
+                                                             $directly_monitored_acts_types);      
     
     $this->pager = new sfPropelPager('News', sfConfig::get('app_pagination_limit'));
     $this->pager->setCriteria($c);

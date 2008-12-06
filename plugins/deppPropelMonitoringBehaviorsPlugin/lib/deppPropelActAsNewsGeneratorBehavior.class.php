@@ -86,8 +86,9 @@ class deppPropelActAsNewsGeneratorBehavior
 
       if ($obj instanceof OppAtto)
       {
-        $n->setTipoAtto($obj->getOppTipoAtto()->getTipo());
         $n->setDataPresentazioneAtto($obj->getDataPres());
+        $n->setTipoAttoId($obj->getOppTipoAtto()->getId());
+        $n->setRamoVotazione($obj->getRamo());
       }
       
       if ($object->getCreatedAt() != null)

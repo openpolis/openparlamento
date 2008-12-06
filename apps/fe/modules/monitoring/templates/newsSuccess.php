@@ -6,6 +6,13 @@
 <div id="content" class="tabbed float-container">
   <div id="main" class="monitoring">
 
+    <?php include_partial('newsFilter',
+                          array('tags' => $all_monitored_tags,
+                                'types' => $all_monitored_acts_types, 
+                                'selected_tag_id' => array_key_exists('tag_id', $filters)?$filters['tag_id']:0,
+                                'selected_act_type_id' => array_key_exists('act_type_id', $filters)?$filters['act_type_id']:0,                                
+                                'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0)) ?>
+
     <h3>Le tue notizie (<?php echo $pager->getNbResults() ?>)</h3>
 
     <?php echo pager_navigation($pager, 'monitoring/news') ?>

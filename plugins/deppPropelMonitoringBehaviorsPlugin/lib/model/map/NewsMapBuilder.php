@@ -48,7 +48,7 @@ class NewsMapBuilder {
 
 		$tMap->addColumn('PRIORITY', 'Priority', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('TIPO_ATTO', 'TipoAtto', 'string', CreoleTypes::CHAR, false, 1);
+		$tMap->addColumn('TIPO_ATTO_ID', 'TipoAttoId', 'int', CreoleTypes::INTEGER, false, null);
 
 		$tMap->addColumn('DATA_PRESENTAZIONE_ATTO', 'DataPresentazioneAtto', 'int', CreoleTypes::TIMESTAMP, false, null);
 
