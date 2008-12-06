@@ -60,12 +60,6 @@ class parlamentareActions extends sfActions
 	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 	 
 	 $c = new Criteria();
-	 $c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
-	 $c->add(OppSedutaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'), Criteria::EQUAL );
-	 $c->add(OppSedutaPeer::RAMO, $this->getUser()->getAttribute('ramo'), Criteria::EQUAL );
-	 $this->numero_votazioni = OppVotazionePeer::doCount($c);
-	 
-	 $c = new Criteria();
 	 $c->add(OppCaricaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'), Criteria::EQUAL);
 	 $c->add(OppCaricaPeer::CARICA, $this->getUser()->getAttribute('carica'), Criteria::EQUAL);
 	 $this->numero_parlamentari = OppCaricaPeer::doCount($c);

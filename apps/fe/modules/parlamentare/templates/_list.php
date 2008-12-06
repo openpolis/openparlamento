@@ -39,14 +39,15 @@
           </p>  				
         </td>
         <td><p><?php echo $parlamentari->getString(5) ?></p></td>
+		<?php $num_votazioni = $parlamentari->getInt(6) + $parlamentari->getInt(7) + $parlamentari->getInt(8) ?>
         <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(6)/$numero_votazioni *100,2), $parlamentari->getInt(6), $numero_votazioni) ?>
+          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(6)/$num_votazioni *100,2), $parlamentari->getInt(6), $num_votazioni) ?>
         </td>
         <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(7)/$numero_votazioni *100,2), $parlamentari->getInt(7), $numero_votazioni) ?>
+          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(7)/$num_votazioni *100,2), $parlamentari->getInt(7), $num_votazioni) ?>
         </td>
         <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(8)/$numero_votazioni *100,2), $parlamentari->getInt(8), $numero_votazioni) ?>
+          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
         </td>
         <td>
           <?php printf('<b>%01.2f</b> (%d° su %d)', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?>  

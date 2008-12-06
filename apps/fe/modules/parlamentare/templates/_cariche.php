@@ -44,8 +44,7 @@
     <td>
       <?php $presenze_totali = 0 ?>
 	  <?php foreach($gruppi as $nome => $gruppo): ?>
-	    <?php //$ribelle_count=$parlamentare->getRibelleReport($id, ($carica['carica']=='Deputato' ? 'C' : 'S'), $nome, format_date($gruppo['data_inizio'], 'yyyy-MM-dd'), format_date($gruppo['data_fine'], 'yyyy-MM-dd')); ?>
-        <?php $presenze = OppCaricaPeer::doSelectPresenzePerGruppo($id, format_date($gruppo['data_inizio'], 'yyyy-MM-dd'), format_date($gruppo['data_fine'], 'yyyy-MM-dd')) ?>
+	    <?php $presenze = OppCaricaPeer::doSelectPresenzePerGruppo($id, format_date($gruppo['data_inizio'], 'yyyy-MM-dd'), format_date($gruppo['data_fine'], 'yyyy-MM-dd')) ?>
 		<?php if($presenze!=0): ?>
 		  <?php printf('%d volte su %d voti (%01.2f %%)', $gruppo['ribelle'], $presenze, number_format($gruppo['ribelle']/$presenze *100,2)) ?><br />
 	    <?php else: ?>

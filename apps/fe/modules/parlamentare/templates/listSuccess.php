@@ -15,7 +15,7 @@
       <?php include_partial('sort') ?>   
     </div>
 	<div class="W100_100 float-left"> 
-	  <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_votazioni' => $numero_votazioni, 'numero_parlamentari' => $numero_parlamentari)) ?>  
+	  <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
     </div>
     <div class="clear-both"></div>
   </div>
