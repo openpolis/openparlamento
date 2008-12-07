@@ -52,14 +52,18 @@ class parlamentareActions extends sfActions
 	 if($this->getRequestParameter('ramo', 'camera')=='camera')
 	 {
 	   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-	   
-	   $carica = 'Deputato';
 	   $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+	   
+	   //conteggio numero deputati  
+	   $c1 = new Criteria();
+       $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '1' , Criteria::EQUAL);
+       $this->numero_parlamentari = OppCaricaPeer::doCount($c1);
+	 	 
 	 }
 	 else
 	 {
-	   $carica = 'Senatore';
-	   
+	      
 	   $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
 	   //in questo modo considero i senatori a vita
 	   $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
@@ -70,18 +74,26 @@ class parlamentareActions extends sfActions
 	   $cton1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, '5', Criteria::EQUAL);
        $cton->addOr($cton1);
        $c->add($cton);
+	   
+	   //conteggio numero senatori
+	   $c1 = new Criteria();
+       $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '4' , Criteria::EQUAL);
+       $numero_senatori = OppCaricaPeer::doCount($c1);
+	   
+	   //conteggio numero senatori a vita
+	   $c2 = new Criteria();
+       $c2->add(OppCaricaPeer::TIPO_CARICA_ID, '5' , Criteria::EQUAL);
+       $numero_senatori_a_vita = OppCaricaPeer::doCount($c2);
+	   
+	   $this->numero_parlamentari = $numero_senatori + $numero_senatori_a_vita;
 	 }
 	     
      $this->addSortCriteria($c);
 	 $c->setLimit(100);
 	 
 	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
-	 
-	 $c = new Criteria();
-	 $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-	 $c->add(OppCaricaPeer::CARICA, $carica, Criteria::EQUAL);
-	 $this->numero_parlamentari = OppCaricaPeer::doCount($c);
-     
+	      
   }
   
   protected function processSort()

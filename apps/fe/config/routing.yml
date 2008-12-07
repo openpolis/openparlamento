@@ -27,7 +27,7 @@ votazione:
   param: { module: votazione, action: index }
 
 parlamentari:
-  url:   /parlamentari/:ramo
+  url:   /parlamentari/:ramo/:sort/:type
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 parlamentare:
