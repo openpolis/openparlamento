@@ -157,7 +157,7 @@ class NewsPeer extends BaseNewsPeer
           $c->add(NewsPeer::PRIORITY, 3);
           $c->add(NewsPeer::RELATED_MONITORABLE_ID, $id);          
         }
-        $c->add(NewsPeer::TIPO_ATTO_id, $tipo_atto_id);
+        $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);
         $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
       }
       else if ($type == 'Politico')

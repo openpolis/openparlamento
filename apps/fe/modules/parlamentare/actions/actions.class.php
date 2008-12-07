@@ -31,14 +31,10 @@ class parlamentareActions extends sfActions
   
   public function executeList()
   {
-     $this->processFilters();
-
-     $this->filters = $this->getUser()->getAttributeHolder()->getAll('opp_parlamentare/filters');
-	 
+     $this->processSort();
 	 
 	 $c = new Criteria();
-	 $this->addFiltersCriteria($c);
-	 
+	 	 
 	 $c->clearSelectColumns();
 	 $c->addSelectColumn(OppCaricaPeer::ID);
 	 $c->addSelectColumn(OppPoliticoPeer::ID);
@@ -52,52 +48,85 @@ class parlamentareActions extends sfActions
 	 $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
 	 $c->addSelectColumn(OppCaricaPeer::MEDIA);
 	 $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-	 $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	 $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);
 	 
+	 if($this->getRequestParameter('ramo', 'camera')=='camera')
+	 {
+	   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+	   
+	   $carica = 'Deputato';
+	   $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+	 }
+	 else
+	 {
+	   $carica = 'Senatore';
+	   
+	   $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+	   //in questo modo considero i senatori a vita
+	   $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
+       $cton->addOr($cton1);
+       $c->add($cton);
+	   	   
+	   $cton = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
+	   $cton1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, '5', Criteria::EQUAL);
+       $cton->addOr($cton1);
+       $c->add($cton);
+	 }
+	     
+     $this->addSortCriteria($c);
 	 $c->setLimit(100);
 	 
 	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 	 
 	 $c = new Criteria();
-	 $c->add(OppCaricaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'), Criteria::EQUAL);
-	 $c->add(OppCaricaPeer::CARICA, $this->getUser()->getAttribute('carica'), Criteria::EQUAL);
+	 $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+	 $c->add(OppCaricaPeer::CARICA, $carica, Criteria::EQUAL);
 	 $this->numero_parlamentari = OppCaricaPeer::doCount($c);
      
   }
   
-  protected function processFilters()
+  protected function processSort()
   {
-    if ($this->getRequestParameter('legislatura'))
-	  $this->getUser()->setAttribute('legislatura', $this->getRequestParameter('legislatura'));
-		
-	if (!($this->getUser()->hasAttribute('legislatura')))
-	  $this->getUser()->setAttribute('legislatura', 16);
-    
-	if ($this->getRequestParameter('carica'))
-	  $this->getUser()->setAttribute('carica', $this->getRequestParameter('carica'));
-			
-	if (!($this->getUser()->hasAttribute('carica')))
-	  $this->getUser()->setAttribute('carica', 'Deputato');
-		    
-    if($this->getUser()->getAttribute('carica')=='Deputato')
-      $this->getUser()->setAttribute('ramo', 'C');
-	else
-	  $this->getUser()->setAttribute('ramo', 'S');    
-  }
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->getUser()->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_carica/sort');
+      $this->getUser()->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_carica/sort');
+    }
 
-  protected function addFiltersCriteria($c)
+    if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_carica/sort'))
+    {
+      $this->getUser()->setAttribute('sort', 'nome', 'sf_admin/opp_carica/sort');
+      $this->getUser()->setAttribute('type', 'asc', 'sf_admin/opp_carica/sort');
+	}
+  }
+  
+  protected function addSortCriteria($c)
   {
-      if ($this->getUser()->getAttribute('legislatura') != '16')
-        $c->add(OppCaricaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'));
-	  else
-	    $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-	
-	  if ($this->getUser()->getAttribute('carica') == 'Deputato')
-        $c->add(OppCaricaPeer::CARICA, $this->getUser()->getAttribute('carica'));
-	  else
-	    $c->add(OppCaricaPeer::CARICA, 'Senatore', Criteria::EQUAL);
-			
+    if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_carica/sort'))
+    {
+      if($sort_column!='nome')
+	    $sort_column = OppCaricaPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      
+	  if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_carica/sort') == 'asc')
+      {
+        if($sort_column=='nome')
+		{
+		  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	      $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);  
+		}
+		else
+		  $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        if($sort_column=='nome')
+		{
+		  $c->addDescendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	      $c->addDescendingOrderByColumn(OppPoliticoPeer::NOME);  
+		}
+		else
+		$c->addDescendingOrderByColumn($sort_column);
+      }
+    }
   }
 }
 

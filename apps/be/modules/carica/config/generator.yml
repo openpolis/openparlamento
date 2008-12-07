@@ -6,6 +6,6 @@ generator:
 
     list:
       title:          Elenco Parlamentari
-      display:        [id, _politico, carica, data_inizio, data_fine, legislatura, gruppo, circoscrizione]
+      display:        [id, _politico, carica, data_inizio, data_fine, legislatura, circoscrizione, presenze, assenze, missioni]
       peer_method:    doSelectJoinOppPolitico
       filters:        [legislatura, carica]

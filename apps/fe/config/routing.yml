@@ -27,8 +27,8 @@ votazione:
   param: { module: votazione, action: index }
 
 parlamentari:
-  url:   /parlamentari/:legislatura/:carica
-  param: { module: parlamentare, action: list, legislatura: 16, carica: Deputato, display: false }
+  url:   /parlamentari/:ramo
+  param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 parlamentare:
   url:   /parlamentare/:id

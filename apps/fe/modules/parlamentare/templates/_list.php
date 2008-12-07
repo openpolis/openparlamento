@@ -17,7 +17,6 @@
       <tr>
         <th scope="row">
           <p class="politician-id">
-            
             <img width="40" height="55" src="http://openpolis.depplab.net/politician/picture?content_id=<?php echo $parlamentari->getInt(2) ?>" />     
             <?php //echo image_tag('no-avatar40.png') ?>	
             <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
@@ -40,20 +39,31 @@
         </td>
         <td><p><?php echo $parlamentari->getString(5) ?></p></td>
 		<?php $num_votazioni = $parlamentari->getInt(6) + $parlamentari->getInt(7) + $parlamentari->getInt(8) ?>
-        <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(6)/$num_votazioni *100,2), $parlamentari->getInt(6), $num_votazioni) ?>
-        </td>
-        <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(7)/$num_votazioni *100,2), $parlamentari->getInt(7), $num_votazioni) ?>
-        </td>
-        <td class="evident">
-          <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
-        </td>
+        <?php if($num_votazioni==0): ?>
+		  <td class="evident">
+		    <?php print('<b>0</b>% (0 su 0)') ?>
+		  </td>
+		  <td class="evident">
+		    <?php print('<b>0</b>% (0 su 0)') ?>
+		  </td>
+		  <td class="evident">
+		    <?php print('<b>0</b>% (0 su 0)') ?>
+		  </td>
+		<?php else: ?>
+          <td class="evident">
+            <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(6)/$num_votazioni *100,2), $parlamentari->getInt(6), $num_votazioni) ?>
+          </td>
+          <td class="evident">
+            <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(7)/$num_votazioni *100,2), $parlamentari->getInt(7), $num_votazioni) ?>
+          </td>
+          <td class="evident">
+            <?php printf('<b>%01.0f</b>%% (%d su %d)', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
+          </td>
+        <?php endif; ?>
         <td>
           <?php printf('<b>%01.2f</b> (%d° su %d)', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?>  
         </td>
-
-        <td>
+		<td>
           <?php if($parlamentari->getInt(6)!=0 && $rib_count!=0): ?>
             <?php printf('<b>%01.2f</b>%% (%d su %d)', number_format($rib_count/$parlamentari->getInt(6) *100,2), $rib_count, $parlamentari->getInt(6)) ?>
 	      <?php else: ?>

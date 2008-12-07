@@ -1,10 +1,35 @@
 <div id="disegni-decreti-order" class="float-container tools-container">
   <p>ordina per</p>
   <ul>
-    <li><a href="#">nome</a></li>		
-    <li><a href="#" class="current ascending">presenze</a></li>
-    <li><a href="#">assenze</a></li>
-    <li><a href="#">indice di attivit&agrave;</a></li>
+    <?php $current_class = ($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'ascending' : 'descending') ?>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'nome'): ?>
+        <?php echo link_to('nome', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=nome&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('nome', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=nome&type=asc') ?>
+      <?php endif; ?>
+	</li>	
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'presenze'): ?>
+        <?php echo link_to('presenze', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=presenze&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('presenze', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=presenze&type=asc') ?>
+      <?php endif; ?>
+	</li>
+    <li>
+	  <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'assenze'): ?>
+        <?php echo link_to('assenze', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=assenze&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('assenze', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=assenze&type=asc') ?>
+      <?php endif; ?>
+	</li>
+	<li>
+	  <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'indice'): ?>
+        <?php echo link_to('indice di attivit&agrave;', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('indice di attivit&agrave;', 'parlamentare/list?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type=asc') ?>
+      <?php endif; ?>
+	</li>
     <li><a href="#">voti ribelli</a></li>
   </ul>
 </div>

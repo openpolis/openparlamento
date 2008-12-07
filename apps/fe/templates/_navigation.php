@@ -24,7 +24,8 @@
     <?php if($this->getContext()->getModuleName() == 'parlamentare'): ?>
       <span class="current">Parlamentari</span>
     <?php else: ?>
-      <?php echo link_to('Parlamentari', '@parlamentari?legislatura=16&carica=Deputato') ?>
+      <?php //echo link_to('Parlamentari', '@parlamentari?legislatura=16&carica=Deputato') ?>
+	  <?php echo link_to('Parlamentari', '@parlamentari?ramo=camera') ?>
     <?php endif; ?>
   </li>
   <li><?php echo link_to('Argomenti', '@argomenti') ?></li>
