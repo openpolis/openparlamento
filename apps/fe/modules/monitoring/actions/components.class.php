@@ -41,14 +41,14 @@ class monitoringComponents extends sfComponents
     
     // filtri per ramo e stato avanzamento
     $act_filtering_criteria = null;
-    if (array_key_exists('act_ramo', $this->filters))
+    if ($this->filters['act_ramo'] != '0')
     {
       if (is_null($act_filtering_criteria))
         $act_filtering_criteria = new Criteria();
       
       $act_filtering_criteria->add(OppAttoPeer::RAMO, $this->filters['act_ramo']);
     }
-    if (array_key_exists('act_stato', $this->filters))
+    if ($this->filters['act_stato'] != '0')
     {
       if (is_null($act_filtering_criteria))
         $act_filtering_criteria = new Criteria();
@@ -68,7 +68,7 @@ class monitoringComponents extends sfComponents
     $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, 
       $this->type, $this->tag_filtering_criteria, $this->my_monitored_tags_pks, $act_filtering_criteria);
     
-    if (!array_key_exists('tag_id', $this->filters))
+    if ($this->filters['tag_id'] == '0')
       $directly_monitored_acts = OppAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type, $act_filtering_criteria);
     else
       $directly_monitored_acts = array();

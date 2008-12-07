@@ -23,15 +23,30 @@ class monitoringActions extends sfActions
   {
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
-
-    // legge i filtri dalla request
+    $this->session = $this->getUser();
+    
     $this->filters = array();
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    {
+      // legge i filtri dalla request e li scrive nella sessione utente
+      if ($this->hasRequestParameter('filter_tag_id'))
+        $this->session->setAttribute('tag_id', $this->getRequestParameter('filter_tag_id'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_act_type_id'))
+        $this->session->setAttribute('act_type_id', $this->getRequestParameter('filter_act_type_id'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_act_ramo'))
+        $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'monitoring_filter');
+    }
+
+    // legge sempre i filtri dalla sessione utente
+    $this->filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
+    $this->filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
+    $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
 
     // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
-    if ($this->hasRequestParameter('filter_tag_id') &&
-        $this->getRequestParameter('filter_tag_id') != '0')
+    if ($this->filters['tag_id'] != '0')
     {
-      $this->filters['tag_id'] = $this->getRequestParameter('filter_tag_id');
       $filter_criteria = new Criteria();
       $filter_criteria->add(TagPeer::ID, $this->filters['tag_id']);
       $monitored_objects = $this->user->getMonitoredObjects('Tag', $filter_criteria);
@@ -41,18 +56,12 @@ class monitoringActions extends sfActions
     // criterio di selezione delle news dagli oggetti monitorati    
     $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
 
-    if ($this->hasRequestParameter('filter_act_type_id') &&
-        $this->getRequestParameter('filter_act_type_id') != '0')
-    {
-      $this->filters['act_type_id'] = $this->getRequestParameter('filter_act_type_id');
+    if ($this->filters['act_type_id'] != '0')
       $c->add(NewsPeer::TIPO_ATTO_ID, $this->filters['act_type_id']);
-    }
-    if ($this->hasRequestParameter('filter_act_ramo') &&
-        $this->getRequestParameter('filter_act_ramo') != '0')
-    {
-      $this->filters['act_ramo'] = $this->getRequestParameter('filter_act_ramo');      
+
+    if ($this->filters['act_ramo'] != '0')
       $c->add(NewsPeer::RAMO_VOTAZIONE, $this->filters['act_ramo']);
-    }
+
 
     // estrae tutti gli atti monitorati dall'utente, per costruire la select
     $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
@@ -105,33 +114,38 @@ class monitoringActions extends sfActions
     
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
+    $this->session = $this->getUser();
 
     // legge i filtri dalla request
     $this->filters = array();
-    if ($this->hasRequestParameter('filter_tag_id') &&
-        $this->getRequestParameter('filter_tag_id') != '0')
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
     {
-      $this->filters['tag_id'] = $this->getRequestParameter('filter_tag_id');
-      $this->filter_tag = TagPeer::retrieveByPK($this->filters['tag_id']);      
+      // legge i filtri dalla request e li scrive nella sessione utente
+      if ($this->hasRequestParameter('filter_tag_id'))
+      {
+        $this->session->setAttribute('tag_id', $this->getRequestParameter('filter_tag_id'), 'monitoring_filter');
+        $this->filter_tag = TagPeer::retrieveByPK($this->filters['tag_id']);        
+      }
+
+      if ($this->hasRequestParameter('filter_act_type_id'))
+        $this->session->setAttribute('act_type_id', $this->getRequestParameter('filter_act_type_id'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_act_ramo'))
+        $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_act_stato'))
+        $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'monitoring_filter');
     }
-    if ($this->hasRequestParameter('filter_act_type_id') &&
-        $this->getRequestParameter('filter_act_type_id') != '0')
-    {
-      $this->filters['act_type_id'] = $this->getRequestParameter('filter_act_type_id');      
-    }
-    if ($this->hasRequestParameter('filter_act_ramo') &&
-        $this->getRequestParameter('filter_act_ramo') != '0')
-    {
-      $this->filters['act_ramo'] = $this->getRequestParameter('filter_act_ramo');      
-    }
-    if ($this->hasRequestParameter('filter_act_stato') &&
-        $this->getRequestParameter('filter_act_stato') != '0')
-    {
-      $this->filters['act_stato'] = $this->getRequestParameter('filter_act_stato');      
-    }
-    
+
+    // legge sempre i filtri dalla sessione utente
+    $this->filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
+    $this->filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
+    $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
+    $this->filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'monitoring_filter');
+
+
     // definisce il criterio di filtri sui tag
-    if (array_key_exists('tag_id', $this->filters))
+    if ($this->filters['tag_id'] != '0')
     {
       $tag_filtering_criteria = new Criteria();
       $tag_filtering_criteria->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
@@ -154,7 +168,7 @@ class monitoringActions extends sfActions
                                                              $directly_monitored_acts_types);      
 
     // filtro sui tipi di atti
-    if (array_key_exists('act_type_id', $this->filters))
+    if ($this->filters['act_type_id'] != 0)
     {
       $this->monitored_acts_types = array(OppTipoAttoPeer::retrieveByPK($this->filters['act_type_id']));
     } else {
