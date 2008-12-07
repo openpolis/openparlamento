@@ -1,3 +1,5 @@
+<?php echo use_helper('I18n'); ?>
+
     <li id="act_<?php echo $act->getPrimaryKey()?>">
 
       <!-- blocco bookmarking positivo -->
@@ -27,6 +29,15 @@
           <span class="tag"><?php echo link_to(strtolower($tag->getTripleValue()), 'monitoring/acts?filter_tag_id=' . $tag->getPrimaryKey()) ?></span>
         <?php endforeach; ?>          
       <?php endif; ?>
+
+      <span class="info">
+        <?php echo format_number_choice( 
+          '[0]|[1]1 nuova|(1,+Inf]%1% nuove', 
+          array('%1%' => $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
+          $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
+        ?> 
+        - ultima: <?php echo $act->getLastNews()->getDate('d/m/Y h:i') ?> - 
+      </span>
 
       <!-- titolo cliccabile, con drop-down associato (nello script js) -->
       <span class="title" title="click per vedere le notizie"><?php echo $act->getTitolo() ?></span>

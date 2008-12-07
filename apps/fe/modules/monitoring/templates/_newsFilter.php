@@ -3,9 +3,10 @@
 
 <?php echo form_tag('#', array("id"=>"disegni-decreti-filter")) ?>
   <fieldset class="labels">
-    <label for="topic">argomento:</label>
-    <label for="type">tipologia:</label>
-    <label for="room">ramo:</label>
+    <label for="filter_tag_id">argomento:</label>
+    <label for="filter_act_type_id">tipologia:</label>
+    <label for="filter_act_ramo">ramo:</label>
+    <label for="filter_date">data:</label>
   </fieldset>
   <p>filtra per</p>
   <fieldset>
@@ -21,6 +22,11 @@
                           options_for_select(array('0' => 'tutti',
                                                    'C' => 'camera',
                                                    'S' => 'senato'), $selected_act_ramo)) ?>
+
+    <?php echo select_tag('filter_date', 
+                          options_for_select(array('0' => 'tutte',
+                                                   'W' => 'ultima settimana',
+                                                   'M' => 'ultimo mese'), $selected_date)) ?>
 
     <?php echo submit_image_tag('btn-applica.png', array('id' => 'disegni-decreti-filter-apply', 'alt' => 'applica', 'style' => 'display: none;', 'name' => 'disegni-decreti-filter-apply' )) ?>
   </fieldset>

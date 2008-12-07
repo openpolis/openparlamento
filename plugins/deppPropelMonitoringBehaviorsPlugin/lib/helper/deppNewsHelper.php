@@ -41,13 +41,41 @@ function news($news)
 
     // nuovo incarico
     if ($generator_model == 'OppCarica'){
-      $news_string .= $politico_link . " ha assunto l'incarico di " . $generator->getCarica();
+      $news_string .= $politico_link . " assume l'incarico di " . $generator->getCarica();
     }
     
     // nuovo gruppo
-    if ($generator_model == 'OppCaricaHasGruppo'){
-      $news_string .= $politico_link . " si &egrave; unito al gruppo " . $generator->getOppGruppo()->getNome();
+    else if ($generator_model == 'OppCaricaHasGruppo'){
+      $news_string .= $politico_link . " si unisce al gruppo " . $generator->getOppGruppo()->getNome();
     }
+
+    // intervento
+    else if ($generator_model == 'OppIntervento'){
+      $atto = $generator->getOppAtto();
+      $tipo = $atto->getOppTipoAtto();
+      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+                           'atto/ddlIndex?id=' . $atto->getId(),
+                           array('title' => $atto->getTitolo()));
+                           
+      $news_string .= $politico_link . " interviene su ";
+      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $atto_link;
+    }
+
+    // firma
+    else if ($generator_model == 'OppCaricaHasAtto'){
+      $atto = $generator->getOppAtto();
+      $tipo = $atto->getOppTipoAtto();
+      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+                           'atto/ddlIndex?id=' . $atto->getId(),
+                           array('title' => $atto->getTitolo()));
+                           
+      $news_string .= $politico_link . " firma ";
+      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $atto_link;
+    }
+
+    else $news_string .= $generator_model;
     
   }
   
@@ -77,25 +105,57 @@ function news($news)
       $news_string .= $atto_link;
     }
     
+    // intervento
+    else if ($generator_model == 'OppIntervento'){
+      $politico = $generator->getOppCarica()->getOppPolitico();
+      $politico_link = link_to($politico, 
+                           '@parlamentare?id=' . $politico->getId(),
+                           array('title' => 'Vai alla scheda del politico'));
+                           
+      $news_string .= $politico_link . " interviene su ";
+      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $atto_link;
+    }
+
+    // firma
+    else if ($generator_model == 'OppCaricaHasAtto'){
+      $politico = $generator->getOppCarica()->getOppPolitico();
+      $politico_link = link_to($politico, 
+                           '@parlamentare?id=' . $politico->getId(),
+                           array('title' => 'Vai alla scheda del politico'));
+
+      $news_string .= ' firmat' . ($gender=='m'?'o':'a') . " ";
+      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $atto_link;
+      $news_string .= " da " . $politico_link;      
+    }
+    
+    // spostamento in commissione
+    else if ($generator_model == 'OppAttoHasSede'){
+      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $atto_link . " ";
+      $news_string .= "&egrave; spostat" . ($gender=='m'?'o':'a') . " in ";
+      $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppSede()->getDenominazione())));
+    }
+    
     // votazione finale
-    if ($generator_model == 'OppVotazioneHasAtto'){
+    else if ($generator_model == 'OppVotazioneHasAtto'){
       $news_string .= ' si &egrave; svolta la votazione finale relativa a ';
       $news_string .= $tipo->getDenominazione() . " ";
       $news_string .= $atto_link;
     }
     
     // status conclusivo
-    if ($generator_model == 'OppAttoHasIter'){
-      $news_string .= "l'iter del" .($gender=='m'?"l'":"la ");
+    else if ($generator_model == 'OppAttoHasIter'){
+      $news_string .= "lo status del" .($gender=='m'?"l'":"la ");
       $news_string .= $tipo->getDenominazione() . " ";
       $news_string .= $atto_link . " ";
-      $news_string .= "si &egrave; concluso. ";
+      $news_string .= "&egrave; ora ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
     }
     
-    
+    else $news_string .= $generator_model;
                                   
-   // fetch dell'id del generatore
     
     
   }

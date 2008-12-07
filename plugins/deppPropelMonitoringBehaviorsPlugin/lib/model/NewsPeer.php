@@ -329,25 +329,30 @@ class NewsPeer extends BaseNewsPeer
     return $c;
   }
   
-  public static function countNewsForItem($item_type, $item_id)
-  {
+
+  public static function getNewsForItemCriteria($item_type, $item_id)
+  {    
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, $item_type);
     $c->add(self::RELATED_MONITORABLE_ID, $item_id);
-      
+
+    return $c;
+  }
+
+  public static function countNewsForItem($item_type, $item_id)
+  {
+    $c = self::getNewsForItemCriteria($item_type, $item_id);      
     return self::doCount($c);
   }
 
   public static function getNewsForItem($item_type, $item_id, $limit = 0)
   {
     
-    $c = new Criteria();
-    $c->add(self::RELATED_MONITORABLE_MODEL, $item_type);
-    $c->add(self::RELATED_MONITORABLE_ID, $item_id);
+    $c = self::getNewsForItemCriteria($item_type, $item_id);      
     $c->addDescendingOrderByColumn(self::CREATED_AT);
+    $c->addDescendingOrderByColumn(self::DATE);
     if ($limit > 0)
-      $c->setLimit(10);
-      
+      $c->setLimit($limit);
     return self::doSelect($c);
   }
 

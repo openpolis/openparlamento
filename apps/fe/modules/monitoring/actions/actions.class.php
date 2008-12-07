@@ -24,7 +24,7 @@ class monitoringActions extends sfActions
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
-    
+
     $this->filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
     {
@@ -37,12 +37,24 @@ class monitoringActions extends sfActions
 
       if ($this->hasRequestParameter('filter_act_ramo'))
         $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_date'))
+        $this->session->setAttribute('date', $this->getRequestParameter('filter_date'), 'monitoring_filter');
+        
+      if ($this->getRequestParameter('filter_tag_id') == '0' &&
+          $this->getRequestParameter('filter_act_type_id') == '0' &&
+          $this->getRequestParameter('filter_act_ramo') == '0' &&
+          $this->getRequestParameter('filter_date') == '0')
+      {
+        $this->redirect('monitoring/news');
+      }
     }
 
     // legge sempre i filtri dalla sessione utente
     $this->filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
     $this->filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
     $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
+    $this->filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
 
     // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
     if ($this->filters['tag_id'] != '0')
@@ -56,11 +68,22 @@ class monitoringActions extends sfActions
     // criterio di selezione delle news dagli oggetti monitorati    
     $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
 
+    // aggiunta filtri su tipi di atto, ramo e data
     if ($this->filters['act_type_id'] != '0')
       $c->add(NewsPeer::TIPO_ATTO_ID, $this->filters['act_type_id']);
 
     if ($this->filters['act_ramo'] != '0')
       $c->add(NewsPeer::RAMO_VOTAZIONE, $this->filters['act_ramo']);
+
+    if ($this->filters['date'] != '0')
+      if ($this->filters['date'] == 'W')
+      {
+        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 week')), Criteria::GREATER_THAN);
+      }
+      elseif ($this->filters['date'] == 'M') 
+      {
+        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 month')), Criteria::GREATER_THAN);
+      }
 
 
     // estrae tutti gli atti monitorati dall'utente, per costruire la select
@@ -108,10 +131,6 @@ class monitoringActions extends sfActions
   
   public function executeActs()
   {
-    // embed javascripts for advanced javascripts
-    $response = sfContext::getInstance()->getResponse();
-    $response->addJavascript('jquery.js');
-    
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
@@ -135,6 +154,14 @@ class monitoringActions extends sfActions
 
       if ($this->hasRequestParameter('filter_act_stato'))
         $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'monitoring_filter');
+
+      if ($this->getRequestParameter('filter_tag_id') == '0' &&
+          $this->getRequestParameter('filter_act_type_id') == '0' &&
+          $this->getRequestParameter('filter_act_ramo') == '0')
+      {
+        $this->redirect('monitoring/acts');
+      }
+
     }
 
     // legge sempre i filtri dalla sessione utente
@@ -234,8 +261,8 @@ class monitoringActions extends sfActions
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
 
-    $act_id = $this->getRequestParameter('act_id');
-    $this->_fetchNewsForItem('OppAtto', $act_id);
+    $this->act_id = $this->getRequestParameter('act_id');
+    $this->_fetchNewsForItem('OppAtto', $this->act_id);
   }
 
   public function executeAjaxNewsForPolitician()
@@ -243,17 +270,22 @@ class monitoringActions extends sfActions
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
 
-    $politician_id = $this->getRequestParameter('politician_id');
-    $this->_fetchNewsForItem('OppPolitico', $politician_id);
+    $this->politician_id = $this->getRequestParameter('politician_id');
+    $this->_fetchNewsForItem('OppPolitico', $this->politician_id);
   }
 
   private function _fetchNewsForItem($type, $item_id)
   {
     $n_news = NewsPeer::countNewsForItem($type, $item_id);
-    $this->news = NewsPeer::getNewsForItem($type, $item_id, sfConfig::get('app_news_dropdown_limit', 10));
+    
+    $c = NewsPeer::getNewsForItemCriteria($type, $item_id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+    $c->setLimit(sfConfig::get('app_news_dropdown_limit', 10));
+    $this->news = NewsPeer::doSelect($c);
+
     $this->has_more = 0;
     if ($n_news > count($this->news))
-      $this->has_more = $n_news - count($this->news);    
+      $this->has_more = $n_news;    
   }
 
   public function executeAjaxAddTagToMyMonitoredTags()

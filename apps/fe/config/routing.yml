@@ -2,6 +2,18 @@
 #  url:   /ddl/:id
 #  param: { module: ddl, action: index }
 
+news_atto:
+  url:  /news_atto/:id
+  param: { module: news, action: act }
+
+news_parlamentare:
+  url:  /news_parlamentare/:id
+  param: { module: news, action: politician }
+
+atto:
+  url:   /atto/:id
+  param: { module: atto, action: ddlIndex }
+  
 argomenti:
   url:   /argomenti
   param: { module: argomento, action: list }

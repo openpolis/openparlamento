@@ -69,7 +69,7 @@ all:
   news_dropdown_limit: 7
   
   pagination:
-    limit:    100
+    limit:    50
 
   voto:
     "1":     "Assente"

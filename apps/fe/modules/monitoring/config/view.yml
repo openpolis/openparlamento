@@ -5,4 +5,4 @@ newsSuccess:
   javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
 
 actsSuccess:
-  javascripts:    [fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]

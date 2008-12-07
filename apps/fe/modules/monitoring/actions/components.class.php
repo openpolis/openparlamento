@@ -17,7 +17,6 @@ class monitoringComponents extends sfComponents
                                   'tags' => 'Gestione argomenti');
   }
   
-  
   public function executeManageItem()
   {
     if ($this->getUser()->isAuthenticated())
@@ -32,7 +31,6 @@ class monitoringComponents extends sfComponents
       $this->is_monitoring = $user->isMonitoring($this->item_model, $this->item_pk);
     }
   }
-  
   
   public function executeActsForType()
   {

@@ -25,6 +25,23 @@ class newsActions extends sfActions
     $c = NewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
+    $pager = new sfPropelPager('News', 30);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;
+  }
+  
+  public function executePolitician()
+  {
+
+    $this->politician_id = $this->getRequestParameter('id');
+    $this->politician = OppPoliticoPeer::retrieveByPK($this->politician_id);
+    $this->n_news = NewsPeer::countNewsForItem('OppPolitico', $this->politician_id);
+
+    $c = NewsPeer::getNewsForItemCriteria('OppPolitico', $this->politician_id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+
     $pager = new sfPropelPager('News', 50);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
@@ -32,5 +49,24 @@ class newsActions extends sfActions
     $this->pager = $pager;
 
   }
+
+  public function executeAct()
+  {
+
+    $this->act_id = $this->getRequestParameter('id');
+    $this->act = OppAttoPeer::retrieveByPK($this->act_id);
+    $this->n_news = NewsPeer::countNewsForItem('OppAtto', $this->act_id);
+
+    $c = NewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+
+    $pager = new sfPropelPager('News', 50);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;
+
+  }
+  
 
 }
