@@ -10,7 +10,7 @@
     <?php if($this->getContext()->getActionName() == 'attoNonLegislativoList'): ?>
       <span class="current">Atti non legislativi</span>
     <?php else: ?>
-      <?php echo link_to('Atti non legislativi', 'atto/attoNonLegislativoList') ?>
+      <?php echo link_to('Atti non legislativi', '@attiNonLegislativi') ?>
     <?php endif; ?>
   </li>
   <li>

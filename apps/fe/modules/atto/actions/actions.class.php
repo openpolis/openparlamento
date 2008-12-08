@@ -11,24 +11,6 @@
 class attoActions extends sfActions
 {
   /**
-  * Executes Atto list action
-  *
-  */
-  public function executeList()
-  {
-    $altri_atti = array(2,3,4,5,6,7,8,9,10,11,14); 
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_pagination_limit'));
-    $c = new Criteria();
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $altri_atti, Criteria::IN);
-  	$this->pager->setCriteria($c);
-    $this->pager->setPage($this->getRequestParameter('page', 1));
-    $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
-    $this->pager->init();
-    
-  }
-
-  /**
   * Executes Disegno di legge list action
   *
   */
@@ -90,16 +72,48 @@ class attoActions extends sfActions
   {
     $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
     
+	$this->processAttoNonLegislativoListSort();
+	
     $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
     $c = new Criteria();
+	$this->addAttoNonLegislativoListSortCriteria($c);
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
     $this->pager->init();
-    
-    
+  }
+  
+  protected function processAttoNonLegislativoListSort()
+  {
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->getUser()->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
+      $this->getUser()->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
+    }
+
+    if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+	  $this->getUser()->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->getUser()->setAttribute('type', 'asc', 'sf_admin/opp_atto/sort');
+    }
+  }
+  
+  protected function addAttoNonLegislativoListSortCriteria($c)
+  {
+    if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $sort_column = OppAttoPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
   }
 
   /**

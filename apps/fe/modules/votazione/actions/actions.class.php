@@ -105,14 +105,13 @@ class votazioneActions extends sfActions
    */
   public function executeList()
   {
-    $this->processListFilters();
+    $this->processListSort();
 
-    $this->filters = $this->getUser()->getAttributeHolder()->getAll('opp_votazione/filters');
-	
     $this->pager = new sfPropelPager('OppVotazione', 25);
     $c = new Criteria();
+	$this->addListSortCriteria($c);
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-    $this->addListFiltersCriteria($c);
+	$c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppSeduta');
@@ -121,36 +120,49 @@ class votazioneActions extends sfActions
 		
   }
   
-  protected function processListFilters()
+  protected function processListSort()
   {
-    if ($this->getRequestParameter('legislatura'))
-	  $this->getUser()->setAttribute('legislatura', $this->getRequestParameter('legislatura'));
-	
-	
-	if (!($this->getUser()->hasAttribute('legislatura')))
-	  $this->getUser()->setAttribute('legislatura', 16);
-    
-	if ($this->getRequestParameter('ramo'))
-	  $this->getUser()->setAttribute('ramo', $this->getRequestParameter('ramo'));
-	
-	
-	if (!($this->getUser()->hasAttribute('ramo')))
-	  $this->getUser()->setAttribute('ramo', 'entrambi');
-	    
-  }
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->getUser()->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_votazione/sort');
+      $this->getUser()->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_votazione/sort');
+    }
 
-  protected function addListFiltersCriteria($c)
-  {
-      if ($this->getUser()->getAttribute('legislatura') != 'tutte')
-        $c->add(OppSedutaPeer::LEGISLATURA, $this->getUser()->getAttribute('legislatura'));
-	  else
-	    $c->add(OppSedutaPeer::LEGISLATURA, NULL, Criteria::NOT_EQUAL);
-	  
-	  if ($this->getUser()->getAttribute('ramo') != 'entrambi')
-        $c->add(OppSedutaPeer::RAMO, $this->getUser()->getAttribute('ramo'));
+    if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_votazione/sort'))
+    {
+	  $this->getUser()->setAttribute('sort', 'data', 'sf_admin/opp_votazione/sort');
+      $this->getUser()->setAttribute('type', 'asc', 'sf_admin/opp_votazione/sort');
+    }
   }
   
-  
+  protected function addListSortCriteria($c)
+  {
+    if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_votazione/sort'))
+    {
+      if($sort_column!='data' && $sort_column!='ramo')
+	    $sort_column = OppVotazionePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      
+	  if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_votazione/sort') == 'asc')
+      {
+        if($sort_column=='data')
+		  $c->addAscendingOrderByColumn(OppSedutaPeer::DATA);
+		elseif($sort_column=='ramo')
+		  $c->addAscendingOrderByColumn(OppSedutaPeer::RAMO);
+		else    
+		  $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+	    if($sort_column=='data')
+		  $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+		elseif($sort_column=='ramo')
+		  $c->addDescendingOrderByColumn(OppSedutaPeer::RAMO);
+		else    
+		  $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
+  }
+   
 }
 
 ?>

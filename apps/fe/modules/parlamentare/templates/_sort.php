@@ -1,7 +1,8 @@
+<?php $current_class = ($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'ascending' : 'descending') ?>
+
 <div id="disegni-decreti-order" class="float-container tools-container">
   <p>ordina per</p>
   <ul>
-    <?php $current_class = ($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'ascending' : 'descending') ?>
     <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'nome'): ?>
         <?php echo link_to('nome', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=nome&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>

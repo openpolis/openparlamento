@@ -10,9 +10,13 @@ news_parlamentare:
   url:  /news_parlamentare/:id
   param: { module: news, action: politician }
 
-atto:
-  url:   /atto/:id
-  param: { module: atto, action: ddlIndex }
+attiNonLegislativi:
+  url:   /atti_non_legislativi/:sort/:type
+  param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
+
+#atto:
+#  url:   /atto/:id
+#  param: { module: atto, action: ddlIndex }
   
 argomenti:
   url:   /argomenti
@@ -31,8 +35,8 @@ teseo:
   param: { module: teseo, action: index }
 
 votazioni:
-  url:   /votazioni/:legislatura/:ramo/:page
-  param: { module: votazione, action: list, legislatura: 16, ramo: entrambi, page: 1, display: false }
+  url:   /votazioni/:sort/:type
+  param: { module: votazione, action: list, sort: data, type: desc, display: false }
 
 votazione:
   url:   /votazione/:id

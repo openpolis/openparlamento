@@ -1,10 +1,42 @@
+<?php $current_class = ($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'ascending' : 'descending') ?>
+
 <div id="disegni-decreti-order" class="float-container tools-container">
   <p>ordina per</p>
   <ul>
-    <li><a href="#" class="current ascending">data voto</a></li>
-    <li><a href="#">ramo parlamentare</a></li>
-    <li><a href="#">esito in Parlamento</a></li>
-    <li><a href="#">voti di scarto</a></li>
-    <li><a href="#">numero di ribelli</a></li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'data'): ?>
+        <?php echo link_to('data voto', '@votazioni?sort=data&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('data voto', '@votazioni?sort=data&type=asc') ?>
+      <?php endif; ?>
+	</li>
+	<li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'ramo'): ?>
+        <?php echo link_to('ramo parlamentare', '@votazioni?sort=ramo&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('ramo parlamentare', '@votazioni?sort=ramo&type=asc') ?>
+      <?php endif; ?>
+	</li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'esito'): ?>
+        <?php echo link_to('esito in Parlamento', '@votazioni?sort=esito&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('esito in Parlamento', '@votazioni?sort=esito&type=asc') ?>
+      <?php endif; ?>
+	</li>	
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'margine'): ?>
+        <?php echo link_to('voti di scarto', '@votazioni?sort=margine&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('voti di scarto', '@votazioni?sort=margine&type=asc') ?>
+      <?php endif; ?>
+	</li>
+   <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'ribelli'): ?>
+        <?php echo link_to('numero di ribelli', '@votazioni?sort=ribelli&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+	  <?php else: ?>
+        <?php echo link_to('numero di ribelli', '@votazioni?sort=ribelli&type=asc') ?>
+      <?php endif; ?>
+	</li>
   </ul>
 </div>

@@ -6,6 +6,6 @@ generator:
 
     list:
       title:          Elenco votazioni
-      display:        [_ramo, _data, _legislatura, id, presenti, maggioranza, favorevoli, contrari, astenuti, esito]
-      peer_method:    doSelectJoinOppSeduta
+      display:        [_ramo, _data, esito, margine, ribelli]
+#      peer_method:    doSelectJoinOppSeduta
       filters:        [legislatura, ramo]
