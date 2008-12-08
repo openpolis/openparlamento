@@ -1,4 +1,4 @@
-<?php echo use_helper('I18n'); ?>
+<?php echo use_helper('I18N'); ?>
 
     <li id="act_<?php echo $act->getPrimaryKey()?>">
 

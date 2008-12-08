@@ -1,4 +1,4 @@
-<?php echo use_helper('I18n'); ?>
+<?php echo use_helper('I18N'); ?>
 
 <?php echo include_component('monitoring', 'submenu', array('current' => 'politicians')); ?>
 
