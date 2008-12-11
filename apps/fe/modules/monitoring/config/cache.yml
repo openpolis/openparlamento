@@ -1,0 +1,25 @@
+#
+# la cache è abilitata su tutte le azioni, 
+# ma senza layout, per via del nome utente e di altre informazioni nei componenti esterni
+#
+# la cache funziona solo sulle richieste senza parametri POST o GET espliciti
+# quindi, quando sono attivi i filtri, le pagine non sono cached
+# questo è un comportamento accettabile, perché comunque riduce il carico sulle pagine iniziali
+# e su tutte quelle paginate (in quel caso i parametri get sono impliciti)
+#
+# la cache deve essere però dipendente dall'utente e deve espirare quando l'utente cambia 
+# i settaggi del suo monitoraggio, 
+# è stato aggiunto un identificativo utente nella url (user_token)
+#
+news: 
+  enabled:    on 
+acts:
+  enabled:    on
+politicians:
+  enabled:    on
+tags:
+  enabled:    on
+  
+all: 
+  with_layout: false     # Default value 
+  lifetime:    10800     # Default value: 3 hours

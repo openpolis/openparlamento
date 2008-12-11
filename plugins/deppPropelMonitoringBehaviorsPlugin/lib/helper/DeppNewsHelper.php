@@ -22,7 +22,7 @@ function news($news)
   // fetch del modello e dell'oggetto che ha generato la notizia
   $generator_model = $news->getGeneratorModel();
   $pks = array_values(unserialize($news->getGeneratorPrimaryKeys()));
-  $generator = call_user_func_array($generator_model.'Peer::retrieveByPK', $pks);
+  $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);
 
 
   $related_monitorable_model = $news->getRelatedMonitorableModel();

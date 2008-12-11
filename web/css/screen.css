@@ -17,6 +17,7 @@ table { width: 100%; border-collapse: collapse; }
 table tbody th { text-align: left; font-weight: normal; }
 table tbody td { text-align: center; }
 
+.sfWebDebugLogs td { text-align: left; }
 
 /*
  * FLOAT

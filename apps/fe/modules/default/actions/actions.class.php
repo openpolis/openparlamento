@@ -17,12 +17,10 @@ class defaultActions extends sfActions
   
   public function executeIndex()
   {
-    
   }
   
   public function executeError404()
   {
-    //return $this->redirect('@homepage');
   }
   
 }

@@ -24,7 +24,7 @@ class BasedeppBookmarkingActions extends sfActions
   {
     $item_model = $this->getRequestParameter('item_model');
     $item_pk = $this->getRequestParameter('item_pk');
-  
+
     $this->user_id = deppPropelActAsBookmarkableToolkit::getUserId();
     $user = OppUserPeer::retrieveByPK($this->user_id);
 

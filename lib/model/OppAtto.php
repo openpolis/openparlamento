@@ -251,6 +251,7 @@ sfPropelBehavior::add(
   array('deppPropelActAsVotableBehavior' =>
         array('voting_range'    => 1,              
               'voting_field'    => 'VotoMedio',
+              'voting_fields'   => array(1 => 'Favorevoli', -1 => 'Contrari'),
               'neutral_position'=> false,
               'anonymous_voting'=> false )));
 

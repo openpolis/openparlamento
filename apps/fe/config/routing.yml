@@ -2,6 +2,22 @@
 #  url:   /ddl/:id
 #  param: { module: ddl, action: index }
 
+monitoring_news:
+  url: /monitoring_news/:user_token
+  param: { module: monitoring, action: news}
+
+monitoring_acts:
+  url: /monitoring_acts/:user_token
+  param: { module: monitoring, action: acts}
+
+monitoring_politicians:
+  url: /monitoring_politicians/:user_token
+  param: { module: monitoring, action: politicians}
+
+monitoring_tags:
+  url: /monitoring_tags/:user_token
+  param: { module: monitoring, action: tags }
+
 news_atto:
   url:  /news_atto/:id
   param: { module: news, action: act }

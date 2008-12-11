@@ -3,7 +3,7 @@
 <div id="content" class="tabbed float-container">
   <div id="main" class="monitored_acts monitoring">
 
-    <div><?php echo link_to('mostra l\'elenco completo', 'monitoring/acts') ?></div>
+    <div><?php echo link_to('mostra l\'elenco completo', '@monitoring_acts?user_token='.$sf_user->getToken()) ?></div>
     
     <h3>Elenco degli atti bloccati</h3>
 

@@ -41,7 +41,7 @@ class deppPropelActAsMonitorableBehavior
     $ret = $monitoring_object->save();
     
     // update the caches
-    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), $user_id);
+    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), array($user_id));
     $user->countMonitoredObjects(get_class($object), null, true);    
     $this->countMonitoringUsers($object, true);
   }
@@ -68,7 +68,7 @@ class deppPropelActAsMonitorableBehavior
     $ret = MonitoringPeer::doDelete($c);
     
     // update the caches
-    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), $user_id);
+    $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), array($user_id));
     $user->countMonitoredObjects(get_class($object), null, true);    
     $this->countMonitoringUsers($object, true);
 
@@ -153,6 +153,8 @@ class deppPropelActAsMonitorableBehavior
       $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
       $res = MonitoringPeer::doCount($c);      
       try {        
+        sfLogger::getInstance()->info('xxx: ' . $res);
+        
         self::setCachedCountMonitoringUsers($object, $res);
       } catch (deppPropelActAsMonitorableException $e) {
         sfLogger::getInstance()->warning($e); 
@@ -232,7 +234,7 @@ class deppPropelActAsMonitorableBehavior
       $setter = 'set'.$field;
       if (method_exists($object, $setter))
       {
-        $ret = $object->$setter($value);
+        $ret = call_user_func(array($object, $setter), $value);
         return $object->save();
       }
     }
@@ -258,7 +260,7 @@ class deppPropelActAsMonitorableBehavior
       $getter = 'get'.$field;
       if (method_exists($object, $getter))
       {
-        return $object->$getter();
+        return call_user_func(array($object, $getter));
       }
     }
     

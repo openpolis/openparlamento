@@ -16,7 +16,7 @@ class monitoringActions extends sfActions
    */
   public function executeIndex()
   {
-    $this->forward('monitoring', 'news');
+    $this->redirect('@monitoring_news?user_token=' . $this->getUser()->getToken());
   }
     
   public function executeNews()
@@ -25,7 +25,7 @@ class monitoringActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
 
-    $this->filters = array();
+    $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
     {
       // legge i filtri dalla request e li scrive nella sessione utente
@@ -46,45 +46,65 @@ class monitoringActions extends sfActions
           $this->getRequestParameter('filter_act_ramo') == '0' &&
           $this->getRequestParameter('filter_date') == '0')
       {
-        $this->redirect('monitoring/news');
+        $this->redirect('@monitoring_news?user_token=' . $this->getUser()->getToken());
       }
     }
 
     // legge sempre i filtri dalla sessione utente
-    $this->filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
-    $this->filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
-    $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
-    $this->filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
+    $filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
+    $filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
+    $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
+    $filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
 
     // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
-    if ($this->filters['tag_id'] != '0')
+    if ($filters['tag_id'] != '0')
     {
       $filter_criteria = new Criteria();
-      $filter_criteria->add(TagPeer::ID, $this->filters['tag_id']);
+      $filter_criteria->add(TagPeer::ID, $filters['tag_id']);
       $monitored_objects = $this->user->getMonitoredObjects('Tag', $filter_criteria);
     } else
       $monitored_objects = $this->user->getMonitoredObjects();
 
     // criterio di selezione delle news dagli oggetti monitorati    
     $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
+    
+    // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
+    $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($this->user_id);
+    if (count($blocked_items_ids['OppAtto']))
+    {
+      $blocked_news_ids = array();
+      $bc = new Criteria();
+      $bc->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+      $bc->add(NewsPeer::RELATED_MONITORABLE_ID, $blocked_items_ids['OppAtto'], Criteria::IN);
+      $bc->clearSelectColumns(); 
+      $bc->addSelectColumn(NewsPeer::ID);
+      $rs = NewsPeer::doSelectRS($bc);
+      while ($rs->next()) {
+        array_push($blocked_news_ids, $rs->getInt(1));
+      }
+      $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
+    }
+    
 
     // aggiunta filtri su tipi di atto, ramo e data
-    if ($this->filters['act_type_id'] != '0')
-      $c->add(NewsPeer::TIPO_ATTO_ID, $this->filters['act_type_id']);
+    if ($filters['act_type_id'] != '0')
+      $c->add(NewsPeer::TIPO_ATTO_ID, $filters['act_type_id']);
 
-    if ($this->filters['act_ramo'] != '0')
-      $c->add(NewsPeer::RAMO_VOTAZIONE, $this->filters['act_ramo']);
+    if ($filters['act_ramo'] != '0')
+      $c->add(NewsPeer::RAMO_VOTAZIONE, $filters['act_ramo']);
 
-    if ($this->filters['date'] != '0')
-      if ($this->filters['date'] == 'W')
+    if ($filters['date'] != '0')
+      if ($filters['date'] == 'W')
       {
         $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 week')), Criteria::GREATER_THAN);
       }
-      elseif ($this->filters['date'] == 'M') 
+      elseif ($filters['date'] == 'M') 
       {
         $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 month')), Criteria::GREATER_THAN);
       }
 
+    // passa la variabile filters
+    $this->filters = $filters;
 
     // estrae tutti gli atti monitorati dall'utente, per costruire la select
     $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
@@ -136,14 +156,14 @@ class monitoringActions extends sfActions
     $this->session = $this->getUser();
 
     // legge i filtri dalla request
-    $this->filters = array();
+    $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
     {
       // legge i filtri dalla request e li scrive nella sessione utente
       if ($this->hasRequestParameter('filter_tag_id'))
       {
         $this->session->setAttribute('tag_id', $this->getRequestParameter('filter_tag_id'), 'monitoring_filter');
-        $this->filter_tag = TagPeer::retrieveByPK($this->filters['tag_id']);        
+        $this->filter_tag = TagPeer::retrieveByPK($filters['tag_id']);        
       }
 
       if ($this->hasRequestParameter('filter_act_type_id'))
@@ -165,18 +185,18 @@ class monitoringActions extends sfActions
     }
 
     // legge sempre i filtri dalla sessione utente
-    $this->filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
-    $this->filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
-    $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
-    $this->filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'monitoring_filter');
+    $filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
+    $filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
+    $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
+    $filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'monitoring_filter');
 
 
     // definisce il criterio di filtri sui tag
-    if ($this->filters['tag_id'] != '0')
+    if ($filters['tag_id'] != '0')
     {
       $tag_filtering_criteria = new Criteria();
       $tag_filtering_criteria->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
-      $tag_filtering_criteria->add(TagPeer::ID, $this->filters['tag_id']);
+      $tag_filtering_criteria->add(TagPeer::ID, $filters['tag_id']);
     } else
       $tag_filtering_criteria = null;
 
@@ -195,9 +215,9 @@ class monitoringActions extends sfActions
                                                              $directly_monitored_acts_types);      
 
     // filtro sui tipi di atti
-    if ($this->filters['act_type_id'] != 0)
+    if ($filters['act_type_id'] != 0)
     {
-      $this->monitored_acts_types = array(OppTipoAttoPeer::retrieveByPK($this->filters['act_type_id']));
+      $this->monitored_acts_types = array(OppTipoAttoPeer::retrieveByPK($filters['act_type_id']));
     } else {
       $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user,
          $this->type, $tag_filtering_criteria);
@@ -212,6 +232,8 @@ class monitoringActions extends sfActions
          $directly_monitored_acts_types);      
     }
 
+    $this->filters = $filters;
+    
     $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
 
@@ -317,6 +339,12 @@ class monitoringActions extends sfActions
     // fetch the monitored pool
     $this->my_tags = self::_getMyTags();
     $this->setTemplate('ajaxMyTags');
+    
+    // a tag was added, clear the cache for the news, acts and tags page
+    $cacheManager = $this->getContext()->getViewCacheManager(); 
+    $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
+    $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
+    $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken()); 
   }
 
   public function executeAjaxRemoveTagFromMyMonitoredTags()
@@ -336,12 +364,26 @@ class monitoringActions extends sfActions
     // fetch the monitored pool
     $this->my_tags = self::_getMyTags();
     $this->setTemplate('ajaxMyTags');
+    
+    // a tag was removed, clear the cache for the news, acts and tags page
+    $cacheManager = $this->getContext()->getViewCacheManager(); 
+    $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
+    $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
+    $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());
+    
+    // remove the negative bookmarking from objects indirectly monitored thanks to this tag
+    $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($opp_user, null, null, array($tag_id));
+    foreach ($indirectly_monitored_acts as $act)
+    {
+      $act->removeNegativeBookmarking($this->getUser()->getId());
+    }
+    
   }
 
   public function executeAjaxAddItemToMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    // if (!$isAjax) return sfView::noAjax;
+    if (!$isAjax) return sfView::noAjax;
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
     
@@ -368,6 +410,17 @@ class monitoringActions extends sfActions
       $user->addMonitoredObject($this->item_model, $this->item_pk);
     }  
     $this->setTemplate('ajaxManageItem');
+
+    // an item was added, clear the cache consequently
+    $cacheManager = $this->getContext()->getViewCacheManager();
+    $user_token = $this->getUser()->getToken();
+    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+    if ($this->item_model == 'OppAtto')
+    {
+      $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
+    } else {
+      $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+    }
     
   }
     
@@ -401,7 +454,19 @@ class monitoringActions extends sfActions
     if ($is_monitoring) 
     {
       $user->removeMonitoredObject($this->item_model, $this->item_pk);
-    }      
+    } 
+    
+    // an item was removed, clear the cache consequently
+    $cacheManager = $this->getContext()->getViewCacheManager();
+    $user_token = $this->getUser()->getToken();
+    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+    if ($this->item_model == 'OppAtto')
+    {
+      $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
+    } else {
+      $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+    }
+         
   }
   
   // fetch tags I am monitoring

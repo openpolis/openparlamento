@@ -1,4 +1,13 @@
 .svn
-/web/uploads/*
+syncall
+/config/properties.ini
+/config/rsync_exclude.txt
+/data/import
+/data/model/
+/data/fixtures/*
+/data/sql/*
+/doc/
+/test/
+/web/uploads/assets/*
 /cache/*
 /log/*

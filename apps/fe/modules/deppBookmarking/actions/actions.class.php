@@ -25,9 +25,38 @@ class deppBookmarkingActions extends BasedeppBookmarkingActions
     $this->user_id = deppPropelActAsBookmarkableToolkit::getUserId();
     $user = OppUserPeer::retrieveByPK($this->user_id);
 
-    // go to error page if user is not monitoring the object (security)
-    $this->forward404Unless($user->isMonitoring($item_model, $item_pk) || $user->isIndirectlyMonitoringAct($item_pk));
-
     $this->item = deppPropelActAsBookmarkableToolkit::retrieveBookmarkableObject($item_model, $item_pk);
+
+    // go to error page if user is not monitoring the object (security)
+    $this->forward404Unless($user->isMonitoring($item_model, $item_pk) || 
+                            $user->isIndirectlyMonitoringAct($item_pk) ||
+                            $this->item->hasBeenPositivelyBookmarked($this->user_id));
+    
+    // an object was bookmarked, clear the acts cache
+    $cacheManager = $this->getContext()->getViewCacheManager();
+    $user_token = $this->getUser()->getToken();
+    $cacheManager->remove('monitoring/acts?user_token='.$user_token); 
+    
   }
+  
+  public function executeNegativeBookmark()
+  {
+    parent::executeNegativeBookmark();
+    $this->_clearNewsCache();
+  }
+  
+  public function executeNegativeUnbookmark()
+  {
+    parent::executeNegativeUnbookmark();
+    $this->_clearNewsCache();
+  }
+  
+  protected function _clearNewsCache()
+  {
+    // an object was negatively bookmarked, clear the news cache (news of that object are no longer reported)
+    $cacheManager = $this->getContext()->getViewCacheManager();
+    $user_token = $this->getUser()->getToken();
+    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+  }
+  
 }

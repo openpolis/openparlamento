@@ -2,6 +2,11 @@
 
 class myUser extends sfRemoteGuardSecurityUser
 {
+  public function getToken()
+  {
+    return md5($this->getAttribute('name', '', 'subscriber'));
+  }
+  
   public function getFirstname()
 	{
 	  return $this->getAttribute('firstname', '', 'subscriber');
