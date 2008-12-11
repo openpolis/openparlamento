@@ -70,7 +70,7 @@ class monitoringActions extends sfActions
     
     // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
     $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($this->user_id);
-    if (array_key_exists($blocked_items_ids, 'OppAtto') && count($blocked_items_ids['OppAtto']))
+    if (array_key_exists('OppAtto', $blocked_items_ids) && count($blocked_items_ids['OppAtto']))
     {
       $blocked_news_ids = array();
       $bc = new Criteria();
