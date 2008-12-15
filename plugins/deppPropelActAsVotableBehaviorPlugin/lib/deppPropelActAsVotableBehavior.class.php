@@ -107,6 +107,7 @@ class deppPropelActAsVotableBehavior
     $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
     $ret = sfVotingPeer::doDelete($c);
     self::setVotingToObject($object, 0);
+    self::setVotingDetailsToObject($object, null);
     return $ret;
   }
 
@@ -129,6 +130,7 @@ class deppPropelActAsVotableBehavior
     $c->add(sfVotingPeer::USER_ID, $user_id);
     $ret = sfVotingPeer::doDelete($c);
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
+    self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
     return $ret;
   }
 
@@ -279,7 +281,7 @@ class deppPropelActAsVotableBehavior
   }
 
   /**
-   * Retrieves the object voting
+   * Retrieves the object voting (average)
    *
    * @param  BaseObject  $object
    * @param  int         $precision   Result float precision
@@ -314,14 +316,19 @@ class deppPropelActAsVotableBehavior
   }
   
   /**
-   * Gets the object voting details
+   * Gets the object voting details (how many voted what, as an hash)
    *
    * @param  BaseObject  $object
    * @param  boolean     $include_all  Shall we include all available votings?
    * @return associative array containing (voting => count)
    **/
-  public function getVotingDetails(BaseObject $object, $include_all = false)
+  public function getVotingDetails(BaseObject $object, $include_all = false, $docount=false)
   {
+    if ($include_all === false && $docount === false && !is_null(self::getObjectVotingFields($object)))
+    {
+      return self::getVotingDetailsFromObject($object);
+    }
+    
     $c = new Criteria();
     $c->add(sfVotingPeer::VOTABLE_ID, $object->getReferenceKey());
     $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
@@ -454,6 +461,7 @@ class deppPropelActAsVotableBehavior
     $voting_object->setVoting($voting);
     $ret = $voting_object->save();
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
+    self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
 
     return $ret;
   }
@@ -477,6 +485,79 @@ class deppPropelActAsVotableBehavior
         'Unable to delete votable object related votings records');
     }
   }
+  
+  
+  
+
+  /* Contributed by Guglielmo Celata */
+
+  /**
+   * Retrieves voting_fields phpName from configuration
+   * 
+   * @param  BaseObject  $object
+   * @return hash (1 => 'NFavour', -1 => 'NAgainst')
+   */
+  protected static function getObjectVotingFields(BaseObject $object)
+  {
+    return sfConfig::get(
+      sprintf('propel_behavior_deppPropelActAsVotableBehavior_%s_voting_fields', 
+              get_class($object)));
+  }
+
+  
+  /**
+   * Sets cached voting details to the object
+   * 
+   * @param  BaseObject  $object
+   * @param  hash        $values (1 => FAV, -1 => AG)
+   */
+  protected static function setVotingDetailsToObject(BaseObject $object, $values)
+  {
+    $fields = self::getObjectVotingFields($object);
+    if (!is_null($fields) && count($fields) > 0) 
+    {
+      foreach ($fields as $value => $field)
+      {
+        $setter = 'set'.$field;
+        if (method_exists($object, $setter))
+        {
+          if (is_null($values))
+            $object->$setter(null);
+          else
+            $object->$setter($values[$value]);      
+        }
+      }
+      return $object->save();
+    }
+  } 
+  
+  /**
+   * Return cached voting details from object
+   * 
+   * @param  BaseObject  $object
+   * @return hash       (1 => FAV, -1 => AG)
+   */
+  protected static function getVotingDetailsFromObject(BaseObject $object)
+  {
+    $fields = self::getObjectVotingFields($object);
+    if (!is_null($fields) && count($fields)>0) 
+    {
+      $details = array();
+      foreach ($fields as $value => $field)
+      {
+        $getter = 'get'.$field; 
+        if (method_exists($object, $getter))
+        {
+          $v = $object->$getter();
+          if (!is_null($v))
+            $details[$value] = $v;
+        }        
+      }
+      if (count($details) >0) return $details;
+    }
+    return null;
+  }
+  
   
   /*
    * Contributed by Vojtech Rysanek

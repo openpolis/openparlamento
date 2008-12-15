@@ -47,7 +47,7 @@ $method_setter = TEST_METHOD_SETTER;
 
 
 // start tests
-$t = new lime_test(27, new lime_output_color());
+$t = new lime_test(28, new lime_output_color());
 
 $t->diag('deppPropelActAsVotableBehaviorPlugin API unit test');
 
@@ -57,17 +57,14 @@ $t->diag('Tests beginning');
 sfVotingPeer::doDeleteAll();
 call_user_func(array(_create_object()->getPeer(), 'doDeleteAll'));
 
-
 // an object is created and a test on the countVotings and getVoting values is performed
 $obj1 = _create_object();
 $t->ok($obj1->countVotings() == 0, 'a new object has no votings.');
 $t->ok($obj1->getVoting() == 0.0, 'a new object has an average vote of 0');
 $obj1->save();
 
-
 $obj2 = _create_object();
 $obj2->save();
-
 
 // Override any existing voting_range parameter
 sfConfig::set(
@@ -86,7 +83,6 @@ sfConfig::set(
     sprintf('propel_behavior_deppPropelActAsVotableBehavior_%s_anonymous_voting', 
             get_class($obj1)), true);
 $t->is($obj1->allowsAnonymousVoting(), true, 'allowsAnonymousVoting() returns if anonymous voting is allowed or not');
-
 
 // define three users
 $user_1_id = 1;
@@ -143,11 +139,12 @@ $t->ok($obj1->hasBeenVotedByUser($user_3_id) == false, 'hasBeenVotedByUser() obj
 
 // test the votingDetails() function
 $voting_details = $obj1->getVotingDetails();
-$t->ok($voting_details[1] == 1 && $voting_details[-2] == 1, 'getVotingDetails() simple voting details for the previous votation are correctly extracted');
+$t->ok($voting_details[1] == 1 && !array_key_exists(-2, $voting_details), 'getVotingDetails() simple voting details for the previous votation are correctly extracted, keys out of range do not exist');
 $t->ok(array_key_exists(2, $voting_details) == false, 'getVotingDetails() simple voting details do not contain keys for unexpressed opinions');
 
 // test the votingDetails(true) method, that extracts details for all possible keys
 $full_voting_details = $obj1->getVotingDetails(true);
+$t->ok($voting_details[1] == 1 && $full_voting_details[-2] == 1, 'getVotingDetails() full voting details for the previous votation are correctly extracted, keys out of range do exist');
 $t->ok($full_voting_details[0] == 0 && $voting_details[1] == 1, 'getVotingDetails() full voting details for the previous votation are correctly extracted');
 
 // test the getUserVoting() method

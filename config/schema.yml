@@ -29,7 +29,7 @@ propel:
     succ:               { type: integer }
     voto_medio:         { type: float }
     ut_fav:             { type: integer }
-    ut_contr:             { type: integer }
+    ut_contr:           { type: integer }
     nb_commenti:        { type: integer, required: true, default: 0 }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     created_at:
@@ -303,6 +303,8 @@ propel:
     id:
     title:             { type: varchar(50), required: true, default: 'Nessun titolo' }
     voto_medio:        { type: float }
+    ut_fav:            { type: integer }
+    ut_contr:          { type: integer }
 
   sf_test_monitorable:
     _attributes:         { phpName: sfTestMonitorable }
