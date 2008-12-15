@@ -28,6 +28,8 @@ propel:
     pred:               { type: integer }
     succ:               { type: integer }
     voto_medio:         { type: float }
+    ut_fav:             { type: integer }
+    ut_contr:             { type: integer }
     nb_commenti:        { type: integer, required: true, default: 0 }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     created_at:
@@ -67,6 +69,7 @@ propel:
     scaglione:        { type: integer }
     posizione:        { type: integer }
     media:            { type: float }
+    ribelle:          { type: integer }
     created_at:
 
   opp_carica_has_atto:
@@ -148,6 +151,7 @@ propel:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 
     nome:               { type: varchar(30) }
     cognome:            { type: varchar(30) }
+    picture:            { type: varbinary }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
 
   opp_sede:
