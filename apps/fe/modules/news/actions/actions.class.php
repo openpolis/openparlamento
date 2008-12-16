@@ -67,6 +67,26 @@ class newsActions extends sfActions
     $this->pager = $pager;
 
   }
+
+  public function executeTag()
+  {
+
+    $this->tag_id = $this->getRequestParameter('id');
+    $this->tag = TagPeer::retrieveByPK($this->tag_id);
+    $this->n_news = NewsPeer::countNewsForTag($this->tag_id);
+
+    $c = NewsPeer::getNewsForTagCriteria($this->tag_id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+
+    $pager = new sfPropelPager('News', 50);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;
+
+  }
+  
+  
   
 
 }

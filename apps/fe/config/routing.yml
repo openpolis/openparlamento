@@ -18,6 +18,10 @@ monitoring_tags:
   url: /monitoring_tags/:user_token
   param: { module: monitoring, action: tags }
 
+news_tag:
+  url: /news_tag/:id
+  param: { module: news, action: tag }
+
 news_atto:
   url:  /news_atto/:id
   param: { module: news, action: act }

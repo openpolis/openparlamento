@@ -346,14 +346,36 @@ class NewsPeer extends BaseNewsPeer
   }
 
   public static function getNewsForItem($item_type, $item_id, $limit = 0)
-  {
-    
+  {    
     $c = self::getNewsForItemCriteria($item_type, $item_id);      
     $c->addDescendingOrderByColumn(self::CREATED_AT);
     $c->addDescendingOrderByColumn(self::DATE);
     if ($limit > 0)
       $c->setLimit($limit);
     return self::doSelect($c);
+  }
+
+  public static function getNewsForTagCriteria($tag_id)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    
+    // extracts all Attos tagged by the given tag
+    $attos_ids = array();
+    $attos_rs = TaggingPeer::getTaggableIDsByTagAndTaggableModel($tag_id, 'OppAtto');
+    while($attos_rs->next()){   
+      $attos_ids[] = $attos_rs->getInt(1);
+    } 
+    
+    $c->add(self::RELATED_MONITORABLE_ID, $attos_ids, Criteria::IN);
+
+    return $c;
+  }
+
+  public static function countNewsForTag($tag_id)
+  {
+    $c = self::getNewsForTagCriteria($tag_id);
+    return self::doCount($c);
   }
 
   public static function getMyMonitoredItemsNewsCriteria($monitored_objects)

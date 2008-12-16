@@ -5,20 +5,26 @@
 <div id="content" class="tabbed float-container">
   <div id="main" class="monitoring">
 
+    <?php if ($opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
+      <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array()); ?>
+    <?php endif ?>
+
     <h3>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></span>)</h3>
     <ul id="my_tags">
       <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></li>
       <?php foreach ($my_tags as $my_tag): ?>
         <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
           <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>
-          <span class="tag" title="clicca qui per visualizzare le notizie relative"><?php echo $my_tag->getTripleValue() ?></span>
+          <span class="tag" title="clicca qui per visualizzare le notizie relative all'argomento">
+            <?php echo link_to($my_tag->getTripleValue(), '@news_tag?id='.$my_tag->getId()) ?>
+          </span>
         </li>
       <?php endforeach ?>
     </ul>
 
 
     <h3>Elenco dei top-term</h3>
-    <div id="top_terms_drill_down">
+    <div id="top_terms_drill_down" style="width:75%;">
       <?php foreach ($teseo_tts as $top_term): ?>
         <div id="top_term_<?php echo $top_term->getId();?>" class="top_term">
           <?php echo $top_term->getDenominazione() ?>
@@ -29,6 +35,7 @@
 
   </div>
 </div>
+
 
 <script type="text/javascript" language="javascript">
 //<![CDATA[
@@ -63,20 +70,17 @@ refresh_mytags_observers = function(){
     remover = el.firstDescendant();
     tag = remover.next();
 
-    // TODO: click sul tag, mostra le notizie
-    tag.observe('click', function(event) {
-      var elt = Event.element(event);
-      alert('Notizie presto!');
-    });  
-
     // click sulla X per rimuovere il tag dai miei tag
     remover.observe('click', function(event) {
       var elt = Event.element(event);
       unselect_tag(elt.up());
       var id = elt.up().id.split('_').last();
       removed = $('tag_'+id);
-      removed.className = '';
-      removed.title = 'click per aggiungere ai tuoi tag';
+      if (removed !== null)
+      {
+        removed.className = '';
+        removed.title = 'click per aggiungere ai tuoi tag';
+      }
       
     });  
   });
@@ -131,7 +135,7 @@ refresh_tags_container = function(container_id){
 // gestione della selezione di un tag
 select_tag = function(el){
   var id = el.id.split('_').last()
-  var url = "<?php echo url_for('monitoring/ajaxAddTagToMyMonitoredTags'); ?>?tag_id=" + id;  
+  var url = "<?php echo url_for('monitoring/ajaxAddTagIdToMyMonitoredTags'); ?>?tag_id=" + id;  
   new Ajax.Request(url, { 
     method: 'get', 
     onSuccess: function(transport) { 

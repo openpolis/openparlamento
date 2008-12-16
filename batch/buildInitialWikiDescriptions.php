@@ -71,7 +71,9 @@ foreach ($classes as $model => $name_prefix)
     // then destroys it, in order to release memory
     $object = call_user_func_array(array($model.'Peer', 'retrieveByPK'), $pk_values);
     try{
-      add_wiki_description($object, $name_prefix);      
+      nahoWikiToolkit::add_wiki_description($object, $name_prefix,
+                                            "Descrizione wiki, a cura degli utenti.", 
+                                            "Creazione Automatica");      
     } catch (Exception $e) {
       echo "Exception: " . $e->getMessage() . "\n";
     }
@@ -86,25 +88,3 @@ foreach ($classes as $model => $name_prefix)
   echo "\n$cnt objects of type $model imported\n";
 }
 echo "$tot_cnt total\n";
-
-
-
-function add_wiki_description($object, $name_prefix)
-{
-  $page = new nahoWikiPage();
-  $page->setName($name_prefix . '_' . $object->getId());
-  $page->setLatestRevision(1);
-  $page->save();
-  
-  $content = new nahoWikiContent();
-  $content->setContent("Descrizione wiki del contenuto, a cura degli utenti.");
-  $content->save();
-  
-  $revision = new nahoWikiRevision();
-  $revision->setNahoWikiPage($page);
-  $revision->setNahoWikiContent($content);
-  $revision->setRevision(1);
-  $revision->setComment("Creazione automatica");
-  $revision->setUserName("admin");
-  $revision->save();
-}

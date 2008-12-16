@@ -310,7 +310,7 @@ class monitoringActions extends sfActions
       $this->has_more = $n_news;    
   }
 
-  public function executeAjaxAddTagToMyMonitoredTags()
+  public function executeAjaxAddTagIdToMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
@@ -322,7 +322,27 @@ class monitoringActions extends sfActions
     // fetch the tag to add
     $tag_id = $this->getRequestParameter('tag_id');
     $tag = TagPeer::retrieveByPK($tag_id);
+    
+    $this->_addTagToMyMonitoredTags($tag, $opp_user);
+  }
 
+  public function executeAjaxAddTagValueToMyMonitoredTags()
+  {
+    $isAjax = $this->getRequest()->isXmlHttpRequest();
+    // if (!$isAjax) return sfView::noAjax;
+
+    // fetch current user profile
+    $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+    // fetch the tag to add
+    $tag_value = $this->getRequestParameter('tag_value');
+    $tag = TagPeer::retrieveFirstByTripleValue($tag_value);
+
+    $this->_addTagToMyMonitoredTags($tag, $opp_user);
+  }
+
+  protected function _addTagToMyMonitoredTags($tag, $opp_user)
+  {
     // check if the user can add a new tag to the monitored pool
     $this->remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
     if ($this->remaining_tags == 0){
@@ -346,6 +366,7 @@ class monitoringActions extends sfActions
     $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
     $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken()); 
   }
+  
 
   public function executeAjaxRemoveTagFromMyMonitoredTags()
   {

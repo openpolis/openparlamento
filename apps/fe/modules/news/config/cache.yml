@@ -1,0 +1,4 @@
+all: 
+  enabled:     on
+  with_layout: false     # Default value 
+  lifetime:    10800     # Default value: 3 hours

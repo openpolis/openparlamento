@@ -90,3 +90,5 @@ ul#my_tags li span.remover {
 }
 
 .news ul li.new { font-weight: bold;}
+
+#tag_add { float:right;}

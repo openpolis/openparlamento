@@ -1,7 +1,15 @@
 <div id="login">
-  <?php echo link_to('Registrati', '#', array('class' => 'sign-on')) ?>	
-  <span> | </span>
-  <?php echo link_to('Entra', '#', array('class' => 'sign-in')) ?>  
+  <?php if ($this->getContext()->getModuleName() != 'sfGuardAuth' ||
+            $this->getContext()->getActionName() != 'signin'): ?>
+    <?php if ($sf_user->isAuthenticated()): ?>
+      <span>ciao, <?php echo $sf_user->getFirstname() ?></span>
+      <?php echo link_to('(Esci)', 'logout', array('style'=>'margin-left: 20px')); ?>
+    <?php else: ?>
+      <?php echo link_to('Registrati', '#', array('class' => 'sign-on')) ?>	
+      <span> | </span>
+      <?php echo link_to('Entra', 'login', array('class' => 'sign-in')) ?>      
+    <?php endif; ?>
+  <?php endif ?>
 </div>
 
 <?php echo form_tag('#', array("id"=>"search-main")) ?>

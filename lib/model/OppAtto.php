@@ -245,6 +245,9 @@ class OppAtto extends BaseOppAtto
 
 
 
+sfPropelBehavior::add('OppAtto', 
+                      array('wikifiableBehavior' => 
+                            array('prefix' => 'atto')));
 
 sfPropelBehavior::add(
   'OppAtto', 

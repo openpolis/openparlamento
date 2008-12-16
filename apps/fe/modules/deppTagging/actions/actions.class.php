@@ -12,6 +12,17 @@ require_once(dirname(__FILE__).'/../../../../../plugins/deppPropelActAsTaggableB
 class deppTaggingActions extends BasedeppTaggingActions
 {
 
+  public function executeTagsAutocomplete() {
+		$this->my_str = $this->getRequestParameter('value');
+
+		$c = new Criteria();
+		$c->add(TagPeer::TRIPLE_VALUE, "%".$this->my_str."%", Criteria::LIKE);
+		$c->setLimit(10);
+		$this->tags = TagPeer::getAll($c, array('is_triple' => true, 
+		                                        'return' => 'value'));
+
+	}
+
   public function executeUsertagsAutocomplete() {
 		$this->my_str = $this->getRequestParameter('value');
 
