@@ -10,8 +10,10 @@ sfContext::getInstance();
 
 print("Fetching data... \n\n");
 
+$leg=16;
+
 $c = new Criteria();
-$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+$c->add(OppCaricaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
 $cariche = OppCaricaPeer::doSelect($c);
 
 foreach($cariche as $carica)
@@ -125,7 +127,32 @@ foreach($cariche as $carica)
 	}	
      
   }	
- 
+
+print("scrivo nel campo ribelle in opp_carica \n");
+
+$c = new Criteria();
+$crit0 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $leg);
+$crit1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 1);
+$crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 4);
+$crit1->addOr($crit2);
+$crit0->addAnd($crit1);
+$c->add($crit0);
+$deputati = OppCaricaPeer::doSelect($c);
+
+foreach ($deputati as $deputato) {
+
+	$c = new Criteria();
+	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $deputato->getId());
+	$gruppi = OppCaricaHasGruppoPeer::doSelect($c);
+	$ribelle=0;
+	foreach ($gruppi as $gruppo) {
+		$ribelle=$ribelle+$gruppo->getRibelle();
+		
+	}
+	$deputato->setRibelle($ribelle);
+	$deputato->save();
+	//echo $deputato->getOppPolitico()->getCognome()." - ".$ribelle."\n";
+}
   
 print("done.\n");
 

@@ -1,34 +1,68 @@
-<h2>Interventi riferiti all'ATTO</h2>
-<table>
-<tr>
-  <th>Data</th>
-  <th>Parlamentare</th>
-  <th>link</th>
-  <th>Tipo intervento</th>
-  <th>Sede</th>
-</tr>	
-<?php foreach($interventi as $intervento): ?>
-<?php $interventi_array = explode('@', $intervento['link'] ); ?>
-  <?php foreach($interventi_array as $intervento_singolo): ?>  
+<h5 class="subsection">gli interventi dei parlamentari sul disegno di legge:</h5>
+<h5 class="subsection-spec">i pi&ugrave; recenti:</h5>
+
+<table class="disegni-decreti column-table">
+  <thead>
     <tr>
-      <td><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></td>
-      <td><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></td>
-      <td><?php echo link_to("vai all'intervento", $intervento_singolo) ?></td>
-      <td>
-<?php switch($intervento['tipo']): ?>
-<?php case 'Referente': ?>
-Intervento in sede referente
-<?php break; ?>
-<?php case 'Consultiva': ?>
-Intervento in sede consultiva
-<?php break; ?>
-<?php case 'Assemblea': ?>
-Intervento
-<?php break; ?>
-<?php endswitch; ?>  	
-      </td>
-      <td><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></td>
+      <th scope="col"><br />data:</th>
+      <th scope="col"><br />sede:</th>
+      <th scope="col">intervento di:</th>
+      <th scope="col">testo dell'intervento:</th>
     </tr>
-  <?php endforeach; ?>	
-<?php endforeach; ?>
+  </thead>
+  <tbody>
+    <?php foreach($interventi as $intervento): ?>
+      <?php $interventi_array = explode('@', $intervento['link'] ); ?>
+      <?php foreach($interventi_array as $intervento_singolo): ?>	  	
+        <?php if($limit_count < $limit): ?>  	
+          <tr>
+            <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
+            <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
+            <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
+            <td><p><?php echo link_to("vai all'intervento", $intervento_singolo) ?></p></td>
+          </tr>
+          <?php $limit_count++; ?>
+        <?php else: ?>
+          <?php break; ?>  	  
+        <?php endif; ?>
+      <?php endforeach; ?>		  	
+	<?php endforeach; ?>
+  </tbody>
 </table>
+
+<?php if($interventi_count > $limit): ?>
+  <p class="indent">guarda tutti gli altri <strong><?php echo ($interventi_count - $limit - 1) ?> </strong> interventi...
+    [ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]
+  </p>
+  <div class="more-results float-container" style="display: none;">
+    <table class="disegni-decreti column-table">
+      <thead>
+        <tr>
+          <th scope="col"><br />data:</th>
+          <th scope="col"><br />sede:</th>
+          <th scope="col">intervento di:</th>
+          <th scope="col">testo dell'intervento:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php $limit_count = 0; ?> 
+        <?php foreach($interventi as $intervento): ?>
+          <?php $interventi_array = explode('@', $intervento['link'] ); ?>
+          <?php foreach($interventi_array as $intervento_singolo): ?>	  	
+            <?php if ($limit_count >= $limit): ?>
+              <tr>
+                <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
+                <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
+                <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
+                <td><p><?php echo link_to("vai all'intervento", $intervento_singolo) ?></p></td>
+              </tr>
+            <?php else: ?>
+              <?php $limit_count++; ?>  	  
+            <?php endif; ?>
+          <?php endforeach; ?>		  	
+	    <?php endforeach; ?>
+      </tbody>
+    </table>
+    <div class="more-results-close">[ <?php echo link_to('chiudi', '#', array('class'=>'btn-close action') ) ?> ]</div>
+  </div>
+<?php endif; ?>

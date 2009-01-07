@@ -8,4 +8,5 @@
   <?php $c->add(OppIterPeer::ID, $status_iter, Criteria::EQUAL); ?>
   <?php $iter = OppIterPeer::doSelectOne($c) ?>
   <p class="gold"><?php echo $iter->getFase() ?></p>
-<?php endforeach; ?> 
+<?php endforeach; ?>
+

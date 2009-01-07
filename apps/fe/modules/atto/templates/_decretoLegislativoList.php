@@ -16,7 +16,7 @@
 			<span><?php echo substr($ddl->getOppTipoAtto()->getDenominazione(),6) ?></span>
           </p>
           <p>     
-            <span><?php echo link_to('DLGS.'.$ddl->getNumfase().' '.$ddl->getTitolo(), 'atto/ddlIndex?id='.$ddl->getId()) ?></span>
+            <span><?php echo link_to('DLGS.'.$ddl->getNumfase().' '.$ddl->getTitolo(), 'atto/index?id='.$ddl->getId()) ?></span>
           </p>  
         </th>  	
         <td>da fare</td>

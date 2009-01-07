@@ -7,5 +7,8 @@
   </li>
   <li class="<?php echo($this->getContext()->getActionName()=='decretoLegislativoList' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Decreti legislativi', 'atto/decretoLegislativoList') ?></h2>   
+  </li>
+  <li class="<?php echo($this->getContext()->getActionName()=='attoNonLegislativoList' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Atti non legislativi', '@attiNonLegislativi') ?></h2>   
   </li>  
 </ul>

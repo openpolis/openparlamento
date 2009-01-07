@@ -1,31 +1,31 @@
+<?php echo form_tag('#', array("id"=>"search-main")) ?>
+  <p>
+    <?php echo input_tag('query', '', array('id' => 'search-main-field', 'name' => 'search-field', 'tabindex' => '1') ) ?>
+    <?php echo submit_image_tag('btn-cerca.png', array('id' => 'search-main-go', 'alt' => 'cerca', 'name' => 'search-go' )) ?>	
+  </p>
+</form>
+
+
 <ul>
   <li>
-    <?php if($this->getContext()->getActionName() == 'disegnoList' || $this->getContext()->getActionName() == 'decretoList' || $this->getContext()->getActionName() == 'decretoLegislativoList'): ?>
-      <span class="current">Disegni di legge e decreti</span>
+    <?php if($this->getContext()->getModuleName() == 'atto'): ?>
+      <?php echo link_to('Atti', 'atto/disegnoList', array('class' => 'current')) ?>
     <?php else: ?>
-      <?php echo link_to('Disegni di legge e decreti', 'atto/disegnoList') ?>
-    <?php endif; ?>
-  </li>
-  <li>
-    <?php if($this->getContext()->getActionName() == 'attoNonLegislativoList'): ?>
-      <span class="current">Atti non legislativi</span>
-    <?php else: ?>
-      <?php echo link_to('Atti non legislativi', '@attiNonLegislativi') ?>
+      <?php echo link_to('Atti', 'atto/disegnoList') ?>
     <?php endif; ?>
   </li>
   <li>
     <?php if($this->getContext()->getModuleName() == 'votazione'): ?>
-      <span class="current">Votazioni</span>
+      <?php echo link_to('Votazioni', '@votazioni', array('class' => 'current')) ?>
     <?php else: ?>
       <?php echo link_to('Votazioni', '@votazioni') ?>
     <?php endif; ?>
   </li>   
   <li>
     <?php if($this->getContext()->getModuleName() == 'parlamentare'): ?>
-      <span class="current">Parlamentari</span>
+      <?php echo link_to('Parlamentari', '@parlamentari?ramo=camera', array('class' => 'current')) ?>
     <?php else: ?>
-      <?php //echo link_to('Parlamentari', '@parlamentari?legislatura=16&carica=Deputato') ?>
-	  <?php echo link_to('Parlamentari', '@parlamentari?ramo=camera') ?>
+      <?php echo link_to('Parlamentari', '@parlamentari?ramo=camera') ?>
     <?php endif; ?>
   </li>
   <li><?php echo link_to('Argomenti', '@argomenti') ?></li>

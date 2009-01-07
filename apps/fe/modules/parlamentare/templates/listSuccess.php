@@ -13,9 +13,16 @@
       <?php include_partial('filter') ?> 
 
       <?php include_partial('sort') ?>   
+	  
+	  <a href="#decaduti">parlamentari decaduti</a><br />
     </div>
 	<div class="W100_100 float-left"> 
 	  <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
+    </div>
+	<div class="W100_100 float-left"> 
+	  <h2>parlamentari decaduti</h2>
+	  <a name="decaduti"></a>
+	  <?php include_partial('list', array('parlamentari' => $parlamentari_decaduti, 'numero_parlamentari' => $numero_parlamentari)) ?>  
     </div>
     <div class="clear-both"></div>
   </div>

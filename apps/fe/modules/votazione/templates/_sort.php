@@ -11,20 +11,6 @@
       <?php endif; ?>
 	</li>
 	<li>
-      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'ramo'): ?>
-        <?php echo link_to('ramo parlamentare', '@votazioni?sort=ramo&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
-	  <?php else: ?>
-        <?php echo link_to('ramo parlamentare', '@votazioni?sort=ramo&type=asc') ?>
-      <?php endif; ?>
-	</li>
-    <li>
-      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'esito'): ?>
-        <?php echo link_to('esito in Parlamento', '@votazioni?sort=esito&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
-	  <?php else: ?>
-        <?php echo link_to('esito in Parlamento', '@votazioni?sort=esito&type=asc') ?>
-      <?php endif; ?>
-	</li>	
-    <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_votazione/sort') == 'margine'): ?>
         <?php echo link_to('voti di scarto', '@votazioni?sort=margine&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_votazione/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
 	  <?php else: ?>

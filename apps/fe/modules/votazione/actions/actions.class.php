@@ -146,18 +146,14 @@ class votazioneActions extends sfActions
       {
         if($sort_column=='data')
 		  $c->addAscendingOrderByColumn(OppSedutaPeer::DATA);
-		elseif($sort_column=='ramo')
-		  $c->addAscendingOrderByColumn(OppSedutaPeer::RAMO);
-		else    
+        else    
 		  $c->addAscendingOrderByColumn($sort_column);
       }
       else
       {
 	    if($sort_column=='data')
 		  $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-		elseif($sort_column=='ramo')
-		  $c->addDescendingOrderByColumn(OppSedutaPeer::RAMO);
-		else    
+        else    
 		  $c->addDescendingOrderByColumn($sort_column);
       }
     }

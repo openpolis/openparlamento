@@ -4,16 +4,49 @@
 <h1>Pagina DDL</h1>
 <br />
 
-<h2><?php echo ($ddl->getRamo().'.'.$ddl->getNumfase().' '.$ddl->getTitolo()) ?></h2>
+<h2><?php echo Text::denominazioneAtto($ddl, 'index') ?></h2>
 <br />
+
+<!--
+<h2> Testo atto (parte provvisoria)</h2>
+<?php //echo $ddl->getDescrizione() ?>
+<br /><br />
+-->
 
 <!-- partial per la descrizione wiki -->
 <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $ddl->getId())); ?>
 
-<b><?php echo link_to('Testo del DDL', 'http://www.senato.it/leg/'.$ddl->getLegislatura().'/BGT/Schede/Ddliter/testi/'.$ddl->getParlamentoId().'_testi.htm', array('target' => '_blank')) ?></b>
-<br /><br />
+<?php if($ddl->getTipoAttoId() == '1'): ?>
+  <?php $link = 'http://www.senato.it/leg/'.$ddl->getLegislatura().'/BGT/Schede/Ddliter/'.$ddl->getParlamentoId().'.htm' ?>
+<?php elseif($ddl->getTipoAttoId() > '1'  && $ddl->getTipoAttoId() < '12' ): ?>
+  <?php $link = 'http://banchedati.camera.it/sindacatoispettivo_'.$ddl->getLegislatura().'/showXhtml.Asp?idAtto='.$ddl->getParlamentoId().'&stile=6&highLight=1'; ?>
+<?php elseif($ddl->getTipoAttoId() == '12' ): ?>
+  <?php $link = '#' ?>
+<?php elseif($ddl->getTipoAttoId() == '14' ): ?>
+   <?php if($ddl->getRamo()=='C'): ?>
+    <?php $link = 'http://www.camera.it/_dati/leg'.$ddl->getLegislatura().'/lavori/stencomm/'.$ddl->getNumfase().'/s010.htm'; ?>
+  <?php else: ?>
+    <?php $link = 'http://www.senato.it/leg/'.$ddl->getLegislatura().'/BGT/Schede/ProcANL/ProcANLscheda'.$ddl->getParlamentoId().'.htm' ?>
+  <?php endif; ?>  
+<?php elseif($ddl->getTipoAttoId() > '14' && $ddl->getTipoAttoId() < '18' ): ?>
+  <?php $str = $ddl->getParlamentoId(); ?>
+  <?php $len = 5 - strlen($str); ?>
+  <?php for($i=0; $i<$len; $i++): ?>
+    <?php $str = '0'.$str; ?>
+  <?php endfor; ?>
+  <?php $link = 'http://www.parlamento.it/leggi/deleghe/'.$str.'dl.htm' ?>
+<?php endif; ?>
+
+<?php if($link != '#'): ?>
+  <b><?php echo link_to("link alla fonte", $link, array('target' => '_blank')) ?></b>
+  <br /><br />
+<?php endif; ?>
 
 <b>data di presentazione: <?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></b>
+<br /><br />
+
+<!-- component per l'elenco dei documenti -->
+<?php echo include_component('atto', 'documenti', array('atto' => $ddl) ); ?>
 <br /><br />
 
 <?php switch($ddl->getIniziativa()): ?>

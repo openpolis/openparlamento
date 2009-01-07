@@ -16,16 +16,49 @@ class attoActions extends sfActions
   */
   public function executeDisegnoList()
   {
+    $this->processDisegnoListSort();
+	
     $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
     $c = new Criteria();
+	$this->addDisegnoListSortCriteria($c);
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
-    
-    //$this->news = OppAttoPeer::doSelectNews();
+      
+  }
+  
+  protected function processDisegnoListSort()
+  {
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->getUser()->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
+      $this->getUser()->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
+    }
+
+    if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+	  $this->getUser()->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->getUser()->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
+    }
+  }
+  
+  protected function addDisegnoListSortCriteria($c)
+  {
+    if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $sort_column = OppAttoPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
   }
   
   /**
@@ -128,7 +161,48 @@ class attoActions extends sfActions
     $this->atti = OppAttoPeer::doSelectJoinOppTipoAtto($c);
     $this->atto = $this->atti[0];
     $this->forward404Unless($this->atto);
+
+    //individuazione link fonte
+    if($this->atto->getTipoAttoId() == '1')
+      $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/Ddliter/'.$this->atto->getParlamentoId().'.htm';
+    elseif($this->atto->getTipoAttoId() > '1' && $this->atto->getTipoAttoId() < '12' )
+      $this->link = 'http://banchedati.camera.it/sindacatoispettivo_'.$this->atto->getLegislatura().'/showXhtml.Asp?idAtto='.$this->atto->getParlamentoId().'&stile=6&highLight=1';
+    elseif($this->atto->getTipoAttoId() == '12' )
+      $link = '#';
+    elseif($this->atto->getTipoAttoId() == '14' )
+    {
+	  if($this->atto->getRamo()=='C')
+        $this->link = 'http://www.camera.it/_dati/leg'.$this->atto->getLegislatura().'/lavori/stencomm/'.$this->atto->getNumfase().'/s010.htm';
+      else
+        $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/ProcANL/ProcANLscheda'.$this->atto->getParlamentoId().'.htm';
+    }  
+    elseif($this->atto->getTipoAttoId() > '14' && $this->atto->getTipoAttoId() < '18' )
+    {
+      $str = $this->atto->getParlamentoId();
+      $len = 5 - strlen($str);
+      for($i=0; $i<$len; $i++)
+        $str = '0'.$str;
+      
+	  $this->link = 'http://www.parlamento.it/leggi/deleghe/'.$str.'dl.htm';
+    }
     
+	//tipo di iniziativa
+	$this->tipo_iniziativa = '';
+	if($this->atto->getIniziativa())
+	{
+	  switch($this->atto->getIniziativa())
+	  {
+	    case '1':
+		  $this->tipo_iniziativa = 'Parlamentare';
+		  break;
+		case '2':
+          $this->tipo_iniziativa = 'di Governo';
+		  break;
+	    default:
+		  $this->tipo_iniziativa = 'Popolare'; 	  		  
+	  }
+	}
+	
     $pred = '';
     $pred_1 = '';
     if($this->atto->getPred())
@@ -373,6 +447,20 @@ class attoActions extends sfActions
         return $all_succ;
     }
     return $all_succ;
+  }
+  
+  public function executeDocumento()
+  {
+     $this->documento = OppDocumentoPeer::retrieveByPk($this->getRequestParameter('id'));
+     $this->forward404Unless($this->documento);
+     
+     $c = new Criteria();
+     $cton1 = $c->getNewCriterion(OppDocumentoPeer::ATTO_ID, $this->documento->getAttoId(), Criteria::EQUAL);
+     $cton2 = $c->getNewCriterion(OppDocumentoPeer::ID, $this->getRequestParameter('id'), Criteria::NOT_IN);
+     $cton1->addAnd($cton2);
+     $c->add($cton1);
+     $this->documenti_correlati = OppDocumentoPeer::doSelect($c);
+  
   }
   
 }

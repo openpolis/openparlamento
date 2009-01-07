@@ -20,15 +20,16 @@
             <img width="40" height="55" src="http://openpolis.depplab.net/politician/picture?content_id=<?php echo $parlamentari->getInt(2) ?>" />     
             <?php //echo image_tag('no-avatar40.png') ?>	
             <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
+			<?php if($parlamentari->getInt(10)=='-1'): ?>
+			<br />cessato il <?php echo format_date($parlamentari->getDate(13, 'Y-m-d'), 'dd/MM/yyyy') ?> 
+			<?php endif; ?>
           </p>
         </th>
 	    <td>
           <p>	        	
 	        <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>  	
-	        <?php $rib_count=0 ?>
 	        <?php foreach($gruppi as $nome => $gruppo): ?>
-	          <?php $rib_count = $rib_count + $gruppo['ribelle'] ?>
-              <?php if($gruppo['data_fine']): ?>
+	          <?php if($gruppo['data_fine']): ?>
                 <?php printf('(dal %s al %s: %s)', format_date($gruppo['data_inizio'], 'dd/MM/yyyy'), format_date($gruppo['data_fine'], 'dd/MM/yyyy'), $nome ) ?>
 	          <?php else: ?>
 		        <?php print $nome ?>
@@ -61,11 +62,15 @@
           </td>
         <?php endif; ?>
         <td>
-          <?php printf('<b>%01.2f</b> (%d° su %d)', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?>  
-        </td>
+		  <?php if($parlamentari->getInt(10)!='-1'): ?>
+            <?php printf('<b>%01.2f</b> (%d° su %d)', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?>  
+          <?php else: ?>
+		    <?php printf('<b>%01.2f</b> ', $parlamentari->getFloat(9)) ?>  
+		  <?php endif; ?>
+		</td>
 		<td>
-          <?php if($parlamentari->getInt(6)!=0 && $rib_count!=0): ?>
-            <?php printf('<b>%01.2f</b>%% (%d su %d)', number_format($rib_count/$parlamentari->getInt(6) *100,2), $rib_count, $parlamentari->getInt(6)) ?>
+          <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
+            <?php printf('<b>%01.2f</b>%% (%d su %d)', number_format($parlamentari->getInt(12)/$parlamentari->getInt(6) *100,2), $parlamentari->getInt(12), $parlamentari->getInt(6)) ?>
 	      <?php else: ?>
 	        <?php print('<b>0</b>% (0 su 0)') ?>
 	      <?php endif; ?>

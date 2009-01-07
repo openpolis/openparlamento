@@ -17,10 +17,19 @@
             <span><?php echo $ddl->getOppTipoAtto()->getDenominazione() ?>, <?php echo($ddl->getRamo()=='C' ? 'alla Camera' : 'al Senato') ?></span>
           </p>
 	      <p>
-            <?php echo link_to(Text::denominazioneAtto($ddl, 'list'), 'atto/ddlIndex?id='.$ddl->getId()) ?>
+            <?php echo link_to(Text::denominazioneAtto($ddl, 'list'), 'atto/index?id='.$ddl->getId()) ?>
           </p>
         </th>  	
-        <td><?php include_component('atto', 'statoAttoNonLegislativo', array('ddl' => $ddl)) ?></td>
+        <td>
+          <?php //include_component('atto', 'statoAttoNonLegislativo', array('ddl' => $ddl)) ?>
+          <?php if($ddl->getStatoFase()!=''): ?>
+            <p class="date"><?php echo format_date($ddl->getStatoLastDate() , 'dd/MM/yyyy') ?></p>
+            <p class="gold"><?php echo $ddl->getStatoFase() ?></p>
+          <?php else: ?>
+            <p class="date"><?php echo format_date($ddl->getDataPres() , 'dd/MM/yyyy') ?></p>
+            <p class="gold">PRESENTATO</p>
+          <?php endif; ?>  
+        </td>
         <td><?php echo $ddl->getInterventiCount() ?></td>
         <td>
           <div class="user-stats-column">

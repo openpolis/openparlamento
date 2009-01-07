@@ -9,6 +9,20 @@
  */ 
 class OppPolitico extends BaseOppPolitico
 {
+  public function setPicture($filename)
+  {
+    if(!stat($filename)){
+      parent::setPicture($filename);
+    } else {
+			try {
+				$this->picture = new Clob();
+				$this->picture->readFromFile($filename);
+				$this->modifiedColumns[] = OppPoliticoPeer::PICTURE;
+			} catch (Exception $e) {
+				echo("Exception " . $e . " encountered!\n");
+			}
+		}
+	}
   
   /**
    * string representation for Politician

@@ -85,21 +85,51 @@ class Text
       case '14':
         return $atto->getTitolo();
         break;
-      default:
-        $descrizione = $atto->getDescrizione();
+      case '2':
+        if($atto->getRamo()=='C')
+          $sub_str_pos = strpos($atto->getDescrizione(),  'La Camera');
+        else
+          $sub_str_pos = strpos($atto->getDescrizione(),  'Il Senato');
+        
+        $descrizione = substr($atto->getDescrizione(), $sub_str_pos + 10 );
+        
         if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return strip_tags(Text::shorten($descrizione, 150));
+            return "<em>".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
-            return $atto->getTitolo();
+            return "<em>".$atto->getNumfase()."</em> ".$atto->getTitolo();
         }    
         else
         {  
           if($action=='list')
             return $atto->getNumfase().' '.$atto->getTitolo();
           else  
-            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 150));
+            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
+        }
+        break;   
+              
+      default:
+	    //$descrizione = $atto->getDescrizione();
+        $sub_str_pos = strpos($atto->getDescrizione(),  'seduta n.');
+		$sub_str1 = substr($atto->getDescrizione(), $sub_str_pos + 10 );
+		$sub_str_pos2 = strpos($sub_str1,  '<br/>');
+		$sub_str2 = substr($sub_str1, $sub_str_pos2 + 5 );
+		$descrizione =$sub_str2;
+		
+		if($atto->getNumfase()==$atto->getTitolo())
+        {
+          if($action=='list')  
+            return "<em>".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
+          else
+            return "<em>".$atto->getNumfase()."</em> ".$atto->getTitolo();
+        }    
+        else
+        {  
+          if($action=='list')
+            return $atto->getNumfase().' '.$atto->getTitolo();
+          else  
+            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
         }
         break;  
     }

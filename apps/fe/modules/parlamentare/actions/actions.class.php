@@ -31,10 +31,9 @@ class parlamentareActions extends sfActions
   
   public function executeList()
   {
-     $this->processSort();
-	 
+     //estrazione parlamentari
+	 $this->processSort();
 	 $c = new Criteria();
-	 	 
 	 $c->clearSelectColumns();
 	 $c->addSelectColumn(OppCaricaPeer::ID);
 	 $c->addSelectColumn(OppPoliticoPeer::ID);
@@ -47,6 +46,7 @@ class parlamentareActions extends sfActions
 	 $c->addSelectColumn(OppCaricaPeer::INDICE);
 	 $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
 	 $c->addSelectColumn(OppCaricaPeer::MEDIA);
+	 $c->addSelectColumn(OppCaricaPeer::RIBELLE);
 	 $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 	 
 	 if($this->getRequestParameter('ramo', 'camera')=='camera')
@@ -58,6 +58,7 @@ class parlamentareActions extends sfActions
 	   $c1 = new Criteria();
        $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
        $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '1' , Criteria::EQUAL);
+	   $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
        $this->numero_parlamentari = OppCaricaPeer::doCount($c1);
 	 	 
 	 }
@@ -79,6 +80,7 @@ class parlamentareActions extends sfActions
 	   $c1 = new Criteria();
        $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
        $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '4' , Criteria::EQUAL);
+	   $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
        $numero_senatori = OppCaricaPeer::doCount($c1);
 	   
 	   //conteggio numero senatori a vita
@@ -88,11 +90,40 @@ class parlamentareActions extends sfActions
 	   
 	   $this->numero_parlamentari = $numero_senatori + $numero_senatori_a_vita;
 	 }
-	     
+	    
      $this->addSortCriteria($c);
+	 $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
 	 $c->setLimit(100);
 	 
 	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+	 
+	 //estrazione parlamentari decaduti
+	 $c = new Criteria();
+     $c->clearSelectColumns();
+	 $c->addSelectColumn(OppCaricaPeer::ID);
+	 $c->addSelectColumn(OppPoliticoPeer::ID);
+	 $c->addSelectColumn(OppPoliticoPeer::COGNOME);
+	 $c->addSelectColumn(OppPoliticoPeer::NOME);
+	 $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+	 $c->addSelectColumn(OppCaricaPeer::PRESENZE);
+	 $c->addSelectColumn(OppCaricaPeer::ASSENZE);
+	 $c->addSelectColumn(OppCaricaPeer::MISSIONI);
+	 $c->addSelectColumn(OppCaricaPeer::INDICE);
+	 $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
+	 $c->addSelectColumn(OppCaricaPeer::MEDIA);
+	 $c->addSelectColumn(OppCaricaPeer::RIBELLE);
+	 $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
+	 $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+	 
+	 if($this->getRequestParameter('ramo', 'camera')=='camera')
+	   $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+	 else
+	   $c->add(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
+	 
+	 $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);    
+     $c->add(OppCaricaPeer::DATA_FINE, 'NULL', Criteria::NOT_EQUAL); 
+	 	 
+	 $this->parlamentari_decaduti = OppCaricaPeer::doSelectRS($c);
 	      
   }
   
@@ -107,8 +138,7 @@ class parlamentareActions extends sfActions
     if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_carica/sort'))
     {
       $this->getUser()->setAttribute('sort', 'nome', 'sf_admin/opp_carica/sort');
-      $this->getUser()->setAttribute('type', 'asc', 'sf_admin/opp_carica/sort');
-	}
+    }
   }
   
   protected function addSortCriteria($c)

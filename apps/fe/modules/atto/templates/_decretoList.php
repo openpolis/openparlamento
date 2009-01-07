@@ -17,7 +17,7 @@
 	                <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
                   <?php endif; ?>
 	            </p>
-			    <p><?php echo link_to('<em>DL.'.$ddl->getNumfase().'</em> '.$ddl->getTitolo(), 'atto/ddlIndex?id='.$ddl->getId()) ?></p>
+			    <p><?php echo link_to('<em>DL.'.$ddl->getNumfase().'</em> '.$ddl->getTitolo(), 'atto/index?id='.$ddl->getId()) ?></p>
               </th>
               <td><?php include_partial('statoDecreto', array('ddl' => $ddl)) ?></td>
               <td><?php include_component('atto', 'ddlConversione', array('ddl' => $ddl)) ?></td>  

@@ -2,6 +2,10 @@
 #  url:   /ddl/:id
 #  param: { module: ddl, action: index }
 
+#atto:
+#  url:   /atto/:id
+#  param: { module: atto, action: index }
+
 monitoring_news:
   url: /monitoring_news/:user_token
   param: { module: monitoring, action: news}
@@ -33,10 +37,6 @@ news_parlamentare:
 attiNonLegislativi:
   url:   /atti_non_legislativi/:sort/:type
   param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
-
-#atto:
-#  url:   /atto/:id
-#  param: { module: atto, action: ddlIndex }
   
 argomenti:
   url:   /argomenti

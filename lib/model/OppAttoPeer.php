@@ -129,11 +129,14 @@ class OppAttoPeer extends BaseOppAttoPeer
 	
     $rs = OppAttoPeer::getRecordsetFirmatari($pred, 'P');
 	
-	  while ($rs->next())
+	while ($rs->next())
     {
-	  $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
-	  }
-	  return $primi_firmatari;
+	  if($rs->getString(4) != '')
+	    $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
+	  else
+	    $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3); 
+	}
+	return $primi_firmatari;
 	
   }
   
@@ -142,14 +145,17 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     $co_firmatari = array();
 	
-	  $rs = OppAttoPeer::getRecordsetFirmatari($pred, 'C');
+	$rs = OppAttoPeer::getRecordsetFirmatari($pred, 'C');
 	
-	  while ($rs->next())
+	while ($rs->next())
     {
+	  if($rs->getString(4) != '')
 	    $co_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')';  
-	  }
+	  else
+	    $co_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3);    
+	}
     
-	  return $co_firmatari;
+	return $co_firmatari;
   }
   
    public static function doSelectRelatori($pred)

@@ -9,19 +9,19 @@
   </thead>
 
   <tbody>		
-    <?php foreach ($pager->getResults() as $ddl): ?>
+    <?php foreach ($pager->getResults() as $atto): ?>
       <tr>
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
-            <span>, <?php echo($ddl->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?></span>
+            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span>
+            <span>, <?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?></span>
           </p>
           <p>
-            <?php echo link_to('<em>'.$ddl->getRamo().'.'.$ddl->getNumfase().'</em> '.$ddl->getTitolo(), 'atto/ddlIndex?id='.$ddl->getId()) ?>
+            <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), 'atto/index?id='.$atto->getId()) ?>
           </p>
         </th>
         <td>
-          <?php $status = $ddl->getStatus(); ?>
+          <?php $status = $atto->getStatus(); ?>
           <?php foreach($status as $data => $status_iter): ?>
             <p class="date"><?php echo format_date($data, 'dd/MM/yyyy') ?></p>
             <?php $c = new Criteria() ?>
@@ -30,11 +30,11 @@
             <p class="gold"><?php echo $iter->getFase() ?></p>
           <?php endforeach; ?>
         </td>
-        <td><p><?php echo $ddl->getInterventiCount() ?></p></td>
+        <td><p><?php echo $atto->getInterventiCount() ?></p></td>
         <td>
           <div class="user-stats-column">
-            <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>
-            <p><?php echo link_to('1.130 <strong>commenti</strong>', '#') ?></p>
+            <span class="green thumb-up"><?php echo $atto->getUtFav() ?></span><span class="red thumb-down"><?php echo $atto->getUtContr() ?></span>
+            <p><?php echo link_to($atto->getNbCommenti().' <strong>commenti</strong>', '#') ?></p>
           </div>
         </td>	
       </tr>

@@ -16,7 +16,16 @@
         <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></td>
         <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>
         <td><p><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></p></td>
-	    <td><span class="<?php echo ($votazione->getEsito()=='APPROVATA' ? 'green thumb-approved' : 'red thumb-rejected') ?>"><?php echo $votazione->getEsito() ?></span></td>
+	    <td>
+		  <?php if($votazione->getEsito()=='APPROVATA'): ?>
+		    <?php $class = "green thumb-approved"; ?>
+		  <?php elseif($votazione->getEsito()=='RESPINTA'): ?>
+		    <?php $class = "red thumb-rejected"; ?>
+		  <?php else: ?>
+		    <?php $class = ""; ?>
+          <?php endif; ?>					
+		  <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>
+		</td>
         <td><p><?php echo $votazione->getMargine() ?></p></td>
         <td><p><?php echo $votazione->getRibelli() ?></p></td>
       </tr>

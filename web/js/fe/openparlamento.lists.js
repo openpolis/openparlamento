@@ -34,9 +34,32 @@ $(document).ready(function(){
 	);			
 
 	// Visualizza/nascondi help box
-	$('.ico-help').click( function(){ $(this).parent().next().toggle('fast'); } );
-	$('.ico-close').click( function(){ $(this).parent().parent().hide('fast'); } );
-	
+	$('.ico-help').click( function(){ $(this).parent().next().toggle('fast'); return false; } );
+	$('.ico-close').click( function(){ $(this).parent().parent().hide('fast'); return false; } );
+
+	// Visualizza/nascondi liste
+	$('.btn-open').click(
+		function(){
+			$(this).hide().next().show().click(
+				function(){
+					$(this).unbind().hide().prev().show();
+					$(this).parent().next().hide('fast');
+					return false;
+				}
+			);
+			$(this).parent().next().show('fast').find('.btn-close').click(
+				function(){
+					$(this).unbind();
+					$(this).parent().parent().hide('fast').parent().find('.btn-open').show().next().hide();
+					return false;
+					
+				}
+			);
+			return false; 
+		}
+	);
+
+
 	// mostra tasto applica al cambio filtri
 	$('#disegni-decreti-filter select').change( function() { $('#disegni-decreti-filter-apply').show(); } );
 	
@@ -78,6 +101,7 @@ $(document).ready(function(){
 	}
 	
 	$('#identity').pngFix();
+	$('.coo-mind').pngFix();	
 
 })
 
