@@ -1,8 +1,8 @@
-secure:
+secureSuccess:
   is_secure: off
 
-signin:
+signinSuccess:
   is_secure: off
 
-signout:
+signoutSuccess:
   is_secure: off

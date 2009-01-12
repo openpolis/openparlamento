@@ -19,7 +19,21 @@ all:
     allows_tagging_removal:      'self'
     tagging_removal_credentials: ['moderator']
     use_unique_triple_values:    true
-      
+
+  sfEmendPlugin:    
+    user:
+      cu_id_method:    getId
+      profile_class:   OppUser
+      name_method:     __toString
+      allow_anonymous: false
+    allowed_tags:
+      a:              <a>
+      em:             <em>
+      i:              <i>
+      p:              <p>
+      strong:         <strong>
+
+    
   deppPropelActAsCommentableBehaviorPlugin:    
     namespaces:
       frontend:       

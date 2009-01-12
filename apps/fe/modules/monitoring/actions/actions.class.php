@@ -371,7 +371,7 @@ class monitoringActions extends sfActions
   public function executeAjaxRemoveTagFromMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    if (!$isAjax) return sfView::noAjax;
+    // if (!$isAjax) return sfView::noAjax;
 
     // remove the tag from the monitored pool
     $tag_id = $this->getRequestParameter('tag_id');

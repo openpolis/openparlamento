@@ -20,7 +20,7 @@ class attoActions extends sfActions
 	
     $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
     $c = new Criteria();
-	$this->addDisegnoListSortCriteria($c);
+	  $this->addDisegnoListSortCriteria($c);
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
   	$this->pager->setCriteria($c);

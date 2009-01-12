@@ -24,7 +24,7 @@ all:
     prototype_web_dir:      ''         # Prototype library for Javascript helpers is loaded from web/js/prototype.js
     .settings:
       i18n:                 on         
-      enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppBookmarking, deppTagging, deppCommenting, nahoWiki]
+      enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppBookmarking, deppTagging, deppCommenting, nahoWiki, sfEmendAPI]
     .actions:                               
       login_module:           sfGuardAuth   
       login_action:           signin        

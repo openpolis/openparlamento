@@ -10,3 +10,6 @@ generated-deppPropelActAsBookmarkableBehaviorPlugin-schema.sql=propel
 generated-deppPropelActAsMonitorableBehaviorPlugin-schema.sql=propel
 generated-deppPropelMonitoringBehaviorsPlugin-schema.sql=propel
 generated-nahoWikiPlugin-schema.sql=propel
+generated-deppPropelActAsEmendableBehaviorPlugin-schema.sql=propel
+generated-deppPropelActAsEmendableBehaviorPlugin.old-schema.sql=propel
+generated-sfEmendPlugin-schema.sql=propel

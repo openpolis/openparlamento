@@ -153,8 +153,6 @@ class deppPropelActAsMonitorableBehavior
       $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
       $res = MonitoringPeer::doCount($c);      
       try {        
-        sfLogger::getInstance()->info('xxx: ' . $res);
-        
         self::setCachedCountMonitoringUsers($object, $res);
       } catch (deppPropelActAsMonitorableException $e) {
         sfLogger::getInstance()->warning($e); 

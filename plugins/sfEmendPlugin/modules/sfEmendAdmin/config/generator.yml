@@ -1,0 +1,17 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      sfEmendComment
+    theme:            default
+
+    list:
+      title: Emend Comments list
+      filters: [created_at, is_public]
+      sort:    [created_at, desc]
+      layout: stacked
+      params: %%_comment%%
+      display: [author_name, body, created_at] 
+      actions: [ ]
+      object_actions: 
+        togglePublish: { name: publish/unpublish, action: togglePublish, icon: '/sfEmendPlugin/images/comment.png' }
+        _delete: ~

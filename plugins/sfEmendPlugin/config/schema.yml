@@ -1,0 +1,20 @@
+propel:
+  _attributes:    { package: plugins.sfEmendPlugin.lib.model }
+  
+  # a comment is defined by :
+  # - a title
+  # - a body
+  # - a selection (identifies the selected text the comments applies to)
+  # - an author (set the related  user model in app.yml)
+  # - a creation date
+  sf_emend_comment:
+    _attributes:       { phpName: sfEmendComment, package: plugins.sfEmendPlugin.lib.model }
+    id:                { phpName: Id, type: integer, required: true, primaryKey: true, autoincrement: true }
+    url:               { type: varchar(255), required: true, index: multiple }
+    selection:         longvarchar
+    title:             varchar(100)
+    body:              longvarchar
+    author_id:         { type: integer, index: multiple }
+    author_name:       varchar(50)
+    created_at:
+    is_public:         { type: tinyint, required: true, default: 1 }      

@@ -1,0 +1,162 @@
+= sfEmendPlugin =
+[[PageOutline(2-6, Table of contents)]]
+
+== Introduction ==
+This plugin allows to integrate the [http://emend.stage.htrex.keybit.net/documentation/emend-me_en.html/ eMend] annotation system into a symfony project, by providing a ''backend storage'' to eMend through an sf_emend_comment table.
+
+== Philosophy ==
+The eMend annotation system is a javascript jQuery-based tool, that, when inoculated into a web page, allows the readers to '''select part of the displayed text and add a comment to it'''. Comments by different users are displayed in a retractable sidebar at the right end of the screen. Comments are always visually connected, through straight lines to the selected text they refer to.
+
+The aim of eMend is to provide an online tool through which readers may create or join online discourses.
+
+Cool stuff, really.
+
+== Features ==
+The plugin provides a very simple public API, to add and read comments, and an administration interface, to moderate them.
+
+Comments will be read and written through AJAX requests. Wether anonymous or authenticated users can add comments, it's a decision 
+that must be explicitated in the app.yml configuration file (see [#Optionalsettings optional settings]). By default, only authenticated users can add comments.
+
+=== Table fields ===
+The YML schema of the table:
+{{{
+  sf_emend_comment:
+    _attributes:       { phpName: sfEmendComment, package: plugins.sfEmendPlugin.lib.model }
+    id:                { phpName: Id, type: integer, required: true, primaryKey: true, autoincrement: true }
+    url:               { type: varchar(255), required: true, index: unique }
+    selection:         longvarchar
+    title:             varchar(100)
+    body:              longvarchar
+    author_id:         { type: integer, index: multiple }
+    author_name:       varchar(50)
+    created_at:
+    is_public:         { type: tinyint, required: true, default: 1 }      
+}}}
+
+ '''url'''::
+  comments are always referred to a ''page'' that is stored in the table as a URL relative to the / path;
+ '''selection'''::
+  this is used internally by eMend to store the pointers to the selected text; being totally transparent to the developer of the symfony application, it won't be discussed here;
+ '''title'''::
+   comments have a title and a body in the eMend world; title will be stribbed of any html tags
+ '''body'''::
+   comments main content; it will be stripped of most of the html tags, except those listed in the app.yml (see [#Optionalsettings optional settings])
+ '''author_id'''::
+   if a user is authenticated, then her user_id is retrieved (see [#Optionalsettings optional settings]) and stored (there is no real usage of this info, as of yet, but you never can tell)
+ '''author_name'''::
+   the name of the user adding the comment, if the user is authenticated, it's retrieved automatically (see [#Optionalsettings optional settings]), else the value must be passed along with the post request by the eMend script
+ '''created_at'''::
+   the timestamp of comment creation
+ '''is_public'''::
+   all comments are created with the is_public flag set to true (we basically trust people), but this make it really easy to moderate some offensive comments, by using the admin interface
+
+== Installation ==
+The installation procedure is standard, you can either install the plugin by using the pear symfony inline command:
+{{{
+ symfony plugin-install sfEmend
+}}}
+or check it out from the Symfony's SVN repository:
+{{{
+ svn co http://svn.symfony-project.org/plugins/sfEmend
+}}}
+
+To make the public API accessible, you have to enable the sfEmendAPI module in the application (usually the front-end, but your mileage may vary here).
+This is done by modifying the settings.yml file:
+{{{
+all:
+  .settings:
+    enabled_modules:      [default, sfEmendAPI, ...]
+}}}
+
+To enable the administration interface, you must edit the settings.yml in the backend application (well, of course, usually it is the backend).
+{{{
+all:
+  .settings:
+    enabled_modules:      [default, sfEmendAdmin, ...]
+}}}
+
+=== Optional settings ===
+A series of configuration options that can be specified in the app.yml file of the application hosting the sfEmendAPI (usually the front end app).
+A sample file is shown in config/app.sample.yml; its content, starting from the sfEmendPlugin section, can be copied into the app.yml file.
+
+There are two main sections in this file:
+ * '''user''': depending on the way the user authentication is checked in the application, this section allows the developer to state how to get the currently authenticated user's name
+  * cu_id_method: the method applied to the $sf_user (session) object, to get the currently logged user (usually getId());
+  * profile_class: the class that contains the user's profile (name, email, ...) see the sfGuardPlugin;
+  * name_method: the method, in the profile class, that extracts the name you want to use in the author_name field 
+  * allow_anonymous: true allows anonymous posting, without any check, captcha allows anonymous posting with captcha (todo), false do not allow anonymous posting
+ * '''allowed_tags''': these tags are allowed in the comment's body; all other tags are stripped; the stripping method is the strip_tags php function, by default, but if the ''use_htmlpurifier'' option is set to true, and the far more secure [http://htmlpurifier.org/ htmlpurifier] library is installed in the ''htmlpurifier_path'', then it is used
+
+
+== Usage ==
+
+=== API ===
+The public API is ment to be used by the eMend tool, through AJAX requests. Responses are sent in the json format.
+
+In both cases, a request parameter named '''url''' must be passed along. It identifies the page the user is currently reading that contains the commented texts.
+The url must be passed as a relative url, with reference to the home path (/). The initial slash must be stripped off.
+
+==== emend.getComments ====
+This '''has''' to be a GET request. 
+If the request succeeds, then the response contains the number of comments found for that url, and the exploded array of comments in json format:
+{{{
+{ "n_comments": 2
+  "comments": [
+    {"s": --uninteresting selection string--, 
+     "c": {"author_name": My Name, 
+           "title": A title, 
+           "body": A text for the comment with <em>few</em> html tags allowed, 
+           "date": 20090111 12:30, 
+           "textlength": 58}
+    },
+    {"s": --uninteresting selection string--, 
+     "c": {"author_name": My Second Name, 
+           "title": Another title, 
+           "body": A simple text for the comment: Lorem Ipsum?, 
+           "date": 20090111 12:31, 
+           "textlength": 45}
+    }
+  ]  
+}
+}}}
+If there's an error, the response contains the error string, in json format:
+{{{
+{"err": Ooops! There was an error. Sorry.}
+}}}
+
+==== emend.addComment ====
+This, being a request that modifies the status of the application, has to be a POST request.
+
+The title, body and selection parameters '''must''' be passed.
+
+For an authenticated user no other parameters are needed.
+
+For an anonymous user, the author_name parameter '''must''' be passed, too.
+
+If the request succeeds, then the comment is added to the table and the inserted comment is sent back as a response in json format:
+{{{
+{"s": --uninteresting selection string--, 
+ "c": {"author_name": My True Name, 
+       "title": Another title, 
+       "body": A simple text for the comment: Lorem Ipsum?, 
+       "date": 20090111 12:31, 
+       "textlength": 45}
+      }
+}
+}}}
+If there's an error, the response contains the error string, in json format:
+{{{
+{"err": Ooops! There was an error. Sorry.}
+}}}
+=== Admin interface ===
+The administration interface is reachable at /sfEmendAdmin/ and allows the user that has permissions to list, show, publish, unpublish and remove the comments.
+
+== License and credits ==
+
+This plugin is licensed under the MIT license. You can contact the maintainer at 
+[http://guglielmo.celata.com/ guglielmo => depp.it]
+
+The eMend tool is a creation of the [http://memefarmers.net/ MemeFarmers] collective
+
+== Changelog ==
+=== version 0.1 - 2009-01-11 ===

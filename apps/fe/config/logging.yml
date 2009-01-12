@@ -1,6 +1,6 @@
 prod:
-  enabled: off
-  level:   err
+  enabled: on
+  level:   debug
   rotate:  on
   purge:   off
 
