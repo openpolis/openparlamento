@@ -9,6 +9,18 @@
  */ 
 class OppPolitico extends BaseOppPolitico
 {
+  
+  public function countAllMonitoringUsers()
+  {
+    return count($this->getAllMonitoringUsersPKs());
+  }
+  
+  public function getAllMonitoringUsersPKs()
+  {
+    return $this->getMonitoringUsersPKs();
+  }
+  
+  
   public function setPicture($filename)
   {
     if(!stat($filename)){

@@ -101,6 +101,23 @@ class deppPropelActAsMonitorableBehavior
     if ($n_monitoring == 0) return false;
   }
 
+
+  public function getMonitoringUsersPKs(BaseObject $object)
+  {
+    $c = new Criteria();
+    $c->add(MonitoringPeer::MONITORABLE_ID, $this->getReferenceKey($object));
+    $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
+    $c->clearSelectColumns();
+    $c->addSelectColumn(MonitoringPeer::USER_ID);
+
+    $users_pks = array();
+    $rs = MonitoringPeer::doSelectRS($c); 
+    while($rs->next())
+      $users_pks[] = $rs->getInt(1);
+
+    return $users_pks;
+  }
+
   /**
    * Retrieve a list of users monitoring the propel object
    *
@@ -109,20 +126,10 @@ class deppPropelActAsMonitorableBehavior
    **/
   public function getMonitoringUsers(BaseObject $object)
   {
-    $c = new Criteria();
-    $c->add(MonitoringPeer::MONITORABLE_ID, $this->getReferenceKey($object));
-    $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
-    
-    $monitoring_recs = MonitoringPeer::doSelect($c);
-    $monitoring = array();
-    foreach ($monitoring_recs as $rec)
-    {
-      $monitoring []= call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), 
-                                           $rec->getUserId());
-    }
-    return $monitoring;
-    
-    return MonitoringPeer::doSelect($c);
+    $users_pks = self::getMonitoringUsersPKs($object);
+    $users = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPKs'), 
+                                  array($users_pks));
+    return $users;
   }
 
   /**

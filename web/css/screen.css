@@ -127,6 +127,42 @@ thead th { font-size: 12px; vertical-align: top; }
 .tags { font-size: 15px; padding-left: 30px; background: transparent url(../images/bg-ico-tags.png) no-repeat center left; margin-bottom: .8em; }
 .tags em { font-size: 16px; color: #4e8480; font-weight: bold; }
 .tags-add { margin-bottom: 1em; }
+.tags-add form input#usertags_autocomplete { border: 1px solid gray;}
+
+
+div.autocomplete {
+  margin:0px;
+  padding:0px;
+}
+div.autocomplete ul {
+  list-style-type:none;
+  margin:0px;
+  padding:0px;
+}
+div.autocomplete ul li.selected { border: 1px solid #bbb; background-color: #5656ff; font-weight: bold; color: #fff;}
+div.autocomplete ul li {
+  border: 1px solid #5656ff;
+  border-top: 0px;
+  background-color: #fff;
+  border-color: #5656ff;
+  color: #5656ff;
+  font-size: 1.15em;
+  list-style-type:none;
+  display:block;
+  margin:0;
+  padding:2px;
+  cursor:pointer;
+}
+
+#tag_show { display: inline; font-size: 0.95em;}
+#tag_show div { display: inline; padding: 2px;}
+#tag_show div.teseo { background-color: #fdd; }
+#tag_show div.user { background-color: #dfd;}
+#tag_show div.my { background-color: #ddf;}
+#tag_edit { margin-top: 7px; }
+#tag_show span.tag:hover, #tag_show span.remover:hover {
+  cursor:pointer; color: darkblue; text-decoration: underline;
+}
 
 /*
  * WIDTHS

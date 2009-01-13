@@ -186,22 +186,22 @@ class attoActions extends sfActions
 	  $this->link = 'http://www.parlamento.it/leggi/deleghe/'.$str.'dl.htm';
     }
     
-	//tipo di iniziativa
-	$this->tipo_iniziativa = '';
-	if($this->atto->getIniziativa())
-	{
-	  switch($this->atto->getIniziativa())
+	  //tipo di iniziativa
+	  $this->tipo_iniziativa = '';
+	  if($this->atto->getIniziativa())
 	  {
-	    case '1':
-		  $this->tipo_iniziativa = 'Parlamentare';
-		  break;
-		case '2':
+	    switch($this->atto->getIniziativa())
+	    {
+	      case '1':
+		      $this->tipo_iniziativa = 'Parlamentare';
+		      break;
+		    case '2':
           $this->tipo_iniziativa = 'di Governo';
-		  break;
-	    default:
-		  $this->tipo_iniziativa = 'Popolare'; 	  		  
+		      break;
+	      default:
+		    $this->tipo_iniziativa = 'Popolare'; 	  		  
+	    }
 	  }
-	}
 	
     $pred = '';
     $pred_1 = '';
@@ -217,9 +217,9 @@ class attoActions extends sfActions
     }	  
 		
     $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
-	$this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
-	$this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
-	$this->commissioni = $this->atto->getCommissioni();
+	  $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
+	  $this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
+	  $this->commissioni = $this->atto->getCommissioni();
 	
   	$this->status = $this->atto->getStatus();
 	
@@ -232,6 +232,7 @@ class attoActions extends sfActions
   	$leggi=$this->atto->getOppLegges();
   	if (count($leggi)>0) $this->legge=$leggi[0];
   	else $this->legge="";	
+
   	/*
   	$quale_atto=$this->getTuttiSucc($this->atto->getId());
   	if (count($quale_atto)==0) $leggi=$this->atto->getOppLegges();
@@ -265,24 +266,24 @@ class attoActions extends sfActions
 	
   	$this->interventi = $this->atto->getInterventi();
 	
-     //PER RAPPRESENTAZIONE ITER
-     // Tutti i PRED
-     $quale_atto=$this->getTuttiPred($this->atto->getId());
-     if (count($quale_atto)>0) {
-        $this->rappresentazioni_pred = $this->atto->getIterRappresentazioni($quale_atto);
-        $this->rappresentazioni_pred=array_reverse($this->rappresentazioni_pred);
-     }   
-     else
-        $this->rappresentazioni_pred='';
-     
-     //TUTTI I SUCC
-     $quale_atto=$this->getTuttiSucc($this->atto->getId());
-     if (count($quale_atto)>0)
-        $this->rappresentazioni_succ = $this->atto->getIterRappresentazioni($quale_atto);
-     else
-        $this->rappresentazioni_succ = '';
-        
-     $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));  
+    //PER RAPPRESENTAZIONE ITER
+    // Tutti i PRED
+    $quale_atto=$this->getTuttiPred($this->atto->getId());
+    if (count($quale_atto)>0) {
+      $this->rappresentazioni_pred = $this->atto->getIterRappresentazioni($quale_atto);
+      $this->rappresentazioni_pred=array_reverse($this->rappresentazioni_pred);
+    }   
+    else
+      $this->rappresentazioni_pred='';
+    
+    //TUTTI I SUCC
+    $quale_atto=$this->getTuttiSucc($this->atto->getId());
+    if (count($quale_atto)>0)
+      $this->rappresentazioni_succ = $this->atto->getIterRappresentazioni($quale_atto);
+    else
+      $this->rappresentazioni_succ = '';
+      
+    $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));  
   }
 
   /**
@@ -310,9 +311,9 @@ class attoActions extends sfActions
     }	  
 		
     $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
-	$this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
-	$this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
-	$this->commissioni = $this->ddl->getCommissioni();
+	  $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
+	  $this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
+	  $this->commissioni = $this->ddl->getCommissioni();
 	
   	$this->status = $this->ddl->getStatus();
 	

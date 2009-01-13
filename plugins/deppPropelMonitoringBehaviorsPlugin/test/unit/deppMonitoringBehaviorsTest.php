@@ -67,7 +67,6 @@ $t->diag('Tests beginning');
 
 // clean the database
 $monitorable_callable = array(TEST_MONITORABLE.'Peer', 'doSelect');
-//$existing_records = call_user_func_array($monitorable_callable, new Criteria());
 $c = new Criteria();
 $c->add(MonitoringPeer::MONITORABLE_MODEL, 'sfTestMonitorable');
 $existing_records = sfTestMonitorablePeer::doSelect($c);

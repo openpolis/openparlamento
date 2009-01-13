@@ -12,6 +12,39 @@ class OppAtto extends BaseOppAtto
   protected $collIMTags;
   protected $lastIMTagsCriteria = null;
   
+  
+  public function countDirectlyMonitoringUsers()
+  {
+    return $this->countMonitoringUsers(true);
+  }
+  
+  public function getDirectlyMonitoringUsersPKs()
+  {
+    return $this->getMonitoringUsersPKs();
+  }
+
+  public function countIndirectlyMonitoringUsers()
+  {
+    return 0;
+  }
+  
+  public function getIndirectlyMonitoringUsersPKs()
+  {
+    return array();
+  }
+  
+  public function countAllMonitoringUsers()
+  {
+    // return $this->countDirectlyMonitoringUsers() + $this->countIndirectlyMonitoringUsers();
+    return count($this->getAllMonitoringUsersPKs()); // alternative and more precise
+  }
+  
+  public function getAllMonitoringUsersPKs()
+  {
+    return array_merge($this->getDirectlyMonitoringUsersPKs(), $this->getIndirectlyMonitoringUsersPKs());
+  }
+  
+  
   /**
    * returns an OppIter object, that is the last iter assigned to the object
    * order criterion, by date

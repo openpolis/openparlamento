@@ -52,6 +52,90 @@ class deppPropelActAsVotableBehavior
     return sfVotingPeer::doCount($c);
   }
 
+
+  /**
+   * Generates the criteria used to extract the list and number of users voting the probel object
+   * with a given attitude
+   *
+   * @param BaseObject $object 
+   * @param string $voting_attitude 
+   * @return Criteria
+   * @author Guglielmo Celata
+   */
+  protected function _votingUsersPKsCriteria(BaseObject $object, $voting_attitude = null)
+  {
+    $c = new Criteria();
+    $c->add(sfVotingPeer::VOTABLE_ID, $this->getReferenceKey($object));
+    $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
+    $c->clearSelectColumns();
+    $c->addSelectColumn(sfVotingPeer::USER_ID);
+
+    // analyze voting attitude
+    if (!is_null($voting_attitude))
+    {
+      if ($voting_attitude > 0)
+        $c->add(sfVotingPeer::VOTING, 0, Criteria::GREATER_THAN);
+      elseif ($voting_attitude < 0)
+        $c->add(sfVotingPeer::VOTING, 0, Criteria::LESS_THAN);
+      else
+        $c->add(sfVotingPeer::VOTING, 0);
+    }
+    
+    return $c;
+  }
+
+  /**
+   * Retrieve an array of all pks for the users voting for this object
+   *
+   * @param BaseObject $object 
+   * @param string $voting_attitude - if not null, filters on how the users voted (pro or aganist)
+   * @return array of users pks
+   * @author Guglielmo Celata
+   */
+  public function getVotingUsersPKs(BaseObject $object, $voting_attitude = null)
+  {
+    $c = self::_votingUsersPKsCriteria($object, $voting_attitude);
+
+    $users_pks = array();
+    $rs = sfVotingPeer::doSelectRS($c); 
+    while($rs->next())
+      $users_pks[] = $rs->getInt(1);
+
+    return $users_pks;
+  }
+
+  /**
+   * Retrieve a list of users voting the propel object with a give attitude
+   *
+   * @param  BaseObject  $object
+   * @param string $voting_attitude - if not null, filters on how the users voted (pro or aganist)
+   * @return array of Objects
+   **/
+  public function getVotingUsers(BaseObject $object, $voting_attitude = null)
+  {
+    $users_pks = self::getVotingUsersPKs($object, $voting_attitude);
+    $users = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPKs'), 
+                                  array($users_pks));
+    return $users;
+  }
+
+  /**
+   * Retrieve the number of users monitoring the propel object with a given attitude
+   *
+   * @param  BaseObject  $object
+   * @param  string $voting_attitude - if not null, filters on how the users voted (pro or aganist)
+   * @return int
+   **/
+  public function countVotingUsers(BaseObject $object, $voting_attitude)
+  {
+    $c = self::_votingUsersPKsCriteria($object, $voting_attitude);
+
+    $users_pks = array();
+    return sfVotingPeer::doCount($c); 
+  }
+
+
+
   /**
    * Retrieves configured float precision for votings
    * 

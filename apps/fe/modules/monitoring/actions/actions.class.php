@@ -407,6 +407,7 @@ class monitoringActions extends sfActions
     if (!$isAjax) return sfView::noAjax;
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
+    $this->item = call_user_func_array(array($this->item_model . "Peer", 'retrieveByPK'), $this->item_pk);
     
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     
@@ -468,6 +469,7 @@ class monitoringActions extends sfActions
   {
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
+    $this->item = call_user_func_array(array($this->item_model . "Peer", 'retrieveByPK'), $this->item_pk);
 
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
 

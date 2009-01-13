@@ -26,4 +26,7 @@ sfPropelBehavior::registerMethods('deppPropelActAsVotableBehavior', array (
   array('deppPropelActAsVotableBehavior', 'hasBeenVotedByUser'),
   array('deppPropelActAsVotableBehavior', 'clearVotings'),
   array('deppPropelActAsVotableBehavior', 'clearUserVoting'),
+  array('deppPropelActAsVotableBehavior', 'getVotingUsersPKs'),
+  array('deppPropelActAsVotableBehavior', 'getVotingUsers'),
+  array('deppPropelActAsVotableBehavior', 'countVotingUsers'),
 ));                 

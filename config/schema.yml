@@ -318,5 +318,6 @@ propel:
     id:
     title:               { type: varchar(50), required: true, default: 'Titolo generatore'}
     test_date:           { type: timestamp }
+    created_at:
     monitorable_id:      { type: integer, required: true, index: true, foreignTable: sf_test_monitorable, foreignReference: id, onDelete: CASCADE }
     

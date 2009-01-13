@@ -5,7 +5,6 @@
  * @package    openparlamento
  * @subpackage monitoring
  * @author     Guglielmo Celata
- * @version    SVN: $Id: components.class.php 1415 2006-06-11 08:33:51Z fabien $
  */
 class monitoringComponents extends sfComponents
 {
@@ -16,6 +15,7 @@ class monitoringComponents extends sfComponents
                                   'politicians' => 'Parlamentari monitorati',
                                   'tags' => 'Gestione argomenti');
   }
+  
   
   public function executeManageItem()
   {
@@ -28,7 +28,22 @@ class monitoringComponents extends sfComponents
         $monitored = $user->countMonitoredObjects('OppAtto') + $user->countMonitoredObjects('OppPolitico');
         $this->remaining_items = $user->getNMaxMonitoredItems() - $monitored;
       }
+      $this->item_model = get_class($this->item);
+      $this->item_pk = $this->item->getPrimaryKey();
+      $this->nMonitoringUsers = $this->item->countAllMonitoringUsers();
       $this->is_monitoring = $user->isMonitoring($this->item_model, $this->item_pk);
+      switch ($this->item_model)
+      {
+        case 'OppPolitico':
+          $this->item_type = 'politico';
+          break;
+        case 'OppAtto':
+          $this->item_type = 'atto';
+          break;
+        case 'Tag';
+          $this->item_type = 'argomento';
+          break;
+      }
     }
   }
   

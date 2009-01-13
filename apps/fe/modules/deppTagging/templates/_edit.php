@@ -1,8 +1,9 @@
 <?php echo use_helper('Javascript', 'Tags') ?>
 <div id="tag_associati" style="margin: 20px 0">
 
-  Tag associati:
-  <div id="tag_show">
+
+  <div id="tag_show" class="tags">
+    <em>argomenti:</em>
     <?php foreach ($tags as $tag): ?>
       <div id="<?php echo $tag[0]?>" class="<?php echo get_classes_for_tag($tag[3], $teseo_tags, $user_tags, $my_tags) ?>">
         <?php if (is_removable($tag[3], $removable_tags)): ?>
@@ -15,8 +16,8 @@
   </div>
 
   <?php if ($anonymous_tagging || $sf_user->isAuthenticated()): ?>
-    <div id="tag_edit">
-      Aggiungi tag: 
+    <div id="tag_edit" class="tags-add">
+      aggiungi un argomento 
       <?php echo form_remote_tag(array(
           'update' => 'tag_show',
           'complete' => "$('usertags_autocomplete').value=''; refresh_tags_show_observers();",
@@ -40,15 +41,19 @@
   <script type="text/javascript" language="javascript">
   //<![CDATA[
   new Ajax.Autocompleter("usertags_autocomplete", "autocomplete_choices",
-                         "<?php echo url_for('deppTagging/usertagsAutocomplete')?>", 
+                         "<?php echo url_for('deppTagging/tagsAutocomplete')?>", 
     {
       paramName: "value",
       indicator: "autocomplete_indicator",
       frequency: 0.3,
       tokens: [','],
       updateElement: function (le) { 
-        var val = $('usertags_autocomplete').value;
-        $('usertags_autocomplete').value =  (val.lastIndexOf(',') > 0 ? val.truncate(2+val.lastIndexOf(','), '') : '') + le.innerHTML.unescapeHTML().strip();
+        var val = le.innerHTML.unescapeHTML();
+        if (val.indexOf('\n', 1) != -1) val = val.substring(0, val.indexOf('\n', 1)).strip();
+        $('usertags_autocomplete').value =  val;
+        
+        //var val = $('usertags_autocomplete').value;
+        //$('usertags_autocomplete').value =  (val.lastIndexOf(',') > 0 ? val.truncate(2+val.lastIndexOf(','), '') : '') + le.innerHTML.unescapeHTML().strip();
       }
     });
 

@@ -20,6 +20,7 @@ sfPropelBehavior::registerMethods('deppPropelActAsMonitorableBehavior', array (
   array('deppPropelActAsMonitorableBehavior', 'addMonitoringUser'),
   array('deppPropelActAsMonitorableBehavior', 'removeMonitoringUser'),  
   array('deppPropelActAsMonitorableBehavior', 'isMonitoredByUser'),
+  array('deppPropelActAsMonitorableBehavior', 'getMonitoringUsersPKs'),  
   array('deppPropelActAsMonitorableBehavior', 'getMonitoringUsers'),  
   array('deppPropelActAsMonitorableBehavior', 'countMonitoringUsers'),  
   array('deppPropelActAsMonitorableBehavior', 'getNNewNews'),

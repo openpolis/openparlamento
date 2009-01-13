@@ -1,6 +1,64 @@
 <?php
 class attoComponents extends sfComponents
 {
+  public function executeMonitor_n_vote()
+  {
+    
+  }
+  
+  public function executeItemshortinline()
+  {
+    switch(get_class($this->item)){
+      case 'OppPolitico':
+        $str = $this->item->__toString();
+        $url = '@parlamentare?id='.$this->item->getId();
+        break;
+      case 'OppAtto':
+        $str = $this->item->getRamo() .".". $this->item->getNumfase();
+        $url = '@atto?id='.$this->item->getId();
+        break;
+      case 'Tag':
+        $str = $this->item->getTripleValue();
+        $url = '@argomento?id='.$this->item->getId();
+        break;
+    }
+    $this->str = $str . " (".$this->item->getNMonitoringUsers().")"; 
+    $this->url=$url;
+  }
+
+  public function executeProusersdo()
+  {
+    $pro_users_pks = $this->item->getVotingUsersPKs(1);
+
+    $voted_items = sfVotingPeer::getItemsFavouredByUsers($pro_users_pks, 'OppAtto');
+    uasort($voted_items, 'sfVotingPeer::compareItemsByProUsers');
+    $this->pro_acts = array_slice($voted_items, 0, 10);
+
+    $voted_items = sfVotingPeer::getItemsOpposedByUsers($pro_users_pks, 'OppAtto');
+    uasort($voted_items, 'sfVotingPeer::compareItemsByAntiUsers');
+    $this->anti_acts = array_slice($voted_items, 0, 10);
+  }
+
+  public function executeAntiusersdo()
+  {
+    $anti_users_pks = $this->item->getVotingUsersPKs(-1);
+
+    $voted_items = sfVotingPeer::getItemsFavouredByUsers($anti_users_pks, 'OppAtto');
+    uasort($voted_items, 'sfVotingPeer::compareItemsByProUsers');
+    $this->pro_acts = array_slice($voted_items, 0, 10);
+
+    $voted_items = sfVotingPeer::getItemsOpposedByUsers($anti_users_pks, 'OppAtto');
+    uasort($voted_items, 'sfVotingPeer::compareItemsByAntiUsers');
+    $this->anti_acts = array_slice($voted_items, 0, 10);
+  }
+  
+  public function executeMonitoringusersdo()
+  {
+    $this->monitorers_pks = $this->item->getAllMonitoringUsersPKs();
+    $this->monitored_models_pks = MonitoringPeer::getModelsPKsMonitoredByUsers($this->monitorers_pks);
+  }
+  
+  
   public function executeDdlConversione()
   {
     $c = new Criteria();

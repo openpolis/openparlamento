@@ -4,8 +4,7 @@
 
 <!-- partial per la gestione del monitoring di questo politico -->
 <?php echo include_component('monitoring', 'manageItem', 
-                             array('item_pk' => $parlamentare->getPrimaryKey(), 
-                                   'item_model' => get_class($parlamentare))); ?>
+                             array('item' => $parlamentare, 'item_type' => 'politico')); ?>
 
 
 <img src="http://www.openpolis.it/politician/picture?content_id=<?php echo $parlamentare->getId() ?>" /><br /><br />
