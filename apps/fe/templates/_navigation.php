@@ -31,8 +31,5 @@
   <li><?php echo link_to('Argomenti', '@argomenti') ?></li>
   <li><?php echo link_to('Comunit&agrave;', '#') ?></li>
   <li><?php echo link_to('Blog', '#') ?></li>
-  <?php if ($sf_user->isAuthenticated()): ?>
-    <li><?php echo link_to('Monitoring', 'monitoring') ?></li>
-  <?php endif; ?>
   
 </ul>

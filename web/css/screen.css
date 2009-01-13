@@ -19,6 +19,8 @@ table { width: 100%; border-collapse: collapse; }
 table tbody th { text-align: left; font-weight: normal; }
 table tbody td { text-align: center; }
 
+.input-text { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd; }
+
 
 /*
  * FLOAT
@@ -73,7 +75,9 @@ thead th { font-size: 12px; vertical-align: top; }
 .coo-mind table tbody th { text-align: left; padding: 8px; }
 .coo-mind table tbody td { width: 150px; text-align: left; padding: 8px; }
 .coo-mind table tbody td a { display: block; float: left; font-size: 16px; padding-right: 12px; }
-.coo-mind table tbody th a { font-size: 14px; }
+.coo-mind table tbody th a { font-size: 14px; display: block; padding-right: 60px; }
+.coo-mind table tbody th a:hover { background: url(../images/txt-commenta.png) no-repeat center right; }
+
 .coo-mind table tbody th strong { font-size: 16px; padding-right: 2px; }
 .activity-meter { display: block; float: left; background: url(../images/bg-coo-mind-activity.png) no-repeat center left;}
 
@@ -197,6 +201,7 @@ div.autocomplete ul li {
 }
 
 #content.tabbed { -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-left-radius: 0; margin-top:0; }
+#content.tabbed-orange { -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-left-radius: 0; margin-top:0; border-top: 10px solid #ee7f00; }
 
 #footer { background-color: #ebebeb; height: 120px; margin: 23px 12px 0 12px;
 -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
@@ -206,6 +211,7 @@ div.autocomplete ul li {
 
 #main { padding: 12px 19px 12px 23px;  }
 #content.tabbed #main { padding: 12px 10px 12px 10px; }
+#content.tabbed-orange #main { padding: 12px 10px 12px 10px; }
 
 /*
  * BREADCRUMBS
@@ -223,7 +229,13 @@ div.autocomplete ul li {
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; }
 #content-tabs li.current { background-image: none; background-color: #fff; }
 #content-tabs li.current a, #content-tabs li.current a:visited, #content-tabs li.current { color: #4e8480; cursor: default; }
-#content-tabs h2 { line-height: 1.4em; min-height: 1.4em; }
+#content-tabs h2 { line-height: 40px; min-height: 1.4em; height:40px;}
+
+#content-tabs.orange li { background: #e0b383 url(../images/bg-tab-content-orange.png) repeat-x top left; }
+#content-tabs.orange li a { color: #f3f3f3; }
+#content-tabs.orange li.current { background-image: none; background-color: #ee7f00; color: #fff; }
+#content-tabs.orange li.current a, #content-tabs.orange li.current a:visited, #content-tabs.orange li.current { color: #fff; cursor: default; }
+#content-tabs.orange h2 { font-size: 1.5em; line-height: 40px; min-height: 1.4em; height:40px; }
 
 .last-update { font-size: 11px; color: #737373; padding: 0 0 8px 3px; }
 .last-update strong { font-size: 13px; }
@@ -314,10 +326,11 @@ img.prev-active, img.next-active { display: none; }
  * DISEGNI-DECRETI ORDER-FILTER
  *----------------------------------------------*/
 
-#disegni-decreti-order, #disegni-decreti-filter { font-size: 12px; clear: left; margin: 15px 0; }
+#disegni-decreti-order, #disegni-decreti-filter, #disegni-decreti-time-filter { font-size: 12px; clear: left; margin: 15px 0; }
+#disegni-decreti-time-filter label { margin-left: 25px; }
 #disegni-decreti-filter fieldset { zoom: 1; }
 .disegni-decreti-date { margin-top: 15px; color: #22ce00; }
-#disegni-decreti-order p, #disegni-decreti-filter p { color: #22ce00; float: left; padding: 3px 10px 0 0; }
+#disegni-decreti-order p, #disegni-decreti-filter p, #disegni-decreti-time-filter p { color: #22ce00; float: left; padding: 3px 10px 0 0; }
 #disegni-decreti-order p { padding-right: 4px; }
 #disegni-decreti-order li { float: left; padding: 0 3px 0 0; }
 #disegni-decreti-order a { padding: 3px 10px 3px 2px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; display: block; float: left; border: 1px solid #dcdcdc; }
@@ -418,11 +431,23 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .btn-close { padding-right: 20px; background: transparent url(../images/bg-ico-open-close.png) no-repeat bottom right; }
 
 /*
+ * PAGENAV
+ *----------------------------------------------*/
+ 
+.pagenav { font-size: 16px; border: 1px solid #ee7f00; padding: 5px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; float: left; }
+
+.pagenav em { color: #ee7f00; font-weight: bold; font-size: 20px; }
+.pagenav label { color: #888; margin-left: 20px; }
+.pagenav.tools-container .pagenav-jumpto a { color: #888; }
+.pagenav.tools-container .pagenav-jumpto a:hover { color: #0066ff; }
+#itemsperpage { margin-right: 20px; }
+
+/*
  * LOGIN
  *----------------------------------------------*/
 
 #login { float: right; font-size: 24px; color: #517486; background: transparent url(../images/bg-login-sx.png) no-repeat top left; height: 59px;  margin-top: 5px; padding-left: 10px; }
-#login .inner{ background: transparent url(../images/bg-login-dx.png) no-repeat top right; height: 59px; line-height:59px; width: 220px; }
+#login .inner{ background: transparent url(../images/bg-login-dx.png) no-repeat top right; height: 59px; line-height:59px; width: 210px; }
 #logged-in { float: right; font-size: 16px; color: #517486; background: transparent url(../images/bg-login-sx.png) no-repeat top left; height: 59px;  margin-top: 5px; padding-left: 10px; }
 #logged-in .inner{ background: transparent url(../images/bg-login-dx.png) no-repeat top right; height: 59px;  padding-right: 3px; width: 348px; }
 

@@ -161,14 +161,15 @@ class attoActions extends sfActions
     $this->atti = OppAttoPeer::doSelectJoinOppTipoAtto($c);
     $this->atto = $this->atti[0];
     $this->forward404Unless($this->atto);
-
+    
+    
     //individuazione link fonte
     if($this->atto->getTipoAttoId() == '1')
       $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/Ddliter/'.$this->atto->getParlamentoId().'.htm';
     elseif($this->atto->getTipoAttoId() > '1' && $this->atto->getTipoAttoId() < '12' )
       $this->link = 'http://banchedati.camera.it/sindacatoispettivo_'.$this->atto->getLegislatura().'/showXhtml.Asp?idAtto='.$this->atto->getParlamentoId().'&stile=6&highLight=1';
     elseif($this->atto->getTipoAttoId() == '12' )
-      $link = '#';
+      $this->link = '#';
     elseif($this->atto->getTipoAttoId() == '14' )
     {
 	  if($this->atto->getRamo()=='C')
@@ -217,9 +218,9 @@ class attoActions extends sfActions
     }	  
 		
     $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
-	  $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
-	  $this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
-	  $this->commissioni = $this->atto->getCommissioni();
+    $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
+    $this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
+    $this->commissioni = $this->atto->getCommissioni();
 	
   	$this->status = $this->atto->getStatus();
 	
@@ -283,7 +284,26 @@ class attoActions extends sfActions
     else
       $this->rappresentazioni_succ = '';
       
-    $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));  
+    $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));
+	
+	//titolo del wiki
+	switch($this->atto->getTipoAttoId())
+    {
+	  case '1':
+	    $this->titolo_wiki = "cosa sono i disegni di legge";  
+        break;
+      case '12': 
+        $this->titolo_wiki = "cosa sono i decreti legge";  
+        break;
+      case '15':
+      case '16':
+      case '17':
+        $this->titolo_wiki = "cosa sono i decreti legislativi";  
+        break;
+      default: 
+        $this->titolo_wiki = "cosa sono gli atti non legislativi";  
+        break;
+    }      
   }
 
   /**

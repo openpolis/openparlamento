@@ -105,6 +105,11 @@ class attoComponents extends sfComponents
 	
 	$this->interventi_count = count($this->interventi);
   }
+  
+  public function executeCommissioni()
+  {
+    $this->consultive_count = 0;
+  }
 }
 
 ?>

@@ -1,12 +1,12 @@
-<table id="disegni-decreti" class="column-table">
+<table class="disegni-decreti column-table">
   <thead>
     <tr>
       <th scope="col"><br />sigla/titolo:</th>
       <th scope="col"><br />data voto:</th>
-      <th scope="col">ramo parlamentare:</th>
-      <th scope="col">esito in Parlamento:</th>
-      <th scope="col">voti di scarto:</th>
-      <th scope="col">numero di ribelli:</th>
+      <th scope="col">ramo<br />parlamentare:</th>
+      <th scope="col">esito in<br />Parlamento:</th>
+      <th scope="col">voti di<br />scarto:</th>
+      <th scope="col">numero di<br />ribelli:</th>
     </tr>
   </thead>
 

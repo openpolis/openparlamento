@@ -41,7 +41,7 @@
 </table>
 
 <?php if($votazioni_count > $limit): ?>
-  <p class="indent">guarda tutti gli altri <strong><?php echo ($votazioni_count - $limit - 1) ?> </strong>voti relativi al disegno di legge... 
+  <p class="indent">guarda tutti gli altri <strong><?php echo ($votazioni_count - $limit) ?> </strong>voti relativi al disegno di legge... 
     [ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]
   </p>
   <div class="more-results float-container" style="display: none;">

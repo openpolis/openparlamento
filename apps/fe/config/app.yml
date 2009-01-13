@@ -1,10 +1,10 @@
 dev:
-  remote_guard_host:      'lapgu.guard.openpolis.it'
+  remote_guard_host:      'accesso.openpolis.it'
   
 # default values
 all:
   # remote guard host
-  remote_guard_host:      'lapgu.guard.openpolis.it'
+  remote_guard_host:      'accesso.openpolis.it'
 
   # cookies
   cookies:
@@ -99,3 +99,6 @@ all:
   iter_id:
     "decaduto":    "14"
     "convertito":  "63"
+
+  mail_per_redazione:
+    site_address: http://openparlamento.depplab.net/

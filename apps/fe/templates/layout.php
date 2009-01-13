@@ -11,7 +11,7 @@
 <body>
   <div id="wrapper">
     <div id="header">
-      <div id="tools">
+      <div id="tools" class="float-container">
         <?php include_partial('global/tools') ?>	  
 	  </div>
   	  <div id="navigation">	

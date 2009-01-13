@@ -98,14 +98,14 @@ class Text
           if($action=='list')  
             return "<em>".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
-            return "<em>".$atto->getNumfase()."</em> ".$atto->getTitolo();
+            return $atto->getTitolo();
         }    
         else
         {  
           if($action=='list')
             return $atto->getNumfase().' '.$atto->getTitolo();
           else  
-            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
+            return $atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
         }
         break;   
               
@@ -120,20 +120,47 @@ class Text
 		if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return "<em>".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
+            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
-            return "<em>".$atto->getNumfase()."</em> ".$atto->getTitolo();
+            return $atto->getTitolo();
         }    
         else
         {  
           if($action=='list')
-            return $atto->getNumfase().' '.$atto->getTitolo();
+            return $atto->getRamo().".".$atto->getNumfase().' '.$atto->getTitolo();
           else  
-            return $atto->getNumfase().' '.$atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
+            return $atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
         }
         break;  
     }
   }
+  
+  public static function denominazioneAttoShort($atto)
+  {
+    switch($atto->getTipoAttoId())
+    {
+      case '1':
+        return $atto->getRamo().".".$atto->getNumfase();
+        break;
+      case '12':
+        return "DL.".$atto->getNumfase();
+        break;  
+      case '15':
+      case '16':
+      case '17':
+        return "DLGS.".$atto->getNumfase();
+        break;  
+      case '14':
+        return $atto->getOppTipoAtto()->getDescrizione();
+        break;
+      default:
+        if($atto->getRamo())
+          return $atto->getRamo().'.'.$atto->getNumfase();
+        else return $atto->getNumfase();  
+    }
+  }
+  
+  
     
 }
 

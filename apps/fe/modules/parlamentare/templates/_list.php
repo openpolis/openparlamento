@@ -1,4 +1,4 @@
-<table id="disegni-decreti" class="column-table">
+<table class="disegni-decreti column-table">
   <thead>
     <tr>
       <th scope="col">parlamentare:</th>

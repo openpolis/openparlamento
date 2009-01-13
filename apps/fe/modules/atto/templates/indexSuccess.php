@@ -1,7 +1,11 @@
 <?php use_helper('Date', 'I18N') ?>
 
 <ul id="content-tabs" class="float-container tools-container">
-  <li class="current"><h2><?php echo Text::denominazioneAtto($atto, 'index') ?></h2></li>
+  <li class="current">
+    <h2>
+      <?php echo Text::denominazioneAttoShort($atto) ?>  
+    </h2>
+  </li>
 </ul>
 
 <div id="content" class="tabbed float-container">
@@ -12,13 +16,34 @@
 	  </div>
     
     <div class="W73_100 float-left">
-      <h4 class="grey-888"><?php echo $atto->getOppTipoAtto()->getDenominazione() ?></h4>
+      <h4 class="grey-888">
+        <?php if($atto->getTipoAttoId()!=14): ?>
+          <?php if($atto->getRamo()): ?>
+            <?php if($atto->getRamo()=='C'): ?>
+              Camera,
+            <?php else: ?>
+              Senato,
+            <?php endif; ?>
+          <?php endif; ?>          
+          <?php echo $atto->getOppTipoAtto()->getDescrizione() ?>
+        <?php else: ?>
+          <?php if($atto->getRamo()): ?>
+            <?php if($atto->getRamo()=='C'): ?>
+              Camera
+            <?php else: ?>
+              Senato
+            <?php endif; ?>
+          <?php endif; ?>  
+        <?php endif; ?>
+      </h4>
 	  
-	    <?php include_partial('attoWiki') ?>
+	    <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
 	  
-	    <!-- SINOSSI -->
-	    <p class="synopsis"><!--Interventi urgenti in materia di adeguamento dei prezzi di materiali da costruzione, di sostegno ai settori  dell’autotrasporto, dell’agricoltura e della pesca professionale, nonche' di finanziamento delle opere per il G8 e definizione degli adempimenti tributari per le regioni Marche ed Umbria, colpite dagli eventi sismici del 1997 (Gazzetta Ufficiale n. 247 del 23/10/2008)--></p>
-
+	  <!-- SINOSSI -->
+	  <p class="synopsis">
+        <?php echo Text::denominazioneAtto($atto, 'index') ?>            
+      </p>
+      
       <ul class="presentation float-container">
         <li><h6>presentato il: <em><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></em></h6></li>
         
@@ -48,6 +73,10 @@
 
       <?php if(count($votazioni)!=0): ?>
         <?php include_component('atto', 'votazioni', array('votazioni' => $votazioni)) ?>
+      <?php endif; ?>
+
+      <?php if(count($commissioni)!=0): ?>
+	    <?php include_component('atto', 'commissioni', array('commissioni' => $commissioni)) ?>
       <?php endif; ?>
 
       <?php if(count($interventi)!=0): ?>

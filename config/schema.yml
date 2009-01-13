@@ -176,6 +176,8 @@ propel:
   opp_tipo_atto:
    id:  
    denominazione:     { type: varchar(60) }
+   descrizione:       { type: varchar(60) }
+   spiegazione:       { type: longvarchar }
 
   opp_tipo_carica:
    id:  
