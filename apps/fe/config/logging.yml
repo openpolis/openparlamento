@@ -1,5 +1,5 @@
 prod:
-  enabled: on
+  enabled: off
   level:   debug
   rotate:  on
   purge:   off

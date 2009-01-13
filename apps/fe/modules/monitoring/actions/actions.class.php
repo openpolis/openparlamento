@@ -362,9 +362,12 @@ class monitoringActions extends sfActions
     
     // a tag was added, clear the cache for the news, acts and tags page
     $cacheManager = $this->getContext()->getViewCacheManager(); 
-    $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
-    $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
-    $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken()); 
+    if (!is_null($cache_manager))
+    {
+      $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());       
+    }
   }
   
 
@@ -387,10 +390,13 @@ class monitoringActions extends sfActions
     $this->setTemplate('ajaxMyTags');
     
     // a tag was removed, clear the cache for the news, acts and tags page
-    $cacheManager = $this->getContext()->getViewCacheManager(); 
-    $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
-    $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
-    $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());
+    $cacheManager = $this->getContext()->getViewCacheManager();
+    if (!is_null($cacheManager))
+    {
+      $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());      
+    }
     
     // remove the negative bookmarking from objects indirectly monitored thanks to this tag
     $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($opp_user, null, null, array($tag_id));
@@ -404,10 +410,11 @@ class monitoringActions extends sfActions
   public function executeAjaxAddItemToMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    if (!$isAjax) return sfView::noAjax;
+    // if (!$isAjax) return sfView::noAjax;
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
-    $this->item = call_user_func_array(array($this->item_model . "Peer", 'retrieveByPK'), $this->item_pk);
+
+    $this->item = call_user_func($this->item_model . "Peer::retrieveByPK", $this->item_pk);
     
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     
@@ -432,17 +439,21 @@ class monitoringActions extends sfActions
       $user->addMonitoredObject($this->item_model, $this->item_pk);
     }  
     $this->setTemplate('ajaxManageItem');
-
+    
     // an item was added, clear the cache consequently
     $cacheManager = $this->getContext()->getViewCacheManager();
-    $user_token = $this->getUser()->getToken();
-    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
-    if ($this->item_model == 'OppAtto')
+    if (!is_null($cacheManager))
     {
-      $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
-    } else {
-      $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+      $user_token = $this->getUser()->getToken();    
+      $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+      if ($this->item_model == 'OppAtto')
+      {
+        $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
+      } else {
+        $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+      }      
     }
+
     
   }
     
@@ -469,7 +480,7 @@ class monitoringActions extends sfActions
   {
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
-    $this->item = call_user_func_array(array($this->item_model . "Peer", 'retrieveByPK'), $this->item_pk);
+    $this->item = call_user_func($this->item_model . "Peer::retrieveByPK", $this->item_pk);
 
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
 
@@ -481,13 +492,16 @@ class monitoringActions extends sfActions
     
     // an item was removed, clear the cache consequently
     $cacheManager = $this->getContext()->getViewCacheManager();
-    $user_token = $this->getUser()->getToken();
-    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
-    if ($this->item_model == 'OppAtto')
+    if (!is_null($cacheManager))
     {
-      $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
-    } else {
-      $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+      $user_token = $this->getUser()->getToken();
+      $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+      if ($this->item_model == 'OppAtto')
+      {
+        $cacheManager->remove('monitoring/acts?user_token='.$user_token);       
+      } else {
+        $cacheManager->remove('monitoring/politicians?user_token='.$user_token); 
+      }      
     }
          
   }
