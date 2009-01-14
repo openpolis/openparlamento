@@ -35,6 +35,56 @@ class newsActions extends sfActions
     $pager->init();
     $this->pager = $pager;
   }
+
+  public function executeDdlList()
+  {
+    $this->n_news = NewsPeer::countNewsForDDLList();
+    $c = NewsPeer::getNewsForDDLListCriteria();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;    
+  }
+
+  public function executeDecretiList()
+  {
+    $this->n_news = NewsPeer::countNewsForDecretiList();
+    $c = NewsPeer::getNewsForDecretiListCriteria();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;    
+  }
+
+  public function executeDecretiLegislativiList()
+  {
+    $this->n_news = NewsPeer::countNewsForDecretiLegislativiList();
+    $c = NewsPeer::getNewsForDecretiLegislativiListCriteria();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;    
+  }
+  
+  
   
   public function executePolitician()
   {

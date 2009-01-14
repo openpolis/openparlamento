@@ -115,9 +115,12 @@ function stop_remote_pager()
  * @param  integer the number of links (odd if possible)
  * @return string XHTML code containing links
  */
-function pager_navigation($pager, $uri, $has_first_last = true, $num_links=5)
+function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
 {
  
+  if ($num_links == 0)
+    $num_links = sfConfig::get('app_pagination_num_links', 5);
+    
   $navigation = "";
   
   if ($pager->haveToPaginate())

@@ -15,7 +15,7 @@ class attoComponents extends sfComponents
         break;
       case 'OppAtto':
         $str = $this->item->getRamo() .".". $this->item->getNumfase();
-        $url = '@atto?id='.$this->item->getId();
+        $url = '@singolo_atto?id='.$this->item->getId();
         break;
       case 'Tag':
         $str = $this->item->getTripleValue();

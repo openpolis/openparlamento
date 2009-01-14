@@ -328,7 +328,79 @@ class NewsPeer extends BaseNewsPeer
 
     return $c;
   }
+
+
+  public static function countNewsForDecretiLegislativiList()
+  {
+    $c = self::getNewsForDecretiLegislativiListCriteria();
+    return self::doCount($c);
+  }
   
+  public static function getNewsForDecretiLegislativiList($limit = 10)
+  {
+    $c = self::getNewsForDecretiLegislativiListCriteria($limit);
+    return self::doSelect($c);
+  }
+
+  public static function getNewsForDecretiLegislativiListCriteria($limit = null)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(self::TIPO_ATTO_ID, array(15, 16, 17), Criteria::IN);
+    if (!is_null($limit))
+      $c->setLimit($limit);
+    $c->addDescendingOrderByColumn(self::DATE);
+    return $c;    
+  }
+
+
+  public static function countNewsForDecretiList()
+  {
+    $c = self::getNewsForDecretiListCriteria();
+    return self::doCount($c);
+  }
+  
+  public static function getNewsForDecretiList($limit = 10)
+  {
+    $c = self::getNewsForDecretiListCriteria($limit);
+    return self::doSelect($c);
+  }
+
+  public static function getNewsForDecretiListCriteria($limit = null)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(self::TIPO_ATTO_ID, 12);
+    if (!is_null($limit))
+      $c->setLimit($limit);
+    $c->addDescendingOrderByColumn(self::DATE);
+    return $c;    
+  }
+
+
+  public static function countNewsForDDLList()
+  {
+    $c = self::getNewsForDDLListCriteria();
+    return self::doCount($c);
+  }
+  
+  public static function getNewsForDDLList($limit = 10)
+  {
+    $c = self::getNewsForDDLListCriteria($limit);
+    return self::doSelect($c);
+  }
+
+  public static function getNewsForDDLListCriteria($limit = null)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(self::TIPO_ATTO_ID, 1);
+    if (!is_null($limit))
+      $c->setLimit($limit);
+    $c->addDescendingOrderByColumn(self::DATE);
+    return $c;    
+  }
+
 
   public static function getNewsForItemCriteria($item_type, $item_id)
   {    

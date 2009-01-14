@@ -25,7 +25,7 @@
               Senato,
             <?php endif; ?>
           <?php endif; ?>          
-          <?php echo $atto->getOppTipoAtto()->getDescrizione() ?>
+          <?php echo $atto->getOppTipoAtto()->getDenominazione() ?>
         <?php else: ?>
           <?php if($atto->getRamo()): ?>
             <?php if($atto->getRamo()=='C'): ?>
