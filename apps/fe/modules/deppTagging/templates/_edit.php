@@ -24,7 +24,7 @@
           'url'    => "deppTagging/addAjax?content_type=" .get_class($content). "&content_id=". $content->getId()
           ), array('style' => 'display:inline')); ?>
         <input type="text" id="usertags_autocomplete" name="usertags" 
-               autocomplete="off" value="" size="30"/>
+               autocomplete="off" value="" size="60"/>
         <?php echo submit_tag('Salva') ?>
         <div id="autocomplete_choices" class="autocomplete"></div>
       </form>
