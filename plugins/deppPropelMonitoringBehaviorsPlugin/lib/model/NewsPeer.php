@@ -330,6 +330,30 @@ class NewsPeer extends BaseNewsPeer
   }
 
 
+  public static function countNewsForAttiNonLegislativiList()
+  {
+    $c = self::getNewsForAttiNonLegislativiListCriteria();
+    return self::doCount($c);
+  }
+  
+  public static function getNewsForAttiNonLegislativiList($limit = 10)
+  {
+    $c = self::getNewsForAttiNonLegislativiListCriteria($limit);
+    return self::doSelect($c);
+  }
+
+  public static function getNewsForAttiNonLegislativiListCriteria($limit = null)
+  {
+    $c = new Criteria();
+    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(self::TIPO_ATTO_ID, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14), Criteria::IN);
+    if (!is_null($limit))
+      $c->setLimit($limit);
+    $c->addDescendingOrderByColumn(self::DATE);
+    return $c;    
+  }
+
+
   public static function countNewsForDecretiLegislativiList()
   {
     $c = self::getNewsForDecretiLegislativiListCriteria();

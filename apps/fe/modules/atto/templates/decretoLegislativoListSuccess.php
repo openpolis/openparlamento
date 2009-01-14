@@ -11,7 +11,7 @@
 
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legislativi', 
-                                       'all_news_url' => 'news/decretiLegislativiList',
+                                       'all_news_url' => '@news_attiDecretiLegislativi',
                                        'n_news' => NewsPeer::countNewsForDecretiLegislativiList(), 
                                        'news'   => NewsPeer::getNewsForDecretiLegislativiList(10))); ?>
 	  </div>

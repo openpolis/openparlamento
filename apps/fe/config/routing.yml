@@ -34,6 +34,21 @@ news_parlamentare:
   url:  /news_parlamentare/:id
   param: { module: news, action: politician }
 
+news_attiDisegni:
+  url: /news_attiDisegni
+  param: { module: news, action: ddlList}
+
+news_attiDecreti:
+  url: /news_attiDecreti
+  param: { module: news, action: decretiList}
+
+news_attiDecretiLegislativi:
+  url: /news_attiDecretiLegislativi
+  param: { module: news, action: decretiLegislativiList}
+
+news_attiNonLegislativi:
+  url: /news_attiNonLegislativi
+  param: { module: news, action: attiNonLegislativiList}
 
 attiDisegni:
   url: /attiDisegni

@@ -83,6 +83,22 @@ class newsActions extends sfActions
     $pager->init();
     $this->pager = $pager;    
   }
+
+  public function executeAttiNonLegislativiList()
+  {
+    $this->n_news = NewsPeer::countNewsForAttiNonLegislativiList();
+    $c = NewsPeer::getNewsForAttiNonLegislativiListCriteria();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager->setCriteria($c);
+    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;    
+  }
   
   
   

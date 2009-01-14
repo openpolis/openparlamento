@@ -10,7 +10,7 @@
           <li><?php echo news($news_item); ?></li>
         <?php endforeach ?>
       </ul>
-      <a href="<?php echo $all_news_url ?>" class="see-all tools-container">vedi tutta la cronologia</a>
+      <?php echo link_to("vedi tutta la cronologia", $all_news_url, array('class'=>"see-all tools-container")) ?>
     </div>
   </div>  
 <?php endif ?>

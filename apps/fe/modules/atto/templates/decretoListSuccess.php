@@ -12,7 +12,7 @@
 
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legge', 
-                                       'all_news_url' => 'news/decretiList',
+                                       'all_news_url' => '@news_attiDecreti',
                                        'n_news' => NewsPeer::countNewsForDecretiList(), 
                                        'news'   => NewsPeer::getNewsForDecretiList(10))); ?>
 	  </div>
