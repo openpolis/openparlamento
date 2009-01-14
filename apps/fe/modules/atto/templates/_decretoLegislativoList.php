@@ -1,3 +1,5 @@
+<?php echo use_helper('PagerNavigation'); ?>
+
 <table class="disegni-decreti column-table">
   <thead>
     <tr> 

@@ -34,16 +34,26 @@ news_parlamentare:
   url:  /news_parlamentare/:id
   param: { module: news, action: politician }
 
-attiNonLegislativi:
-  url:   /atti_non_legislativi/:sort/:type
-  param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
 
-atti:
-  url: /atti
+attiDisegni:
+  url: /attiDisegni
   param: { module: atto, action: disegnoList }
 
-atto:
-  url: /atto/:id
+attiDecretiLegge:
+  url: /attiDecretiLegge
+  param: { module: atto, action: decretoList }
+
+attiDecretiLegislativi:
+  url: /attiDecretiLegislativi
+  param: { module: atto, action: decretoLegislativoList }
+
+attiNonLegislativi:
+  url:   /attiNonLegislativi/:sort/:type
+  param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
+
+
+singolo_atto:
+  url: /singolo_atto/:id
   param: { module: atto, action: index }
     
 argomenti:
