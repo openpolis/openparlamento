@@ -31,6 +31,9 @@ function news($news)
     // fetch del politico
     $c = new Criteria(); $c->add(OppPoliticoPeer::ID, $news->getRelatedMonitorableId());
     $politici = OppPoliticoPeer::doSelect($c);
+
+    if (count($politici) == 0) return 'empty OppPolitico:' . $news->getRelatedMonitorableId();
+
     $politico = $politici[0];
 
     // link al politico
@@ -84,6 +87,10 @@ function news($news)
     // fetch dell'atto
     $c = new Criteria(); $c->add(OppAttoPeer::ID, $news->getRelatedMonitorableId());
     $atti = OppAttoPeer::doSelectJoinOppTipoAtto($c);
+
+    // detect a void query
+    if (count($atti) == 0) return 'empty OppAtto:' . $news->getRelatedMonitorableId();
+
     $atto = $atti[0];
     
     // tipo di atto e genere per gli articoli e la desinenza
