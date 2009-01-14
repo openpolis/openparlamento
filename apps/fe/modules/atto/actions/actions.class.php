@@ -18,7 +18,12 @@ class attoActions extends sfActions
   {
     $this->processDisegnoListSort();
 	
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+	
+	  if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+  
+    $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
 	  $this->addDisegnoListSortCriteria($c);
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
@@ -67,7 +72,11 @@ class attoActions extends sfActions
   */
   public function executeDecretoList()
   {
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
@@ -87,7 +96,11 @@ class attoActions extends sfActions
   {
     $decreti_legislativi_ids = array('15','16','17');
     
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+    
+    $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
@@ -107,15 +120,19 @@ class attoActions extends sfActions
     
 	$this->processAttoNonLegislativoListSort();
 	
-    $this->pager = new sfPropelPager('OppAtto', sfConfig::get('app_atto_pagination_limit'));
-    $c = new Criteria();
-	$this->addAttoNonLegislativoListSortCriteria($c);
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
-  	$this->pager->setCriteria($c);
-    $this->pager->setPage($this->getRequestParameter('page', 1));
-    $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
-    $this->pager->init();
+  if ($this->hasRequestParameter('itemsperpage'))
+    $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+  $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+  $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
+  $c = new Criteria();
+  $this->addAttoNonLegislativoListSortCriteria($c);
+  $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+  $c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
+  $this->pager->setCriteria($c);
+  $this->pager->setPage($this->getRequestParameter('page', 1));
+  $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
+  $this->pager->init();
   }
   
   protected function processAttoNonLegislativoListSort()

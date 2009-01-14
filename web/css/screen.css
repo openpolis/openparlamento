@@ -17,7 +17,7 @@ em { font-style: normal; color: #000000; }
 p {  }
 table { width: 100%; border-collapse: collapse; }
 table tbody th { text-align: left; font-weight: normal; }
-table tbody td { text-align: center; }
+/* table tbody td { text-align: center; } */
 
 .input-text { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd; }
 

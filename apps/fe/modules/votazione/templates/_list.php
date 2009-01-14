@@ -1,3 +1,5 @@
+<?php echo use_helper('PagerNavigation'); ?>
+
 <table class="disegni-decreti column-table">
   <thead>
     <tr>
@@ -35,15 +37,7 @@
   <tfoot>		  		  
     <tr>
       <td colspan="6" align="center">
-        <?php if ($pager->haveToPaginate()): ?>
-          <?php echo link_to('<<', '@votazioni?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo').'&page=1') ?>
-          <?php echo link_to('<', '@votazioni?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo').'&page='.$pager->getPreviousPage()) ?>
-          <?php foreach ($pager->getLinks() as $page): ?>
-            <?php echo link_to_unless($page == $pager->getPage(), $page, '@votazioni?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo').'&page='.$page) ?>
-          <?php endforeach; ?>
-          <?php echo link_to('>', '@votazioni?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo').'&page='.$pager->getNextPage()) ?>
-          <?php echo link_to('>>', '@votazioni?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo').'&page='.$pager->getLastPage()) ?>
-        <?php endif; ?>    	
+        <?php echo pager_navigation($pager, 'votazione/list?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo')) ?>
       </td>	
     </tr>
     <tr>

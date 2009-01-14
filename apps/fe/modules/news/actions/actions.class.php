@@ -25,7 +25,11 @@ class newsActions extends sfActions
     $c = NewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
-    $pager = new sfPropelPager('News', 30);
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();
@@ -42,7 +46,11 @@ class newsActions extends sfActions
     $c = NewsPeer::getNewsForItemCriteria('OppPolitico', $this->politician_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
-    $pager = new sfPropelPager('News', 50);
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();
@@ -60,7 +68,11 @@ class newsActions extends sfActions
     $c = NewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
-    $pager = new sfPropelPager('News', 50);
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();
@@ -78,7 +90,11 @@ class newsActions extends sfActions
     $c = NewsPeer::getNewsForTagCriteria($this->tag_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
-    $pager = new sfPropelPager('News', 50);
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $pager = new sfPropelPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();

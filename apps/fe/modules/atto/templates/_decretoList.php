@@ -34,15 +34,7 @@
 	    <tfoot>  		 
           <tr>
             <td align="center" colspan='4'>
-              <?php if ($pager->haveToPaginate()): ?>
-                <?php echo link_to('<<', 'atto/decretoList?page=1') ?>
-                <?php echo link_to('<', 'atto/decretoList?page='.$pager->getPreviousPage()) ?>
-                <?php foreach ($pager->getLinks() as $page): ?>
-                  <?php echo link_to_unless($page == $pager->getPage(), $page, 'atto/decretoList?page='.$page) ?>
-                <?php endforeach; ?>
-                <?php echo link_to('>', 'atto/decretoList?page='.$pager->getNextPage()) ?>
-                <?php echo link_to('>>', 'atto/decretoList?page='.$pager->getLastPage()) ?>
-              <?php endif; ?>    	
+              <?php echo pager_navigation($pager, 'atto/decretoList') ?>
             </td>
           </tr>
           <tr>

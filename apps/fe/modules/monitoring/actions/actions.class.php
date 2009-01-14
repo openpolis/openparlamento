@@ -115,7 +115,11 @@ class monitoringActions extends sfActions
     $this->all_monitored_acts_types = OppTipoAttoPeer::merge($indirectly_monitored_acts_types,
                                                              $directly_monitored_acts_types);      
     
-    $this->pager = new sfPropelPager('News', sfConfig::get('app_pagination_limit'));
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+    
+    $this->pager = new sfPropelPager('News', $itemsperpage);
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
   	$this->pager->init();

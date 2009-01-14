@@ -105,7 +105,7 @@ function stop_remote_pager()
 }
 
 /**
- * Outputs a regular navigation navigation.
+ * Outputs a regular navigation pager
  * It outputs a series of links to the first, previous, next and last page
  * as well as to the 5 pages surrounding the current page.
  *
@@ -117,38 +117,82 @@ function stop_remote_pager()
  */
 function pager_navigation($pager, $uri, $has_first_last = true, $num_links=5)
 {
-  $navigation = '';
  
+  $navigation = "";
+  
   if ($pager->haveToPaginate())
   {  
+    $navigation .= form_tag($uri, array("method" => "get", "class" => "pagenav tools-container", 
+                                      "style" => "margin: 20px 0; padding-right: 20px"));
+ 
     $uri .= (preg_match('/\?/', $uri) ? '&' : '?').'page=';
- 
-    // First and previous page
+
+    $navigation .= content_tag('label', 'pagina: ');
+    
+    $pagelinks = "";
+    
+    // previous page
     if ($pager->getPage() != 1)
-    {
-      if ($has_first_last)
-        $navigation .= link_to(image_tag('/images/first.png', 'align=absmiddle alt=Primo'), $uri.'1');
-      $navigation .= link_to(image_tag('/images/previous.png', 'align=absmiddle alt=Precedente'), $uri.$pager->getPreviousPage()).'&nbsp;';
-    }
+      $navigation .= link_to('precedente', $uri.$pager->getPreviousPage()).'&nbsp;';
+    
+    // first page
+    if ($pager->getPage() >= $num_links-1 && $has_first_last)
+      $pagelinks .= link_to('1', $uri.'1');
+
+    // initial dieresis or comma
+    if ($pager->getPage() >= $num_links)
+      $pagelinks .= " ... ";
+    else if ($pager->getPage() >= $num_links-1)
+      $pagelinks .= ", ";
+    
  
-    // Pages one by one
+    // pages one by one
     $links = array();
     foreach ($pager->getLinks($num_links) as $page)
     {
-      $links[] = link_to_unless($page == $pager->getPage(), $page, $uri.$page);
+      if ($page == $pager->getPage())
+        $links[] = content_tag('em', "[ $page ]");
+      else
+        $links[] = link_to($page, $uri.$page);
     }
-    $navigation .= join('&nbsp;&nbsp;', $links);
+    $pagelinks .= join(',&nbsp;', $links);
+
+    // final dieresis or comma
+    if ($pager->getLastPage() - $pager->getPage() >= $num_links-1)
+      $pagelinks .= " ... ";
+    else if ($pager->getLastPage() - $pager->getPage() >= $num_links-1)
+      $pagelinks .= ", ";
  
-    // Next and last page
+    // last page
+    if ($pager->getLastPage() - $pager->getPage() >= $num_links-2 && $has_first_last)
+      $pagelinks .= link_to($pager->getLastPage(), $uri.$pager->getLastPage());
+        
+    $navigation .= content_tag('span', $pagelinks, array("class" => "pagenav-jumpto"));
+
+    // next page
     if ($pager->getPage() != $pager->getLastPage())
-    {
-      $navigation .= '&nbsp;'.link_to(image_tag('/images/next.png', 'align=absmiddle alt=Successivo'), $uri.$pager->getNextPage());
-      if ($has_first_last)
-        $navigation .= link_to(image_tag('/images/last.png', 'align=absmiddle alt=Ultimo'), $uri.$pager->getLastPage());
-    }
- 
+      $navigation .= '&nbsp;'.link_to('successiva', $uri.$pager->getNextPage());
+      
+
+    // goto page
+    $navigation .= content_tag('label', 'vai a pag.:', array('for'=>'page'));
+    $navigation .= input_tag('page', $pager->getPage(), array('maxlength' => '5', 'size'=>'3', 'class' => 'input-text'));
+    $navigation .= submit_image_tag("ico-arrow-jump.png", array('name'=>'gotopage-go'));
+		
+		// items per page selector
+    $navigation .= content_tag('label', 'mostra:', array('for'=>'itemsperpage'));
+    $navigation .= select_tag('itemsperpage', 
+                              options_for_select(array(15 => '15 elementi', 
+                                                       30 => '30 elementi', 
+                                                       60 => '60 elementi', 
+                                                       90 => '90 elementi', 
+                                                       150 => '150 elementi'),
+                                                 $pager->getMaxPerPage()));
+
+    $navigation .= "</form>";
+    $navigation .= "<div style='clear: both;'></div>";
   }
- 
+  
   return $navigation;
 }
 

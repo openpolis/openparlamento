@@ -33,15 +33,7 @@
   <tfoot>
     <tr>
       <td align="center" colspan='3'>
-        <?php if ($pager->haveToPaginate()): ?>
-          <?php echo link_to('<<', 'atto/decretoLegislativoList?page=1') ?>
-          <?php echo link_to('<', 'atto/decretoLegislativoList?page='.$pager->getPreviousPage()) ?>
-          <?php foreach ($pager->getLinks() as $page): ?>
-            <?php echo link_to_unless($page == $pager->getPage(), $page, 'atto/decretoLegislativoList?page='.$page) ?>
-          <?php endforeach; ?>
-          <?php echo link_to('>', 'atto/decretoLegislativoList?page='.$pager->getNextPage()) ?>
-          <?php echo link_to('>>', 'atto/decretoLegislativoList?page='.$pager->getLastPage()) ?>
-        <?php endif; ?>    	
+        <?php echo pager_navigation($pager, 'atto/decretoLegislativoList') ?>
       </td>
     </tr>
     <tr>

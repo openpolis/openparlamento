@@ -7,7 +7,7 @@ dev:
     # E_ALL | E_STRICT = 4095
     error_reporting:        4095
     web_debug:              on
-    cache:                  on
+    cache:                  off
     no_script_name:         off
     etag:                   off
 

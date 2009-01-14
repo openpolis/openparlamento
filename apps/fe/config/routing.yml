@@ -38,9 +38,13 @@ attiNonLegislativi:
   url:   /atti_non_legislativi/:sort/:type
   param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
 
-#atto:
-#  url: /atto/:id
-#  param: { module: atto, action: index }
+atti:
+  url: /atti
+  param: { module: atto, action: disegnoList }
+
+atto:
+  url: /atto/:id
+  param: { module: atto, action: index }
     
 argomenti:
   url:   /argomenti

@@ -1,9 +1,7 @@
-dev:
-  remote_guard_host:      'accesso.openpolis.it'
-  
 # default values
 all:
   # remote guard host
+  # remote_guard_host:      'accesso.openpolis.it'
   remote_guard_host:      'accesso.openpolis.it'
 
   # cookies
@@ -78,12 +76,12 @@ all:
                                         # off: never send emails
 
   atto:
-    pagination_limit:  25
+    pagination_limit:  30
 
   news_dropdown_limit: 7
   
   pagination:
-    limit:    50
+    limit:    60
 
   voto:
     "1":     "Assente"
