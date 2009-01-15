@@ -303,6 +303,7 @@ class NewsPeer extends BaseNewsPeer
     return $c;
   }
   
+  
   public static function countHomeNews()
   {
     $c = self::getHomeNewsCriteria();
@@ -330,100 +331,60 @@ class NewsPeer extends BaseNewsPeer
   }
 
 
-  public static function countNewsForAttiNonLegislativiList()
+  // some static constants used to defint the type of acts
+  const ATTI_DDL_TIPO_IDS = "1";
+  const ATTI_DECRETI_TIPO_IDS = "12";
+  const ATTI_DECRETI_LEGISLATIVI_TIPO_IDS = "15, 16, 17";
+  const ATTI_NON_LEGISLATIVI_TIPO_IDS = "2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14";
+
+  public static function countAttiListNews($atto_type_ids)
   {
-    $c = self::getNewsForAttiNonLegislativiListCriteria();
+    $c = self::getAttiListNewsCriteria($atto_type_ids);
     return self::doCount($c);
   }
-  
-  public static function getNewsForAttiNonLegislativiList($limit = 10)
+
+  public static function getAttiListNews($atto_type_ids, $limit = 10)
   {
-    $c = self::getNewsForAttiNonLegislativiListCriteria($limit);
+    $c = self::getAttiListNewsCriteria($atto_type_ids, $limit);
     return self::doSelect($c);
   }
 
-  public static function getNewsForAttiNonLegislativiListCriteria($limit = null)
+  public static function getAttiListNewsGroupedByDayRS($atto_type_ids)
+  {
+    $c = self::getAttiListNewsCriteria($atto_type_ids);
+    $c->clearSelectColumns();
+    $c->addSelectColumn(self::DATE);
+    $c->addAsColumn('numNews', 'count('.self::DATE.')');
+    $c->addGroupByColumn(self::DATE);
+    $c->addDescendingOrderByColumn(self::DATE);
+    
+    return self::doSelectRS($c);
+  }
+
+  /**
+   * build the criteria to extract the news for lis oc acts specified
+   * through the $atto_type_ids parameter
+   *
+   * @param array or int   $atto_type_ids - single id or array of ids of opp_tipo_atto 
+   * @param integer        $limit         - the limit to apply (null = no limit)
+   * @return Propel Criteria
+   * @author Guglielmo Celata
+   */
+  public static function getAttiListNewsCriteria($atto_type_ids, $limit = null)
   {
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
-    $c->add(self::TIPO_ATTO_ID, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14), Criteria::IN);
+    $atto_type_ids_arr = explode(",", $atto_type_ids);
+
+    $c->add(self::TIPO_ATTO_ID, $atto_type_ids_arr, Criteria::IN);      
+    $c->add(self::PRIORITY, 2, Criteria::LESS_THAN);
+
     if (!is_null($limit))
       $c->setLimit($limit);
     $c->addDescendingOrderByColumn(self::DATE);
     return $c;    
   }
 
-
-  public static function countNewsForDecretiLegislativiList()
-  {
-    $c = self::getNewsForDecretiLegislativiListCriteria();
-    return self::doCount($c);
-  }
-  
-  public static function getNewsForDecretiLegislativiList($limit = 10)
-  {
-    $c = self::getNewsForDecretiLegislativiListCriteria($limit);
-    return self::doSelect($c);
-  }
-
-  public static function getNewsForDecretiLegislativiListCriteria($limit = null)
-  {
-    $c = new Criteria();
-    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
-    $c->add(self::TIPO_ATTO_ID, array(15, 16, 17), Criteria::IN);
-    if (!is_null($limit))
-      $c->setLimit($limit);
-    $c->addDescendingOrderByColumn(self::DATE);
-    return $c;    
-  }
-
-
-  public static function countNewsForDecretiList()
-  {
-    $c = self::getNewsForDecretiListCriteria();
-    return self::doCount($c);
-  }
-  
-  public static function getNewsForDecretiList($limit = 10)
-  {
-    $c = self::getNewsForDecretiListCriteria($limit);
-    return self::doSelect($c);
-  }
-
-  public static function getNewsForDecretiListCriteria($limit = null)
-  {
-    $c = new Criteria();
-    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
-    $c->add(self::TIPO_ATTO_ID, 12);
-    if (!is_null($limit))
-      $c->setLimit($limit);
-    $c->addDescendingOrderByColumn(self::DATE);
-    return $c;    
-  }
-
-
-  public static function countNewsForDDLList()
-  {
-    $c = self::getNewsForDDLListCriteria();
-    return self::doCount($c);
-  }
-  
-  public static function getNewsForDDLList($limit = 10)
-  {
-    $c = self::getNewsForDDLListCriteria($limit);
-    return self::doSelect($c);
-  }
-
-  public static function getNewsForDDLListCriteria($limit = null)
-  {
-    $c = new Criteria();
-    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
-    $c->add(self::TIPO_ATTO_ID, 1);
-    if (!is_null($limit))
-      $c->setLimit($limit);
-    $c->addDescendingOrderByColumn(self::DATE);
-    return $c;    
-  }
 
 
   public static function getNewsForItemCriteria($item_type, $item_id)

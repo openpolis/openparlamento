@@ -13,8 +13,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Disegni di legge', 
                                        'all_news_url' => '@news_attiDisegni',
-                                       'n_news' => NewsPeer::countNewsForDDLList(), 
-                                       'news'   => NewsPeer::getNewsForDDLList(10))); ?>
+                                       'n_news' => NewsPeer::countAttiListNews(NewsPeer::ATTI_DDL_TIPO_IDS), 
+                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DDL_TIPO_IDS, 10))); ?>
 
 	  </div>
 

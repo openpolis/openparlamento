@@ -12,8 +12,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Atti non legislativi', 
                                        'all_news_url' => '@news_attiNonLegislativi',
-                                       'n_news' => NewsPeer::countNewsForAttiNonLegislativiList(), 
-                                       'news'   => NewsPeer::getNewsForAttiNonLegislativiList(10))); ?>
+                                       'n_news' => NewsPeer::countAttiListNews(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS), 
+                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS, 10))); ?>
 
 	  </div>
 

@@ -36,58 +36,32 @@ class newsActions extends sfActions
     $this->pager = $pager;
   }
 
+
+
   public function executeDdlList()
   {
-    $this->n_news = NewsPeer::countNewsForDDLList();
-    $c = NewsPeer::getNewsForDDLListCriteria();
-
-    if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-
-    $pager = new sfPropelPager('News', $itemsperpage);
-    $pager->setCriteria($c);
-    $pager->setPage($this->getRequestParameter('page', 1));
-    $pager->init();
-    $this->pager = $pager;    
+    return $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
   }
 
   public function executeDecretiList()
   {
-    $this->n_news = NewsPeer::countNewsForDecretiList();
-    $c = NewsPeer::getNewsForDecretiListCriteria();
-
-    if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-
-    $pager = new sfPropelPager('News', $itemsperpage);
-    $pager->setCriteria($c);
-    $pager->setPage($this->getRequestParameter('page', 1));
-    $pager->init();
-    $this->pager = $pager;    
+    return $this->_getAttiList(NewsPeer::ATTI_DECRETI_TIPO_IDS);
   }
 
   public function executeDecretiLegislativiList()
   {
-    $this->n_news = NewsPeer::countNewsForDecretiLegislativiList();
-    $c = NewsPeer::getNewsForDecretiLegislativiListCriteria();
-
-    if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-
-    $pager = new sfPropelPager('News', $itemsperpage);
-    $pager->setCriteria($c);
-    $pager->setPage($this->getRequestParameter('page', 1));
-    $pager->init();
-    $this->pager = $pager;    
+    return $this->_getAttiList(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
   }
 
   public function executeAttiNonLegislativiList()
   {
-    $this->n_news = NewsPeer::countNewsForAttiNonLegislativiList();
-    $c = NewsPeer::getNewsForAttiNonLegislativiListCriteria();
+    return $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+  }
+  
+  protected function _getAttiList($tipo_atto_ids)
+  {
+    $this->n_news = NewsPeer::countAttiListNews($tipo_atto_ids);
+    $c = NewsPeer::getAttiListNewsCriteria($tipo_atto_ids);
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -99,7 +73,7 @@ class newsActions extends sfActions
     $pager->init();
     $this->pager = $pager;    
   }
-  
+
   
   
   public function executePolitician()
