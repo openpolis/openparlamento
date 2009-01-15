@@ -50,7 +50,7 @@ class monitoringComponents extends sfComponents
   public function executeActsForType()
   {
     $this->type_id = $this->type->getId();
-    $this->type_denominazione = $this->type->getDenominazione();
+    $this->type_denominazione = $this->type->getDescrizione();
     
     // filtri per ramo e stato avanzamento
     $act_filtering_criteria = null;

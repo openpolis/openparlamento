@@ -93,7 +93,7 @@ class parlamentareActions extends sfActions
 	    
      $this->addSortCriteria($c);
 	 $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
-	 $c->setLimit(100);
+	// $c->setLimit(100);
 	 
 	 $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 	 

@@ -57,7 +57,7 @@ function news($news)
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto();
       $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
-                           'atto/ddlIndex?id=' . $atto->getId(),
+                           'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
                            
       $news_string .= $politico_link . " interviene su ";
@@ -70,7 +70,7 @@ function news($news)
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto();
       $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
-                           'atto/ddlIndex?id=' . $atto->getId(),
+                           'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
                            
       $news_string .= $politico_link . " firma ";
@@ -102,7 +102,7 @@ function news($news)
 
     // link all'atto
     $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
-                         'atto/ddlIndex?id=' . $atto->getId(),
+                         'atto/index?id=' . $atto->getId(),
                          array('title' => $atto->getTitolo()));
     
     // presentazione
@@ -159,7 +159,7 @@ function news($news)
       $news_string .= $atto_link . " ";
       $news_string .= "&egrave; ora ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
-    }
+    } 
     
     else $news_string .= $generator_model;
                                   

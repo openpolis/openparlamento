@@ -16,7 +16,7 @@
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
-            <span><?php echo $ddl->getOppTipoAtto()->getDenominazione() ?>, <?php echo($ddl->getRamo()=='C' ? 'alla Camera' : 'al Senato') ?></span>
+            <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?>, <?php echo($ddl->getRamo()=='C' ? 'alla Camera' : 'al Senato') ?></span>
           </p>
 	      <p>
             <?php echo link_to(Text::denominazioneAtto($ddl, 'list'), 'atto/index?id='.$ddl->getId()) ?>

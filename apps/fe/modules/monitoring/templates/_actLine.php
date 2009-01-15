@@ -19,7 +19,7 @@
 
       <!-- link alla pagina dell'atto -->
       (<?php echo link_to($act->getRamo().'.'.$act->getNumfase(), 
-                          'atto/ddlIndex?id=' . $act->getId(),
+                          'atto/index?id=' . $act->getId(),
                           array('title' => 'vai alla pagina')) ?>)
 
 
