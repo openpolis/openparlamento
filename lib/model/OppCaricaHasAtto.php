@@ -43,6 +43,8 @@ class OppCaricaHasAtto extends BaseOppCaricaHasAtto
 
     $n->save();
     
+    return 1;
+    
   }
   
 }
