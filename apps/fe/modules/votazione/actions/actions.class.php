@@ -61,6 +61,99 @@ class votazioneActions extends sfActions
 	$this->votanti = OppVotazioneHasCaricaPeer::doSelectRS($c1);
   }
 
+
+
+  /**
+   * check request parameters and set session values for the filters
+   * reads filters from session, so that a clean url builds up with user's values
+   *
+   * @param  array $active_filters an array of all the active filters
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function processFilters($active_filters)
+  {
+
+    $this->filters = array();
+
+    // legge i filtri dalla request e li scrive nella sessione utente
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    {
+      if ($this->hasRequestParameter('filter_tags_category'))
+        $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_ramo'))
+        $this->session->setAttribute('ramo', $this->getRequestParameter('filter_ramo'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_esito'))
+        $this->session->setAttribute('esito', $this->getRequestParameter('filter_esito'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_type'))
+        $this->session->setAttribute('type', $this->getRequestParameter('filter_type'), 'votes_filter');
+
+    }
+
+
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if (in_array('tags_category', $active_filters))
+      $this->filters['tags_category'] = $this->session->getAttribute('tags_category', '0', 'votes_filter');
+
+    if (in_array('ramo', $active_filters))
+      $this->filters['ramo'] = $this->session->getAttribute('ramo', '0', 'votes_filter');
+
+    if (in_array('esito', $active_filters))
+      $this->filters['esito'] = $this->session->getAttribute('esito', '0', 'votes_filter');    
+
+    if (in_array('type', $active_filters))
+      $this->filters['type'] = $this->session->getAttribute('type', '0', 'votes_filter');    
+
+
+  }
+
+  /**
+   * add filtering criteria to the criteria passed as an argument
+   * being an object, the criteria is passed by reference and modifications
+   * in the method modifies the referenced object
+   *
+   * @param Criteria $c 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function addFiltersCriteria($c)
+  {
+    // filtro per ramo
+    if (array_key_exists('ramo', $this->filters) && $this->filters['ramo'] != '0')
+    {
+      sfLogger::getInstance()->info('xxx' . $this->filters['ramo']);
+      
+      $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+      $c->add(OppSedutaPeer::RAMO, $this->filters['ramo']);
+    }
+    
+    // filtro per stato di avanzamento
+    if (array_key_exists('esito', $this->filters) && $this->filters['esito'] != '0')
+      $c->add(OppVotazionePeer::ESITO, $this->filters['esito']);      
+
+    // filtro per tipo di decreto legislativo
+    if (array_key_exists('type', $this->filters) && $this->filters['type'] != '0')
+      $c->add(OppVotazionePeer::FINALE, $this->filters['type']);
+    
+    // filtro per categoria
+    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    {
+      $c->addJoin(OppVotazionePeer::ID, OppVotazioneHasAttoPeer::VOTAZIONE_ID);
+      $c->addJoin(OppVotazioneHasAttoPeer::ATTO_ID, OppAttoPeer::ID);
+      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
+      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+    }    
+
+    
+  }
+
+
   protected function processSort()
   {
     if ($this->getRequestParameter('sort'))
@@ -99,31 +192,6 @@ class votazioneActions extends sfActions
     }
   }
 
-  /**
-   * Executes list action
-   *
-   */
-  public function executeList()
-  {
-    $this->processListSort();
-
-    if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-
-    $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
-    $c = new Criteria();
-	  $this->addListSortCriteria($c);
-    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-	  $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-    $this->pager->setCriteria($c);
-    $this->pager->setPage($this->getRequestParameter('page', 1));
-    $this->pager->setPeerMethod('doSelectJoinOppSeduta');
-    $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
-	  $this->pager->init();
-		
-  }
-  
   protected function processListSort()
   {
     if ($this->getRequestParameter('sort'))
@@ -163,6 +231,50 @@ class votazioneActions extends sfActions
     }
   }
    
+
+  /**
+   * Executes list action
+   *
+   */
+  public function executeList()
+  {
+    
+    $this->session = $this->getUser();
+   
+    // estrae tutte le macrocategorie, per costruire la select
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    $this->processFilters(array('tags_category', 'type', 'ramo', 'esito'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_type') == '0' &&
+        $this->getRequestParameter('filter_ramo') == '0' && 
+        $this->getRequestParameter('filter_esito') == '0')
+    {
+      $this->redirect('@votazioni');
+    }
+    
+    $this->processListSort();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
+    $c = new Criteria();
+	  $this->addListSortCriteria($c);
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+	  $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+	  $this->addFiltersCriteria($c);    
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppSeduta');
+    $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
+	  $this->pager->init();
+		
+  }
+  
 }
 
 ?>

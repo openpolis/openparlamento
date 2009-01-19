@@ -210,7 +210,6 @@ class monitoringActions extends sfActions
     // estrae gli atti monitorati, con l'eventuale filtro
     $this->my_monitored_tags_pks = $this->user->getMonitoredPks('Tag', $tag_filtering_criteria);
 
-
     // estrae tutti i tipi di atti monitorati dall'utente (senza filtri), per la select
     $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, $this->type);
     $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type);

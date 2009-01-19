@@ -9,6 +9,34 @@
  */ 
 class OppAttoPeer extends BaseOppAttoPeer
 {
+
+  const ATTI_DDL_TIPO_IDS = "1";
+  const ATTI_DECRETI_TIPO_IDS = "12";
+  const ATTI_DECRETI_LEGISLATIVI_TIPO_IDS = "15, 16, 17";
+  const ATTI_NON_LEGISLATIVI_TIPO_IDS = "2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14";
+
+  /**
+   * extracts all acts of the given type, subjected to filters passed along
+   *
+   * @param string $atto_type_ids       constant to select the type of act
+   * @param string $filtering_criteria  filter on acts' attributes
+   * @return array of OppAtto objects
+   * @author Guglielmo Celata
+   */
+  public static function doSelectFilteredActs( $atto_type_ids, $filtering_criteria = null)
+  {
+    if (is_null($filtering_criteria))
+      $c = new Criteria();
+    else
+      $c = clone $filtering_criteria;
+
+    $atto_type_ids_arr = explode(",", $atto_type_ids);
+    $c->add(self::TIPO_ATTO_ID, $atto_type_ids_arr, Criteria::IN);      
+
+    return OppAttoPeer::doSelect($c);
+  }
+
+
   /**
    * returns the Atto objects that are indirectly monitored by a user, 
    * that monitors at least one tag with which the object has been tagged
@@ -24,7 +52,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 
     // build the array of monitored tags_ids if it is not passed as a param
     if (is_null($my_monitored_tags_pks))
-      $my_monitored_tags_pks = $user->getMonitoredPks('Tag', $criteria);
+      $my_monitored_tags_pks = $user->getMonitoredPks('Tag', $tag_criteria);
     
     // fetch all acts tagged with the monitored tags (indirect monitoring)
     if (is_null($act_criteria))

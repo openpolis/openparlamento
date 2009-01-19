@@ -1,6 +1,6 @@
 <?php use_helper('DeppNews') ?>
 
-<?php if ($n_news>0): ?>
+<?php if (count($news)>0): ?>
   <div class="section-box">
     <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '/', array('class' => 'section-box-rss')) ?>
     <h6>News - <?php echo $title ?></h6>

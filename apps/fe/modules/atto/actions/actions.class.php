@@ -10,14 +10,124 @@
  */
 class attoActions extends sfActions
 {
+
+  /**
+   * check request parameters and set session values for the filters
+   * reads filters from session, so that a clean url builds up with user's values
+   *
+   * @param  array $active_filters an array of all the active filters
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function processFilters($active_filters)
+  {
+
+    $this->filters = array();
+
+    // legge i filtri dalla request e li scrive nella sessione utente
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    {
+      if ($this->hasRequestParameter('filter_tags_category'))
+        $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'acts_filter');
+
+      if ($this->hasRequestParameter('filter_initiative_type'))
+        $this->session->setAttribute('initiative_type', $this->getRequestParameter('filter_initiative_type'), 'acts_filter');
+
+      if ($this->hasRequestParameter('filter_act_ramo'))
+        $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'acts_filter');
+
+      if ($this->hasRequestParameter('filter_act_stato'))
+        $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'acts_filter');
+
+      if ($this->hasRequestParameter('filter_act_type'))
+        $this->session->setAttribute('act_type', $this->getRequestParameter('filter_act_type'), 'acts_filter');
+
+    }
+
+
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if (in_array('tags_category', $active_filters))
+      $this->filters['tags_category'] = $this->session->getAttribute('tags_category', '0', 'acts_filter');
+
+    if (in_array('initiative_type', $active_filters))
+      $this->filters['initiative_type'] = $this->session->getAttribute('initiative_type', '0', 'acts_filter');
+
+    if (in_array('act_ramo', $active_filters))
+      $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'acts_filter');
+
+    if (in_array('act_stato', $active_filters))
+      $this->filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'acts_filter');    
+
+    if (in_array('act_type', $active_filters))
+      $this->filters['act_type'] = $this->session->getAttribute('act_type', '0', 'acts_filter');    
+
+
+  }
+
+  /**
+   * add filtering criteria to the criteria passed as an argument
+   * being an object, the criteria is passed by reference and modifications
+   * in the method modifies the referenced object
+   *
+   * @param Criteria $c 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function addFiltersCriteria($c)
+  {
+    // filtro per ramo
+    if (array_key_exists('act_ramo', $this->filters) && $this->filters['act_ramo'] != '0')
+      $c->add(OppAttoPeer::RAMO, $this->filters['act_ramo']);
+    
+    // filtro per stato di avanzamento
+    if (array_key_exists('act_stato', $this->filters) && $this->filters['act_stato'] != '0')
+      $c->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
+
+    // filtro per tipo di iniziativa
+    if (array_key_exists('initiative_type', $this->filters) && $this->filters['initiative_type'] != '0')
+      $c->add(OppAttoPeer::INIZIATIVA, $this->filters['initiative_type']);      
+
+    // filtro per tipo di decreto legislativo
+    if (array_key_exists('act_type', $this->filters) && $this->filters['act_type'] != '0')
+      $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
+    
+    // filtro per categoria
+    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    {
+      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
+      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+    }    
+
+    
+  }
+
   /**
   * Executes Disegno di legge list action
   *
   */
   public function executeDisegnoList()
   {
+    
+    $this->session = $this->getUser();
+   
+    // estrae tutte le macrocategorie, per costruire la select
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    $this->processFilters(array('tags_category', 'initiative_type', 'act_ramo', 'act_stato'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_initiative_type') == '0' &&
+        $this->getRequestParameter('filter_act_ramo') == '0' && 
+        $this->getRequestParameter('filter_act_stato') == '0')
+    {
+      $this->redirect('@attiDisegni');
+    }
+    
     $this->processDisegnoListSort();
-	
 	
 	  if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -25,37 +135,47 @@ class attoActions extends sfActions
   
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
+
+	  $this->addFiltersCriteria($c);    
 	  $this->addDisegnoListSortCriteria($c);
+	  
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
-      
+
+    // estrazione data ultimo aggiornamento
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
+  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);
   }
+
+
   
   protected function processDisegnoListSort()
   {
     if ($this->getRequestParameter('sort'))
     {
-      $this->getUser()->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
-      $this->getUser()->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
     }
 
-    if (!$this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    if (!$this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
     {
-	  $this->getUser()->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
-      $this->getUser()->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
+	    $this->session->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
     }
   }
   
   protected function addDisegnoListSortCriteria($c)
   {
-    if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
     {
       $sort_column = OppAttoPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
-      if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
+      if ($this->session->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
       {
         $c->addAscendingOrderByColumn($sort_column);
       }
@@ -66,25 +186,53 @@ class attoActions extends sfActions
     }
   }
   
+
   /**
   * Executes Decreto di legge list action
   *
   */
   public function executeDecretoList()
   {
+    
+    $this->session = $this->getUser();
+   
+
+    // estrae tutte le macrocategorie, per costruire la select
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    $this->processFilters(array('tags_category', 'act_stato'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_act_stato') == '0')
+    {
+      $this->redirect('@attiDecretiLegge');
+    }
+
+
+    // $this->processDecretoListSort(); ?
+    
+    
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
+	  $this->addFiltersCriteria($c);    
+
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
-    
+
+    // estrazione data ultimo aggiornamento
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
+  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);    
     
   }
   
@@ -94,7 +242,21 @@ class attoActions extends sfActions
   */
   public function executeDecretoLegislativoList()
   {
+    $this->session = $this->getUser();
+
     $decreti_legislativi_ids = array('15','16','17');
+
+    // estrae tutte le macrocategorie, per costruire la select
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    $this->processFilters(array('tags_category', 'act_type'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_act_type') == '0')
+    {
+      $this->redirect('@attiDecretiLegislativi');
+    }
     
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -102,12 +264,20 @@ class attoActions extends sfActions
     
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
+	  $this->addFiltersCriteria($c);    
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
     $this->pager->init();
+    
+    // estrazione data ultimo aggiornamento
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
+  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
+  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);
+    
   }
   
   /**
@@ -116,23 +286,37 @@ class attoActions extends sfActions
   */
   public function executeAttoNonLegislativoList()
   {
-    $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
-    
-	$this->processAttoNonLegislativoListSort();
-	
-  if ($this->hasRequestParameter('itemsperpage'))
-    $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-  $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+    $this->session = $this->getUser();
 
-  $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
-  $c = new Criteria();
-  $this->addAttoNonLegislativoListSortCriteria($c);
-  $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  $c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
-  $this->pager->setCriteria($c);
-  $this->pager->setPage($this->getRequestParameter('page', 1));
-  $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
-  $this->pager->init();
+    $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
+
+    // estrae tutte le macrocategorie, per costruire la select
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    $this->processFilters(array('tags_category', 'act_type', 'act_ramo', 'act_stato'));
+
+  	$this->processAttoNonLegislativoListSort();
+	
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
+    $c = new Criteria();
+	  $this->addAttoNonLegislativoListSortCriteria($c);
+    $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
+    $this->addFiltersCriteria($c);    
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
+    $this->pager->init();
+
+    // estrazione data ultimo aggiornamento
+    $c = new Criteria();
+  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, $atti_non_legislativi_ids, Criteria::IN);
+  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);
   }
   
   protected function processAttoNonLegislativoListSort()
