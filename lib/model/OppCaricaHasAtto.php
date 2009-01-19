@@ -17,27 +17,32 @@ class OppCaricaHasAtto extends BaseOppCaricaHasAtto
     if ($this->getTipo() != 'R' && $this->getData() <= $this->getOppAtto()->getDataPres())
     {
       $this->skip_news_generation = true;
-
-      // force generation of another news related to politico in case skip is activated
-      // we need the news related to the politician for the politician page
-      $n = new News();
-      $n->setGeneratorModel(get_class($this));
-      $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray()));
-      $n->setRelatedMonitorableModel('OppPolitico');
-      $n->setRelatedMonitorableId($this->getOppCarica()->getPoliticoId());
-
-      if ($this->getCreatedAt() != null)
-        $n->setCreatedAt($this->getCreatedAt());
-
-      $n->setDate($this->getNewsDate());
-      $n->setPriority(2);
-
-      $n->save();
+      $this->generateNewsForPolitico();
     }
     
     $res = parent::save();
     
     return $res;
+  }
+  
+  public function generateNewsForPolitico()
+  {
+    // force generation of another news related to politico in case skip is activated
+    // we need the news related to the politician for the politician page
+    $n = new News();
+    $n->setGeneratorModel(get_class($this));
+    $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray()));
+    $n->setRelatedMonitorableModel('OppPolitico');
+    $n->setRelatedMonitorableId($this->getOppCarica()->getPoliticoId());
+
+    if ($this->getCreatedAt() != null)
+      $n->setCreatedAt($this->getCreatedAt());
+
+    $n->setDate($this->getNewsDate());
+    $n->setPriority(2);
+
+    $n->save();
+    
   }
   
 }

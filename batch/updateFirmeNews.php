@@ -77,6 +77,12 @@ while ($objects_rs->next())
     } catch (Exception $e) {
       echo "Exception: " . $e->getMessage() . "\n";
     }    
+  } else {
+    try {
+      $added += $object->generateNewsForPolitico();
+    } catch (Exception $e) {
+      echo "Exception: " . $e->getMessage() . "\n";
+    }
   }
   unset($object);
   
