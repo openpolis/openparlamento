@@ -40,22 +40,22 @@ class newsActions extends sfActions
 
   public function executeDdlList()
   {
-    return $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
+    $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
   }
 
   public function executeDecretiList()
   {
-    return $this->_getAttiList(NewsPeer::ATTI_DECRETI_TIPO_IDS);
+    $this->_getAttiList(NewsPeer::ATTI_DECRETI_TIPO_IDS);
   }
 
   public function executeDecretiLegislativiList()
   {
-    return $this->_getAttiList(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
+    $this->_getAttiList(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
   }
 
   public function executeAttiNonLegislativiList()
   {
-    return $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+    $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
   }
   
   protected function _getAttiList($tipo_atto_ids)

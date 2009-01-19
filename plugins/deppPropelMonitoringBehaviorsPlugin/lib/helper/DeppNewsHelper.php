@@ -21,6 +21,48 @@ function news($news)
   
   // fetch del modello e dell'oggetto che ha generato la notizia
   $generator_model = $news->getGeneratorModel();
+
+  if (is_null($news->getGeneratorPrimaryKeys()))
+  {
+    if ($generator_model == 'OppVotazioneHasAtto')
+    {
+      if ($news->getPriority() == 1)
+      {
+        $news_string .= 'si &egrave; svolta almeno una VOTAZIONE';
+        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato ';        
+      } else {
+        $news_string .= 'si &egrave; svolta una VOTAZIONE';
+        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato ';        
+        $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
+        
+        // link all'atto
+        $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
+                                           $news->getRelatedMonitorableId());
+        
+        $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+                             'atto/index?id=' . $atto->getId(),
+                             array('title' => $atto->getTitolo()));
+        $news_string .= $atto_link;
+      }
+    } else if ($generator_model == 'OppIntervento') {
+      $news_string .= 'c\'&egrave; stato almeno un intervento ';
+      $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  ' ';
+      $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
+
+      // link all'atto
+      $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
+                                         $news->getRelatedMonitorableId());
+      
+      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+                           'atto/index?id=' . $atto->getId(),
+                           array('title' => $atto->getTitolo()));
+      $news_string .= $atto_link;
+      
+    }
+      
+    return $news_string;
+  }
+  
   $pks = array_values(unserialize($news->getGeneratorPrimaryKeys()));
   $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);
 
@@ -145,11 +187,11 @@ function news($news)
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppSede()->getDenominazione())));
     }
     
-    // votazione finale
+    // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
       $news_string .= ' si &egrave; svolta la votazione finale relativa a ';
       $news_string .= $tipo->getDenominazione() . " ";
-      $news_string .= $atto_link;
+      $news_string .= $atto_link;        
     }
     
     // status conclusivo

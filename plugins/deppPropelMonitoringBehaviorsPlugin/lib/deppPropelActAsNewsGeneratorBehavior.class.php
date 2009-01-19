@@ -71,6 +71,8 @@ class deppPropelActAsNewsGeneratorBehavior
    **/
   public function generateNews(BaseObject $object, $priority = null)
   {
+    $n_gen_news = 0;
+    
     // fetch the monitorable objects related to this generator
     $monitorable_objects = $this->getRelatedMonitorableObjects($object);
     foreach($monitorable_objects as $obj)
@@ -101,7 +103,10 @@ class deppPropelActAsNewsGeneratorBehavior
         $n->setPriority($object->getNewsPriority());
 
       $n->save();
+      $n_gen_news ++;
     }
+    
+    return $n_gen_news;
   }
             
   /**
@@ -247,18 +252,16 @@ class deppPropelActAsNewsGeneratorBehavior
     {
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;
-      
-      // OppVotazioneHasAttos and OppInterventos, when not override, generate group news
-      if ($object instanceof OppVotazioneHasAtto && !$object->priority_override || 
-          $object instanceof OppIntervento)
+
+      // grouped news generation
+      if (isset($object->generate_group_news) && $object->generate_group_news == true)
         $object->generateUnlessAlreadyHasGroupNews();        
+
+      // simple news generation
+      if (isset($object->priority_override) && $object->priority_override > 0)
+        $object->generateNews($object->priority_override);
       else
-      {
-        if (isset($object->priority_override) && $object->priority_override > 0)
-          $object->generateNews($object->priority_override);
-        else
-          $object->generateNews();        
-      }
+        $object->generateNews();        
         
       unset($this->wasNew);    
     }

@@ -42,9 +42,9 @@ class NewsPeer extends BaseNewsPeer
    * @return boolean
    * @author Guglielmo Celata
    **/
-  public static function hasGroupIntervention($data, $sede_id, $type='Any', $tipo_atto_id = null, $id = null)
+  public static function hasGroupIntervention($data, $sede_id, $tipo_atto_id, $id)
   {
-    $c = self::buildGroupInterventionsCriteria($data, $sede_id, $type, $tipo_atto_id, $id);
+    $c = self::buildGroupInterventionsCriteria($data, $sede_id, $tipo_atto_id, $id);
     $n_res = NewsPeer::doCount($c);
     return $n_res>0?true:false;
   }
@@ -56,7 +56,7 @@ class NewsPeer extends BaseNewsPeer
    * @return array of News
    * @author Guglielmo Celata
    **/
-  public static function getGroupInterventions($data, $sede_id, $type='Any', $tipo_atto_id = null, $id = null)
+  public static function getGroupInterventions($data, $sede_id, $tipo_atto_id, $id)
   {
     $c = self::buildGroupInterventionsCriteria($data, $sede_id, $type, $tipo_atto_id, $id);
     return NewsPeer::doSelect($c);
@@ -78,54 +78,35 @@ class NewsPeer extends BaseNewsPeer
   
   /**
    * insert a record in the sf_news_cache table, regarding an intervention on a given
-   * date, place and, optionally, act or politician; 
+   * date, place and, act; 
    * see description of hasGroupVotation, for the meaning of parameters
    *
    * @param  date     $data    - the date of the seduta when the votation happened
    * @param  integer  $sede_id - the identifier for the OppSede object where the intervention was held
    * @param  char     $type    - specifies the type of search (Any, Atto, Politico)
+   * @param  integer  $tipo_atto_id - type of act (if type=='Atto')
    * @param  integer  $id      - the identifier of the OppAtto or OppPolitico object the intervention is related to
    *
    * @return void
    * @author Guglielmo Celata
    **/
-  public static function addGroupIntervention($data, $sede_id, $type='Any', $tipo_atto_id = null, $id = null)
+  public static function addGroupIntervention($data, $sede_id, $tipo_atto_id, $id)
   {
-    if (!isset($data) || !isset($sede_id)) 
-      throw new deppPropelActAsNewsGeneratorException('both $data and $sede_id are required');
+    // in un certo giorno, in una sede, 
+    // qualcuno è intervenuto su un certo atto
+
+    if (!isset($data) || !isset($sede_id) || !isset($tipo_atto_id) || !isset($id)) 
+      throw new deppPropelActAsNewsGeneratorException('$data, $sede_id, $tipo_atto_id and $id are required');
       
     $news = new News();
     $news->setGeneratorModel('OppIntervento');
     $news->setDate($data);
     $news->setSedeInterventoId($sede_id);
-    if ($type != 'Any')
-    {
-      if ($type == 'Atto') 
-      {
-        if (!isset($tipo_atto_id)) throw new deppPropelActAsNewsGeneratorException('Va specificato il tipo di atto (ID) quando si aggiungono notizie di interventi legati a un atto ');       
-        if (!isset($id)) 
-          $news->setPriority(2);          
-        else 
-        {
-          $news->setPriority(3);
-          $news->setRelatedMonitorableId($id);
-        }
-        $news->setTipoAttoId($tipo_atto_id);
-        $news->setRelatedMonitorableModel('OppAtto');        
-      }
-      else if ($type == 'Politico')
-      {
-        if (!isset($id)) throw new deppPropelActAsNewsGeneratorException('Va specificato un ID quando si aggiungono notizie di interventi legati a un politico');
-        $news->setPriority(3);
-        $news->setRelatedMonitorableId($id);
-        $news->setRelatedMonitorableModel('OppPolitico');        
-      }
-      else
-        throw new deppPropelActAsNewsGeneratorException('Il tipo di ricerca deve essere: Any, Atto o Politico');
-    } else {
-      $news->setPriority(1);
-    }
-    
+    $news->setRelatedMonitorableId($id);
+    $news->setTipoAttoId($tipo_atto_id);
+    $news->setRelatedMonitorableModel('OppAtto');        
+    $news->setPriority(2);
+
     $news->save();
   }
 
@@ -135,43 +116,20 @@ class NewsPeer extends BaseNewsPeer
    * @return void
    * @author Guglielmo Celata
    **/
-  public static function buildGroupInterventionsCriteria($data, $sede_id, $type='Any', $tipo_atto_id = null, $id = null)
+  public static function buildGroupInterventionsCriteria($data, $sede_id, $tipo_atto_id, $id)
   {
-    if (!isset($data) || !isset($sede_id)) 
-      throw new deppPropelActAsNewsGeneratorException('both $data and $sede_id are required');
-
+    if (!isset($data) || !isset($sede_id) || !isset($tipo_atto_id) || !isset($id)) 
+      throw new deppPropelActAsNewsGeneratorException('$data, $sede_id, $tipo_atto_id and $id are required');
     
     $c = new Criteria();
     $c->add(NewsPeer::GENERATOR_MODEL, 'OppIntervento');
+    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNULL);
+    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    $c->add(NewsPeer::RELATED_MONITORABLE_ID, $id);          
     $c->add(NewsPeer::DATE, $data);
     $c->add(NewsPeer::SEDE_INTERVENTO_ID, $sede_id);
-    if ($type != 'Any')
-    {
-      if ($type == 'Atto') 
-      {
-        if (!isset($tipo_atto_id)) throw new deppPropelActAsNewsGeneratorException('Va specificato il tipo di atto (ID) quando si cercano notizie di interventi legati a un atto ');       
-        if (!isset($id))
-          $c->add(NewsPeer::PRIORITY, 2);
-        else
-        {
-          $c->add(NewsPeer::PRIORITY, 3);
-          $c->add(NewsPeer::RELATED_MONITORABLE_ID, $id);          
-        }
-        $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);
-        $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
-      }
-      else if ($type == 'Politico')
-      {
-        if (!isset($id)) throw new deppPropelActAsNewsGeneratorException('Va specificato un ID quando si cercano notizie di interventi legati a un politico');
-        $c->add(NewsPeer::PRIORITY, 3);
-        $c->add(NewsPeer::RELATED_MONITORABLE_ID, $id);          
-        $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppPolitico');        
-      }
-      else
-        throw new deppPropelActAsNewsGeneratorException('Il tipo di ricerca deve essere: Any, Atto o Politico');
-    } else {
-      $c->add(NewsPeer::PRIORITY, 1);
-    }
+    $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);
+    $c->add(NewsPeer::PRIORITY, 2);
     return $c;
   }
   
@@ -191,7 +149,7 @@ class NewsPeer extends BaseNewsPeer
    * @return boolean
    * @author Guglielmo Celata
    **/
-  public static function hasGroupVotation($data, $ramo, $tipo_atto_id = null, $atto_id = null)
+  public static function hasGroupVotation($data, $ramo, $tipo_atto_id, $atto_id = null)
   {
     $c = self::buildGroupVotationsCriteria($data, $ramo, $tipo_atto_id, $atto_id);
     $n_res = NewsPeer::doCount($c);
@@ -206,7 +164,7 @@ class NewsPeer extends BaseNewsPeer
    * @return array of News
    * @author Guglielmo Celata
    **/
-  public static function getGroupVotations($data, $ramo, $tipo_atto_id = null, $atto_id = null)
+  public static function getGroupVotations($data, $ramo, $tipo_atto_id, $atto_id = null)
   {
     $c = self::buildGroupVotationsCriteria($data, $ramo, $tipo_atto_id, $atto_id);
     return NewsPeer::doSelect($c);
@@ -240,30 +198,23 @@ class NewsPeer extends BaseNewsPeer
    * @return void
    * @author Guglielmo Celata
    **/
-  public function addGroupVotation($data, $ramo, $tipo_atto_id = null, $atto_id = null)
+  public static function addGroupVotation($data, $ramo, $tipo_atto_id, $atto_id = null)
   {
-    if (!isset($data) || !isset($ramo)) 
-      throw new deppPropelActAsNewsGeneratorException('both $data and $ramo are required');
+    if (!isset($data) || !isset($ramo) || !isset($tipo_atto_id)) 
+      throw new deppPropelActAsNewsGeneratorException('$data, $ramo and $tipo_atto_id are required');
       
     $news = new News();
     $news->setGeneratorModel('OppVotazioneHasAtto');
     $news->setDate($data);
     $news->setRamoVotazione($ramo);
-    if (isset($atto_id))
+    $news->setRelatedMonitorableModel('OppAtto');
+    $news->setTipoAttoId($tipo_atto_id);
+    if (!isset($atto_id))
     {
-      if (isset($tipo_atto_id))
-        $news->setTipoAttoId($tipo_atto_id);
-      $news->setPriority(3);
-      $news->setRelatedMonitorableId($atto_id);
-      $news->setRelatedMonitorableModel('OppAtto');
+      $news->setPriority(1);
     } else {
-      if (isset($tipo_atto_id))
-      {
-        $news->setPriority(2);
-        $news->setTipoAttoId($tipo_atto_id);
-        $news->setRelatedMonitorableModel('OppAtto');
-      } else
-        $news->setPriority(1);
+      $news->setPriority(2);
+      $news->setRelatedMonitorableId($atto_id);
     }
     
     $news->save();
@@ -275,31 +226,26 @@ class NewsPeer extends BaseNewsPeer
    * @return Criteria object
    * @author Guglielmo Celata
    **/
-  public static function buildGroupVotationsCriteria($data, $ramo, $tipo_atto_id = null, $atto_id = null)
+  public static function buildGroupVotationsCriteria($data, $ramo, $tipo_atto_id, $atto_id = null)
   {
-    if (!isset($data) || !isset($ramo)) 
-      throw new deppPropelActAsNewsGeneratorException('both $data and $ramo are required');
+    if (!isset($data) || !isset($ramo) || !isset($tipo_atto_id)) 
+      throw new deppPropelActAsNewsGeneratorException('$data, $ramo and $tipo_atto_id are required');
       
     $c = new Criteria();
+    $c->add(NewsPeer::GENERATOR_MODEL, 'OppVotazioneHasAtto');
+    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNULL);
     $c->add(NewsPeer::DATE, $data);
     $c->add(NewsPeer::RAMO_VOTAZIONE, $ramo);
-    if (isset($atto_id))
+    $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);
+    $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    if (!isset($atto_id))
     {
-      if (isset($tipo_atto_id))
-        $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);        
-      $c->add(NewsPeer::PRIORITY, 3);
-      $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
-      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $atto_id);
+      $c->add(NewsPeer::PRIORITY, 1);
     } else {
-      if (isset($tipo_atto_id))
-      {
-        $c->add(NewsPeer::PRIORITY, 2);
-        $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
-        $c->add(NewsPeer::TIPO_ATTO_ID, $tipo_atto_id);
-      } else
-        $c->add(NewsPeer::PRIORITY, 1);        
+      $c->add(NewsPeer::PRIORITY, 2);
+      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $atto_id);
     }
-    
+           
     return $c;
   }
   

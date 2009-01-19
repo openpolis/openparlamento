@@ -10,6 +10,7 @@
 class OppVotazioneHasAtto extends BaseOppVotazioneHasAtto
 {
   public $priority_override = 0;
+  public $generate_group_news = true;
 
   /**
    * generates a group news, unless the sf_news_cache already has it
@@ -23,30 +24,27 @@ class OppVotazioneHasAtto extends BaseOppVotazioneHasAtto
     $data = $seduta->getData();
     $ramo = $seduta->getRamo();
     $atto_id = $this->getAttoId();
-    $tipo_atto = $this->getOppAtto()->getOppTipoAtto()->getTipo();
+    $tipo_atto_id = $this->getOppAtto()->getTipoAttoId();
 
-    // controllo e scrittura notizie di rilevanza 1 (home)
-    $has_group_votation = NewsPeer::hasGroupVotation($data, $ramo);
+    $cnt = 0;
+    
+    // controllo e scrittura notizie di rilevanza 1 (in un certo giorno si è votato un certo tipo di atti)
+    $has_group_votation = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id);
     if (!$has_group_votation)
     {
-      NewsPeer::addGroupVotation($data, $ramo);
-    }    
-
-    // controllo e scrittura notizie di rilevanza 2 (elenchi)
-    
-    $has_group_votation = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto);
-    if (!$has_group_votation)
-    {
-      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto);
+      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id);
+      $cnt ++;
     }    
     
-    
-    // controllo e scrittura notizie di rilevanza 3 (foglia)
-    $has_group_votation_on_atto = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto, $atto_id);
+    // controllo e scrittura notizie di rilevanza 2 (in un certo giorno si è votato per un atto almeno una volta)
+    $has_group_votation_on_atto = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
     if (!$has_group_votation_on_atto)
     {
-      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto, $atto_id);
+      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
+      $cnt++;
     }
+    
+    return $cnt;
   }
   
   public function save($con = null)
