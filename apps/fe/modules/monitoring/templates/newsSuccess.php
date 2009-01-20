@@ -12,7 +12,8 @@
                                 'selected_tag_id' => array_key_exists('tag_id', $filters)?$filters['tag_id']:'0',
                                 'selected_act_type_id' => array_key_exists('act_type_id', $filters)?$filters['act_type_id']:'0',
                                 'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:'0',
-                                'selected_date' => array_key_exists('date', $filters)?$filters['date']:'0')) ?>
+                                'selected_date' => array_key_exists('date', $filters)?$filters['date']:'0',
+                                'selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
 
     <h3>Le tue notizie (<?php echo $pager->getNbResults() ?>)</h3>
 

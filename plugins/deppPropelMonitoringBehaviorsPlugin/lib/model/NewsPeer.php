@@ -283,15 +283,15 @@ class NewsPeer extends BaseNewsPeer
   const ATTI_DECRETI_LEGISLATIVI_TIPO_IDS = "15, 16, 17";
   const ATTI_NON_LEGISLATIVI_TIPO_IDS = "2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14";
 
-  public static function countAttiListNews($atto_type_ids)
+  public static function countAttiListNews($atto_type_ids, $max_priority = 1)
   {
     $c = self::getAttiListNewsCriteria($atto_type_ids);
     return self::doCount($c);
   }
 
-  public static function getAttiListNews($atto_type_ids, $limit = 10)
+  public static function getAttiListNews($atto_type_ids, $limit = null, $max_priority = 1)
   {
-    $c = self::getAttiListNewsCriteria($atto_type_ids, $limit);
+    $c = self::getAttiListNewsCriteria($atto_type_ids, $limit, $max_priority);
     return self::doSelect($c);
   }
 
@@ -316,14 +316,14 @@ class NewsPeer extends BaseNewsPeer
    * @return Propel Criteria
    * @author Guglielmo Celata
    */
-  public static function getAttiListNewsCriteria($atto_type_ids, $limit = null)
+  public static function getAttiListNewsCriteria($atto_type_ids, $limit = null, $max_priority = 1)
   {
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
     $atto_type_ids_arr = explode(",", $atto_type_ids);
 
     $c->add(self::TIPO_ATTO_ID, $atto_type_ids_arr, Criteria::IN);      
-    $c->add(self::PRIORITY, 2, Criteria::LESS_THAN);
+    $c->add(self::PRIORITY, $max_priority, Criteria::LESS_EQUAL);
 
     if (!is_null($limit))
       $c->setLimit($limit);

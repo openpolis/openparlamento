@@ -40,14 +40,20 @@ class monitoringActions extends sfActions
 
       if ($this->hasRequestParameter('filter_date'))
         $this->session->setAttribute('date', $this->getRequestParameter('filter_date'), 'monitoring_filter');
+
+      if ($this->hasRequestParameter('filter_main_all'))
+        $this->session->setAttribute('main_all', $this->getRequestParameter('filter_main_all'), 'news_filter');
         
       if ($this->getRequestParameter('filter_tag_id') == '0' &&
           $this->getRequestParameter('filter_act_type_id') == '0' &&
           $this->getRequestParameter('filter_act_ramo') == '0' &&
-          $this->getRequestParameter('filter_date') == '0')
+          $this->getRequestParameter('filter_date') == '0' &&
+          $this->getRequestParameter('filter_main_all') == 'main')
       {
         $this->redirect('@monitoring_news?user_token=' . $this->getUser()->getToken());
       }
+
+
     }
 
     // legge sempre i filtri dalla sessione utente
@@ -55,6 +61,7 @@ class monitoringActions extends sfActions
     $filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
     $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
     $filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
+    $filters['main_all'] = $this->session->getAttribute('main_all', 'main', 'news_filter');
 
     // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
     if ($filters['tag_id'] != '0')
@@ -102,6 +109,9 @@ class monitoringActions extends sfActions
       {
         $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 month')), Criteria::GREATER_THAN);
       }
+
+    if ($filters['main_all'] == 'main')
+      $c->add(NewsPeer::PRIORITY, 1);
 
     // passa la variabile filters
     $this->filters = $filters;

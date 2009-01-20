@@ -13,6 +13,9 @@
         </div>
       </div>      
     </div>
+
+    <?php include_partial('filter',
+                          array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
     
     <h3>Tutte le notizie relative agli atti non legislativi legislativi</h3>
 

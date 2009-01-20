@@ -10,6 +10,7 @@
  */
 class newsActions extends sfActions
 {
+  
   /**
    * Executes index action
    *
@@ -38,7 +39,7 @@ class newsActions extends sfActions
 
 
 
-  public function executeDdlList()
+  public function executeDisegniList()
   {
     $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
   }
@@ -58,10 +59,31 @@ class newsActions extends sfActions
     $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
   }
   
+  
   protected function _getAttiList($tipo_atto_ids)
   {
-    $this->n_news = NewsPeer::countAttiListNews($tipo_atto_ids);
-    $c = NewsPeer::getAttiListNewsCriteria($tipo_atto_ids);
+    $this->session = $this->getUser();
+
+    $filters = array();
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    {
+      // legge i filtri dalla request e li scrive nella sessione utente
+      if ($this->hasRequestParameter('filter_main_all'))
+        $this->session->setAttribute('main_all', $this->getRequestParameter('filter_main_all'), 'news_filter');        
+    }
+
+    // legge sempre i filtri dalla sessione utente
+    $filters['main_all'] = $this->session->getAttribute('main_all', 'main', 'news_filter');
+
+    $this->filters = $filters;
+    
+    if ($filters['main_all'] == 'main')
+      $max_priority = 1;
+    else
+      $max_priority = 2;
+
+    $c = NewsPeer::getAttiListNewsCriteria($tipo_atto_ids, null, $max_priority);
+
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));

@@ -36,7 +36,7 @@ news_parlamentare:
 
 news_attiDisegni:
   url: /news_attiDisegni
-  param: { module: news, action: ddlList}
+  param: { module: news, action: disegniList}
 
 news_attiDecreti:
   url: /news_attiDecreti

@@ -146,6 +146,7 @@ class votazioneActions extends sfActions
       $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
       $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
       $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+      $c->setDistinct();
     }    
 
     

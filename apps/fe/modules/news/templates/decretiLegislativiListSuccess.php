@@ -14,6 +14,9 @@
       </div>      
     </div>
     
+    <?php include_partial('filter',
+                          array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
+
     <h3>Tutte le notizie relative ai decreti legislativi</h3>
 
     Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
