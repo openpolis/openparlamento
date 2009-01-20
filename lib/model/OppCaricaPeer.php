@@ -9,6 +9,38 @@
  */ 
 class OppCaricaPeer extends BaseOppCaricaPeer
 {
+  /**
+   * return an associative array of all the constituencies
+   * a zero option is included at the beginning, if specified
+   *
+   * @param string $ramo 
+   * @param boolean $include_zero
+   * @return array of strings
+   * @author Guglielmo Celata
+   */
+  public static function getAllConstituencies($ramo, $include_zero = false)
+  {
+    $c = new Criteria();
+    if ($ramo == 'camera')
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
+    else
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 4);
+    $c->clearSelectColumns();
+    $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+    $c->setDistinct();
+    $rs = OppCaricaPeer::doSelectRS($c);
+    if ($include_zero)
+      $all_constituencies = array('0' => $include_zero);
+    else
+      $all_constituencies = array();
+      
+    while ($rs->next())
+    {
+      $all_constituencies[$rs->getString(1)]= $rs->getString(1);
+    }
+    return $all_constituencies;
+  }
+  
   public static function doSelectFullReport($politico_id)
   {
     $risultato = array();

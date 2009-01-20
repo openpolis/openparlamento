@@ -123,9 +123,7 @@ class votazioneActions extends sfActions
   {
     // filtro per ramo
     if (array_key_exists('ramo', $this->filters) && $this->filters['ramo'] != '0')
-    {
-      sfLogger::getInstance()->info('xxx' . $this->filters['ramo']);
-      
+    {      
       $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
       $c->add(OppSedutaPeer::RAMO, $this->filters['ramo']);
     }
