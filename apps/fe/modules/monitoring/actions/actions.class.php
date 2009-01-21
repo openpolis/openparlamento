@@ -316,10 +316,25 @@ class monitoringActions extends sfActions
     $c = NewsPeer::getNewsForItemCriteria($type, $item_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     $c->setLimit(sfConfig::get('app_news_dropdown_limit', 10));
-    $this->news = NewsPeer::doSelect($c);
+    $news = NewsPeer::doSelect($c);
+
+    $grouped_news = array();
+    foreach ($news as $n)
+    {
+      $date = strtotime($n->getDate());
+      if ((is_string($date) || is_integer($date)) && !array_key_exists($date, $grouped_news))
+      {
+        $grouped_news[$date] = array();
+      } else {
+        $grouped_news['nessuna data'] = array();        
+      }
+      $grouped_news[$date] []= $n;
+    }
+    krsort($grouped_news);
+    $this->grouped_news = $grouped_news;
 
     $this->has_more = 0;
-    if ($n_news > count($this->news))
+    if ($n_news > count($news))
       $this->has_more = $n_news;    
   }
 

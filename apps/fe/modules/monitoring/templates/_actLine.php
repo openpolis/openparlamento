@@ -38,11 +38,11 @@
 	</td>
 	<td>
 	  <?php if (!$user_is_monitoring_act): ?>
-      <?php foreach ($act->getIndirectlyMonitoringTags($user->getPrimaryKey()) as $i => $tag): ?>
+      <?php foreach ($act->getIndirectlyMonitoringTags($user_id) as $i => $tag): ?>
         <?php echo link_to(strtolower($tag->getTripleValue()), 
                           'monitoring/acts?filter_tag_id=' . $tag->getPrimaryKey(),
                           array('class' => 'action')) ?>
-        <?php if ($i < count($act->getIndirectlyMonitoringTags($user->getPrimaryKey())) ): ?>
+        <?php if ($i < count($act->getIndirectlyMonitoringTags($user_id)) ): ?>
           <br/>
         <?php endif ?>
       <?php endforeach; ?>          
@@ -51,7 +51,7 @@
 	</td>
 	<td scope="row">
 	  <p class="float-right">
-      <a class="action btn-open-table" href="#">
+      <a class="action btn-open-table" href="">
         (<?php echo format_number_choice( 
           '[0]0|[1]1 nuova|(1,+Inf]%1% nuove', 
           array('%1%' => $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
@@ -61,9 +61,23 @@
       </a>
 	  </p>
 	</td>
-	<td><?php echo image_tag('ico-thumb-up-big.png', 
-	                         array('alt' => 'favorevole', 
-	                               'class' => 'ico-thumb-up-big')) ?></td>
+	<td>
+    <!-- 
+	  <?php if ($user_voting_act == ''): ?>
+      <p class="grey-888 ico-no-vote-yet">non hai<br/>votato</p>
+	  <?php endif ?>
+	  -->
+	  <?php if ($user_voting_act == 1): ?>
+  	  <?php echo image_tag('ico-thumb-up-big.png', 
+  	                         array('alt' => 'favorevole', 
+  	                               'class' => 'ico-thumb-up-big')) ?>	   
+	  <?php endif ?>
+	  <?php if ($user_voting_act == -1): ?>
+  	  <?php echo image_tag('ico-thumb-down-big.png', 
+  	                         array('alt' => 'contrario', 
+  	                               'class' => 'ico-thumb-down-big')) ?>	   
+	  <?php endif ?>
+	</td>
 	<td>
     <!-- rimozione dal monitoraggio -->
     <?php if ($user_is_monitoring_act): ?>
@@ -90,36 +104,8 @@
 </tr>
 <tr>
 	<td colspan="5">
-			<div style="display: none;" class="news-parlamentari float-container"> 
-			<ul>
-				<li>
-					<strong>23-10-2008</strong>
-					<p><a href="singolo_atto.html">C.1386-B</a> <br/>
-					interventi in commissione cultura della <a href="#" class="tools-container">Camera</a></p>
-				</li>
-				<li>
-					<strong>18-10-2008</strong>
-					<p><a href="singolo_atto.html">C.1386-B</a><br/>
-					aggiunto nuovo co-firmatario</p>
-				</li>
-				<li>
-					<strong>17-10-2008</strong>
-					<p><a href="singolo_atto.html">C.1386-B</a><br/>
-					aggiunto nuovo co-firmatario</p>
-				</li>
-				<li>
-					<strong>09-10-2008</strong>
-					<p><a href="singolo_atto.html">C.1386-B</a><br/>
-					assegnato in commissione</p>
-				</li>
-				<li>
-					<strong>09-10-2008</strong>
-					<p><a href="singolo_atto.html">C.1386-B</a><br/>
-					presentato</p>
-				</li>
-			</ul>
-			<a href="#" class="see-all tools-container">vedi tutte</a>
-			</div>
+		<div style="display: none;" class="news-parlamentari float-container"> 
+		</div>
 	</td>
 	<td/>
 	<td/>

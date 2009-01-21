@@ -26,14 +26,11 @@
     		<form>
     		<p>mostra solo</p>
     		<ul>
-    			<li>gli atti preferiti <input type="checkbox" value="" name="showBookmarks"/></li>		
-    			<li>gli atti bloccati <input type="checkbox" value="" name="showStoped"/></li>
+    			<li><?php echo link_to('preferiti', 'monitoring/favouriteActs') ?></li>		
+    			<li><?php echo link_to('<i>bloccati</i>', 'monitoring/blockedActs') ?></li>
     		</ul>
     		</form>
     	</div>
-
-      <div><?php echo link_to('mostra solo preferiti', 'monitoring/favouriteActs') ?></div>
-      <div><?php echo link_to('mostra atti <i>bloccati</i>', 'monitoring/blockedActs') ?></div>
 
       <?php foreach ($monitored_acts_types as $type): ?>
         <?php echo include_component('monitoring', 'actsForType', 
@@ -77,8 +74,23 @@ jQuery.noConflict();
 	// Visualizza/nascondi liste in tabella
 	$('.btn-open-table').click(
 		function(){
-			var line = $(this).toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
-			$(line).next().find('.news-parlamentari').toggle();
+      $this = $(this);
+			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
+      var id = $(line).get(0).id.split('_').pop();
+      var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";
+      if (!$this.data('news_loaded'))
+      {
+        $.get(url, { act_id: id },
+          function(data){
+            $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
+            $this.data('news_loaded', true);
+            $this.unbind('click').click( function(){
+              $(line).next().find(".news-parlamentari").slideToggle("slow");
+              $this.toggleClass('btn-open-table').toggleClass('btn-close-table');
+              return false;
+            });
+          })      
+      }
 			return false; 
 		}
 	);
@@ -87,20 +99,7 @@ jQuery.noConflict();
 
   // news cached-slider (only does ajax request once)
   $('.monitored_acts .acts li span.title').click( function(){
-    $this = $(this);
     var id = $this.parent().get(0).id.split('_').pop();
-    var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";
-    if (!$this.data('news_loaded'))
-    {
-      $.get(url, { act_id: id },
-        function(data){
-          $this.parent().append('<div class="news">' + data + '</div>').css('display', 'none').slideDown();
-          $this.data('news_loaded', true);
-          $this.unbind('click').click( function(){
-            $(this).parent().find("div.news").slideToggle("slow");
-          });
-        })      
-    }
       
   });  
 })(jQuery);

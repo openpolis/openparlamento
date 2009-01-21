@@ -16,7 +16,10 @@
 		<tbody>
       <?php foreach ($monitored_acts as $act): ?>
         <?php  echo include_component('monitoring', 'actLine', 
-                                     array('act' => $act, 'user' => $user, 'user_id' => $user_id)); ?>
+                                     array('act' => $act, 
+                                           'user' => $user, 
+                                           'user_id' => $user_id, 
+                                           'user_voting_act' => $act->getUserVoting($user_id))); ?>
       <?php endforeach ?>
 		</tbody>
 	</table>

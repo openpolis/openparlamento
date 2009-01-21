@@ -387,7 +387,7 @@ hr.dotted { background: transparent url(../images/hr-dotted-orange.png) repeat-x
 .news-parlamentari { padding: 5px 10px 15px 10px; margin: 3px 0 15px 0; border: 1px solid #f00; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; clear: both; }
 .news-parlamentari strong { color: #a2a2a2; font-size: 12px; line-height: 1.2em; text-align: left; padding-left: 8px;}
 .news-parlamentari p { padding: 0 8px 8px 8px; line-height: 1.1em; }
-.news-parlamentari li { border-bottom: 1px dotted #4e8480; text-align: left; width: 100%; }
+.news-parlamentari li.news-group { border-bottom: 1px dotted #4e8480; text-align: left; width: 100%; }
 .news-parlamentari li:hover { background-color: #fffaea; }
 .news-parlamentari .see-all { float: right; }
 
