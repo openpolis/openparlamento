@@ -25,3 +25,5 @@ propel:
     data_presentazione_atto:   { type: timestamp, index: multiple }
     ramo_votazione:            { type: char, size: 1, index: multiple }
     sede_intervento_id:        { type: integer, index: multiple }
+    _indexes:
+      relmodel_date_priority_tipoatto:        [related_monitorable_model, date, priority, tipo_atto_id]

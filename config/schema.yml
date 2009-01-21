@@ -15,8 +15,8 @@ propel:
     ramo:               { type: longvarchar }
     numfase:            { type: varchar(255) }
     legislatura:        { type: integer }
-    data_pres:          { type: date }
-    data_agg:           { type: date, index: multiple }
+    data_pres:          { type: date, index: true }
+    data_agg:           { type: date, index: true }
     titolo:             { type: longvarchar }
     iniziativa:         { type: integer }
     stato_cod:          { type: char, size: 2, index: multiple }

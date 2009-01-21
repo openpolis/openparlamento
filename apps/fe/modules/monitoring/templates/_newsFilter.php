@@ -6,7 +6,7 @@
     <label for="filter_tag_id">argomento:</label>
     <label for="filter_act_type_id">tipologia:</label>
     <label for="filter_act_ramo">ramo:</label>
-    <label for="filter_date">data:</label>
+    <!--<label for="filter_date">data:</label>-->
     <label for="filter_main_all">principali:</label>
   </fieldset>
   <p>filtra per</p>
@@ -23,11 +23,12 @@
                           options_for_select(array('0' => 'tutti',
                                                    'C' => 'camera',
                                                    'S' => 'senato'), $selected_act_ramo)) ?>
-
+    <!--
     <?php echo select_tag('filter_date', 
                           options_for_select(array('0' => 'tutte',
                                                    'W' => 'ultima settimana',
                                                    'M' => 'ultimo mese'), $selected_date)) ?>
+    -->
     <?php echo select_tag('filter_main_all',
                           options_for_select(array('main' => 'principali',
                                                    'all'  => 'tutte'), $selected_main_all))?>

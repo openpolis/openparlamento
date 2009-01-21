@@ -14,10 +14,19 @@
  * @version    SVN: $Id$
  */
 
-
 function news($news)
 {
-  $news_string = $news->getDate('d/m/Y') . " - ";
+  return news_date($news->getDate('d/m/Y')) . "<br/>" . news_text($news);
+}
+
+function news_date($newsdate)
+{
+  return content_tag('em', $newsdate);
+}
+
+function news_text($news)
+{
+  $news_string = "";
   
   // fetch del modello e dell'oggetto che ha generato la notizia
   $generator_model = $news->getGeneratorModel();

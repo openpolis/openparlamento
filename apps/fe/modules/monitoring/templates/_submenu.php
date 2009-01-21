@@ -1,4 +1,4 @@
-<ul id="content-tabs" class="float-container tools-container">
+<ul id="content-tabs" class="float-container tools-container orange">
   <?php foreach ($sub_menu_items as $key => $value): ?>
     <li class="<?php echo ($current == $key?'current':'') ?>">
       <h2>

@@ -35,7 +35,8 @@ class deppBookmarkingActions extends BasedeppBookmarkingActions
     // an object was bookmarked, clear the acts cache
     $cacheManager = $this->getContext()->getViewCacheManager();
     $user_token = $this->getUser()->getToken();
-    $cacheManager->remove('monitoring/acts?user_token='.$user_token); 
+    if (!is_null($cacheManager))
+      $cacheManager->remove('monitoring/acts?user_token='.$user_token); 
     
   }
   
@@ -56,7 +57,8 @@ class deppBookmarkingActions extends BasedeppBookmarkingActions
     // an object was negatively bookmarked, clear the news cache (news of that object are no longer reported)
     $cacheManager = $this->getContext()->getViewCacheManager();
     $user_token = $this->getUser()->getToken();
-    $cacheManager->remove('monitoring/news?user_token='.$user_token); 
+    if (!is_null($cache_manager))
+      $cacheManager->remove('monitoring/news?user_token='.$user_token); 
   }
   
 }

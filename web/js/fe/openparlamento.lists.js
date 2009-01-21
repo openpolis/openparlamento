@@ -1,6 +1,24 @@
 (function($) {
 
 $(document).ready(function(){
+													 
+		
+	// range di date
+	if($.datepicker) {
+		function customRange(input) { 
+			return {minDate: (input.id == "endDate" ? $("#startDate").datepicker("getDate") : null), 
+					maxDate: (input.id == "startDate" ? $("#endDate").datepicker("getDate") : null)}; 
+		} 
+		
+		
+		$("#startDate, #endDate").datepicker($.extend({},$.datepicker.regional["it"], { 
+			beforeShow: customRange,																								
+			showStatus: true, 
+			showOn: "both", 
+			buttonImage: "imgs/ico-calendar.png", 
+			buttonImageOnly: true 
+		})); 
+	}
 
 	// Ricerca disegni di legge
 	$('#search-ddl-fbox').hover(
@@ -58,6 +76,18 @@ $(document).ready(function(){
 			return false; 
 		}
 	);
+	
+	$('.topics-list li').click(
+		function(){
+			var child = $(this).find('ul');
+			if(child.length) {
+				$(this).toggleClass('opened');
+				child.toggle();
+			}
+			return false;
+		}
+	);
+	
 
 
 	// mostra tasto applica al cambio filtri
@@ -80,26 +110,24 @@ $(document).ready(function(){
 	);
 	if($.browser.mozilla || $.browser.msie) {
 		$('#disegni-decreti-filter select').combobox(
-						{
-							comboboxContainerClass: "comboboxContainer",
-							comboboxValueContentContainerClass: "comboboxValueContainer",
-							comboboxValueContentClass: "comboboxValueContent",
-							comboboxDropDownClass: "comboboxDropDownContainer",
-							comboboxDropDownButtonClass: "comboboxDropDownButton",
-							comboboxDropDownItemClass: "comboboxItem",
-							comboboxDropDownItemHoverClass: "comboboxItemHover",
-							comboboxDropDownGroupItemHeaderClass: "comboboxGroupItemHeader",
-							comboboxDropDownGroupItemContainerClass: "comboboxGroupItemContainer"
-						},
-						{
-							width: 130
-						},
-						function() { $('#disegni-decreti-filter-apply').show(); }
-											
-			);
-
+			{
+				comboboxContainerClass: "comboboxContainer",
+				comboboxValueContentContainerClass: "comboboxValueContainer",
+				comboboxValueContentClass: "comboboxValueContent",
+				comboboxDropDownClass: "comboboxDropDownContainer",
+				comboboxDropDownButtonClass: "comboboxDropDownButton",
+				comboboxDropDownItemClass: "comboboxItem",
+				comboboxDropDownItemHoverClass: "comboboxItemHover",
+				comboboxDropDownGroupItemHeaderClass: "comboboxGroupItemHeader",
+				comboboxDropDownGroupItemContainerClass: "comboboxGroupItemContainer"
+			},
+			{
+				width: 130
+			},
+			function() { $('#disegni-decreti-filter-apply').show(); }
+		);
 	}
-	
+			
 	$('#identity').pngFix();
 	$('.coo-mind').pngFix();	
 

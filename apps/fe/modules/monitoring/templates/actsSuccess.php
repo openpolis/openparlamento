@@ -1,33 +1,52 @@
 <?php echo include_component('monitoring', 'submenu', array('current' => 'acts')); ?>
 
-<div id="content" class="tabbed float-container">
-  <div id="main" class="monitored_acts monitoring">
+<div id="content" class="tabbed-orange float-container">
+  <div id="main">
 
-    <?php include_partial('actsFilter',
-                          array('tags' => $all_monitored_tags,
-                                'types' => $all_monitored_acts_types, 
-                                'selected_tag_id' => array_key_exists('tag_id', $filters)?$filters['tag_id']:0,
-                                'selected_act_type_id' => array_key_exists('act_type_id', $filters)?$filters['act_type_id']:0,                                
-                                'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
-                                'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
+    <div class="W100_100 float-left">
+  		<p class="tools-container"><a class="ico-help" href="#">eventuale testo micro-help</a></p>
+  		<div style="display: none;" class="help-box float-container">
+  			<div class="inner float-container">
 
-   
-    <div><?php echo link_to('mostra solo preferiti', 'monitoring/favouriteActs') ?></div>
-    <div><?php echo link_to('mostra atti <i>bloccati</i>', 'monitoring/blockedActs') ?></div>
-    
-    <h3>Elenco degli atti monitorati</h3>
+  				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
+  				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  			</div>
+  		</div>
 
-
-    <?php foreach ($monitored_acts_types as $type): ?>
-      <?php echo include_component('monitoring', 'actsForType', 
-                                   array('user' => $user, 'user_id' => $user_id,
-                                         'my_monitored_tags_pks' => $my_monitored_tags_pks,
-                                         'type' => $type,
-                                         'filters' => $filters,
-                                         'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
-    <?php endforeach ?>
+      <?php include_partial('actsFilter',
+                            array('tags' => $all_monitored_tags,
+                                  'types' => $all_monitored_acts_types, 
+                                  'selected_tag_id' => array_key_exists('tag_id', $filters)?$filters['tag_id']:0,
+                                  'selected_act_type_id' => array_key_exists('act_type_id', $filters)?$filters['act_type_id']:0,                                
+                                  'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
+                                  'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
 
+    	<div class="float-container tools-container" id="disegni-decreti-order">
+    		<form>
+    		<p>mostra solo</p>
+    		<ul>
+    			<li>gli atti preferiti <input type="checkbox" value="" name="showBookmarks"/></li>		
+    			<li>gli atti bloccati <input type="checkbox" value="" name="showStoped"/></li>
+    		</ul>
+    		</form>
+    	</div>
+
+      <div><?php echo link_to('mostra solo preferiti', 'monitoring/favouriteActs') ?></div>
+      <div><?php echo link_to('mostra atti <i>bloccati</i>', 'monitoring/blockedActs') ?></div>
+
+      <?php foreach ($monitored_acts_types as $type): ?>
+        <?php echo include_component('monitoring', 'actsForType', 
+                                     array('user' => $user, 'user_id' => $user_id,
+                                           'my_monitored_tags_pks' => $my_monitored_tags_pks,
+                                           'type' => $type,
+                                           'filters' => $filters,
+                                           'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
+      <?php endforeach ?>
+			
+
+
+    </div>
   </div>
 </div>
 
@@ -45,7 +64,27 @@ jQuery.noConflict();
     var id = $(this).get(0).id.split('_').pop();
     $(this).parent().find("#type_acts_" + id).slideToggle("slow");
   });
-  
+
+	// preferiti
+	$('.ico-star').click(
+		function(){
+			$(this).toggleClass('bookmark');
+			// return false;
+		}
+	);
+
+
+	// Visualizza/nascondi liste in tabella
+	$('.btn-open-table').click(
+		function(){
+			var line = $(this).toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
+			$(line).next().find('.news-parlamentari').toggle();
+			return false; 
+		}
+	);
+	
+
+
   // news cached-slider (only does ajax request once)
   $('.monitored_acts .acts li span.title').click( function(){
     $this = $(this);
