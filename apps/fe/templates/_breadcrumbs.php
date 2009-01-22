@@ -4,6 +4,7 @@ $mod = $this->getContext()->getModuleName();
 ?>
 
 <div id="breadcrumbs">
+
 <?php switch($mod): ?>
 <?php case 'atto': ?>
   <?php echo link_to("Home", "@homepage") ?>
@@ -16,6 +17,11 @@ $mod = $this->getContext()->getModuleName();
   Decreti legislativi
   <?php elseif($act=='attoNonLegislativoList'): ?>
   Atti non legislativi
+  <?php elseif($act=='documento'): ?>
+    <?php $documento = OppDocumentoPeer::retrieveByPk($sf_params->get('id')); ?>
+	<?php echo link_to(Text::denominazioneAttoShort($documento->getOppAtto()),'atto/index?id='.$documento->getOppAtto()->getId()) ?>
+    /
+	<?php echo $documento->getTitolo() ?>
   <?php elseif($sf_params->get('id')): ?>
     <?php $atto = OppAttoPeer::retrieveByPk($sf_params->get('id')); ?>
 <?php switch($atto->getTipoAttoId()): ?>
@@ -42,7 +48,9 @@ $mod = $this->getContext()->getModuleName();
 <?php echo Text::denominazioneAttoShort($atto) ?>
 <?php endswitch; ?>
   <?php endif; ?> 
+ 
   <?php break; ?>
+  
 <?php case 'votazione': ?>
   <?php echo link_to("Home", "@homepage") ?>
   /

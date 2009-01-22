@@ -6,7 +6,6 @@
     <tr>
       <th scope="col"><br />sigla/titolo:</th>
       <th scope="col"><br />data voto:</th>
-      <th scope="col">ramo parlamentare:</th>
       <th scope="col">esito in Parlamento:</th>
       <th scope="col">voti di scarto:</th>
       <th scope="col">numero di ribelli:</th>
@@ -18,7 +17,6 @@
 	    <tr>
           <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
           <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
-          <td><p><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></p></td>
           <td>
             <?php if($votazione->getEsito()=='APPROVATA'): ?>
 		      <?php $class = "green thumb-approved"; ?>
@@ -50,7 +48,6 @@
         <tr>
           <th scope="col"><br />sigla/titolo:</th>
           <th scope="col"><br />data voto:</th>
-          <th scope="col">ramo parlamentare:</th>
           <th scope="col">esito in Parlamento:</th>
           <th scope="col">voti di scarto:</th>
           <th scope="col">numero di ribelli:</th>
@@ -63,7 +60,6 @@
 		    <tr>
               <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
               <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
-              <td><p><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></p></td>
               <td>
                 <?php if($votazione->getEsito()=='APPROVATA'): ?>
 		          <?php $class = "green thumb-approved"; ?>

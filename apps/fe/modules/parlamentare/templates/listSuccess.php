@@ -18,13 +18,14 @@
 
       <?php include_partial('sort') ?>   
 	  
-	  <a href="#decaduti">parlamentari decaduti</a><br />
+	  <a href="#decaduti">guarda le variazioni nella legislatura</a><br />
     </div>
 	<div class="W100_100 float-left"> 
 	  <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
     </div>
 	<div class="W100_100 float-left"> 
-	  <h2>parlamentari decaduti</h2>
+	<h5 class="subsection">variazioni nella legislatura:</h5>
+	  
 	  <a name="decaduti"></a>
 	  <?php include_partial('list', array('parlamentari' => $parlamentari_decaduti, 'numero_parlamentari' => $numero_parlamentari)) ?>  
     </div>

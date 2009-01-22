@@ -61,6 +61,16 @@
       <!-- partial per la visualizzazione e l'edit-in-place dei tags associati all'atto -->
       <?php echo include_component('deppTagging', 'edit', array('content' => $atto)); ?>
 
+      <!-- component per l'elenco dei documenti -->
+      <?php echo include_component('atto', 'documenti', array('atto' => $atto, 'titolo_wiki' => $titolo_wiki) ); ?>
+      
+	  <?php include_partial('statoAvanzamento', 
+	                      array('rappresentazioni_pred' => $rappresentazioni_pred,
+						  'atto' => $atto,
+						  'rappresentazioni_this' => $rappresentazioni_this,
+						  'rappresentazioni_succ' => $rappresentazioni_succ,
+						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva)) ?>
+ 
 
 	    <?php include_component('atto', 'firmatari', 
 	                            array('primi_firmatari' => $primi_firmatari, 'relatori' => $relatori)) ?>

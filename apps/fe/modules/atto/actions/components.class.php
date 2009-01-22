@@ -76,6 +76,12 @@ class attoComponents extends sfComponents
   public function executeDocumenti()
   {
     $this->documenti = $this->atto->getOppDocumentos();
+	$this->documenti_count = $this->atto->countOppDocumentos();
+	
+	$this->limit = 5;
+	$this->limit_count = 0;
+	
+	$this->tipo_atto = $this->atto->getOppTipoAtto()->getDescrizione();
   }
   
   public function executeFirmatari()

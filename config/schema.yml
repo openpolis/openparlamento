@@ -88,6 +88,14 @@ propel:
     ribelle:          { type: integer }
     created_at:
     
+  opp_categoria:
+    id:
+    denominazione:             { type: varchar(255) }
+    
+  opp_categoria_has_tt:
+    categoria_id:    { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_categoria, foreignReference: id, onDelete: CASCADE }
+    teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }  
+    
   opp_documento:
     id:
     atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }

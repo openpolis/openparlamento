@@ -21,7 +21,7 @@ class defaultActions extends sfActions
   
   public function executeError404()
   {
-    //return $this->redirect('@homepage');
+    return $this->redirect('@homepage');
   }
   
 }
