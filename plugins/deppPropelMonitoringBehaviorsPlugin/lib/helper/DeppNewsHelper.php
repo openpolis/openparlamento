@@ -16,12 +16,12 @@
 
 function news($news)
 {
-  return news_date($news->getDate('d/m/Y')) . "<br/>" . news_text($news);
+  return news_date($news->getDate('d/m/Y')). "<p>" . news_text($news). "</p>";
 }
 
 function news_date($newsdate)
 {
-  return content_tag('em', $newsdate);
+  return content_tag('strong',$newsdate);
 }
 
 function news_text($news)
