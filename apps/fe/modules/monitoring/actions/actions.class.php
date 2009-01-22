@@ -291,29 +291,22 @@ class monitoringActions extends sfActions
     $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
   }
 
-  public function executeAjaxNewsForAct()
+  public function executeAjaxNewsForItem()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
 
-    $this->act_id = $this->getRequestParameter('act_id');
-    $this->_fetchNewsForItem('OppAtto', $this->act_id);
+    $this->item_id = $this->getRequestParameter('item_id');
+    $this->item_model = $this->getRequestParameter('item_model');
+    $this->all_news_route = $this->getRequestParameter('all_news_route');
+    $this->_fetchNewsForItem($this->item_model, $this->item_id);
   }
 
-  public function executeAjaxNewsForPolitician()
+  private function _fetchNewsForItem($item_model, $item_id)
   {
-    $isAjax = $this->getRequest()->isXmlHttpRequest();
-    if (!$isAjax) return sfView::noAjax;
-
-    $this->politician_id = $this->getRequestParameter('politician_id');
-    $this->_fetchNewsForItem('OppPolitico', $this->politician_id);
-  }
-
-  private function _fetchNewsForItem($type, $item_id)
-  {
-    $n_news = NewsPeer::countNewsForItem($type, $item_id);
+    $n_news = NewsPeer::countNewsForItem($item_model, $item_id);
     
-    $c = NewsPeer::getNewsForItemCriteria($type, $item_id);
+    $c = NewsPeer::getNewsForItemCriteria($item_model, $item_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     $c->setLimit(sfConfig::get('app_news_dropdown_limit', 10));
     $news = NewsPeer::doSelect($c);

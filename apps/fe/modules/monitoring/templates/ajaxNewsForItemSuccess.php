@@ -24,8 +24,6 @@
   <?php endforeach; ?>
 </ul>
 <?php if ($has_more>0): ?>
-  <?php echo link_to("visualizza tutte le $has_more notizie", '@news_atto?id=' . $act_id, 
+  <?php echo link_to("visualizza tutte le $has_more notizie", $all_news_route.'?id='.$item_id, 
                      array('class' => 'see-all tools-container')) ?>
 <?php endif ?>
-
-

@@ -77,10 +77,10 @@ jQuery.noConflict();
       $this = $(this);
 			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
       var id = $(line).get(0).id.split('_').pop();
-      var url = "<?php echo url_for('monitoring/ajaxNewsForAct'); ?>";
+      var url = "<?php echo url_for('monitoring/ajaxNewsForItem'); ?>";
       if (!$this.data('news_loaded'))
       {
-        $.get(url, { act_id: id },
+        $.get(url, { item_id: id, item_model: 'OppAtto', all_news_route: '@news_atto' },
           function(data){
             $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
             $this.data('news_loaded', true);
@@ -94,14 +94,7 @@ jQuery.noConflict();
 			return false; 
 		}
 	);
-	
 
-
-  // news cached-slider (only does ajax request once)
-  $('.monitored_acts .acts li span.title').click( function(){
-    var id = $this.parent().get(0).id.split('_').pop();
-      
-  });  
 })(jQuery);
 
 
