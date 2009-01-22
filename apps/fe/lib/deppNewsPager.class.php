@@ -10,9 +10,12 @@ class deppNewsPager extends sfPropelPager
     foreach ($results as $res)
     {
       $date = strtotime($res->getDate());
+      if (!is_string($date) && !is_int($date))
+        $date = 0;
+
       if (!array_key_exists($date, $grouped_results))
       {
-        $grouped_results[$date] = array();
+        $grouped_results[$date] = array();        
       }
       $grouped_results[$date] []= $res;
     }

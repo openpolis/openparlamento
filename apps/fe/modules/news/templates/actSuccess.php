@@ -25,9 +25,16 @@
     <?php echo pager_navigation($pager, '@news_atto?id='.$act_id, true, 7) ?>
 
     <ul>
-    <?php foreach ($pager->getResults() as $news): ?>
-      <li><?php echo news($news); ?></li>
-    <?php endforeach ?>
+      <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
+        <li>
+          <h6><?php echo date("d/m/Y", $date_ts); ?></h6>
+          <ul class="square-bullet">
+          <?php foreach ($news as $n): ?>
+            <li><?php echo news_text($n) ?></li>
+          <?php endforeach ?>
+          </ul>
+        </li>
+      <?php endforeach; ?>
     </ul>
 
     <?php echo pager_navigation($pager, '@news_atto?id='.$act_id, true, 7) ?>

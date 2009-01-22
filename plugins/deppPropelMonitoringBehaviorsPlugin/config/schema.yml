@@ -27,3 +27,4 @@ propel:
     sede_intervento_id:        { type: integer, index: multiple }
     _indexes:
       relmodel_date_priority_tipoatto:        [related_monitorable_model, date, priority, tipo_atto_id]
+      relmodel_tipoatto_priority:             [related_monitorable_model, tipo_atto_id, priority]

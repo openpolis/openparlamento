@@ -22,13 +22,7 @@
     Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
     di <?php echo $pager->getNbResults() ?><br/>
 
-    <?php echo pager_navigation($pager, 'news/decretiList') ?>
-
-    <ul>
-    <?php foreach ($pager->getResults() as $news): ?>
-      <li><?php echo news($news); ?></li>
-    <?php endforeach ?>
-    </ul>
+    <?php echo include_partial('news/newslist', array('pager' => $pager)); ?>
 
     <?php echo pager_navigation($pager, 'news/decretiList') ?>
 
