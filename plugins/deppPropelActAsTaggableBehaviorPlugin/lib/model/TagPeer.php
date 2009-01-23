@@ -66,6 +66,8 @@ class TagPeer extends BaseTagPeer
     return TagPeer::doSelect($c);
   }
 
+
+
   /**
    * Returns all tags, sorted by name, with their number of occurencies.
    * The first optionnal parameter permits to add some restrictions on the
@@ -123,7 +125,7 @@ class TagPeer extends BaseTagPeer
 
     $c->addSelectColumn(TagPeer::NAME);
     $c->addSelectColumn('COUNT('.TagPeer::NAME.') as counter');
-    $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+    $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID, Criteria::RIGHT_JOIN);
     $c->addGroupByColumn(TaggingPeer::TAG_ID);
     $c->addDescendingOrderByColumn('counter');
     $c->addAscendingOrderByColumn(TagPeer::NAME);
@@ -250,7 +252,7 @@ class TagPeer extends BaseTagPeer
     }
 
     $all_tags = TagPeer::getAllWithCount($c, $options);
-    return deppdeppPropelPropelActAsTaggableToolkit::normalize($all_tags);
+    return deppPropelActAsTaggableToolkit::normalize($all_tags);
   }
 
   /**

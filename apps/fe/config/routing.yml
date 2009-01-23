@@ -22,8 +22,16 @@ monitoring_tags:
   url: /monitoring_tags/:user_token
   param: { module: monitoring, action: tags }
 
+addTagToMyMonitoredTags:
+  url: /addTagToMyMonitoredTags/:name
+  param: { module: monitoring, action: addTagToMyMonitoredTags }
+  
+removeTagFromMyMonitoredTags:
+  url: /removeTagFromMyMonitoredTags/:name
+  param: { module: monitoring, action: removeTagFromMyMonitoredTags }
+
 news_tag:
-  url: /news_tag/:id
+  url: /news_tag/:name
   param: { module: news, action: tag }
 
 news_atto:

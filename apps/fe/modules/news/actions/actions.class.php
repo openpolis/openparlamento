@@ -145,10 +145,11 @@ class newsActions extends sfActions
   public function executeTag()
   {
 
-    $this->tag_id = $this->getRequestParameter('id');
-    $this->tag = TagPeer::retrieveByPK($this->tag_id);
-    $this->n_news = NewsPeer::countNewsForTag($this->tag_id);
+    $this->tag_name = $this->getRequestParameter('name');
+    $this->tag = TagPeer::retrieveByTagname($this->tag_name);
+    $this->tag_id = $this->tag->getId();
 
+    $this->n_news = NewsPeer::countNewsForTag($this->tag_id);
     $c = NewsPeer::getNewsForTagCriteria($this->tag_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
@@ -156,7 +157,7 @@ class newsActions extends sfActions
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
-    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager = new deppNewsPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();

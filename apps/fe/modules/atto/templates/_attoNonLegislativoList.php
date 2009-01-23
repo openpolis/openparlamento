@@ -41,9 +41,6 @@
         </td>
       </tr>
     <?php endforeach; ?>
-  </tbody>
-
-  <tfoot>		  		  
     <tr>
       <td align="center" colspan='4'>
         <?php echo pager_navigation($pager, 'atto/attoNonLegislativoList') ?>
@@ -54,5 +51,5 @@
         <?php echo format_number_choice('[0] nessun risultato|[1] 1 risultato|(1,+Inf] %1% risultati', array('%1%' => $pager->getNbResults()), $pager->getNbResults()) ?>
 	  </td>
     </tr>
-  </tfoot>  		  
+  </tbody>		  
 </table>

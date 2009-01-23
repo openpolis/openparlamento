@@ -51,13 +51,13 @@
 	</td>
 	<td scope="row">
 	  <p class="float-right">
-      <a class="action btn-open-table" href="">
+      <a class="action btn-open-table" href="#">
         (<?php echo format_number_choice( 
           '[0]0|[1]1 nuova|(1,+Inf]%1% nuove', 
           array('%1%' => $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
           $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
         ?>) 
-        - <span>ultima</span>: <?php echo $act->getLastNews()->getDate('d/m/Y') ?></span>
+        - <span>ultima</span>: <?php echo $act->getLastNews()->getDate('d/m/Y') ?>
       </a>
 	  </p>
 	</td>

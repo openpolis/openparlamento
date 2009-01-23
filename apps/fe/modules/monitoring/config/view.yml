@@ -6,3 +6,10 @@ newsSuccess:
 
 actsSuccess:
   javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  
+politiciansSuccess:
+  javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+
+tagsSuccess:  
+  javascripts:    [prototype.js, effects.js, control.js, jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  

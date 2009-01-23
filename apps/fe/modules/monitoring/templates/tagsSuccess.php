@@ -2,183 +2,128 @@
 
 <?php echo include_component('monitoring', 'submenu', array('current' => 'tags')); ?>
 
-<div id="content" class="tabbed float-container">
-  <div id="main" class="monitoring">
+<div id="content" class="tabbed-orange float-container">
+  <div id="main">
 
-    <?php if ($opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
-      <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array()); ?>
+    <?php if ($opp_user->getNMonitoredTags()>0): ?>
+    	<h5 class="subsection">gli argomenti che stai monitorando (ancora <span id="my_remaining_tags"><?php echo $remaining_tags ?></span> a disposizione)</h5>
+    <?php else: ?>
+      Non stai monitorando nessun argomento
     <?php endif ?>
 
-    <h3>I tuoi tag (ancora <span id="my_remaining_tags"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></span>)</h3>
-    <ul id="my_tags">
-      <li id="ok" style="display:none"><?php echo $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() ?></li>
-      <?php foreach ($my_tags as $my_tag): ?>
-        <li id="my_tag_<?php echo $my_tag->getId()?>" title="click per visualizzare le notizie relative">
-          <span class="remover" title="clicca qui per rimuovere questo tag dai tuoi tag">(X)</span>
-          <span class="tag" title="clicca qui per visualizzare le notizie relative all'argomento">
-            <?php echo link_to($my_tag->getTripleValue(), '@news_tag?id='.$my_tag->getId()) ?>
-          </span>
-        </li>
-      <?php endforeach ?>
-    </ul>
+    <div class="more-results float-container">
+      <ul id="my_tags" class="monitoring-list">
+        <li id="ok" style="display:none"><?php echo $remaining_tags ?></li>
+        <?php foreach ($my_tags as $my_tag_name => $popularity): ?>
+          <li title="click per visualizzare le notizie relative">
+            <?php 
+              list($tag, $ns, $key, $value) = deppPropelActAsTaggableToolkit::extractTriple($my_tag_name);
+              echo link_to(strtolower($value), '@news_tag?name='.$tag, array('class' => 'folk'.($popularity+3))); 
+            ?>
+            <?php echo link_to('x', '@removeTagFromMyMonitoredTags?name='.$tag, array('class' => 'ico-stop_monitoring', 'title' => 'smetti di monitorare questo argomento')) ?>
+          </li>
+        <?php endforeach ?>
+      </ul>
+	  </div>
 
+    <h5 class="subsection">Aggiungi un argomento</h3>
 
-    <h3>Elenco dei top-term</h3>
-    <div id="top_terms_drill_down" style="width:75%;">
-      <?php foreach ($teseo_tts as $top_term): ?>
-        <div id="top_term_<?php echo $top_term->getId();?>" class="top_term">
-          <?php echo $top_term->getDenominazione() ?>
-        </div>
-        <div id="top_term_tags_<?php echo $top_term->getId();?>" class="tags" style="display:none"></div>
-      <?php endforeach ?>
+    <?php if ($opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
+      <div class="W25_100 float-right">
+        <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array()); ?>
+      </div>
+    <?php endif ?>
+
+    <div id="top_terms_drill_down" class="W73_100 float-left">
+      <ul class="topics-list">
+        <?php foreach ($teseo_tts_with_counts as $term_id => $term_data ): ?>
+          <li id="top_term_<?php echo $term_id;?>" class="top_term">
+            <?php echo link_to($term_data['denominazione'] .  " (" . $term_data['counter'] .  ")", '#') ?>
+            <?php if ($term_data['n_monitored']>0): ?>
+              <span class="ico-monitoring-left">(
+                <?php echo $term_data['n_monitored'] ?>
+              )</span>              
+            <?php endif ?>
+            <ul id="top_term_tags_<?php echo $term_id;?>" style="display:none"></ul>
+          </li>
+        <?php endforeach ?>
+  		</ul>
     </div>
 
   </div>
 </div>
 
-
-<script type="text/javascript" language="javascript">
+<!-- slider jQuery per gli atti e le notizie relative -->
+<script type="text/javascript">
 //<![CDATA[
 
-// assegnazione degli observer corretti ai top term
-var top_terms = $$('.top_term');
-top_terms.each( function(el) {
-  el.observe('click', function(event) {
-    var elt = Event.element(event);
-    cached_drill_down(elt);
-  })  
-});
-
-/**
- * Assegna observer per eventi dei my_tags
- */
-refresh_mytags_observers = function(){
-  var lis = $$('#my_tags li');
-  lis.each( function(el) {
-    // per l'elemento nascosto, skip 
-    if (el.descendants().length == 0) return;
-    
-    // mouseover e mouseout su elemento, mostrano la X della rimozione
-    el.observe('mouseover', function(event) {
-      el.firstDescendant().style.display = 'inline';
-    });
-    el.observe('mouseout', function(event) {
-      el.firstDescendant().style.display = 'none';
-    });
-
-    // identifica remover e tag
-    remover = el.firstDescendant();
-    tag = remover.next();
-
-    // click sulla X per rimuovere il tag dai miei tag
-    remover.observe('click', function(event) {
-      var elt = Event.element(event);
-      unselect_tag(elt.up());
-      var id = elt.up().id.split('_').last();
-      removed = $('tag_'+id);
-      if (removed !== null)
-      {
-        removed.className = '';
-        removed.title = 'click per aggiungere ai tuoi tag';
-      }
-      
-    });  
-  });
-};
-
-// eventuale assegnazione degli observers ai miei tag
-refresh_mytags_observers();
-
-
-//  script per la gestione del drill down dei top terms 
-//  il drill down è cached, nel senso che, se non viene trovato, allora
-//  è richiesto via ajax al server, altrimenti viene chiuso o aperto
-cached_drill_down = function(el){
-  var id = el.id.split('_').last()
-  var tags_ul = $$('#top_term_tags_' + id + ' ul');
-  var tags = $('top_term_tags_' + id);
-  if (tags_ul == '')
-  {
-    var url = "<?php echo url_for('monitoring/ajaxTagsForTopTerm'); ?>?tt_id=" + id;
-    new Ajax.Updater($('top_term_tags_' + id), url, {
-      evalScripts: true,
-      onComplete: setTimeout('refresh_tags_container(\'top_term_tags_'+id+'\')', 500)
-    });
-    
-  } else {
-    if (tags.style.display == 'none')
-      tags.style.display = 'block';
-    else
-      tags.style.display = 'none';
-  }
-};
-
-
-// funzione che aggiunge ai tag gli observer adatti
-refresh_tags_container = function(container_id){
-  var tags_container = $(container_id);
-  tags_container.style.display = 'block'; 
-
-  var tags = $$('#'+container_id + '.tags li');
-  tags.each( function(el) {
-    el.observe('click', function(event) {
-      var elt = Event.element(event);
-      if (elt.className != 'selected')
-        select_tag(elt);
-      else 
-        unselect_tag(elt);
-    })  
-  });
-};
-
-
-// gestione della selezione di un tag
-select_tag = function(el){
-  var id = el.id.split('_').last()
-  var url = "<?php echo url_for('monitoring/ajaxAddTagIdToMyMonitoredTags'); ?>?tag_id=" + id;  
-  new Ajax.Request(url, { 
-    method: 'get', 
-    onSuccess: function(transport) { 
-      if (transport.responseText.match(/ok/))
-      {
-        el.className = 'selected';
-        el.title = 'click per rimuovere dai tuoi tag';
-        $('my_tags').update(transport.responseText);
-        refresh_mytags_observers();
-        $('my_remaining_tags').innerHTML = $('ok').innerHTML;
-      }
-      else
-      {
-        alert(transport.responseText);
-      } 
-    }
-  }); 
-};
-
-// gestione della rimozione della selezione di un tag
-unselect_tag = function(el){
-  var id = el.id.split('_').last()
-  var url = "<?php echo url_for('monitoring/ajaxRemoveTagFromMyMonitoredTags'); ?>?tag_id=" + id;  
-  new Ajax.Request(url, { 
-    method: 'get', 
-    onSuccess: function(transport) { 
-      if (transport.responseText.match(/ok/))
-      {
-        el.className = '';
-        el.title = 'click per aggiungere ai tuoi tag';
-        $('my_tags').update(transport.responseText);
-        refresh_mytags_observers();
-        $('my_remaining_tags').innerHTML = $('ok').innerHTML;
-      }
-      else
-      {
-        alert(transport.responseText);
-      } 
-    },
-  }); 
+jQuery.noConflict();
+(function($) {
+  $(document).ready(function(){
   
-};
+    $('.topics-list li.top_term a').click(
+    	function(){
+    	  $this = $(this);
+    	  
+    		var child = $this.nextAll('ul');
+        var url = "<?php echo url_for('monitoring/ajaxTagsForTopTerm'); ?>";
+        var id = $(child).get(0).id.split('_').pop();
+    		if(child.length) {
+          if (!$this.data('tags_loaded'))
+          {
+            $.get(url, { tt_id: id },
+              function(data){
+          			$this.toggleClass('opened');
+                child.append(data).toggle();
+                $this.data('tags_loaded', true);
+                /*
+                child.find('li').click(
+                  function(){
+                    var $this = $(this);
+                    var wasMonitoring = $this.hasClass('monitoring');                    
+                    var id = $this.get(0).id.split('_').last();
+                    var my_tags = $('#my_tags');
+                    if (!wasMonitoring) {
+                      var url = "<?php echo url_for('monitoring/ajaxAddTagIdToMyMonitoredTags'); ?>";
+                      var title = 'click per rimuovere dai tuoi tag';
+                    } else {
+                      var url = "<?php echo url_for('monitoring/ajaxRemoveTagIdFromMyMonitoredTags'); ?>";                        
+                      var title = 'click per aggiungere ai tuoi tag';
+                    } 
+                    $.get(url, {tag_id: id},
+                      function(data){
+                        if (data.match(/ok/))
+                        {
+                          $this.toggleClass('monitoring');
+                          $this[0].title = title;
+                          my_tags.replaceWith(data);
+                          var remaining_tags = data.match(/<li id="ok".*>(.*)<\/li>/)[1];
+                          $('#my_remaining_tags').html(remaining_tags);
+                        }
+                        else
+                        {
+                          alert(data);
+                        } 
+                        
+                      }
+                    );
+                  }
+                );
+                */
+              }
+            );      
+          } else {
+            $this.toggleClass('closed').toggleClass('opened');
+      			child.toggle();
+          }
+    		}
+    		return false;    	    
+    	}
+    );
+    
+
+  })
+})(jQuery);
 
 //]]>
 </script>
-

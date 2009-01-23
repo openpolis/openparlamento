@@ -22,8 +22,6 @@
     Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
     di <?php echo $pager->getNbResults() ?><br/>
 
-    <?php echo pager_navigation($pager, 'news/politician?id='.$politician_id, true, 7) ?>
-
     <ul>
       <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
         <li>

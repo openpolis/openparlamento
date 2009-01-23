@@ -23,13 +23,11 @@
 
 
     	<div class="float-container tools-container" id="disegni-decreti-order">
-    		<form>
     		<p>mostra solo</p>
     		<ul>
     			<li><?php echo link_to('preferiti', 'monitoring/favouriteActs') ?></li>		
     			<li><?php echo link_to('<i>bloccati</i>', 'monitoring/blockedActs') ?></li>
     		</ul>
-    		</form>
     	</div>
 
       <?php foreach ($monitored_acts_types as $type): ?>
@@ -50,51 +48,52 @@
 
 
 <!-- slider jQuery per gli atti e le notizie relative -->
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 jQuery.noConflict();
-(function($){
+(function($) {
+  $(document).ready(function(){
   
-  // acts slider
-  $('.type').click( function(){
-    var id = $(this).get(0).id.split('_').pop();
-    $(this).parent().find("#type_acts_" + id).slideToggle("slow");
-  });
+    // acts slider
+    $('.type').click( function(){
+      var id = $(this).get(0).id.split('_').pop();
+      $(this).parent().find("#type_acts_" + id).slideToggle("slow");
+    });
 
-	// preferiti
-	$('.ico-star').click(
-		function(){
-			$(this).toggleClass('bookmark');
-			// return false;
-		}
-	);
+  	// preferiti
+  	$('.ico-star').click(
+  		function(){
+  			$(this).toggleClass('bookmark');
+  			// return false;
+  		}
+  	);
 
 
-	// Visualizza/nascondi liste in tabella
-	$('.btn-open-table').click(
-		function(){
-      $this = $(this);
-			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
-      var id = $(line).get(0).id.split('_').pop();
-      var url = "<?php echo url_for('monitoring/ajaxNewsForItem'); ?>";
-      if (!$this.data('news_loaded'))
-      {
-        $.get(url, { item_id: id, item_model: 'OppAtto', all_news_route: '@news_atto' },
-          function(data){
-            $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
-            $this.data('news_loaded', true);
-            $this.unbind('click').click( function(){
-              $(line).next().find(".news-parlamentari").slideToggle("slow");
-              $this.toggleClass('btn-open-table').toggleClass('btn-close-table');
-              return false;
-            });
-          })      
-      }
-			return false; 
-		}
-	);
-
+  	// Visualizza/nascondi liste in tabella
+  	$('.btn-open-table').click(
+  		function(){
+        $this = $(this);
+  			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
+        var id = $(line).get(0).id.split('_').pop();
+        var url = "<?php echo url_for('monitoring/ajaxNewsForItem'); ?>";
+        if (!$this.data('news_loaded'))
+        {
+          $.get(url, { item_id: id, item_model: 'OppAtto', all_news_route: '@news_atto' },
+            function(data){
+              $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
+              $this.data('news_loaded', true);
+              $this.unbind('click').click( function(){
+                $(line).next().find(".news-parlamentari").toggle();
+                $this.toggleClass('btn-open-table').toggleClass('btn-close-table');
+                return false;
+              });
+            })      
+        }
+  			return false; 
+  		}
+  	);
+  })
 })(jQuery);
 
 

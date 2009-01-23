@@ -266,18 +266,25 @@ class monitoringActions extends sfActions
   { 
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();
-    $response->addJavascript('prototype.js');
-    $response->addJavascript('effects.js');
-    $response->addJavascript('controls.js');
-    
+
     // fetch current user profile
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
  
-    // fetch teseo top_terms
-    $this->teseo_tts = OppTeseottPeer::doSelect(new Criteria());
+    // fetch teseo top_terms and add monitoring info
+    $teseo_tts_with_counts = OppTeseottPeer::getAllWithCount();
+    foreach ($teseo_tts_with_counts as $term_id => $term_data)
+    {
+      $teseo_tts_with_counts[$term_id]['n_monitored'] = OppTeseottPeer::countTagsUnderTermMonitoredByUser($term_id, $this->opp_user->getId());
+    }
+    $this->teseo_tts_with_counts = $teseo_tts_with_counts;
     
-    // fetch tags I am monitoring
-    $this->my_tags = self:: _getMyTags();
+    // get user's monitored tags as a cloud
+    $c = new Criteria();
+    $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
+    $this->my_tags = TagPeer::getPopulars($c, array('limit' => 10 ));
+    $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
+                            $this->opp_user->countMonitoredObjects('Tag');
+    
   }
 
   public function executeAjaxTagsForTopTerm()
@@ -331,26 +338,37 @@ class monitoringActions extends sfActions
       $this->has_more = $n_news;    
   }
 
-  public function executeAjaxAddTagIdToMyMonitoredTags()
+  public function executeAddTagToMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    if (!$isAjax) return sfView::noAjax;
 
     // fetch current user profile
     $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    
 
     // fetch the tag to add
-    $tag_id = $this->getRequestParameter('tag_id');
-    $tag = TagPeer::retrieveByPK($tag_id);
-    
+    $tag_name = $this->getRequestParameter('name');
+    $tag = TagPeer::retrieveByTagname($tag_name);
+
     $this->_addTagToMyMonitoredTags($tag, $opp_user);
+
+    // a tag was added, clear the cache for the news, acts and tags page
+    $cacheManager = $this->getContext()->getViewCacheManager(); 
+    if (!is_null($cacheManager))
+    {
+      $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
+      $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());       
+    }
+
+    if ($isAjax)
+      $this->setTemplate('ajaxMyTags');
+    else
+      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
   }
 
-  public function executeAjaxAddTagValueToMyMonitoredTags()
+  public function executeAddTagValueToMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    // if (!$isAjax) return sfView::noAjax;
 
     // fetch current user profile
     $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
@@ -360,46 +378,51 @@ class monitoringActions extends sfActions
     $tag = TagPeer::retrieveFirstByTripleValue($tag_value);
 
     $this->_addTagToMyMonitoredTags($tag, $opp_user);
-  }
-
-  protected function _addTagToMyMonitoredTags($tag, $opp_user)
-  {
-    // check if the user can add a new tag to the monitored pool
-    $this->remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
-    if ($this->remaining_tags == 0){
-      $this->renderText('Hai terminato i tag monitorabili, acquistane di più!');
-      return sfView::NONE;
-    }
-
-    // add the tag to the monitorable pool
-    $tag->addMonitoringUser($this->getUser()->getId());
-
-    // decrease the number of tags the user can add
-    $this->remaining_tags --;
-    
-    // fetch the monitored pool
-    $this->my_tags = self::_getMyTags();
-    $this->setTemplate('ajaxMyTags');
     
     // a tag was added, clear the cache for the news, acts and tags page
     $cacheManager = $this->getContext()->getViewCacheManager(); 
-    if (!is_null($cache_manager))
+    if (!is_null($cacheManager))
     {
       $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 
       $cacheManager->remove('monitoring/acts?user_token='.$this->getUser()->getToken()); 
       $cacheManager->remove('monitoring/tags?user_token='.$this->getUser()->getToken());       
     }
+
+    if ($isAjax)
+      $this->setTemplate('ajaxMyTags');
+    else
+      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
+  }
+
+  /**
+   * add the specified tag to my monitored tags
+   *
+   * @param string $tag 
+   * @param string $opp_user 
+   * @return integer the number of remaining tags or -1 if the limit was already passed
+   * @author Guglielmo Celata
+   */
+  protected function _addTagToMyMonitoredTags($tag, $opp_user)
+  {
+    // check if the user can add a new tag to the monitored pool
+    $remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
+    if ($remaining_tags == 0)
+      return -1;
+
+    // add the tag to the monitorable pool
+    $tag->addMonitoringUser($this->getUser()->getId());
+
+    return $remaining_tags -1;
   }
   
 
-  public function executeAjaxRemoveTagFromMyMonitoredTags()
+  public function executeRemoveTagFromMyMonitoredTags()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
-    // if (!$isAjax) return sfView::noAjax;
 
     // remove the tag from the monitored pool
-    $tag_id = $this->getRequestParameter('tag_id');
-    $tag = TagPeer::retrieveByPK($tag_id);
+    $tag_name = $this->getRequestParameter('name');
+    $tag = TagPeer::retrieveByTagname($tag_name);
     $tag->removeMonitoringUser($this->getUser()->getId());
 
     // fetch current user profile and the number of tags the user can still add to the pool
@@ -407,8 +430,9 @@ class monitoringActions extends sfActions
     $this->remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
 
     // fetch the monitored pool
-    $this->my_tags = self::_getMyTags();
-    $this->setTemplate('ajaxMyTags');
+    $c = new Criteria();
+    $c->add(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::IN);
+    $this->my_tags = TagPeer::getPopulars($c, array('limit' => 10 ));
     
     // a tag was removed, clear the cache for the news, acts and tags page
     $cacheManager = $this->getContext()->getViewCacheManager();
@@ -425,6 +449,12 @@ class monitoringActions extends sfActions
     {
       $act->removeNegativeBookmarking($this->getUser()->getId());
     }
+
+    if ($isAjax)
+      $this->setTemplate('ajaxMyTags');
+    else
+      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
+
     
   }
 
@@ -477,7 +507,8 @@ class monitoringActions extends sfActions
 
     
   }
-    
+
+
   public function executeAjaxRemoveItemFromMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
@@ -534,5 +565,6 @@ class monitoringActions extends sfActions
     $opp_user = OppUserPeer::retrieveByPK(sfContext::getInstance()->getUser()->getId());
     return $opp_user->getMonitoredObjects('Tag');    
   }
+
   
 }

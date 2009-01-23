@@ -42,7 +42,7 @@
               array('%1%' => $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
               $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
             ?> 
-            - ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y h:i') ?> - 
+            - ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y') ?> 
   				</a></p></td>
   				<td>
             <!-- rimozione dal monitoraggio -->
@@ -66,35 +66,36 @@
   </div>
 </div>
 <!-- slider jQuery per le notizie relative ai politici -->
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 jQuery.noConflict();
 (function($){
-  
-	// Visualizza/nascondi liste in tabella
-	$('.btn-open-table').click(
-		function(){
-      $this = $(this);
-			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
-      var id = $(line).get(0).id.split('_').pop();
-      var url = "<?php echo url_for('monitoring/ajaxNewsForItem'); ?>";
-      if (!$this.data('news_loaded'))
-      {
-        $.get(url, { item_id: id, item_model: 'OppPolitico', all_news_route: '@news_parlamentare' },
-          function(data){
-            $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
-            $this.data('news_loaded', true);
-            $this.unbind('click').click( function(){
-              $(line).next().find(".news-parlamentari").slideToggle("slow");
-              $this.toggleClass('btn-open-table').toggleClass('btn-close-table');
-              return false;
-            });
-          })      
-      }
-			return false; 
-		}
-	);
+  $(document).ready(function($){
+  	// Visualizza/nascondi liste in tabella
+  	$('.btn-open-table').click(
+  		function(){
+        $this = $(this);
+  			var line = $this.toggleClass('btn-open-table').toggleClass('btn-close-table').parents('tr');
+        var id = $(line).get(0).id.split('_').pop();
+        var url = "<?php echo url_for('monitoring/ajaxNewsForItem'); ?>";
+        if (!$this.data('news_loaded'))
+        {
+          $.get(url, { item_id: id, item_model: 'OppPolitico', all_news_route: '@news_parlamentare' },
+            function(data){
+              $(line).next().find('.news-parlamentari').append(data).css('display', 'none').slideDown();
+              $this.data('news_loaded', true);
+              $this.unbind('click').click( function(){
+                $(line).next().find(".news-parlamentari").toggle();
+                $this.toggleClass('btn-open-table').toggleClass('btn-close-table');
+                return false;
+              });
+            })      
+        }
+  			return false; 
+  		}
+  	);    
+  })
   
 })(jQuery);
 

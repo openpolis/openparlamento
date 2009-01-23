@@ -98,12 +98,12 @@ thead th { font-size: 12px; vertical-align: top; }
  * FOLKSONOMIES
  *----------------------------------------------*/
 
-.folk1 { font-size: 150%; }
-.folk2 { font-size: 140%; }
-.folk3 { font-size: 130%; }
-.folk4 { font-size: 120%; }
-.folk5 { font-size: 110%; }
-.folk6 { font-size: 100%; }
+.folk6 { font-size: 150%; }
+.folk5 { font-size: 140%; }
+.folk4 { font-size: 130%; }
+.folk3 { font-size: 120%; }
+.folk2 { font-size: 110%; }
+.folk1 { font-size: 100%; }
 
 .folk1, 
 .folk2,
@@ -210,6 +210,8 @@ thead th { font-size: 12px; vertical-align: top; }
 #content-tabs { margin: 0 12px; }
 #content-tabs li { float: left; background: #ccd4d5 url(../images/bg-tab-content.png) repeat-x top left; margin-right: 5px; padding: 0 18px;
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; }
+
+#content-tabs li a { line-height: 40px; }
 #content-tabs li.current { background-image: none; background-color: #fff; }
 #content-tabs li.current a, #content-tabs li.current a:visited, #content-tabs li.current { color: #4e8480; cursor: default; }
 #content-tabs h2 { line-height: 40px; min-height: 1.4em; height:40px;}
@@ -604,3 +606,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 /* Hides from IE-mac \*/
 .float-container {display: block}
 /* End hide from IE-mac */
+
+ul.monitoring-list { min-height: 30px;}
+
+.sfWebDebugLogs td { text-align: left; }

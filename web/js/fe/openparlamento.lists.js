@@ -1,3 +1,5 @@
+jQuery.noConflict();
+
 (function($) {
 
 $(document).ready(function(){
@@ -77,18 +79,6 @@ $(document).ready(function(){
 		}
 	);
 	
-	$('.topics-list li').click(
-		function(){
-			var child = $(this).find('ul');
-			if(child.length) {
-				$(this).toggleClass('opened');
-				child.toggle();
-			}
-			return false;
-		}
-	);
-	
-
 
 	// mostra tasto applica al cambio filtri
 	$('#disegni-decreti-filter select').change( function() { $('#disegni-decreti-filter-apply').show(); } );
