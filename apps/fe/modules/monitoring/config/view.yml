@@ -11,5 +11,10 @@ politiciansSuccess:
   javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
 
 tagsSuccess:  
-  javascripts:    [prototype.js, effects.js, control.js, jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
+  stylesheets:    [monitoring, jquery.autocomplete.css]
+
+searchSuccess:  
+  javascripts:    [jquery.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.bgiframe.min.js, fe/jquery.autocomplete.min.js]
+  stylesheets:    [monitoring, jquery.autocomplete.css]
   

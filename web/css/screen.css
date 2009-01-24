@@ -608,5 +608,6 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 /* End hide from IE-mac */
 
 ul.monitoring-list { min-height: 30px;}
+li.top_term li a:hover { background-color: #ededed;}
 
 .sfWebDebugLogs td { text-align: left; }

@@ -281,7 +281,7 @@ class monitoringActions extends sfActions
     // get user's monitored tags as a cloud
     $c = new Criteria();
     $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
-    $this->my_tags = TagPeer::getPopulars($c, array('limit' => 10 ));
+    $this->my_tags = TagPeer::getPopulars($c);
     $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
                             $this->opp_user->countMonitoredObjects('Tag');
     
@@ -291,11 +291,19 @@ class monitoringActions extends sfActions
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();
     if (!$isAjax) return sfView::noAjax;
-
-    $this->my_tags = self::_getMyTags();
+    $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    
+    $c = new Criteria();
+    $c->add(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::IN);
+    $this->my_tags = TagPeer::getPopulars($c);
     
     $top_term_id = $this->getRequestParameter('tt_id');
-    $this->tags = OppTeseottPeer::retrieveTagsFromTTPK($top_term_id);
+
+    $c = new Criteria();
+    $c->add(OppTagHasTtPeer::TESEOTT_ID, $top_term_id);
+    $c->addJoin(OppTagHasTtPeer::TAG_ID, TagPeer::ID);
+    $c->addAscendingOrderByColumn(TagPeer::TRIPLE_VALUE);
+    $this->tags = TagPeer::getPopulars($c);
   }
 
   public function executeAjaxNewsForItem()
@@ -564,6 +572,11 @@ class monitoringActions extends sfActions
     // fetch tags I am monitoring
     $opp_user = OppUserPeer::retrieveByPK(sfContext::getInstance()->getUser()->getId());
     return $opp_user->getMonitoredObjects('Tag');    
+  }
+
+  public function executeSearch()
+  {
+    # code...
   }
 
   

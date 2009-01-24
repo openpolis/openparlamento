@@ -17,6 +17,7 @@ all:
     allows_tagging_removal:      'self'
     tagging_removal_credentials: ['moderator']
     use_unique_triple_values:    true
+    limit:                       1000
 
   sfEmendPlugin:    
     user:

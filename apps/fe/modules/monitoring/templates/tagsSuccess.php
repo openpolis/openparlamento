@@ -26,12 +26,10 @@
       </ul>
 	  </div>
 
-    <h5 class="subsection">Aggiungi un argomento</h3>
+    <h5 class="subsection">Aggiungi un argomento</h5>
 
     <?php if ($opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
-      <div class="W25_100 float-right">
-        <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array()); ?>
-      </div>
+      <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array('name' => 'search_tag')); ?>
     <?php endif ?>
 
     <div id="top_terms_drill_down" class="W73_100 float-left">
@@ -44,7 +42,7 @@
                 <?php echo $term_data['n_monitored'] ?>
               )</span>              
             <?php endif ?>
-            <ul id="top_term_tags_<?php echo $term_id;?>" style="display:none"></ul>
+            <ul id="top_term_tags_<?php echo $term_id;?>" style="display:none"><li> </li></ul>
           </li>
         <?php endforeach ?>
   		</ul>
@@ -59,13 +57,14 @@
 
 jQuery.noConflict();
 (function($) {
-  $(document).ready(function(){
-  
+  $().ready(function(){
+
     $('.topics-list li.top_term a').click(
     	function(){
     	  $this = $(this);
     	  
     		var child = $this.nextAll('ul');
+    		var parent = $this.parents('li');
         var url = "<?php echo url_for('monitoring/ajaxTagsForTopTerm'); ?>";
         var id = $(child).get(0).id.split('_').pop();
     		if(child.length) {
@@ -73,7 +72,7 @@ jQuery.noConflict();
           {
             $.get(url, { tt_id: id },
               function(data){
-          			$this.toggleClass('opened');
+          			parent.toggleClass('opened');
                 child.append(data).toggle();
                 $this.data('tags_loaded', true);
                 /*
@@ -113,7 +112,7 @@ jQuery.noConflict();
               }
             );      
           } else {
-            $this.toggleClass('closed').toggleClass('opened');
+            parent.toggleClass('closed').toggleClass('opened');
       			child.toggle();
           }
     		}
