@@ -1,6 +1,22 @@
+<script>
+jQuery(document).ready(function(){
+  var url = "<?php echo url_for('deppTagging/tagsAutocomplete')?>";
+  jQuery("#tag_search").autocomplete(url, {
+    formatItem: function(row, i, max) {
+			return row[0] + " (" + row[1] + ")";
+		},
+    formatResult: function(row, i, max) {
+			return row[0];
+		},    		
+    minChars: "2", width: "300px", max: "50", scrollHeight: "250px"
+  }).result(function(event, data) {
+     jQuery("#usertags").get(0).value =  !data ? "No match!" :  data[2];
+  });
+});
+</script>
+
 <?php echo use_helper('Javascript', 'Tags') ?>
 <div id="tag_associati" style="margin: 20px 0">
-
 
   <div id="tag_show" class="tags">
     <em>argomenti:</em>
@@ -16,19 +32,19 @@
   </div>
 
   <?php if ($anonymous_tagging || $sf_user->isAuthenticated()): ?>
-    <div id="tag_edit" class="tags-add">
-      aggiungi un argomento 
+    <div id="tag_edit">
+      Cerca tag: 
       <?php echo form_remote_tag(array(
-          'update' => 'tag_show',
-          'complete' => "$('usertags_autocomplete').value=''; refresh_tags_show_observers();",
-          'url'    => "deppTagging/addAjax?content_type=" .get_class($content). "&content_id=". $content->getId()
-          ), array('style' => 'display:inline')); ?>
-        <input type="text" id="usertags_autocomplete" name="usertags" 
-               autocomplete="off" value="" size="60"/>
+        'update' => 'tag_show',
+        'url' => 'deppTagging/addAjax?content_type='. get_class($content) . "&content_id=" . $content->getId(),
+        'complete' => "$('usertags').value=''; refresh_tags_show_observers();"), 
+        array('id' => 'autocompleter', 'style' => 'display:inline')); ?>
+        <input id="tag_search" class="ac_input" />
+        <input id="usertags" name="usertags" type="hidden"/>
+        <?php echo submit_tag('Aggiungi', array('id' => 'aggiungi', 'name'=>'aggiungi')) ?>
+        <?php echo image_tag('indicator.gif', array('id'=>'autocomplete_indicator', 'style' => 'display:none')) ?>
         <?php echo submit_tag('Salva') ?>
-        <div id="autocomplete_choices" class="autocomplete"></div>
       </form>
-      <?php echo image_tag('indicator.gif', array('id'=>'autocomplete_indicator', 'style' => 'display:none')) ?>
     </div>
   <?php endif ?>  
 
@@ -36,29 +52,6 @@
 
 
 <?php if ($anonymous_tagging || $sf_user->isAuthenticated()): ?>
-
-  <!-- script per la gestione dell'autocompleter -->
-  <script type="text/javascript" language="javascript">
-  //<![CDATA[
-  new Ajax.Autocompleter("usertags_autocomplete", "autocomplete_choices",
-                         "<?php echo url_for('deppTagging/tagsAutocomplete')?>", 
-    {
-      paramName: "value",
-      indicator: "autocomplete_indicator",
-      frequency: 0.3,
-      tokens: [','],
-      updateElement: function (le) { 
-        var val = le.innerHTML.unescapeHTML();
-        if (val.indexOf('\n', 1) != -1) val = val.substring(0, val.indexOf('\n', 1)).strip();
-        $('usertags_autocomplete').value =  val;
-        
-        //var val = $('usertags_autocomplete').value;
-        //$('usertags_autocomplete').value =  (val.lastIndexOf(',') > 0 ? val.truncate(2+val.lastIndexOf(','), '') : '') + le.innerHTML.unescapeHTML().strip();
-      }
-    });
-
-  //]]>
-  </script>
 
   <script type="text/javascript" language="javascript">
   //<![CDATA[

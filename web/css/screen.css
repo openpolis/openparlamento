@@ -610,4 +610,14 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 ul.monitoring-list { min-height: 30px;}
 li.top_term li a:hover { background-color: #ededed;}
 
+#tag_edit .ac_input {
+  border:1px solid gray;
+  font-size:1.2em;
+  height:1.25em;
+  width:250px;
+}
+.tags div {
+  display: inline;
+}
+
 .sfWebDebugLogs td { text-align: left; }

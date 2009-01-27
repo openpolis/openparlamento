@@ -1,4 +1,10 @@
+indexSuccess:  
+  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
+  stylesheets:    [monitoring, jquery.autocomplete.css]
+
 documentoSuccess:
   javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js,  http://emend.stage.htrex.keybit.net/emend.boot.js]
+
 default:
   javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+

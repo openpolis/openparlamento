@@ -46,7 +46,7 @@ class deppTaggingActions extends BasedeppTaggingActions
     $content_peer = $this->getRequestParameter('content_type') . 'Peer';
     $content = call_user_func(array($content_peer, 'retrieveByPK'), $content_id);
     $usertags = strip_tags($this->getRequestParameter('usertags'));
-
+    
     // transform tag values into triple names
     // add the tag to the associated tag pool
     if ($usertags != '')
