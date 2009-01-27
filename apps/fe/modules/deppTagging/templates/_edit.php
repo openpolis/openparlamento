@@ -43,7 +43,6 @@ jQuery(document).ready(function(){
         <input id="usertags" name="usertags" type="hidden"/>
         <?php echo submit_tag('Aggiungi', array('id' => 'aggiungi', 'name'=>'aggiungi')) ?>
         <?php echo image_tag('indicator.gif', array('id'=>'autocomplete_indicator', 'style' => 'display:none')) ?>
-        <?php echo submit_tag('Salva') ?>
       </form>
     </div>
   <?php endif ?>  
