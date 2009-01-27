@@ -122,7 +122,7 @@ class Text
           if($action=='list')  
             return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
-            return $atto->getTitolo();
+            return strip_tags(Text::shorten($descrizione, 200));
         }    
         else
         {  

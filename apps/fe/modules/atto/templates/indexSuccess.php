@@ -77,14 +77,24 @@
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId())); ?>
       
+      <?php if($status): ?>
+      <!-- rappresentazione grafica dell'iter -->
 	  <?php include_partial('statoAvanzamento', 
 	                      array('rappresentazioni_pred' => $rappresentazioni_pred,
 						  'atto' => $atto,
 						  'rappresentazioni_this' => $rappresentazioni_this,
 						  'rappresentazioni_succ' => $rappresentazioni_succ,
 						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva)) ?>
- 
-
+						  
+ 	   <!-- tutto l'iter -->
+	   <?php include_partial('status', array('status' => $status)) ?>
+	
+	   <?php if(count($iter_completo)!=0): ?>
+	     <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo)) ?>
+	   <?php endif; ?>
+	
+	<?php endif; ?>
+	<!-- Firmatari -->
 	    <?php include_component('atto', 'firmatari', 
 	                            array('primi_firmatari' => $primi_firmatari, 'relatori' => $relatori)) ?>
 
