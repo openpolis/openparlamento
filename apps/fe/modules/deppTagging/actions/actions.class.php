@@ -45,6 +45,7 @@ class deppTaggingActions extends BasedeppTaggingActions
     $content_id = $this->getRequestParameter('content_id');
     $content_peer = $this->getRequestParameter('content_type') . 'Peer';
     $content = call_user_func(array($content_peer, 'retrieveByPK'), $content_id);
+    
     $tag_search = trim(strip_tags($this->getRequestParameter('tag_search')), " ,");
     
     // transform tag values into triple names
