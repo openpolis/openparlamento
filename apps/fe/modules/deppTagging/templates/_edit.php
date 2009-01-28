@@ -8,9 +8,7 @@ jQuery(document).ready(function(){
     formatResult: function(row, i, max) {
 			return row[0];
 		},    		
-    minChars: "2", width: "300px", max: "50", scrollHeight: "250px"
-  }).result(function(event, data) {
-     jQuery("#usertags").get(0).value =  !data ? "No match!" :  data[2];
+    minChars: "2", width: "300px", max: "50", scrollHeight: "250px", multiple: true
   });
 });
 </script>
@@ -37,10 +35,9 @@ jQuery(document).ready(function(){
       <?php echo form_remote_tag(array(
         'update' => 'tag_show',
         'url' => 'deppTagging/addAjax?content_type='. get_class($content) . "&content_id=" . $content->getId(),
-        'complete' => "$('usertags').value=''; refresh_tags_show_observers();"), 
+        'complete' => "$('tag_search').value=''; refresh_tags_show_observers();"), 
         array('id' => 'autocompleter', 'style' => 'display:inline')); ?>
-        <input id="tag_search" class="ac_input" />
-        <input id="usertags" name="usertags" type="hidden"/>
+        <input id="tag_search" name="tag_search" class="ac_input" />
         <?php echo submit_tag('Aggiungi', array('id' => 'aggiungi', 'name'=>'aggiungi')) ?>
         <?php echo image_tag('indicator.gif', array('id'=>'autocomplete_indicator', 'style' => 'display:none')) ?>
       </form>
