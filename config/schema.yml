@@ -85,6 +85,7 @@ propel:
     gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE } 
     data_inizio:      { type: date }
     data_fine:        { type: date }
+    presenze:         { type: integer }
     ribelle:          { type: integer }
     created_at:
     
