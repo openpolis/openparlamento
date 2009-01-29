@@ -253,14 +253,14 @@ class OppAtto extends BaseOppAtto
     $c->clearSelectColumns();
     $c->addSelectColumn(OppInterventoPeer::ID);
     $c->addJoin(OppInterventoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppInterventoPeer::SEDE_ID, OppSedePeer::ID, Criteria::LEFT_JOIN);	
+	  $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
+	  $c->addJoin(OppInterventoPeer::SEDE_ID, OppSedePeer::ID, Criteria::LEFT_JOIN);	
     $c->add(OppInterventoPeer::ATTO_ID, $this->getId(), Criteria::EQUAL);
     $c->addDescendingOrderByColumn(OppInterventoPeer::DATA);
-	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);   
-	$count = OppInterventoPeer::doCount($c);
+	  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);   
+	  $count = OppInterventoPeer::doCount($c);
 			
-	return $count;
+	  return $count;
   }
   
   public function getCommissioni()

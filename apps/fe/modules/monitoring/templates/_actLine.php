@@ -21,10 +21,8 @@
 	</th>
 	<th>
 	  <!-- link alla pagina dell'atto -->
-    <em><?php echo link_to(content_tag('em', $act->getRamo().'.'.$act->getNumfase()) . '&nbsp;' . $act->getTitolo(),
-                           'atto/index?id=' . $act->getId(),
-                           array('title' => 'vai alla pagina')) ?></em>
-
+    <?php echo link_to(Text::denominazioneAtto($act, 'list'), 'atto/index?id='.$act->getId()) ?>
+    
 
    
 	</th>

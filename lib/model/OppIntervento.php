@@ -11,6 +11,33 @@ class OppIntervento extends BaseOppIntervento
 {
   public $generate_group_news = true;
   
+  public function save($con = null)
+  {
+    if ($this->isNew())
+      $updateInterventi = true;
+      
+    $affected_rows = self::save($con);
+    
+    if ($updateInterventi)
+    {
+      $atto = $this->getOppAtto();
+      $interventi = $atto->getNInterventi();
+      $atto->setNInterventi($interventi + 1);
+    }
+    
+    return $affected_rows;
+  }
+  
+  public function delete($con = null)
+  {
+    $atto = $this->getOppAtto();
+    $interventi = $atto->getNInterventi();
+    
+    self::delete($con);
+    
+    $atto->setNInterventi($interventi - 1);
+  }
+  
   /**
    * generates a group news, unless the sf_news_cache already has it
    *
