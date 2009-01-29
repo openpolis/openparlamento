@@ -17,16 +17,56 @@ class parlamentareActions extends sfActions
   public function executeIndex()
   {
     $this->parlamentare = OppPoliticoPeer::RetrieveByPk($this->getRequestParameter('id'));
-	$this->forward404Unless($this->parlamentare); 
+	  $this->forward404Unless($this->parlamentare); 
+
+	  $carica = $this->parlamentare->getCaricaDepSenCorrente();
+    $this->carica = $carica;
+    
+    $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
+	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($carica->getId());
+	  
+	  
+	  $this->circoscrizione = $carica->getCircoscrizione();	  
+	  // $this->cariche = $this->parlamentare->getAltreCariche();
+    
+
+    if ($carica->getTipoCaricaId() == 1) $ramo = 'C';
+    if ($carica->getTipoCaricaId() == 4 || $carica->getTipoCaricaId() == 5) $ramo = 'S';
+    $this->ramo = $ramo=='C'?'camera':'senato';
+    $nparl = OppCaricaPeer::getNParlamentari($ramo);
+
+    $this->presenze = $carica->getPresenze();
+    $this->assenze = $carica->getAssenze();
+    $this->missioni = $carica->getMissioni();
+    $this->nvotazioni = $this->presenze + $this->assenze + $this->missioni;
+    $this->presenze_perc = number_format($this->presenze * 100 / $this->nvotazioni, 2);
+    $this->assenze_perc = number_format($this->assenze * 100 / $this->nvotazioni, 2);
+    $this->missioni_perc = number_format($this->missioni * 100 / $this->nvotazioni, 2);
+    
+    $this->presenze_media = number_format(OppCaricaPeer::getSomma('presenze', $ramo) / $nparl, 0);
+    $this->assenze_media = number_format(OppCaricaPeer::getSomma('assenze', $ramo) / $nparl, 0);    
+    $this->missioni_media = number_format(OppCaricaPeer::getSomma('missioni', $ramo) / $nparl, 0);
+    $this->nvotazioni_media = $this->presenze_media + $this->assenze_media + $this->missioni_media;
+    
+    $this->presenze_media_perc = number_format($this->presenze_media * 100 / $this->nvotazioni_media, 2);
+    $this->assenze_media_perc = number_format($this->assenze_media * 100 / $this->nvotazioni_media, 2);
+    $this->missioni_media_perc = number_format($this->missioni_media * 100 / $this->nvotazioni_media, 2);
+
+    $this->ribelli = $carica->getRibelle();
+    $this->ribelli_perc = number_format($this->ribelli * 100 / $this->presenze, 2);
+    $this->ribelli_media = number_format(OppCaricaPeer::getSomma('ribelle', $ramo) / $nparl, 2);
+    $this->ribelli_media_perc = number_format($this->ribelli_media * 100 / $this->presenze_media, 2);
+    
+	  /*
+	  $this->voti = $this->parlamentare->getVoti($this->getRequestParameter('page',1));
 	
-	$this->cariche = OppCaricaPeer::doSelectFullReport($this->getRequestParameter('id'));
-	
-	$this->voti = $this->parlamentare->getVoti($this->getRequestParameter('page',1));
-	
-    $this->pager = new customArrayPager(null, sfConfig::get('app_pagination_limit'), $this->parlamentare->getVotiCount());
+    $this->pager = new customArrayPager(null, sfConfig::get('app_pagination_limit'),    
+                                        $this->parlamentare->getVotiCount());
     $this->pager->setResultArray($this->voti);
     $this->pager->setPage($this->getRequestParameter('page',1));
     $this->pager->init();
+    */
   }
   
   public function executeList()
@@ -161,14 +201,31 @@ class parlamentareActions extends sfActions
       if ($this->hasRequestParameter('filter_const'))
         $this->session->setAttribute('const', $this->getRequestParameter('filter_const'), "pol_{$ramo}_filter");
 
+    } 
+
+    // legge i filtri attivi dalla sessione utente o dalle variabili passate in GET
+    if (in_array('group', $active_filters))
+    {
+      if ($this->getRequest()->getMethod() == sfRequest::GET && 
+          $this->hasRequestParameter('filter_group'))
+        {
+          $this->filters['group'] = $this->getRequestParameter('filter_group');
+          $this->filters['const'] = '0';
+        }
+      else
+        $this->filters['group'] = $this->session->getAttribute('group', '0', "pol_{$ramo}_filter");      
     }
 
-    // legge sempre i filtri dalla sessione utente (quelli attivi)
-    if (in_array('group', $active_filters))
-      $this->filters['group'] = $this->session->getAttribute('group', '0', "pol_{$ramo}_filter");
-
     if (in_array('const', $active_filters))
-      $this->filters['const'] = $this->session->getAttribute('const', '0', "pol_{$ramo}_filter");
+    {
+      if ($this->getRequest()->getMethod() == sfRequest::GET && $this->hasRequestParameter('filter_const'))
+      {
+        $this->filters['const'] = $this->getRequestParameter('filter_const');
+        $this->filters['group'] = '0';
+      }
+      else
+        $this->filters['const'] = $this->session->getAttribute('const', '0', "pol_{$ramo}_filter");
+    }
 
   }
 

@@ -9,6 +9,27 @@
  */ 
 class OppPolitico extends BaseOppPolitico
 {
+
+  public function getCaricaDepSenCorrente()
+  {
+    $c = new Criteria();
+    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1, 4, 5), Criteria::IN);
+    $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::ISNULL);
+    $c->add(OppCaricaPeer::POLITICO_ID, $this->getId());
+    return OppCaricaPeer::doSelectOne($c);
+  }
+  
+  public function getGruppoCorrente()
+  {
+    $c = new Criteria();
+    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1, 4, 5), Criteria::IN);
+    $c->add(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+    $c->add(OppCaricaPeer::LEGISLATURA, 16);
+    $c->add(OppCaricaPeer::POLITICO_ID, $this->getId());
+    $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID);
+    $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
+    return OppGruppoPeer::doSelectOne($c);
+  }
   
   public function countAllMonitoringUsers()
   {
