@@ -13,13 +13,21 @@ print("Fetching data... \n\n");
 $leg=16;
 
 $c = new Criteria();
+$crit0 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 1);
+$crit1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 4);
+$crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+
+$crit0->addOr($crit1);
+$crit0->addOr($crit2);
+$c->add($crit0);
 $c->add(OppCaricaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
+$c->add(OppCaricaPeer::ID, 332634, Criteria::EQUAL);
 $cariche = OppCaricaPeer::doSelect($c);
 
 foreach($cariche as $carica)
   {  
     
-	$parlamentare = OppPoliticoPeer::RetrieveByPk($carica->getPoliticoId());
+    $parlamentare = OppPoliticoPeer::RetrieveByPk($carica->getPoliticoId());
   
     $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($carica->getId());
     
@@ -96,12 +104,20 @@ foreach($cariche as $carica)
 	  }
 	  
 	  $cont = 0;
+	  $cont_pres=0;
+	  $zio=0;
 	  
 	  foreach ($voto_gruppo as $indice => $voto)
 	  {
+	  
 	    //nel caso di gruppo misto il calcolo non viene fatto
 	    if( !(in_array( '13', $id_gruppo )) )
 	    {
+	      // calcolo le presenze
+              if($voto_carica[$indice]=='Favorevole' || $voto_carica[$indice]=='Astenuto' || $voto_carica[$indice]=='Contrario')
+              {
+              	$cont_pres=$cont_pres+1;
+              }	 
 	      if(isset($voto_carica[$indice]) 
 		    && ($voto=='Favorevole' || $voto=='Astenuto' || $voto=='Contrario' ) 
 		    && $voto!=$voto_carica[$indice])
@@ -112,8 +128,9 @@ foreach($cariche as $carica)
 		      //echo "votazione: ".$indice." voto gruppo: ".$voto." voto carica: ".$voto_carica[$indice]."<br />";
 		    }
 		  }
-        }		    
-	  }
+               }
+
+	     }
 	  
 	  $c = new Criteria();
 	  $c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica->getId(), Criteria::EQUAL);
@@ -121,9 +138,10 @@ foreach($cariche as $carica)
 	  $carica_gruppo = OppCaricaHasGruppoPeer::doSelectOne($c);
 	  
 	  $carica_gruppo->setRibelle($cont);
+	  $carica_gruppo->setPresenze($cont_pres);
 	  $carica_gruppo->save();
 	  
-	  print $di.' / '.$df.' => '.$nome." (id: ".$gruppo['gruppo_id'].") ribellioni:".$cont."\n";
+	  print $di.' / '.$df.' => '.$nome." (id: ".$gruppo['gruppo_id'].") ribellioni:".$cont." voti nel gruppo: ".$cont_pres."\n";
 	}	
      
   }	
@@ -146,7 +164,7 @@ foreach ($deputati as $deputato) {
 	$gruppi = OppCaricaHasGruppoPeer::doSelect($c);
 	$ribelle=0;
 	foreach ($gruppi as $gruppo) {
-		$ribelle=$ribelle+$gruppo->getRibelle();
+		$ribelle=$ribelle+$gruppo->getRibelle(); 
 		
 	}
 	$deputato->setRibelle($ribelle);
@@ -155,5 +173,7 @@ foreach ($deputati as $deputato) {
 }
   
 print("done.\n");
+
+mail("e.dicesare@depp.it", "OK - Update Ribellioni", "aggiornamento a buon fine", "From: BatchOpp");	
 
 ?>
