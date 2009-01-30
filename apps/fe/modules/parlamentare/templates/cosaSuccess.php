@@ -1,4 +1,4 @@
-<?php use_helper('Date') ?>
+<?php use_helper('Date', 'Number') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
 	<li class="current"><h2>On.<?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
@@ -138,20 +138,20 @@
   			<div class="meter-bar float-container">
   				<label>presenze:</label>
   				<div class="green-meter-bar">
-  					<div style="left: <?php echo $presenze_media_perc ?>%;" class="meter-average"><label>valore medio: <?php echo $presenze_media_perc ?> (<?php echo $presenze_media ?>)</label> </div>
-  					<div style="width: <?php echo $presenze_perc ?>%;" class="meter-label"><?php echo $presenze_perc ?>% (<?php echo $presenze ?>)</div>									
-  					<div style="width: <?php echo $presenze_perc ?>%;" class="meter-value"> </div>
+  					<div style="left: <?php echo number_format($presenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($presenze_media_perc, 2) ?> (<?php echo number_format($presenze_media, 0) ?>)</label> </div>
+  					<div style="width: <?php echo number_format($presenze_perc, 2) ?>%;" class="meter-label"><?php echo number_format($presenze_perc, 2) ?>% (<?php echo number_format($presenze, 0) ?>)</div>									
+  					<div style="width: <?php echo number_format($presenze_perc, 2) ?>%;" class="meter-value"> </div>
   				</div>
   				<label>assenze:</label>
   				<div class="red-meter-bar">
-  					<div style="left: <?php echo $assenze_media_perc ?>%;" class="meter-average"><label>valore medio: <?php echo $assenze_media_perc ?>% (<?php echo $assenze_media ?>)</label> </div>
-  					<div style="width: <?php echo $assenze_perc ?>%;" class="meter-label"><?php echo $assenze_perc ?>% (<?php echo $assenze ?>)</div>									
-  					<div style="width: <?php echo $assenze_perc ?>%;" class="meter-value"> </div>
+  					<div style="left: <?php echo number_format($assenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($assenze_media_perc,2) ?>% (<?php echo number_format($assenze_media,0) ?>)</label> </div>
+  					<div style="width: <?php echo number_format($assenze_perc,2) ?>%;" class="meter-label"><?php echo number_format($assenze_perc, 2) ?>% (<?php echo number_format($assenze, 0) ?>)</div>									
+  					<div style="width: <?php echo number_format($assenze_perc, 2) ?>%;" class="meter-value"> </div>
   				</div>
   				<label>missioni:</label>
   				<div class="blue-meter-bar">
-  					<div style="left: <?php echo $missioni_media_perc ?>%;" class="meter-average"><label>valore medio: <?php echo $missioni_media_perc ?>% (<?php echo $missioni_media ?>)</label> </div>
-  					<div style="width: <?php echo $missioni_perc ?>%;" class="meter-label"><?php echo $missioni_perc ?>% (<?php echo $missioni ?>)</div>									
+  					<div style="left: <?php echo number_format($missioni_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($missioni_media_perc, 2) ?>% (<?php echo number_format($missioni_media, 0) ?>)</label> </div>
+  					<div style="width: <?php echo number_format($missioni_perc, 2) ?>%;" class="meter-label"><?php echo number_format($missioni_perc, 2) ?>% (<?php echo number_format($missioni, 0) ?>)</div>									
   					<div style="width: <?php echo $missioni_perc ?>%;" class="meter-value"> </div>
   				</div>
   				<p class="float-right">
@@ -174,15 +174,17 @@
   			<div class="meter-bar float-container">
   				<label>voti ribelli:</label>
   				<div class="violet-meter-bar">
-  					<div style="left: <?php echo $ribelli_media_perc ?>%;" class="meter-average"><label>valore medio: <?php echo $ribelli_media_perc ?>% (<?php echo $ribelli_media ?>)</label> </div>
-  					<div style="width: <?php echo $ribelli_perc ?>%;" class="meter-label"><?php echo $ribelli_perc ?>% (<?php echo $ribelli ?>)</div>									
-  					<div style="width: <?php echo $ribelli_set ?>%;" class="meter-value"> </div>
+  					<div style="left: <?php echo number_format($ribelli_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($ribelli_media_perc, 2) ?>% (<?php echo number_format($ribelli_media, 0) ?>)</label> </div>
+  					<div style="width: <?php echo number_format($ribelli_perc, 2) ?>%;" class="meter-label"><?php echo number_format($ribelli_perc, 2) ?>% (<?php echo number_format($ribelli, 0) ?>)</div>									
+  					<div style="width: <?php echo number_format($ribelli_perc, 2) ?>%;" class="meter-value"> </div>
   				</div>
-  				<div class="evidence-box">
-  				  <?php foreach ($gruppi as $acronimo => $gruppo): ?>
-    					<label>nel gruppo <?php echo $acronimo ?>:</label><div class="violet-meter-bar"><div style="width: <?php echo number_format(100*$gruppo['ribelle']/$gruppo['presenze'], 2) ?>%;" class="meter-value"><?php echo number_format(100*$gruppo['ribelle']/$gruppo['presenze'], 2) ?>% (<?php echo $gruppo['ribelle'] ?> su <?php echo $gruppo['presenze'] ?> votazioni)</div></div>  				    
-  				  <?php endforeach ?>
-  				</div>
+  				<?php if (count($gruppi) > 1): ?>
+    				<div class="evidence-box">
+    				  <?php foreach ($gruppi as $acronimo => $gruppo): ?>
+      					<label>nel gruppo <?php echo $acronimo ?>:</label><div class="violet-meter-bar"><div style="width: <?php echo number_format(100*$gruppo['ribelle']/$gruppo['presenze'], 2) ?>%;" class="meter-value"><?php echo number_format(100*$gruppo['ribelle']/$gruppo['presenze'], 2) ?>% (<?php echo $gruppo['ribelle'] ?> su <?php echo $gruppo['presenze'] ?> votazioni)</div></div>  				    
+    				  <?php endforeach ?>
+    				</div>  				  
+  				<?php endif ?>
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .

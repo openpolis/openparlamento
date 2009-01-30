@@ -13,7 +13,7 @@
       <?php echo include_partial('monitor', array()); ?>
 		</div>
 			
-	  <div class="W73_100 float-left">
+	  <div class="W100_100 float-left">
 	    <?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'voti', 
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>
@@ -26,6 +26,10 @@
    				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
    			</div>
    		</div>
+
+      <?php include_partial('votiList', 
+                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
+
 
 	  </div>
 

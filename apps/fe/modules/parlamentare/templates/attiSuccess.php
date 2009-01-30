@@ -33,7 +33,7 @@
       <?php include_partial('attiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
 
       <?php include_partial('attiList', 
-                            array('pager' => $pager)) ?>
+                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
 
 
 	  </div>

@@ -45,23 +45,34 @@ class parlamentareActions extends sfActions
     $this->assenze = $this->carica->getAssenze();
     $this->missioni = $this->carica->getMissioni();
     $this->nvotazioni = $this->presenze + $this->assenze + $this->missioni;
-    $this->presenze_perc = number_format($this->presenze * 100 / $this->nvotazioni, 2);
-    $this->assenze_perc = number_format($this->assenze * 100 / $this->nvotazioni, 2);
-    $this->missioni_perc = number_format($this->missioni * 100 / $this->nvotazioni, 2);
+    $this->presenze_perc = $this->presenze * 100 / $this->nvotazioni;
+    $this->assenze_perc = $this->assenze * 100 / $this->nvotazioni;
+    $this->missioni_perc = $this->missioni * 100 / $this->nvotazioni;
     
-    $this->presenze_media = number_format(OppCaricaPeer::getSomma('presenze', $ramo) / $nparl, 0);
-    $this->assenze_media = number_format(OppCaricaPeer::getSomma('assenze', $ramo) / $nparl, 0);    
-    $this->missioni_media = number_format(OppCaricaPeer::getSomma('missioni', $ramo) / $nparl, 0);
+    $this->presenze_media = OppCaricaPeer::getSomma('presenze', $ramo) / $nparl;
+    $this->assenze_media = OppCaricaPeer::getSomma('assenze', $ramo) / $nparl;    
+    $this->missioni_media = OppCaricaPeer::getSomma('missioni', $ramo) / $nparl;
     $this->nvotazioni_media = $this->presenze_media + $this->assenze_media + $this->missioni_media;
     
-    $this->presenze_media_perc = number_format($this->presenze_media * 100 / $this->nvotazioni_media, 2);
-    $this->assenze_media_perc = number_format($this->assenze_media * 100 / $this->nvotazioni_media, 2);
-    $this->missioni_media_perc = number_format($this->missioni_media * 100 / $this->nvotazioni_media, 2);
+    $this->presenze_media_perc = $this->presenze_media * 100 / $this->nvotazioni_media;
+    $this->assenze_media_perc = $this->assenze_media * 100 / $this->nvotazioni_media;
+    $this->missioni_media_perc = $this->missioni_media * 100 / $this->nvotazioni_media;
 
-    $this->ribelli = $this->carica->getRibelle();
-    $this->ribelli_perc = number_format($this->ribelli * 100 / $this->presenze, 2);
-    $this->ribelli_media = number_format(OppCaricaPeer::getSomma('ribelle', $ramo) / $nparl, 2);
-    $this->ribelli_media_perc = number_format($this->ribelli_media * 100 / $this->presenze_media, 2);
+    // calcolo totale ribellioni e presenze ai fini del calcolo delle perc. a partire dai gruppi
+    $pres_ribelli = 0;
+    $ribellioni = 0;
+    foreach ($this->gruppi as $acronimo => $gruppo) {
+      $pres_ribelli += $gruppo['presenze'];
+      $ribellioni += $gruppo['ribelle'];
+    }
+    $pres_ribelli_media = OppCaricaHasGruppoPeer::getSomma('presenze', $ramo) / $nparl;
+
+    // $this->ribelli = $this->carica->getRibelle();
+    $this->ribelli = $ribellioni;
+    $this->ribelli_perc = $ribellioni * 100 / $pres_ribelli;
+    
+    $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
+    $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
     
   }
   
@@ -221,6 +232,21 @@ class parlamentareActions extends sfActions
   public function executeInterventi()
   {
     $this->_getAndCheckParlamentare();  
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+  
+    $this->pager = new sfPropelPager('OppIntervento', $itemsperpage);
+    
+    $c = new Criteria();
+    $c->add(OppInterventoPeer::CARICA_ID, $this->carica->getId());	  
+  	$c->addDescendingOrderByColumn(OppInterventoPeer::CREATED_AT);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinAll');
+    $this->pager->init();
+	  
   }
 
   public function executeList()

@@ -108,19 +108,19 @@ parlamentari:
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 parlamentare:
-  url:   /parlamentare/:id.html
+  url:   /parlamentare/:id
   param: { module: parlamentare, action: cosa }
 
 parlamentare_atti:
-  url:  /parlamentare_atti/:id/:sort/:type/*.html
+  url:  /parlamentare_atti/:id/:sort/:type/*
   param: { module: parlamentare, action: atti, sort: stato_last_date, type: desc }
 
 parlamentare_voti:
-  url:  /parlamentare_voti/:id.html
+  url:  /parlamentare_voti/:id
   param: { module: parlamentare, action: voti }
 
 parlamentare_interventi:
-  url:  /parlamentare_interventi/:id.html
+  url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
 
   

@@ -46,7 +46,7 @@
     <?php endforeach; ?>
     <tr>
       <td align="center" colspan='4'>
-        <?php echo pager_navigation($pager, 'atto/disegnoList') ?>
+        <?php echo pager_navigation($pager, '@parlamentare_atti?id='.$parlamentare_id) ?>
       </td>
     </tr>
 

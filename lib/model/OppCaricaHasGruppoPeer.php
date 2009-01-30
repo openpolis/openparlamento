@@ -23,7 +23,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
   {
     $con=Propel::getConnection(self::DATABASE_NAME); 
     
-    $sql = "SELECT sum($field) from opp_carica_has_gruppo cg, opp_carica c where cg.carica_id = c.id and c.data_fine is null and ";
+    $sql = "SELECT sum(cg.$field) from opp_carica_has_gruppo cg, opp_carica c where cg.carica_id = c.id and c.data_fine is null and ";
     if ($section == 'C') $sql .= "c.tipo_carica_id = 1;";
     else $sql .= "c.tipo_carica_id in (4,5);";
     $stm = $con->createStatement(); 
