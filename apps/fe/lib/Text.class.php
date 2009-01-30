@@ -117,7 +117,7 @@ class Text
 		$sub_str2 = substr($sub_str1, $sub_str_pos2 + 5 );
 		$descrizione =$sub_str2;
 		
-		if($atto->getNumfase()==$atto->getTitolo())
+	if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
             return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
@@ -129,7 +129,7 @@ class Text
           if($action=='list')
             return $atto->getRamo().".".$atto->getNumfase().' '.$atto->getTitolo();
           else  
-            return $atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
+            return $atto->getTitolo();//." ".strip_tags(Text::shorten($descrizione, 200));
         }
         break;  
     }
