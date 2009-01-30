@@ -37,7 +37,7 @@ table tbody td { text-align: center; }
 h2 { font-size: 25px; font-weight: bold; }
 h3 { font-size: 24px; }
 h4 { font-size: 20px; }
-h5 { font-size: 14px; }
+h5 { font-size: 16px; }
 h6 { font-size: 14px; }
 thead th { font-size: 12px; vertical-align: top; }
 
@@ -57,7 +57,7 @@ thead th { font-size: 12px; vertical-align: top; }
 .indent { padding-left: 16px; margin-bottom: 10px; }
 .interline { margin-bottom: 1em; }
 
-.synopsis { font-size: 18px; font-weight: bold; margin: 1em 0; line-height: 1.2em; }
+.synopsis { font-size: 16px; font-weight: bold; margin: 1em 0; line-height: 1.2em; }
 
 .micro-tip { font-size: 11px; padding-left: 10px; margin-bottom: 1em; }
 
