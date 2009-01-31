@@ -116,7 +116,7 @@ parlamentare_atti:
   param: { module: parlamentare, action: atti, sort: stato_last_date, type: desc }
 
 parlamentare_voti:
-  url:  /parlamentare_voti/:id
+  url:  /parlamentare_voti/:id/*
   param: { module: parlamentare, action: voti }
 
 parlamentare_interventi:

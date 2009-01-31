@@ -294,6 +294,7 @@ propel:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
     carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(40) }
+    ribelle:          { type: tinyint, required: true, default: 0 }
 
   opp_votazione_has_gruppo:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }

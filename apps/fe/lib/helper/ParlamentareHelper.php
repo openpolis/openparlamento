@@ -2,6 +2,8 @@
 
 function ribelleStyle($voto_parlamentare, $voto_gruppo)
 {
+  sfLogger::getInstance()->info('xxx: ' . $voto_parlamentare . "-" . $voto_gruppo);
+  
   if( ($voto_gruppo == 'Favorevole' || $voto_gruppo == 'Astenuto' || $voto_gruppo == 'Contrario')
       && $voto_gruppo != $voto_parlamentare ) 
   {  

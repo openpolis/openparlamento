@@ -218,15 +218,29 @@ class parlamentareActions extends sfActions
   public function executeVoti()
   {
     $this->_getAndCheckParlamentare(); 
-	  /*
-	  $this->voti = $this->parlamentare->getVoti($this->getRequestParameter('page',1));
-	
-    $this->pager = new customArrayPager(null, sfConfig::get('app_pagination_limit'),    
-                                        $this->parlamentare->getVotiCount());
-    $this->pager->setResultArray($this->voti);
-    $this->pager->setPage($this->getRequestParameter('page',1));
-    $this->pager->init();
-    */
+    $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+
+	  if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+  
+    $this->pager = new deppPropelPager('OppVotazioneHasCarica', $itemsperpage);
+    
+    $c = new Criteria();
+    $c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID);
+    $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+    $c->add(OppVotazioneHasCaricaPeer::CARICA_ID, $this->carica->getId());
+	  // $this->addVotiFiltersCriteria($c);    
+	  // $this->addVotiSortCriteria($c);
+  	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppVotazione');
+    
+    $cForCount = new Criteria();
+    $cForCount->add(OppVotazioneHasCaricaPeer::CARICA_ID, $this->carica->getId());
+    $this->pager->init($cForCount);
+
   }
   
   public function executeInterventi()

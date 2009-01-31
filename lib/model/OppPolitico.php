@@ -74,62 +74,62 @@ class OppPolitico extends BaseOppPolitico
     $voti = array();
 
     $c = new Criteria();
-	$c->clearSelectColumns();
-	$c->addSelectColumn(OppVotazionePeer::ID);
-	$c->addSelectColumn(OppSedutaPeer::RAMO);
-	$c->addSelectColumn(OppSedutaPeer::LEGISLATURA);
-	$c->addSelectColumn(OppSedutaPeer::DATA);
-	$c->addSelectColumn(OppVotazionePeer::TITOLO);
-	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
-	$c->addSelectColumn(OppVotazionePeer::ESITO);
-	$c->addSelectColumn(OppGruppoPeer::NOME);
-	$c->addSelectColumn(OppVotazioneHasGruppoPeer::VOTO);
+  	$c->clearSelectColumns();
+  	$c->addSelectColumn(OppVotazionePeer::ID);
+  	$c->addSelectColumn(OppSedutaPeer::RAMO);
+  	$c->addSelectColumn(OppSedutaPeer::LEGISLATURA);
+  	$c->addSelectColumn(OppSedutaPeer::DATA);
+  	$c->addSelectColumn(OppVotazionePeer::TITOLO);
+  	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
+  	$c->addSelectColumn(OppVotazionePeer::ESITO);
+  	$c->addSelectColumn(OppGruppoPeer::NOME);
+  	$c->addSelectColumn(OppVotazioneHasGruppoPeer::VOTO);
 		
-	$c->addJoin(OppCaricaPeer::ID, OppVotazioneHasCaricaPeer::CARICA_ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppCaricaPeer::ID, OppVotazioneHasCaricaPeer::CARICA_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
 	
-	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
 	
-	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazioneHasGruppoPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazioneHasGruppoPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
 	
-	$c->add(OppCaricaPeer::POLITICO_ID, $this->getId(), Criteria::EQUAL);
+  	$c->add(OppCaricaPeer::POLITICO_ID, $this->getId(), Criteria::EQUAL);
 	
-	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppSedutaPeer::DATA, Criteria::LESS_EQUAL);
+  	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppSedutaPeer::DATA, Criteria::LESS_EQUAL);
 	
-	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppSedutaPeer::DATA, Criteria::GREATER_EQUAL);
-	$cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
-	$cton1->addOr($cton2);
+  	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppSedutaPeer::DATA, Criteria::GREATER_EQUAL);
+  	$cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+  	$cton1->addOr($cton2);
     $c->add($cton1);
 	
-	$c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, OppVotazioneHasGruppoPeer::GRUPPO_ID.'='.OppGruppoPeer::ID, Criteria::CUSTOM);
+	  $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, OppVotazioneHasGruppoPeer::GRUPPO_ID.'='.OppGruppoPeer::ID, Criteria::CUSTOM);
 	
-	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+	  $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
 	
-	if($page!=1)
-	  $c->setOffset(sfConfig::get('app_pagination_limit')*$page);  
+  	if($page!=1)
+  	  $c->setOffset(sfConfig::get('app_pagination_limit')*$page);  
 	
-	$c->setLimit(sfConfig::get('app_pagination_limit'));
+  	$c->setLimit(sfConfig::get('app_pagination_limit'));
 	
     $rs = OppVotazioneHasCaricaPeer::doSelectRS($c);
 	 	
-	while ($rs->next())
+	  while ($rs->next())
     {
 		  
 	  //$voto_gruppo = OppVotazionePeer::doSelectVotoGruppo($rs->getInt(1), $rs->getString(8));
 	  	  
-	  $voti[$rs->getInt(1)] = array('ramo' => ($rs->getString(2)=='C' ? 'Camera' : 'Senato'), 
-	                                'legislatura' => $rs->getString(3), 
-									'data' => $rs->getDate(4, 'Y-m-d'), 
-	                                'titolo' => str_replace(';NULL', '', $rs->getString(5)),
-	                                'voto' => $rs->getString(6), 'voto_gruppo' => $rs->getString(9), 
-									'esito' => Text::decodeEsito($rs->getString(7)) );
+	    $voti[$rs->getInt(1)] = array('ramo' => ($rs->getString(2)=='C' ? 'Camera' : 'Senato'), 
+	                                  'legislatura' => $rs->getString(3), 
+									                  'data' => $rs->getDate(4, 'Y-m-d'), 
+	                                  'titolo' => str_replace(';NULL', '', $rs->getString(5)),
+	                                  'voto' => $rs->getString(6), 'voto_gruppo' => $rs->getString(9), 
+									                  'esito' => Text::decodeEsito($rs->getString(7)) );
 									
 		   
-	}
+	  }
 		
-	return $voti;
+	  return $voti;
   }
   
   public function getVotiCount()

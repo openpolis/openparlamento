@@ -1,4 +1,4 @@
-<?php echo use_helper('PagerNavigation'); ?>
+<?php echo use_helper('PagerNavigation', 'I18N', 'Parlamentare'); ?>
 
 <table class="disegni-decreti column-table">
   <thead>
@@ -14,12 +14,15 @@
   </thead>
 
   <tbody>
-    <?php foreach ($pager->getResults() as $votazione): ?>
-      <tr>
+    <?php foreach ($pager->getResults() as $votazione_has_carica): ?>
+      <?php $votazione = $votazione_has_carica->getOppVotazione(); ?>
+      <?php $voto_parlamentare =  $votazione_has_carica->getVoto() ?>
+      <?php $voto_gruppo = $votazione->getVotoGruppo($id_gruppo_corrente) ?>
+      <tr class="<?php echo ribelleStyle($voto_parlamentare, $voto_gruppo) ?>">
         <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></td>
         <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>
-        <td><p>TODO</p></td>
-        <td><p>TODO</p></td>
+        <td><p><?php echo $voto_parlamentare ?></p></td>
+        <td><p><?php echo $voto_gruppo?></p></td>
   	    <td>
     		  <?php if($votazione->getEsito()=='APPROVATA'): ?>
     		    <?php $class = "green thumb-approved"; ?>
@@ -40,7 +43,7 @@
     <tr>
       <td colspan="6" align="center">
         <?php echo pager_navigation($pager, 
-           'parlamentare_voti/id='.$parlamentare_id) ?>
+           '@parlamentare_voti?id='.$parlamentare_id) ?>
       </td>	
     </tr>
     <tr>

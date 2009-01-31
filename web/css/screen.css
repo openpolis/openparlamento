@@ -579,6 +579,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .disegni-decreti thead th { padding: 0 5px 5px 5px; font-size: 11px; vertical-align: bottom; }
 .disegni-decreti tbody th, .disegni-decreti tbody td  { padding: 10px 0 5px 0; border-bottom: 1px solid #dfe0e0; border-top: 1px solid #fff; color: #000; }
 .disegni-decreti tbody tr { padding-bottom: 3px; }
+.disegni-decreti tr.ribelli { background-color: #faf8ef;}
 
 .list-table { margin-bottom: 1em; }
 .list-table thead th { padding: 0 5px 5px 5px; font-size: 11px; vertical-align: bottom; }
