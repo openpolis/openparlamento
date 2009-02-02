@@ -185,6 +185,12 @@
     				  <?php endforeach ?>
     				</div>  				  
   				<?php endif ?>
+  				<p class="float-left">
+  				  <?php echo link_to('vedi tutti i voti ribelli', 
+  				                     '@parlamentari?ramo=' . $ramo .
+  				                      '&sort=ribelle&type=desc') ?>
+  				</p>
+  				
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
@@ -224,6 +230,12 @@
   			<div class="meter-bar float-container">
   				<label class="mb-idx-label">classifica:</label>
   				<div class="pos-idx"><strong><?php echo $carica->getPosizione() ?></strong> su 630 deputati</div>
+  				<br />
+  				<p class="float-left">
+  				 dettaglio delle attivit&agrave;
+  				   [ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]                   
+  				</class>
+  				
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
