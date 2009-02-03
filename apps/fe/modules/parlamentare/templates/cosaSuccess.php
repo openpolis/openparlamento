@@ -10,13 +10,25 @@
 	<div id="main">
 		<div class="W25_100 float-right">
 			<p class="last-update">data di ultimo aggiornamento: <strong>25-11-2008</strong></p>
-      <?php echo include_partial('monitor', array()); ?>				
 
+			<div id="monitor-n-vote">
+      	<h6>monitora questo politico</h6>
+
+        <!-- partial per la gestione del monitoring di questo politico -->
+        <?php echo include_component('monitoring', 'manageItem', 
+                                     array('item' => $parlamentare, 'item_type' => 'politico')); ?>
+
+
+
+        <?php echo include_component('parlamentare', 'monitoringalso', array('item' => $parlamentare)); ?>
+
+  		</div>
+      
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Disegni di legge', 
                                        'all_news_url' => '@news_attiDisegni', 
                                        'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DDL_TIPO_IDS, 10))); ?>
-		</div>
+    </div>
 			
 	  <div class="W73_100 float-left">
 	    <?php echo include_partial('secondlevelmenu', 
@@ -40,55 +52,18 @@
         
   			<a class="jump-to-camera" href="#">vai alla scheda su <img alt="camera dei deputati" src="/images/logo-camera-deputati.png"/></a>
 			
-  			<div class="evidence-box float-container">
-  				<h5 class="subsection">Si occupa di...</h5>
-  				<p class="pad10">
-  					<a class="folk1" href="#">Cooperazione</a>,
-  					<a class="folk4" href="#">aborto</a>,
-  					<a class="folk2" href="#">armi</a>,
-  					<a class="folk5" href="#">Abruzzo</a>,
-  					<a class="folk5" href="#">immigrazione</a>,
-  					<a class="folk5" href="#">riforme istituzionali</a>,
-  					<a class="folk5" href="#">rifiuti</a>,
-  					<a class="folk5" href="#">bilancio partecipato</a>
-  				</p>
-  			</div>		
+        <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
 
-  			<div class="evidence-box float-container">
-  				<h5 class="subsection">Vota più spesso come...</h5>
-  				<div class="pad10">
-  					<p class="green">parlamentari del suo gruppo:</p>
-  					<p>
-  						<a class="folk5" href="#">Silvio BERLUSCONI</a>,
-  						<a class="folk5" href="#">Fabrizio CICCHETTO</a>,
-  						<a class="folk5" href="#">Giovanni Battista BACHELET</a>
-  					</p>
-  					<p class="violet">parlamentari di altri gruppi:</p>
-  					<p>
-  						<a class="folk5" href="#">Silvio BERLUSCONI (PdL)</a>,
-  						<a class="folk5" href="#">Fabrizio CICCHETTO (PD)</a>,
-  						<a class="folk5" href="#">Giovanni Battista BACHELET (PD)</a>
-  					</p>					
-  				</div>
-  			</div>		
+        <?php if ($nvoti_validi>0): ?>
+          <?php echo include_component('parlamentare', 'votacome', 
+                                       array('carica' => $carica, 
+                                             'acronimo' => $acronimo_gruppo_corrente)); ?>          
+        <?php endif ?>
 
-  			<div class="evidence-box float-container">
-  				<h5 class="subsection">Firma atti più spesso come...</h5>
-  				<div class="pad10">
-  					<p class="green">parlamentari del suo gruppo:</p>
-  					<p>
-  						<a class="folk5" href="#">Silvio BERLUSCONI</a>,
-  						<a class="folk5" href="#">Fabrizio CICCHETTO</a>,
-  						<a class="folk5" href="#">Giovanni Battista BACHELET</a>
-  					</p>
-  					<p class="violet">parlamentari di altri gruppi:</p>
-  					<p>
-  						<a class="folk5" href="#">Silvio BERLUSCONI (PdL)</a>,
-  						<a class="folk5" href="#">Fabrizio CICCHETTO (PD)</a>,
-  						<a class="folk5" href="#">Giovanni Battista BACHELET (PD)</a>
-  					</p>					
-  				</div>
-  			</div>				
+        <?php echo include_component('parlamentare', 'firmacon', 
+                                     array('carica' => $carica,
+                                           'acronimo' => $acronimo_gruppo_corrente)); ?>
+
   		</div>
 		
   		<div class="W73_100 float-left" style="width:60%">
@@ -124,7 +99,7 @@
   				</div>
   			</div>
 		 
-  			<h5 class="subsection-alt">Presenze in <?php echo $nvotazioni ?> votazione elettroniche</h5>
+  			<h5 class="subsection-alt">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
   			<p class="float-right">ultima votazione: <strong>gg-mm-aaaa</strong></p>
   			<p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
   			<div style="display: none;" class="help-box float-container">
@@ -161,7 +136,7 @@
   				</p>
   			</div>
 		 
-  			<h5 class="subsection-alt">Voti ribelli su <?php echo $nvotazioni ?> votazioni elettroniche</h5>
+  			<h5 class="subsection-alt">Voti ribelli su <?php echo $nvoti_validi ?> votazioni nominali</h5>
 			
   			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
   			<div style="display: none;" class="help-box float-container">
@@ -185,12 +160,6 @@
     				  <?php endforeach ?>
     				</div>  				  
   				<?php endif ?>
-  				<p class="float-left">
-  				  <?php echo link_to('vedi tutti i voti ribelli', 
-  				                     '@parlamentari?ramo=' . $ramo .
-  				                      '&sort=ribelle&type=desc') ?>
-  				</p>
-  				
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
@@ -230,12 +199,6 @@
   			<div class="meter-bar float-container">
   				<label class="mb-idx-label">classifica:</label>
   				<div class="pos-idx"><strong><?php echo $carica->getPosizione() ?></strong> su 630 deputati</div>
-  				<br />
-  				<p class="float-left">
-  				 dettaglio delle attivit&agrave;
-  				   [ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]                   
-  				</class>
-  				
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
@@ -255,7 +218,3 @@
 		
   </div>
 </div>
-
-<!-- partial per la gestione del monitoring di questo politico -->
-<?php echo include_component('monitoring', 'manageItem', 
-                             array('item' => $parlamentare, 'item_type' => 'politico')); ?>

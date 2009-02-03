@@ -108,9 +108,10 @@ thead th { font-size: 12px; vertical-align: top; }
 -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px;
  color: #4e8480; margin: 0; padding: 5px; }
  
-.evidence-box p.green { margin-bottom: 1em; color: #39aa2d; font-size: 14px; }
-.evidence-box p.violet { margin: 1em 0; color: #ab2ba2; font-size: 14px; }
- 
+.evidence-box .green { color: #39aa2d; }
+.evidence-box .violet { color: #ab2ba2; }
+.evidence-box p { margin: 0.2em; }
+.evidence-box li { margin: 0.1em 0; } 
 .evidence-box .folk1, 
 .evidence-box .folk2,
 .evidence-box .folk3,
@@ -128,6 +129,7 @@ thead th { font-size: 12px; vertical-align: top; }
 .folk3 { font-size: 120%; }
 .folk2 { font-size: 110%; }
 .folk1 { font-size: 100%; }
+.folk0 { font-size: 80%; }
 
 .folk1, 
 .folk2,

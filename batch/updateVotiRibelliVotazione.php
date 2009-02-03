@@ -17,28 +17,26 @@ $argc = count($argv);
 # controllo sintassi
 if ( $argc != 2 ) 
 {
-  print "sintassi: php batch/updateVotiRibelliCarica carica_id\n";  
+  print "sintassi: php batch/updateVotiRibelliCarica votazione_id\n";  
   exit;
 }
 
-$carica_id = $argv[1];
+$votazione_id = $argv[1];
+$votazione = OppVotazionePeer::retrieveByPK($votazione_id);
 
-$carica = OppCaricaPeer::retrieveByPK($carica_id);
-$parlamentare =  $carica->getOppPolitico();
-$votazioni = $carica->getOppVotazioneHasCaricas();
-$nvotazioni = count($votazioni);
-print "$nvotazioni votazioni: \n";
-foreach ($votazioni as $k => $votazione_carica) {
-  $votazione = $votazione_carica->getOppVotazione();
-  $data_votazione = $votazione->getOppSeduta()->getData();
-  
-  $c = new Criteria();
-  $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
-  $cton = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
-  $cton->addOr($c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL));
-  $c->add($cton);
+$data_votazione = $votazione->getOppSeduta()->getData();
+$c = new Criteria();
+$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
+$cton = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
+$cton->addOr($c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL));
+$c->add($cton);
+
+$cariche = $votazione->getOppVotazioneHasCaricas();
+$ncariche = count($cariche);
+// print "- $ncariche cariche: \n";
+foreach ($cariche as $k => $votazione_carica) {
+  $carica = $votazione_carica->getOppCarica();
   $gruppi_carica_votazione = $carica->getOppCaricaHasGruppos($c);
-
   $gruppo_votazione = $gruppi_carica_votazione[0];
   $voto = $votazione_carica->getVoto();
   $voto_gruppo = $votazione->getVotoGruppo($gruppo_votazione->getGruppoId());
@@ -53,5 +51,6 @@ foreach ($votazioni as $k => $votazione_carica) {
   if ($k % 10 == 0) print ".";
   if ($k >0 && $k % 1000 == 0) print "$k/$nvotazioni\n";
 }
+echo "\n";
 
 ?>

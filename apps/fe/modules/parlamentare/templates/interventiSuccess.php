@@ -8,12 +8,8 @@
 
 <div class="tabbed float-container" id="content">
 	<div id="main">
-		<div class="W25_100 float-right">
-			<p class="last-update">data di ultimo aggiornamento: <strong>25-11-2008</strong></p>
-      <?php echo include_partial('monitor', array()); ?>
-		</div>
 			
-	  <div class="W73_100 float-left">
+	  <div class="W100_100 float-left">
 	    <?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'interventi', 
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>

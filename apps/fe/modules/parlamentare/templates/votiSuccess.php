@@ -23,6 +23,14 @@
    			</div>
    		</div>
 
+      <?php include_partial('votiFilter',
+                            array('selected_vote_type'   => array_key_exists('vote_type', $filters)?$filters['vote_type']:0,                                
+                                  'selected_vote_vote'   => array_key_exists('vote_vote', $filters)?$filters['vote_vote']:0,
+                                  'selected_vote_result' => array_key_exists('vote_result', $filters)?$filters['vote_result']:0,
+                                  'selected_vote_rebel'  => array_key_exists('vote_rebel', $filters)?$filters['vote_rebel']:0)) ?>
+
+      <?php include_partial('votiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
+
       <?php include_partial('votiList', 
                             array('pager' => $pager, 
                                   'parlamentare_id' => $parlamentare->getId(), 'id_gruppo_corrente' => $id_gruppo_corrente)) ?>

@@ -97,6 +97,13 @@ propel:
   opp_categoria_has_tt:
     categoria_id:    { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_categoria, foreignReference: id, onDelete: CASCADE }
     teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }  
+ 
+  opp_similarita:
+    id:
+    carica_from_id:     { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    carica_to_id:       { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    voting_similarity:  { type: float, index: true }
+    signing_similarity: { type: float, index: true }
     
   opp_documento:
     id:

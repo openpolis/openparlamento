@@ -10,6 +10,7 @@
 class OppPolitico extends BaseOppPolitico
 {
 
+
   public function getCaricaDepSenCorrente()
   {
     $c = new Criteria();
@@ -144,66 +145,66 @@ class OppPolitico extends BaseOppPolitico
   public function getRibelleReport($carica_id, $ramo, $gruppo, $data_inizio, $data_fine)
   {
     $esiti_gruppo = array();
-	$count = 0;
+  	$count = 0;
 	
-	//determinazione voto esito gruppo nel periodo considerato
+  	//determinazione voto esito gruppo nel periodo considerato
     $c = new Criteria();
-	$c->clearSelectColumns();
-	$c->addSelectColumn(OppVotazionePeer::ID);
-	$c->addSelectColumn(OppSedutaPeer::DATA);
-	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
-	$c->addAsColumn('CONT', 'COUNT(*)');
-	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazionePeer::ID, OppVotazioneHasCaricaPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
-	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
-	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+  	$c->clearSelectColumns();
+  	$c->addSelectColumn(OppVotazionePeer::ID);
+  	$c->addSelectColumn(OppSedutaPeer::DATA);
+  	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
+  	$c->addAsColumn('CONT', 'COUNT(*)');
+  	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazionePeer::ID, OppVotazioneHasCaricaPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
+  	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
+  	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
 	
-	if($data_fine!='') 
-	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
+  	if($data_fine!='') 
+  	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
 	
-	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_inizio, Criteria::GREATER_EQUAL);
+  	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_inizio, Criteria::GREATER_EQUAL);
 	
-	if($data_fine!='') 
-	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
+  	if($data_fine!='') 
+  	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
 	
-	$c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
-	$c->addGroupByColumn(OppVotazionePeer::ID);
-	$c->addGroupByColumn(OppVotazioneHasCaricaPeer::VOTO);
-	$c->addAscendingOrderByColumn(OppVotazionePeer::ID);
-	$c->addDescendingOrderByColumn('CONT');
+  	$c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
+  	$c->addGroupByColumn(OppVotazionePeer::ID);
+  	$c->addGroupByColumn(OppVotazioneHasCaricaPeer::VOTO);
+  	$c->addAscendingOrderByColumn(OppVotazionePeer::ID);
+  	$c->addDescendingOrderByColumn('CONT');
 	
-	$rs = OppVotazionePeer::doSelectRS($c);
+  	$rs = OppVotazionePeer::doSelectRS($c);
 	
-	while ($rs->next())
-    {
-	  if(!isset($esiti_gruppo[$rs->getInt(1)]))
-	    $esiti_gruppo[$rs->getInt(1)] = $rs->getString(3);
-	}
+  	while ($rs->next())
+      {
+  	  if(!isset($esiti_gruppo[$rs->getInt(1)]))
+  	    $esiti_gruppo[$rs->getInt(1)] = $rs->getString(3);
+  	}
 	
-	$c = new Criteria();
-	$c->clearSelectColumns();
-	$c->addSelectColumn(OppVotazionePeer::ID);
-	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
+  	$c = new Criteria();
+  	$c->clearSelectColumns();
+  	$c->addSelectColumn(OppVotazionePeer::ID);
+  	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
 	
-	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazionePeer::ID, OppVotazioneHasCaricaPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
-	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazionePeer::ID, OppVotazioneHasCaricaPeer::VOTAZIONE_ID, Criteria::INNER_JOIN);
+  	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
 	
-	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
-	$c->add(OppVotazioneHasCaricaPeer::CARICA_ID, $carica_id, Criteria::EQUAL);
-	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_inizio, Criteria::GREATER_EQUAL);
-	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
-	if($data_fine!='') 
-	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
+  	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
+  	$c->add(OppVotazioneHasCaricaPeer::CARICA_ID, $carica_id, Criteria::EQUAL);
+  	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_inizio, Criteria::GREATER_EQUAL);
+  	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+  	if($data_fine!='') 
+  	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
 	
-	if($data_fine!='') 
-	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
+  	if($data_fine!='') 
+  	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
 	
-	$c->addAscendingOrderByColumn(OppVotazionePeer::ID);
+  	$c->addAscendingOrderByColumn(OppVotazionePeer::ID);
 	
-	$rs1 = OppVotazionePeer::doSelectRS($c);
+  	$rs1 = OppVotazionePeer::doSelectRS($c);
 
     while ($rs1->next())
     {

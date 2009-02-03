@@ -65,14 +65,15 @@ class parlamentareActions extends sfActions
       $pres_ribelli += $gruppo['presenze'];
       $ribellioni += $gruppo['ribelle'];
     }
+    $this->nvoti_validi = $pres_ribelli;
     $pres_ribelli_media = OppCaricaHasGruppoPeer::getSomma('presenze', $ramo) / $nparl;
 
-    // $this->ribelli = $this->carica->getRibelle();
     $this->ribelli = $ribellioni;
-    $this->ribelli_perc = $ribellioni * 100 / $pres_ribelli;
+    $this->ribelli_perc = $ribellioni * 100 / $this->nvoti_validi;
     
     $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
     $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
+    
     
   }
   
@@ -214,11 +215,26 @@ class parlamentareActions extends sfActions
     
   }
 
+
   
   public function executeVoti()
   {
     $this->_getAndCheckParlamentare(); 
     $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+    $this->session = $this->getUser();
+
+    $this->processVotiFilters(array('vote_type', 'vote_vote', 'vote_result', 'vote_rebel'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_vote_type') == '0' &&
+        $this->getRequestParameter('filter_vote_vote') == '0' && 
+        $this->getRequestParameter('filter_vote_result') == '0' &&
+        $this->getRequestParameter('filter_vote_rebel') == '0')
+    {
+      $this->redirect('@parlamentare_voti?id='.$this->getRequestParameter('id'));
+    }
+
+    $this->processVotiSort();
 
 	  if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -230,18 +246,113 @@ class parlamentareActions extends sfActions
     $c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(OppVotazioneHasCaricaPeer::CARICA_ID, $this->carica->getId());
-	  // $this->addVotiFiltersCriteria($c);    
-	  // $this->addVotiSortCriteria($c);
+	  $this->addVotiFiltersCriteria($c);    
+	  $this->addVotiSortCriteria($c);
   	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppVotazione');
     
     $cForCount = new Criteria();
+    $cForCount->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID);
     $cForCount->add(OppVotazioneHasCaricaPeer::CARICA_ID, $this->carica->getId());
+	  $this->addVotiFiltersCriteria($cForCount);    
     $this->pager->init($cForCount);
 
   }
+
+  protected function processVotiFilters($active_filters)
+  {
+
+    $this->filters = array();
+
+    // legge i filtri dalla request e li scrive nella sessione utente
+    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    {
+      if ($this->hasRequestParameter('filter_vote_type'))
+        $this->session->setAttribute('vote_type', $this->getRequestParameter('filter_vote_type'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_vote_vote'))
+        $this->session->setAttribute('vote_vote', $this->getRequestParameter('filter_vote_vote'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_vote_result'))
+        $this->session->setAttribute('vote_result', $this->getRequestParameter('filter_vote_result'), 'votes_filter');
+
+      if ($this->hasRequestParameter('filter_vote_rebel'))
+        $this->session->setAttribute('vote_rebel', $this->getRequestParameter('filter_vote_rebel'), 'votes_filter');
+
+    }
+    
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if (in_array('vote_type', $active_filters))
+      $this->filters['vote_type'] = $this->session->getAttribute('vote_type', '0', 'votes_filter');
+
+    if (in_array('vote_vote', $active_filters))
+      $this->filters['vote_vote'] = $this->session->getAttribute('vote_vote', '0', 'votes_filter');
+
+    if (in_array('vote_result', $active_filters))
+      $this->filters['vote_result'] = $this->session->getAttribute('vote_result', '0', 'votes_filter');
+
+    if (in_array('vote_rebel', $active_filters))
+      $this->filters['vote_rebel'] = $this->session->getAttribute('vote_rebel', '0', 'votes_filter');
+    
+  }
+
+  protected function processVotiSort()
+  {
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->session->setAttribute('sort', $this->getRequestParameter('sort'), 'opp_parlamentare_voti/sort');
+      $this->session->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'opp_parlamentare_voti/sort');
+    }
+
+    if (!$this->session->getAttribute('sort', null, 'opp_parlamentare_voti/sort'))
+    {
+	    $this->session->setAttribute('sort', 'data', 'opp_parlamentare_voti/sort');
+      $this->session->setAttribute('type', 'desc', 'opp_parlamentare_voti/sort');
+    }
+  }
+    
+  protected function addVotiFiltersCriteria($c)
+  {
+    // filtro per tipo di voto (finale o no)
+    if (array_key_exists('vote_type', $this->filters) && $this->filters['vote_type'] != '0')
+      $c->add(OppVotazionePeer::FINALE, $this->filters['vote_type']);
+
+    // filtro per voto (favorevole, contrario o astenuto)
+    if (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0')
+      $c->add(OppVotazioneHasCaricaPeer::VOTO, $this->filters['vote_vote']);
+    
+    // filtro per esito
+    if (array_key_exists('vote_result', $this->filters) && $this->filters['vote_result'] != '0')
+      $c->add(OppVotazionePeer::ESITO, $this->filters['vote_result']);
+
+    // filtro per soli voti ribelli
+    if (array_key_exists('vote_rebel', $this->filters) && $this->filters['vote_rebel'] != '0')
+      $c->add(OppVotazioneHasCaricaPeer::RIBELLE, $this->filters['vote_rebel']);
+    
+  }
+
+  protected function addVotiSortCriteria($c)
+  {
+    if ($sort_column = $this->session->getAttribute('sort', 'data', 'opp_parlamentare_voti/sort'))
+    {
+      if ($sort_column == 'data')
+        $sort_column = OppSedutaPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      else
+        $sort_column = OppVotazionePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->session->getAttribute('type', null, 'opp_parlamentare_voti/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
+  }
+
+
   
   public function executeInterventi()
   {

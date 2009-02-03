@@ -15,6 +15,46 @@ class OppAttoPeer extends BaseOppAttoPeer
   const ATTI_DECRETI_LEGISLATIVI_TIPO_IDS = "15, 16, 17";
   const ATTI_NON_LEGISLATIVI_TIPO_IDS = "2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14";
 
+  public static function get_fattore_tipo_atto($tipo_atto_id)
+  {
+    switch ($tipo_atto_id)
+    {
+      case 1:
+        $val = 6;
+        $break;
+      
+       case 4:
+       case 5:
+       case 6:
+      case 10:
+      case 11: 
+      case 12:
+      case 13:
+      case 14:
+      case 15:
+      case 16:
+      case 17:
+        $val = 4;
+        break;
+        
+      case 2:
+      case 3:
+      case 7:
+      case 8:
+      case 9:
+        $val = 3;
+        break;
+      
+      default:
+        $val = 0;
+        break;
+    }
+    
+    return $val;
+    
+  }
+  
+
   /**
    * extracts all acts of the given type, subjected to filters passed along
    *

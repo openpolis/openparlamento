@@ -14,7 +14,8 @@
  * @package plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model
  */
 class TagPeer extends BaseTagPeer
-{
+{  
+  
   /**
    * Returns all tags, eventually with a limit option.
    * The first optionnal parameter permits to add some restrictions on the
@@ -230,7 +231,7 @@ class TagPeer extends BaseTagPeer
    * Returns the most popular tags with their associated weight. See
    * deppPropelActAsTaggableToolkit::normalize for more details.
    *
-   * The first optionnal parameter permits to add some restrictions on the
+   * The first optional parameter permits to add some restrictions on the
    * objects the selected tags are related to.
    * The second optionnal parameter permits to restrict the tag selection with
    * different criterias
