@@ -84,6 +84,7 @@
 						  'atto' => $atto,
 						  'rappresentazioni_this' => $rappresentazioni_this,
 						  'rappresentazioni_succ' => $rappresentazioni_succ,
+						  'leggi_succ'            => $leggi_succ,
 						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva)) ?>
 						  
  	   <!-- tutto l'iter -->

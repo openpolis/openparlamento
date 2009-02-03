@@ -194,6 +194,43 @@ class OppAtto extends BaseOppAtto
     return $rappresentazioni;
   }
   
+  public function getIterLegge($quale_atto)
+  {
+    $rappresentazioni = array();
+    for ($x=0;$x<count($quale_atto);$x++) {
+    $c = new Criteria();
+    $c->clearSelectColumns();
+    $c->addSelectColumn(OppAttoHasIterPeer::DATA);
+    $c->addSelectColumn(OppIterPeer::FASE);
+    $c->addSelectColumn(OppAttoPeer::RAMO);
+    $c->addSelectColumn(OppAttoPeer::NUMFASE);
+    $c->addSelectColumn(OppAttoPeer::ID);
+    $c->addSelectColumn(OppAttoPeer::DATA_PRES);
+    $c->add(OppAttoHasIterPeer::ATTO_ID, $quale_atto[$x], Criteria::EQUAL);
+    $c->add(OppAttoPeer::ID, $quale_atto[$x], Criteria::EQUAL);
+    $c->add(OppIterPeer::ID, array(16), Criteria::IN);
+    $c->addJoin(OppAttoHasIterPeer::ITER_ID, OppIterPeer::ID, Criteria::LEFT_JOIN);
+    $c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
+    $c->setLimit(1);
+    $rs = OppAttoHasIterPeer::doSelectRS($c);
+	
+	while ($rs->next())
+    {
+	 
+	    $rappresentazioni[$x][1] = $rs->getDate(1, 'Y-m-d');
+	    $rappresentazioni[$x][2] = $rs->getString(2);
+	    $rappresentazioni[$x][3] = $rs->getString(3);
+	    $rappresentazioni[$x][4] = $rs->getString(4);
+	    $rappresentazioni[$x][5] = $rs->getString(5);
+	    $rappresentazioni[$x][6] = $rs->getString(6);
+  
+    }
+    
+    }	
+  
+    return $rappresentazioni;
+  }
+  
   
   public function getIdVotazioni()
   {

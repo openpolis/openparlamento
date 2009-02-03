@@ -10,87 +10,102 @@
     <p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
   </div>
 </div>
+<br />
 
- <?php if($atto->getTipoAttoId() == '1'): ?>
-<table border=1>
-<tr>
+<ul class="iter float-container">
+
+<!-- caso in cui non ha PRED -->
 <?php if ($rappresentazioni_pred=='') : ?>
-  <th bgcolor="#00FF00"><?php echo ($atto->getRamo()=='C' ? 'Camera':'Senato'). " - ".format_date($atto->getDataPres(), 'dd/MM/yyyy') ?> Presentato</th>
+<li class="step-done"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><p>presentato<?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
+  
   <?php if(count($rappresentazioni_this)!=0) : ?>
-    <th>
+    
       <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
-        <?php $tempo= ($rappresentazione_this[3]=='C' ? 'Camera':'Senato').' - '.format_date($rappresentazione_this[1], 'dd/MM/yyyy').' '.$rappresentazione_this[2] ?>
-      <?php endforeach; ?>
-      <?php if(substr_count($tempo,'approvato')>0) : ?>
-        <th bgcolor="#00FF00">
-      <?php else : ?>
-        <th bgcolor="#FF0000">
-      <?php endif; ?>   
-      <?php echo $tempo ?>       
-    </th>
-    <?php if(count($rappresentazioni_succ)==0) : ?>
-      <th><i><?php echo 'Da Approvare'.($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?>
-        <?php if($lettura_parlamentare_successiva): ?>
-          <?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?>
-        <?php endif; ?>
-      </i></th>
-      <th><i><?php echo 'Diventa Legge!  ' ?></i></th>
-    <?php endif; ?>   
+          <li class="step-done"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo $rappresentazione_this[2] ?> <?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
+      <?php endforeach; ?> 
+      
+  <?php else: ?> 
+      
+      <li><span class="date">&nbsp;</span><p>approvato<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
+      
+      
   <?php endif; ?>   
-  <?php if(count($rappresentazioni_this)==0) : ?>
-    <th><i><?php echo 'Da Approvare'.($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?>
-      <?php if($lettura_parlamentare_successiva): ?>
-        <?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?>
+   
+  <!--  CONTROLLO SE HA SUCC CHIUSI  -->
+ 
+  <?php if(count($rappresentazioni_succ)==0) : ?>
+      <!--  NON HA SUCC CHIUSI. CONTROLLO SE HA SUCC ATTIVI -->
+      <?php if($lettura_parlamentare_successiva) : ?>
+         
+        <li><span class="date"></span> <strong><?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?></strong>
+        <p>da approvare <?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p>
+        <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
+        
+        
+      <?php else: ?>    
+      
+        <li><span class="date">&nbsp;</span><p>approvato<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+        <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
+        
+     <?php endif; ?> 
+   <?php else: ?>
+   <!--  CASO IN CUI HA SUCC CHIUSI -->
+   
+       <?php foreach($rappresentazioni_succ as $rappresentazione_succ): ?>
+          <?php if(substr_count($rappresentazione_succ[2],'approvato')>0 and $rappresentazione_succ[2]!=='approvato definitivamente. Legge') : ?>
+              <li class="step-done"><span class="date"><?php echo format_date($rappresentazione_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($rappresentazione_succ[3].'.'.$rappresentazione_succ[4], 'atto/index?id='.$rappresentazione_succ[5]) ?></strong>
+              <p><?php echo $rappresentazione_succ[2].  ($rappresentazione_succ[3]=='S' ? ' in Senato':' alla Camera') ?></p>
+          <?php endif; ?>   
+          <?php if(substr_count($rappresentazione_succ[2],'approvato')==0)  : ?>
+              <li><span class="date"><?php echo format_date($rappresentazione_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($rappresentazione_succ[3].'.'.$rappresentazione_succ[4], 'atto/index?id='.$rappresentazione_succ[5]) ?></strong>
+              <p><?php echo $rappresentazione_succ[2].  ($rappresentazione_succ[3]=='S' ? ' in Senato':' alla Camera') ?></p>
+          <?php endif; ?>  
+         
+      <?php endforeach; ?>  
+   
+   
+      <?php if($leggi_succ=='') : ?> 
+            <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
+      <?php else: ?>
+         <?php foreach($leggi_succ as $legge_succ): ?>
+             <li class="step-done"><span class="date"><?php echo format_date($legge_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($legge_succ[3].'.'.$legge_succ[4], 'atto/index?id='.$legge_succ[5]) ?></strong>
+             <p>definitivamente legge</p>
+          <?php endforeach; ?>           
       <?php endif; ?>
-    </i></th> 
-    <th><i><?php echo 'Da Approvare'.($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></i></th>
-    <th><i><?php echo 'Diventa Legge!  ' ?></i></th>
-  <?php endif; ?>     
-<?php endif ?>
-	
+   <?php endif; ?> 
+<?php endif; ?> 
+
 <?php if ($rappresentazioni_pred!=='') : ?>
-  <th bgcolor="#00FF00">
-    <?php echo link_to($rappresentazioni_pred[0][3].'.'.$rappresentazioni_pred[0][4],'atto/index?id='.$rappresentazioni_pred[0][5]) ?>
-    <br />
-    <?php echo ($rappresentazioni_pred[0][3]=='C' ? 'Camera':'Senato'). " - ".format_date($rappresentazioni_pred[0][6], 'dd/MM/yyyy') ?> Presentato
-    </th>
-  <?php foreach($rappresentazioni_pred as $rappresentazione_pred): ?>
-      <?php $tempo= ($rappresentazione_pred[3]=='C' ? 'Camera':'Senato').' - '.format_date($rappresentazione_pred[1], 'dd/MM/yyyy').' '.$rappresentazione_pred[2] ?>
-      <?php $chiuso_pred=$rappresentazione_pred[2] ?>
+   <li class="step-done"><span class="date"><?php echo format_date($rappresentazioni_pred[0][6], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($rappresentazioni_pred[0][3].'.'.$rappresentazioni_pred[0][4],'atto/index?id='.$rappresentazioni_pred[0][5]) ?></strong>
+   <p>presentato<?php echo ($rappresentazioni_pred[0][3]=='C' ? ' alla Camera':' al Senato') ?></p></li> 
+   <?php foreach($rappresentazioni_pred as $rappresentazione_pred): ?>
+     <?php $tempo= ($rappresentazione_pred[3]=='C' ? 'Camera':'Senato').' - '.format_date($rappresentazione_pred[1], 'dd/MM/yyyy').' '.$rappresentazione_pred[2] ?>
+     <?php $chiuso_pred=$rappresentazione_pred[2] ?>
      <?php if(substr_count($tempo,'approvato')>0) : ?>
-          <th bgcolor="#00FF00">
-       <?php else : ?>
-          <th bgcolor="#FF0000">
-       <?php endif; ?>   
-       <?php echo link_to($rappresentazione_pred[3].'.'.$rappresentazione_pred[4],'atto/index?id='.$rappresentazione_pred[5]) ?>
-       <br />
-        <?php echo $tempo ?>       
-    </th>
+          <li class="step-done"><span class="date"><?php echo format_date($rappresentazione_pred[1], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($rappresentazione_pred[3].'.'.$rappresentazione_pred[4],'atto/index?id='.$rappresentazione_pred[5]) ?></strong>
+          <p><?php echo $rappresentazione_pred[2]. ($rappresentazioni_pred[0][3]=='C' ? ' alla Camera':' al Senato') ?></p></li> 
+     <?php else : ?>
+          <li class="step-done"><span class="date"><?php echo format_date($rappresentazione_pred[1], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($rappresentazione_pred[3].'.'.$rappresentazione_pred[4],'atto/index?id='.$rappresentazione_pred[5]) ?></strong>
+          <p><?php echo $rappresentazione_pred[2]. ($rappresentazioni_pred[0][3]=='C' ? ' alla Camera':' al Senato') ?></p></li> 
+     <?php endif; ?>       
    <?php endforeach; ?>  
-  <?php if(count($rappresentazioni_this)!=0) : ?>
-    
+   
+   <?php if(count($rappresentazioni_this)!=0) : ?> 
       <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
-         <?php $tempo=($rappresentazione_this[3]=='C' ? 'Camera':'Senato').' - '.format_date($rappresentazione_this[1], 'dd/MM/yyyy').' '.$rappresentazione_this[2] ?>
-         <?php $chiuso_this=$rappresentazione_this[2] ?>
-       <?php if(substr_count($tempo,'approvato')>0) : ?>
-          <th bgcolor="#00FF00">
-       <?php else : ?>
-          <th bgcolor="#FF0000">
-       <?php endif; ?>   
-       <br />
-        <?php echo $tempo ?>       
-    </th>
-       <?php endforeach; ?> 
-    
-     <?php if (($chiuso_this=='approvato con modificazioni') && ($rappresentazioni_succ=='')) : ?>
-         <th><i><?php echo 'Nuova Approvazione'.($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?>
-       <?php if($lettura_parlamentare_successiva): ?>
-         <?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?>
-      <?php endif; ?>
-         </i></th>
-         <th><i><?php echo 'Diventa Legge!  ' ?></i></th>
-     <?php endif ?>           
-  <?php endif ?>
+          <li class="step-done"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo $rappresentazione_this[2] ?> <?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
+      <?php endforeach; ?>    
+   <?php else: ?> 
+      <li><span class="date">&nbsp;</span><p>approvato<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+   <?php endif; ?>   
+     
+   <?php if (($chiuso_this=='approvato con modificazioni') && ($rappresentazioni_succ=='')) : ?>
+          <li><span class="date">&nbsp;</span><p>nuova approvazione<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>       
+          <?php if($lettura_parlamentare_successiva): ?>
+              <li><span class="date">&nbsp;</span><strong><?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(),'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?></strong>
+              <p>approvato<?php echo $lettura_parlamentare_successiva->getRamo()=='C' ? ' alla Camera':' al Senato' ?></p></li> 
+          <?php endif; ?>
+          <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
+   <?php endif ?>           
   <?php if(count($rappresentazioni_this)==0) : ?> 
      <th><i><?php echo 'Approvazione'.($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?>
       <?php if($lettura_parlamentare_successiva): ?>
@@ -122,7 +137,5 @@
     </th>
    <?php endforeach; ?>  
 <?php endif ?>
-</tr>
-</table>
 
-<?php endif; ?>   
+</ul>

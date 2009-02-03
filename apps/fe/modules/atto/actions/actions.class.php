@@ -457,7 +457,7 @@ class attoActions extends sfActions
   	if($this->atto->getSucc())
   	{
   	  $c = new Criteria();
-      $c->add(OppAttoPeer::ID, $this->atto->getSucc(), Criteria::EQUAL );
+          $c->add(OppAttoPeer::ID, $this->atto->getSucc(), Criteria::EQUAL );
   	  $this->lettura_parlamentare_successiva = OppAttoPeer::doSelectOne($c);
   	}
 	
@@ -481,12 +481,21 @@ class attoActions extends sfActions
     
     //TUTTI I SUCC
     $quale_atto=$this->getTuttiSucc($this->atto->getId());
-    if (count($quale_atto)>0)
-      $this->rappresentazioni_succ = $this->atto->getIterRappresentazioni($quale_atto);
+    if (count($quale_atto)>0) {
+           $this->rappresentazioni_succ = $this->atto->getIterRappresentazioni($quale_atto);   
+    }       
     else
       $this->rappresentazioni_succ = '';
       
     $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));
+    
+    //Controlla se succ e' diventato legge
+    if (count($quale_atto)>0) {
+           $this->leggi_succ = $this->atto->getIterLegge($quale_atto);   
+    }       
+    else
+      $this->leggi_succ = '';
+    
 	
 	//titolo del wiki
 	switch($this->atto->getTipoAttoId())
