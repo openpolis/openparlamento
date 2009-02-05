@@ -15,27 +15,27 @@ class OppIntervento extends BaseOppIntervento
   {
     if ($this->isNew())
       $updateInterventi = true;
-      
-    $affected_rows = self::save($con);
-    
+
+    $affected_rows = parent::save($con);
+
     if ($updateInterventi)
     {
       $atto = $this->getOppAtto();
-      $interventi = $atto->getNInterventi();
-      $atto->setNInterventi($interventi + 1);
+      $atto->setNInterventi($atto->countOppInterventos());
+      $atto->save();
     }
-    
+
     return $affected_rows;
   }
   
   public function delete($con = null)
   {
     $atto = $this->getOppAtto();
-    $interventi = $atto->getNInterventi();
     
-    self::delete($con);
+    parent::delete($con);
     
-    $atto->setNInterventi($interventi - 1);
+    $atto->setNInterventi($atto->countOppInterventos());
+    $atto->save();
   }
   
   /**
