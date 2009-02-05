@@ -489,6 +489,11 @@ class attoActions extends sfActions
       
     $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));
     
+    //Controlla se this e' diventato legge
+    
+    $this->leggi_this = $this->atto->getIterLegge(array($this->atto->getId()));          
+
+    
     //Controlla se succ e' diventato legge
     if (count($quale_atto)>0) {
            $this->leggi_succ = $this->atto->getIterLegge($quale_atto);   

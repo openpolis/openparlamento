@@ -1,8 +1,12 @@
+<?php if ($atto->getTipoAttoId()<12) : ?>
+
 <table class="signers">
   <thead>
     <tr>
       <th scope="col"><h5 class="subsection ico-first-signers">primi firmatari:</h5></th>
-      <th scope="col"><h5 class="subsection ico-co-signers">relatori:</h5></th>
+      <?php if ($atto->getTipoAttoId()==1) : ?>
+          <th scope="col"><h5 class="subsection ico-co-signers">relatori:</h5></th>
+      <?php endif; ?>    
     </tr>
   </thead>
 
@@ -42,3 +46,4 @@
     <?php endif; ?>
   </tbody>
 </table>
+<?php endif; ?>

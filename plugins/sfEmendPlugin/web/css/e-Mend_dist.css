@@ -1,0 +1,451 @@
+.highlight { background: #f0ECB3; color: #000; }
+a .highlight { text-decoration: underline; }
+
+.a1 { background: #fffdc5; }
+.a2 { background: #fff09a; } 
+.a3 { background: #FFEB8C; }
+.a4 { background: #ffe26f; }
+.a5 { background: #ffd441; }
+.a6 { background: #ffc614; }
+.a7 { background: #ffb600; }
+.a8 { background: #ffa800; }
+.a9 { background: #ff9900; }
+.a10 { background: #ff8b00; }
+.a11 { background: #ff7b00; }
+.a12 { background: #ff6500; }
+.a13 { background: #ff5100; }
+.a14 { background: #ff3d00; }
+.a15 { background: #ff0c00; }
+.a16 { background: #f80000; }
+.a17 { background: #dc0000; color: #fff; }
+.a18 { background: #c00000; color: #fff; }
+.a19 { background: #9c0000; color: #fff; }
+.a20 { background: #7f0000; color: #fff; }
+.a21 { background: #640000; color: #fff; }
+.a22 { background: #480000; color: #fff; }
+.a22 { background: #2c0000; color: #fff; }
+.a23 { background: #180000; color: #fff; }
+.a24 { background: #000; color: #fff; }
+.a25,.a26,.a27,.a28,.a29,.a30,.a31,.a32,.a33,.a34,.a35,.a36,.a37,.a38,.a39,.a40 { background: #000; color: #f00; }
+
+
+
+.Emend-left { float: left; }
+.Emend-right { float: right; }
+
+.user-0, .user-1, .user-2, .user-3, .user-4, .user-5, .user-6, .user-7,
+.user-8, .user-9, .user-10, .user-11, .user-12, .user-13, .user-14, .user-15,
+.user-16, .user-17, .user-18, .user-19, .user-20, .user-21, .deletenote, .editnote { padding: 5px 6px; text-decoration: none; cursor: default; background-repeat: no-repeat; background-position: center center;}
+
+.user-0 { background-image: url(images/user0.png); }
+.user-1 { background-image: url(images/user1.png);  }
+.user-2 { background-image: url(images/user2.png);  }
+.user-3 { background-image: url(images/user3.png);  }
+.user-4 { background-image: url(images/user4.png);  }
+.user-5 { background-image: url(images/user5.png);  }
+.user-6 { background-image: url(images/user6.png);  }
+.user-7 { background-image: url(images/user7.png);  }
+.user-8 { background-image: url(images/user8.png);  }
+.user-9 { background-image: url(images/user9.png);  }
+.user-10 { background-image: url(images/user10.png); }
+.user-11 { background-image: url(images/user11.png); }
+.user-12 { background-image: url(images/user12.png); }
+.user-13 { background-image: url(images/user13.png); }
+.user-14 { background-image: url(images/user14.png); }
+.user-15 { background-image: url(images/user15.png); }
+.user-16 { background-image: url(images/user16.png); }
+.user-17 { background-image: url(images/user17.png); }
+.user-18 { background-image: url(images/user18.png); }
+.user-19 { background-image: url(images/user19.png); }
+.user-20 { background-image: url(images/user20.png); }
+.user-21 { background-image: url(images/user21.png); }
+
+#EmendOverlay, .EmendOverlay { position: absolute; z-index: 100; left: 0; text-align:left; /*border: 1px solid red; visibility: hidden;*/ }
+
+#eMend-VISUAL-Overlay ul { list-style-type: none; padding: 0; margin:0; font-family: "Trebuchet MS",Verdana,Helvetica,Arial,sans-serif !important; }
+#eMend-VISUAL-Overlay ul li { padding: 0; margin:0; }
+
+/*
+TEASERS
+-------*/
+#HOLteaser { position:fixed; z-index: 105; width: 280px; right: 40px; bottom: 20px; }
+#eMend-VISUAL-Overlay #HOLteaser li { border: 5px solid #ff3d00; text-align: center; background-color: #ff3d00; margin-bottom: 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; display: table; -moz-user-select: none; user-select: none; }
+#HOLteaser img {float: left; }
+#HOLteaser h2 {font: 17px sans-serif; letter-spacing: -0.05px; color: #000; border:none;}
+.HOLbg { height: 80px; background-color: #FFA400; background-repeat: repeat-x; display: table-cell; vertical-align: middle; width: 100%;}
+.helpOnLine {  margin: 0; padding: 8px; }
+
+/* jqModal base Styling courtesy of;
+	Brice Burgess <bhb@iceburg.net> */
+
+/* The Window's CSS z-index value is respected (takes priority). If none is supplied,
+	the Window's z-index value will be set to 3000 by default (via jqModal.js). */
+	
+.jqmWindow {
+    display: none;
+    
+    position: fixed;
+    top: 17%;
+    left: 50%;
+    
+    margin-left: -300px;
+    width: 600px;
+    
+    background-color: #EEE;
+    color: #333;
+    border: 1px solid black;
+    padding: 12px;
+}
+
+.jqmWindow340 {
+    display: none;
+    
+    position: fixed;
+    top: 17%;
+    left: 50%;
+    
+    margin-left: -167px;
+    width: 335px;
+    
+    background-color: #EEE;
+    color: #333;
+    border: 1px solid black;
+    padding: 12px;
+}
+
+.jqmOverlay { background-color: #000; }
+
+/* Background iframe styling for IE6. Prevents ActiveX bleed-through (<select> form elements, etc.) */
+* iframe.jqm {position:absolute;top:0;left:0;z-index:-1;
+	width: expression(this.parentNode.offsetWidth+'px');
+	height: expression(this.parentNode.offsetHeight+'px');
+}
+
+/* Fixed posistioning emulation for IE6
+     Star selector used to hide definition from browsers other than IE6
+     For valid CSS, use a conditional include instead */
+* html .jqmWindow {
+     position: absolute;
+     top: expression((document.documentElement.scrollTop || document.body.scrollTop) + Math.round(17 * (document.documentElement.offsetHeight || document.body.clientHeight) / 100) + 'px');
+}form.Emend fieldset { border: none; border-top: 1px solid #999; margin:0; padding:10px; background: none; }
+
+form.Emend span {
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 1px;
+	border: 1px solid #DFDFDF;
+	background-color: #FFF;
+}
+	
+form.Emend span input,
+form.Emend span textarea,
+form.Emend span select {
+	border: 1px solid #C3C3C3;
+	border-top-color: #7C7C7C;
+	border-bottom-color: #DDD;
+	font-size: 11.5px;
+	line-height: 13px;
+/*	width: 100%;*/
+	margin: 0;
+	font-family: "Courier New", Courier, monospace;
+	background-color:#fff;
+}
+
+form.Emend span input:focus,
+form.Emend span textarea:focus,
+form.Emend span select:focus {
+	background-color:#FFFF99;
+	/* color: #000000; reverse color */	
+}
+
+form.Emend input.warning,
+form.Emend select.warning,
+form.Emend textarea.warning {
+	border: 1px solid red;
+	background-color: #FFFCE2;
+	background-image: url(images/warning_obj.png);
+	background-position: right bottom;
+	background-repeat: no-repeat;
+}
+
+form.Emend legend { font-weight: bold; }
+
+form.Emend label { display: block; }
+
+form.Emend button.submit
+{
+border: 3px double #999999;
+border-top-color: #CCCCCC;
+border-left-color: #CCCCCC;
+color: #333333;
+font-size: 10px;
+font-weight: bold;
+float: left;
+}
+
+form.Emend button.submit:active
+{
+border: 3px double #CCCCCC;
+border-top-color: #999999;
+border-left-color: #999999;
+}
+
+form.Emend p {
+margin: 5px 0;
+}
+
+#noteFormContainer { width: 300px; }
+#noteForm { background-color: #fff; padding: 5px; }
+
+#noteSubject, #noteText, #noteTags { width: 300px; }
+
+span.ico.cancel {
+	border: none;
+	display: block;
+	text-align: center;
+	background: none;
+	min-height: 16px;
+	line-height: 12px;
+}
+
+span.ico.cancel img {
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+span.ico.confirm {
+	border: none;
+	display: block;
+	text-align: center;	
+	background: none;
+	min-height: 16px;	
+	line-height: 12px;	
+}
+
+span.ico.confirm img {
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+br.clear { clear: both; }
+
+
+
+
+
+
+#eMend-sidebar { font: 13px sans-serif; color:#333; width:260px; text-align: left;
+ position: fixed; z-index: 101;  padding: 0; -moz-user-select: none; user-select: none; overflow: hidden;}
+#eMend-sidebar a:link, #eMend-sidebar a:hover, #eMend-sidebar a:visited, #eMend-sidebar img { border:none; }
+#EmendLinks {z-index: 99;}
+
+#eMend-DATA-Overlay {display:none;}
+
+#emend-navbar { background-color: #bbb; float: right;}
+
+.sidebar-wrapper { position: absolute; background: #f5f5f5 url(images/memefarmers.png) no-repeat bottom right; right: -260px; height: 100%; width: 260px; z-index: 3; }
+#sidebar-body { padding: 0 12px 15px 2px; height: 100%; overflow: hidden; position: relative;}
+
+.deletenote { background-image: url(images/comment_delete.png); }
+.editnote { background-image: url(images/comment_edit.png); }
+.sidebar-X-header div.linktoggle { width:15px; height:15px; text-decoration: none; float: right; margin-right: 5px; }
+.closesidebar { width:15px; height:15px; text-decoration: none; float: right;}
+.closesidebar:hover { display: block; width:15px; height:15px;}
+.extendsidebar { margin-right: 10px; }
+.opensidebar, .extendsidebar { background: transparent url(images/arrows.png) no-repeat 0 -15px; display: block; width:15px; height:15px; text-decoration: none;}
+.emend-comment { background: transparent url(images/comment.gif) no-repeat top left; width: 16px; height: 16px; clear: left; float: left; }
+.opensidebar:hover, .extendsidebar:hover { display: block; width:15px; height:15px; }
+.sidebar-X-header{ overflow:hidden; zoom:1; color:#15428b; padding:5px 3px 4px 5px; border:1px solid #99bbe8; line-height:15px; background-color:#D2E0F2; z-index: 1; margin-right: 6px;}
+.sidebar-X-header .logo {margin-right: 10px;}
+.sidebar-Y-header{ padding:5px 3px 4px 5px; height: 100%; position: absolute; background-color:#d2e0f2; border:1px solid #98c0f4; z-index: 2; right: 0; cursor: pointer;}
+#eMend-sidebar .version {font-size: 9px; color: #7ea0cc; padding: 5px 0; }
+
+.noteGroup { background-color: #ddd; margin-top: 8px; padding: 2px; -moz-border-radius:4px; -webkit-border-radius:4px; border-radius:4px;}
+.noteGroup h6 { padding: 2px 3px; margin: 0; font-size: 10px; }
+.noteGroup div.nodetoggle { float: right; position:relative; top: -9px; right:-7px; margin-left:3px;}
+
+
+/*
+NOTE
+--------*/
+.noteGroup .emend-note { padding: 2px 0; border-bottom: 1px dashed #b4b4b4;}
+
+.noteGroup .emend-note.even_false {background-color: #f6f6f6; }
+.noteGroup .emend-note.even_true {background-color: #eaeaea; }
+.noteGroup .emend-note.even_false, .noteGroup .note.currentUser.even_false {background: #e5e4d5 url(images/fade-lighter.png) repeat-x;}
+.noteGroup .emend-note.even_true, .noteGroup .note.currentUser.even_true {background: #ebeae4 url(images/fade-lighter.png) repeat-x;}
+
+.noteGroup .emend-note h6 { border-top: none; background: none; font-weight: normal;}
+.noteGroup .emend-note h5 { margin: 2px 3px; font-size: 11px;}
+.noteGroup .emend-note img { vertical-align: middle; }
+.noteGroup .emend-note p { margin: 2px 3px; font-style:italic;}
+.noteGroup .emend-note .actions {display: none; -moz-border-radius-topright: 5px; -moz-border-radius-bottomright: 5px;}
+
+.noteGroup .emend-note.currentUser .actions {background: inherit; float: right; display: none; width: 20px; position: absolute; right: -12px; }
+.noteGroup .emend-note.currentUser .actions img { padding: 4px; }
+#eMend-sidebar .currentUser:hover .actions {display: block; }
+
+
+.noteGroup a.readmore, .noteGroup a.readless, .noteGroup a.opengroup, .noteGroup a.closegroup, .sidebar-X-header a.linkgroup, .sidebar-X-header a.unlinkgroup { display: block; width: 16px; height: 16px; text-decoration: none;}
+
+.noteGroup a.opengroup {
+	 background: url(images/more_big.png) no-repeat top left;
+}
+
+.noteGroup a.closegroup {
+	 background: url(images/less_big.png) no-repeat top left;
+}
+
+.noteGroup a.readmore {
+	 background: url(images/more.png) no-repeat center center; display: inline; padding: 4px;
+}
+
+.noteGroup a.readless {
+	 background: url(images/less.png) no-repeat center center; display: inline; padding: 4px;
+}
+
+.sidebar-X-header a.linkgroup {
+	background: url(images/link.png) no-repeat top left;
+}
+
+.sidebar-X-header a.unlinkgroup {
+	background: url(images/link_break.png) no-repeat top left;
+}
+
+
+
+.noteGroup .note.readpart a.readmore,
+ .noteGroup.readpart img.opengroup,
+  .noteGroup .note.readfull a.readless,
+	 .noteGroup.readfull img.closegroup,
+	  .linked a.unlinkgroup,
+		.unlinked a.linkgroup { display: block; position: absolute; right: 0; top: 0; text-decoration: none; cursor: pointer;}
+
+
+div.jGrowl {
+	padding: 			10px;
+	z-index: 			9999;
+}
+
+/** Special IE6 Style Positioning **/
+div.ie6 {
+	position: 			absolute;
+}
+
+div.ie6.top-right {
+	right: 				auto;
+	bottom: 			auto;
+	left: 				expression( ( 0 - jGrowl.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+  	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+}
+
+div.ie6.top-left {
+	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+}
+
+div.ie6.bottom-right {
+	left: 				expression( ( 0 - jGrowl.offsetWidth + ( document.documentElement.clientWidth ? document.documentElement.clientWidth : document.body.clientWidth ) + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: 				expression( ( 0 - jGrowl.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+}
+
+div.ie6.bottom-left {
+	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: 				expression( ( 0 - jGrowl.offsetHeight + ( document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight ) + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+}
+
+div.ie6.center {
+	left: 				expression( ( 0 + ( ignoreMe2 = document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft ) ) + 'px' );
+	top: 				expression( ( 0 + ( ignoreMe = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop ) ) + 'px' );
+	width: 				100%;
+}
+
+/** Normal Style Positions **/
+body > div.jGrowl {
+	position:			fixed;
+}
+
+body > div.jGrowl.top-left {
+	left: 				0px;
+	top: 				0px;
+}
+
+body > div.jGrowl.top-right {
+	right: 				0px;
+	top: 				0px;
+}
+
+body > div.jGrowl.bottom-left {
+	left: 				0px;
+	bottom:				0px;
+}
+
+body > div.jGrowl.bottom-right {
+	right: 				0px;
+	bottom: 			0px;
+}
+
+body > div.jGrowl.center {
+	top: 				0px;
+	width: 				50%;
+	left: 				25%;
+}
+
+/** Cross Browser Styling **/
+div.center div.jGrowl-notification, div.center div.jGrowl-closer {
+	margin-left: 		auto;
+	margin-right: 		auto;
+}
+
+div.jGrowl div.jGrowl-notification, div.jGrowl div.jGrowl-closer {
+	background-color: 		#000;
+	color: 					#fff;
+	opacity: 				.85;
+	filter: 				alpha(opacity = 85);
+	zoom: 					1;
+	width: 					235px;
+	padding: 				10px;
+	margin-top: 			5px;
+	margin-bottom: 			5px;
+	font-family: 			Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 				12px;
+	text-align: 			left;
+	display: 				none;
+	-moz-border-radius: 	5px;
+	-webkit-border-radius:	5px;
+}
+
+div.jGrowl div.jGrowl-notification {
+	min-height: 			40px;
+}
+
+div.jGrowl div.jGrowl-notification div.header {
+	font-weight: 			bold;
+	font-size:				10px;
+}
+
+div.jGrowl div.jGrowl-notification div.close {
+	float: 					right;
+	font-weight: 			bold;
+	font-size: 				12px;
+	cursor:					pointer;
+}
+
+div.jGrowl div.jGrowl-closer {
+	height: 				15px;
+	padding-top: 			4px;
+	padding-bottom: 		4px;
+	cursor: 				pointer;
+	font-size:				11px;
+	font-weight: 			bold;
+	text-align: 			center;
+}
+
+/** eMend Styling **/
+div#jGrowl div.eMend-jGrowl { text-align: center; width: 280px; border: 5px solid #ff3d00; color: #333; background-color: #ff3d00; padding:0; margin-right: 25px; opacity: 1; filter: alpha(opacity = 100); -moz-user-select: none; }
+div#jGrowl div.eMend-jGrowl input { vertical-align: middle; }
+div#jGrowl div.eMend-jGrowl label { color: #333; cursor: pointer; }
+.HOLbg img {float: left; }
+.HOLbg h2 {font: 17px sans-serif; letter-spacing: -0.05px; color: #000; border:none;}
+div.jGrowl div.jGrowl-closer { width: 270px; visibility: none; background-color: #ff3d00; opacity: 1; filter: alpha(opacity = 100); color: #333;}

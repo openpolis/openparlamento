@@ -84,7 +84,9 @@
 						  'atto' => $atto,
 						  'rappresentazioni_this' => $rappresentazioni_this,
 						  'rappresentazioni_succ' => $rappresentazioni_succ,
+						  'leggi_this'            => $leggi_this,
 						  'leggi_succ'            => $leggi_succ,
+						  'lettura_parlamentare_precedente' => $lettura_parlamentare_precedente,
 						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva)) ?>
 						  
  	   <!-- tutto l'iter -->
@@ -97,11 +99,11 @@
 	<?php endif; ?>
 	<!-- Firmatari -->
 	    <?php include_component('atto', 'firmatari', 
-	                            array('primi_firmatari' => $primi_firmatari, 'relatori' => $relatori)) ?>
+	                            array('primi_firmatari' => $primi_firmatari, 'relatori' => $relatori, 'atto'=>$atto)) ?>
 
       <?php if(count($co_firmatari)!=0): ?>
         <?php include_partial('coFirmatari', 
-	                      array('co_firmatari' => $co_firmatari)) ?>						
+	                      array('co_firmatari' => $co_firmatari, 'atto'=>$atto)) ?>						
 	
 	    <?php endif; ?>
 

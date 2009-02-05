@@ -2,7 +2,10 @@
 <div class="more-results float-container" style="display: none;">
    <ul class="square-bullet">
    <?php foreach($iter_completo as $iter => $data): ?>
-      <li><em><?php echo format_date($data, 'dd/MM/yyyy') ?></em><br /> <?php echo $iter ?></li>
+     
+        <li><em><?php echo format_date($data, 'dd/MM/yyyy') ?></em><br /> <?php echo $iter ?></li>
+
+      
     <?php endforeach; ?>
     </ul>
     <div class="more-results-close">[ <a href="#" class="btn-close action">chiudi</a> ]</div>
