@@ -17,7 +17,7 @@ $argc = count($argv);
 # controllo sintassi
 if ( $argc != 2 ) 
 {
-  print "sintassi: php batch/updateVotiRibelliCarica votazione_id\n";  
+  print "sintassi: php batch/updateVotiRibelliVotazione votazione_id\n";  
   exit;
 }
 

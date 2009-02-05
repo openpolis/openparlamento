@@ -3,6 +3,10 @@ dev:
   
 # default values
 all:
+  sfSimpleBlog:
+    user_class:          OppUser
+    use_bundled_layout:  false
+
   # remote guard host
   remote_guard_host:      'accesso.openpolis.it'
 

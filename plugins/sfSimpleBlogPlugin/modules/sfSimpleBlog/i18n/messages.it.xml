@@ -1,0 +1,193 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+
+      <trans-unit>
+        <source>[0]no comment|[1]one comment|(1,+Inf]%1% comments</source>
+        <target>[0]nessun commento|[1]un commento|(1,+Inf]%1% commenti</target>
+      </trans-unit>
+      <trans-unit>
+        <source>[1]One comment so far|(1,+Inf]%1% comments so far</source>
+        <target>[1]Un commento finora|(1,+Inf]%1% commenti finora</target>
+      </trans-unit>
+      <trans-unit>
+        <source>&lt; earlier posts</source>
+        <target>&lt; post successivi</target>
+      </trans-unit>
+      <trans-unit>
+        <source>older posts &gt;</source>
+        <target>post precedenti &gt;</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments</source>
+        <target>Commenti</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Your comment has been submitted and is awaiting moderation</source>
+        <target>Il tuo commento è stato inviato e sta aspettando la moderazione</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posted by %1% on %2%</source>
+        <target>Scritto da %1% il %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>in %1%</source>
+        <target>in %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts tagged "%1%"</source>
+        <target>Post taggati "%1%"</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Tags</source>
+        <target>Tags</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Leave a reply</source>
+        <target>Lascia un commento</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Name (required)</source>
+        <target>Nome (richiesto)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Mail (required) (will not be published)</source>
+        <target>E-Mail (richiesta) (non sarà pubblicata)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Website</source>
+        <target>Sito web</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Submit comment</source>
+        <target>Invia commento</target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>You must provide a name to leave a comment</source>
+        <target>Devi fornire un nome per lasciare un commento</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a longer name (4 characters minimum)</source>
+        <target>Devi fornire un nome più lungo (minimo 4 caratteri)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a shorter name (100 characters minimum)</source>
+        <target>Devi fornire un nome più corto (massimo 100 caratteri)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide an email to leave a comment</source>
+        <target>Devi fornire un e-mail per lasciare un commento</target>
+      </trans-unit>
+      <trans-unit>
+        <source>This email address is not valid</source>
+        <target>Questo indirizzo e-mail non è valido</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a text content to leave a comment</source>
+        <target>Devi scrivere il testo del commento</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a longer content (4 characters minimum)</source>
+        <target>Devi fornire un contenuto più lungo (minimo 4 caratteri)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Latest posts</source>
+        <target>Ultimi post</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Meta</source>
+        <target>Meta</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Admin</source>
+        <target>Admin</target>
+      </trans-unit>
+      <trans-unit>
+        <source>symfony</source>
+        <target>symfony</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts from %1%</source>
+        <target>Post di %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments from %1%</source>
+        <target>Commenti di %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments on post "%1%" from %2%</source>
+        <target>Commenti sul post "%1%" di %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts tagged "%1%" from %2%</source>
+        <target>Post taggati "%1%" da %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Feeds</source>
+        <target>Feeds</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts (RSS)</source>
+        <target>Post (RSS)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts (Atom)</source>
+        <target>Post (Atom)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments (RSS)</source>
+        <target>Commenti (RSS)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments (Atom)</source>
+        <target>Commenti (Atom)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>[%1%] Please moderate: New comment on "%2%"</source>
+        <target>[%1%] Nuovi commenti da moderare su "%2%"</target>
+      </trans-unit>
+      <trans-unit>
+        <source>[%1%] New comment on "%2%"</source>
+        <target>[%1%] Nuovi commenti su "%2%"</target>
+      </trans-unit>
+      <trans-unit>
+        <source>A new comment has been posted on the post "%1%".</source>
+        <target>Un nuovo commento è stato inviato sul post "%1%".</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Author: </source>
+        <target>Autore : </target>
+      </trans-unit>
+      <trans-unit>
+        <source>Email: </source>
+        <target>E-mail : </target>
+      </trans-unit>
+      <trans-unit>
+        <source>Website: </source>
+        <target>Sito web : </target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comment: </source>
+        <target>Commento : </target>
+      </trans-unit>
+      <trans-unit>
+        <source>This comment was automatically moderated and is waiting for your approval.</source>
+        <target>Questo commento è stato automaticamente moderato e sta aspettando la tua approvazione.</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Accept this comment:</source>
+        <target>Accetta questo commento:</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Moderate this comment:</source>
+        <target>Modera questo commento:</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments are closed.</source>
+        <target>I commenti sono chiusi.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

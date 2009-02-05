@@ -1,0 +1,274 @@
+= sfSimpleBlog plugin =
+
+The `sfSimpleBlogPlugin` adds standard weblog features to an existing website:
+ - List of posts
+ - Details of a post
+ - Ability to add a comment
+ - Email alert on comments
+ - Tagsonomy
+ - RSS feeds (if [http://trac.symfony-project.com/trac/wiki/sfFeed2Plugin sfFeed2Plugin] is installed)
+ - Administration for posts and comments
+
+It is not aimed at replacing full-featured blog packages, but offers a lightweight alternative for when you build a website that has to contain a blog section. It is voluntarily simple and limited (that's why it doesn't come with a BBCode parser, a search engine, a media asset library, or a user management module). However, it is very easy to configure and adapt, so it should fulfill most basic blog requirements.
+
+This plugin can only provide one blog per project.
+
+== Screenshots ==
+
+[[Image(sfSimpleBlog_front.gif)]] [[Image(sfSimpleBlog_back.gif)]]
+
+== Contents ==
+
+This plugin contains one schema with three new Propel classes:
+
+ * `sfSimpleBlogPost`
+ * `sfSimpleBlogComment`
+ * `sfSimpleBlogTag`
+ 
+It also contains three modules that you can activate in whatever application you need them:
+
+ * `sfSimpleBlog`: Blog front-end
+ * `sfSimpleBlogPostAdmin`: Backend for managing posts
+ * `sfSimpleBlogCommentAdmin`: Backend for managing comments
+
+The plugin is fully i18n and is bundled with English, French, Polish, and Brazilian Portuguese versions. Additional translations are easy to implement.
+
+== Installation ==
+
+Tip: If you just want to test the plugin, a sandbox already packaged with the right plug-ins and configured correctly is available for download in this page. [http://trac.symfony-project.com/trac/attachment/wiki/sfSimpleBlogPlugin/sfSimpleBlogSandbox.zip Click here] to download the sandbox.
+
+The prerequisites for using the `sfSimpleBlog` plugin are:
+ - As the plugin doesn't contain a user management module, the project where you install it must have a table managing authors, or users (whatever the name), and the related Propel class must have a `__toString()` method. Both these conditions are satisfied by the [http://trac.symfony-project.com/trac/wiki/sfGuardPlugin sfGuardPlugin], so installing this plugin is a good choice.
+ - If you want to use RSS feeds, you must install the [http://trac.symfony-project.com/trac/wiki/sfFeed2Plugin sfFeed2Plugin].
+ - If you want to use rich text editing, the TinyMCE JavaScript editor must be [http://www.symfony-project.com/book/trunk/10-Forms#Rich%20Text%20Editing installed in your project].
+ - If you want to use the sfMediaLibrary in conjunction with TinyMCE, you must install the [http://trac.symfony-project.com/trac/wiki/sfMediaLibraryPlugin sfMediaLibraryPlugin].
+ 
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+{{{
+$ php symfony plugin-install http://plugins.symfony-project.com/sfSimpleBlogPlugin
+}}}
+
+Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory. You will also have to copy the contents of the `myproject/plugins/sfSimpleBlogPlugin/web/` directory into a `myproject/web/sfSimpleBlogPlugin/` directory.
+
+Clear the cache to enable the autoloading to find the new classes:
+{{{
+$ php symfony cc
+}}}
+
+Rebuild the model and generate the SQL code for the three new tables:
+{{{
+$ php symfony propel-build-model
+$ php symfony propel-build-sql
+}}}
+
+Use the generated SQL file in `myproject/data/sql/plugins.sfSimpleBlogPlugin.lib.model.schema.sql` to build the new tables in your project's database.
+{{{ 
+$ mysql -uroot mydb < data/sql/plugins.sfSimpleBlogPlugin.lib.model.schema.sql
+}}}
+
+Enable the three new modules in your applications, via the `settings.yml` file.
+{{{
+// in myproject/apps/frontend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfSimpleBlog, sfSimpleBlogPostAdmin, sfSimpleBlogCommentAdmin]
+}}}
+
+Start using the plugin by browsing to the frontend module's default page:
+{{{ 
+http://myproject/frontend_dev.php/sfSimpleBlog
+}}}
+
+Tip: To test the plugin with test data, execute the following command:
+{{{
+$ php symfony propel-load-data frontend plugins/sfSimpleBlogPlugin/data/fixtures
+}}}
+
+== Configuration ==
+
+=== The `app.yml` file ===
+
+The plugin is highly configurable and should be easy to integrate to an existing project. Here is the default plugin configuration, taken from `myproject/plugins/sfSimpleBlogPlugin/config/sfSimpleBlog.yml.sample`:
+
+{{{
+all:
+  sfSimpleBlog:
+    title:         How is life on earth?
+    tagline:       You'd better start to live before it's too late
+    author:        John Doe
+    email:         john.doe@howislifeonearth.com   # Used only for alerts on comments
+
+    sidebar:       [custom, recent_posts, tags, feeds, blogroll, meta]
+
+    custom : |
+      <h2>About the author</h2>
+      <p>My name is John Doe and I'm a freelance freelancer. I do things when I have time, 
+      and the rest of the time, I write things here.</p>
+
+    blogroll:
+      - { title: how is life on earth?, url: 'http://www.howislifeonearth.com' }
+      - { title: google, url: 'http://www.google.com' }
+
+    user_class: sfGuardUser        # class name for the user class
+    use_bundled_layout: true       # if true, the three modules will use sfSimpleBlog/templates/layout.php for layout; if false, they will use the layout settings from the view.yml
+    use_ajax:      true            # enable posting of comments in Ajax
+    use_feeds:     true            # enable feeds (require sfFeed2Plugin)
+    use_rich_text: false           # enable tinyMCE
+    use_media_library: false       # enable support for sfMediaLibrary in TinyMCE (requires sfMediaLibraryPlugin)
+    use_date_in_url: false         # enable to use urls in the form of /year/month/day/title (set to 'false' for backwards compatibility)
+
+    use_post_extract: true         # display extract in post list instead of full post body
+    post_max_per_page:  5          # number of posts displayed in a list of posts
+    post_recent:        5          # number of posts to display in the recent sidebar widget
+
+    comment_enabled:        on     # enable comments by default on new posts
+    comment_disable_after:  0      # number of days after which comments on a post are not possible anymore
+                                   # set to 0 for unlimited comments
+    comment_automoderation: on     # triggers the automoderation of comments. Possible values are:
+                                   # on: comments are not published until a moderator accepts them
+                                   # first_post: the first comment of a user must be accepted, subsequent posts are accepted automatically
+                                   # off: comments are automatically accepted and published
+
+    comment_mail_alert: on         # send an email to the blog owner when a comment is posted.
+                                   # Possible values are: 
+                                   # on: send an email for every posted comment
+                                   # moderated: send an email for every automoderated comment
+
+    feed_count:         5          # number of posts appearing in the RSS feed
+}}}
+
+You can customize these settings in `myproject/apps/myapp/config/app.yml`
+
+The `sidebar` array controls which widgets, and in which order, appear in the sidebar of the blog frontend. The existing widgets are:
+ - `custom`: insertion of custom HTML code taken from the `blog_custom` parameter
+ - `recent_posts`: list of recent posts
+ - `tags`: list of tags
+ - `feeds`: links to the RSS and Atom feeds
+ - `blogroll`: list of blogs
+ - `meta`: not much for now (link to administration modules, but the link works only if the modules are in the same application)
+
+=== Security, view configuration, custom templates, etc. ===
+
+Just like for every other plugin module, the `sfSimpleBlog`, `sfSimpleBlogPostAdmin`, and `sfSimpleBlogCommentAdmin` modules can be partly overridden by your applications. 
+
+For instance, if you want to restrict access to the `sfSimpleBlogCommentAdmin` module to users with an `editor` credential, create a `sfSimpleBlogCommentAdmin` directory in your application `module/` folder, and create in a `config/security.yml` with the following content:
+{{{
+// in myproject/apps/backend/modules/sfSimpleBlogCommentAdmin/config/security.yml
+all:
+  is_secure: on
+  credentials: [editor]
+}}}
+
+Alternatively, if you want the `sfSimpleBlog` module to use some special templates for presentation, you can create templates and partials with the same name as the plugin's ones in this kind of tree structure:
+{{{
+myproject/apps/frontend/modules/sfSimpleBlog/
+  templates/
+    _add_comment.php
+    _blogroll.php
+    _comment.php
+    _comment_list.php
+    _feed.php
+    _meta.php
+    _post.php
+    _post_short.php
+    _recentPosts.php
+    _sidebar.php
+    _tagList.php
+    addCommentAjax.php
+    feedSuccess.php
+    indexSuccess.php
+    sendMailOnCommentSuccess.php
+    showByTagSuccess.php
+    showSuccess.php
+}}}
+
+=== Routing ===
+
+The plugin doesn't ship with routing rules, so that you can define your own. Example routing rules for the main actions are given below:
+
+{{{
+blog_index:
+  url: /blog
+  param: { module: sfSimpleBlog, action: index }
+
+blog_article_with_date:
+  url: /blog/:year/:month/:day/:stripped_title
+  param: { module: sfSimpleBlog, action: show }
+
+blog_article:
+  url: /blog/:stripped_title
+  param: { module: sfSimpleBlog, action: show }
+
+blog_tag:
+  url: /blog/tag/:tag
+  param: { module: sfSimpleBlog, action: showByTag }
+}}}
+
+== TODO ==
+
+ * Archives sidebar widget
+ * Use Joins and calculated fields (for nb comments and tags) to reduce query count
+ * Unit tests
+ * Add hooks to allow extension by other plugins
+ * Trackbacks
+ * Use sfModerationPlugin instead of built-in moderation
+
+== Changelog ==
+
+=== Trunk ===
+
+=== 2007-11-29 | 0.8.5 Beta ===
+
+ * sebastien: Added the ability to send mail alerts to more than one recipient
+ * francois: Fixed tags not working when output escaping is turned off
+ * francois: Fixed publication date displayed was indeed the creation date
+ * francois: Added the ability to display date in the URL (based on a patch from Mark.Quezada)
+ * francois: Added the ability to display full posts in lists
+ * francois: Fixed feeds not working when output escaping is turned on
+ * francois: Fixed posts with no tags appear incorrectly when output escaping is turned on
+ * jfcaouette: Fixed incorrect parameter name in `sfSimpleBlogPostAdmin`
+ * Manuel.Dalla.Lana: Added Italian translation for `sfSimpleBlog` module
+ * Rimenes.Ribeiro: Added translation for Brazilian Portuguese
+ * jzalas: Added Polish translation
+ * francois: Added test data
+ * francois: Added lib/model/plugin for more customization
+ * francois: Removed the need for a custom config handler
+ * francois: Removed `schemaConfig.php`. To customize the schema, use sfPropelAlternativeSchemaPlugin
+ * gregoire: Changed the default «comment_disable_after» value to 0.
+ * gregoire: Error with various versions of PHP, if(array()) does not work.
+ * francois: Flatified the `app.yml` config file
+ * francois: Fixed number of comments displayed in post list
+ * francois: Split the configuration into an application-wide and a project-wide file
+ * fabien: Don't save empty tags
+ * francois: Made the default schema play well with sfGuard
+
+=== 2007-06-10 | 0.8.4 Beta ===
+
+ * fabien: made the plugin compatible with symfony 1.0
+ * gordon: Better handling dashes in post titles and URLs
+ * gordon: Fixed comments sort order
+ * francois: Make comments optional and add delay after which comments are no more possible
+ * francois: Better handling of special characters in post titles and URLs
+
+=== 2007-04-20 | 0.8.3 Beta ===
+
+ * SentinelDiety: Fixed feeds on case-sensitive filesystems
+ * SentinelDiety: Fixed post feeds when User table is not named User
+ * francois: Added hooks to allow extension of TinyMCE by the sfMediaLibraryPlugin
+ * francois: Fixed a bug when editing a post
+
+=== 2007-04-10 | 0.8.2 Beta ===
+
+ * francois: Added email alert on comment
+ * francois: Added blogroll in the sidebar
+ * francois: Added ability to have more than one custom sidebar element
+
+=== 2007-04-06 | 0.8.1 Beta === 
+
+ * francois: removed `lib/model/om/` and `lib/model/map` from package
+ * gordon: Added German translations
+ * Michael.Nolan: fixed incorrect validation message in `addComment.yml`
+
+=== 2007-04-03 | 0.8.0 Beta === 
+
+ * francois: Initial release

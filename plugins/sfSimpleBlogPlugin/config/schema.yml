@@ -1,0 +1,34 @@
+propel:
+  _attributes:       { package: plugins.sfSimpleBlogPlugin.lib.model }
+  
+  sf_blog_post:
+    _attributes:     { phpName: sfSimpleBlogPost }
+    id:              ~
+    author_id:       { type: integer, foreignTable: opp_user, foreignReference: id, onDelete: cascade  }
+    title:           varchar(255)
+    stripped_title:  { type: varchar(255) }
+    extract:         longvarchar
+    content:         longvarchar
+    is_published:    { type: boolean, default: false }
+    allow_comments:  { type: boolean, default: true }
+    created_at:      ~
+    published_at:    { type: date }
+    _uniques:
+      stripped_title_published_at:  [stripped_title, published_at]
+    
+  sf_blog_comment:
+    _attributes:     { phpName: sfSimpleBlogComment }
+    id:              ~
+    sf_blog_post_id: { type: integer, foreignTable: sf_blog_post, foreignReference: id, onDelete: cascade }
+    author_name:     varchar(255)
+    author_email:    varchar(255)
+    author_url:      varchar(255)
+    content:         longvarchar
+    is_moderated:    { type: boolean, default: false }
+    created_at:      ~
+    
+  sf_blog_tag:
+    _attributes:     { phpName: sfSimpleBlogTag }
+    sf_blog_post_id: { type: integer, primaryKey: true, foreignTable: sf_blog_post, foreignReference: id, onDelete: cascade }
+    tag:             { type: varchar(255), primaryKey: true }
+    created_at:      ~

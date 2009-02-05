@@ -15,7 +15,9 @@
   <?php
     $menu_items = array(
       'tag'=>'Tag',
-      'teseott'=>'Categorie Teseo');
+      'teseott'=>'Categorie Teseo',
+      '@blog_posts' => 'Post del Blog',
+      '@blog_comments' => 'Commenti del Blog');
     $nitems = count($menu_items);
     $menu_sep = '|';
     $module_name = $sf_context->getModuleName(); 

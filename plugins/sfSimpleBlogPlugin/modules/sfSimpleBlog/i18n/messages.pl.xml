@@ -1,0 +1,147 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+    <file orginal="global" source-language="en_US" datatype="plaintext">
+        <body>
+            <trans-unit>
+                <source>[0]no comment|[1]one comment|(1,+Inf]%1% comments</source>
+                <target>[0]brak komentarzy|[1]jeden komentarz|[2,4]%1% komentarze|(4,+Inf]%1% komentarzy</target>
+            </trans-unit>
+            <trans-unit>
+                <source>[1]One comment so far|(1,+Inf]%1% comments so far</source>
+                <target>[1]jeden komentarz|[2,4]%1% komentarze|(4,+Inf]%1% komentarzy</target>
+            </trans-unit>
+            <trans-unit>
+                <source>&lt; earlier posts</source>
+                <target>&lt; poprzednie wpisy</target>
+            </trans-unit>
+            <trans-unit>
+                <source>older posts &gt;</source>
+                <target>starsze wpisy &gt;</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Comments</source>
+                <target>Komentarze</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Your comment has been submitted and is awaiting moderation</source>
+                <target>Twój komentarz został zapisany i czeka na akceptację</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posted by %1% on %2%</source>
+                <target>Wysłany przez %1% dnia %2%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>in %1%</source>
+                <target>w %1%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posts tagged "%1%"</source>
+                <target>Artykuły oznaczone jako "%1%"</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Tags</source>
+                <target>Etykietki</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Leave a reply</source>
+                <target>Napisz komentarz</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Name (required)</source>
+                <target>Imię (wymagane)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Mail (required) (will not be published)</source>
+                <target>E-Mail (wymagany) (nie zostanie opublikowany)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Website</source>
+                <target>Strona internetowa</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Submit comment</source>
+                <target>Wyślij komentarz</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide a name to leave a comment</source>
+                <target>Musisz podać imię, aby wysłać komentarz</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide a longer name (4 characters minimum)</source>
+                <target>Musisz podać dłuższe imię (co najmniej 4 znaki)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide a shorter name (100 characters minimum)</source>
+                <target>Musisz podać krótsze imię (maksimum 100 znaków)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide an email to leave a comment</source>
+                <target>Musisz podać swój adres e-mail, aby wysłać komentarz</target>
+            </trans-unit>
+            <trans-unit>
+                <source>This email address is not valid</source>
+                <target>To nie jest prawidłowy adres e-mail</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide a text content to leave a comment</source>
+                <target>Musisz napisać treść komentarza</target>
+            </trans-unit>
+            <trans-unit>
+                <source>You must provide a longer content (4 characters minimum)</source>
+                <target>Treść komentarza musi być dłuższa (co najmniej 4 znaki)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Latest posts</source>
+                <target>Ostatnie wpisy</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Meta</source>
+                <target>Meta</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Admin</source>
+                <target>Admin</target>
+            </trans-unit>
+            <trans-unit>
+                <source>symfony</source>
+                <target>symfony</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posts from %1%</source>
+                <target>Wpisów od %1%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Comments from %1%</source>
+                <target>Komentarzy od %1%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Comments on post "%1%" from %2%</source>
+                <target>Komentarzy do wpisu "%1%" od %2%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posts tagged "%1%" from %2%</source>
+                <target>Wpisów oznaczonych jako "%1%" od %2%</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Feeds</source>
+                <target>Kanały</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posts (RSS)</source>
+                <target>Wpisy (RSS)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Posts (Atom)</source>
+                <target>Wpisy (Atom)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Comments (RSS)</source>
+                <target>Komentarze (RSS)</target>
+            </trans-unit>
+            <trans-unit>
+                <source>Comments (Atom)</source>
+                <target>Komentarze (Atom)</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

@@ -6,6 +6,24 @@
 #  url:   /atto/:id
 #  param: { module: atto, action: index }
 
+
+
+blog_index:
+  url: /blog
+  param: { module: sfSimpleBlog, action: index }
+
+blog_article_with_date:
+  url: /blog/:year/:month/:day/:stripped_title
+  param: { module: sfSimpleBlog, action: show }
+
+blog_article:
+  url: /blog/:stripped_title
+  param: { module: sfSimpleBlog, action: show }
+
+blog_tag:
+  url: /blog/tag/:tag
+  param: { module: sfSimpleBlog, action: showByTag }
+  
 monitoring_news:
   url: /monitoring_news/:user_token
   param: { module: monitoring, action: news}

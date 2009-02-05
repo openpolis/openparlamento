@@ -1,0 +1,104 @@
+html, body { 
+ margin:0; 
+ padding:0; 
+ text-align:center; 
+}
+
+#sfSimpleBlog_container
+{
+  width: 760px;
+  \width: 780px;
+  w\idth: 760px;
+  border: 1px solid gray;
+  margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px;
+  text-align: left;
+  color:#000000;
+  font-family:verdana,arial,helvetica,sans-serif!Important;
+  font-size: 16px;
+}
+
+#sfSimpleBlog_container #header
+{
+	padding: 5px;
+	margin-bottom: 10px;
+	background-color: #0066B3;  
+  height:120px; 
+  text-align: center;
+  color: white;
+}
+
+#sfSimpleBlog_container #content 
+{
+	padding: 0 5px 5px 5px;
+	margin-right: 250px;
+	background-color: #ffffff;
+	font-size: 79%;
+}
+
+#sfSimpleBlog_container #sidebar-a
+{
+  float: right;
+  width: 230px;
+  margin: 0;
+  padding: 0 5px;
+  font-size: 79%;
+}
+
+
+#sfSimpleBlog_container #footer
+{
+  padding: 5px;
+  margin-top: 10px;			
+  height:30px; 
+  background-color:#0066B3; 
+  clear:both;
+} 
+
+
+
+
+
+#sfSimpleBlog_container #header h1
+{
+  font-size: 200%;
+  font-weight: normal;
+  margin: 30px 0 0 0;
+  font-family: 'Trebuchet MS','Lucida Grande',Verdana,Arial,Sans-Serif;
+}
+
+#sfSimpleBlog_container #header h1 a
+{
+  color: white;
+  text-decoration: none;
+}
+
+#sfSimpleBlog_container #header #tagline
+{
+  font-size: 90%;
+}
+ 
+#sfSimpleBlog_container #sidebar-a h2 
+{
+  color: #003D6B;
+  font-weight: bold;
+  font-size: 1.2em;
+  background-color: #E6F4FF;
+  padding: 2px;
+  margin: 10px 0;
+}
+
+#sfSimpleBlog_container #sidebar-a ul, #sfSimpleBlog_container #sidebar-a li
+{
+  list-style: none;
+  padding-left: 0;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+#sfSimpleBlog_container #sidebar-a li
+{
+  margin-bottom: 5px;
+}

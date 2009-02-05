@@ -1,0 +1,26 @@
+fillin:
+  enabled: true
+  param:
+    name: add_comment 
+  
+fields:
+  name:
+    required:
+      msg: You must provide a name to leave a comment
+    sfStringValidator:
+      min: 4
+      min_error: You must provide a longer name (4 characters minimum)
+      max: 100
+      max_error: You must provide a shorter name (100 characters minimum)
+  mail:
+    required:
+      msg: You must provide an email to leave a comment
+    sfEmailValidator:
+      email_error: This email address is not valid
+  content:
+    required:
+      msg: You must provide a text content to leave a comment
+    sfStringValidator:
+      min: 4
+      min_error: You must provide a longer content (4 characters minimum)
+  

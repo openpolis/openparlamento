@@ -1,4 +1,12 @@
 # default rules
+blog_posts:
+  url:   /blog_posts
+  param: { module: sfSimpleBlogPostAdmin, action: index }
+
+blog_comments:
+  url:   /blog_comments
+  param: { module: sfSimpleBlogCommentAdmin, action: index }
+  
 homepage:
   url:   /
   param: { module: tag, action: index }

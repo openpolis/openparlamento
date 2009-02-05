@@ -1,0 +1,8 @@
+all:
+  stylesheets:    [screen, /sfSimpleBlogPlugin/css/blog.css]
+  
+
+showSuccess:
+  components:
+    breadcrumbs:  [crumbs, blogShow]
+  

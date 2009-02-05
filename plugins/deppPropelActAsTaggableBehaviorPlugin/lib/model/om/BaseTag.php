@@ -40,6 +40,12 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	protected $triple_value;
 
 	
+	protected $collTaggings;
+
+	
+	protected $lastTaggingCriteria = null;
+
+	
 	protected $collOppTagHasTts;
 
 	
@@ -361,6 +367,14 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
+			if ($this->collTaggings !== null) {
+				foreach($this->collTaggings as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			if ($this->collOppTagHasTts !== null) {
 				foreach($this->collOppTagHasTts as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -409,6 +423,14 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collTaggings !== null) {
+					foreach($this->collTaggings as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 				if ($this->collOppTagHasTts !== null) {
 					foreach($this->collOppTagHasTts as $referrerFK) {
@@ -595,6 +617,10 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
+			foreach($this->getTaggings() as $relObj) {
+				$copyObj->addTagging($relObj->copy($deepCopy));
+			}
+
 			foreach($this->getOppTagHasTts() as $relObj) {
 				$copyObj->addOppTagHasTt($relObj->copy($deepCopy));
 			}
@@ -622,6 +648,76 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 			self::$peer = new TagPeer();
 		}
 		return self::$peer;
+	}
+
+	
+	public function initTaggings()
+	{
+		if ($this->collTaggings === null) {
+			$this->collTaggings = array();
+		}
+	}
+
+	
+	public function getTaggings($criteria = null, $con = null)
+	{
+				include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/om/BaseTaggingPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTaggings === null) {
+			if ($this->isNew()) {
+			   $this->collTaggings = array();
+			} else {
+
+				$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+
+				TaggingPeer::addSelectColumns($criteria);
+				$this->collTaggings = TaggingPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+
+				TaggingPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTaggingCriteria) || !$this->lastTaggingCriteria->equals($criteria)) {
+					$this->collTaggings = TaggingPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTaggingCriteria = $criteria;
+		return $this->collTaggings;
+	}
+
+	
+	public function countTaggings($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'plugins/deppPropelActAsTaggableBehaviorPlugin/lib/model/om/BaseTaggingPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TaggingPeer::TAG_ID, $this->getID());
+
+		return TaggingPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTagging(Tagging $l)
+	{
+		$this->collTaggings[] = $l;
+		$l->setTag($this);
 	}
 
 	

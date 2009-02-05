@@ -1,0 +1,44 @@
+all:
+  sfSimpleBlog:
+    title:         How is life on earth?
+    tagline:       You'd better start to live before it's too late
+    author:        John Doe
+    email:         john.doe@howislifeonearth.com   # Used only for alerts on comments
+
+    sidebar:       [custom, recent_posts, tags, feeds, blogroll, meta]
+
+    custom : |
+      <h2>About the author</h2>
+      <p>My name is John Doe and I'm a freelance freelancer. I do things when I have time, 
+      and the rest of the time, I write things here.</p>
+
+    blogroll:
+      - { title: how is life on earth?, url: 'http://www.howislifeonearth.com' }
+      - { title: google, url: 'http://www.google.com' }
+    
+    user_class: sfGuardUser        # class name for the user class
+    use_bundled_layout: true       # if true, the three modules will use sfSimpleBlog/templates/layout.php for layout; if false, they will use the layout settings from the view.yml
+    use_ajax:      true            # enable posting of comments in Ajax
+    use_feeds:     true            # enable feeds (require sfFeed2Plugin)
+    use_rich_text: false           # enable tinyMCE
+    use_media_library: false       # enable support for sfMediaLibrary in TinyMCE (requires sfMediaLibraryPlugin)
+    use_date_in_url: false         # enable to use urls in the form of /year/month/day/title (set to 'false' for backwards compatibility)
+
+    use_post_extract: true         # display extract in post list instead of full post body
+    post_max_per_page:  5          # number of posts displayed in a list of posts
+    post_recent:        5          # number of posts to display in the recent sidebar widget
+
+    comment_enabled:        on     # enable comments by default on new posts
+    comment_disable_after:  30     # number of days after which comments on a post are not possible anymore
+                                   # set to 0 for unlimited comments
+    comment_automoderation: on     # triggers the automoderation of comments. Possible values are:
+                                   # on: comments are not published until a moderator accepts them
+                                   # first_post: the first comment of a user must be accepted, subsequent posts are accepted automatically
+                                   # off: comments are automatically accepted and published
+
+    comment_mail_alert: on         # send an email to the blog owner when a comment is posted.
+                                   # Possible values are: 
+                                   # on: send an email for every posted comment
+                                   # moderated: send an email for every automoderated comment
+
+    feed_count:         5          # number of posts appearing in the RSS feed

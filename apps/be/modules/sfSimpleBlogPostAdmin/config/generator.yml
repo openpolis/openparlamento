@@ -1,0 +1,31 @@
+generator:
+  class:                sfPropelAdminGenerator
+  param:
+    model_class:        sfSimpleBlogPost
+    theme:              sfSimpleBlogAdmin
+
+    list:
+      title:            List of blog posts
+      display:          [title, created_at, extract]
+      layout:           stacked
+      params:           %%_post%%
+      filters:          [title, created_at]
+      sort:             [created_at, desc]
+      object_actions: 
+        _edit:          ~
+        togglePublish:  { name: publish/unpublish, action: togglePublish }
+        toggleComment:  { name: enable/disable comments, action: toggleComment }
+        _delete:        ~
+        
+    edit:
+      title:            Edit post "%%title%%"
+      display:          [author_id, title, extract, content, tags_as_string, allow_comments, is_published]
+      fields:
+        allow_comments: { name: Commenti }
+        tags_as_string: { name: Tags, type: input_tag }
+        content:        { params: size=60x30 <?php if(sfConfig::get('app_sfSimpleBlog_use_rich_text', false)): echo 'rich=true'; endif; ?> tinymce_options='<?php if(sfConfig::get('app_sfSimpleBlog_use_media_library', false)): echo 'file_browser_callback:"sfMediaLibrary.fileBrowserCallBack"'; endif; ?>' }
+      actions: 
+        _save:          ~
+        togglePublish:  { name: publish/unpublish, action: togglePublish }
+        _list:          ~
+ 

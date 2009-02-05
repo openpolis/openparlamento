@@ -99,11 +99,10 @@ propel:
     teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }  
  
   opp_similarita:
-    id:
-    carica_from_id:     { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    carica_to_id:       { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    voting_similarity:  { type: float, index: true }
-    signing_similarity: { type: float, index: true }
+    carica_from_id:     { type: integer, required: true, primaryKey: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    carica_to_id:       { type: integer, required: true, primaryKey: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    voting_similarity:  { type: float, index: true, required: true, default: 0 }
+    signing_similarity: { type: float, index: true, required: true, default: 0 }
     
   opp_documento:
     id:
@@ -216,24 +215,25 @@ propel:
     tag_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
     teseott_id:      { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_teseott, foreignReference: id, onDelete: CASCADE }
 
-  # dummy (or patch), to have the admin generator work 
+  # dummy (or patch), to have the admin generator work symfony propel-init-admin 
+  # this can (must) be removed after the invocation of the symfony propel-init-admin command
   # the package param is important, since the classes must be generated in the plugins directory
-  sf_tag:
-    _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
-    id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
-    name:             varchar(255)
-    n_monitoring_users: { type: integer, required: true, default: 0 }
-    is_tmp:           { type: tinyint, required: true, default: 1 }
-    is_triple:        { type: tinyint }
-    triple_namespace: varchar(100)
-    triple_key:       varchar(100)
-    triple_value:     varchar(255)
-    _uniques:
-      name:           [name]
-    _indexes:
-      triple1:        [triple_namespace]
-      triple2:        [triple_key]
-      triple3:        [triple_value]
+  #sf_tag:
+  #  _attributes:      { phpName: Tag, package: plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model }
+  #  id:               { phpName: ID, type: integer, required: true, primaryKey: true, autoincrement: true }
+  #  name:             varchar(255)
+  #  n_monitoring_users: { type: integer, required: true, default: 0 }
+  #  is_tmp:           { type: tinyint, required: true, default: 1 }
+  #  is_triple:        { type: tinyint }
+  #  triple_namespace: varchar(100)
+  #  triple_key:       varchar(100)
+  #  triple_value:     varchar(255)
+  #  _uniques:
+  #    name:           [name]
+  #  _indexes:
+  #    triple1:        [triple_namespace]
+  #    triple2:        [triple_key]
+  #    triple3:        [triple_value]
 
 
   opp_teseott:

@@ -57,6 +57,38 @@ all:
       p:              <p>
       strong:         <strong>
 
+
+
+  sfSimpleBlog:
+    user_class:          OppUser
+    use_bundled_layout:  false
+    use_post_extract:    true   # display extract in post list instead of full post body
+    use_date_in_url:     true
+    use_rich_text:       true
+    use_media_library:   true
+    post_max_per_page:   10
+    title:         Openparlamento > Blog
+    tagline:       Openparlamento Tagline
+    author:        -
+    email:         info@openpolis.it
+    sidebar:       [recent_posts, tags, feeds, blogroll, meta]
+
+    blogroll:
+      - { title: "Openpolis", url: 'http://www.openpolis.it' }
+      - { title: "Google", url: 'http://www.google.com' }
+
+    comment_automoderation: captcha  # triggers the automoderation of comments. Possible values are:
+                                     # on: comments are not published until a moderator accepts them
+                                     # first_post: the first comment of a user must be accepted, subsequent posts are accepted automatically
+                                     # off: comments are automatically accepted and published
+                                     # captcha: comments are accepted and published, but a captcha has to be filled
+
+    comment_mail_alert: on         # send an email to the blog owner when a comment is posted.
+                                   # Possible values are: 
+                                   # on: send an email for every posted comment
+                                   # moderated: send an email for every automoderated comment
+
+
   nahoWikiPlugin:
     include_breadcrumbs:    off            # Include breadcrumbs slot (disable if you include the slot in your layout) ?
     include_pagename:       off            # Display page's name when viewing content ?

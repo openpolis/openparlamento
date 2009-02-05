@@ -1,0 +1,79 @@
+a:link, a:active
+{
+  color: #0066B3;
+}
+
+a:hover
+{
+  text-decoration: none;
+}
+
+.sfSimpleBlog .post
+{
+  margin: 10px 0;
+}
+
+.sfSimpleBlog .post h2
+{
+  font-family: "Trebuchet MS", verdana, sans-serif;
+  size: 1.3em;
+  margin-bottom: 5px;
+}
+
+.sfSimpleBlog .post .details
+{
+  font-weight: bold;
+  font-size: 0.9em;
+  margin: 5px 0;
+  color: #003D6B;
+}
+
+.sfSimpleBlog .related_details
+{
+  font-style: italic;
+}
+
+.sfSimpleBlog .comment
+{
+  padding:5px;
+  margin: 5px;
+  background: #eef;
+  border: solid 1px #ccd;
+}
+
+.sfSimpleBlog .comment .author
+{
+  font-weight: bold;
+}
+
+.sfSimpleBlog form.add_comment .form_control
+{
+  margin: 2px;
+}
+
+.sfSimpleBlog form.add_comment .form_control label
+{
+  padding-left:10px;
+}
+
+.sfSimpleBlog form.add_comment .form_control input.text
+{
+  width: 200px;
+}
+
+.sfSimpleBlog form.add_comment .form_control textarea
+{
+  width: 300px;
+  height: 150px;
+}
+
+.sfSimpleBlog .form_error
+{
+  color: red;
+}
+
+.comment.moderated
+{
+  font-style: italic;
+  background-color: #FFFFEE;
+}

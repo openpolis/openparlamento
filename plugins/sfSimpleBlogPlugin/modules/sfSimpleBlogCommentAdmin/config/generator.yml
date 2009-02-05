@@ -1,0 +1,17 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      sfSimpleBlogComment
+    theme:            sfSimpleBlogAdmin
+    css:              /sfSimpleBlogPlugin/css/admin.css
+
+    list:
+      title: List of comments
+      filters: [created_at, is_moderated]
+      layout: stacked
+      params: %%_comment%%
+      display: [author_name, author_email, author_url, content, is_moderated, created_at] 
+      actions: [ ]
+      object_actions: 
+        togglePublish: { name: publish/unpublish, action: togglePublish }
+        _delete: ~

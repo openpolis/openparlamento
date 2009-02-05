@@ -1,0 +1,158 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+
+      <trans-unit>
+        <source>List of comments</source>
+        <target>Liste des commentaires</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author name:</source>
+        <target>Auteur</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author name</source>
+        <target>Auteur</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Author email:</source>
+        <target>Email</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author email</source>
+        <target>Email</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Author url:</source>
+        <target>Site</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author url</source>
+        <target>Site</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Content:</source>
+        <target>Commentaire</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Content</source>
+        <target>Commentaire</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Created at:</source>
+        <target>Date de création</target>
+      </trans-unit>   
+      <trans-unit>
+        <source>Created at</source>
+        <target>Date de création</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>Is moderated:</source>
+        <target>Modéré</target>
+      </trans-unit>   
+      <trans-unit>
+        <source>Is moderated</source>
+        <target>Modéré</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>%%_comment%%</source>
+        <target>%%_comment%%</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>Posted on %2%, by %1% (%11%%12%)&lt;br/&gt;about &lt;b&gt;%3%&lt;/b&gt;</source>
+        <target>Envoyé le %2%, par %1% (%11%%12%)&lt;br/&gt;à propos de &lt;b&gt;%3%&lt;/b&gt;</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>publish/unpublish</source>
+        <target>Publier/Dépublier</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Posts</source>
+        <target>Articles</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Comments</source>
+        <target>Commentaires</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Media Library</source>
+        <target>Médiathèque</target>
+      </trans-unit>
+      <trans-unit>
+        <source>View blog</source>
+        <target>Voir le blog</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comment publication status toggled</source>
+        <target>Statut de commentaire modifié</target>
+      </trans-unit>
+      <trans-unit>
+        <source>The following comment has been moderated:</source>
+        <target>Le commentaire suivant a été modéré:</target>
+      </trans-unit>
+      <trans-unit>
+        <source>The following comment has been published:</source>
+        <target>Le commentaire suivant a été publié:</target>
+      </trans-unit>
+
+            
+      <trans-unit>
+        <source>Actions</source>
+        <target>Actions</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>asc</source>
+        <target>asc</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>desc</source>
+        <target>desc</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>filters</source>
+        <target>Filtres</target>
+      </trans-unit>       
+      <trans-unit>
+        <source>Your modifications have been saved</source>
+        <target>Les modifications ont été enregistrées</target>
+      </trans-unit>       
+      <trans-unit>
+        <source>create</source>
+        <target>Créer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>edit</source>
+        <target>Editer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>delete</source>
+        <target>Supprimer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>save</source>
+        <target>Enregistrer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>list</source>
+        <target>Retour à la liste</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>reset</source>
+        <target>Réinitialiser</target>
+      </trans-unit>
+      <trans-unit>
+        <source>filter</source>
+        <target>Filtrer</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Are you sure?</source>
+        <target>Etes-vous sûr?</target>
+      </trans-unit>  
+    </body>
+  </file>
+</xliff>

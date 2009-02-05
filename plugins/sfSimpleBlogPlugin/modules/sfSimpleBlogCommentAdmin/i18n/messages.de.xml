@@ -1,0 +1,142 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+
+      <trans-unit>
+        <source>List of comments</source>
+        <target>Liste der Kommentare</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author name:</source>
+        <target>Autor Name</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author name</source>
+        <target>Autor Name</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Author email:</source>
+        <target>Autor E-Mail:</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author email</source>
+        <target>Autor E-Mail</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Author url:</source>
+        <target>Autor Webseite:</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Author url</source>
+        <target>Autor Webseite</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Content:</source>
+        <target>Inhalt:</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Content</source>
+        <target>Inhalt</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Created at:</source>
+        <target>Erstellt am:</target>
+      </trans-unit>   
+      <trans-unit>
+        <source>Created at</source>
+        <target>Erstellt am</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>Is moderated:</source>
+        <target>moderiert:</target>
+      </trans-unit>   
+      <trans-unit>
+        <source>Is moderated</source>
+        <target>moderiert</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>%%_comment%%</source>
+        <target>%%_comment%%</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>Posted on %2%, by %1% (%11%%12%)&lt;br/&gt;about &lt;b&gt;%3%&lt;/b&gt;</source>
+        <target>Erstellt am %2%, von %1% (%11%%12%)&lt;br/&gt;gegen &lt;b&gt;%3%&lt;/b&gt;</target>      
+      </trans-unit>
+      <trans-unit>
+        <source>publish/unpublish</source>
+        <target>publiziert/nicht publiziert</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Administration</source>
+        <target>Administration</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Posts</source>
+        <target>Artikel</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Comments</source>
+        <target>Kommentare</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>View blog</source>
+        <target>Zeige Blog</target>
+      </trans-unit>     
+      
+            
+      <trans-unit>
+        <source>Actions</source>
+        <target>Aktionen</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>asc</source>
+        <target>aufsteigend</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>desc</source>
+        <target>absteigend</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>filters</source>
+        <target>Filter</target>
+      </trans-unit>       
+      <trans-unit>
+        <source>Your modifications have been saved</source>
+        <target>Ihre Änderungen wurden gespeichert.</target>
+      </trans-unit>       
+      <trans-unit>
+        <source>create</source>
+        <target>erstellen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>edit</source>
+        <target>editieren</target>
+      </trans-unit>
+      <trans-unit>
+        <source>delete</source>
+        <target>löschen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>save</source>
+        <target>speichern</target>
+      </trans-unit>
+      <trans-unit>
+        <source>list</source>
+        <target>Liste</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>reset</source>
+        <target>zurücksetzen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>filter</source>
+        <target>filtern</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Are you sure?</source>
+        <target>Sind Sie sich sicher?</target>
+      </trans-unit>  
+    </body>
+  </file>
+</xliff>

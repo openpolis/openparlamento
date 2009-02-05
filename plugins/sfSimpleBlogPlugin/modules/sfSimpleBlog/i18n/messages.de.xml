@@ -1,0 +1,149 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+
+      <trans-unit>
+        <source>[0]no comment|[1]one comment|(1,+Inf]%1% comments</source>
+        <target>[0]keine Kommentare|[1]ein Kommentar|(1,+Inf]%1% Kommentare</target>
+      </trans-unit>
+      <trans-unit>
+        <source>[1]One comment so far|(1,+Inf]%1% comments so far</source>
+        <target>[1]Kommentar bis jetzt|(1,+Inf]%1% Kommentare</target>
+      </trans-unit>
+      <trans-unit>
+        <source>&lt; earlier posts</source>
+        <target>&lt; jüngere Artikel</target>
+      </trans-unit>
+      <trans-unit>
+        <source>older posts &gt;</source>
+        <target>ältere Artikel &gt;</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments</source>
+        <target>Kommentare</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Your comment has been submitted and is awaiting moderation</source>
+        <target>Ihr Kommentar wurde eingereicht und wartet auf die Freischaltung</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posted by %1% on %2%</source>
+        <target>Erstellt von %1% am %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>in %1%</source>
+        <target>in %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts tagged "%1%"</source>
+        <target>Artikel tagged "%1%"</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Tags</source>
+        <target>Schlagwörter</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Leave a reply</source>
+        <target>erstelle ein Kommentar</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Name (required)</source>
+        <target>Name (erforderlich)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Mail (required) (will not be published)</source>
+        <target>E-Mail (erforderlich) (wird nicht publiziert)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Website</source>
+        <target>Webseite</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Submit comment</source>
+        <target>Kommentar erstellen</target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>You must provide a name to leave a comment</source>
+        <target>Sie müssen einen Namen eingeben um ein Kommentar zu erstellen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a longer name (4 characters minimum)</source>
+        <target>Sie müssen einen längeren Namen eingeben (4 Zeichen minimum)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a shorter name (100 characters minimum)</source>
+        <target>Sie müssen einen kürzeren Namen eingeben (100 Zeichen maximum)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide an email to leave a comment</source>
+        <target>Sie müssen eine E-Mailadresse eingeben um ein Kommentar zu erstellen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>This email address is not valid</source>
+        <target>Diese E-Mailadresse ist nicht korrekt</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a text content to leave a comment</source>
+        <target>Sie müssen einen Text eingeben um ein Kommentar zu erstellen</target>
+      </trans-unit>
+      <trans-unit>
+        <source>You must provide a longer content (4 characters minimum)</source>
+        <target>Sie müssen einen längeren Inhalt eingeben (4 Zeichen minimum)</target>
+      </trans-unit>      
+      <trans-unit>
+        <source>Latest posts</source>
+        <target>Neueste Artikel</target>
+      </trans-unit>    
+      <trans-unit>
+        <source>Meta</source>
+        <target>Meta</target>
+      </trans-unit>          
+      <trans-unit>
+        <source>Admin</source>
+        <target>Admin</target>
+      </trans-unit>
+      <trans-unit>
+        <source>symfony</source>
+        <target>symfony</target>
+      </trans-unit>          
+      <trans-unit>
+        <source>Posts from %1%</source>
+        <target>Artikel vom %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments from %1%</source>
+        <target>Kommentare vom %1%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments on post "%1%" from %2%</source>
+        <target>Kommentare von Artikel "%1%" vom %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts tagged "%1%" from %2%</source>
+        <target>Artikel tagged "%1%" vom %2%</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Feeds</source>
+        <target>Feeds</target>
+      </trans-unit>  
+      <trans-unit>
+        <source>Posts (RSS)</source>
+        <target>Artikel (RSS)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Posts (Atom)</source>
+        <target>Artikel (Atom)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments (RSS)</source>
+        <target>Kommentare (RSS)</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Comments (Atom)</source>
+        <target>Kommentare (Atom)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

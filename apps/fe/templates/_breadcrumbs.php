@@ -92,6 +92,9 @@ $mod = $this->getContext()->getModuleName();
   /
   Argomenti
   <?php break; ?>
+<?php case 'sfSimpleBlog': ?>
+  <?php include_slot('blog_breadcrumbs'); ?>
+  <?php break; ?>
 <?php default: ?>
   Home    
 <?php endswitch; ?>
