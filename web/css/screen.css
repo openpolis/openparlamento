@@ -158,12 +158,15 @@ thead th { font-size: 12px; vertical-align: top; }
 .more-results h6 { margin: 8px;}
 .iter { margin-bottom: 25px; }
 .iter li { display: block; float: left; width: 175px; height: 47px; background: transparent url(../images/bg-iter-2.png) no-repeat bottom left; text-align: center; color: #a3a3a3; }
-.iter li.step-done { background: transparent url(../images/bg-iter-1.png) no-repeat bottom left; }
+.iter li.step-yes { background: transparent url(../images/bg-iter-yes.png) no-repeat bottom left; }
+.iter li.step-no { background: transparent url(../images/bg-iter-no.png) no-repeat bottom left; }
 
-.iter li.step-done span.date { font-size: 12px; color: #a5871c; padding-right: 5px; }
+.iter li.step-yes span.date { font-size: 12px; color: #a5871c; padding-right: 5px; }
+.iter li.step-no span.date { font-size: 12px; color: #a5871c; padding-right: 5px; }
 .iter li a.id { font-size: 12px; }
 .iter li p { line-height: 32px; }
-.iter li.step-done p a { color: #333; line-height: 32px; }
+.iter li.step-yes p { color: #333; line-height: 32px; } 
+.iter li.step-no p { color: #333; line-height: 32px; } 
 
 .iter-last-event { font-size: 14px; }
 .iter-last-event .date { color: #a2a2a2; font-weight: bold; }

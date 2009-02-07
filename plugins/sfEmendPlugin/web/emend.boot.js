@@ -1,5 +1,6 @@
 var eMend = {
   config: {
+    comment_target: '#testo_atto',
     baseURI: "/sfEmendPlugin/",                            // load eMend assets from this URI
     backstore_tiddly: true,                                // enable/disable tiddly backstore
     backstore_sfEmendPlugin: true,                         // enable/disable symfony plugin backstore

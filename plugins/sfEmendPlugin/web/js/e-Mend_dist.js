@@ -3492,7 +3492,8 @@ $.aqCookie = {
     "select_text": "seleziona il testo che vuoi commentare",
     "activate_comment": "premi 'C' per commentare il testo selezionato",
     "write_comment": "scrivi nel commento ci&ograve; che pensi",
-    "disable_HOL": "non mostrare pi&ugrave; i messaggi di aiuto"
+    "disable_HOL": "non mostrare pi&ugrave; i messaggi di aiuto",
+    "outside_boudaries": "la selezione &egrave; fuori dall'area commentabile"
   },
   sidebar: {
     "hidelink": "Nascondi collegamento visuale",
@@ -3530,7 +3531,7 @@ commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
-commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li>',
+commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li></ul>',
 
 sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;3</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;3</sup></div><div id="sidebar-body"></div></div>'
 }
@@ -4697,7 +4698,32 @@ eMend.commentTrigger = function (options) {
         var s = $.getSelectedText();
         
         if(!_self.opts.form.isActive() && s && s.length) {
-          _self.show(1,1000);				
+          
+          // is selection outside of commentable area?
+          if(eMend.config.comment_target) {
+            var so = $.getSelection();
+            var startsInside = $(so.startContainer).parents(eMend.config.comment_target);
+            var endsInside = $(so.endContainer).parents(eMend.config.comment_target);
+            
+            if(startsInside.length & endsInside.length) {
+              _self.show(1,1000);
+            } else {              
+              _self.show(3,1000);
+              $(document).unbind('keyup.commentTrigger');
+              $(document).unbind('keydown.commentTrigger');
+              var targ = $(eMend.config.comment_target);
+              console.log(targ.css('color') == '');
+              var orig_color = targ.css('color') ? targ.css('color') : '';
+              
+              
+              targ.css("color", "#ff0000");
+              targ.animate({ opacity: "1" }, {duration: 1000, callback: function(){targ.css("color",orig_color)} });
+            }
+            
+          } else {
+            _self.show(1,1000);				            
+          }
+
         } else {
           _self.show(0,1000);
         }
@@ -5780,7 +5806,11 @@ eMend.backstore.sfEmendPlugin = function (options) {
 	return new eMend.backstore.sfEmendPlugin(options); 	
 
 	this.opts = $.extend({}, eMend.backstore.sfEmendPlugin.defaults, options);
-
+    
+    var loc = window.location.pathname.split('/');
+    loc.shift();
+    this.resourceID = loc.join('_');
+    this.getComments();
 };
 
 eMend.backstore.sfEmendPlugin.defaults = {};
@@ -5789,9 +5819,19 @@ eMend.backstore.sfEmendPlugin.prototype = {
 	addComment: function() {
 		var s = this.opts.dataset.getLastSelection()
 		  , c = this.opts.dataset.getLastComment().data;
-            console.log('sfEmendPlugin.addcomment',s,c);
-		  
-		var data = $.toJSON({"s":s,"c":c});
+            //console.log('sfEmendPlugin.addcomment',s,c);
+        
+
+        c.selection = $.toJSON(s);
+        console.log(c);
+        $.ajax({
+            url: '/fe_dev.php/emend.addComment/'+this.resourceID,
+            data: c,
+            success: function(msg){
+              //console.log("Data Saved: ",msg);
+            }
+        });
+		//var data = $.toJSON({"s":s,"c":c});
 
 	},
 	getComments: function(container) {
@@ -5802,7 +5842,29 @@ eMend.backstore.sfEmendPlugin.prototype = {
 			ds.importEmendment(o.s,o.c);
 		});
         */
-		$(document).trigger('emend.importData');
+        $.ajax({
+            url: '/fe_dev.php/emend.getComments/'+this.resourceID,
+            success: function(data, textStatus){
+              //console.log("Data loaded: ",textStatus, data);
+              var obj = $.evalJSON(data);
+              //console.log("JSON: ",obj);
+              
+              var i,l,o;
+            
+              for(i=0, l=obj.comments.length; i<l; i++) {
+                o = obj.comments[i];
+                ds.importEmendment(o.s,o.c);
+              }
+              $(document).trigger('emend.importData');              
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+              //console.log(textStatus, errorThrown)
+              // typically only one of textStatus or errorThrown 
+              // will have info
+              this; // the options for this ajax request
+            }           
+        });        
+		//$(document).trigger('emend.importData');
 		
 	}
 };

@@ -190,7 +190,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     return self::retrieveByPKs($items_pks);
   }
   
-  
+   
   public static function doSelectPrimiFirmatari($pred)
   {
     $primi_firmatari = array();

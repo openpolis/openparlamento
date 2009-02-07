@@ -419,9 +419,9 @@ class attoActions extends sfActions
   	  $pred_1=$this->atto->getId();
     }	  
 		
-    $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($pred);
-    $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($pred);
-    $this->relatori = OppAttoPeer::doSelectRelatori($pred_1);
+    $this->primi_firmatari = OppAttoPeer::doSelectPrimiFirmatari($this->atto->getId());
+    $this->co_firmatari = OppAttoPeer::doSelectCoFirmatari($this->atto->getId());
+    $this->relatori = OppAttoPeer::doSelectRelatori($this->atto->getId());
     $this->commissioni = $this->atto->getCommissioni();
 	
   	$this->status = $this->atto->getStatus();
