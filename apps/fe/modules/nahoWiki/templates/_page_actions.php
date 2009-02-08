@@ -1,10 +1,8 @@
-<ul class="wiki-actions">
+<ul class="second-level-tabs float-container">
   <?php if ($canView): ?>
-    <li class="wiki-action-edit<?php echo $action == 'edit' ? ' active' : '' ?>"><?php 
-      echo link_to(__($canEdit ? 'Edit' : 'Markdown source'), 'nahoWiki/edit?' . $uriParams) ?></li>
-    <li class="wiki-action-history<?php echo $action == 'history' || $action == 'diff' ? ' active' : '' ?>"><?php 
-      echo link_to(__('History'), 'nahoWiki/history?' . $uriParams) ?></li>
-  <?php endif ?>
-  <li class="wiki-action-index"><?php 
-      echo link_to(__('Back to content'), $sf_user->getAttribute('referer', '@homepage')) ?></li>
+    <li class="<?php echo $action == 'edit' ? ' current ' : '' ?>"><?php 
+    echo link_to(__($canEdit ? '<h5>Modifica la descrizione dell\'atto</h5>' : '<h5>Markdown source</h5>'), 'nahoWiki/edit?' . $uriParams) ?></li>
+    <li class="<?php echo $action == 'history' || $action == 'diff' ? ' current ' : '' ?>"><?php 
+    echo link_to(__('<h5>Cronologia delle modifiche</h5>'), 'nahoWiki/history?' . $uriParams) ?></li>
+   <?php endif ?>
 </ul>

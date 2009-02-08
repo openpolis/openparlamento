@@ -175,7 +175,7 @@ class OppAtto extends BaseOppAtto
       $c->addSelectColumn(OppAttoPeer::TIPO_ATTO_ID);
       $c->add(OppAttoHasIterPeer::ATTO_ID, $quale_atto[$x], Criteria::EQUAL);
       $c->add(OppAttoPeer::ID, $quale_atto[$x], Criteria::EQUAL);
-      $c->add(OppIterPeer::ID, array(11,12,13,14,16,17,18,19,20,21,22,25,65), Criteria::IN);
+      $c->add(OppIterPeer::ID, array(11,12,13,14,15,16,17,18,19,20,21,22,25,65), Criteria::IN); 
       $c->addJoin(OppAttoHasIterPeer::ITER_ID, OppIterPeer::ID, Criteria::LEFT_JOIN);
       $c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
       $c->setLimit(1);

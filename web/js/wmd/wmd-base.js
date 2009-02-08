@@ -1573,7 +1573,7 @@ _8.redo.execute=function(_15c){
 _15c.redo();
 };
 _6.findPanes=function(_15d){
-_15d.preview=_15d.preview||_6.getElementsByClass("wmd-preview",null,"div")[0];
+_15d.preview=_15d.preview||_6.getElementsByClass("evidence-box bg-light-cyan pad10",null,"div")[0];
 _15d.output=_15d.output||_6.getElementsByClass("wmd-output",null,"textarea")[0];
 _15d.output=_15d.output||_6.getElementsByClass("wmd-output",null,"div")[0];
 if(!_15d.input){

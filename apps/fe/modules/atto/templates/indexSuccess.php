@@ -75,12 +75,12 @@
 		</div>
 	</div>
       <!-- partial per la descrizione wiki -->	
-      <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId())); ?>
+      <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId() )) ?>
       
       <?php if($status): ?>
       <!-- rappresentazione grafica dell'iter -->
 	  <?php include_partial('statoAvanzamento', 
-	                      array('rappresentazioni_pred' => $rappresentazioni_pred,
+	                      array('rappresentazioni_pred' => $rappresentazioni_pred, 
 						  'atto' => $atto,
 						  'rappresentazioni_this' => $rappresentazioni_this,
 						  'rappresentazioni_succ' => $rappresentazioni_succ,

@@ -74,7 +74,7 @@
     <?php endforeach; ?>
          
 <?php else: ?> 
-         <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
+         <li class="step-now"><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
 <?php endif; ?>
    
   
@@ -103,6 +103,10 @@
           <?php foreach($rappresentazioni_succ as $rappresentazione_succ): ?>
              <?php if(substr_count($rappresentazione_succ[2],'ritirato')>0 or substr_count($rappresentazione_succ[2],'respinto')>0 or substr_count($rappresentazione_succ[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_succ[2],'conclusione anomala per stralcio')>0)  : ?>
              <?php else: ?>
+                <?php if ($atto->getTipoAttoId()==12 && count($rappresentazioni_succ)==1) : ?>
+                   
+                   <li class="step-now"><span class="date">&nbsp;</span><p>da approvare<?php echo ($rappresentazione_succ[3]=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                 <?php endif; ?>   
                 <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
              <?php endif; ?>   
           <?php endforeach; ?>   
@@ -117,8 +121,7 @@
       <!--  NON HA SUCC CHIUSI. CONTROLLO SE HA SUCC ATTIVI -->
     
       <?php if($lettura_parlamentare_successiva) : ?>
-         
-        <li><span class="date"></span> <strong><?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?></strong>
+        <li class="step-now"><span class="date"></span> <strong><?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?></strong>
         <p>da approvare <?php echo ($lettura_parlamentare_successiva->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
         <?php if ($atto->getTipoAttoId()==12) : ?>
           <li><span class="date">&nbsp;</span> 
@@ -139,26 +142,31 @@
                             <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
                           <?php endif; ?>  
                        <?php endforeach; ?>  
-                   <?php else: ?>
+                     <?php else: ?>
                             <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
                             <li><span class="date">&nbsp;</span><p>diventa legge</p></li>          
-                   <?php endif; ?>  
+                     <?php endif; ?>  
                
                <?php else: ?>
                   <?php if($rappresentazioni_pred[0][7]=='12') : ?>
+                     
                       <?php if($rappresentazioni_this) : ?> 
                         <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
                         
                           <?php if(substr_count($rappresentazione_this[2],'ritirato')>0 or substr_count($rappresentazione_this[2],'respinto')>0 or substr_count($rappresentazione_this[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')>0)  : ?>
                           <?php else: ?>
-                             <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                              <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
                              <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
                           <?php endif; ?>
                        <?php endforeach; ?>     
                       <?php else: ?>
-                          <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                          <?php if(count($rappresentazioni_pred)==1) : ?>
+                             <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                          <?php endif; ?>
                           <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
                       <?php endif; ?>
+                  <?php else: ?>    
+                      <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
                   <?php endif; ?>
               <?php endif; ?>                
                              

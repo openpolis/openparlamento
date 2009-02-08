@@ -1,9 +1,8 @@
 <?php use_helper('I18N') ?>
 
-<h1 class="wiki-title"><?php echo __('Edit a page') ?></h1>
 
 <?php if (!$canView): ?>
-  <p class="wiki-warning"><?php echo __('You are not allowed to access this page.') ?></p>
+  <p class="wiki-warning"><?php echo __('Per modificare la descrizione e\' necessario registrarsi') ?></p>
 <?php else: ?>
 
   <?php if (!$revision->isLatest()): ?>
@@ -13,7 +12,7 @@
     </p>
   <?php endif ?>
 
-  <?php echo form_tag('nahoWiki/edit?' . $uriParams, 'name=edit_page id=edit_page class=wiki-form') ?>
+  
 
     <?php if ($canEdit): ?>
       <?php if (!$sf_user->isAuthenticated()): ?>
@@ -22,20 +21,63 @@
         <p><?php echo __('You are authenticated. Your username will be stored : %username%.', array('%username%' => '<strong>' . $userName . '</strong>')) ?></p>
       <?php endif ?>
     <?php endif ?>
+    <div class="W48_100 float-right">
 
-    <?php echo textarea_tag('content', $revision->getContent(true), 'size=80x20' . ($canEdit ? '' : ' readonly=yes')) ?>
+		<h5 class="subsection-alt">anteprima della modifica</h5>
+		
+			<script type="text/javascript">
+			//<![CDATA[
+			
+			  wmd_options = {
+					// format sent to the server.  Use "Markdown" to return the markdown source.
+					output: "Markdown",
+			
+					// line wrapping length for lists, blockquotes, etc.
+					lineLength: 60,
+			
+					// toolbar buttons.  Undo and redo get appended automatically.
+					buttons: "bold italic heading hr | link blockquote  | ol ul ",
+			
+					// option to automatically add WMD to the first textarea found.  See apiExample.html for usage.
+					autostart: true
+				};
+			
+			//]]>
+			</script>
+			<div class="evidence-box bg-light-cyan pad10">
 
-    <?php if ($canEdit): ?>
+			  <p>
+			     
+			     <script type="text/javascript" language="javascript" src="/js/wmd/wmd.js"></script>
+			
+			</p>
+		      </div>
+    </div>
+    
+    <div class="W50_100 float-left">
 
-      <p><?php echo label_for('comment', __('Comment')) ?> <?php echo input_tag('comment', $page->isNew() ? 'Creazione' : ($sf_request->getParameter('request-preview') ? $revision->getComment() : ''), 'size=80') ?></p>
+      <?php echo form_tag('nahoWiki/edit?' . $uriParams, 'name=edit_page id=edit_page') ?>
+		<div class="evidence-box pad10">
 
-      <p>
-        <?php echo submit_tag(__('Save changes'), 'class=submit-button') ?> &nbsp;
-      </p>
+			<p><?php echo textarea_tag('content', $revision->getContent(true), 'size=50x20' . ($canEdit ? '' : ' readonly=yes')) ?></p>
 
-    <?php endif ?>
+		</div>
+	
+		<p class="wiki-form-submit">
+		         <?php if ($canEdit): ?>
+		            <?php echo submit_tag(__('pubblica la modifica'), 'class=commit') ?>
+			 |
+			<?php endif ?>	
+			<?php echo link_to(__('annulla e torna all\'atto'), $sf_user->getAttribute('referer', '@homepage')) ?>
 
-  </form>
+		</p>
+     
+      </form>
+    </div>
+	
+     
+
+
 
   <?php if ($sf_request->getParameter('request-preview')): ?>
     <p class="wiki-warning"><?php echo __('This is a preview of how your text will look like. Remember: <strong>It is not saved yet</strong> !') ?></p>
@@ -43,25 +85,3 @@
   <?php endif ?>
 
 <?php endif ?>
-
-<script type="text/javascript">
-//<![CDATA[
-
-  wmd_options = {
-		// format sent to the server.  Use "Markdown" to return the markdown source.
-		output: "Markdown",
-
-		// line wrapping length for lists, blockquotes, etc.
-		lineLength: 60,
-
-		// toolbar buttons.  Undo and redo get appended automatically.
-		buttons: "bold italic heading hr | link blockquote  | ol ul ",
-
-		// option to automatically add WMD to the first textarea found.  See apiExample.html for usage.
-		autostart: true
-	};
-
-//]]>
-</script>
-<div class="wmd-preview" style="float:right"></div>
-<script type="text/javascript" language="javascript" src="/js/wmd/wmd.js"></script>
