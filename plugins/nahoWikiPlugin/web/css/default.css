@@ -105,7 +105,7 @@ a.wiki-toc-header:hover {
 }
 
 
-/* History */
+/* History 
 
 table.wiki-history {
   margin: 0px 0px 0px 25px;
@@ -126,19 +126,20 @@ table.wiki-history td {
   padding: 5px 10px;
   border-top: 1px solid #EEE;
 }
-
+*/
 
 /* Diff */
 
 .wiki-diff ins {
-  background: green;
+  background: #E9F5EA;
+  color: #239B2B;
   text-decoration: none;
   font-weight: bold;
   padding: 0px 2px;
 }
 
 .wiki-diff del {
-  background: red;
+  color: #AAAAAA;
   padding: 0px 2px;
 }
 

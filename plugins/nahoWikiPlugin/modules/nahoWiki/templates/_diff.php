@@ -3,7 +3,8 @@
 <p class="wiki-diff-intro"><?php echo __('View below changes from %revision1% to %revision2% :', array(
     '%revision1%' => link_to_wiki(null, $page->getName(), array('revision' => $revision1->getRevision())),
     '%revision2%' => link_to_wiki(null, $page->getName(), array('revision' => $revision2->getRevision())),
-  )) ?></p>
+  )) ?>
+ </p>
 
 <?php if (!trim($diff)): ?>
   <p class="wiki-diff-intro wiki-warning"><?php echo __('There is no difference between the selected revisions') ?></p>

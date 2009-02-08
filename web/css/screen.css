@@ -11,6 +11,7 @@ a.action:visited { color: #4472ac; }
 a:visited { color: #583a71; }
 a.external { padding-right: 14px; background: transparent url(../images/bg-ico-link-external.png) no-repeat center right; }
 input { vertical-align: middle; }
+input.revision { margin: 0 10px; }
 input.blur { color: #aaa; }
 ul { list-style-type: none; }
 em { font-style: normal; color: #000000; }
