@@ -432,9 +432,21 @@ class attoActions extends sfActions
 	
   	$this->lettura_parlamentare_precedente = null;
 	
-  	$leggi=$this->atto->getOppLegges();
-  	if (count($leggi)>0) $this->legge=$leggi[0];
-  	else $this->legge="";	
+	$this->legge= null;
+	
+	$c = new Criteria();
+        $c->add(OppLeggePeer::ATTO_ID, $this->atto->getId(), Criteria::EQUAL );
+  	$this->legge = OppLeggePeer::doSelectOne($c);
+  	if ($this->legge == null )
+  	{
+  	    $quale_atto=$this->getTuttiSucc($this->atto->getId());
+  	    if (count($quale_atto)>0) 
+  	    {
+  	       $c = new Criteria();
+               $c->add(OppLeggePeer::ATTO_ID, end($quale_atto), Criteria::EQUAL );
+  	       $this->legge = OppLeggePeer::doSelectOne($c); 
+  	    }   
+  	}    
 
   	/*
   	$quale_atto=$this->getTuttiSucc($this->atto->getId());
@@ -459,6 +471,17 @@ class attoActions extends sfActions
   	  $c = new Criteria();
           $c->add(OppAttoPeer::ID, $this->atto->getSucc(), Criteria::EQUAL );
   	  $this->lettura_parlamentare_successiva = OppAttoPeer::doSelectOne($c);
+  	}
+  	
+  	$this->lettura_parlamentare_ultima = null;
+	
+	$quale_atto=$this->getTuttiSucc($this->atto->getId());
+     
+  	if (count($quale_atto)>0) 
+  	{
+  	  $c = new Criteria();
+          $c->add(OppAttoPeer::ID, end($quale_atto), Criteria::EQUAL );
+  	  $this->lettura_parlamentare_ultima = OppAttoPeer::doSelectOne($c);
   	}
 	
     $c = new Criteria();

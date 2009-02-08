@@ -87,7 +87,9 @@
 						  'leggi_this'            => $leggi_this,
 						  'leggi_succ'            => $leggi_succ,
 						  'lettura_parlamentare_precedente' => $lettura_parlamentare_precedente,
-						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva)) ?>
+						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva,
+						  'lettura_parlamentare_ultima' => $lettura_parlamentare_ultima,
+						  'legge'                       => $legge           )) ?>
 						  
  	   <!-- tutto l'iter -->
 	   <?php include_partial('status', array('status' => $status)) ?>

@@ -104,7 +104,7 @@ class OppAtto extends BaseOppAtto
 
 		return $this->collIMTags;
 	}
-	
+
   
   public function getStatus()
   {

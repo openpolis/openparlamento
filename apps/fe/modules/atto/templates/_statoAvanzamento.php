@@ -103,9 +103,11 @@
           <?php foreach($rappresentazioni_succ as $rappresentazione_succ): ?>
              <?php if(substr_count($rappresentazione_succ[2],'ritirato')>0 or substr_count($rappresentazione_succ[2],'respinto')>0 or substr_count($rappresentazione_succ[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_succ[2],'conclusione anomala per stralcio')>0)  : ?>
              <?php else: ?>
-                <?php if ($atto->getTipoAttoId()==12 && count($rappresentazioni_succ)==1) : ?>
+               
+                <?php if (count($rappresentazioni_succ)==1 && $lettura_parlamentare_ultima) : ?>
                    
-                   <li class="step-now"><span class="date">&nbsp;</span><p>da approvare<?php echo ($rappresentazione_succ[3]=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                   <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($lettura_parlamentare_ultima->getRamo().'.'.$lettura_parlamentare_ultima->getNumfase(), 'atto/index?id='.$lettura_parlamentare_ultima->getId()) ?></strong>
+                   <p>da approvare<?php echo ($lettura_parlamentare_ultima->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
                  <?php endif; ?>   
                 <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
              <?php endif; ?>   
@@ -114,6 +116,11 @@
          <?php foreach($leggi_succ as $legge_succ): ?>
              <li class="step-yes"><span class="date"><?php echo format_date($legge_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($legge_succ[3].'.'.$legge_succ[4], 'atto/index?id='.$legge_succ[5]) ?></strong>
              <p>definitivamente legge</p></li>
+              <?php if($legge) : ?> 
+                   </ul>
+                   <p><strong><?php echo link_to("Legge n. ".$legge->getNumero()." del ".format_date($legge->getData(), 'dd/MM/yyyy'),$legge->getUrl()) ?></strong><?php echo" - ".$legge->getGu() ?></p>
+                   <br />
+              <?php endif; ?>     
           <?php endforeach; ?>           
       <?php endif; ?>
 <?php else: ?>      
@@ -174,6 +181,11 @@
          <?php foreach($leggi_this as $legge_this): ?>
              <li class="step-yes"><span class="date"><?php echo format_date($legge_this[1], 'dd/MM/yyyy') ?></span> 
              <p>definitivamente legge</p></li>
+             <?php if($legge) : ?>  
+                  </ul>
+                   <p><strong><?php echo link_to("Legge n. ".$legge->getNumero()." del ".format_date($legge->getData(), 'dd/MM/yyyy'),$legge->getUrl()) ?></strong><?php echo" - ".$legge->getGu() ?></p>
+                   <br />
+              <?php endif; ?>      
           <?php endforeach; ?>          
     
        <?php endif; ?>
@@ -185,6 +197,10 @@
    
        
 <?php endif; ?> 
-      
-</ul>
+
+<?php if(!$legge) : ?>    
+   </ul>
+<?php endif; ?> 
+
+
 <?php endif ?>
