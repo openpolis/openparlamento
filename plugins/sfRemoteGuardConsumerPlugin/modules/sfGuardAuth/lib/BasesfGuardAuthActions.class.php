@@ -17,6 +17,7 @@
  */
 class BasesfGuardAuthActions extends sfActions
 {
+
   public function executeSignin()
   {
     $user = $this->getUser();

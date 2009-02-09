@@ -1,13 +1,3 @@
-#ddl:
-#  url:   /ddl/:id
-#  param: { module: ddl, action: index }
-
-#atto:
-#  url:   /atto/:id
-#  param: { module: atto, action: index }
-
-
-
 blog_index:
   url: /blog
   param: { module: sfSimpleBlog, action: index }
@@ -23,6 +13,7 @@ blog_article:
 blog_tag:
   url: /blog/tag/:tag
   param: { module: sfSimpleBlog, action: showByTag }
+
   
 monitoring_news:
   url: /monitoring_news/:user_token
@@ -47,6 +38,7 @@ addTagToMyMonitoredTags:
 removeTagFromMyMonitoredTags:
   url: /removeTagFromMyMonitoredTags/:name
   param: { module: monitoring, action: removeTagFromMyMonitoredTags }
+
 
 news_tag:
   url: /news_tag/:name
@@ -75,6 +67,7 @@ news_attiDecretiLegislativi:
 news_attiNonLegislativi:
   url: /news_attiNonLegislativi
   param: { module: news, action: attiNonLegislativiList}
+
 
 attiDisegni:
   url: /attiDisegni
@@ -154,6 +147,9 @@ parlamentare_interventi:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
 
+get_logged_user:
+  url: /get_logged_user
+  param: { module: default, action: getLoggedUser }
   
 sf_captcha:
   url:   /captcha/:rk
