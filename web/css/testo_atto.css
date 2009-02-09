@@ -1,0 +1,484 @@
+/*
+ * TESTO ATTO
+ *----------------------------------------------*/
+ 
+#testo_atto { font-family: serif; font-size: 16px; color: #333; line-height: 20px; padding: 0 10px; max-width: 55em; }
+#testo_atto p { line-height: 20px; }
+#testo_atto hr { color: #000; background-color: #000; height: 1px; margin: .7em auto; }
+
+
+/*
+ * STILI SENATO
+ *----------------------------------------------*/
+
+a.function {
+        font-size : 75%;
+        font-weight : bold;
+        color : #9B1818;
+        padding : 0px;
+        margin : 0px;
+        border : 0px;
+}
+
+
+
+#testo_atto a:hover[name], #testo_attoIndex  a:hover[name] {
+        text-decoration : none;
+}
+
+#testo_atto h1, #testo_attoIndex h1{
+        color : #000000;
+        margin-bottom : 16px;
+        text-align : center;
+        font : bold 90% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+#testo_atto h2, #testo_attoIndex h2 {
+        color : #000000;
+        margin-bottom : 10px;
+        text-align : center;
+        font : bold 100% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+#testo_atto p, #testo_attoIndex p{
+        border : 0px;
+        padding : 2px;
+        margin : 2px 0px 2px 2px;
+}
+
+#testo_attoIndex {
+        list-style-type : none;
+        font-size : 75%;
+        font-weight : bold;
+        margin : 0px 0px 0px 0px;
+        padding-left: 6px;
+        padding-right: 0px;
+}
+#testo_attoIndex ul {
+        font-size : 90%;
+        font-weight : bold;
+        margin-top: 0px;
+		margin-left: 0px;
+        width: 98%;
+}
+#testo_attoIndex ul ul {
+        font-size : 100%;
+        font-weight : bold;
+		width: 98%;
+}
+
+#testo_attoIndex ul ul ul {
+        font-size : 100%;
+        font-weight : normal;
+}
+
+#testo_attoIndex ul ul ul ul{
+        font-size : 100%;
+        font-weight : normal;
+}
+
+#testo_attoIndex ul ul ul ul ul{
+        font-size : 100%;
+        font-weight : normal;
+}
+
+#testo_attoIndex ul ul ul ul ul ul {
+        font-size : 100%;
+        font-weight : normal;
+}
+#testo_attoIndex ul li {
+        line-height : 120%;
+        padding : 0px 0px 0px 0px;
+        list-style-type : none;
+        list-style-image : none;
+        text-indent : -12px; 
+        margin : 2px 0px 0px 12px;
+}
+
+#testo_attoIndex ul li a:link {
+        text-decoration : none;
+        color: #000000;
+}
+
+#testo_attoIndex ul li a:visited {
+        color: #000000;
+}
+
+#testo_attoIndex  ul li.listClose {
+        color : #000000;
+}
+
+#testo_attoIndex  ul li.listOpen {
+        color : #9B1818;
+}
+
+#testo_attoIndex  ul li.listOpenOn {
+        color : #9B1818;
+        background : #F0F0F0;
+}
+#testo_attoIndex ul li.listOpenOn a.link2Liv {
+        color : #9B1818;
+}
+
+div.front p {
+        text-align : center;
+}
+
+img {
+        border : 0px none;
+}
+
+img.nohiding {
+        margin : 0px 3px 0px 0px;
+}
+
+#testo_atto ol, #testo_atto ul, #testo_atto li {
+        margin : 0px 0px 0px 16px;
+        padding : 0px 0px 0px 0px;
+        border : 0px;
+        line-height : 160%;
+        list-style : square outside none;
+}
+
+#testo_atto p {
+        margin : 5px 0px 12px 0px;
+}
+.bgRicerca {
+        background-color: #E7E8E7;
+}
+
+.bgGrigio {
+        background-color: #DFDFDF;
+}
+
+strong {
+        font-weight : bold;
+}
+div.testata {
+        width: 30%;
+        min-height: 12%;
+        border-bottom-color: #9b1818;
+        border-bottom-style: solid;
+        border-bottom-width: 6px;
+        margin: 0px;
+        padding: 0px;
+
+        padding-left: 69.9%;
+        background-color: #FFFFFF;
+        background-image: url(/img/popup/logo_popup.gif);
+        background-position: left;
+        background-repeat: no-repeat;
+}
+div.scrollHead div.testata {
+        min-height: none;
+}
+div.testata br{
+        clear: both;
+}
+div.testata ul {
+        padding : 4px 4px 3px 0px;
+        list-style: none;
+}
+
+div.testata ul li {
+        font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+        font-size: 60%;
+        font-weight: bold;
+        line-height: 150%;
+   color: #000000;
+        list-style: none;
+        background-image: url(/img/css/px_trasp.gif);
+        padding: 0px;
+        margin: 0px;
+}
+a.boxLink, a.boxLink:visited, a.boxLink:active {
+   color: #666666;
+}
+.linkPDF {
+	background-image: url(/img/css/icona_pdf.gif);
+	background-repeat: no-repeat;
+	font-size:75%;
+	font-weight: bold;
+   color: #0000FF;
+	padding: 6px 4px 6px 20px;
+	margin-bottom: 3px;
+}
+
+div.scrollHead {
+        margin:0px; 
+        width: 100%;  
+        height: 13%; 
+        overflow: auto; 
+        background-color: #ffffff; 
+        border: 0;
+        float: left;
+        padding: 0px;
+}
+div.scrollIndex {
+        margin:0px; 
+        width: 26%;  
+        height: 86.5%; 
+        max-height: 86.5%; 
+        overflow: auto; 
+        background-color: #FFFFFF; 
+        border: 0;
+     	float: left;
+        position: relative;
+/*        padding-left : 3px !important;
+        padding-left : 0px;
+        padding-right : 15px;
+        padding-bottom : 0px;
+        padding-top : 0px;   */
+}
+div.scrollText, div.wideScrollText {
+        margin: 0%;
+        height: 86.5%;
+        max-height: 86.5%;
+        overflow: auto;        
+        background-color: #FFFFFF; 
+        border: 0;
+        float: right;
+        position: relative;
+/*        padding-left : 3px !important;
+        padding-left : 0px;
+        padding-right : 3px;
+        padding-bottom : 0px;
+        padding-top : 0px; */
+}
+
+div.scrollText {
+	width: 70%;  
+} 
+div.wideScrollText {
+	width: 98%;
+}
+
+div.separazione {
+        height: 0.5%;
+        font-size: 2px;
+        line-height: 10%;
+        width: 99%;
+        float: left;
+        position: relative;
+}
+div.separazione br {
+        clear: both;
+}
+.hide {
+        display : none;
+}
+
+.hr {
+        height : 30px;
+        background : url(/img/pallini_oriz.gif);
+}
+#testo_attoIndex div.hr {
+	height: 16px;
+	margin: 0px 16px 8px 8px;
+}
+.sottoTitolo {
+        color : #000000;
+        font : 80% Georgia, "Times New Roman", Times, serif;
+}
+
+.testoBig {
+        color : #000000;
+        font : 80% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.testoCenter {
+        text-align : center;
+}
+
+.testoJustify {
+        text-align : justify;
+}
+
+.center {
+        text-align : center;
+}
+
+.testoMedium {
+        color : #000000;
+        font : 75% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+.testoRight {
+        text-align : right;
+}
+
+.testoLeft {
+        text-align : left;
+}
+
+.testoSmall {
+        color : #000000;
+        font : 70% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+td {
+        font : /130% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+.titoloRicStampa {
+        font-family: Verdana, Geneva, Arial, Helvetica, sans-serif;
+        font-size: 85%;
+        line-height: 110%;
+        font-weight: bold;
+   color: color: #0000FF;
+        padding: 1px 2px 0px 0px;
+}
+
+.titoloData {
+        color : #9B1818;
+        font : bold 85% Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+
+#testo_atto  h1.titoloLeg {
+        color : #9B1818;
+        font : bold 85% Verdana, Geneva, Arial, Helvetica, sans-serif;
+        text-align: left;
+        margin-left: 12px;
+        margin-top: 6px;
+}
+
+
+.bordino .ulOriz li {
+        display: inline;
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        background-image: url(/img/css/px_trasp.gif);
+        border-right: 1px solid #FFFFFF;
+        padding-left: 0.75em;
+        padding-right: 0.5em;
+}
+.bordino .ulOriz li.last {
+        display: inline;
+        list-style: none;
+        margin: 0px;
+        padding: 0px;
+        background-image: url(/img/css/px_trasp.gif);
+        border-right: 0;
+        padding-left: 0.75em;
+        padding-right: 0.5em;
+}
+#footer a {
+        color: #FFFFFF;
+}
+#footer a:visited {
+        color: #FFFFFF;
+}
+#footer a:hover {
+        color: #FFFFFF;
+}
+#footer a:active {
+        color: #E0AD72;
+}
+
+.verStampa {
+        background-color: #E7E8E7;
+        background-image: url(/img/css/ico_stampa.gif);
+        background-repeat: no-repeat;
+        font-size: 85%;
+        font-weight: bold;
+   color: #0000FF;
+        padding: 6px 4px 6px 17px;
+        margin: 0px;
+        vertical-align: middle;
+}
+.rifStampa {
+        background-color: #E7E8E7;
+        background-image: url(/img/css/ico_rif.gif);
+        background-repeat: no-repeat;
+        font-size: 85%;
+        font-weight: bold;
+   		color: #0000FF;
+        padding: 0px 4px 6px 17px;
+        margin: 0px;
+        vertical-align: middle;
+}
+.altVersion {
+        font-size: 85%;
+        font-weight: bold;
+        padding: 4px;
+        margin: 0px 4px 0px 17px;
+        vertical-align: middle;
+}
+.altVersion a {
+	color: #0000FF;
+}
+.altVersion a:visited {
+	color: #0000FF;
+}
+.altVersion a:active {
+	color: #0000FF;
+}
+.sxSmall  {
+        float: left;
+        padding-right: 8px;
+        padding-left: 10px;     
+}
+.dxSmall  {
+        float: right;
+        position: relative;
+}
+
+.segnalazione, .messaggioErrore {       
+    	padding: 4px;
+        font-size: 80%;
+        line-height: 130%;
+        font-weight: bold;
+        margin-top: 6px;
+        margin-bottom: 6px;
+}
+
+.segnalazione { 
+        margin-left: 2%;
+        margin-right: 20%;
+    	color: #9B1818;      
+        border: 1px;
+        border-color: #9B1818;
+        border-style: solid;
+        padding-left: 6px;
+        background : #FFFFFF;
+        width: 30%;
+}
+
+.segnalazioneTesto { 
+        margin-left: 20px;
+        margin-right: 80px;
+    	color: #9B1818;      
+        border: 1px;
+        border-color: #9B1818;
+        border-style: solid;
+        padding-left: 6px;
+        background : #FFFFFF;
+}
+
+.messaggioErrore {      
+    color: white;      
+    background-color: #9B1818; 
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-left: 24px;
+        background-image: url(/img/css/ico_alert.gif);
+        background-repeat: no-repeat;
+        background-position: 8px;
+        width: 80%;
+}
+
+#mess {
+        position: absolute;
+        top: 5px;
+        right: 20px;
+        z-index : 255;
+}
+#testo_atto table {
+	border: 1px solid #aaaaaa;
+	border-collapse: collapse;
+}
+#testo_atto table td {
+	font-size: 80%;
+	border: 1px solid #aaaaaa;
+	padding: 2px;
+}
