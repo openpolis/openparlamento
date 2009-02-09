@@ -18,6 +18,7 @@
       'teseott'=>'Categorie Teseo',
       'sfSimpleBlogPostAdmin' => 'Post del Blog',
       'sfSimpleBlogCommentAdmin' => 'Commenti del Blog',
+      'sfEmendAdmin' => 'Commenti eMend',
       'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
     $menu_sep = '|';
