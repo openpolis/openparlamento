@@ -75,40 +75,6 @@ jQuery.noConflict();
           			parent.toggleClass('opened');
                 child.append(data).toggle();
                 $this.data('tags_loaded', true);
-                /*
-                child.find('li').click(
-                  function(){
-                    var $this = $(this);
-                    var wasMonitoring = $this.hasClass('monitoring');                    
-                    var id = $this.get(0).id.split('_').last();
-                    var my_tags = $('#my_tags');
-                    if (!wasMonitoring) {
-                      var url = "<?php echo url_for('monitoring/ajaxAddTagIdToMyMonitoredTags'); ?>";
-                      var title = 'click per rimuovere dai tuoi tag';
-                    } else {
-                      var url = "<?php echo url_for('monitoring/ajaxRemoveTagIdFromMyMonitoredTags'); ?>";                        
-                      var title = 'click per aggiungere ai tuoi tag';
-                    } 
-                    $.get(url, {tag_id: id},
-                      function(data){
-                        if (data.match(/ok/))
-                        {
-                          $this.toggleClass('monitoring');
-                          $this[0].title = title;
-                          my_tags.replaceWith(data);
-                          var remaining_tags = data.match(/<li id="ok".*>(.*)<\/li>/)[1];
-                          $('#my_remaining_tags').html(remaining_tags);
-                        }
-                        else
-                        {
-                          alert(data);
-                        } 
-                        
-                      }
-                    );
-                  }
-                );
-                */
               }
             );      
           } else {

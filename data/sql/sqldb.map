@@ -23,3 +23,4 @@ lib.model.schema.sql=propel
 plugins.sfEmendPlugin.lib.model.schema.sql=propel
 plugins.sfPropelActAsRatableBehaviorPlugin.lib.model.schema.sql=propel
 plugins.sfSimpleBlogPlugin.lib.model.schema.sql=propel
+plugins.sfSupraVariablesPlugin.lib.model.schema.sql=propel

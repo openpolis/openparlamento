@@ -3,7 +3,7 @@
   	<h5 class="subsection">Si occupa di...</h5>
   	<p class="pad10">
   	  <?php foreach ($tags as $triple_value => $relevance): ?>
-  	    <?php echo link_to(strtolower($triple_value), '#', array('class' => 'folk2')) ?>
+  	    <?php echo link_to(strtolower($triple_value), '@argomento?triple_value='.$triple_value, array('class' => 'folk2')) ?>
   	    &nbsp;&nbsp;
   	  <?php endforeach ?>
   	</p>

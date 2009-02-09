@@ -15,16 +15,41 @@ class deppTaggingActions extends BasedeppTaggingActions
   public function executeTagsAutocomplete() {
 		$this->my_str = $this->getRequestParameter('q');
 		$limit = $this->getRequestParameter('limit');
-
+    
+    // estrazione elementi che iniziano per ...
 		$c = new Criteria();
-		$c->add(TagPeer::TRIPLE_VALUE, "%".$this->my_str."%", Criteria::LIKE);
+		$c->add(TagPeer::TRIPLE_VALUE, $this->my_str."%", Criteria::LIKE);
 
 		if (isset($limit))
 		  $c->setLimit($limit);
 
-		$this->tags = TagPeer::getAll($c, array('is_triple' => true, 
+		$tags_starting = TagPeer::getAll($c, array('is_triple' => true, 
+		                                           'return' => 'value'));
+    
+    $tags_ids = array();
+    foreach ($tags_starting as $tag)
+      $tags_ids []= $tag->getId();
+    
+    
+    // estrazione elementi che contengono ... (tranne quelli che iniziano per)
+		$c = new Criteria();
+		$c->add(TagPeer::TRIPLE_VALUE, "%".$this->my_str."%", Criteria::LIKE);
+    $c->add(TagPeer::ID, $tags_ids, Criteria::NOT_IN);
+		if (isset($limit))
+		  $c->setLimit($limit - count($tags_starting));
+
+		$tags_ending = TagPeer::getAll($c, array('is_triple' => true, 
 		                                        'return' => 'value'));
 
+    // costruzione array totale dei tag estratti
+    $tags = $tags_starting;
+    foreach ($tags_ending as $tag)
+    {
+      $tags []= $tag;
+      // $tags_ids []= $tag->getId();
+    }
+    
+    $this->tags = $tags;
 	}
 
   public function executeUsertagsAutocomplete() {

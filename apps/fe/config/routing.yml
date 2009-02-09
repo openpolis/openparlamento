@@ -92,23 +92,36 @@ attiNonLegislativi:
   url:   /attiNonLegislativi/:sort/:type
   param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
 
-
 singolo_atto:
   url: /singolo_atto/:id
   param: { module: atto, action: index }
-    
+
+
 argomenti:
-  url:   /argomenti
+  url:   /argomenti    
   param: { module: argomento, action: list }
+  
+argomento_search:
+  url:   /argomento_search/*
+  param: { module: argomento, action: showFromSearch }
 
 argomento:
-  url:   /argomento/:id
-  param: { module: argomento, action: index }
+  url:   /argomento/:triple_value/*
+  param: { module: argomento, action: showAggiornamenti }
 
-tag:
-  url:  /tag/:tag_name
-  param: { module: argomento, action: index }
+argomento_leggi:
+  url:   /argomento_leggi/:triple_value/*
+  param: { module: argomento, action: showLeggi }
 
+argomento_nonleg:
+  url:   /argomento_nonleg/:triple_value/*
+  param: { module: argomento, action: showNonleg }
+
+argomenti_per_categoria:
+  url: /argomenti_per_categoria/*
+  param: { module: argomento, action: ajaxTagsForTopTerm }
+
+  
 teseo:
   url:   /teseo/:id
   param: { module: teseo, action: index }

@@ -1,0 +1,87 @@
+= sfSupraVariablesPlugin =
+[[PageOutline(2-6, Table of contents)]]
+
+== Introduction ==
+This plugin allows to set or retrieve application variables from the model. These application variables are called supra-variables, since they are global to the whole application. 
+
+== Philosophy ==
+The mechanism can be useful when the need arises to store some interesting values, likely to have been computed through a complex and time-consuming procedure, and retrieve them later. It can also store statistics about the whole application, like user's averages or the most searched terms, ...
+
+== Features ==
+The plugin provides methods to store and retrieve variables, transparently, with respect to the storage used. The storage mechanism is a DB table in the end, but the methods invoked just deal with setting or getting a variable.
+
+A supra-variable must have a unique name among the other supra-variables used in the application.
+Variable can be of primitive type (integer, float, boolean, string) or they can be complex.
+Complex variables are stored as their serialized representation.
+The type of variable must not be specified by the user at storage or retrieval time, the mechanism is completely transparent to the end-user.
+
+A variable is set with a sfSupra::getVariable() method and get with a sfSupra::getVariable().
+Details of the API usage can be found in the API section.
+
+An administration crud may be activated (typically in a backend application), in order to check the variables value and eventually remove them. This should be under restricted access and can not be used in any case to modify the values.
+
+== Installation ==
+The installation procedure is standard, you can either install the plugin by using the pear symfony inline command:
+{{{
+ symfony plugin-install sfSupraVariables
+}}}
+or check it out from the Symfony's SVN repository:
+{{{
+ svn co http://svn.symfony-project.org/plugins/sfSupraVariables
+}}}
+
+To enable the administration interface, you must edit the settings.yml in the backend application (well, of course, usually it is the backend).
+{{{
+all:
+  .settings:
+    enabled_modules:      [default, sfSupraVariablesAdmin, ...]
+}}}
+
+=== Storage schema ===
+A table (sf_supra_variable, mapped to the Supra model) is the storage for the supra variables.
+
+{{{
+propel:
+  _attributes:    { package: plugins.sfSupraVariablesPlugin.lib.model }
+
+  sf_supra_variable:
+    _attributes:     { phpName: Supra, package: plugins.sfSupraVariablesPlugin.lib.model }
+    id:
+    name:            { type: varchar, size: 255, required: true, index: unique }
+    type:            { type: integer, reqiured: true, default: 0 }
+    value:           { type: longvarchar, required: true, default: '' }
+}}}
+
+The type field can assume values in the range 0-4:
+0: string
+1: integer
+2: float
+3: boolean
+4: complex
+
+All fields are required, since this table is only internaly used by the plugin.
+
+=== API ===
+The public API is ment to be used by the programmers by invoking static methods of the sfSupra class.
+
+==== sfSupra::setVariable ====
+Puts a variable in the storage. The name and value are passed as parameters.
+
+Type and stored value are computed internally and transparent to the user. The serialize() method is used for complex variables.
+
+It is by design not possible to store more than one variable with the same name.
+
+==== sfSupra::getVariable ====
+Gets a variable from the storage. Only the name is passed. The value is returned. In case a complex variable is read, then the value is brought back to ist unserialized form before being returned.
+
+=== Admin interface ===
+The administration interface is reachable at /sfSupraVariablesAdmin/ and allows the user that has permissions to list, show, publish, unpublish and remove the comments.
+
+== License and credits ==
+
+This plugin is licensed under the MIT license. You can contact the maintainer at 
+[http://guglielmo.celata.com/ g.celata => depp.it]
+
+
+== Changelog ==
+=== version 0.1 - 2009-02-07 ===

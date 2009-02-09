@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
         <?php if ($sf_user->hasCredential('administrator')): ?>
           <span class="remover" title="clicca qui per rimuovere questo tag">(X)</span>        
         <?php endif ?>
-        <span class="tag"><?php echo link_to(strtolower($tag[3]), '@tag?tag_name='.$tag[0])?></span>
+        <span class="tag"><?php echo link_to(strtolower($tag[3]), '@argomento?triple_value='.$tag[3])?></span>
       </div> &nbsp;
     <?php endforeach ?>
     <?php echo image_tag('indicator.gif', array('id'=>'tag_removal_indicator', 'style' => 'display:none')) ?>

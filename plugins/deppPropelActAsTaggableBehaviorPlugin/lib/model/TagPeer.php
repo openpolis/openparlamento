@@ -610,6 +610,22 @@ class TagPeer extends BaseTagPeer
   }
 
   /**
+   * Retrieve a tag by a single name (NS_VALUE)
+   *
+   * @param string $single_name 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function retrieveBySingleName($single_name)
+  {
+    list($tag_namespace, $tag_value) = split("_", $single_name, 2);      
+    $c = new Criteria();
+    $c->add(TagPeer::TRIPLE_NAMESPACE, $tag_namespace);
+    $c->add(TagPeer::TRIPLE_VALUE, $tag_value);
+    return TagPeer::doSelectOne($c);    
+  }
+
+  /**
    * Retrives a tag by his name.
    *
    * @param      String      $tagname

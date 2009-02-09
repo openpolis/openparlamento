@@ -32,7 +32,7 @@
             <p class="gold"><?php echo $iter->getFase() ?></p>
           <?php endforeach; ?>
         </td>
-        <td><p><?php echo $atto->getInterventiCount() ?></p></td>
+        <td><p><?php echo $atto->getNInterventi() ?></p></td>
         <td>
           <div class="user-stats-column">
             <span class="green thumb-up"><?php echo $atto->getUtFav() ?></span><span class="red thumb-down"><?php echo $atto->getUtContr() ?></span>

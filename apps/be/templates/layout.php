@@ -16,8 +16,9 @@
     $menu_items = array(
       'tag'=>'Tag',
       'teseott'=>'Categorie Teseo',
-      '@blog_posts' => 'Post del Blog',
-      '@blog_comments' => 'Commenti del Blog');
+      'sfSimpleBlogPostAdmin' => 'Post del Blog',
+      'sfSimpleBlogCommentAdmin' => 'Commenti del Blog',
+      'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
     $menu_sep = '|';
     $module_name = $sf_context->getModuleName(); 

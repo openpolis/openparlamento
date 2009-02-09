@@ -1,0 +1,14 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      Supra
+    theme:            default
+
+    list:
+      title: Supra Variables List
+      display: [name, type, value] 
+      filters: [name]
+      sort:    [name, asc]
+      object_actions: 
+        _delete: ~
+      

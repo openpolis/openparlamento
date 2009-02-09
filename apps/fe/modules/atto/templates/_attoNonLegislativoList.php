@@ -32,7 +32,7 @@
             <p class="gold">PRESENTATO</p>
           <?php endif; ?>  
         </td>
-        <td><?php echo $ddl->getInterventiCount() ?></td>
+        <td><?php echo $ddl->getNInterventi() ?></td>
         <td>
           <div class="user-stats-column">
             <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>

@@ -1,0 +1,10 @@
+propel:
+  _attributes:    { package: plugins.sfSupraVariablesPlugin.lib.model }
+
+  sf_supra_variable:
+    _attributes:     { phpName: Supra, package: plugins.sfSupraVariablesPlugin.lib.model }
+    id:
+    name:            { type: varchar, size: 255, required: true, index: unique }
+    type:            { type: integer, reqiured: true, default: 0 }
+    value:           { type: longvarchar, required: true, default: '' }
+            

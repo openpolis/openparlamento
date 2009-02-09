@@ -1,8 +1,8 @@
 # default values
 all:
   # remote guard host
-  remote_guard_host:      'accesso.openpolis.it'
-  #remote_guard_host:      'lapgu.guard.openpolis.it'
+  #remote_guard_host:      'accesso.openpolis.it'
+  remote_guard_host:      'lapgu.guard.openpolis.it'
 
   # cookies
   cookies:

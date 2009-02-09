@@ -1,4 +1,11 @@
-# default rules
+categorie:
+  url:  /categorie
+  param: { module: teseott, action: index }
+
+argomenti:
+  url:  /argomenti
+  param: { module: tag, action: index }
+
 blog_posts:
   url:   /blog_posts
   param: { module: sfSimpleBlogPostAdmin, action: index }
@@ -7,6 +14,11 @@ blog_comments:
   url:   /blog_comments
   param: { module: sfSimpleBlogCommentAdmin, action: index }
   
+supra_variables:
+  url:  /supra_variables
+  param: { module: sfSupraVariablesAdmin, action: index }
+  
+# default rules
 homepage:
   url:   /
   param: { module: tag, action: index }

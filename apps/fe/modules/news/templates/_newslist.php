@@ -1,3 +1,5 @@
+<?php echo use_helper('PagerNavigation', 'DeppNews'); ?>
+
 <ul>
   <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
     <li>
@@ -16,3 +18,5 @@
     </li>
   <?php endforeach; ?>
 </ul>
+
+<?php echo pager_navigation($pager, '@argomento?triple_value='.$triple_value) ?>

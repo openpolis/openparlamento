@@ -1,0 +1,103 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit>
+        <source>Comment publication status toggled</source>
+        <target>Modificato lo stato di pubblicazione di un commento</target>
+      </trans-unit>    
+
+      <trans-unit>
+        <source>The following comment has been published:</source>
+        <target>Questo commento è stato pubblicato:</target>
+      </trans-unit>    
+
+      <trans-unit>
+        <source>The following comment has been moderated:</source>
+        <target>Questo commento è stato moderato:</target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>Posted on %2%, by %1% (%11%%12%), about %3%</source>
+        <target>Inviato il %2%, da %1% (%11%%12%), su %3%</target>
+      </trans-unit>
+
+      <trans-unit>
+        <source>Author name</source>
+        <target>Nome autore</target>
+      </trans-unit>    
+
+      <trans-unit>
+        <source>Author email</source>
+        <target>Email autore</target>
+      </trans-unit>    
+
+      <trans-unit>
+        <source>Author url</source>
+        <target>Url autore</target>
+      </trans-unit>
+      
+      <trans-unit>
+        <source>Content</source>
+        <target>Testo</target>
+      </trans-unit> 
+
+      <trans-unit>
+        <source>Is moderated</source>
+        <target>Moderato</target>
+      </trans-unit> 
+      <trans-unit>
+        <source>Is moderated:</source>
+        <target>Moderato:</target>
+      </trans-unit> 
+      
+      <trans-unit>
+        <source>Created at</source>
+        <target>Creazione</target>
+      </trans-unit> 
+      <trans-unit>
+        <source>Created at:</source>
+        <target>Creazione:</target>
+      </trans-unit> 
+
+      <trans-unit>
+        <source>Actions</source>
+        <target>Azioni</target>
+      </trans-unit> 
+        
+      <trans-unit>
+        <source>delete</source>
+        <target>rimuovi</target>
+      </trans-unit>
+      
+      <trans-unit>
+        <source>reset</source>
+        <target>azzera</target>
+      </trans-unit> 
+      
+      <trans-unit>
+        <source>filter</source>
+        <target>filtra</target>
+      </trans-unit> 
+      
+      <trans-unit>
+        <source>yes</source>
+        <target>sì</target>
+      </trans-unit> 
+      <trans-unit>
+        <source>yes or no</source>
+        <target>sì o no</target>
+      </trans-unit> 
+      <trans-unit>
+        <source>publish/moderate</source>
+        <target>pubblica/modera</target>
+      </trans-unit> 
+      
+       
+      
+          
+     
+     
+    </body>
+  </file>
+</xliff>

@@ -49,8 +49,16 @@ class OppTeseottPeer extends BaseOppTeseottPeer
     return $tts;    
   }
   
-  
-  public static function countTagsUnderTermMonitoredByUser($term_id, $user_id)
+
+  /**
+   * conta il numero di tag sotto il term, monitorati da un utente (o da tutti gli utenti)
+   *
+   * @param string $term_id 
+   * @param string $user_id - se null, torna il num. di tag monitorati da tutti gli utenti
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function countTagsUnderTermMonitoredByUser($term_id, $user_id = null)
   {
     // fetch degli id dei tag sotto il term
     $c = new Criteria();
@@ -67,7 +75,8 @@ class OppTeseottPeer extends BaseOppTeseottPeer
     
     // conteggio dei tag
     $c = new Criteria();
-    $c->add(MonitoringPeer::USER_ID, $user_id);
+    if (!is_null($user_id))
+      $c->add(MonitoringPeer::USER_ID, $user_id);
     $c->add(MonitoringPeer::MONITORABLE_MODEL, 'Tag');
     $c->add(MonitoringPeer::MONITORABLE_ID, $tags, Criteria::IN);
     return MonitoringPeer::doCount($c);

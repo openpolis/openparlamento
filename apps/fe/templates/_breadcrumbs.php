@@ -88,9 +88,7 @@ $mod = $this->getContext()->getModuleName();
   <?php endif;?>	
   <?php break; ?>
 <?php case 'argomento': ?>
-  <?php echo link_to("Home", "@homepage") ?>
-  /
-  Argomenti
+  <?php include_slot('argomento_breadcrumbs'); ?>
   <?php break; ?>
 <?php case 'sfSimpleBlog': ?>
   <?php include_slot('blog_breadcrumbs'); ?>
