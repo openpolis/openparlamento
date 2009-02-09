@@ -13,15 +13,16 @@
     <div id="header">
       <div id="tools" class="float-container">
         <?php include_partial('global/tools') ?>	  
-	  </div>
+	    </div>
   	  <div id="navigation">	
        <?php include_partial('global/navigation') ?> 
   	  </div>
-    	<?php include_partial('global/breadcrumbs') 
-    	?> 
+    	<?php include_partial('global/breadcrumbs') ?> 
     </div>
-	<?php echo $sf_data->getRaw('sf_content') ?>
-	<?php include_partial('global/footer') ?>
+
+	  <?php echo $sf_data->getRaw('sf_content') ?>
+	
+	  <?php include_partial('global/footer') ?>
   </div>
   <!--
   <script type="text/javascript">jQuery.noConflict();</script>
