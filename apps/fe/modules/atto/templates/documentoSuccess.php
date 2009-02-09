@@ -15,7 +15,7 @@
         <br />
       <?php endif; ?>
 
-      Atto associato: <?php echo link _to(Text::denominazioneAtto($documento->getOppAtto(), 'list'), 'atto/index?id='.$documento->getOppAtto()->getId()) ?>
+      Atto associato: <?php echo link_to(Text::denominazioneAtto($documento->getOppAtto(), 'list'), 'atto/index?id='.$documento->getOppAtto()->getId()) ?>
       <br /><br />
 
       <?php if($documenti_correlati): ?>
