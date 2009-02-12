@@ -113,7 +113,9 @@ class attoActions extends sfActions
   {
     
     $this->session = $this->getUser();
-   
+    
+    $this->query = $this->getRequestParameter('query', '');
+    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
@@ -127,19 +129,19 @@ class attoActions extends sfActions
     {
       $this->redirect('@attiDisegni');
     }
-    
+
     $this->processDisegnoListSort();
-	
+
 	  if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-  
+
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
 
 	  $this->addFiltersCriteria($c);    
 	  $this->addDisegnoListSortCriteria($c);
-	  
+
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
   	$this->pager->setCriteria($c);
@@ -151,7 +153,8 @@ class attoActions extends sfActions
     $c = new Criteria();
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
   	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
-  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);
+  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);      
+   
   }
 
 
@@ -197,6 +200,7 @@ class attoActions extends sfActions
     
     $this->session = $this->getUser();
    
+    $this->query = $this->getRequestParameter('query', '');
 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
@@ -245,6 +249,8 @@ class attoActions extends sfActions
   {
     $this->session = $this->getUser();
 
+    $this->query = $this->getRequestParameter('query', '');
+
     $decreti_legislativi_ids = array('15','16','17');
 
     // estrae tutte le macrocategorie, per costruire la select
@@ -288,6 +294,8 @@ class attoActions extends sfActions
   public function executeAttoNonLegislativoList()
   {
     $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
 
     $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
 

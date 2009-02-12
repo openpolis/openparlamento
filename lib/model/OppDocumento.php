@@ -9,7 +9,29 @@
  */ 
 class OppDocumento extends BaseOppDocumento
 {
+  public function getDocId()
+  {
+    return $this->getId();
+  }
+
+  public function getTitoloCompleto()
+  {
+    return $this->getTitolo() . ' - ' . Text::denominazioneAtto($this->getOppAtto(), 'list');
+  }
+  
+  public function getTestoLimitato()
+  {
+    return substr($this->getTesto(), 0, 10000);
+  }
+  
+  public function isIndexable()
+  {
+    if ($this->getId() < 1248) return true;
+    else return false;
+  }
 }
+
+
 
 sfPropelBehavior::add(
   'OppDocumento',

@@ -1,0 +1,5 @@
+# Define any application specific rules to your models here
+# such as routing, partials, etc.
+
+MyIndex:
+  models:

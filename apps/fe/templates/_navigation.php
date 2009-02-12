@@ -1,14 +1,12 @@
-<?php echo form_tag('#', array("id"=>"search-main")) ?>
-  <p>
-    <?php echo input_tag('query', '', array('id' => 'search-main-field', 'name' => 'search-field', 'tabindex' => '1') ) ?>
-    <?php echo submit_image_tag('btn-cerca.png', array('id' => 'search-main-go', 'alt' => 'cerca', 'name' => 'search-go' )) ?>	
-  </p>
-</form>
+<!-- motore di ricerca generico, contenuto in sfLucene/_controls.php -->
+<?php include_partial('sfLucene/controls', 
+                      array('query' => $this->getContext()->getRequest()->getParameter('query', '')));?>
 
-
+<!-- menu di navigazione -->
 <ul>
   <li>
-    <?php if($this->getContext()->getModuleName() == 'atto'): ?>
+    <?php if($this->getContext()->getModuleName() == 'atto' ||
+             $this->getContext()->getModuleName() == 'sfLucene' && $this->getContext()->getActionName() == 'attiSearch'): ?>
       <?php echo link_to('Atti', 'atto/disegnoList', array('class' => 'current')) ?>
     <?php else: ?>
       <?php echo link_to('Atti', 'atto/disegnoList') ?>
@@ -28,8 +26,20 @@
       <?php echo link_to('Parlamentari', '@parlamentari?ramo=camera') ?>
     <?php endif; ?>
   </li>
-  <li><?php echo link_to('Argomenti', '@argomenti') ?></li>
+  <li>
+    <?php if($this->getContext()->getModuleName() == 'argomento'): ?>
+      <?php echo link_to('Argomenti', '@argomenti', array('class' => 'current')) ?>
+    <?php else: ?>
+      <?php echo link_to('Argomenti', '@argomenti') ?>
+    <?php endif; ?>
+  </li>
   <li><?php echo link_to('Comunit&agrave;', '#') ?></li>
-  <li><?php echo link_to('Blog', '@blog_index') ?></li>
-  
+  <li>
+    <?php if($this->getContext()->getModuleName() == 'sfSimpleBlog'): ?>
+      <?php echo link_to('Blog', '@blog_index', array('class' => 'current')) ?>
+    <?php else: ?>
+      <?php echo link_to('Blog', '@blog_index') ?>
+    <?php endif; ?>
+  </li>
+  <li></li>
 </ul>

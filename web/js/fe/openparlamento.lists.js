@@ -23,6 +23,13 @@ $(document).ready(function(){
 	}
 
 	// Ricerca disegni di legge
+	$('#search-ddl-field').click(
+		function(){
+			$('#search-ddl-field').val('');
+		}
+	);			
+
+	/*
 	$('#search-ddl-fbox').hover(
 		function(){ $('#search-ddl-type').css({width: ($('#search-ddl-field').width() - 10) + 'px'}).show(); },
 		function(){ $('#search-ddl-type').hide(); }		
@@ -52,7 +59,7 @@ $(document).ready(function(){
 			sf.data('defaultLabel','cerca '+ label);
 		}
 	);			
-
+  */
 	// Visualizza/nascondi help box
 	$('.ico-help').click( function(){ $(this).parent().next().toggle('fast'); return false; } );
 	$('.ico-close').click( function(){ $(this).parent().parent().hide('fast'); return false; } );

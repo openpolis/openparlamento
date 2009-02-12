@@ -69,10 +69,14 @@ news_attiNonLegislativi:
   param: { module: news, action: attiNonLegislativiList}
 
 
+attiSearch:
+  url: /attiSearch/:type/*
+  param: { module: sfLucene, action: attiSearch }
+
 attiDisegni:
   url: /attiDisegni
   param: { module: atto, action: disegnoList }
-
+  
 attiDecretiLegge:
   url: /attiDecretiLegge
   param: { module: atto, action: decretoList }

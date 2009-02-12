@@ -1,8 +1,9 @@
 # default values
 all:
+  
   # remote guard host
-  #remote_guard_host:      'accesso.openpolis.it'
-  remote_guard_host:      'lapgu.guard.openpolis.it'
+  remote_guard_host:      'accesso.openpolis.it'
+  #remote_guard_host:      'lapgu.guard.openpolis.it'
 
   # cookies
   cookies:
@@ -18,6 +19,11 @@ all:
     tagging_removal_credentials: ['moderator']
     use_unique_triple_values:    true
     limit:                       1000
+
+  lucene:
+    index: MainIndex
+    advanced: off
+    per_page: 30
 
   sfEmendPlugin:    
     user:

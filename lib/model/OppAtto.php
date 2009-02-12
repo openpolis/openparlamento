@@ -314,6 +314,54 @@ class OppAtto extends BaseOppAtto
 	return OppAttoHasSedePeer::doSelectJoinOppSede($c);
   }
 
+  /* --------- funzioni per indicizzazione sfLucene ---------- */
+
+  public function getAttoId()
+  {
+    return $this->getId();
+  }
+
+  public function getTipoAtto()
+  {
+    $tipo_atto_id = $this->getTipoAttoId();
+    if ($tipo_atto_id == 1) return 'disegni';
+    if ($tipo_atto_id == 12) return 'decreti';
+    if (in_array($tipo_atto_id, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14))) return 'decrleg';
+    if (in_array($tipo_atto_id, array(15, 16, 17))) return 'nonleg';
+    return 'errore';
+  }
+  
+  public function getTitoloCompleto()
+  {
+    return Text::denominazioneAtto($this, 'list');
+  }
+
+  public function getDescrizioneWiki()
+  {
+    $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
+    if ($wiki_page)
+    {
+      $desc = $wiki_page->getRevision()->getContent();
+      if ($desc != 'Descrizione wiki, a cura degli utenti.') return $desc;      
+    }
+
+    return null;
+    
+  }
+  
+  public function getHasDescrizioneWiki()
+  {
+    $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
+    if ($wiki_page)
+    {
+      $desc = $wiki_page->getRevision()->getContent();
+      if ($desc != 'Descrizione wiki, a cura degli utenti.') return "true";      
+    }
+
+    return "false";
+  }
 }
 
 
@@ -363,3 +411,5 @@ sfPropelBehavior::add(
               'date_method'        => 'DataPres',
               'priority'           => '1',
         )));
+
+sfLucenePropelBehavior::getInitializer()->setupModel('OppAtto');

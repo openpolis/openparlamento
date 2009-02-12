@@ -873,6 +873,9 @@ input.blur { color:#AAAAAA; }
 .float-container {display: block}
 /* End hide from IE-mac */
 
+
+.search-controls input#query { width: 200px; height: 20px; font-size: 14px; color: #343434; border: 1px solid #333;}
+
 ul.monitoring-list { min-height: 30px;}
 li.top_term li a:hover { background-color: #ededed;}
 

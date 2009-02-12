@@ -1,6 +1,6 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs') ?>
+<?php include_partial('tabs', array('current' => 'decrleg')) ?>
 
 <div id="content" class="tabbed float-container">
   <div id="main">
@@ -9,7 +9,12 @@
       <p class="last-update">data di ultimo aggiornamento: <strong><?php echo $last_updated_item->getDataAgg('d-m-Y') ?></strong></p>			
       -->
 
-      <?php echo include_partial('atto/searchbox', array()); ?>
+      <?php 
+        echo include_partial('sfLucene/specialized_controls', 
+                            array('query' => $query, 
+                                  'type' => 'decrleg', 
+                                  'title' => 'nei decreti legislativi'));
+      ?>
 
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legislativi', 

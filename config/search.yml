@@ -1,0 +1,46 @@
+# Define all the models in your project that you want indexed.
+
+MainIndex:
+  models:
+    OppDocumento:
+      fields:
+        docId: unindexed
+        titoloCompleto:
+          boost: 1.5
+          type: text
+          transform: strip_tags
+        testo:
+          type: unstored
+          transform: strip_tags
+      title: titoloCompleto
+      description: testo
+      rebuild_limit: 100
+    OppAtto:
+      fields:
+        attoId: unindexed
+        tipoAttoId: unindexed
+        tipoAtto: keyword
+        hasDescrizioneWiki: unindexed
+        descrizioneWiki: 
+          type: unstored
+          transform: strip_tags
+        titoloCompleto: 
+          boost: 1.5
+          type: text
+          transform: strip_tags
+      title: titoloCompleto
+      description: descrizioneWiki
+      rebuild_limit: 500
+    Tag:
+      fields:
+        tripleValue: text
+      title: tripleValue
+      rebuild_limit: 1000
+  index:
+    encoding: UTF-8
+    cultures: [it_IT]
+    analyzer: utf8num
+    case_sensitive: off
+    mb_string: on
+    short_words: 2
+    stop_words: ["adesso", "ai", "al", "alla", "allo", "allora", "altre", "altri", "altro", "anche", "ancora", "avere", "aveva", "avevano", "ben", "buono", "che", "chi", "cinque", "comprare", "con", "consecutivi", "consecutivo", "cosa", "cui", "da", "del", "della", "dello", "dentro", "deve", "devo", "di", "doppio", "due", "e", "ecco", "fare", "fine", "fino", "fra", "gente", "giu", "ha", "hai", "hanno", "ho", "il", "indietro", "invece", "io", "la", "lavoro", "le", "lei", "lo", "loro", "lui", "lungo", "ma", "me", "meglio", "molta", "molti", "molto", "nei", "nella", "no", "noi", "nome", "nostro", "nove", "nuovi", "nuovo", "o", "oltre", "ora", "otto", "peggio", "però", "persone", "più", "poco", "primo", "promesso", "quà", "quarto", "quasi", "quattro", "quello", "questo", "qui", "quindi", "quinto", "rispetto", "sarà", "secondo", "sei", "sembra", "sembrava", "senza", "sette", "sia", "siamo", "siete", "solo", "sono", "sopra", "soprattutto", "sotto", "stati", "stato", "stesso", "su", "subito", "sul", "sulla", "tanto", "te", "tempo", "terzo", "tra", "tre", "triplo", "ultimo", "un", "una", "uno", "va", "vai", "voi", "volte", "vostro"]

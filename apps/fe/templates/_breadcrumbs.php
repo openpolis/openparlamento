@@ -93,6 +93,9 @@ $mod = $this->getContext()->getModuleName();
 <?php case 'sfSimpleBlog': ?>
   <?php include_slot('blog_breadcrumbs'); ?>
   <?php break; ?>
+<?php case 'sfLucene': ?>
+  <?php include_slot('search_breadcrumbs'); ?>
+  <?php break; ?>
 <?php default: ?>
   Home    
 <?php endswitch; ?>

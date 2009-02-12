@@ -1,0 +1,14 @@
+# Define any application specific rules to your models here
+# such as routing, partials, etc.
+
+MainIndex:
+  models:
+    Tag:
+      route: argomento/showAggiornamenti?triple_value=%tripleValue%
+      partial: argomento/searchResult
+    OppAtto:
+      route: atto/index?id=%attoId%
+      partial: atto/searchResult
+    OppDocumento:
+      route: atto/documento?id=%docId%
+      partial: atto/searchResultDoc

@@ -53,3 +53,4 @@ sfPropelBehavior::add(
               'count_monitored_objects_field' => 'NMonitoredTags',    // refers to OppUser::N_MONITORING_TAGS
        )));
 
+sfLucenePropelBehavior::getInitializer()->setupModel('Tag');

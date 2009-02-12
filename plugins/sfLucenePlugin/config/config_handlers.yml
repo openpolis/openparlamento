@@ -1,0 +1,7 @@
+# the individual module/action config file
+modules/*/config/search.yml:
+  class: sfLuceneModuleConfigHandler
+
+# the master config file
+config/search.yml:
+  class: sfLuceneProjectConfigHandler

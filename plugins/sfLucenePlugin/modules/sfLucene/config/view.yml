@@ -1,0 +1,9 @@
+searchControls:
+  stylesheets: [/sfLucenePlugin/css/search.css]
+
+searchNoResults:
+  stylesheets: [/sfLucenePlugin/css/search.css]
+
+searchResults:
+  stylesheets: [/sfLucenePlugin/css/search.css]
+

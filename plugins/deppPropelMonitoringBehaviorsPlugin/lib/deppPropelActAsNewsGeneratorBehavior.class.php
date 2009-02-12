@@ -269,7 +269,7 @@ class deppPropelActAsNewsGeneratorBehavior
   
   
   /**
-   * Deletes all news for a generator object (delete cascade emulation)
+   * Deletes all news originated from a generator object (delete cascade emulation)
    * 
    * @param  BaseObject  $object
    */
@@ -278,8 +278,8 @@ class deppPropelActAsNewsGeneratorBehavior
     try
     {
       $c = new Criteria();
-      $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, get_class($object));
-      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $object->getPrimaryKey());
+      $c->add(NewsPeer::GENERATOR_MODEL, get_class($object));
+      $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, serialize($this->getPrimaryKeysArray($object)));
       NewsPeer::doDelete($c);          
     }
     catch (Exception $e)

@@ -85,6 +85,7 @@ class Text
       case '14':
         return $atto->getTitolo();
         break;
+
       case '2':
         if($atto->getRamo()=='C')
           $sub_str_pos = strpos($atto->getDescrizione(),  'La Camera');
@@ -110,14 +111,14 @@ class Text
         break;   
               
       default:
-	    //$descrizione = $atto->getDescrizione();
+  	    //$descrizione = $atto->getDescrizione();
         $sub_str_pos = strpos($atto->getDescrizione(),  'seduta n.');
-		$sub_str1 = substr($atto->getDescrizione(), $sub_str_pos + 10 );
-		$sub_str_pos2 = strpos($sub_str1,  '<br/>');
-		$sub_str2 = substr($sub_str1, $sub_str_pos2 + 5 );
-		$descrizione =$sub_str2;
+  		  $sub_str1 = substr($atto->getDescrizione(), $sub_str_pos + 10 );
+  		  $sub_str_pos2 = strpos($sub_str1,  '<br/>');
+  		  $sub_str2 = substr($sub_str1, $sub_str_pos2 + 5 );
+  		  $descrizione =$sub_str2;
 		
-	if($atto->getNumfase()==$atto->getTitolo())
+  	    if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
             return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
