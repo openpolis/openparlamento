@@ -18,7 +18,6 @@ class nahoWikiActions extends BasenahoWikiActions
     // Get page from request if not given as parameter (default behaviour)
     if (is_null($page_name)) {
       $page_name = $this->getRequestParameter('page', $this->startPage);
-      
     }
     
     // Handle case insensitivity
@@ -51,6 +50,21 @@ class nahoWikiActions extends BasenahoWikiActions
     // Permissions management
     $this->canView = $this->page->canView($this->getUser());
     $this->canEdit = $this->page->canEdit($this->getUser());
+    
+    // Retriev item name and type of item (tab and breadcrumbs)
+    list($tipo, $id) = split("_", $this->page->getName());
+    switch ($tipo)
+    {
+      case 'atto':
+        $this->item_name = Text::denominazioneAttoShort(OppAttoPeer::retrieveByPK($id));
+        break;
+        
+      case 'votazione':
+        $this->item_name = OppVotazionePeer::retrieveByPK($id)->getTitolo();
+        break;
+    }
+    $this->item_type = $tipo;
+    
   }
 
 
@@ -70,6 +84,7 @@ class nahoWikiActions extends BasenahoWikiActions
     $this->setPage();
     $this->forward404Unless($this->page);
     $this->forward403Unless($this->canView); 
+    
    
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();

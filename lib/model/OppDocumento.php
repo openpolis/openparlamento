@@ -40,3 +40,5 @@ sfPropelBehavior::add(
               'date_method'        => 'Data',
               'priority'           => '2',
         )));
+
+sfLucenePropelBehavior::getInitializer()->setupModel('OppDocumento');

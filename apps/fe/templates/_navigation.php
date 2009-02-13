@@ -13,7 +13,8 @@
     <?php endif; ?>
   </li>
   <li>
-    <?php if($this->getContext()->getModuleName() == 'votazione'): ?>
+    <?php if($this->getContext()->getModuleName() == 'votazione' ||
+             $this->getContext()->getModuleName() == 'sfLucene' && $this->getContext()->getActionName() == 'votazioniSearch'): ?>
       <?php echo link_to('Votazioni', '@votazioni', array('class' => 'current')) ?>
     <?php else: ?>
       <?php echo link_to('Votazioni', '@votazioni') ?>

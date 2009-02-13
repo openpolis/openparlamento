@@ -326,8 +326,8 @@ class OppAtto extends BaseOppAtto
     $tipo_atto_id = $this->getTipoAttoId();
     if ($tipo_atto_id == 1) return 'disegni';
     if ($tipo_atto_id == 12) return 'decreti';
-    if (in_array($tipo_atto_id, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14))) return 'decrleg';
-    if (in_array($tipo_atto_id, array(15, 16, 17))) return 'nonleg';
+    if (in_array($tipo_atto_id, array(15, 16, 17))) return 'decrleg';
+    if (in_array($tipo_atto_id, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14))) return 'nonleg';
     return 'errore';
   }
   
@@ -339,11 +339,13 @@ class OppAtto extends BaseOppAtto
   public function getDescrizioneWiki()
   {
     $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
+                                         get_class($object)), 'Descrizione di default');
     $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
     if ($wiki_page)
     {
       $desc = $wiki_page->getRevision()->getContent();
-      if ($desc != 'Descrizione wiki, a cura degli utenti.') return $desc;      
+      if ($desc != $default_description) return $desc;      
     }
 
     return null;
@@ -353,14 +355,29 @@ class OppAtto extends BaseOppAtto
   public function getHasDescrizioneWiki()
   {
     $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
+                                         get_class($object)), 'Descrizione di default');
+    
     $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
     if ($wiki_page)
     {
       $desc = $wiki_page->getRevision()->getContent();
-      if ($desc != 'Descrizione wiki, a cura degli utenti.') return "true";      
+      if ($desc != $default_description) return "true";      
     }
 
     return "false";
+  }
+
+  public function isIndexable()
+  {
+    if ($this->getId() < 14500) return true;
+    else return false;
+  }
+  
+  // fast save excluding mixins
+  public function fastSave($con = null)
+  {
+    $this->doSave($con);
   }
 }
 
@@ -368,7 +385,9 @@ class OppAtto extends BaseOppAtto
 
 sfPropelBehavior::add('OppAtto', 
                       array('wikifiableBehavior' => 
-                            array('prefix' => 'atto')));
+                            array('prefix' => 'atto',
+                                  'default_description' => "Inserire qui una descrizione dell'atto.",
+                                  'default_user_comment' => 'Creazione iniziale')));
 
 sfPropelBehavior::add(
   'OppAtto', 

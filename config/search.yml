@@ -2,6 +2,28 @@
 
 MainIndex:
   models:
+    OppPolitico:
+      fields:
+        polId: unindexed
+        nominativo:
+          boost: 1.5
+          type: text
+      title: nominativo
+      rebuild_limit: 500
+    OppVotazione:
+      fields:
+        votoId: unindexed
+        titolo:
+          boost: 1.5
+          type: text
+          transform: strip_tags
+        hasDescrizioneWiki: unindexed
+        descrizioneWiki:
+          type: unstored
+          transform: strip_tags
+      title: titolo
+      description: descrizioneWiki
+      rebuild_limit: 500
     OppDocumento:
       fields:
         docId: unindexed

@@ -97,6 +97,10 @@ $mod = $this->getContext()->getModuleName();
   <?php include_slot('search_breadcrumbs'); ?>
   <?php break; ?>
 <?php default: ?>
-  Home    
+  <?php if (has_slot('breadcrumbs')): ?>
+    <?php include_slot('breadcrumbs'); ?>    
+  <?php else: ?>
+    Home
+  <?php endif ?>
 <?php endswitch; ?>
 </div>

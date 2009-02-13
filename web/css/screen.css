@@ -116,18 +116,18 @@ thead th { font-size: 12px; vertical-align: top; }
  * WIKI-BOX
  *----------------------------------------------*/
  
-.wiki-box { background-color: #f1f3fe; border: 1px solid #ebeaf2; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;  margin-bottom: 44px; }
-.wiki-box-content { padding: 14px 10px; }
+.wiki-box { background-color: #f1f3fe; border: 1px solid #ebeaf2; 
+            -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;  margin-bottom: 44px; }
+.wiki-box-content { padding: 14px 10px; max-height: 200px; overflow: auto; }
 .wiki-box p { margin-bottom: 1em; }
-.wiki-box-edit, .wiki-box-read  { display: block; float: right; height: 20px; background-color:#fff; position: relative; margin-right: 30px; border: 1px solid #e3e4ea; padding: 0 26px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
-.wiki-box-read { bottom: 0px; }
-.wiki-box-edit { top: -22px; }
+.wiki-box-edit  { display: block; float: right; height: 20px; background-color:#fff; position: relative; margin-right: 20px; border: 1px solid #e3e4ea; padding: 3px 26px 0 26px; margin-bottom: -1px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+
 
 /*
  * EVIDENCE-BOX
  *----------------------------------------------*/
  
-.evidence-box { border: 1px solid #dbdbdb; -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; margin: 20px 0; }
+.evidence-box { -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px;  }
 .evidence-box .subsection { background-color: #f0f4f4;
 -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; 
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px;
@@ -140,6 +140,9 @@ thead th { font-size: 12px; vertical-align: top; }
 -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px;
  color: #999; margin: 0; padding: 5px; }
  
+textarea.wikicontent { border: 1px solid gray; padding: 5px;}
+p.wiki-form-submit { margin-left: 20px;}
+
 .bg-light-cyan { background-color: #f1f3fe; }
  
 .evidence-box p.green { margin-bottom: 1em; color: #39aa2d; font-size: 14px; }
@@ -278,7 +281,7 @@ thead th { font-size: 12px; vertical-align: top; }
 
 #content-tabs li a { line-height: 40px; }
 #content-tabs li.current { background-image: none; background-color: #fff; }
-#content-tabs li.current a, #content-tabs li.current a:visited, #content-tabs li.current { color: #4e8480; cursor: default; }
+#content-tabs li.current a, #content-tabs li.current a:visited, #content-tabs li.current { color: #4e8480; }
 #content-tabs h2 { line-height: 40px; min-height: 1.4em; height:40px; float: left;}
 
 #content-tabs.orange li { background: #e0b383 url(../images/bg-tab-content-orange.png) repeat-x top left; }

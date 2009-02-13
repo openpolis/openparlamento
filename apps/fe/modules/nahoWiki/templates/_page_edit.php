@@ -23,7 +23,7 @@
     <?php endif ?>
     <div class="W48_100 float-right">
 
-		<h5 class="subsection-alt">anteprima della modifica</h5>
+		  <h5 class="subsection-alt">anteprima della modifica</h5>
 		
 			<script type="text/javascript">
 			//<![CDATA[
@@ -45,34 +45,27 @@
 			//]]>
 			</script>
 			<div class="evidence-box bg-light-cyan pad10">
-
 			  <p>
-			     
 			     <script type="text/javascript" language="javascript" src="/js/wmd/wmd.js"></script>
-			
-			</p>
-		      </div>
+			  </p>
+		  </div>
     </div>
     
     <div class="W50_100 float-left">
 
       <?php echo form_tag('nahoWiki/edit?' . $uriParams, 'name=edit_page id=edit_page') ?>
-		<div class="evidence-box pad10">
-
-			<p><?php echo textarea_tag('content', $revision->getContent(true), 'size=50x20' . ($canEdit ? '' : ' readonly=yes')) ?></p>
-
-		</div>
+  		  <div class="evidence-box">
+  			  <p><?php echo textarea_tag('content', $revision->getContent(true), 'size=50x20 class=wikicontent' . ($canEdit ? '' : ' readonly=yes')) ?></p>
+  		  </div>
 	
-		<p class="wiki-form-submit">
-		         <?php if ($canEdit): ?>
-		            <?php echo submit_tag(__('pubblica la modifica'), 'class=commit') ?>
-			 |
-			<?php endif ?>	
-			<?php echo link_to(__('annulla e torna all\'atto'), $sf_user->getAttribute('referer', '@homepage')) ?>
-
-		</p>
-     
+  		  <p class="wiki-form-submit">
+          <?php if ($canEdit): ?>
+            <?php echo submit_tag(__('pubblica la modifica'), 'class=commit') ?> |
+    			<?php endif ?>	
+    			<?php echo link_to(__('annulla e torna all\'atto'), $sf_user->getAttribute('referer', '@homepage')) ?>
+  		  </p>     
       </form>
+
     </div>
 	
      

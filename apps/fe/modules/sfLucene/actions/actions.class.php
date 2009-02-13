@@ -16,12 +16,14 @@ require_once(SF_ROOT_DIR . '/plugins/sfLucenePlugin/modules/sfLucene/lib/BasesfL
  */
 class sfLuceneActions extends BasesfLuceneActions
 {
-  /**
-  * Executes a constrained search action.  
+  
+ /**
+  * Executes constrained search actions for Atti, Votazioni and Parlamentari.  
   * The search query inserted by the user is constrained by the fields_constraints request parameter
   * This allows to constrain the search, specifying filters (date, section, types of objects)
   * Categories 
   */
+  
   public function executeAttiSearch()
   {
     // determine if the user pressed the "Advanced"  button
@@ -95,6 +97,63 @@ class sfLuceneActions extends BasesfLuceneActions
       $this->redirect($this->pages_routes[$this->type]);
     }
   }
+
+  public function executeVotazioniSearch()
+  {
+    // determine if the user pressed the "Advanced"  button
+    if ($this->getRequestParameter('commit') == $this->translate('Advanced'))
+    {
+      // user did, so redirect to advanced search
+      $this->redirect($this->getModuleName() . '/advancedSearch');
+    }
+
+    $this->advanced_enabled = sfConfig::get('sf_lucene_interface_advanced', true);
+
+    $query = $this->getRequestParameter('query');
+    $this->title = 'nelle votazioni';
+    
+    // did user enter a query?
+    if ($query)
+    {
+      // query is passed back to the view, to fill the input field
+      $this->query = $query;
+
+      // constraints on the query are built from the type
+      $fields_constraints = array('sfl_model' => 'OppVotazione');
+      
+      // get query results
+      $pager = $this->getResults($query, $fields_constraints);
+
+      $num = $pager->getNbResults();
+
+      // were any results returned?
+      if ($num > 0)
+      {
+        // display results
+        $this->configurePager($pager);
+
+        $this->num = $num;
+        $this->pager = $pager;
+
+        $this->setTitle('Openpolis - Ricerca per <' . $query . '> nelle votazioni');
+
+        return 'Results';
+      }
+      else
+      {
+        // display error
+        $this->setTitle('Openpolis - Ricerca per <' . $query . '> nelle votazioni');
+
+        return 'NoResults';
+      }
+    }
+    else
+    {
+      // on direct visits, redirect to votazioni lists
+      $this->redirect('@votazioni');
+    }
+  }
+
 
   /**
    * a modified override for the getResults method, that accept an array of fields constraints

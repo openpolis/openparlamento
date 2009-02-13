@@ -1,5 +1,5 @@
 <ul id="content-tabs" class="float-container tools-container">
-   <li class="current"><h2><?php echo link_to( 'atto', $sf_user->getAttribute('referer', '@homepage')) ?></h2></li>
+   <li class="current"><h2><?php echo link_to( $item_name, $sf_user->getAttribute('referer', '@homepage')) ?></h2></li>
 </ul>
 <div id="content" class="tabbed float-container">
   <div id="main">
@@ -12,3 +12,8 @@
      <div class="clear-both"></div>
  </div> 	
 </div>
+
+<?php echo include_partial('breadcrumbs_slot', 
+                           array('item_type' => $item_type, 
+                                 'item_name' => $item_name, 
+                                 'link_back' => $sf_user->getAttribute('referer', '@homepage'))); ?>

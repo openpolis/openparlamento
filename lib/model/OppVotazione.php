@@ -132,12 +132,60 @@ class OppVotazione extends BaseOppVotazione
     if (count($voti_gruppo) == 1) return $voti_gruppo[0]->getVoto();
     else return null;
   }
+  
+
+  /* --------- funzioni per indicizzazione sfLucene ---------- */
+  
+  public function getVotoId()
+  {
+    return $this->getId();
+  }
+  
+  public function getDescrizioneWiki()
+  {
+    $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
+                                         get_class($object)), 'Descrizione di default');
+    $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
+    if ($wiki_page)
+    {
+      $desc = $wiki_page->getRevision()->getContent();
+      if ($desc != $default_description) return $desc;      
+    }
+
+    return null;
+    
+  }
+  
+  public function getHasDescrizioneWiki()
+  {
+    $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
+    $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
+                                         get_class($object)), 'Descrizione di default');
+    $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
+    if ($wiki_page)
+    {
+      $desc = $wiki_page->getRevision()->getContent();
+      if ($desc != $default_description) return "true";      
+    }
+
+    return "false";
+  }
+
+  public function isIndexable()
+  {
+    return true;
+  }
     
 }
 
 sfPropelBehavior::add('OppVotazione', 
                       array('wikifiableBehavior' => 
-                            array('prefix' => 'votazione')));
+                            array('prefix' => 'votazione',
+                                  'default_description' => "Inserire qui una descrizione della votazione.",
+                                  'default_user_comment' => 'Creazione iniziale')));
 
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsTaggableBehavior'));
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsCommentableBehavior'));
+
+sfLucenePropelBehavior::getInitializer()->setupModel('OppVotazione');

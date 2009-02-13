@@ -12,3 +12,9 @@ MainIndex:
     OppDocumento:
       route: atto/documento?id=%docId%
       partial: atto/searchResultDoc
+    OppVotazione:
+      route: votazione/index?id=%votoId%
+      partial: votazione/searchResult
+    OppPolitico:
+      route: parlamentare/cosa?id=%polId%
+      partial: parlamentare/searchResult

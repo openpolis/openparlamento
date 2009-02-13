@@ -123,6 +123,10 @@ teseo:
   url:   /teseo/:id
   param: { module: teseo, action: index }
 
+votazioniSearch:
+  url: /votazioniSearch/*
+  param: { module: sfLucene, action: votazioniSearch }
+
 votazioni:
   url:   /votazioni/:sort/:type
   param: { module: votazione, action: list, sort: data, type: desc, display: false }
@@ -130,6 +134,11 @@ votazioni:
 votazione:
   url:   /votazione/:id
   param: { module: votazione, action: index }
+
+
+parlamentariSearch:
+  url: /parlamentariSearch/*
+  param: { module: sfLucene, action: parlamentariSearch }
 
 parlamentari:
   url:   /parlamentari/:ramo/:sort/:type/*

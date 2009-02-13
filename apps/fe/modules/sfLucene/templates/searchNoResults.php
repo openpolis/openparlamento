@@ -11,3 +11,8 @@
     </div>
   </div>
 </div>
+
+<?php slot('search_breadcrumbs') ?>
+  <?php echo link_to('Home', '@homepage') ?> /
+  Risultati della ricerca per <i><?php echo $query ?></i>
+<?php end_slot() ?>

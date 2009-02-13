@@ -33,6 +33,7 @@ propel:
     nb_commenti:        { type: integer, required: true, default: 0 }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     n_interventi:       { type: integer, required: true, default: 0, index: multiple }
+    is_indexed:         { type: tinyint, required: true, default: 0, index: multiple }
     created_at:
 
   opp_atto_has_iter:
@@ -114,6 +115,7 @@ propel:
     file_pdf:         { type: blob }
     url_testo:        { type: varchar(1024) }
     url_pdf:          { type: varchar(1024) }
+    is_indexed:       { type: tinyint, required: true, default: 0, index: multiple }
     created_at:
     
   opp_gruppo:

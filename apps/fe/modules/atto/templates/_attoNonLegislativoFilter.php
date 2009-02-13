@@ -13,7 +13,7 @@
 
     <?php echo select_tag('filter_act_type', 
                           options_for_select(array('0' => 'tutte',
-                                                   '2' => 'attuativo di legge delega',
+                                                   '2' => 'mozione',
                                                    '3' => 'interpellanza',
                                                    '4' => 'interrogazione a risposta orale',
                                                    '5' => 'interrogazione a risposta scritta',
@@ -23,7 +23,6 @@
                                                    '9' => 'risoluzione conclusiva',
                                                    '10' => 'odg - in assemblea',
                                                    '11' => 'odg - in commissione',
-                                                   '13' => 'comunicato del governo',
                                                    '14' => 'audizione'), $selected_act_type)) ?>
     <?php echo select_tag('filter_tags_category', 
                           adv_objects_for_select($tags_categories, 'getId', 'getDenominazione', $selected_tags_category, 

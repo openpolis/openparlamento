@@ -237,6 +237,18 @@ class OppPolitico extends BaseOppPolitico
     
     parent::delete($con);
   }
+
+  /* --------- funzioni per indicizzazione sfLucene ---------- */
+  
+  public function getPolId()
+  {
+    return $this->getId();
+  }
+
+  public function getNominativo()
+  {
+    return $this->__toString();
+  }
     
 }
 
@@ -251,3 +263,4 @@ sfPropelBehavior::add(
               'count_monitored_objects_field' => 'NMonitoredPoliticos', // refers to OppUserPeer::N_MONITORED_ATTOS
        )));
 
+sfLucenePropelBehavior::getInitializer()->setupModel('OppPolitico');

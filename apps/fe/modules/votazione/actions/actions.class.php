@@ -239,6 +239,8 @@ class votazioneActions extends sfActions
   {
     
     $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
