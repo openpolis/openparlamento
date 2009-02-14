@@ -7,6 +7,7 @@
 <?php include_title() ?>
 
 <link rel="shortcut icon" href="/favicon.ico" />
+
 </head>
 <body>
   <div id="wrapper">
