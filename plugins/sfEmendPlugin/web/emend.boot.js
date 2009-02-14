@@ -7,7 +7,7 @@ var eMend = {
     scroll_refresh_delay: true,                            // delay comments visual link refresh to save CPU cycles
     jquery_noconflict: true,                               // enable/disable jQuery no conflict mode
     jquery_googleapis: false,                              // enable/disable loading jQuery from googleapis
-    jquery_min_version: '1.2.6',                           // minimum version of jQuery
+    jquery_min_version: '1.3.1',                           // minimum version of jQuery
     debug: true                                            // enable/disable uncompressed scripts inclusion for debug
   }
 };	
@@ -30,41 +30,37 @@ function eMendBoot() {
 		var head = document.getElementsByTagName('head')[0]
 		  , js = document.createElement('script')
           , jqbaseURI = cfg.jquery_googleapis ? 'http://ajax.googleapis.com/ajax/libs/jquery/' : cfg.baseURI+'js/libs/jquery/'
-          , jqfile = cfg.debug ? '/jquery.js' : '/jquery.min.js';          
-		
-        js.language = 'text/javascript';
-        js.src =  jqbaseURI + cfg.jquery_min_version + jqfile;
-		document.getElementsByTagName('head')[0].appendChild(js);
-		
-		if(cfg.jquery_noconflict) {
-		  var nc = document.createElement('script');
-		  nc.language = 'text/javascript';
-		  nc.innerHTML = 'jQuery.noConflict();';
-		  document.getElementsByTagName('head')[0].appendChild(nc);
-		}
+          , jqfile = cfg.debug ? '/jquery.js' : '/jquery.min.js';
+          
+          if(typeof eMendInit != 'undefined' && eMendInit == true) {
+            js.language = 'text/javascript';
+            js.src =  jqbaseURI + cfg.jquery_min_version + jqfile;
+            document.getElementsByTagName('head')[0].appendChild(js);            
+          } else {
+            document.write('<script type="text/javascript" src="'+jqbaseURI + cfg.jquery_min_version + jqfile+'"><\/script>');    
+          }		
 	}
 	
 	if(eMend_required) {
-        var emfile = cfg.debug ? '/e-Mend_dist' : '/e-Mend_dist-yui';
-		var css = document.createElement('link');
-		css.rel = 'stylesheet';
-		css.type = 'text/css';
-		css.href = cfg.baseURI+'css'+emfile+'.css';
-		var head = document.getElementsByTagName('head')[0];
-		head.insertBefore(css,head.lastChild);
-				
-		var js = document.createElement('script');
-		js.language = 'text/javascript';
-		js.src = cfg.baseURI+'js'+emfile+'.js';
-		head.insertBefore(js,head.lastChild);
-	}		
-	
-	/*
-	var scr = document.getElementsByTagName('script');
-	for (var i=0, l=scr.length; i<l; i++) {
-		if(scr[i].src.indexOf('emend.boot') != -1) scr[i].parentNode.removeChild(scr[i]);
+          var emfile = cfg.debug ? '/e-Mend_dist' : '/e-Mend_dist-yui';
+	  var css = document.createElement('link');
+	  css.rel = 'stylesheet';
+	  css.type = 'text/css';
+	  css.href = cfg.baseURI+'css'+emfile+'.css';
+	  var head = document.getElementsByTagName('head')[0];
+	  head.insertBefore(css,head.lastChild);
+
+          if(typeof eMendInit != 'undefined' && eMendInit == true) {  
+            var js = document.createElement('script');
+            js.language = 'text/javascript';
+            js.src = cfg.baseURI+'js'+emfile+'.js';         
+            head.insertBefore(js,head.lastChild);            
+          } else {
+            document.write('<script type="text/javascript" src="'+cfg.baseURI+'js'+emfile+'.js'+'"><\/script>');
+          }
 	}
-	*/
+    	
 };
 
 eMendBoot();
+

@@ -13,7 +13,7 @@
     
     <div class="W25_100 float-right">
       <?php echo include_component('atto', 'monitor_n_vote', array('atto' => $atto)); ?>
-	  </div>
+    </div>
     
     <div class="W73_100 float-left">
       <h5 class="grey-888">

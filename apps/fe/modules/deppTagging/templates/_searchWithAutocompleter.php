@@ -20,8 +20,9 @@ jQuery.noConflict();
   })(jQuery);
 </script>
 <div class="W50_100">
+<h5 class="subsection">Cerca tra gli argomenti ...</h5>
   <?php echo form_tag('argomento_search', array('id' => 'search-autocompleter')); ?>
-		<h6 class="orange">Cerca tra gli argomenti ...</h6>
+		
 		<fieldset id="search-autocompleter-fbox">
       <input id="tag_search" class="ac_input blur"/>
       <input id="tag_name" name="tag_name" type="hidden"/>

@@ -2211,7 +2211,7 @@ jQuery.extend( jQuery.easing,
 	$.fn.textNodes = function(deep) {
 				var text=[];
 				this.each(function(){
-						var children =this.childNodes;
+						var children = this.childNodes;
 						for (var i = 0; i < children.length; i++){
 								var child = children[i];
 								if (child.nodeType == 3)
@@ -3461,7 +3461,50 @@ $.aqCookie = {
 
    del: function(k) { $.aqCookie.set(k) }
 };
-})(jQuery);eMend.dictionary = {
+})(jQuery);/*
+ * jQuery simpleXpath plugin
+ *
+ * returns an object with the current text selection coordinates
+ * (startContainer, startOffset, endContainer, endOffset)
+ * Version: 0.1 (08/30/2008)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ */
+
+(function($) {
+  $.simpleXpath = function(selector,context) {
+
+
+    var o = selector.split('/text()');
+    selector = o[0];
+    var textNodeN = o[1].replace(/[\[\]]/g,"");
+    
+    // Convert ./ to >
+    selector = selector.replace(/\.\//g, ">");    
+    
+    // Convert // to " "
+    //selector = selector.replace(/\/\//g, " ");
+
+    // Convert / to >
+    selector = selector.replace(/\//g, ">");
+    
+    // Convert [n] to :eq(n-1)
+    var nth = selector.split(/[\[\]]/);
+    
+    for(var i=0, l=nth.length; i<l; i++) {
+      if(Number(nth[i]) > 0) {
+        nth[i] = ":eq("+(nth[i]-1)+")";
+      }
+    }
+    selector = nth.join('');
+    //console.log(context+selector,$(context+selector).get(0).innerHTML);
+    //console.log(selection.lenght);
+    
+    return $(context+selector).textNodes(true)[textNodeN];
+  }
+})(jQuery);
+eMend.dictionary = {
   comment: {
     "delete_note_H": "Elimina questo commento",
     "edit_note_H": "Modifica questo commento",
@@ -3989,6 +4032,19 @@ eMend.dataset.prototype = {
       fragments.push([node.nodeValue]);
       fragmentsMap.push([[0,node.nodeValue.length,[]]]);
     }
+    
+    function processNodeIE(node) {
+      switch(node.parentNode.tagName){
+        case 'SCRIPT':
+        case 'NOSCRIPT':
+          return;
+        break;
+      }
+      
+      nodes.push(node);
+      fragments.push([node.nodeValue]);
+      fragmentsMap.push([[0,node.nodeValue.length,[]]]);
+    }    
 			
     if(document.createTreeWalker && jQuery.browser.mozilla) {
       // at the time of writing TreeWalker is implemented in Firefox, Safari and Opera; using it just on Mozilla as on:
@@ -4010,7 +4066,8 @@ eMend.dataset.prototype = {
     } else {
       // fallback to textNodes jQuery plugin
       $(document.body).textNodes(true).each(function() {
-        processNode(this);
+      //$(document.body).textNodesFiltered('jGrowl eMend-DATA-Overlay eMend-VISUAL-Overlay').each(function() {
+        processNodeIE(this);
       });
     }
 
@@ -4041,6 +4098,8 @@ eMend.dataset.prototype = {
 
 	var selections,comments,r,date,oS,oE,XcS,XcE,cS,cE,cSel,cEel,startNode,endNode,startChunk,endChunk;
 	var fragmentL,fragmentR,prevOffsetStart,prevOffsetEnd;
+    
+    var xpathmethod = document.evaluate ? 0 : 1;
 
 	for(var u=0, len1=groupSel.length; u < len1; u++) {
       selections = groupSel[u];
@@ -4064,16 +4123,31 @@ eMend.dataset.prototype = {
 //dump(XcE.base+'\n');
 //=================================================
 
-        cSel = XcS.base == '__noId__' ? document.body : document.getElementById(XcS.base);	
-        cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);	
 
-        cS = document.evaluate(XcS.xpath,cSel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-        cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+
+        switch(xpathmethod) {
+          case 0:
+            cSel = XcS.base == '__noId__' ? document.body : document.getElementById(XcS.base);	
+            cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);	            
+            cS = document.evaluate(XcS.xpath,cSel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+            cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;            
+          break;
+        
+          case 1:
+            cSel = XcS.base == '__noId__' ? 'body' : '#'+XcS.base;
+            cEel = XcE.base == '__noId__' ? 'body' : '#'+XcE.base;	                        
+            cS = $.simpleXpath(XcS.xpath,cSel);
+            cE = $.simpleXpath(XcE.xpath,cEel);            
+          break;
+        }
 
 //=================================================
 //dump('context start:'+cS+'\n');
 //dump('context end:'+cE+'\n');
 //=================================================
+
+        //console.log('nodes', nodes.length, typeof cS, typeof cE);
+        
 
         startNode = endNode = -1
         for(var j=0, len3=nodes.length; j <= len3; j++) {
@@ -4083,12 +4157,14 @@ eMend.dataset.prototype = {
         }
         if(startNode == -1 || endNode == -1) continue; //skip filtered nodes
         
-        //console.log(startNode,endNode);
-
         var startFragment = fragments[startNode];
         var endFragment = fragments[endNode];				
         var startFragmentMap = fragmentsMap[startNode];
         var endFragmentMap = fragmentsMap[endNode];
+        
+        //console.log('startNode', startNode);
+        //console.log('endNode', endNode);
+        //console.log('startFragmentMap', typeof startFragmentMap);
 
         // Find which chunks the selection boundaries are within
         startChunk = endChunk = -1;
@@ -4120,7 +4196,7 @@ eMend.dataset.prototype = {
 //dump('***' + startChunkText + '\n');
 //console.log("fragments: ",fragments);
 //console.log("fragmentsMap: ",fragmentsMap);				
-//console.log('startChunk,endChunk',startChunk,endChunk);
+console.log('startChunk,endChunk',startChunk,endChunk);
 //=================================================
 
         // cuts the text chunks before and after the selection start boundary in their respective fragments
@@ -4712,7 +4788,7 @@ eMend.commentTrigger = function (options) {
               $(document).unbind('keyup.commentTrigger');
               $(document).unbind('keydown.commentTrigger');
               var targ = $(eMend.config.comment_target);
-              console.log(targ.css('color') == '');
+              //console.log(targ.css('color') == '');
               var orig_color = targ.css('color') ? targ.css('color') : '';
               
               
@@ -5823,7 +5899,7 @@ eMend.backstore.sfEmendPlugin.prototype = {
         
 
         c.selection = $.toJSON(s);
-        console.log(c);
+        //console.log(c);
         $.ajax({
             url: '/fe_dev.php/emend.addComment/'+this.resourceID,
             data: c,
@@ -5890,7 +5966,6 @@ eMend.backstore.sfEmendPlugin.prototype = {
 
 (function($) {
 eMend.init = function($) {
-	
 	if(eMend.status == 'running') return;
     	
 	document.body.normalize();	
@@ -5980,10 +6055,24 @@ eMend.init = function($) {
         $(document).bind('emend.addComment',function(){ bkSf.addComment(); });
     };
 	
-	eMend.status = 'running';
+	eMend.status = 'running';    
 };
+
+if (!window.console || !window.console.firebug) {  
+     var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
+                  "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
+                 ];  
+     window.console = {};  
+     // no more javascript errors in non-firefox browsers  
+     for (i in names) {  
+         window.console[names[i]] = function() {};  
+     }
+}
 
 if(typeof eMendInit != 'undefined' && eMendInit == true) eMend.init(jQuery);
 $(document).ready(function(){ eMend.init(jQuery) });
 
 })(jQuery);
+if(eMend.config.jquery_noconflict) {
+  jQuery.noConflict();
+};

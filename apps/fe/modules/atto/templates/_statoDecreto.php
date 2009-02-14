@@ -6,7 +6,7 @@
 <?php $status = $ddl->getStatus(); ?>
 
 <?php foreach ($status as $data => $status_iter): ?>
-  <?php if($status_iter!=65) : ?>
+  <?php if($status_iter!=65 ) : ?>
   
     <?php if($data): ?>
 	  <p class="date"><?php echo format_date($data, 'dd/MM/yyyy') ?></p>

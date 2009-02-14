@@ -27,6 +27,8 @@ class votazioneActions extends sfActions
     $this->risultati = OppVotazioneHasCaricaPeer::doSelectGroupByGruppo($this->getRequestParameter('id'));
 
     $this->ribelli = $this->votazione->getRibelliList();
+    
+    
 
     //$gruppi = sfYaml::load(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps/fe/config/gruppi.yml');
     //$this->gruppi_votazione = $gruppi['legislatura_'.$this->votazione->getOppSeduta()->getLegislatura()][$this->ramo];	
@@ -43,6 +45,7 @@ class votazioneActions extends sfActions
     $c1->addSelectColumn(OppGruppoPeer::NOME);
     $c1->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
     $c1->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
+     $c1->addSelectColumn(OppGruppoPeer::ACRONIMO);
 
     $c1->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
     $c1->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
@@ -55,10 +58,18 @@ class votazioneActions extends sfActions
 	$cton1 = $c1->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $this->votazione->getOppSeduta()->getData(), Criteria::GREATER_EQUAL);
 	$cton2 = $c1->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
 	$cton1->addOr($cton2);
-    $c1->add($cton1);
+       $c1->add($cton1);
 	  
 	$c1->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	$this->votanti = OppVotazioneHasCaricaPeer::doSelectRS($c1);
+	
+     $c2 = new Criteria();
+     $c2->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->votazione->getId());
+     $this->voto_gruppi=OppVotazioneHasGruppoPeer::doSelect($c2);
+     
+     $c3 = new Criteria();
+     $c3->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->votazione->getId());
+     $this->voto_atti=OppVotazioneHasAttoPeer::doSelect($c3);
   }
 
 

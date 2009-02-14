@@ -1,7 +1,7 @@
 <?php use_helper('Date', 'Number') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
-	<li class="current"><h2>On.<?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
 </ul>
 
 

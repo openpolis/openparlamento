@@ -298,7 +298,7 @@ jQuery.extend( jQuery.easing,
 	$.fn.textNodes = function(deep) {
 				var text=[];
 				this.each(function(){
-						var children =this.childNodes;
+						var children = this.childNodes;
 						for (var i = 0; i < children.length; i++){
 								var child = children[i];
 								if (child.nodeType == 3)
@@ -1548,4 +1548,46 @@ $.aqCookie = {
 
    del: function(k) { $.aqCookie.set(k) }
 };
+})(jQuery);/*
+ * jQuery simpleXpath plugin
+ *
+ * returns an object with the current text selection coordinates
+ * (startContainer, startOffset, endContainer, endOffset)
+ * Version: 0.1 (08/30/2008)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ */
+
+(function($) {
+  $.simpleXpath = function(selector,context) {
+
+
+    var o = selector.split('/text()');
+    selector = o[0];
+    var textNodeN = o[1].replace(/[\[\]]/g,"");
+    
+    // Convert ./ to >
+    selector = selector.replace(/\.\//g, ">");    
+    
+    // Convert // to " "
+    //selector = selector.replace(/\/\//g, " ");
+
+    // Convert / to >
+    selector = selector.replace(/\//g, ">");
+    
+    // Convert [n] to :eq(n-1)
+    var nth = selector.split(/[\[\]]/);
+    
+    for(var i=0, l=nth.length; i<l; i++) {
+      if(Number(nth[i]) > 0) {
+        nth[i] = ":eq("+(nth[i]-1)+")";
+      }
+    }
+    selector = nth.join('');
+    //console.log(context+selector,$(context+selector).get(0).innerHTML);
+    //console.log(selection.lenght);
+    
+    return $(context+selector).textNodes(true)[textNodeN];
+  }
 })(jQuery);

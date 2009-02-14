@@ -3,9 +3,10 @@ indexSuccess:
   stylesheets:    [monitoring, jquery.autocomplete.css]
 
 documentoSuccess:
-  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, /sfEmendPlugin/emend.boot.js]
+  javascripts:    [/sfEmendPlugin/emend.boot.js]
+#  javascripts:    [/sfEmendPlugin/js/libs/jquery/1.2.6/jquery.js, /sfEmendPlugin/querytest.js]
   stylesheets:    [testo_atto]
 
-default:
-  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+#default:
+#  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
 
