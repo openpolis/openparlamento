@@ -46,6 +46,7 @@ class OppVotazione extends BaseOppVotazione
       if($gruppo!='Gruppo Misto')
 	  {
 	    unset($risultato['Assente']);
+	    unset($risultato['In missione']);
 	    arsort($risultato);
 	    array_shift($risultato);
 	    $n+=array_sum($risultato);
@@ -67,6 +68,7 @@ class OppVotazione extends BaseOppVotazione
       if($gruppo!='Gruppo Misto')
   	  {
   	    unset($risultato['Assente']);
+  	    unset($risultato['In missione']);
   	    arsort($risultato);
   	    array_shift($risultato);
 	  	  

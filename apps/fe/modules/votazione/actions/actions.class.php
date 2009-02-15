@@ -47,7 +47,6 @@ class votazioneActions extends sfActions
     $c1->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
     $c1->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
     $c1->addSelectColumn(OppGruppoPeer::ACRONIMO);
-    $c1->addSelectColumn(OppVotazioneHasGruppoPeer::VOTO);
 
     $c1->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
     $c1->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);

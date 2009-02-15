@@ -441,9 +441,13 @@ eMend.dataset.prototype = {
 // IMPORT
   importEmendment: function(selection,commentdata) {
     
+    commentdata.selection = selection;
+    
     var userIdx = this.getOrCreateUser(commentdata.author);
+    commentdata.userIdx = userIdx;
     
     var s = this._selections[userIdx].push(selection);
+    commentdata.noteIdx = s-1;
     this.lastSelection = {user:userIdx, idx: s-1};
     
     var c = this._comments[userIdx].push(new eMend.comment(commentdata));
@@ -976,6 +980,7 @@ eMend.comment.prototype = {
 	getElement: function(className) {
         if(!this.element) {
             var id = this.data.userIdx+'_'+this.data.noteIdx;
+            console.log(this.data);
             var tpl = $.template(this.template).apply(this.data);
             //var tpl = this.template_C.apply(this.data);	// <-- in firefox this is faster
             
@@ -2112,7 +2117,7 @@ eMend.prefetch = function (options) {
         $(options.datastore).append(c);
         
         var d = eMend.dictionary;
-        d.comment.baseURI = d.comment_more.baseURI = d.commentGroup.baseURI = d.commentTrigger.baseURI = d.commentForm.baseURI = d.sidebar.baseURI = baseURI+'/images';
+        d.comment.baseURI = d.comment_more.baseURI = d.commentGroup.baseURI = d.commentTrigger.baseURI = d.commentForm.baseURI = d.sidebar.baseURI = baseURI+'images';
         
     } else {
         var URI = $(c[0].firstChild).attr('src')
@@ -2491,7 +2496,7 @@ eMend.init = function($) {
 	
 	//events binding
 	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
-	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); }
+	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); window.clearTimeout(emend_lastScrollTimer);}
 	  , F_hideLinks = function(){ ln.hideLinks(); }
 	  , F_clearLinks = function(){ ln.clearLinks(); }
 	  , F_refnavbar = function(){ nb.refresh(); }
@@ -2499,11 +2504,11 @@ eMend.init = function($) {
 	  , F_refRender = function(){ eMend.highlight(ds); rn.renderNotes(); }
 	  , F_openSB = function(){ SB.open(); }
 	  , F_afterscroll = function(){
-			var now = new Date();
-			emend_lastScrollTime = now.getTime();
-			window.setTimeout(function(){
-				var now = new Date();
-				if(now.getTime() < emend_lastScrollTime + 450) return;
+			var d = new Date();
+            if (typeof emend_lastScrollTime != 'undefined' && d.getTime() < emend_lastScrollTime + 600) window.clearTimeout(emend_lastScrollTimer);
+			emend_lastScrollTime = d.getTime();
+            
+			emend_lastScrollTimer = window.setTimeout(function(){
 				$(document).trigger('emend.afterscroll');
 			},600);
 		}

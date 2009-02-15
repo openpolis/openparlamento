@@ -61,7 +61,7 @@
            <?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?>  
        <?php endif; ?> 
       
-      <h5 class="subsection">come hanno votato i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
+      <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
       
       

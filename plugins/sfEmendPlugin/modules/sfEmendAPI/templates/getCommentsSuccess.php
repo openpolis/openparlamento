@@ -3,7 +3,7 @@
   "comments": [
     <?php foreach ($comments as $i => $comment): ?>
 {"s": <?php echo $comment->getSelection() ?>, 
- "c": {"author_name": "<?php echo $comment->getAuthorName() ?>", 
+ "c": {"author": "<?php echo $comment->getAuthorName() ?>", 
        "title": "<?php echo $comment->getTitle() ?>", 
        "body": "<?php echo $comment->getBody() ?>", 
        "date": "<?php echo $comment->getCreatedAt() ?>", 

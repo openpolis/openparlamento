@@ -45,7 +45,7 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
 	  
 	  if(!isset($risultato[$rs->getString(1)]))
 	  { 
-	    $risultato[$rs->getString(1)] = array('Favorevole' => 0, 'Contrario' => 0, 'Astenuto' => 0, 'Assente' => 0);
+	    $risultato[$rs->getString(1)] = array('Favorevole' => 0, 'Contrario' => 0, 'Astenuto' => 0, 'Assente' => 0, 'In missione' => 0);
 	  }
 	  
 	  if(isset($risultato[$rs->getString(1)][$rs->getString(2)]))
