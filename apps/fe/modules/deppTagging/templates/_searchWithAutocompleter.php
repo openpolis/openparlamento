@@ -21,7 +21,7 @@ jQuery.noConflict();
 </script>
 <div class="W50_100">
 <h5 class="subsection">Cerca tra gli argomenti ...</h5>
-  <?php echo form_tag('argomento_search', array('id' => 'search-autocompleter')); ?>
+  <?php echo form_tag('@argomento_search', array('id' => 'search-autocompleter')); ?>
 		
 		<fieldset id="search-autocompleter-fbox">
       <input id="tag_search" class="ac_input blur"/>

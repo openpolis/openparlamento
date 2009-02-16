@@ -257,6 +257,7 @@ propel:
     url_personal_website:    { type: varchar(255) }
     notes:                   { type: longvarchar }
     has_paypal:              { type: integer, default: 0 }
+    wants_newsletter:        { type: tinyint, default: 0 } 
     public_name:             { type: tinyint, required: true, default: 1 }
     votes:                   { type: integer, default: 0 }
     comments:                { type: integer, default: 0 }

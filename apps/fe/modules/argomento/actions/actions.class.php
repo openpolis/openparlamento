@@ -311,8 +311,8 @@ class argomentoActions extends sfActions
       $argomento = TagPeer::retrieveByTagname($this->getRequestParameter('tag_name'));
     }
     
-    $single_name = $argomento->getTripleNamespace() . "_" . $argomento->getTripleValue();
-    $this->redirect('@argomento?single_name='.$single_name);
+    $triple_value = $argomento->getTripleValue();
+    $this->redirect('@argomento?triple_value='.$triple_value);
   }
   
 

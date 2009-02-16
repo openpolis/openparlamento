@@ -135,6 +135,72 @@ class monitoringActions extends sfActions
   	$this->pager->init();
   }
   
+  public function executeSendNewsletter()
+  {
+    $user_id = $this->getRequestParameter('user_id');
+    
+    $user = OppUserPeer::retrieveByPK($user_id);
+    
+    $monitored_objects = $user->getMonitoredObjects();
+
+    // criterio di selezione delle news dagli oggetti monitorati    
+    $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
+
+    // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
+    $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($user->getId());
+    if (array_key_exists('OppAtto', $blocked_items_ids) && count($blocked_items_ids['OppAtto']))
+    {
+      $blocked_news_ids = array();
+      $bc = new Criteria();
+      $bc->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+      $bc->add(NewsPeer::RELATED_MONITORABLE_ID, $blocked_items_ids['OppAtto'], Criteria::IN);
+      $bc->clearSelectColumns(); 
+      $bc->addSelectColumn(NewsPeer::ID);
+      $rs = NewsPeer::doSelectRS($bc);
+      while ($rs->next()) {
+        array_push($blocked_news_ids, $rs->getInt(1));
+      }
+      $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
+    }
+
+    // add a filter on the date (today's news)
+    $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);
+
+    $news = NewsPeer::doSelect($c);
+    
+    // do not send email if no news
+    if (count($news) == 0) return sfView::NONE;
+
+    $mail_html_body = ''; $mail_text_body = '';
+    foreach ($news as $n)
+    {
+      $mail_html_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n);
+      $mail_text_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
+    }
+    
+    // class initialization
+    $mail = new sfMail();
+    $mail->setCharset('utf-8');      
+    $mail->setContentType('text/html');
+
+    // definition of the required parameters
+    $mail->setSender('guglielmo@lapgu.local', 'Test');
+    $mail->setFrom('guglielmo@lapgu.local', 'Test');
+
+    $mail->addAddress($user->getEmail());
+
+    $mail->setSubject('Openparlamento: newsletter quotidiana' );
+    $mail->addEmbeddedImage(sfConfig::get('sf_web_dir').'/images/logo_op_mail_footer.png', 
+                            'CID1', 'Open2Public', 'base64', 'image/png');
+                            
+    $this->date = date('d/m/Y');
+    $this->user = $user;
+    $this->mail_html_body = $mail_html_body;
+    $this->mail_text_body = $mail_text_body;
+    $this->mail = $mail;    
+    
+  }
+  
   public function executeFavouriteActs()
   {
     // embed javascripts for advanced javascripts
