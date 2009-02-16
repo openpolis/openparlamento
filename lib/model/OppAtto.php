@@ -340,7 +340,7 @@ class OppAtto extends BaseOppAtto
   {
     $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
     $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
-                                         get_class($object)), 'Descrizione di default');
+                                         get_class($this)), 'Descrizione di default');
     $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
     if ($wiki_page)
     {
@@ -356,7 +356,7 @@ class OppAtto extends BaseOppAtto
   {
     $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($this)));
     $default_description = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_default_description', 
-                                         get_class($object)), 'Descrizione di default');
+                                         get_class($this)), 'Descrizione di default');
     
     $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $this->getId());
     if ($wiki_page)
