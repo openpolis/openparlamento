@@ -164,19 +164,20 @@ class monitoringActions extends sfActions
     }
 
     // add a filter on the date (today's news)
-    $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);
+    $c->add(NewsPeer::CREATED_AT, date('2009-01-29%'), Criteria::LIKE);
 
     $news = NewsPeer::doSelect($c);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
 
-    $mail_html_body = ''; $mail_text_body = '';
+    $mail_html_body = "<ul>"; $mail_text_body = '';
     foreach ($news as $n)
     {
-      $mail_html_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n);
+      $mail_html_body .= "<li>" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n) . "</li>";
       $mail_text_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
     }
+    $mail_html_body .= "</ul>";
     
     // class initialization
     $mail = new sfMail();
@@ -184,8 +185,8 @@ class monitoringActions extends sfActions
     $mail->setContentType('text/html');
 
     // definition of the required parameters
-    $mail->setSender('guglielmo@lapgu.local', 'Test');
-    $mail->setFrom('guglielmo@lapgu.local', 'Test');
+    $mail->setSender('vilas@deddo.palomarlab.net', 'Test');
+    $mail->setFrom('vilas@deddo.palomarlab.net', 'Test');
 
     $mail->addAddress($user->getEmail());
 

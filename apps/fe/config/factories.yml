@@ -1,7 +1,11 @@
 task:
   response:
     class: sfTaskResponse
-  
+
+task-test:
+  response:
+    class: sfTaskResponse
+
 cli:
   controller:
     class: sfConsoleController
