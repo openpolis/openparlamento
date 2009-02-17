@@ -19,7 +19,7 @@ class attoComponents extends sfComponents
         break;
       case 'Tag':
         $str = $this->item->getTripleValue();
-        $url = '@argomento?id='.$this->item->getId();
+        $url = '@argomento?triple_value='.$this->item->getTripleValue();
         break;
     }
     $this->str = $str . " (".$this->item->getNMonitoringUsers().")"; 
