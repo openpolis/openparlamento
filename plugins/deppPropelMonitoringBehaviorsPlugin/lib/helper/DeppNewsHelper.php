@@ -38,7 +38,7 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
   }
 
   $url = url_for($internal_uri);
-  $url_in_mail = preg_replace('/\.\/symfony\/(.*)/i',  'http://'.$site_url.'/$1', $url);
+  $url_in_mail = preg_replace('/.*\/symfony\/(.*)/i',  'http://'.$site_url.'/$1', $url);
   return "<a href=\"$url_in_mail\">$name</a>";
 }
 

@@ -29,7 +29,7 @@ function run_opp_send_newsletter($task, $args)
   {
     define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
     define('SF_APP', 'fe');
-    define('SF_ENVIRONMENT', 'task-test');
+    define('SF_ENVIRONMENT', 'task');
     define('SF_DEBUG', true);
 
     require_once SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
