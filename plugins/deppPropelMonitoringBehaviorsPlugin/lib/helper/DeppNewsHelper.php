@@ -24,6 +24,24 @@ function news_date($newsdate)
   return content_tag('strong',$newsdate);
 }
 
+
+function link_to_in_mail($name = '', $internal_uri = '', $options = array())
+{
+
+  $html_options = _parse_attributes($options);
+  $html_options = _convert_options_to_javascript($html_options);
+
+  $site_url = sfConfig::get('app_site_url', '');
+  if (isset($html_options['site_url']))
+  {
+    $site_url = $html_options['site_url'];
+  }
+
+  $url = url_for($internal_uri);
+  $url_in_mail = preg_replace('/\.\/symfony\/(.*)/i',  'http://'.$site_url.'/$1', $url);
+  return "<a href=\"$url_in_mail\">$name</a>";
+}
+
 function news_text($news)
 {
   $news_string = "";
@@ -48,7 +66,7 @@ function news_text($news)
         $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                            $news->getRelatedMonitorableId());
         
-        $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+        $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                              'atto/index?id=' . $atto->getId(),
                              array('title' => $atto->getTitolo()));
         $news_string .= $atto_link;
@@ -62,7 +80,7 @@ function news_text($news)
       $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                          $news->getRelatedMonitorableId());
       
-      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
       $news_string .= $atto_link;
@@ -88,7 +106,7 @@ function news_text($news)
     $politico = $politici[0];
 
     // link al politico
-    $politico_link = link_to($politico->getNome() . ' ' .$politico->getCognome(), 
+    $politico_link = link_to_in_mail($politico->getNome() . ' ' .$politico->getCognome(), 
                          '@parlamentare?id=' . $politico->getId(),
                          array('title' => 'Vai alla scheda del politico'));
 
@@ -107,7 +125,7 @@ function news_text($news)
     else if ($generator_model == 'OppIntervento'){
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto();
-      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
                            
@@ -120,7 +138,7 @@ function news_text($news)
     else if ($generator_model == 'OppCaricaHasAtto'){
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto();
-      $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
                            
@@ -152,7 +170,7 @@ function news_text($news)
       $gender = 'f';
 
     // link all'atto
-    $atto_link = link_to($atto->getRamo() . '.' .$atto->getNumfase(), 
+    $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                          'atto/index?id=' . $atto->getId(),
                          array('title' => $atto->getTitolo()));
     
@@ -166,7 +184,7 @@ function news_text($news)
     // intervento
     else if ($generator_model == 'OppIntervento'){
       $politico = $generator->getOppCarica()->getOppPolitico();
-      $politico_link = link_to($politico, 
+      $politico_link = link_to_in_mail($politico, 
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
                            
@@ -178,7 +196,7 @@ function news_text($news)
     // firma
     else if ($generator_model == 'OppCaricaHasAtto'){
       $politico = $generator->getOppCarica()->getOppPolitico();
-      $politico_link = link_to($politico, 
+      $politico_link = link_to_in_mail($politico, 
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
 

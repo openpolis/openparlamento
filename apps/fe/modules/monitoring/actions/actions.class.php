@@ -164,7 +164,9 @@ class monitoringActions extends sfActions
     }
 
     // add a filter on the date (today's news)
-    $c->add(NewsPeer::CREATED_AT, date('2009-01-29%'), Criteria::LIKE);
+    if (SF_ENVIRONMENT == 'task-test') $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
+    else
+      $c->add(NewsPeer::CREATED_AT, date('Y-m-d').'%', Criteria::LIKE);
 
     $news = NewsPeer::doSelect($c);
     
@@ -174,10 +176,10 @@ class monitoringActions extends sfActions
     $mail_html_body = "<ul>"; $mail_text_body = '';
     foreach ($news as $n)
     {
-      $mail_html_body .= "<li>" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n) . "</li>";
+      $mail_html_body .= "\n\t<li>" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n, true) . "</li>";
       $mail_text_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
     }
-    $mail_html_body .= "</ul>";
+    $mail_html_body .= "\n</ul>";
     
     // class initialization
     $mail = new sfMail();
