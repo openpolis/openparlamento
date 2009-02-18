@@ -1,6 +1,6 @@
-<div class="float-left" style="width: 32%">
+<div class="float-left">
   <?php if (count($related_tags) > 0): ?>
-  	<h6>argomenti correlati:</h6>
+  	<h6>argomenti correlati</h6>
   	<p class="pad10">
   	  <?php foreach ($related_tags as $tag_name => $relevance): ?>
   	    <?php list($tag, $namespace, $key, $value) = deppPropelActAsTaggableToolkit::extractTriple($tag_name) ?>

@@ -20,7 +20,7 @@ $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
 $crit0->addOr($crit1);
 $crit0->addOr($crit2);
 $c->add($crit0);
-//$c->add(OppCaricaPeer::ID, 332634, Criteria::EQUAL);
+$c->add(OppCaricaPeer::ID, 333241, Criteria::EQUAL);
 $c->add(OppCaricaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
 $cariche = OppCaricaPeer::doSelect($c);
 
@@ -58,12 +58,10 @@ foreach($cariche as $carica)
             $voti_carica = OppVotazioneHasCaricaPeer::doSelect($c);
             foreach($voti_carica as $voto_carica)
             {
-            
-              if($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario')
-             
+              if(($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario') && $voto_gruppo->getVoto()!='nv')
                 {
                 
-                  if ($voto_carica->getVoto()!==$voto_gruppo->getVoto() && $voto_gruppo->getVoto()!=='nv')
+                  if ($voto_carica->getVoto()!==$voto_gruppo->getVoto())
                     {
                       $cont=$cont+1;
                     }

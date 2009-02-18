@@ -163,7 +163,7 @@ class monitoringActions extends sfActions
       $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
     }
 
-    // add a filter on the date (today's news)
+    // add a filter on the date (today's news) or a test date
     if (SF_ENVIRONMENT == 'task-test') $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
     else
       $c->add(NewsPeer::CREATED_AT, date('Y-m-d').'%', Criteria::LIKE);

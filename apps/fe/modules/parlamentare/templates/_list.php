@@ -71,8 +71,12 @@
             <?php printf('<b>%01.0f</b>%% <br /><span style="font-size:11px; color:#888888">(%d su %d)</span>', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
           </td>
         <?php endif; ?>
-       
+        <?php if($parlamentari->getString(5)!=""): ?>
         <td><p><?php echo $parlamentari->getString(5) ?></p></td>
+         <?php else: ?>
+         <td><p><?php echo '* Senatore a vita' ?></p></td>
+        <?php endif; ?>
+        
       </tr>
     <?php endwhile; ?>
   </tbody>    

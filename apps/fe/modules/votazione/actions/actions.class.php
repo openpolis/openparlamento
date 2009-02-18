@@ -63,6 +63,7 @@ class votazioneActions extends sfActions
 	  
 	$c1->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	$this->votanti = OppVotazioneHasCaricaPeer::doSelectRS($c1);
+	$this->votantiComponent = OppVotazioneHasCaricaPeer::doSelectRS($c1);
 	
      $c2 = new Criteria();
      $c2->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->votazione->getId());

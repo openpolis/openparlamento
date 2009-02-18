@@ -25,7 +25,8 @@ class OppPolitico extends BaseOppPolitico
     $c = new Criteria();
     $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1, 4, 5), Criteria::IN);
     $c->add(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
-    $c->add(OppCaricaPeer::LEGISLATURA, 16);
+   // dava errore per i senatori a vita 
+   // $c->add(OppCaricaPeer::LEGISLATURA, 16);
     $c->add(OppCaricaPeer::POLITICO_ID, $this->getId());
     $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID);
     $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);

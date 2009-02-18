@@ -1,7 +1,7 @@
 # default values
 all:
   
-  site_url:               'parlamento.depplab.net'
+  site_url:               'openparlamento.depplab.net'
   #site_url:               'lapgu.parlamento.openpolis.it'
   
   remote_guard_host:      'accesso.openpolis.it'

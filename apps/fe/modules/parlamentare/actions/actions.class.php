@@ -28,7 +28,7 @@ class parlamentareActions extends sfActions
   {
     $this->_getAndCheckParlamentare(); 
     
-    $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+          $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
 	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
 	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
 	  

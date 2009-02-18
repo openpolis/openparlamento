@@ -1,3 +1,7 @@
+<?php $ribelli_gruppi=array() ?>
+<?php $valore="" ?>
+<?php $label="" ?>
+
 <h5 class="subsection"><?php echo (count($ribelli)==1  ? 'chi &egrave; il parlamentare ribelle' : 'chi sono i '.count($ribelli).' parlamentari ribelli') ?></h5>
 
 <p class="tools-container"><?php echo link_to("quando un parlamentare &egrave; ribelle", '#', array( 'class'=>'ico-help')) ?></p>
@@ -39,5 +43,6 @@
 	  </td> 	    
     </tr>
   </tbody>  
+   
   <?php endforeach; ?>  
 </table>

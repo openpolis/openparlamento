@@ -74,7 +74,8 @@ $mod = $this->getContext()->getModuleName();
 	<?php endif; ?>
   <?php else: ?>
     <?php $c = new Criteria(); ?>
-	<?php $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL); ?>
+	<?php $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1,4,5), Criteria::IN); ?>
+	<?php $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL); ?>
 	<?php $c->add(OppCaricaPeer::POLITICO_ID, $sf_params->get('id'), Criteria::EQUAL); ?>
 	<?php $carica = OppCaricaPeer::doSelectOne($c); ?>
 	<?php if($carica->getCarica()=='Deputato'): ?>

@@ -49,8 +49,21 @@
   		                                                    array('alt' => 'openpolis')), 
   		                     'http://www.openpolis.it/politico/'.$parlamentare->getId(),
   		                     array('class' => 'jump-to-openpolis')) ?>
-        
-  			<a class="jump-to-camera" href="#">vai alla scheda su <img alt="camera dei deputati" src="/images/logo-camera-deputati.png"/></a>
+  		                     
+                  <?php if ($ramo=='camera') : ?> 
+                     <?php $url='http://www.camera.it/cartellecomuni/leg16/include/contenitore_dati.asp?tipopagina=&deputato=d'.$carica->getParliamentId().'&source=%2Fdeputatism%2F240%2Fdocumentoxml.asp&position=Deputati\La%20Scheda%20Personale&Pagina=Deputati/Composizione/SchedeDeputati/SchedeDeputati.asp%3Fdeputato=d'.$carica->getParliamentId() ?> 
+                     <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-camera-deputati.png', 
+  		                                                    array('alt' => 'vai al sito della camera dei deputati')), 
+  		                                                    $url,
+  		                                                    array('class' => 'jump-to-camera')) ?>   
+                  <?php else : ?>
+                     <?php $url='http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=16&id='.$carica->getParliamentId() ?>
+                     <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-senato.png', 
+  		                                                    array('alt' => 'vai al sito del senato')), 
+  		                                                    $url,
+  		                                                    array('class' => 'jump-to-camera')) ?>   
+                  <?php endif ?> 
+                   
 			
         <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
 
@@ -74,7 +87,8 @@
   			                             'width' => '91', 'height' => '126')) ?>
   				<div class="politician-more-info">
   					<p><label>gruppo:</label> 
-					     <?php echo link_to($acronimo_gruppo_corrente, 
+  					
+					     <?php echo link_to($acronimo_gruppo_corrente,  
 					                        '@parlamentari?ramo='.$ramo.'&filter_group='.$id_gruppo_corrente) ?>
   					  <?php if (count($gruppi) > 1): ?>
   					   (
@@ -91,9 +105,14 @@
   					   )
   					  <?php endif ?>
   					</p>
-  					<p><label>circoscrizione:</label> 
-  					  <?php echo link_to($circoscrizione, '@parlamentari?ramo='.$ramo.'&filter_const='.$circoscrizione) ?>
-  					</p>
+  					 <?php if ($circoscrizione=="") : ?>
+  					   <p><label>Senatore a vita</label></p>  
+  					 <?php else : ?>
+  					   <p><label>circoscrizione:</label> 
+  					      <?php echo link_to($circoscrizione, '@parlamentari?ramo='.$ramo.'&filter_const='.$circoscrizione) ?>
+  					    </p>
+  					 <?php endif ?> 
+  					  
   					<p><label>dal:</label> <strong>dd/mm/yyyy</strong> <label>al:</label> <strong>dd/mm/yyyy</strong><br/> 
   					<strong>CARICA PRECEDENTE O CONTEMPORANEA A QUELLA ATTUALE</strong></p>
   				</div>

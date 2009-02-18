@@ -6,13 +6,12 @@ function link_to_politicoNomeTipoFromCaricaId($carica_id, $relevance)
   $politico = $carica->getOppPolitico();
   $str = $politico->__toString();
   
-  $tipo_carica_id = $carica->getTipoCaricaId();
-  if ($tipo_carica_id == 1)
-    $str .= " (D)";
-  elseif ($tipo_carica_id == 4 || $tipo_carica_id == 5)
-    $str .= " (S)";
-  else
-    $str .= " (G)";
+  $c=new Criteria();
+  $c->add(OppCaricaHasGruppoPeer::CARICA_ID,$carica_id);
+  $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL);
+  $gruppo_attuale=OppCaricaHasGruppoPeer::doSelectOne($c);
+  
+  $str=$str. " (".$gruppo_attuale->getOppGruppo()->getAcronimo().")";
   
   return link_to($str, '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => $relevance));
 }

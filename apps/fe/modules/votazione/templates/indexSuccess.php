@@ -12,7 +12,15 @@
   <div id="main">
   
    <div class="W25_100 float-right">
+     
       qui ci va l'esito
+      <br /><br />
+             <?php echo include_component('votazione','chartPresenze', array('votazione' => $votazione, 'votantiComponent' => $votantiComponent, 'ramo' => $ramo)) ?>
+       <?php echo include_component('votazione','chartEsito', array('votazione' => $votazione)) ?>
+
+       <br />
+      
+       
    </div>
     
    <div class="W73_100 float-left"> 
@@ -53,18 +61,39 @@
         <li><h6>Ci sono <a href="#">2 commenti</a> degli utenti (aggiungi anche il <a href="#">tuo commento</a>)</h6></li>
        </ul> 
       
+    
+    
       
+   
       <h5 class="subsection">come hanno votato i gruppi</h5>
       <?php include_partial('gruppi', array('votazione' => $votazione, 'risultati' => $risultati)) ?> 
       
-      <?php if ($ribelli): ?>
-           <?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?>  
-       <?php endif; ?> 
+     </div>  
       
+      <?php if ($ribelli): ?>
+      <div class="W100_100 float-left">
+        <div class="W40_100 float-right"> 
+          <?php echo include_component('votazione','chartRibelli', array('votazione' => $votazione, 'ribelli' => $ribelli)) ?>
+        </div>  
+        <div class="W56_100 float-left">
+           <?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?> 
+         </div>
+       </div>    
+            
+            
+       <?php endif; ?> 
+    
+       
+       <div class="W100_100 float-left"> 
+         <div class="W40_100 float-right">
+           <?php echo include_component('votazione','chartFavorevoli', array('votazione' => $votazione, 'risultati' => $risultati, 'votantiComponent' => $votantiComponent, 'ramo' => $ramo)) ?>
+        </div>   
+       <div class="W56_100 float-left">
       <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
       
       
+   </div>
    </div>
 
   </div>

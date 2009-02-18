@@ -45,12 +45,27 @@ class OppVotazione extends BaseOppVotazione
     {
       if($gruppo!='Gruppo Misto')
 	  {
-	    unset($risultato['Assente']);
-	    unset($risultato['In missione']);
-	    arsort($risultato);
-	    array_shift($risultato);
-	    $n+=array_sum($risultato);
-	  }
+	    $c = new Criteria();
+  	    $c->add(OppGruppoPeer::NOME, $gruppo);
+  	    $gruppo_id = OppGruppoPeer::doSelectOne($c);
+  	     
+  	    $c = new Criteria();
+  	    $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->getId());
+  	    $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, $gruppo_id->getId());
+            $voto_gruppo = OppVotazioneHasGruppoPeer::doSelectOne($c);
+            
+            if ($voto_gruppo) { 
+              if ($voto_gruppo->getVoto()!='nv')
+                {
+	        unset($risultato['Assente']);
+	        unset($risultato['In missione']);
+	        arsort($risultato);
+	        array_shift($risultato);
+	        $n+=array_sum($risultato);
+	       }
+	     }  
+	   
+	  }   
     }
     return $n;
   }
@@ -65,42 +80,59 @@ class OppVotazione extends BaseOppVotazione
 	
     foreach ($risultati as $gruppo => $risultato)
     {
+       
       if($gruppo!='Gruppo Misto')
   	  {
-  	    unset($risultato['Assente']);
-  	    unset($risultato['In missione']);
-  	    arsort($risultato);
-  	    array_shift($risultato);
+  	     $c = new Criteria();
+  	     $c->add(OppGruppoPeer::NOME, $gruppo);
+  	     $gruppo_id = OppGruppoPeer::doSelectOne($c);
+  	     
+  	     $c = new Criteria();
+  	     $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->getId());
+  	     $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, $gruppo_id->getId());
+             $voto_gruppo = OppVotazioneHasGruppoPeer::doSelectOne($c);
+             
+             if ($voto_gruppo->getVoto()!='nv')
+              {
+    
+  	      unset($risultato['Assente']);
+  	      unset($risultato['In missione']);
+  	      arsort($risultato);
+  	      array_shift($risultato);
 	  	  
-  	    $c = new Criteria();
-  	    $c->clearSelectColumns();
-  	    $c->addSelectColumn(OppCaricaPeer::POLITICO_ID);
-  	    $c->addSelectColumn(OppGruppoPeer::NOME);
-  	    $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
-  	    $c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
-  	    $c->addJoin(OppCaricaPeer::ID, OppVotazioneHasCaricaPeer::CARICA_ID, Criteria::LEFT_JOIN);
+  	      $c = new Criteria();
+  	      $c->clearSelectColumns();
+  	      $c->addSelectColumn(OppCaricaPeer::POLITICO_ID);
+  	      $c->addSelectColumn(OppGruppoPeer::NOME);
+  	      $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+  	      $c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
+  	      $c->addJoin(OppCaricaPeer::ID, OppVotazioneHasCaricaPeer::CARICA_ID, Criteria::LEFT_JOIN);
   		  $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);
-  	    $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
+  	      $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
   		  $c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
-  	    $c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $this->getId(), Criteria::EQUAL);
-  	    $c->add(OppVotazioneHasCaricaPeer::VOTO, array_keys($risultato), Criteria::IN);
+  	      $c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $this->getId(), Criteria::EQUAL);
+  	      $c->add(OppVotazioneHasCaricaPeer::VOTO, array_keys($risultato), Criteria::IN);
+  	    
 		
-        $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $this->getOppSeduta()->getData(), Criteria::LESS_EQUAL);
-  	    $cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $this->getOppSeduta()->getData(), Criteria::GREATER_EQUAL);
-  	    $cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
-        $cton1->addOr($cton2);
-        $c->add($cton1);
+              $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $this->getOppSeduta()->getData(), Criteria::LESS_EQUAL);
+  	      $cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $this->getOppSeduta()->getData(), Criteria::GREATER_EQUAL);
+  	      $cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+              $cton1->addOr($cton2);
+              $c->add($cton1);
 	
-  	    $rs = OppCaricaPeer::doSelectRS($c);
+  	      $rs = OppCaricaPeer::doSelectRS($c);
 	  
-  	    while ($rs->next())
-        {
-          $ribelli1[$rs->getInt(1)] = array('id' =>$rs->getInt(1), 
+  	      while ($rs->next())
+               {
+         
+                 $ribelli1[$rs->getInt(1)] = array('id' =>$rs->getInt(1), 
                                           'gruppo' => $rs->getString(2), 
                                           'circoscrizione' => $rs->getString(3), 
                                           'voto' => $rs->getString(4));
-  	      array_push($ribelli_id, $rs->getInt(1));
-        }
+  	         array_push($ribelli_id, $rs->getInt(1));
+  	      
+                }
+             }   
   	  }	   
 	  
     }

@@ -8,7 +8,8 @@ define('SF_DEBUG',       false);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
-print("start script.\n");  	
+print("start script.\n");  
+
 
 if ($argv[1])
 {
