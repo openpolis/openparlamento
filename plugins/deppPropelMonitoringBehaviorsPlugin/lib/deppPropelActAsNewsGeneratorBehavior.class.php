@@ -85,6 +85,9 @@ class deppPropelActAsNewsGeneratorBehavior
       
       // the following methods store data related to the generating object in the cache
       // only data needed to sort, sum, average, or count, are cached
+      
+      // eccezione per non generare notizia alla presentazione di un decreto legge
+      if ($object instanceof OppAtto && $object->getTipoAttoId() == 12) continue;
 
       if ($obj instanceof OppAtto)
       {

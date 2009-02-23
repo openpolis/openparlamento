@@ -17,7 +17,6 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	public function signIn($xml_user, $remember = false)
 	{
 
-	  
 	  // legge i permission dall'xml user
     $permissions = array();
     foreach ($xml_user->permissions->permission as $perm) $permissions[]=$perm;
@@ -78,8 +77,6 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
     // go home if something really wrong happens (could not write last_login to db)
     if (!$xml->ok instanceof SimpleXMLElement)
       sfLogger::getInstance()->info('xxx: not ok: ' . (string)$xml->error);
-    //else
-    //  sfLogger::getInstance()->info('xxx: ok: ' . (string)$xml->ok);    
 	}
 	
 	public function __toString()

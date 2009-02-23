@@ -53,7 +53,10 @@ class sfRemoteGuardLoginValidator extends sfValidator
      // controllo validità utente e password in remoto
      $remote_guard_host = sfConfig::get('app_remote_guard_host', 'guard.openpolis.it' ); 
      $xml = simplexml_load_file("http://$remote_guard_host/index.php/getUser/$username/$password/$remember");
-     if ($xml->user instanceof SimpleXMLElement)
+
+     // l'API di op_guard torna un oggetto error e quindi il corrispettivo oggetto user è vuoto
+     // con simplexml, quando il nodo esiste è un array diverso da zero
+     if (count($xml->user) > 0)
      {
   	   $this->getContext()->getUser()->signIn($xml->user, $remember);
        return true;       

@@ -249,9 +249,11 @@ propel:
 
   opp_user: 
     id:                      { type: integer, required: true, index: unique, primaryKey: true }
+    location_id:             { type: integer }
     first_name:              { type: varchar(100) }
     last_name:               { type: varchar(100) }
     nickname:                { type: varchar(16) }
+    is_active:               { type: boolean, required: true, default: 0 }
     email:                   { type: varchar(100), required: true, default: '' }
     picture:                 { type: varbinary }
     url_personal_website:    { type: varchar(255) }

@@ -25,20 +25,16 @@
     $module_name = $sf_context->getModuleName(); 
   ?>
   <!-- menu principale -->
-  <ul id="main_menu">
-    <?php $cnt = 0; foreach($menu_items as $k=>$v): ?>
-      <li <?php echo ($module_name==$k)?'class="selected"':'';?>><?php echo link_to($v, "/$k"); ?></li>
-      <?php if ($cnt++ < $nitems-1) echo $menu_sep; ?>
-    <?php endforeach; ?>
+  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('administrator')): ?>
+    <ul id="main_menu">
+        <?php $cnt = 0; foreach($menu_items as $k=>$v): ?>
+          <li <?php echo ($module_name==$k)?'class="selected"':'';?>><?php echo link_to($v, "/$k"); ?></li>
+          <?php if ($cnt++ < $nitems-1) echo $menu_sep; ?>
+        <?php endforeach; ?>
 
-    <?php if ($sf_user->isAuthenticated()): ?>
-      <li>ciao, <?php echo $sf_user->getFirstname() ?>&nbsp;(<?php echo link_to('Logout', 'logout') ?>)</li>
-    <?php else: ?>
-      <?php if ($this->getContext()->getModuleName() != 'sfGuardAuth'): ?>
-        <li><?php echo link_to('Login', 'login') ?></li>      
-      <?php endif ?>
-    <?php endif; ?>
-  </ul>
+        <li>ciao, <?php echo $sf_user->getFirstname() ?>&nbsp;(<?php echo link_to('Logout', 'logout') ?>)</li>
+    </ul>
+  <?php endif; ?>
 
   <!-- contenuto -->
   <div id="main_content">

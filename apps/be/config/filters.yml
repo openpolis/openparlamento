@@ -2,6 +2,14 @@ rendering: ~
 web_debug: ~
 security:  ~
 
+# filter that checks if a remember cookie exists and automatically logs the user in
+rememberFilter:
+  class: sfRemoteGuardRememberFilter
+
+# filter that cheks if an sso cookie exists and automatically logs the user in
+ssoFilter:
+  class: sfRemoteGuardSsoFilter  
+
 # generally, you will want to insert your own filters here
 
 cache:     ~

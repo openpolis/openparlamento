@@ -1,6 +1,8 @@
 prod:
   .settings:
     no_script_name:           on
+#    error_reporting:        4095
+#    web_debug:            on
 
 dev:
   .settings:

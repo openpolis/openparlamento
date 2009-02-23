@@ -8,16 +8,24 @@
         <div class="userdata">
           <?php echo link_to('monitoraggio', 'monitoring') ?>     	
           <span> | </span>
-          <?php echo link_to('le tue azioni', '#') ?>       		  
-          <span> | </span>
-          <?php echo link_to('il tuo profilo', '#') ?>
+          <?php echo link_to('modifica il tuo profilo',
+                             "http://".sfConfig::get('app_remote_guard_host',
+                                                     'lapgu.accesso.openpolis.it').
+                             (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
+                             "/aggiorna_profilo"
+          ) ?>
         </div>       
       </div>
 	</div>    
   <?php else: ?>
     <div id="login">
       <div class="inner">
-        <?php echo link_to('Registrati', '#', array('class' => 'sign-on')) ?>	
+        <?php echo link_to('Registrati', 
+                            "http://".sfConfig::get('app_remote_guard_host',
+                                                    'lapgu.accesso.openpolis.it').
+                            (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
+                            "/aggiungi_utente" , 
+                           array('class' => 'sign-on')) ?>	
         <span> | </span>
         <?php echo link_to('Entra', 'login', array('class' => 'sign-in')) ?>      
       </div>	
