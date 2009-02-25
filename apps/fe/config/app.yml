@@ -1,21 +1,4 @@
-<?php
-if (array_key_exists('SERVER_NAME', $_SERVER))
-{
-  if ($_SERVER['SERVER_NAME'] == 'lapgu.parlamento.openpolis.it') {
-    $site_url = 'lapgu.parlamento.openpolis.it';
-    $remote_guard_host = 'lapgu.guard.openpolis.it';
-  } else if ($_SERVER['SERVER_NAME'] == 'parlamentodev.openpolis.it') {
-    $site_url = 'parlamentodev.openpolis.it';
-    $remote_guard_host = 'accessodev.openpolis.it';
-  } else if ($_SERVER['SERVER_NAME'] == 'parlamento.openpolis.it') {
-    $site_url = 'parlamento.openpolis.it';
-    $remote_guard_host = 'accesso.openpolis.it';  
-  }  
-} else {
-  $site_url = '';
-  $remote_guard_host = '';
-}
-?>
+<?php require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'variables_selector.php'); ?>
 
 # default values
 all:
