@@ -99,6 +99,11 @@
 	   <?php endif; ?>
 	
 	<?php endif; ?>
+	
+                           
+	                            
+	
+	
 	<!-- Firmatari -->
 	    <?php include_component('atto', 'firmatari', 
 	                            array('primi_firmatari' => $primi_firmatari, 'relatori' => $relatori, 'atto'=>$atto)) ?>

@@ -170,7 +170,7 @@ propel:
     cognome:            { type: varchar(30) }
     picture:            { type: varbinary }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
-
+    
   opp_sede:
     id:
     ramo:             { type: varchar(255) }
@@ -198,6 +198,21 @@ propel:
   opp_tipo_carica:
    id:  
    nome:              { type: varchar(255) }
+   
+  opp_tipo_relazione:
+   id:  
+   denominazione:     { type: varchar(255) }
+
+  opp_relazione_atto:
+    id:
+    atto_from_id:      { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    atto_to_id:        { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    tipo_relazione_id: { type: integer, required: true, index: true, foreignTable: opp_tipo_relazione, foreignReference: id, onDelete: CASCADE }
+    descrizione:       { type: varchar(60) }
+    data:              { type: date }
+    created_at:
+
+
 
   opp_teseo:
     id:

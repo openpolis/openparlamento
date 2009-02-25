@@ -261,6 +261,30 @@ class OppAttoPeer extends BaseOppAttoPeer
 	return $argomenti;
   }
   
+    public static function getRelazioni($id)
+  {
+    $relazioni = array(); 
+	
+	$c = new Criteria();
+	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
+	$rss = OppRelazioneAttoPeer::doSelect($c);
+	if (count($rss)!=0) {
+	     $c1= new Criteria();
+	     $c1->add(OppTipoRelazionePeer::ID,$rss[0]->getTipoRelazioneId());
+	     $descrizione_relazione= OppTipoRelazionePeer::doSelectOne($c1);
+	}     
+	
+	foreach ($rss as $rs)
+    	{
+    	    $c = new Criteria();
+	    $c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
+	    $rss = OppRelazioneAttoPeer::doSelect($c);	
+	    array_push($relazioni,array($rs->getAttoToId(),$descrizione_relazione->getDenominazione(),$rs->getDescrizione()));  
+	}
+    
+	return $relazioni;
+  }
+  
   protected static function getRecordsetFirmatari($pred, $tipo)
   {
     $c = new Criteria();

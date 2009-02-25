@@ -1,3 +1,5 @@
+<?php use_helper('AttoIter'); ?>
+
 <h5 class="subsection">lo stato di avanzamento
 <?php if ($atto->getTipoAttoId()==1): ?>
    <?php echo " del disegno di legge" ?>
@@ -23,6 +25,13 @@
 </div>
 <br />
 
+	<!-- Relazioni -->
+	
+	<?php if ($atto->getTipoAttoId()==1) : ?>
+	    <?php include_component('atto', 'relazioni', 
+	                            array('atto'=>$atto)) ?>
+	<?php endif; ?> 
+
 <?php if ($atto->getTipoAttoId()==1 or $atto->getTipoAttoId()==12) : ?>
 <ul class="iter float-container">
 
@@ -44,7 +53,7 @@
    <?php foreach($rappresentazioni_pred as $rappresentazione_pred): ?>
     <?php if($rappresentazione_pred[7]!=12) : ?>
           <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_pred[1], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($rappresentazione_pred[3].'.'.$rappresentazione_pred[4],'atto/index?id='.$rappresentazione_pred[5]) ?></strong>
-          <p><?php echo $rappresentazione_pred[2]. ($rappresentazione_pred[3]=='C' ? ' alla Camera':' al Senato') ?></p></li>      
+          <p><?php echo NomeIter($rappresentazione_pred[2],$rappresentazione_pred[3]) ?></p></li>      
     <?php endif; ?> 
    <?php endforeach; ?> 
 <?php else : ?> 
@@ -58,10 +67,10 @@
    <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
       <?php if($rappresentazione_this[7]!='12') : ?>
          <?php if(substr_count($rappresentazione_this[2],'ritirato')>0 or substr_count($rappresentazione_this[2],'respinto')>0 or substr_count($rappresentazione_this[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')>0)  : ?>
-             <li class="step-no"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo $rappresentazione_this[2] ?> <?php echo ($rappresentazione_this[3]=='C' ? ' alla Camera':' al Senato') ?></p></li>
+             <li class="step-no"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?></p></li>
          <?php endif; ?>
         <?php if(substr_count($rappresentazione_this[2],'ritirato')==0 and substr_count($rappresentazione_this[2],'respinto')==0 and substr_count($rappresentazione_this[2],'decreto legge decaduto')==0 and substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')==0 and  $rappresentazione_this[2]!=='approvato definitivamente. Legge') : ?>
-            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo $rappresentazione_this[2] ?> <?php echo ($rappresentazione_this[3]=='C' ? ' alla Camera':' al Senato') ?></p></li>
+            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?> </p></li>
         <?php endif; ?> 
         
         <?php if($rappresentazione_this[2]=='approvato definitivamente. Legge') : ?>
@@ -85,11 +94,11 @@
       <?php foreach($rappresentazioni_succ as $rappresentazione_succ): ?>
           <?php if(substr_count($rappresentazione_succ[2],'ritirato')==0 and substr_count($rappresentazione_succ[2],'respinto')==0 and substr_count($rappresentazione_succ[2],'decreto legge decaduto')==0 and substr_count($rappresentazione_succ[2],'conclusione anomala per stralcio')==0 and  $rappresentazione_succ[2]!=='approvato definitivamente. Legge') : ?>
               <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($rappresentazione_succ[3].'.'.$rappresentazione_succ[4], 'atto/index?id='.$rappresentazione_succ[5]) ?></strong>
-              <p><?php echo $rappresentazione_succ[2].  ($rappresentazione_succ[3]=='S' ? ' in Senato':' alla Camera') ?></p></li>
+              <p><?php echo NomeIter($rappresentazione_succ[2],$rappresentazione_succ[3]) ?></p></li>
           <?php endif; ?>   
           <?php if(substr_count($rappresentazione_succ[2],'ritirato')>0 or substr_count($rappresentazione_succ[2],'respinto')>0 or substr_count($rappresentazione_succ[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_succ[2],'conclusione anomala per stralcio')>0)  : ?>
               <li class="step-no"><span class="date"><?php echo format_date($rappresentazione_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($rappresentazione_succ[3].'.'.$rappresentazione_succ[4], 'atto/index?id='.$rappresentazione_succ[5]) ?></strong>
-              <p><?php echo $rappresentazione_succ[2].  ($rappresentazione_succ[3]=='S' ? ' in Senato':' alla Camera') ?></p></li>
+              <p><?php echo NomeIter($rappresentazione_succ[2],$rappresentazione_succ[3]) ?></p></li>
           <?php endif; ?>
           <?php if($rappresentazione_succ[2]=='approvato definitivamente. Legge')  : ?>
               <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($rappresentazione_succ[3].'.'.$rappresentazione_succ[4], 'atto/index?id='.$rappresentazione_succ[5]) ?></strong>
@@ -115,7 +124,7 @@
       <?php else: ?>
          <?php foreach($leggi_succ as $legge_succ): ?>
              <li class="step-yes"><span class="date"><?php echo format_date($legge_succ[1], 'dd/MM/yyyy') ?></span> <strong><?php echo link_to($legge_succ[3].'.'.$legge_succ[4], 'atto/index?id='.$legge_succ[5]) ?></strong>
-             <p>definitivamente legge</p></li>
+             <p>divenuto legge</p></li>
               <?php if($legge) : ?> 
                    </ul>
                    <p><strong><?php echo link_to("Legge n. ".$legge->getNumero()." del ".format_date($legge->getData(), 'dd/MM/yyyy'),$legge->getUrl()) ?></strong><?php echo" - ".$legge->getGu() ?></p>
@@ -180,7 +189,7 @@
        <?php else: ?>
          <?php foreach($leggi_this as $legge_this): ?>
              <li class="step-yes"><span class="date"><?php echo format_date($legge_this[1], 'dd/MM/yyyy') ?></span> 
-             <p>definitivamente legge</p></li>
+             <p>divenuto legge</p></li>
              <?php if($legge) : ?>  
                   </ul>
                    <p><strong><?php echo link_to("Legge n. ".$legge->getNumero()." del ".format_date($legge->getData(), 'dd/MM/yyyy'),$legge->getUrl()) ?></strong><?php echo" - ".$legge->getGu() ?></p>

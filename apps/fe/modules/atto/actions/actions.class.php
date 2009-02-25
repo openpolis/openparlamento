@@ -454,7 +454,8 @@ class attoActions extends sfActions
                $c->add(OppLeggePeer::ATTO_ID, end($quale_atto), Criteria::EQUAL );
   	       $this->legge = OppLeggePeer::doSelectOne($c); 
   	    }   
-  	}    
+  	}   
+  	 
 
   	/*
   	$quale_atto=$this->getTuttiSucc($this->atto->getId());

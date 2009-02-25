@@ -157,4 +157,4 @@ all:
     "convertito":  "63"
 
   mail_per_redazione:
-    site_address: http://openparlamento.depplab.net/
+    site_address: http://parlamentodev.openpolis.it/

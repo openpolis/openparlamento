@@ -6002,7 +6002,7 @@ eMend.init = function($) {
 	
 	//events binding
 	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
-	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); window.clearTimeout(emend_lastScrollTimer);}
+	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); }
 	  , F_hideLinks = function(){ ln.hideLinks(); }
 	  , F_clearLinks = function(){ ln.clearLinks(); }
 	  , F_refnavbar = function(){ nb.refresh(); }
@@ -6010,11 +6010,11 @@ eMend.init = function($) {
 	  , F_refRender = function(){ eMend.highlight(ds); rn.renderNotes(); }
 	  , F_openSB = function(){ SB.open(); }
 	  , F_afterscroll = function(){
-			var d = new Date();
-            if (typeof emend_lastScrollTime != 'undefined' && d.getTime() < emend_lastScrollTime + 600) window.clearTimeout(emend_lastScrollTimer);
-			emend_lastScrollTime = d.getTime();
-            
-			emend_lastScrollTimer = window.setTimeout(function(){
+			var now = new Date();
+			emend_lastScrollTime = now.getTime();
+			window.setTimeout(function(){
+				var now = new Date();
+				if(now.getTime() < emend_lastScrollTime + 450) return;
 				$(document).trigger('emend.afterscroll');
 			},600);
 		}

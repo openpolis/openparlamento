@@ -93,6 +93,8 @@ function news_text($news)
   $pks = array_values(unserialize($news->getGeneratorPrimaryKeys()));
   $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);
 
+  if ($generator) 
+  {
 
   $related_monitorable_model = $news->getRelatedMonitorableModel();
   if ($related_monitorable_model == 'OppPolitico')
@@ -137,7 +139,7 @@ function news_text($news)
     // firma
     else if ($generator_model == 'OppCaricaHasAtto'){
       $atto = $generator->getOppAtto();
-      $tipo = $atto->getOppTipoAtto();
+      $tipo = $atto->getOppTipoAtto(); 
       $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
@@ -170,14 +172,15 @@ function news_text($news)
       $gender = 'f';
 
     // link all'atto
-    $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+    $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
                          'atto/index?id=' . $atto->getId(),
                          array('title' => $atto->getTitolo()));
     
     // presentazione
     if ($generator_model == 'OppAtto'){
       $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
-      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
+      $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link;
     }
     
@@ -189,7 +192,7 @@ function news_text($news)
                            array('title' => 'Vai alla scheda del politico'));
                            
       $news_string .= $politico_link . " interviene su ";
-      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link;
     }
 
@@ -201,7 +204,7 @@ function news_text($news)
                            array('title' => 'Vai alla scheda del politico'));
 
       $news_string .= ' firmat' . ($gender=='m'?'o':'a') . " ";
-      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link;
       $news_string .= " da " . $politico_link;      
     }
@@ -217,14 +220,14 @@ function news_text($news)
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
       $news_string .= ' si &egrave; svolta la votazione finale relativa a ';
-      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link;        
     }
     
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter'){
       $news_string .= "lo status del" .($gender=='m'?"l'":"la ");
-      $news_string .= $tipo->getDenominazione() . " ";
+      $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link . " ";
       $news_string .= "&egrave; ora ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
@@ -235,10 +238,22 @@ function news_text($news)
     
     
   }
+
+  } else {
+    sfLogger::getInstance()->info('xxx: errore per: ' . $generator_model . ': chiavi: ' . $news->getGeneratorPrimaryKeys());
+  }
   
   return $news_string;
   
 }
+
+function troncaTesto($testo, $caratteri) { 
+
+    if (strlen($testo) <= $caratteri) return $testo; 
+    $nuovo = wordwrap($testo, $caratteri, "|"); 
+    $nuovotesto=explode("|",$nuovo); 
+    return $nuovotesto[0]."..."; 
+} 
 
 
 ?>

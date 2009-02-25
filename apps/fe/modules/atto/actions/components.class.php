@@ -116,6 +116,10 @@ class attoComponents extends sfComponents
   {
     $this->consultive_count = 0;
   }
+  public function executeRelazioni()
+  {
+    $this->relazioni =  OppAttoPeer::getRelazioni($this->atto->getId());
+  }
 }
 
 ?>

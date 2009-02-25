@@ -13,7 +13,16 @@
   
    <div class="W25_100 float-right">
      
-      qui ci va l'esito
+      esito della votazione:
+      <?php echo $votazione->getEsito() ?>
+      <br />
+      voti di scarto: <?php echo $votazione->getMargine() ?>
+       <br />
+       <?php if ($ribelli): ?>
+          numero di ribelli: <a href="#ribelli"><?php echo $votazione->getRibelli() ?></a>
+       <?php endif; ?>	   
+
+		    
       <br /><br />
              <?php echo include_component('votazione','chartPresenze', array('votazione' => $votazione, 'votantiComponent' => $votantiComponent, 'ramo' => $ramo)) ?>
        <?php echo include_component('votazione','chartEsito', array('votazione' => $votazione)) ?>
@@ -58,7 +67,7 @@
       
       <br />
        <ul class="presentation float-container">
-        <li><h6>Ci sono <a href="#">2 commenti</a> degli utenti (aggiungi anche il <a href="#">tuo commento</a>)</h6></li>
+        <li><h6>Ci sono <a href="#commenti">2 commenti</a> degli utenti (aggiungi anche il <a href="#">tuo commento</a>)</h6></li>
        </ul> 
       
     
@@ -71,11 +80,14 @@
      </div>  
       
       <?php if ($ribelli): ?>
+      
       <div class="W100_100 float-left">
         <div class="W40_100 float-right"> 
           <?php echo include_component('votazione','chartRibelli', array('votazione' => $votazione, 'ribelli' => $ribelli)) ?>
         </div>  
+        
         <div class="W56_100 float-left">
+        <a name="ribelli"></a>
            <?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?> 
          </div>
        </div>    
@@ -91,6 +103,9 @@
        <div class="W56_100 float-left">
       <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
+      
+      <a name="commenti"></a>
+      <h5 class="description">ci sono 2 commenti degli utenti:</h5>
       
       
    </div>

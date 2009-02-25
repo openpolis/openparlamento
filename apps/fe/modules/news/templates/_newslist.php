@@ -18,5 +18,3 @@
     </li>
   <?php endforeach; ?>
 </ul>
-
-<?php echo pager_navigation($pager, '@argomento?triple_value='.$triple_value) ?>
