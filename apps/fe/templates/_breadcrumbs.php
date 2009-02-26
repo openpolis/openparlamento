@@ -88,9 +88,6 @@ $mod = $this->getContext()->getModuleName();
 	<?php echo $carica->getOppPolitico()->getNome()." ".$carica->getOppPolitico()->getCognome(); ?>      	
   <?php endif;?>	
   <?php break; ?>
-<?php case 'argomento': ?>
-  <?php include_slot('argomento_breadcrumbs'); ?>
-  <?php break; ?>
 <?php case 'sfSimpleBlog': ?>
   <?php include_slot('blog_breadcrumbs'); ?>
   <?php break; ?>

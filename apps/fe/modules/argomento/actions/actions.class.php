@@ -28,6 +28,8 @@ class argomentoActions extends sfActions
   public function executeShowAggiornamenti()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Argomenti - ' . $this->triple_value);
+
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
 

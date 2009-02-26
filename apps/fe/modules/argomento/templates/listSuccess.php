@@ -26,7 +26,7 @@
   </div>
 </div>
 
-<?php slot('argomento_breadcrumbs') ?>
+<?php slot('breadcrumbs') ?>
   <?php echo link_to("Home", "@homepage") ?> /
   Argomenti
 <?php end_slot() ?>

@@ -44,7 +44,7 @@
   </div>
 </div>
 
-<?php slot('argomento_breadcrumbs') ?>
+<?php slot('breadcrumbs') ?>
   <?php echo link_to("Home", "@homepage") ?> /
   <?php echo link_to('Argomenti', '@argomenti') ?> /
   <?php echo $argomento->getTripleValue() ?>

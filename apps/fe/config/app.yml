@@ -5,7 +5,7 @@ all:
   # settaggio differenziato per differenti hostname
   remote_guard_host:      '<?php echo $remote_guard_host ?>'
   site_url:               '<?php echo $site_url ?>'
-
+  
   # cookies
   cookies:
     path:                 '/'
@@ -14,6 +14,8 @@ all:
     remember_name:        'opRemember'
     remember_key_expiration_age: 604800 # (7 days)
 
+  main_title: Openparlamento
+  
   deppPropelActAsTaggableBehaviorPlugin:
     anonymous_tagging:           false
     allows_tagging_removal:      'self'
