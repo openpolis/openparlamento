@@ -39,6 +39,11 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+    if ($this->ramo=='camera')
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento');
+    else
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento');
+    
     $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
     $this->presenze = $this->carica->getPresenze();
@@ -84,6 +89,10 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+    if ($this->ramo=='camera')
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora');
+    else
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora');
     
     $this->session = $this->getUser();
    
@@ -230,6 +239,10 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+    if ($this->ramo=='camera')
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato');
+    else
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato');
 
     $this->processVotiFilters(array('vote_type', 'vote_vote', 'vote_result', 'vote_rebel'));
 
@@ -383,6 +396,10 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+    if ($this->ramo=='camera')
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari');
+    else
+       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari');
 	  
   }
 

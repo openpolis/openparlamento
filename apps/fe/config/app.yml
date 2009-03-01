@@ -14,7 +14,7 @@ all:
     remember_name:        'opRemember'
     remember_key_expiration_age: 604800 # (7 days)
 
-  main_title: Openparlamento
+  main_title: OpenParlamento
   
   deppPropelActAsTaggableBehaviorPlugin:
     anonymous_tagging:           false
@@ -76,8 +76,8 @@ all:
     use_rich_text:       true
     use_media_library:   true
     post_max_per_page:   10
-    title:         Openparlamento > Blog
-    tagline:       Openparlamento Tagline
+    title:         OpenParlamento - Blog
+    tagline:       OpenParlamento Tagline
     author:        -
     email:         info@openpolis.it
     sidebar:       [recent_posts, tags, feeds, blogroll, meta]

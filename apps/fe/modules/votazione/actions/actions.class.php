@@ -30,6 +30,10 @@ class votazioneActions extends sfActions
     $this->ribelli = $this->votazione->getRibelliList();
     
     
+    
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Votazione '.$this->ramo.' '. $this->votazione->getTitolo());
+    
+    
 
     //$gruppi = sfYaml::load(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps/fe/config/gruppi.yml');
     //$this->gruppi_votazione = $gruppi['legislatura_'.$this->votazione->getOppSeduta()->getLegislatura()][$this->ramo];	
@@ -254,6 +258,8 @@ class votazioneActions extends sfActions
     $this->session = $this->getUser();
 
     $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Tutte le votazioni elettroniche di Camera e Senato');
    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
