@@ -24,3 +24,8 @@
     <div class="clear-both"></div>
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  votazioni
+<?php end_slot() ?>

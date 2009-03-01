@@ -11,9 +11,9 @@ class monitoringComponents extends sfComponents
   public function executeSubmenu()
   {
     $this->sub_menu_items = array('news' => 'Le tue notizie',
-                                  'acts' => 'DDL e Atti monitorati',
-                                  'politicians' => 'Parlamentari monitorati',
-                                  'tags' => 'Gestione argomenti');
+                                  'acts' => 'I tuoi atti',
+                                  'politicians' => 'I tuoi parlamentari',
+                                  'tags' => 'I tuoi argomenti');
   }
   
   

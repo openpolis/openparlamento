@@ -1,6 +1,8 @@
 <?php use_helper('Date', 'I18N', 'nahoWiki') ?>
 
-In questa pagina puoi visionare le differenze tra le diverse versioni della descrizione.
+<p>In questa pagina puoi visionare le differenze tra le diverse versioni della descrizione. </p>
+<p>&nbsp;</p>
+
 
 <?php if (@$compare): ?>
   <?php echo form_tag('nahoWiki/diff', 'name=diff_form id=diff_form class=commit') ?>

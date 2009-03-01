@@ -79,4 +79,7 @@
   </div>
 </div>
 
-	
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  le tue notizie
+<?php end_slot() ?>

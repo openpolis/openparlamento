@@ -36,3 +36,8 @@
     <div class="clear-both"></div>
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  decreti legislativi
+<?php end_slot() ?>

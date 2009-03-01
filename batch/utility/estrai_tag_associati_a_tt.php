@@ -8,12 +8,13 @@ require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.D
 sfContext::getInstance();
 
 $risultato="";
+$cat_tag="";
 
 $c = new Criteria();
-//$c->setLimit(1);
 $tags = TagPeer::doSelect($c);
 
 foreach($tags as $tag) {
+
 
 	$c = new Criteria();
 	$c->add(TaggingPeer::TAG_ID,$tag->getId());
@@ -39,5 +40,22 @@ foreach($tags as $tag) {
 }
 
 echo $risultato;
+echo "\n --------------------- \n";
+
+$c1 = new Criteria();
+$cats = OppTeseottPeer::doSelect($c1);
+
+foreach($cats as $cat) {
+
+	$c2 = new Criteria();
+	$c2->addJoin(OppTagHasTtPeer::TAG_ID,TagPeer::ID);
+	$c2->add(OppTagHasTtPeer::TESEOTT_ID,$cat->getId());
+	$tts = TagPeer::doSelect($c2);
+	foreach($tts as $tt) {
+		$cat_tag=$cat_tag.$cat->getId().";".$cat->getDenominazione().";".$tt->getId().";".$tt->getTripleValue()."\n";
+	}
+}
+
+echo $cat_tag;
 
 ?>

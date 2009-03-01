@@ -36,7 +36,7 @@
 </div>
 
 <?php slot('blog_breadcrumbs') ?>
-  <?php echo link_to("Home", "@homepage") ?> /
+  <?php echo link_to("home", "@homepage") ?> /
   Blog
 <?php end_slot() ?>
 

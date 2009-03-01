@@ -41,3 +41,8 @@
 
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  decreti legge
+<?php end_slot() ?>

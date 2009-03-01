@@ -65,6 +65,13 @@
     
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  i tuoi parlamentari
+<?php end_slot() ?>
+
+
 <!-- slider jQuery per le notizie relative ai politici -->
 <script type="text/javascript">
 //<![CDATA[

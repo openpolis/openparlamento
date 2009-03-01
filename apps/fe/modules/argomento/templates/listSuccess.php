@@ -27,8 +27,8 @@
 </div>
 
 <?php slot('breadcrumbs') ?>
-  <?php echo link_to("Home", "@homepage") ?> /
-  Argomenti
+  <?php echo link_to("home", "@homepage") ?> /
+  argomenti
 <?php end_slot() ?>
 
 <!-- slider jQuery per gli atti e le notizie relative -->

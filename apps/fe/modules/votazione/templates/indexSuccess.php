@@ -113,3 +113,11 @@
 
   </div>
 </div>  
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php echo link_to('votazioni', '@votazioni') ?>
+    /
+  <?php $votazione = OppVotazionePeer::retrieveByPk($sf_params->get('id')); ?>
+  <?php echo $votazione->getTitolo(); ?>
+<?php end_slot() ?>

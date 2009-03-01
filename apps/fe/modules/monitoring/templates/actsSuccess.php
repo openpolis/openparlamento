@@ -45,6 +45,11 @@
   </div>
 </div>
 
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  i tuoi atti
+<?php end_slot() ?>
+
 
 
 <!-- slider jQuery per gli atti e le notizie relative -->

@@ -31,3 +31,14 @@
     <div class="clear-both"></div>
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  
+  <?php if($sf_params->get('ramo') && $sf_params->get('ramo')=='senato' ): ?>
+    senatori
+  <?php else: ?>
+    deputati
+  <?php endif; ?>
+<?php end_slot() ?>
+

@@ -1,4 +1,6 @@
 <?php use_helper('I18N', 'nahoWiki') ?>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <div class="evidence-box">
    <h5 class="subsection-grey">
    <!--//<?php echo link_to_diff(__('visualizza revisioni invertite'),$page->getName(), $revision2->getRevision(), $revision1->getRevision(), array("class" => "float-right small")) ?> -->

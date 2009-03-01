@@ -38,7 +38,7 @@ class parlamentareActions extends sfActions
 
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
-    $this->ramo = $ramo=='C'?'camera':'senato';
+    $this->ramo = $ramo=='C' ? 'camera' : 'senato';
     $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
     $this->presenze = $this->carica->getPresenze();
@@ -80,6 +80,10 @@ class parlamentareActions extends sfActions
   public function executeAtti()
   {
     $this->_getAndCheckParlamentare(); 
+    
+    if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+    if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+    $this->ramo = $ramo=='C' ? 'camera' : 'senato';
     
     $this->session = $this->getUser();
    
@@ -222,6 +226,10 @@ class parlamentareActions extends sfActions
     $this->_getAndCheckParlamentare(); 
     $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
     $this->session = $this->getUser();
+    
+    if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+    if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+    $this->ramo = $ramo=='C' ? 'camera' : 'senato';
 
     $this->processVotiFilters(array('vote_type', 'vote_vote', 'vote_result', 'vote_rebel'));
 
@@ -371,6 +379,10 @@ class parlamentareActions extends sfActions
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinAll');
     $this->pager->init();
+    
+    if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+    if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+    $this->ramo = $ramo=='C' ? 'camera' : 'senato';
 	  
   }
 

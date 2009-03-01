@@ -42,3 +42,8 @@
     <div class="clear-both"></div>
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  atti non legislativi
+<?php end_slot() ?>

@@ -11,7 +11,6 @@
 <?php end_slot() ?>
 
 <div class="wiki-page<?php if (@$preview) echo ' wiki-preview' ?>">
-
   <?php if ($display_pagename) include_slot('wiki_page_name') ?>
   <?php include_slot('wiki_page_header') ?>
   <?php if (@$no_article): ?>
@@ -20,7 +19,6 @@
       <?php echo link_to(__('Edit this page to contribute.'), 'nahoWiki/edit?' . $uriParams) ?>
     </p>
   <?php else: ?>
-    
     <?php $content = $revision->getXHTMLContent() ?>
     <?php if ($display_toc): ?>
       <?php $toc = nahoWikiContentPeer::getTOC($content) ?>

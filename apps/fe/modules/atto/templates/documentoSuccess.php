@@ -38,6 +38,29 @@
   </div>
 </div>
 
+<?php slot('breadcrumbs') ?>
+    <?php echo link_to("home", "@homepage") ?> /
+    <?php if ($documento->getOppAtto()->getTipoAttoId()==1): ?>
+	<?php echo link_to("disegni di legge", "atto/disegnoList") ?>
+    <?php endif; ?> 
+    	
+    <?php if ($documento->getOppAtto()->getTipoAttoId()==12): ?>
+	<?php echo link_to("decreti legge", "atto/decretoList") ?>
+    <?php endif; ?> 
+    
+    <?php if ($documento->getOppAtto()->getTipoAttoId()==15 || $documento->getOppAtto()->getTipoAttoId()==16 || $documento->getOppAtto()->getTipoAttoId()==17): ?>
+	<?php echo link_to("decreti legislativi", "atto/decretoLegislativoList") ?>
+    <?php endif; ?> 
+    
+    <?php if (($documento->getOppAtto()->getTipoAttoId()<12 && $documento->getOppAtto()->getTipoAttoId()!=1) || $documento->getOppAtto()->getTipoAttoId()==14): ?>
+	<?php echo link_to("atti non legislativi", "atto/attoNonLegislativoList") ?>
+    <?php endif; ?> 
+    /
+    <?php echo link_to(Text::denominazioneAttoShort($documento->getOppAtto()),'atto/index?id='.$documento->getOppAtto()->getId()) ?>
+     /
+    <?php echo $documento->getTitolo() ?> 
+<?php end_slot() ?>
+
 
 
   

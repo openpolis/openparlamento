@@ -237,3 +237,16 @@
 		
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  
+  <?php if($ramo =='senato' ): ?>
+    <?php echo link_to('senatori', '@parlamentari?ramo=senato') ?> /
+    Sen. 
+  <?php else: ?>
+    <?php echo link_to('deputati', '@parlamentari?ramo=camera') ?> /
+    On.
+  <?php endif; ?>
+  <?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?>
+<?php end_slot() ?>

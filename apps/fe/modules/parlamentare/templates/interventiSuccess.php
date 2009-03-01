@@ -1,7 +1,7 @@
 <?php use_helper('Date', 'I18N') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
-	<li class="current"><h2>On.<?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
 </ul>
 
 
@@ -36,3 +36,17 @@
 		
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  
+  <?php if($ramo =='senato' ): ?>
+    <?php echo link_to('senatori', '@parlamentari?ramo=senato') ?> /
+    Sen. 
+  <?php else: ?>
+    <?php echo link_to('deputati', '@parlamentari?ramo=camera') ?> /
+    On.
+  <?php endif; ?>
+  <?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?>
+<?php end_slot() ?>
+

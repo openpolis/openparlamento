@@ -40,7 +40,7 @@
 </div>
 
 <?php slot('blog_breadcrumbs') ?>
-  <?php echo link_to("Home", "@homepage") ?> /
-  <?php echo link_to('Blog', '@blog_index') ?> / 
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php echo link_to('blog', '@blog_index') ?> / 
   Argomento "<?php echo $sf_params->get('tag') ?>"
 <?php end_slot() ?>

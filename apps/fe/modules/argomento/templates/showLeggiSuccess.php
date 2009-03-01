@@ -1,7 +1,7 @@
 <?php use_helper('Javascript', 'Date', 'I18N') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
-  <li class="current"><h2>Argomento: <?php echo $argomento->getTripleValue() ?></h2></li>
+  <li class="current"><h2>Argomento: <?php echo strtolower($argomento->getTripleValue()) ?></h2></li>
 </ul>
 
 
@@ -45,7 +45,7 @@
 </div>
 
 <?php slot('breadcrumbs') ?>
-  <?php echo link_to("Home", "@homepage") ?> /
-  <?php echo link_to('Argomenti', '@argomenti') ?> /
-  <?php echo $argomento->getTripleValue() ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php echo link_to('argomenti', '@argomenti') ?> /
+  <?php echo strtolower($argomento->getTripleValue()) ?>
 <?php end_slot() ?>
