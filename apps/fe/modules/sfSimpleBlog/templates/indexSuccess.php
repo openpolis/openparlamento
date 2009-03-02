@@ -1,6 +1,13 @@
 <?php use_helper('I18N', 'Date') ?>
 <?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?')) ?>
 
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      Blog  
+    </h2>
+  </li>
+</ul>
 
 <div class="tabbed float-container" id="content">
 	<div id="main">

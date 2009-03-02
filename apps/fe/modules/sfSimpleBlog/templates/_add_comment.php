@@ -1,4 +1,5 @@
 <?php use_helper('Validation') ?>
+<a name="leave"></a>
 <?php echo form_tag('sfSimpleBlog/addComment', 'name=add_comment id=blog-post-form') ?>
   <h4><?php echo __('Leave a reply') ?></h4>
   <hr />
@@ -7,14 +8,12 @@
 
   <?php echo form_error('name') ?>
   <p>
-    <?php echo image_tag('star.png', array('alt'=>'*')) ?>
     <?php echo input_tag('name', $sf_request->hasErrors()?$sf_params->get('name'):($sf_user->isAuthenticated()?$user:''), 'id= class=text' . ($sf_user->isAuthenticated()?' readonly=true':'')) ?>
     <label for="name">Il tuo nome (almeno 4 lettere)</label>
   </p>
 
   <?php echo form_error('mail') ?>
   <p>
-    <?php echo image_tag('star.png', array('alt'=>'*')) ?>
     <?php echo input_tag('mail', $sf_request->hasErrors()?$sf_params->get('mail'):($sf_user->isAuthenticated()?$user->getEmail():''), 'id= class=text'. ($sf_user->isAuthenticated()?' readonly=true':'')) ?>
     <label for="mail">la tua mail (non verr&agrave; pubblicata)</label>
   </p>
@@ -28,7 +27,7 @@
     </p>    
     <p style="margin-left: 20px;"><img src="<?php echo url_for('@sf_captcha'); ?>" alt="captcha" /></p>
   <?php endif ?>
-  <p><?php echo image_tag('star.png', array('alt'=>'*')) ?>&nbsp;&nbsp;i campi contrassegnati da asterisco sono obbligatori</p>
+  
   
   <?php echo form_error('content') ?>
   <p><label for="content">scrivi qui sotto il tuo commento</label><br/>      

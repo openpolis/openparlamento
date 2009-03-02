@@ -145,9 +145,13 @@
         <?php endif; ?> 
         <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
         
-        
-      <?php else: ?>    
-       <?php if(!$leggi_this ) : ?>
+       <!-- NON HA SUCC --> 
+      <?php else: ?> 
+        <?php if ($atto->getTipoAttoId()==12) : ?>
+           <li><span class="date">&nbsp;</span><p>da approvare al Senato</p></li>
+        <?php endif; ?> 
+         
+        <?php if(!$leggi_this ) : ?>
                <?php if(!$rappresentazioni_pred ) : ?>
                     <?php if($rappresentazioni_this) : ?> 
                         <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>

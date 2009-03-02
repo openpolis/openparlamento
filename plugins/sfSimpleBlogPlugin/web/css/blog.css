@@ -5,7 +5,7 @@ a:link, a:active
 
 a:hover
 {
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .sfSimpleBlog .post

@@ -4,6 +4,14 @@
 <?php endif; ?>
 <?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?').' > '.$post->getTitle()) ?>
 
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      <?php echo link_to('Blog', '@blog_index') ?>
+    </h2>
+  </li>
+</ul>
+
 
 <div class="tabbed float-container" id="content">
 	<div id="main">
@@ -19,13 +27,18 @@
       <!-- commenti -->
       <br/>
       <br/>
-      <hr class="blog-comments-separator"/>
-      <a name="comments"></a>
+      
       <div id="sfSimpleBlog_comment_list">
-        <a href="#top" class="go-top">torna su</a>
-        <?php if($nb_comments = count($comments)): ?>
-          <h3><strong><?php echo format_number_choice('[1]One comment so far|(1,+Inf]%1% comments so far', array('%1%' => $nb_comments), $nb_comments) ?></strong></h3>
-        <?php endif; ?>
+      <a name="comments"></a>
+      
+      <?php if($nb_comments = count($comments)): ?>
+          <h4><strong><?php echo format_number_choice('[1]One comment so far|(1,+Inf]%1% comments so far', array('%1%' => $nb_comments), $nb_comments) ?></strong></h4>
+      
+          <p style="text-align:right; margin-right:6%;" ><a href="#leave">lascia il tuo commento</a>&nbsp;|&nbsp;<a href="#top" class="go-top">torna su</a></p>
+          <hr class="blog-comments-separator"/>
+      <?php endif; ?>
+        
+        
         <?php include_partial('sfSimpleBlog/comment_list', array('post' => $post, 'comments' => $comments, 'user' => $user)) ?>
       </div>
 

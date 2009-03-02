@@ -2,6 +2,14 @@
 <?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?') . " > Argomento: " . $sf_params->get('tag')) ?>
 
 
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      <?php echo link_to('Blog', '@blog_index') ?>
+    </h2>
+  </li>
+</ul>
+
 
 
 <div class="tabbed float-container" id="content">
@@ -10,8 +18,9 @@
       <?php include_partial('sfSimpleBlog/sidebar') ?>
 	  </div>
 
-    <div class="W73_100 float-left">			
-      <h2><?php echo __('Posts tagged "%1%"', array('%1%' => $sf_params->get('tag'))) ?></h2>
+    <div class="W73_100 float-left">
+     <h2 style="padding: 0px 0px 15px 3px;"><?php echo __('Tutti i post per il tag %1%', array('%1%' => $sf_params->get('tag'))) ?></h2>	
+     <hr class="blog-comments-separator"/>		
 
       <ul id="blog-posts-full">
         <?php $cnt = 0;?>

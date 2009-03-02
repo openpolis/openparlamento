@@ -1,7 +1,7 @@
 <?php use_helper('Date') ?>
 <li>
-  inviato il <?php echo format_date($comment->getCreatedAt('U')) ?> da<br/>
-  <?php echo $comment->getAuthorUrl() ? link_to($comment->getAuthorName(), $comment->getAuthorUrl()) : $comment->getAuthorName() ?>
+<strong><?php echo $comment->getAuthorUrl() ? link_to($comment->getAuthorName(), $comment->getAuthorUrl()) : $comment->getAuthorName() ?></strong>
+  ha inviato questo commento il <strong><?php echo format_date($comment->getCreatedAt('U')) ?></strong>
 
   <p><span class="arrow-up"></span>
      <?php echo $comment->getContent() ?></p>
