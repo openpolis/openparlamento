@@ -76,7 +76,7 @@ class argomentoActions extends sfActions
   public function executeShowLeggi()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-   $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
@@ -206,7 +206,8 @@ class argomentoActions extends sfActions
     $this->filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET ) 
     {
       if ($this->hasRequestParameter('filter_tags_category'))
         $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'argomento/atti_filter');

@@ -186,7 +186,7 @@
   				</p>
   			</div>
 
-  			<h5 class="subsection-alt">Indice di attività</h5>
+  			<h5 class="subsection-alt">Indice di attivit&agrave;</h5>
 
   			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
   			<div style="display: none;" class="help-box float-container">
@@ -226,6 +226,10 @@
   			</div>
 
 
+
+  			<h5 class="subsection-alt">Atti presentati</h5>
+        <?php include_component('parlamentare', 'attiPresentati', 
+                                array('parlamentare' => $parlamentare)) ?>
 
 		 
   		</div>

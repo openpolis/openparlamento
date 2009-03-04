@@ -57,6 +57,11 @@
       
       <div class="clear-both"/></div>
 
+
+			<h5 class="subsection-alt">Atti presentati</h5>
+      <?php include_component('argomento', 'attiTaggati', 
+                              array('triple_value' => $triple_value)) ?>
+
       <h5 class="subsection-alt">ci sono <big><?php echo $pager->getNbResults() ?></big> notizie sull'argomento:</h5>
       <div class="more-results float-container">			
         <?php include_partial('newsFilter',

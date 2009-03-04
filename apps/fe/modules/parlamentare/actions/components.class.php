@@ -79,4 +79,52 @@ class parlamentareComponents extends sfComponents
       sfLogger::getInstance()->error($e->getMessage());
     }
   }
+  
+  public function executeAttiPresentati()
+  {
+	  $carica = $this->parlamentare->getCaricaDepSenCorrente();
+
+    /* select raw 
+    select ta.descrizione, ca.tipo, count(ta.id) 
+     from opp_carica_has_atto ca, opp_atto a, opp_tipo_atto ta 
+     where ca.atto_id=a.id and a.tipo_atto_id=ta.id and carica_id=$carica->getId() 
+     group by ta.id, ca.tipo
+     order by ta.id;
+    */
+    $connection = Propel::getConnection();
+    $query = "SELECT %s AS tipo, %s AS tipo_id, %s AS firma, count(%s) AS cnt " .
+             "FROM %s, %s, %s " . 
+             "WHERE %s=%s and %s=%s and %s=%s " . 
+             "GROUP BY %s, %s " . 
+             "ORDER BY %s";
+
+    $query = sprintf($query, OppTipoAttoPeer::DESCRIZIONE, OppTipoAttoPeer::ID, 
+                             OppCaricaHasAttoPeer::TIPO, OppTipoAttoPeer::ID,
+                             OppCaricaHasAttoPeer::TABLE_NAME, OppAttoPeer::TABLE_NAME, OppTipoAttoPeer::TABLE_NAME,
+                             OppCaricaHasAttoPeer::ATTO_ID, OppAttoPeer::ID, 
+                             OppAttoPeer::TIPO_ATTO_ID, OppTipoAttoPeer::ID,
+                             OppCaricaHasAttoPeer::CARICA_ID, $carica->getId(),
+                             OppTipoAttoPeer::ID, OppCaricaHasAttoPeer::TIPO, 
+                             OppTipoAttoPeer::ID);
+    
+    
+    
+    $statement = $connection->prepareStatement($query);
+    $rs = $statement->executeQuery();
+    $atti = array();
+    while ($rs->next())
+    {
+      $tipo = $rs->getString('tipo');
+      $tipo_id = $rs->getString('tipo_id');
+      if (!array_key_exists($tipo, $atti))
+      {
+        $atti[$tipo] = array('id' => $tipo_id, 'C' => 0, 'P' => 0);
+      }
+      $firma = $rs->getString('firma');
+      $cnt = $rs->getInt('cnt');
+      $atti[$tipo][$firma] = $cnt;
+    }
+    
+    $this->atti_presentati = $atti;
+  }
 }

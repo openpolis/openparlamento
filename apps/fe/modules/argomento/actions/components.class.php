@@ -168,6 +168,78 @@ class argomentoComponents extends sfComponents
   {
     $this->related_tags = TagPeer::getRelatedTags($this->tag->getName(), array('limit' => 20));
   }
+  
+  
+  public function executeAttiTaggati()
+  {
+
+    /* select raw 
+      select ta.descrizione, ta.id, count(tg.id) 
+       from sf_tag t, sf_tagging tg, opp_atto a, opp_tipo_atto ta 
+       where t.triple_value='ARTIGIANATO' 
+             and tg.tag_id=t.id 
+             and tg.taggable_model='OppAtto' 
+             and tg.taggable_id=a.id 
+             and ta.id=a.tipo_atto_id 
+       group by ta.id 
+       order by ta.id;
+    */
+    $connection = Propel::getConnection();
+    $query = "SELECT %s AS tipo, %s AS tipo_id, count(%s) AS cnt " .
+             "FROM %s, %s, %s, %s " . 
+             "WHERE %s='%s' and %s=%s and %s='%s' and %s=%s and %s=%s " . 
+             "GROUP BY %s " . 
+             "ORDER BY %s";
+
+    $query = sprintf($query, OppTipoAttoPeer::DESCRIZIONE, OppTipoAttoPeer::ID, TaggingPeer::ID,                              
+                             TagPeer::TABLE_NAME, TaggingPeer::TABLE_NAME, 
+                             OppAttoPeer::TABLE_NAME, OppTipoAttoPeer::TABLE_NAME,
+                             TagPeer::TRIPLE_VALUE, $this->triple_value,
+                             TaggingPeer::TAG_ID, TagPeer::ID, 
+                             TaggingPeer::TAGGABLE_MODEL, 'OppAtto',
+                             TaggingPeer::TAGGABLE_ID, OppAttoPeer::ID,
+                             OppAttoPeer::TIPO_ATTO_ID, OppTipoAttoPeer::ID,
+                             OppTipoAttoPeer::ID, 
+                             OppTipoAttoPeer::ID);
+    
+    
+    
+    $statement = $connection->prepareStatement($query);
+    $rs = $statement->executeQuery();
+    $atti = array();
+    while ($rs->next())
+    {
+      $tipo = $rs->getString('tipo');
+      $tipo_id = $rs->getString('tipo_id');
+      $cnt = $rs->getInt('cnt');
+      $atti[$tipo] = array('id' => $tipo_id, 'n' => $cnt);
+      if (in_array($tipo_id, array('1', '12', '15', '16', '17')))
+        $atti[$tipo]['routing'] = 'leggi';
+      else
+        $atti[$tipo]['routing'] = 'nonleg';
+        
+      if ($atti[$tipo]['routing'] == 'leggi')
+      {
+        switch ($tipo_id)
+        {
+          case 1:
+            $atti[$tipo]['type_filter'] = 'DDL';
+            break;
+          case 12:
+            $atti[$tipo]['type_filter'] = 'DL';
+            break;
+          case 15:
+          case 16:
+          case 17:
+            $atti[$tipo]['type_filter'] = 'DLEG';
+            break;
+        }
+      } else 
+        $atti[$tipo]['type_filter'] = $tipo_id;
+    }
+    
+    $this->atti_taggati = $atti;
+  }
 
 }
 

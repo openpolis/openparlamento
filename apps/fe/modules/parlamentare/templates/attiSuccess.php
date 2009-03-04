@@ -27,7 +27,7 @@
                             array('tags_categories' => $all_tags_categories,
                                   'selected_tags_category' => array_key_exists('tags_category', $filters)?$filters['tags_category']:0,
                                   'selected_act_type' => array_key_exists('act_type', $filters)?$filters['act_type']:0,                                
-                                  'selected_act_firma' => array_key_exists('act_ramo', $filters)?$filters['act_firma']:0,
+                                  'selected_act_firma' => array_key_exists('act_firma', $filters)?$filters['act_firma']:0,
                                   'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
       <?php include_partial('attiSort', array('parlamentare_id' => $parlamentare->getId())) ?>

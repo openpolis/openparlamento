@@ -28,12 +28,20 @@ class parlamentareActions extends sfActions
   {
     $this->_getAndCheckParlamentare(); 
     
-          $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+    $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
 	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
 	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
 	  
 	  $this->circoscrizione = $this->carica->getCircoscrizione();	  
 	  // $this->cariche = $this->parlamentare->getAltreCariche();
+    
+
+    // reset sessioni utente filtri e ordinamento
+    $this->session = $this->getUser();
+    $this->session->getAttributeHolder()->removeNamespace('acts_filter');
+    $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_atti/sort');
+    $this->session->getAttributeHolder()->removeNamespace('votes_filter');
+    $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_voti/sort');
     
 
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
@@ -154,7 +162,9 @@ class parlamentareActions extends sfActions
     $this->filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    // sia in POST che in GET (per i link a liste filtrate)
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET) 
     {
       if ($this->hasRequestParameter('filter_tags_category'))
         $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'acts_filter');
