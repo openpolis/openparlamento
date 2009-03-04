@@ -1,5 +1,5 @@
 <!-- motore di ricerca generico, contenuto in sfLucene/_controls.php -->
-<?php include_partial('sfLucene/controls', 
+<?php include_partial('sfSolr/controls', 
                       array('query' => $this->getContext()->getRequest()->getParameter('query', '')));?>
 
 <!-- menu di navigazione -->

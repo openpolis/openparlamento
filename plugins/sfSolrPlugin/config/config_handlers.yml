@@ -1,0 +1,10 @@
+# the individual apps/*/config config files
+
+config/search.yml:
+  class: sfSolrProjectConfigHandler
+
+# the master config file
+config/solr.yml:
+  class: sfDefineEnvironmentConfigHandler
+  param:
+    prefix: solr_

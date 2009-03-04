@@ -250,6 +250,28 @@ class OppPolitico extends BaseOppPolitico
   {
     return $this->__toString();
   }
+  
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('OppPolitico' . $id);
+    $document->sfl_model = 'OppPolitico';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->nominativo = $this->getNome() . " " . $this->getCognome();            
+
+    // ritorna il documento da aggiungere
+    return $document;
+  }
     
 }
 
@@ -264,4 +286,4 @@ sfPropelBehavior::add(
               'count_monitored_objects_field' => 'NMonitoredPoliticos', // refers to OppUserPeer::N_MONITORED_ATTOS
        )));
 
-sfLucenePropelBehavior::getInitializer()->setupModel('OppPolitico');
+sfSolrPropelBehavior::getInitializer()->setupModel('OppPolitico');

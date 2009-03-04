@@ -212,6 +212,37 @@ class OppVotazione extends BaseOppVotazione
   {
     return true;
   }
+ 
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('OppVotazione' . $id);
+    $document->sfl_model = 'OppVotazione';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->titolo = strip_tags($this->getTitolo());
+    $document->hasDescrizioneWiki = $this->getHasDescrizioneWiki();
+    if ($this->getHasDescrizioneWiki() && $this->getDescrizioneWiki() != sfConfig::get('app_nahoWikiPlugin_default_description'))
+    {
+      $document->descrizioneWiki = strip_tags($this->getDescrizioneWiki());
+      $document->hasDescrizioneWiki = true;      
+    } else {
+      $document->hasDescrizioneWiki = false;            
+    }
+
+    // ritorna il documento da aggiungere
+    return $document;
+  }
+ 
     
 }
 
@@ -224,4 +255,4 @@ sfPropelBehavior::add('OppVotazione',
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsTaggableBehavior'));
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsCommentableBehavior'));
 
-sfLucenePropelBehavior::getInitializer()->setupModel('OppVotazione');
+sfSolrPropelBehavior::getInitializer()->setupModel('OppVotazione');

@@ -1,0 +1,11 @@
+2009-03-03 g.celata -  Version 0.0.1 Alpha
+  Porting from  Carl Vondrick's sfLucenePlugin
+  Uses Donovan Jimenez's SolrPhpClient wrapper to comunicate with the Solr instance
+  Implements:
+    connection parameters in global configuration
+    index management through symfony tasks (remove, update from propel model)
+    sfSolr overridable module to show simple search controls and search results
+    configurable model's routing and partial for single result
+    configurable transformation from propel model into solr document (intoDocument method)
+    highligth search results through highlighter filter
+    

@@ -1,0 +1,16 @@
+# parametri per la connessione al solr in ambienti dev
+dev:
+  query_debug: 1
+
+sviluppo_dev:
+  query_debug: 1
+    
+# parametri per la connessione al solr
+all:
+  query_debug: 0
+  index_dir: "/usr/local/solr-tomcat/solr_op_openparlamento/data/index/"
+  connection:
+    host: "localhost"
+    port: "8080"
+    path: "/solr_op_openparlamento"
+    

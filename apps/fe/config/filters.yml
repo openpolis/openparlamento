@@ -5,7 +5,7 @@ security:  ~
 # generally, you will want to insert your own filters here
 
 highlight:
-  class: sfLuceneHighlightFilter
+  class: sfSolrHighlightFilter
   
 # filter that checks if a remember cookie exists and automatically logs the user in
 rememberFilter:

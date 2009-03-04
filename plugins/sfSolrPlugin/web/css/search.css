@@ -1,0 +1,78 @@
+/*
+ * This file is part of the sfLucenePlugin package
+ * (c) 2007 Carl Vondrick <carlv@carlsoft.net>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+ol.search-results
+{
+  margin: 20px 40px;
+}
+ol.search-results li
+{
+  font-size : 1em;
+  margin: 20px 0;
+}
+
+form.search-controls label
+{
+  font-weight : bold;
+  display : block;
+}
+
+div.search-page-numbers a, div.search-page-numbers strong
+{
+  display : inline-block;
+  width : 25px;
+  height : 20px;
+  padding : 5px 0 0 0;
+  margin : 0;
+  text-align : center;
+  border : #5c94ff 1px solid;
+  color : #0058ff;
+  text-decoration : none;
+  font-size : 12px;
+  font-family : Arial, Verdana, sans-serif;
+}
+div.search-page-numbers a:hover
+{
+  text-decoration : none;
+  background-color : #e5eeff
+}
+
+div.search-page-numbers strong
+{
+  background-color : #5c94ff;
+  color : #fff;
+}
+div.search-page-numbers .bookend
+{
+  width : 50px;
+}
+
+strong.highlight
+{
+}
+
+strong.hcolor1
+{
+  background-color : #ffff66;
+}
+strong.hcolor2
+{
+  background-color : #a0ffff;
+}
+strong.hcolor3
+{
+  background-color : #99ff99;
+}
+strong.hcolor4
+{
+  background-color : #ff9999;
+}
+strong.hcolor5
+{
+  background-color : #ff66ff;
+}

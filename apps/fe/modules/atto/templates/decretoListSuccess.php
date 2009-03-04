@@ -11,7 +11,7 @@
       -->
       
       <?php 
-        echo include_partial('sfLucene/specialized_controls', 
+        echo include_partial('sfSolr/specialized_controls', 
                             array('query' => $query, 
                                   'type' => 'decreti', 
                                   'title' => 'nei decreti legge'));

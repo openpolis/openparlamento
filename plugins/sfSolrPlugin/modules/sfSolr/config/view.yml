@@ -1,0 +1,9 @@
+searchControls:
+  stylesheets: [/sfSolrPlugin/css/search.css]
+
+searchNoResults:
+  stylesheets: [/sfSolrPlugin/css/search.css]
+
+searchResults:
+  stylesheets: [/sfSolrPlugin/css/search.css]
+

@@ -23,11 +23,8 @@ all:
     use_unique_triple_values:    true
     limit:                       1000
 
-  lucene:
-    index: MainIndex
-    advanced: off
-    per_page: 30
-
+  solr_routes: true
+  
   sfEmendPlugin:    
     user:
       cu_id_method:    getId
@@ -102,6 +99,8 @@ all:
     include_breadcrumbs:    off            # Include breadcrumbs slot (disable if you include the slot in your layout) ?
     include_pagename:       off            # Display page's name when viewing content ?
     include_toc:            off            # Display Table of Contents at top of every page
+    default_description:    'Descrizione wiki, a cura degli utenti.'
+    
 
   comments:                enabled
   comments_use_ajax:       true
@@ -142,4 +141,4 @@ all:
     "convertito":  "63"
 
   mail_per_redazione:
-    site_address: http://parlamentodev.openpolis.it/
+    site_address: '<?php echo "http://".$site_url ?>'

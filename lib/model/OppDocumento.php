@@ -29,6 +29,30 @@ class OppDocumento extends BaseOppDocumento
     if ($this->getId() < 1248) return true;
     else return false;
   }
+  
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('OppDocumento' . $id);
+    $document->sfl_model = 'OppDocumento';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->titolo = strip_tags($this->getTitoloCompleto());
+    $document->testo = strip_tags($this->getTesto());
+
+    // ritorna il documento da aggiungere
+    return $document;
+  }
+  
 }
 
 
@@ -41,4 +65,4 @@ sfPropelBehavior::add(
               'priority'           => '2',
         )));
 
-sfLucenePropelBehavior::getInitializer()->setupModel('OppDocumento');
+sfSolrPropelBehavior::getInitializer()->setupModel('OppDocumento');

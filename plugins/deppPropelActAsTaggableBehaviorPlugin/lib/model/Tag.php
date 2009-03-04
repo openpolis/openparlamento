@@ -42,6 +42,29 @@ class Tag extends BaseTag
     
     return trim($res, " ,");
   }  
+  
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('Tag' . $id);
+    $document->sfl_model = 'Tag';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->triple_value = $this->getTripleValue();
+
+    // ritorna il documento da aggiungere
+    return $document;
+  }
+  
 }
 
 
@@ -53,4 +76,4 @@ sfPropelBehavior::add(
               'count_monitored_objects_field' => 'NMonitoredTags',    // refers to OppUser::N_MONITORING_TAGS
        )));
 
-sfLucenePropelBehavior::getInitializer()->setupModel('Tag');
+sfSolrPropelBehavior::getInitializer()->setupModel('Tag');

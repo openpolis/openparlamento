@@ -178,12 +178,12 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
       
 
     // goto page
-    $navigation .= content_tag('label', 'vai a pag.:', array('for'=>'page'));
+    $navigation .= content_tag('label', 'vai a pag.: ', array('for'=>'page'));
     $navigation .= input_tag('page', $pager->getPage(), array('maxlength' => '5', 'size'=>'3', 'class' => 'input-text'));
     $navigation .= submit_image_tag("ico-arrow-jump.png", array('name'=>'gotopage-go'));
 		
 		// items per page selector
-    $navigation .= content_tag('label', 'mostra:', array('for'=>'itemsperpage'));
+    $navigation .= content_tag('label', 'mostra: ', array('for'=>'itemsperpage'));
     $navigation .= select_tag('itemsperpage', 
                               options_for_select(array(15 => '15 elementi', 
                                                        30 => '30 elementi', 

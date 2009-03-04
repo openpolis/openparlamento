@@ -368,17 +368,46 @@ class OppAtto extends BaseOppAtto
     return "false";
   }
 
-  public function isIndexable()
+
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
   {
-    if ($this->getId() < 14500) return true;
-    else return false;
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('OppAtto' . $id);
+    $document->sfl_model = 'OppAtto';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->tipo_atto_id = $this->getTipoAttoId();
+    $document->tipo_atto_s = $this->getTipoAtto();
+    $document->titolo = strip_tags($this->getTitoloCompleto());
+    if ($this->getHasDescrizioneWiki() && $this->getDescrizioneWiki() != sfConfig::get('app_nahoWikiPlugin_default_description'))
+    {
+      $document->descrizioneWiki = strip_tags($this->getDescrizioneWiki());
+      $document->hasDescrizioneWiki = true;      
+    } else {
+      $document->hasDescrizioneWiki = false;            
+    }
+
+    // ritorna il documento da aggiungere
+    return $document;
   }
-  
+
   // fast save excluding mixins
   public function fastSave($con = null)
   {
     $this->doSave($con);
   }
+  
+  
+  
 }
 
 
@@ -431,4 +460,4 @@ sfPropelBehavior::add(
               'priority'           => '1',
         )));
 
-sfLucenePropelBehavior::getInitializer()->setupModel('OppAtto');
+sfSolrPropelBehavior::getInitializer()->setupModel('OppAtto');

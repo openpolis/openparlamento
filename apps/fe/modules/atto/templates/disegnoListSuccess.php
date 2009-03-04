@@ -9,7 +9,7 @@
       <p class="last-update">data di ultimo aggiornamento: <strong><?php echo $last_updated_item->getDataAgg('d-m-Y') ?></strong></p>			
 
       <?php 
-        echo include_partial('sfLucene/specialized_controls', 
+        echo include_partial('sfSolr/specialized_controls', 
                             array('query' => $query, 
                                   'type' => 'disegni', 
                                   'title' => 'nei disegni di legge'));

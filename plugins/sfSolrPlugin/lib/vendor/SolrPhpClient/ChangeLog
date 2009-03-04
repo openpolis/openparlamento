@@ -1,0 +1,139 @@
+2008-11-24 18:14  djimenez
+
+	* Pieter Berkel requested the ability to set field and document
+	  boost values when adding documents to Solr: 
+	  
+	  https://issues.apache.org/jira/browse/SOLR-341?focusedCommentId=12650095#action_12650095
+	  
+	  Added the ability to do so in the Apache_Solr_Document class and
+	  updated the XML fragment generation code in Apache_Solr_Service to
+	  include the new boost values when available.
+
+2008-11-14 22:08  djimenez
+
+	* Apache/Solr/Document.php: Rich Robinson raised an issue on the
+	  Solr issue tracker where he found that documents with values =
+	  false were creating prematurely exiting foreach loops. I tracked
+	  it down to the valid() implementation of the Iterator iterface,
+	  and after fussing with it decided to just implement
+	  IteratorAggregator and use the pre-existing SPL ArrayIterator
+	  class. Simplifies the code and now all document values are looped
+	  even when some are false.
+
+2008-09-02 14:33  djimenez
+
+	* Apache/Solr/Document.php, Apache/Solr/Response.php,
+	  Apache/Solr/Service.php, Apache/Solr/Service/Balancer.php: At the
+	  request of several people using these classes I've changed the
+	  members and functions that were private to protected so that they
+	  can be overridden / used in subclasses
+
+2008-08-26 14:50  dwolfe
+
+	* Apache/Solr/Service/Balancer.php: Changed default value for
+	  $_backoffLimit to 10 minutes instead of 1 minute.
+
+2008-08-26 13:52  dwolfe
+
+	* Apache/Solr/Service/Balancer.php, Solr.clss: Added an increasing
+	  backoff interval for SOLR write server selection. See core ticket
+	  #274.
+
+2008-05-01 05:52  djimenez
+
+	* Apache/Solr/Service/Balancer.php: Looking at the load balanced
+	  solr's on production it became obvious it was completely silly to
+	  ping a solr service on selection. Instead, we select a read
+	  service at random (if there are more than one) and use it until
+	  there is a connection problem - then and ONLY then do we ping it
+	  to decide if we should retry the call. If the ping timesout then
+	  we select another read service (if one is available) and continue
+
+2008-01-26 01:03  djimenez
+
+	* Apache/Solr/Response.php: HTTP 100 Continue response can also be
+	  returned before the REAL status header, so instead of just
+	  looking at the first http header we should look through until the
+	  last one.
+	  
+	  the spec for ref.:
+	  http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.1
+	  
+	  Thanks to Daniel Andersson for pointing out this oversight -
+	  again, probably related to his build's used of libcurl for URL
+	  wrappers
+
+2008-01-26 00:48  djimenez
+
+	* Apache/Solr/Service.php: \r\n added to the end Content-Type
+	  header was causing problems when compiled with the
+	  --with-curlwrappers options. It had always seemed wrong to me,
+	  but the documentation wasn't explicit as to whether it was added
+	  directly to the headers or not.
+	  
+	  THANKS TO Daniel Andersson for finding this bug, since our php
+	  build is not compiled with this options and we never would have
+	  found it ourselves.
+
+2008-01-23 02:53  djimenez
+
+	* Apache/Solr/Service.php, ChangeLog: 5 seconds seemed like too
+	  long a default timeout, set to 2. Added a Changelog that I'm
+	  packaging with the distribution.
+
+2008-01-14 19:12  djimenez
+
+	* Apache/Solr/Response.php, Apache/Solr/Service.php, Solr.clss:
+	  Using the json.nl parameter instead of mapping namedLists with my
+	  own code. Added getters / setters for optional enhancements.
+
+2007-10-19 16:42  djimenez
+
+	* Apache/Solr/Response.php, Apache/Solr/Service.php: Added extra
+	  options to Apache_Solr_Response to allow the turning off of
+	  special "corrections" we do to the json response. In cases where
+	  this isn't needed OR isn't desired it can be a small speed boost.
+	  Changed the implementation of Apache_Solr_Service::search to use
+	  http_build_query - had to combine it with a preg_replace, but
+	  this is still significantly faster than doing all the urlencoding
+	  ourselves in a loop written in PHP.
+
+2007-10-17 15:14  djimenez
+
+	* Apache/Solr/Document.php, Apache/Solr/Response.php,
+	  Apache/Solr/Service.php, Apache/Solr/Service/Balancer.php: Added
+	  ability to keep Response object from creating documents (can save
+	  a little time when you don't need them). Also, updated the
+	  balancer so that it will try other services during a
+	  communication error on a call.
+
+2007-10-02 02:52  djimenez
+
+	* Apache/Solr/Service.php: Got rid of the const defined defaults
+	  for host, port and path. Now defined within the constructor
+	  signature so its easier to override in a subclass
+
+2007-09-28 22:40  djimenez
+
+	* Apache/Solr/Document.php, Apache/Solr/Response.php,
+	  Apache/Solr/Service, Apache/Solr/Service.php,
+	  Apache/Solr/Service/Balancer.php,
+	  trunk/application/cit5_solr/start.inc: Add the
+	  Apache_Solr_Service_Balancer ref. implementation for selecting
+	  from multiple read or write solr instances (such as in a
+	  replicated solr environment). Made the ping function of Service
+	  more useful and faster. stopped ignoring when we couldn't talk to
+	  a server (now throws a communication error exception). refs #29
+
+2007-09-24 22:17  djimenez
+
+	* Apache, Apache/Solr, Apache/Solr/Document.php,
+	  Apache/Solr/Response.php, Apache/Solr/Service.php,
+	  Solr/Document.php, Solr/Response.php, Solr/Service.php,
+	  trunk/application/cit5_solr/start.inc: been suggested by
+	  community to change class namespace to Apache_Solr... have kept
+	  subclasses for backwards compatibility with code we have already
+	  
+	  need config constants for now
+	  
+	  closes #10, #16

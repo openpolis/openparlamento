@@ -71,7 +71,7 @@ news_attiNonLegislativi:
 
 attiSearch:
   url: /attiSearch/:type/*
-  param: { module: sfLucene, action: attiSearch }
+  param: { module: sfSolr, action: attiSearch }
 
 attiDisegni:
   url: /attiDisegni
@@ -125,7 +125,7 @@ teseo:
 
 votazioniSearch:
   url: /votazioniSearch/*
-  param: { module: sfLucene, action: votazioniSearch }
+  param: { module: sfSolr, action: votazioniSearch }
 
 votazioni:
   url:   /votazioni/:sort/:type
@@ -138,7 +138,7 @@ votazione:
 
 parlamentariSearch:
   url: /parlamentariSearch/*
-  param: { module: sfLucene, action: parlamentariSearch }
+  param: { module: sfSolr, action: parlamentariSearch }
 
 parlamentari:
   url:   /parlamentari/:ramo/:sort/:type/*

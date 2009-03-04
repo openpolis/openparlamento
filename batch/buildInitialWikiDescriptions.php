@@ -72,7 +72,7 @@ foreach ($classes as $model => $name_prefix)
     $object = call_user_func_array(array($model.'Peer', 'retrieveByPK'), $pk_values);
     try{
       nahoWikiToolkit::add_wiki_description($object, $name_prefix,
-                                            "Descrizione wiki, a cura degli utenti.", 
+                                            sfConfig::get('nahoWikiPlugin_default_description'), 
                                             "Creazione Automatica");      
     } catch (Exception $e) {
       echo "Exception: " . $e->getMessage() . "\n";

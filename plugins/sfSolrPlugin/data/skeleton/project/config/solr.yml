@@ -1,0 +1,9 @@
+# Define all the global Solr variables
+
+all:
+  query_debug: 0
+  index_dir: "/usr/local/solr-tomcat/solr_project/data/index/"
+  connection:
+    host: "localhost"
+    port: "8080"
+    path: "/solr_project"
