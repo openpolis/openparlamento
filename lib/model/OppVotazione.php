@@ -83,15 +83,16 @@ class OppVotazione extends BaseOppVotazione
        
       if($gruppo!='Gruppo Misto')
   	  {
-  	     $c = new Criteria();
-  	     $c->add(OppGruppoPeer::NOME, $gruppo);
-  	     $gruppo_id = OppGruppoPeer::doSelectOne($c);
+  	   $c = new Criteria();
+  	   $c->add(OppGruppoPeer::NOME, $gruppo);
+  	   $gruppo_id = OppGruppoPeer::doSelectOne($c);
   	     
-  	     $c = new Criteria();
-  	     $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->getId());
-  	     $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, $gruppo_id->getId());
-             $voto_gruppo = OppVotazioneHasGruppoPeer::doSelectOne($c);
-             
+  	   $c = new Criteria();
+  	   $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->getId());
+  	   $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, $gruppo_id->getId());
+           $voto_gruppo = OppVotazioneHasGruppoPeer::doSelectOne($c); 
+           if ($voto_gruppo)
+             {
              if ($voto_gruppo->getVoto()!='nv')
               {
     
@@ -132,7 +133,8 @@ class OppVotazione extends BaseOppVotazione
   	         array_push($ribelli_id, $rs->getInt(1));
   	      
                 }
-             }   
+             }
+            }    
   	  }	   
 	  
     }

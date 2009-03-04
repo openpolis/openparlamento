@@ -28,7 +28,7 @@ class argomentoActions extends sfActions
   public function executeShowAggiornamenti()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - ' . strtolower($this->triple_value));
+    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
 
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
@@ -76,7 +76,7 @@ class argomentoActions extends sfActions
   public function executeShowLeggi()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - ' . strtolower($this->triple_value));
+   $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
@@ -118,7 +118,7 @@ class argomentoActions extends sfActions
   public function executeShowNonleg()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - ' . strtolower($this->triple_value));
+    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);

@@ -31,7 +31,7 @@ class votazioneActions extends sfActions
     
     
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Votazione '.$this->ramo.' '. $this->votazione->getTitolo());
+    $this->getResponse()->setTitle('Votazione '.$this->ramo.' '. $this->votazione->getTitolo().' - '.sfConfig::get('app_main_title'));
     
     
 
@@ -259,7 +259,7 @@ class votazioneActions extends sfActions
 
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Tutte le votazioni elettroniche di Camera e Senato');
+    $this->getResponse()->setTitle('Tutte le votazioni elettroniche di Camera e Senato - '.sfConfig::get('app_main_title'));
    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        

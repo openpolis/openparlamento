@@ -40,9 +40,9 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
     if ($this->ramo=='camera')
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento');
+       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
     else
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento');
+       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
     
     $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
@@ -90,9 +90,9 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
     if ($this->ramo=='camera')
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora');
+       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
     else
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora');
+       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
     
     $this->session = $this->getUser();
    
@@ -239,10 +239,10 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-    if ($this->ramo=='camera')
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato');
+       if ($this->ramo=='camera')
+       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
     else
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato');
+       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
 
     $this->processVotiFilters(array('vote_type', 'vote_vote', 'vote_result', 'vote_rebel'));
 
@@ -397,9 +397,9 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
     if ($this->ramo=='camera')
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari');
+       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
     else
-       $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari');
+       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
 	  
   }
 
@@ -437,6 +437,8 @@ class parlamentareActions extends sfActions
 
     if ($ramo == 'camera')
     {
+      $this->getResponse()->setTitle('tutti i deputati - '.sfConfig::get('app_main_title'));
+      
       $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
  
@@ -449,7 +451,8 @@ class parlamentareActions extends sfActions
     }
     else
     {
-    
+      $this->getResponse()->setTitle('tutti i senatori - '.sfConfig::get('app_main_title'));
+      
       $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       //in questo modo considero i senatori a vita
       $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
@@ -503,6 +506,7 @@ class parlamentareActions extends sfActions
 
     if ($ramo == 'camera')
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+     
     else
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
 

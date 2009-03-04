@@ -116,7 +116,7 @@ class attoActions extends sfActions
     
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - disegni di legge');
+    $this->getResponse()->setTitle('disegni di legge - '.sfConfig::get('app_main_title'));
     
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
@@ -204,7 +204,7 @@ class attoActions extends sfActions
    
     $this->query = $this->getRequestParameter('query', '');
     
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - decreti legge');
+    $this->getResponse()->setTitle('decreti legge - '.sfConfig::get('app_main_title'));
 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
@@ -303,7 +303,7 @@ class attoActions extends sfActions
 
     $this->query = $this->getRequestParameter('query', '');
     
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - atti non legislativi');
+    $this->getResponse()->setTitle('atti non legislativi - '.sfConfig::get('app_main_title'));
 
     $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
 
@@ -380,7 +380,7 @@ class attoActions extends sfActions
     $this->atto = $this->atti[0];
     $this->forward404Unless($this->atto);
     
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - '. $this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index'));
+     $this->getResponse()->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
     
     
     //individuazione link fonte
@@ -736,7 +736,7 @@ class attoActions extends sfActions
      $this->documento = OppDocumentoPeer::retrieveByPk($this->getRequestParameter('id'));
      $this->forward404Unless($this->documento);
      
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - '. $this->documento->getOppAtto()->getOppTipoAtto()->getDescrizione().' '.$this->documento->getOppAtto()->getRamo().'. '.$this->documento->getOppAtto()->getNumfase().' / '.$this->documento->getTitolo());
+     $this->getResponse()->setTitle($this->documento->getOppAtto()->getOppTipoAtto()->getDescrizione().' '.$this->documento->getOppAtto()->getRamo().'. '.$this->documento->getOppAtto()->getNumfase().' / '.$this->documento->getTitolo().' - '.sfConfig::get('app_main_title'));
      
      $c = new Criteria();
      $cton1 = $c->getNewCriterion(OppDocumentoPeer::ATTO_ID, $this->documento->getAttoId(), Criteria::EQUAL);

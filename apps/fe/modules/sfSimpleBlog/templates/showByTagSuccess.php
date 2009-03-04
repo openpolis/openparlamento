@@ -1,5 +1,5 @@
 <?php use_helper('I18N', 'Date') ?>
-<?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?') . " > Argomento: " . $sf_params->get('tag')) ?>
+<?php $sf_context->getResponse()->setTitle('tag: '.$sf_params->get('tag').' - blog - '.sfConfig::get('app_main_title')) ?>
 
 
 <ul id="content-tabs" class="float-container tools-container">
@@ -19,7 +19,7 @@
 	  </div>
 
     <div class="W73_100 float-left">
-     <h2 style="padding: 0px 0px 15px 3px;"><?php echo __('Tutti i post per il tag %1%', array('%1%' => $sf_params->get('tag'))) ?></h2>	
+     <h4 style="padding: 0px 0px 15px 3px;"><?php echo __('In questa pagina trovi la lista di tutti i post per il tag "%1%"', array('%1%' => $sf_params->get('tag'))) ?></h4>	
      <hr class="blog-comments-separator"/>		
 
       <ul id="blog-posts-full">
@@ -48,8 +48,8 @@
   </div>
 </div>
 
-<?php slot('blog_breadcrumbs') ?>
+<?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
   <?php echo link_to('blog', '@blog_index') ?> / 
-  Argomento "<?php echo $sf_params->get('tag') ?>"
+  tag: "<?php echo $sf_params->get('tag') ?>"
 <?php end_slot() ?>

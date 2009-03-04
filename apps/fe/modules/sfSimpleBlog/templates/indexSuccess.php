@@ -1,5 +1,5 @@
 <?php use_helper('I18N', 'Date') ?>
-<?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?')) ?>
+<?php $sf_context->getResponse()->setTitle('blog - '.sfConfig::get('app_main_title')) ?>
 
 <ul id="content-tabs" class="float-container tools-container">
   <li class="current">
@@ -42,9 +42,9 @@
   </div>
 </div>
 
-<?php slot('blog_breadcrumbs') ?>
+<?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  Blog
+  blog
 <?php end_slot() ?>
 
 

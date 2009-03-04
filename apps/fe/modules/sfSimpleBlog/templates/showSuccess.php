@@ -2,7 +2,7 @@
 <?php if(sfConfig::get('app_sfSimpleBlog_use_ajax', true)): ?>
   <?php use_javascript(sfConfig::get('sf_prototype_web_dir') . '/js/prototype.js') ?>
 <?php endif; ?>
-<?php $sf_context->getResponse()->setTitle(sfConfig::get('app_sfSimpleBlog_title', 'How is life on earth?').' > '.$post->getTitle()) ?>
+<?php $sf_context->getResponse()->setTitle($post->getTitle().' - blog - '.sfConfig::get('app_main_title')) ?>
 
 <ul id="content-tabs" class="float-container tools-container">
   <li class="current">
@@ -49,7 +49,7 @@
   </div>
 </div>
 
-<?php slot('blog_breadcrumbs') ?>
+<?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
   <?php echo link_to('blog', '@blog_index') ?> / 
   <?php echo $post->getTitle() ?>
