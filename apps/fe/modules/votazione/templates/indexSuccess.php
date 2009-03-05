@@ -53,23 +53,37 @@
      
       
       <!-- DESCRIZIONE -->
-	<h5 class="description">descrivi questa votazione:</h5>
-	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative a questa votazione</p>
-	<div class="help-box float-container" style="display: none;">
-		<div class="inner float-container">
-			<a href="#" class="ico-close action">chiudi</a><h5>come si usa il micro-wiki ?</h5>
+    	<h5 class="description">descrivi questa votazione:</h5>
+    	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative a questa votazione</p>
+    	<div class="help-box float-container" style="display: none;">
+    		<div class="inner float-container">
+    			<a href="#" class="ico-close action">chiudi</a><h5>come si usa il micro-wiki ?</h5>
 
-			<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per.</p>
-		</div>
-	</div>
+    			<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per.</p>
+    		</div>
+    	</div>
+	
+	
       <!-- partial per la descrizione wiki -->	
-      qui va incluso il wiki
+      <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
       
-      <br />
-       <ul class="presentation float-container">
-        <li><h6>Ci sono <a href="#commenti">2 commenti</a> degli utenti (aggiungi anche il <a href="#">tuo commento</a>)</h6></li>
-       </ul> 
-      
+      <!-- blocco dei commenti -->
+      <div id="comments-block">
+        <hr />
+    
+        <a href="#top" class="go-top">torna su</a>
+        <a name="comments"></a>
+        <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>
+    
+        <hr/>
+    
+        <?php include_component('deppCommenting', 'addComment', 
+                                array('content' => $votazione,
+                                      'read_only' => sfConfig::get('app_comments_enabled', false),
+                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+    
+        <hr/>
+      </div>      
     
     
       

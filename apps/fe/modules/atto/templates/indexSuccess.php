@@ -65,15 +65,15 @@
       
       
       <!-- DESCRIZIONE -->
-	<h5 class="description">descrivi questo atto:</h5>
-	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative al disegno di legge</p>
-	<div class="help-box float-container" style="display: none;">
-		<div class="inner float-container">
-			<a href="#" class="ico-close action">chiudi</a><h5>come si usa il micro-wiki ?</h5>
+    	<h5 class="description">descrivi questo atto:</h5>
+    	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative al disegno di legge</p>
+    	<div class="help-box float-container" style="display: none;">
+    		<div class="inner float-container">
+    			<a href="#" class="ico-close action">chiudi</a><h5>come si usa il micro-wiki ?</h5>
 
-			<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per.</p>
-		</div>
-	</div>
+    			<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per.</p>
+    		</div>
+    	</div>
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId() )) ?>
       

@@ -12,6 +12,9 @@ class BasedeppCommentingComponents extends sfComponents
     // retrieve contentPeer class from content
     $this->content_peer = get_class($this->content) . "Peer";
     
+    // embed stylesheets
+	  $response = sfContext::getInstance()->getResponse();
+    $response->addStylesheet('/deppPropelActAsCommentableBehaviorPlugin/css/depp_commenting.css');
 
     
     if (!sfContext::getInstance()->getUser()->isAuthenticated() &&

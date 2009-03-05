@@ -1,0 +1,7 @@
+/* VOTAZIONE COMMENTS */
+form#comment-form p { margin-top: 5px;}
+form#comment-form input, form#comment-form textarea {border: 1px solid darkgrey; font-size: 13px;}
+form#comment-form input { width: 200px; height: 20px; }
+.form_error { color: darkred;}
+
+
