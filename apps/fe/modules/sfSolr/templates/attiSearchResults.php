@@ -7,7 +7,7 @@
   <div id="main">
     <div class="W25_100 float-right">
       <?php 
-        echo include_partial('sfLucene/specialized_controls', 
+        echo include_partial('sfSolr/specialized_controls', 
                             array('query' => $query,
                                   'type'  => $type,
                                   'title' => $title));
