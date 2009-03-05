@@ -44,7 +44,7 @@
 			
 			//]]>
 			</script>
-			<div class="evidence-box bg-light-cyan pad10">
+			<div id="wmd-preview" class="evidence-box bg-light-cyan pad10">
 			  <p>
 			     <script type="text/javascript" language="javascript" src="/js/wmd/wmd.js"></script>
 			  </p>

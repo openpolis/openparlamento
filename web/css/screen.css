@@ -122,6 +122,58 @@ thead th { font-size: 12px; vertical-align: top; }
 .wiki-box p { margin-bottom: 1em; }
 .wiki-box-edit  { display: block; float: right; height: 20px; background-color:#fff; position: relative; margin-right: 20px; border: 1px solid #e3e4ea; padding: 3px 26px 0 26px; margin-bottom: -1px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 
+#wmd-preview h1, .wiki-box-content h1 { font-size: 28px;}
+#wmd-preview h2, .wiki-box-content h2 { font-size: 24px;}
+#wmd-preview h3, .wiki-box-content h3 { font-size: 20px;}
+#wmd-preview h4, .wiki-box-content h4 { font-size: 16px;}
+
+#wmd-preview ol, #wmd-preview ul, .wiki-box-content ol, .wiki-box-content ul { margin-left: 1em;}
+
+#wmd-preview ul, .wiki-box-content ul {
+  margin-left:0em;
+  padding-left:0.2em;
+  margin-bottom:1em;
+}
+#wmd-preview ul li, .wiki-box-content ul li {
+  background:url(../images/bullet.gif) 0em 0.5em no-repeat; /* change background em accordingly */
+  padding-left: 0.8em;
+  list-style: none;
+}
+ 
+#wmd-preview ol li, #wmd-preview ul li,
+.wiki-box-content ol li, .wiki-box-content ul li { margin-bottom:0.5em; }
+ 
+#wmd-preview ol, .wiki-box-content ol {
+  margin-left:1.5em;
+  padding-left:0px;
+}
+#wmd-preview ol li, .wiki-box-content ol li {
+  list-style:decimal;
+  background-image:none;
+  padding-left:0em;
+}  
+/*
+# Primo capitolo #
+## Primo paragrafo
+### Prima sezione
+#### Prima sotto-sezione
+
+Questa è la prima sottosezione ...
+
+1. Primo elemento
+2. Secondo elemento
+
+Altro
+
+- primo
+  - primo primo
+  - primo secondo
+  - primo terzo
+- secondo
+- terzo
+*/
+
+
 
 /*
  * EVIDENCE-BOX
