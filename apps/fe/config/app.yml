@@ -141,4 +141,4 @@ all:
     "convertito":  "63"
 
   mail_per_redazione:
-    site_address: '<?php echo "http://".$site_url ?>'
+    site_address: '<?php echo "http://".$site_url."/" ?>'

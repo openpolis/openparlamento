@@ -21,7 +21,7 @@
   <?php if (!$sf_user->isAuthenticated() && sfConfig::get('app_sfSimpleBlog_comment_automoderation', 'first_post') === 'captcha'): ?>
     <?php echo form_error('captcha') ?>
     <p>
-      <?php echo image_tag('star.png', array('alt'=>'*')) ?>
+      
       <?php echo input_tag('captcha', $sf_request->hasErrors()?$sf_params->get('captcha'):'', 'id= class=text'); ?>
       <label for="mail">scrivi qui le cifre che leggi sotto</label>
     </p>    

@@ -9,6 +9,7 @@
 </ul>
 
 <div id="content" class="tabbed float-container">
+<a name="top"></a>
   <div id="main">
   
    <div class="W25_100 float-right">
@@ -33,6 +34,7 @@
    </div>
     
    <div class="W73_100 float-left"> 
+  
       <p class="synopsis">
         <?php echo $votazione->getTitolo() ?>            
       </p>
@@ -66,26 +68,7 @@
 	
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
-      
-      <!-- blocco dei commenti -->
-      <div id="comments-block">
-        <hr />
-    
-        <a href="#top" class="go-top">torna su</a>
-        <a name="comments"></a>
-        <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>
-    
-        <hr/>
-    
-        <?php include_component('deppCommenting', 'addComment', 
-                                array('content' => $votazione,
-                                      'read_only' => sfConfig::get('app_comments_enabled', false),
-                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
-    
-        <hr/>
-      </div>      
-    
-    
+      <?php include_partial('deppCommenting/commentsNumber', array('content' => $votazione)) ?>
       
    
       <h5 class="subsection">come hanno votato i gruppi</h5>
@@ -117,9 +100,22 @@
        <div class="W56_100 float-left">
       <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
-      
-      <a name="commenti"></a>
-      <h5 class="description">ci sono 2 commenti degli utenti:</h5>
+       
+      <!-- blocco dei commenti -->
+       <a name="comment"></a>
+      <div id="comments-block">
+        <a name="comments"></a>
+        <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>
+    
+        <hr/>
+    
+        <?php include_component('deppCommenting', 'addComment', 
+                                array('content' => $votazione,
+                                      'read_only' => sfConfig::get('app_comments_enabled', false),
+                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+    
+        <hr/>
+      </div>      
       
       
    </div>
