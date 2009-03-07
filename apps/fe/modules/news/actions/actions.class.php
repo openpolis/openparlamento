@@ -97,7 +97,6 @@ class newsActions extends sfActions
   }
 
   
-  
   public function executePolitician()
   {
 

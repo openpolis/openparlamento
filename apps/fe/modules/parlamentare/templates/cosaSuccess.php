@@ -25,9 +25,9 @@
   		</div>
       
       <?php echo include_partial('news/newsbox', 
-                                 array('title' => 'Disegni di legge', 
-                                       'all_news_url' => '@news_attiDisegni', 
-                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DDL_TIPO_IDS, 10))); ?>
+                                 array('title' => 'Parlamentare', 
+                                       'all_news_url' => '@news_parlamentare?id='.$parlamentare->getId(), 
+                                       'news'   => NewsPeer::getNewsForItem('OppPolitico', $parlamentare->getId(), 10))); ?>
     </div>
 			
 	  <div class="W73_100 float-left">

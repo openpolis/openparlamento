@@ -8,7 +8,7 @@
         <h6>Collegamenti</h6>
         <div class="float-container">
           <ul>
-            <li><?php echo link_to('pagina dell\'atto ', '#') ?></li>
+            <li><?php echo link_to('pagina dell\'atto ', '@singolo_atto?id='.$act_id) ?></li>
             <?php if ($sf_user->isAuthenticated()): ?>
               <li><?php echo link_to('DDL e Atti monitorati', 'monitoring/acts') ?></li>              
             <?php endif ?>

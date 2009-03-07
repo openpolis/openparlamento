@@ -8,7 +8,7 @@
         <h6>Collegamenti</h6>
         <div class="float-container">
           <ul>
-            <li><?php echo link_to('pagina di ' . $politician, '#') ?></li>
+            <li><?php echo link_to('pagina di ' . $politician, '@parlamentare?id='.$politician_id) ?></li>
             <?php if ($sf_user->isAuthenticated()): ?>
               <li><?php echo link_to('i parlamentari monitorati', 'monitoring/politicians') ?></li>              
             <?php endif ?>
@@ -41,7 +41,7 @@
       <?php endforeach; ?>
     </ul>
 
-    <?php echo pager_navigation($pager, 'news/politician?id='.$politician_id, true, 7) ?>
+    <?php echo pager_navigation($pager, '@news_parlamentare?id='.$politician_id, true, 7) ?>
 
   </div>
 </div>

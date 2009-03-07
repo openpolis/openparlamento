@@ -13,6 +13,12 @@
     
     <div class="W25_100 float-right">
       <?php echo include_component('atto', 'monitor_n_vote', array('atto' => $atto)); ?>
+
+      <?php echo include_partial('news/newsbox', 
+                                 array('title' => 'Atto', 
+                                       'all_news_url' => '@news_atto?id='.$atto->getId(), 
+                                       'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10))); 
+      ?>
     </div>
     
     <div class="W73_100 float-left">

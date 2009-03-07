@@ -308,7 +308,7 @@ class NewsPeer extends BaseNewsPeer
   }
 
   /**
-   * build the criteria to extract the news for lis oc acts specified
+   * build the criteria to extract the news for list of acts specified
    * through the $atto_type_ids parameter
    *
    * @param array or int   $atto_type_ids - single id or array of ids of opp_tipo_atto 
@@ -330,6 +330,7 @@ class NewsPeer extends BaseNewsPeer
     $c->addDescendingOrderByColumn(self::DATE);
     return $c;    
   }
+
 
 
 
