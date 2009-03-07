@@ -331,6 +331,14 @@ class OppAtto extends BaseOppAtto
     return 'errore';
   }
   
+  public function getTitolo()
+  {
+    if ($this->getTitoloAggiuntivo() && $this->getTitoloAggiuntivo() != '')
+      return $this->getTitoloAggiuntivo() . ' - ' . parent::getTitolo();
+    else
+      return parent::getTitolo();
+  }
+  
   public function getTitoloCompleto()
   {
     return Text::denominazioneAtto($this, 'list');

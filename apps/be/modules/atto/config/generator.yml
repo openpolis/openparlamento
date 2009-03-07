@@ -1,0 +1,41 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppAtto
+    theme:            default
+
+    fields:
+      titolo:            { name: 'Titolo originale' }
+      titolo_aggiuntivo: { name: 'Titolo aggiuntivo' }
+      numfase:           { name: 'Numero fase' }
+      created_at:        { name: 'Data', params: "date_format='dd/MM/yy'"}
+      
+    list:
+      title:           "Elenco degli atti"
+      layout:          stacked
+      display:         [_data, ramo, numfase, titolo, titolo_aggiuntivo]
+      params:          |
+         (%%_data%%) 
+         %%ramo%%.%%numfase%% - <strong>%%=titolo%%</strong><br/>
+         Titolo aggiuntivo: <strong>%%titolo_aggiuntivo%%</strong>
+      filters:         [titolo, ramo, numfase]
+      object_actions:
+        _edit:         -
+        _delete:       none
+      actions:
+        _create:      none
+      
+      
+    edit: 
+      title:           "Modifica titolo aggiuntivo atto %%titolo%%"
+      display:        
+        "Atto":         [ramo, numfase, titolo, titolo_aggiuntivo]
+      fields: 
+        ramo:              { params: "disabled=true" }
+        numfase:           { name: "Numero fase", params: "disabled=true" }
+        titolo:            { name: "Titolo originale", params: "disabled=true size=60x5" }
+        titolo_aggiuntivo: { name: 'Titolo aggiuntivo', params: "size=60x5" }
+      actions:
+        _list:          -
+        _save:          -
+        _delete:        none

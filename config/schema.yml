@@ -12,7 +12,7 @@ propel:
     id:
     parlamento_id:      { type: integer }
     tipo_atto_id:       { type: integer, required: true, index: true, foreignTable: opp_tipo_atto, foreignReference: id, onDelete: CASCADE }
-    ramo:               { type: longvarchar }
+    ramo:               { type: char, size: 1 }
     numfase:            { type: varchar(255) }
     legislatura:        { type: integer }
     data_pres:          { type: date, index: true }

@@ -50,3 +50,6 @@ ul#main_menu li.selected {color: #254B71; background-color: #B5BEC7; border: 1px
 #sf_admin_container select.sf_admin_multiple-selected {
   width:30em!important;
 }
+
+#sf_admin_content input[disabled='disabled'], 
+#sf_admin_content textarea[disabled='disabled'] { background-color: #eee; }
