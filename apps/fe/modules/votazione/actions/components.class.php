@@ -172,8 +172,8 @@ class votazioneComponents extends sfComponents
    
    
    }
+   
         
-
 }
 
 ?>

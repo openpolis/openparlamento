@@ -4,7 +4,6 @@
   <thead>
     <tr>
       <th scope="col"><br />sigla/titolo:</th>
-      <th scope="col"><br />data voto:</th>
       <th scope="col">ramo<br />parlamentare:</th>
       <th scope="col">esito in<br />Parlamento:</th>
       <th scope="col">voti di<br />scarto:</th>
@@ -15,8 +14,13 @@
   <tbody>
     <?php foreach ($pager->getResults() as $votazione): ?>
       <tr>
-        <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></td>
-        <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>
+        <th scope="row">
+          <p class="content-meta">
+            <span class="date"><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></span>
+          </p>
+          <p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p>
+         </p> 
+       </th>
         <td><p><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></p></td>
 	    <td>
 		  <?php if($votazione->getEsito()=='APPROVATA'): ?>
