@@ -18,6 +18,7 @@ propel:
     data_pres:          { type: date, index: true }
     data_agg:           { type: date, index: true }
     titolo:             { type: longvarchar }
+    titolo_aggiuntivo:  { type: longvarchar }
     iniziativa:         { type: integer }
     stato_cod:          { type: char, size: 2, index: multiple }
     stato_fase:         { type: varchar(255) }
@@ -168,7 +169,6 @@ propel:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 
     nome:               { type: varchar(30) }
     cognome:            { type: varchar(30) }
-    picture:            { type: varbinary }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     
   opp_sede:
@@ -359,3 +359,8 @@ propel:
     created_at:
     monitorable_id:      { type: integer, required: true, index: true, foreignTable: sf_test_monitorable, foreignReference: id, onDelete: CASCADE }
     
+  sf_test_images:
+    _attributes:       { phpName: sfTestImages }
+    id:
+    picture:           { type: varbinary }
+

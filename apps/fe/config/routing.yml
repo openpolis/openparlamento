@@ -159,7 +159,7 @@ parlamentare_voti:
 parlamentare_interventi:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
-
+  
 get_logged_user:
   url: /get_logged_user
   param: { module: default, action: getLoggedUser }

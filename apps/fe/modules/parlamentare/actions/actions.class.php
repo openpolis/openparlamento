@@ -249,7 +249,8 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-       if ($this->ramo=='camera')
+
+    if ($this->ramo=='camera')
        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
     else
        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
@@ -492,7 +493,6 @@ class parlamentareActions extends sfActions
     $this->addSortCriteria($c);
     $this->addFiltersCriteria($c);
     $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
-    // $c->setLimit(100);
 
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
 
@@ -525,6 +525,31 @@ class parlamentareActions extends sfActions
 	 
     $this->parlamentari_decaduti = OppCaricaPeer::doSelectRS($c);
 	      
+  }
+
+
+	public function executePicture()
+	{
+	  $pol = OppPoliticoPeer::retrieveByPk($this->getRequestParameter('id'));
+	  if (!$pol instanceof OppPolitico)
+	    $picture = '';
+	  else
+  	  $picture = $pol->getPicture();
+    $this->response->setContentType('image/jpeg');
+    $this->response->setContent($picture);
+    return sfView::NONE;
+  }
+
+	public function executeThumb()
+	{
+	  $pol = OppPoliticoPeer::retrieveByPk($this->getRequestParameter('id'));
+	  if (!$pol instanceof OppPolitico)
+	    $picture = '';
+	  else
+  	  $picture = $pol->getThumb();
+    $this->response->setContentType('image/jpeg');
+    $this->response->setContent($picture);
+    return sfView::NONE;
   }
 
   /**

@@ -81,10 +81,11 @@
 		
   		<div class="W73_100 float-left" style="width:60%">
   			<div class="float-container">
-  			  <?php echo image_tag("http://www.openpolis.it/politician/picture?content_id=".$parlamentare->getId(),
-  			                       array('class' => 'portrait-91x126 float-left', 
-  			                             'alt' => $parlamentare->getNome() . ' ' . $parlamentare->getCognome(),
-  			                             'width' => '91', 'height' => '126')) ?>
+  			  <?php echo image_tag(OppPoliticoPeer::getPictureUrl($parlamentare->getId()), 
+                               array('class' => 'portrait-91x126 float-left', 
+   			                             'alt' => $parlamentare->getNome() . ' ' . $parlamentare->getCognome(),
+   			                             'width' => '91', 'height' => '126')) ?>	
+          
   				<div class="politician-more-info">
   					<p><label>gruppo:</label> 
   					
@@ -236,8 +237,7 @@
 	  </div>
 
 
-    <div class="clear-both"/>			
-    </div>
+    <div class="clear-both"></div>
 		
   </div>
 </div>

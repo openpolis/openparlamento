@@ -16,8 +16,8 @@
       <tr>
         <th scope="row">
           <p class="politician-id">
-           <!-- <img width="40" height="55" src="http://openpolis.depplab.net/politician/picture?content_id=<?php echo $parlamentari->getInt(2) ?>" />  --> 
-            <?php echo image_tag('no-avatar40.png') ?>	
+            <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 
+                                 'icona parlamentare') ?>	
             <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
             <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>  	
 	        <?php foreach($gruppi as $nome => $gruppo): ?>
