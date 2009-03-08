@@ -33,7 +33,7 @@
         
         <td>
 		  <?php if($parlamentari->getInt(10)!='-1'): ?>
-                   <?php printf('<b>%01.2f</b><br /><span style="font-size:11px; color:#888888">(%d° su %d)</span>', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?> 
+                   <?php printf('<b>%01.2f</b><br /><span>(%d° su %d)</span>', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?> 
                   <?php else: ?>
 		    <?php printf('<b>%01.2f</b> ', $parlamentari->getFloat(9)) ?>  
 		  <?php endif; ?>
@@ -42,33 +42,31 @@
         <td>
           <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
             <?php printf('<b>%01.2f</b>%%', number_format($parlamentari->getInt(12)/$parlamentari->getInt(6) *100,2), $parlamentari->getInt(12), $parlamentari->getInt(6)) ?>
-              <!--  <?php printf('<b>%01.2f</b>%% (%d su %d)', number_format($parlamentari->getInt(12)/$parlamentari->getInt(6) *100,2), $parlamentari->getInt(12), $parlamentari->getInt(6)) ?> -->
 	      <?php else: ?>
 	        <?php print('<b>0</b>% ') ?>
-	      <!--   <?php print('<b>0</b>% (0 su 0)') ?> -->
 	      <?php endif; ?>
         </td>    
         
 	<?php $num_votazioni = $parlamentari->getInt(6) + $parlamentari->getInt(7) + $parlamentari->getInt(8) ?>
         <?php if($num_votazioni==0): ?>
 		  <td class="evident">
-		    <?php print('<b>0</b>% <br /><span style="font-size:11px; color:#888888">(0 su 0)</span>') ?>
+		    <?php print('<b>0</b>% <br /><span>(0 su 0)</span>') ?>
 		  </td>
 		  <td class="evident">
-		    <?php print('<b>0</b>% <br /><span style="font-size:11px; color:#888888">(0 su 0)</span>') ?>
+		    <?php print('<b>0</b>% <br /><span>(0 su 0)</span>') ?>
 		  </td>
 		  <td class="evident">
-		    <?php print('<b>0</b>% <br /><span style="font-size:11px; color:#888888">(0 su 0)</span>') ?>
+		    <?php print('<b>0</b>% <br /><span>(0 su 0)</span>') ?>
 		  </td>
 		<?php else: ?>
           <td class="evident">
-            <?php printf('<b>%01.0f</b>%% <br /><span style="font-size:11px; color:#888888">(%d su %d)</span>', number_format($parlamentari->getInt(6)/$num_votazioni *100,2), $parlamentari->getInt(6), $num_votazioni) ?>
+            <?php printf('<b>%01.0f</b>%% <br /><span>(%d su %d)</span>', number_format($parlamentari->getInt(6)/$num_votazioni *100,2), $parlamentari->getInt(6), $num_votazioni) ?>
           </td>
           <td class="evident">
-            <?php printf('<b>%01.0f</b>%% <br /><span style="font-size:11px; color:#888888">(%d su %d)</span>', number_format($parlamentari->getInt(7)/$num_votazioni *100,2), $parlamentari->getInt(7), $num_votazioni) ?>
+            <?php printf('<b>%01.0f</b>%% <br /><span>(%d su %d)</span>', number_format($parlamentari->getInt(7)/$num_votazioni *100,2), $parlamentari->getInt(7), $num_votazioni) ?>
           </td>
           <td class="evident">
-            <?php printf('<b>%01.0f</b>%% <br /><span style="font-size:11px; color:#888888">(%d su %d)</span>', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
+            <?php printf('<b>%01.0f</b>%% <br /><span>(%d su %d)</span>', number_format($parlamentari->getInt(8)/$num_votazioni *100,2), $parlamentari->getInt(8), $num_votazioni) ?>
           </td>
         <?php endif; ?>
         <?php if($parlamentari->getString(5)!=""): ?>
