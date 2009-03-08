@@ -23,7 +23,8 @@ class parlamentareActions extends sfActions
 	  $this->forward404Unless($this->parlamentare); 
 	  $this->carica = $this->parlamentare->getCaricaDepSenCorrente();
   }
-
+  
+  
   public function executeCosa()
   {
     $this->_getAndCheckParlamentare(); 
@@ -676,6 +677,83 @@ class parlamentareActions extends sfActions
       }
     }
   }
+  
+  public function executeComparaParlamentari()
+  {
+      if ($this->hasRequestParameter('id1') && $this->hasRequestParameter('id2'))
+       {
+        if ($this->getRequestParameter('id1')!=0 && $this->getRequestParameter('id2')!=0)
+         {
+      
+	  $this->session = $this->getUser();
+          $this->query = $this->getRequestParameter('query', '');
+          
+	  if ($this->hasRequestParameter('itemsperpage'))
+          $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+          $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+         
+          $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
+          
+          
+
+	  
+          $c1= new Criteria();
+	  $c1->add(OppVotazioneHasCaricaPeer::VOTO,array('Favorevole','Contrario','Astenuto'),Criteria::IN);
+	  $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,array($this->getRequestParameter('id1'),$this->getRequestParameter('id2')),Criteria::IN);
+	  $results=OppVotazioneHasCaricaPeer::doSelect($c1);
+	  
+	  $arr1=array();
+	  $arr2=array();
+	  foreach ($results as $result) {
+		if ($result->getCaricaId()==$this->getRequestParameter('id1'))
+		    $arr1[$result->getVotazioneId()]=$result->getVoto();
+		else
+		    $arr2[$result->getVotazioneId()]=$result->getVoto();    
+	  }
+	
+ 	  $this->compare = count(array_intersect_assoc($arr1, $arr2));
+ 	  $this->compare_voti=array_keys(array_intersect_key($arr1,$arr2));
+ 	  $this->numero_voti=count($this->compare_voti); 
+ 	  
+ 	  $c= new Criteria();
+ 	  $c->add(OppVotazionePeer::ID,$this->compare_voti,Criteria::IN);
+  	  $this->pager->setCriteria($c);
+          $this->pager->setPage($this->getRequestParameter('page', 1));
+          $this->pager->setPeerMethod('doSelect'); 
+          $this->pager->init($c);
+          	
+ 	  $this->arr1=$arr1;
+ 	  $this->arr2=$arr2;
+ 	  
+ 	  $c1= new Criteria();
+ 	  $c1->add(OppCaricaPeer::ID,$this->getRequestParameter('id1'));
+ 	  $parlamentare1=OppCaricaPeer::doSelectOne($c1);
+ 	  if ($parlamentare1) {
+ 	  	$this->parlamentare1=$parlamentare1;
+ 	  	$this->assenze1=round($parlamentare1->getAssenze()*100/($parlamentare1->getPresenze()+$parlamentare1->getAssenze()+$parlamentare1->getMissioni()),1);
+ 	  }
+ 	  
+ 	  $c1= new Criteria();
+ 	  $c1->add(OppCaricaPeer::ID,$this->getRequestParameter('id2'));
+ 	  $parlamentare2=OppCaricaPeer::doSelectOne($c1);
+ 	  if ($parlamentare2) {
+ 	  	$this->parlamentare2=$parlamentare2;
+ 	  	$this->assenze2=round($parlamentare2->getAssenze()*100/($parlamentare2->getPresenze()+$parlamentare2->getAssenze()+$parlamentare2->getMissioni()),1);
+ 	  }	
+ 	  
+	  
+ 	  $this->compara_ok='1';
+ 	  
+ 	  
+ 	  
+ 	}
+ 	else $this->compara_ok='0';
+ 	
+      } 
+  }
+  
+  
 }
 
 ?>

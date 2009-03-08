@@ -137,7 +137,7 @@ votazioni:
 votazione:
   url:   /votazione/:id
   param: { module: votazione, action: index }
-
+ 
 
 parlamentariSearch:
   url: /parlamentariSearch/*
@@ -162,7 +162,11 @@ parlamentare_voti:
 parlamentare_interventi:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
-  
+
+comparaParlamentari:
+  url:   /parlamentare/comparaParlamentari/:id1/:id2/*
+  param: { module: parlamentare, action: comparaParlamentari, id1: 0, id2: 0, display: false }    
+
 get_logged_user:
   url: /get_logged_user
   param: { module: default, action: getLoggedUser }

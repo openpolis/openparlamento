@@ -127,4 +127,42 @@ class parlamentareComponents extends sfComponents
     
     $this->atti_presentati = $atti;
   }
+  
+     public function executeVotiComparati()
+  {
+    
+       $perc=$this->compare*100/$this->numero_voti;
+       $this->perc=round($perc,1);
+       $x=100/max($this->parlamentare1->getPresenze(),$this->parlamentare2->getPresenze());
+       
+       $this->gchartVoti="http://chart.apis.google.com/chart?cht=v&chd=t:100,100,0,".$perc."&chs=250x100&chdl=".$this->parlamentare1->getOppPolitico()->getCognome()."|".$this->parlamentare2->getOppPolitico()->getCognome();   
+       
+         
+         
+       
+  }
+  
+  public function executeTendinaDeputati()
+    {  
+    
+        $c = new Criteria();
+	$c->clearSelectColumns();
+	$c->addSelectColumn(OppCaricaPeer::ID);
+	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
+	$c->addSelectColumn(OppPoliticoPeer::NOME);   
+        $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+        $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+        $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+        $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL); 
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+        $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+        
+    }
+      
+ public function executeChooseParlamentari()
+  {
+    $parlamentare1 = $this->getRequestParameter('parlamentare1');
+    $parlamentare2 = $this->getRequestParameter('parlamentare2');
+    $this->redirect('votazione/list');
+  }
 }

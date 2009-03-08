@@ -228,8 +228,8 @@
 
 
 
-  			<h5 class="subsection-alt">Atti presentati</h5>
-        <?php include_component('parlamentare', 'attiPresentati', 
+  			
+              <?php include_component('parlamentare', 'attiPresentati', 
                                 array('parlamentare' => $parlamentare)) ?>
 
 		 
