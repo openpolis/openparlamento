@@ -14,7 +14,36 @@ blog_tag:
   url: /blog/tag/:tag
   param: { module: sfSimpleBlog, action: showByTag }
 
+
+feed:
+  url: /feed/
+  param: { module: feed, action: lastGeneric }
+
+feed_disegni:
+  url: /feed/disegni
+  param: { module: feed, action: lastDisegni }
+
+feed_decreti:
+  url: /feed/decreti
+  param: { module: feed, action: lastDecreti }
+
+feed_decretiLegislativi:
+  url: /feed/decretiLegislativi
+  param: { module: feed, action: lastDecretiLegislativi }
+
+feed_attiNonLegislativi:
+  url: /feed/attiNonLegislativi
+  param: { module: feed, action: lastAttiNonLegislativi }
   
+feed_politico:
+  url: /feed/politico/:id
+  param: { module: feed, action: lastPolitico }
+
+feed_atto:
+  url: /feed/atto/:id
+  param: { module: feed, action: lastAtto }
+
+
 monitoring_news:
   url: /monitoring_news/:user_token
   param: { module: monitoring, action: news}

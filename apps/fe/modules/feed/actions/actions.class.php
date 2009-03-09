@@ -10,13 +10,40 @@
  */
 class feedActions extends sfActions
 {
-  /**
-   * Executes index action
-   *
-   */
-  public function executeIndex()
+
+
+  public function executeLastAtto()
   {
-    $this->forward('default', 'module');
+    $id = $this->getRequestParameter('id');
+    $atto = OppAttoPeer::retrieveByPk($id);
+    $this->forward404Unless($atto instanceof OppAtto);
+
+    $feed = $this->_make_feed_from_pager(
+      'Ultime per ' . Text::denominazioneAttoShort($atto), 
+      '@singolo_atto?id='.$id, 
+      $this->_get_newspager_from_criteria(
+        NewsPeer::getNewsForItemCriteria('OppAtto', $id)
+      )
+    );
+    $this->_send_output($feed);
+    return sfView::NONE;    
+  }
+  
+  public function executeLastPolitico()
+  {
+    $id = $this->getRequestParameter('id');
+    $politico = OppPoliticoPeer::retrieveByPk($id);
+    $this->forward404Unless($politico instanceof OppPolitico);
+
+    $feed = $this->_make_feed_from_pager(
+      'Ultime per ' . $politico, 
+      '@parlamentare?id='.$id, 
+      $this->_get_newspager_from_criteria(
+        NewsPeer::getNewsForItemCriteria('OppPolitico', $id)
+      )
+    );
+    $this->_send_output($feed);
+    return sfView::NONE;    
   }
   
   public function executeLastGeneric()

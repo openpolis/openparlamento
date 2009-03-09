@@ -20,7 +20,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Atti non legislativi', 
                                        'all_news_url' => '@news_attiNonLegislativi',
-                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS, 10))); ?>
+                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS, 10),
+                                       'rss_link' => '@feed_attiNonLegislativi')); ?>
 
 	  </div>
 

@@ -17,7 +17,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Atto', 
                                        'all_news_url' => '@news_atto?id='.$atto->getId(), 
-                                       'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10))); 
+                                       'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
+                                       'rss_link' => '@feed_atto?id='.$atto->getId())); 
       ?>
     </div>
     

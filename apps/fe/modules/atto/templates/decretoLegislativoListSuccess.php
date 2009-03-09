@@ -19,7 +19,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legislativi', 
                                        'all_news_url' => '@news_attiDecretiLegislativi',
-                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS, 10))); ?>
+                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS, 10),
+                                       'rss_link' => '@feed_decretiLegislativi')); ?>
 	  </div>
     <div class="W73_100 float-left">
       <?php include_partial('decretoLegislativoWiki') ?>

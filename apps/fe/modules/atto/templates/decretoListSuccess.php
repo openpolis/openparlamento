@@ -21,7 +21,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legge', 
                                        'all_news_url' => '@news_attiDecreti',
-                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DECRETI_TIPO_IDS, 10))); ?>
+                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DECRETI_TIPO_IDS, 10),
+                                       'rss_link' => '@feed_decreti')); ?>
 	  </div>
 
     <div class="W73_100 float-left">

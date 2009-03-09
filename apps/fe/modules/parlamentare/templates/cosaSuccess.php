@@ -27,7 +27,8 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Parlamentare', 
                                        'all_news_url' => '@news_parlamentare?id='.$parlamentare->getId(), 
-                                       'news'   => NewsPeer::getNewsForItem('OppPolitico', $parlamentare->getId(), 10))); ?>
+                                       'news'   => NewsPeer::getNewsForItem('OppPolitico', $parlamentare->getId(), 10),
+                                       'rss_link' => '@feed_politico?id='.$parlamentare->getId())); ?>
     </div>
 			
 	  <div class="W73_100 float-left">
