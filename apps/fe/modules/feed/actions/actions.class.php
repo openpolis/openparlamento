@@ -105,6 +105,7 @@ class feedActions extends sfActions
 
   protected function _make_feed_from_pager($title, $link, $pager)
   {
+    setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
     $feed = sfFeedPeer::newInstance('rss201');
@@ -118,7 +119,7 @@ class feedActions extends sfActions
     foreach ($pager->getGroupedResults() as $date_ts => $news)
     {
       $item = new sfFeedItem( array(
-        'title' => date("d/m/Y", $date_ts),
+        'title' => 'Notizie del ' . strftime("%d %B", $date_ts),
         'link'  => $link,
         'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
