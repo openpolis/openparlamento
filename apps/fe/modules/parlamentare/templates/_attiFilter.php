@@ -31,7 +31,6 @@
                                                    '9' => 'risoluzione conclusiva',
                                                    '10' => 'odg - in assemblea',
                                                    '11' => 'odg - in commissione',
-                                                   '13' => 'comunicato del governo',
                                                    '14' => 'audizione'), $selected_act_type)) ?>
 
     <?php echo select_tag('filter_act_firma', 

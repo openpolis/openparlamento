@@ -41,15 +41,15 @@ removeTagFromMyMonitoredTags:
 
 
 news_tag:
-  url: /news_tag/:name
+  url: /news_tag/:name/*
   param: { module: news, action: tag }
 
 news_atto:
-  url:  /news_atto/:id
+  url:  /news_atto/:id/*
   param: { module: news, action: act }
 
 news_parlamentare:
-  url:  /news_parlamentare/:id
+  url:  /news_parlamentare/:id/*
   param: { module: news, action: politician }
 
 news_attiDisegni:
