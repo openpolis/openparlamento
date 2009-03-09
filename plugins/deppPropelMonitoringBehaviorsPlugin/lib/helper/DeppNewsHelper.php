@@ -25,6 +25,7 @@ function news_date($newsdate)
 }
 
 
+
 function link_to_in_mail($name = '', $internal_uri = '', $options = array())
 {
 
@@ -41,6 +42,26 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
   $url_in_mail = preg_replace('/.*\/symfony\/(.*)/i',  'http://'.$site_url.'/$1', $url);
   return "<a href=\"$url_in_mail\">$name</a>";
 }
+
+/**
+ * torna l'elenco ul/li delle news passate in argomento
+ *
+ * @param string $news array di oggetti News
+ * @return string html
+ * @author Guglielmo Celata
+ */
+function news_list($news)
+{
+  $news_list = '';
+  
+  foreach ($news as $n)
+  {
+    $news_list .= content_tag('li', news_text($n));
+  }
+  
+  return content_tag('ul', $news_list, array('class' => 'square-bullet')); 
+}
+
 
 function news_text($news)
 {

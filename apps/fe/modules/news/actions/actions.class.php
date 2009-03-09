@@ -21,6 +21,8 @@ class newsActions extends sfActions
   
   public function executeHomeAll()
   {
+    $this->session = $this->getUser();
+    
     $this->n_news = NewsPeer::countHomeNews();
 
     $c = NewsPeer::getHomeNewsCriteria();
@@ -30,11 +32,11 @@ class newsActions extends sfActions
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
-    $pager = new sfPropelPager('News', $itemsperpage);
+    $pager = new deppNewsPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));
     $pager->init();
-    $this->pager = $pager;
+    $this->pager = $pager;    
   }
 
 

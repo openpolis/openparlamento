@@ -39,7 +39,10 @@ removeTagFromMyMonitoredTags:
   url: /removeTagFromMyMonitoredTags/:name
   param: { module: monitoring, action: removeTagFromMyMonitoredTags }
 
-
+news_home:
+  url: /news_home/*
+  param: { module: news, action: homeAll }
+  
 news_tag:
   url: /news_tag/:name/*
   param: { module: news, action: tag }
