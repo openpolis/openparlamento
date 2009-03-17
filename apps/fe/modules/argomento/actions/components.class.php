@@ -96,6 +96,7 @@ class argomentoComponents extends sfComponents
     arsort($politici);
 
     // slice dell'array, se specificata l'opzione limit
+    $this->n_remaining_politici = 0;
     if (isset($options['limit']) && count($politici) > $options['limit'])
     {
       $this->n_remaining_politici = count($politici) - $options['limit'];
@@ -149,6 +150,7 @@ class argomentoComponents extends sfComponents
     arsort($politici);
 
     // slice dell'array, se specificata l'opzione limit
+    $this->n_remaining_politici = 0;
     if (isset($options['limit']) && count($politici) > $options['limit'])
     {
       $this->n_remaining_politici = count($politici) - $options['limit'];
@@ -194,7 +196,7 @@ class argomentoComponents extends sfComponents
     $query = sprintf($query, OppTipoAttoPeer::DESCRIZIONE, OppTipoAttoPeer::ID, TaggingPeer::ID,                              
                              TagPeer::TABLE_NAME, TaggingPeer::TABLE_NAME, 
                              OppAttoPeer::TABLE_NAME, OppTipoAttoPeer::TABLE_NAME,
-                             TagPeer::TRIPLE_VALUE, $this->triple_value,
+                             TagPeer::TRIPLE_VALUE, addslashes($this->triple_value),
                              TaggingPeer::TAG_ID, TagPeer::ID, 
                              TaggingPeer::TAGGABLE_MODEL, 'OppAtto',
                              TaggingPeer::TAGGABLE_ID, OppAttoPeer::ID,
