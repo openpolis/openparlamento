@@ -545,10 +545,8 @@ class monitoringActions extends sfActions
     
   }
 
-  public function executeAjaxAddItemToMyMonitoredItems()
+  public function executeAddItemToMyMonitoredItems()
   {
-    $isAjax = $this->getRequest()->isXmlHttpRequest();
-    // if (!$isAjax) return sfView::noAjax;
     $this->item_model = $this->getRequestParameter('item_model');
     $this->item_pk = $this->getRequestParameter('item_pk');
 
@@ -576,7 +574,6 @@ class monitoringActions extends sfActions
     {
       $user->addMonitoredObject($this->item_model, $this->item_pk);
     }  
-    $this->setTemplate('ajaxManageItem');
     
     // an item was added, clear the cache consequently
     $cacheManager = $this->getContext()->getViewCacheManager();
@@ -592,6 +589,8 @@ class monitoringActions extends sfActions
       }      
     }
 
+    // redirect to the referrer page
+    $this->redirect($this->getRequest()->getReferer());
     
   }
 
