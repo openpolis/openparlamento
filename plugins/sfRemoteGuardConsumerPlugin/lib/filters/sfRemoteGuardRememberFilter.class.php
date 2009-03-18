@@ -38,7 +38,7 @@ class sfRemoteGuardRememberFilter extends sfFilter
  	      // controllo esistenza utente con remember_key su server di autenticazione
  	      $remote_guard_host = sfConfig::get('app_remote_guard_host', 'guard.openpolis.it' ); 
         $xml = simplexml_load_file("http://$remote_guard_host/index.php/getUserByRememberKey/$key");
-        if ($xml->user instanceof SimpleXMLElement)
+        if ($xml->user instanceof SimpleXMLElement && $xml->user->asXML() != '')
      	    $this->getContext()->getUser()->signIn($xml->user);	      
 	    }
 	  } 
