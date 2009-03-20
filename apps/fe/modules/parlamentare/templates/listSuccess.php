@@ -12,15 +12,19 @@
     
       <?php include_partial('filter',
                             array('groups' => $all_groups, 'constituencies' => $all_constituencies,
+                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
                                   'selected_group' => array_key_exists('group', $filters)?$filters['group']:0,                                
                                   'selected_const' => array_key_exists('const', $filters)?$filters['const']:0)) ?>
 
 
       <?php include_partial('sort') ?>   
+
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $n_parlamentari)); ?>
 	  
     </div>
-	<div class="W100_100 float-left"> 
-	  <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
+
+	  <div class="W100_100 float-left"> 
+	    <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
     </div>
        
      <div class="W100_100 float-left"> 

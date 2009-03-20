@@ -11,6 +11,28 @@
 class attoActions extends sfActions
 {
 
+  public function preExecute()
+  {
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('votes_filter', 'sf_admin/opp_votazione/sort',
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+
+  }
+
+  /**
+   * reset filters and sort session variables when
+   * the action changes
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function _reset_session_vars()
+  {    
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'action', 'acts_action', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort'));
+  }
+
   /**
    * check request parameters and set session values for the filters
    * reads filters from session, so that a clean url builds up with user's values
@@ -22,7 +44,7 @@ class attoActions extends sfActions
   protected function processFilters($active_filters)
   {
 
-    $this->filters = array();
+    $filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
@@ -47,20 +69,23 @@ class attoActions extends sfActions
 
     // legge sempre i filtri dalla sessione utente (quelli attivi)
     if (in_array('tags_category', $active_filters))
-      $this->filters['tags_category'] = $this->session->getAttribute('tags_category', '0', 'acts_filter');
+      $filters['tags_category'] = $this->session->getAttribute('tags_category', '0', 'acts_filter');
 
     if (in_array('initiative_type', $active_filters))
-      $this->filters['initiative_type'] = $this->session->getAttribute('initiative_type', '0', 'acts_filter');
+      $filters['initiative_type'] = $this->session->getAttribute('initiative_type', '0', 'acts_filter');
 
     if (in_array('act_ramo', $active_filters))
-      $this->filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'acts_filter');
+      $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'acts_filter');
 
     if (in_array('act_stato', $active_filters))
-      $this->filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'acts_filter');    
+      $filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'acts_filter');    
 
     if (in_array('act_type', $active_filters))
-      $this->filters['act_type'] = $this->session->getAttribute('act_type', '0', 'acts_filter');    
+      $filters['act_type'] = $this->session->getAttribute('act_type', '0', 'acts_filter');    
 
+    sfLogger::getInstance()->info('xxx: filter:' . $this->session->getAttribute('tags_category', '0', 'acts_filter') . ":");
+
+    $this->filters = $filters;
 
   }
 
@@ -121,6 +146,11 @@ class attoActions extends sfActions
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
+    // reset di filtri e ordinamento se cambio modulo
+    $this->_reset_session_vars();
+    
+    $this->session = $this->getUser();
+    
     $this->processFilters(array('tags_category', 'initiative_type', 'act_ramo', 'act_stato'));
 
     // if all filters were reset, then restart
@@ -160,7 +190,6 @@ class attoActions extends sfActions
   }
 
 
-  
   protected function processDisegnoListSort()
   {
     if ($this->getRequestParameter('sort'))
@@ -208,6 +237,9 @@ class attoActions extends sfActions
 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    // reset di filtri e ordinamento se cambio modulo
+    $this->_reset_session_vars();
 
     $this->processFilters(array('tags_category', 'act_stato'));
 
@@ -262,6 +294,9 @@ class attoActions extends sfActions
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
+    // reset di filtri e ordinamento se cambio modulo
+    $this->_reset_session_vars();
+
     $this->processFilters(array('tags_category', 'act_type'));
 
     // if all filters were reset, then restart
@@ -309,6 +344,9 @@ class attoActions extends sfActions
 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    // reset di filtri e ordinamento se cambio modulo
+    $this->_reset_session_vars();
 
     $this->processFilters(array('tags_category', 'act_type', 'act_ramo', 'act_stato'));
 

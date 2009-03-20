@@ -12,12 +12,15 @@
 
       <?php include_partial('filter',
                             array('tags_categories' => $all_tags_categories,
+                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
                                   'selected_type' => array_key_exists('type', $filters)?$filters['type']:0,                                
                                   'selected_tags_category' => array_key_exists('tags_category', $filters)?$filters['tags_category']:0,
                                   'selected_ramo' => array_key_exists('ramo', $filters)?$filters['ramo']:0,
                                   'selected_esito' => array_key_exists('esito', $filters)?$filters['esito']:0)) ?>
 
       <?php include_partial('sort') ?>      
+
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
 
       <?php include_partial('list', array('pager' => $pager)) ?>  
     </div>

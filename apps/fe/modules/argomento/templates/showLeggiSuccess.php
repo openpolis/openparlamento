@@ -23,13 +23,16 @@
   		</div>
 
       <?php include_partial('leggiFilter',
-                            array('selected_act_leggi_type' => array_key_exists('act_leggi_type', $filters)?$filters['act_leggi_type']:0,                                
+                            array('active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
+                                  'selected_act_leggi_type' => array_key_exists('act_leggi_type', $filters)?$filters['act_leggi_type']:0,                                
                                   'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
                                   'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
       <?php include_partial('attiSort', array('session_namespace' => 'argomento_leggi/sort', 
                                               'triple_value' => $triple_value,
                                               'route' => '@argomento_leggi')) ?>
+
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
    
       <?php include_partial('leggiList', 
                             array('pager' => $pager, 'triple_value' => $triple_value)) ?>

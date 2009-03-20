@@ -10,6 +10,15 @@
  */
 class votazioneActions extends sfActions
 {
+
+  public function preExecute()
+  {
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort',
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+  }
+  
   /**
    * Executes index action
    *

@@ -11,6 +11,15 @@
 class argomentoActions extends sfActions
 {
 
+  public function preExecute()
+  {
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort',
+                                                        'votes_filter', 'sf_admin/opp_votazione/sort',
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort'));
+  }
+
+
   public function executeList()
   {
     // fetch teseo top_terms and add monitoring info

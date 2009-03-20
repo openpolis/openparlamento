@@ -30,12 +30,15 @@
 
       <?php include_partial('attoNonLegislativoFilter',
                             array('tags_categories' => $all_tags_categories,
+                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
                                   'selected_act_type' => array_key_exists('act_type', $filters)?$filters['act_type']:0,                                
                                   'selected_tags_category' => array_key_exists('tags_category', $filters)?$filters['tags_category']:0,
                                   'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
                                   'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
       <?php include_partial('attoNonLegislativoSort') ?>
+
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
 
       <?php include_partial('attoNonLegislativoList', array('pager' => $pager)) ?>
     </div>

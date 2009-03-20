@@ -24,13 +24,16 @@
   		</div>
 
       <?php include_partial('nonlegFilter',
-                            array('selected_act_nonleg_type' => array_key_exists('act_nonleg_type', $filters)?$filters['act_nonleg_type']:0,                                
+                            array('active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
+                                  'selected_act_nonleg_type' => array_key_exists('act_nonleg_type', $filters)?$filters['act_nonleg_type']:0,                                
                                   'selected_act_ramo' => array_key_exists('act_ramo', $filters)?$filters['act_ramo']:0,
                                   'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
       <?php include_partial('attiSort', array('session_namespace' => 'argomento_nonleg/sort', 
                                                 'triple_value' => $triple_value,
                                                 'route' => '@argomento_nonleg')) ?>
+
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
    
       <?php include_partial('nonlegList', 
                             array('pager' => $pager, 'triple_value' => $triple_value)) ?>

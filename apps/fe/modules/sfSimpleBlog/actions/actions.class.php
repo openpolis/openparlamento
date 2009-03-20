@@ -21,6 +21,24 @@ require_once(SF_ROOT_DIR.'/plugins/sfSimpleBlogPlugin/modules/sfSimpleBlog/lib/B
 class sfSimpleBlogActions extends BasesfSimpleBlogActions
 {
   
+  public function preExecute()
+  {
+    if(sfConfig::get('app_sfSimpleBlog_use_bundled_layout', true))
+    {
+      $this->setLayout(sfLoader::getTemplateDir('sfSimpleBlog', 'layout.php').'/layout');
+      $this->getResponse()->addStylesheet('/sfSimpleBlogPlugin/css/blog.css');
+    }
+
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort',
+                                                        'votes_filter', 'sf_admin/opp_votazione/sort',
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+
+    
+  }
+  
+  
   public function executeShow()
   {
     // retrieve the user, by fetching from the class defined in app.yml (or in the sfGuardUser class)

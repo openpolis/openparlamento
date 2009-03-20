@@ -1,12 +1,19 @@
-indexSuccess:  
-  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
-  stylesheets:    [monitoring, jquery.autocomplete.css]
+indexSuccess:
+  javascripts:    [-*, fe/jquery-1.2.6.pack.js, fe/openparlamento.lists.js]
+  stylesheets:    [-*, screen, monitoring]
 
 documentoSuccess:
   javascripts:    [/sfEmendPlugin/emend.boot.js]
-#  javascripts:    [/sfEmendPlugin/js/libs/jquery/1.2.6/jquery.js, /sfEmendPlugin/querytest.js]
-  stylesheets:    [testo_atto]
+  stylesheets:    [-*, screen, testo_atto]
 
-#default:
-#  javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+all:
+  javascripts:    
+    - fe/jquery-1.2.6.pack.js
+    - fe/jquery.combobox.js
+    - fe/jquery.pngFix.js
+    - fe/openparlamento.lists.js
+    - fe/jquery.bgiframe.min.js
+    - fe/jquery.ajaxQueue.js
+    - fe/jquery.autocomplete.min.js
+  stylesheets:    [monitoring, jquery.autocomplete.css]
 

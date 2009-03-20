@@ -508,7 +508,8 @@ img.prev-active, img.next-active { display: none; }
 #disegni-decreti-filter-apply { vertical-align: bottom; }
 #disegni-decreti-order a.ascending { background: #e5e7e8 url(../images/ico-arrow-asc.png) no-repeat center right; }
 #disegni-decreti-order a.descending { background: #e5e7e8 url(../images/ico-arrow-desc.png) no-repeat center right; }
-
+#disegni-decreti-filter.active { background: #eaebec;}
+#disegni-decreti-filter { padding: 5px;}
 /*
  * SEARCH DDL
  *----------------------------------------------*/

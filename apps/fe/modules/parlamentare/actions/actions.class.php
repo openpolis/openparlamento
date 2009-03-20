@@ -10,6 +10,15 @@
  */
 class parlamentareActions extends sfActions
 {
+  
+  public function preExecute()
+  {
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort',
+                                                        'votes_filter', 'sf_admin/opp_votazione/sort',
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+  }
+  
 
   /**
    * verifica il parametro id e carica gli oggetti OppPolitico e OppCarica (quella attuale)
@@ -459,7 +468,7 @@ class parlamentareActions extends sfActions
 
     if ($ramo == 'camera')
     {
-      $this->getResponse()->setTitle('tutti i deputati - '.sfConfig::get('app_main_title'));
+      $this->getResponse()->setTitle('elenco dei deputati - '.sfConfig::get('app_main_title'));
       
       $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
@@ -473,7 +482,7 @@ class parlamentareActions extends sfActions
     }
     else
     {
-      $this->getResponse()->setTitle('tutti i senatori - '.sfConfig::get('app_main_title'));
+      $this->getResponse()->setTitle('elenco dei senatori - '.sfConfig::get('app_main_title'));
       
       $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       //in questo modo considero i senatori a vita
@@ -506,6 +515,7 @@ class parlamentareActions extends sfActions
     $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
 
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+    $this->n_parlamentari = OppCaricaPeer::doCount($c);
 
     //estrazione parlamentari decaduti
     $c = new Criteria();

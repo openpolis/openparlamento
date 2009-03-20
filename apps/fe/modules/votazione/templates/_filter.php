@@ -1,6 +1,6 @@
 <?php echo use_helper('AdvancedOptionsForSelect') ?>
 
-<?php echo form_tag('#', array("id"=>"disegni-decreti-filter")) ?>
+<?php echo form_tag('#', array("id"=>"disegni-decreti-filter", "class" => $active?'active':'')) ?>
   <fieldset class="labels">
     <label for="filter_tags_category">argomento:</label>
     <label for="filter_type">tipo:</label>
