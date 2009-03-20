@@ -22,14 +22,15 @@
   	       || ($risultato['Astenuto']== $risultato['Contrario'] && $direttiva_gruppo==$risultato['Contrario'])) : ?>
   	 <?php $gruppo_non_voto=1 ?>
   	<?php endif ?> 
-    <th scope="row"><?php echo $gruppo ?></th>
-	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Favorevole']<$direttiva_gruppo && $risultato['Favorevole']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>"><?php echo  "&nbsp;".$risultato['Favorevole']."&nbsp;" ?></span></td>
-	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Contrario']<$direttiva_gruppo && $risultato['Contrario']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>"><?php echo  "&nbsp;".$risultato['Contrario']."&nbsp;" ?></span></td>
-	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Astenuto']<$direttiva_gruppo && $risultato['Astenuto']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>"><?php echo  "&nbsp;".$risultato['Astenuto']."&nbsp;" ?></span></td>
+        <th scope="row"><?php echo $gruppo ?></th>
+	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Favorevole']<$direttiva_gruppo && $risultato['Favorevole']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>><?php echo  "&nbsp;".$risultato['Favorevole']."&nbsp;" ?></span></td>
+	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Contrario']<$direttiva_gruppo && $risultato['Contrario']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>><?php echo  "&nbsp;".$risultato['Contrario']."&nbsp;" ?></span></td>
+	<td><span <?php echo ( ($gruppo!='Gruppo Misto' && $risultato['Astenuto']<$direttiva_gruppo && $risultato['Astenuto']!=0 && $gruppo_non_voto==0) ? 'style="font-weight:bold; background-color:yellow"' :'') ?>><?php echo  "&nbsp;".$risultato['Astenuto']."&nbsp;" ?></span></td>
 	<td class="evident"><?php echo $risultato['Assente'] ?></td>
 	<?php $totale_assenti += $risultato['Assente'] ?>
 	<td class="evident"><?php echo $risultato['In missione'] ?></td>
 	<?php $totale_missioni += $risultato['In missione'] ?>
+   </tr>	
 <?php endforeach; ?>
     
     <tr>

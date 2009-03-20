@@ -409,6 +409,7 @@ class attoActions extends sfActions
       
 	  $this->link = 'http://www.parlamento.it/leggi/deleghe/'.$str.'dl.htm';
     }
+    if($this->atto->getTipoAttoId() == '13') $this->link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$this->atto->getParlamentoId();   
     
 	  //tipo di iniziativa
 	  $this->tipo_iniziativa = '';

@@ -19,7 +19,7 @@ class votazioneComponents extends sfComponents
       $ast_perc=round($ast * 100 /$tot,1);
       $ast_label="Astenuti: ".$ast." (".$ast_perc."%)";
 
-   $gchart="http://chart.apis.google.com/chart?chs=180x200&chd=t:".round($fav_perc,0).",".round($contr_perc,0).",".round($ast_perc,0)."&cht=p&chdl=".$fav_label."|".$contr_label."|".$ast_label."&chco=00ff00,ff0000,0000ff&chdlp=tv";
+   $gchart="http://chart.apis.google.com/chart?chs=180x200&chd=t:".round($fav_perc,0).",".round($contr_perc,0).",".round($ast_perc,0)."&cht=p&chdl=".$fav_label."|".$contr_label."|".$ast_label."&chco=00ff00,ff0000,0000ff&chdlp=tv&chf=bg,s,f7f7ff";
    
  
    $this->gchart = $gchart;
@@ -128,7 +128,7 @@ class votazioneComponents extends sfComponents
    
    $presenze=round($this->votazione->getPresenti()*100/$num,0).",".round($tot_assente*100/$num,0).",".round($tot_missione*100/$num,0);
    
-   $gchartPresenze="http://chart.apis.google.com/chart?chs=180x200&chd=t:".$presenze."&cht=p&chdl=Presenti ".$this->votazione->getPresenti()." (".round($this->votazione->getPresenti()*100/$num,1)."%)|Assenti ".$tot_assente." (".round($tot_assente*100/$num,1)."%)|In Missione ".$tot_missione." (".round($tot_missione*100/$num,1)."%)&chdlp=tv";
+   $gchartPresenze="http://chart.apis.google.com/chart?chs=180x200&chd=t:".$presenze."&cht=p&chdl=Presenti ".$this->votazione->getPresenti()." (".round($this->votazione->getPresenti()*100/$num,1)."%)|Assenti ".$tot_assente." (".round($tot_assente*100/$num,1)."%)|In Missione ".$tot_missione." (".round($tot_missione*100/$num,1)."%)&chdlp=tv&chf=bg,s,f7f7ff";
  
         
    $this->tot_ass_miss=$tot_ass_miss;

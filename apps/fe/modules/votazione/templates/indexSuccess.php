@@ -13,15 +13,29 @@
   <div id="main">
   
    <div class="W25_100 float-right">
-     
-      esito della votazione:
-      <?php echo $votazione->getEsito() ?>
-      <br />
-      voti di scarto: <?php echo $votazione->getMargine() ?>
+    <div style="background-color:#f7f7ff; padding: 5px;">
+     <div style="background-color:#fff; padding:5px; color:#828199; font-weight:bold; font-size:15px;">esito della votazione</div>
+     <div style="padding: 5px;">
+     <?php if ($votazione->getEsito()=='APPROVATA') : ?>
+          <?php echo image_tag('ico-votazione-yes.png', array('style' => 'vertical-align: middle; padding: 0 8px 0 0')) ?>	
+          <span style="background-color: #39aa2d; color:white; font-weight:bold; font-size:16px; padding: 5px;"><?php echo $votazione->getEsito() ?></span>
+      <?php else : ?>
+           <?php echo image_tag('ico-votazione-no.png', array('style' => 'vertical-align: middle; padding: 0 8px 0 0')) ?>	
+          <span style="background-color: #bd3a2e; color:white; font-weight:bold; font-size:16px; padding: 5px;"><?php echo $votazione->getEsito() ?></span>
+      <?php endif ?>    
+      
+      <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>
+    </div>
+     <div style="padding: 5px">
+      <div style="background-color:white; padding:5px; font-weight:bold;">voti di scarto: <?php echo $votazione->getMargine() ?></div>
        <br />
        <?php if ($ribelli): ?>
-          numero di ribelli: <a href="#ribelli"><?php echo $votazione->getRibelli() ?></a>
-       <?php endif; ?>	   
+          <div style="background-color:white; padding:5px; font-weight:bold;">parlamentari ribelli: <a href="#ribelli"><?php echo $votazione->getRibelli() ?></a></div>
+          <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>
+       <?php endif; ?>
+     </div>  	
+      
+       
 
 		    
       <br /><br />
@@ -30,7 +44,7 @@
 
        <br />
       
-       
+    </div>    
    </div>
     
    <div class="W73_100 float-left"> 

@@ -18,6 +18,7 @@
     <li class="<?php echo($current=='interventi' ? 'current' : '' ) ?>">
 		  <h5>
 	      <?php echo link_to('I suoi interventi parlamentari', $current=='interventi'?'#':'@parlamentare_interventi?id='.$parlamentare_id) ?>
+		 </h5>
 		</li>
 	</ul>
 </div>

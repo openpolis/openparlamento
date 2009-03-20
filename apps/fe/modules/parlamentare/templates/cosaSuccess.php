@@ -1,7 +1,7 @@
 <?php use_helper('Date', 'Number') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
-	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+	<li class="current"><h2><?php echo ($carica ? ($ramo=='camera' ? 'On. ' : 'Sen. '):'') ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
 </ul>
 
 
@@ -36,47 +36,42 @@
 	                               array('current' => 'cosa', 
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>
 	                                     	
-  		<p class="tools-container"><a class="ico-help" href="#">eventuale testo micro-help</a></p>
-  		<div style="display: none;" class="help-box float-container">
-  			<div class="inner float-container">
-	
-  				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-  				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
-  			</div>
-  		</div>
 
   		<div class="W25_100 float-right" style="width:37%">
   		  <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-openpolis.png', 
   		                                                    array('alt' => 'openpolis')), 
   		                     'http://www.openpolis.it/politico/'.$parlamentare->getId(),
   		                     array('class' => 'jump-to-openpolis')) ?>
-  		                     
-                  <?php if ($ramo=='camera') : ?> 
+  		   
+  		  <?php if ($carica) : ?>                   
+                   <?php if ($ramo=='camera') : ?> 
                      <?php $url='http://www.camera.it/cartellecomuni/leg16/include/contenitore_dati.asp?tipopagina=&deputato=d'.$carica->getParliamentId().'&source=%2Fdeputatism%2F240%2Fdocumentoxml.asp&position=Deputati\La%20Scheda%20Personale&Pagina=Deputati/Composizione/SchedeDeputati/SchedeDeputati.asp%3Fdeputato=d'.$carica->getParliamentId() ?> 
                      <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-camera-deputati.png', 
   		                                                    array('alt' => 'vai al sito della camera dei deputati')), 
   		                                                    $url,
   		                                                    array('class' => 'jump-to-camera')) ?>   
-                  <?php else : ?>
+                   <?php else : ?>
                      <?php $url='http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=16&id='.$carica->getParliamentId() ?>
                      <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-senato.png', 
   		                                                    array('alt' => 'vai al sito del senato')), 
   		                                                    $url,
   		                                                    array('class' => 'jump-to-camera')) ?>   
-                  <?php endif ?> 
+                   <?php endif ?>
+                  <?php endif ?>   
                    
-			
-        <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
+	<?php if ($carica) : ?>		
+            <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
 
-        <?php if ($nvoti_validi>0): ?>
-          <?php echo include_component('parlamentare', 'votacome', 
+           <?php if ($nvoti_validi>0): ?>
+             <?php echo include_component('parlamentare', 'votacome', 
                                        array('carica' => $carica, 
                                              'acronimo' => $acronimo_gruppo_corrente)); ?>          
-        <?php endif ?>
+           <?php endif ?>
 
-        <?php echo include_component('parlamentare', 'firmacon', 
+           <?php echo include_component('parlamentare', 'firmacon', 
                                      array('carica' => $carica,
                                            'acronimo' => $acronimo_gruppo_corrente)); ?>
+         <?php endif ?>                                  
 
   		</div>
 		
@@ -88,6 +83,7 @@
    			                             'width' => '91', 'height' => '126')) ?>	
           
   				<div class="politician-more-info">
+  				    <?php if ($carica) : ?>	
   					<p><label>gruppo:</label> 
   					
 					     <?php echo link_to($acronimo_gruppo_corrente,  
@@ -114,12 +110,15 @@
   					      <?php echo link_to($circoscrizione, '@parlamentari?ramo='.$ramo.'&filter_const='.$circoscrizione) ?>
   					    </p>
   					 <?php endif ?> 
+  				    <?php endif ?>	 
   					  
   					<p><label>dal:</label> <strong>dd/mm/yyyy</strong> <label>al:</label> <strong>dd/mm/yyyy</strong><br/> 
   					<strong>CARICA PRECEDENTE O CONTEMPORANEA A QUELLA ATTUALE</strong></p>
   				</div>
   			</div>
-		 
+  			
+		    <?php if ($carica) : ?>
+		    
   			<h5 class="subsection-alt">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
   			<p class="float-right">ultima votazione: <strong>gg-mm-aaaa</strong></p>
   			<p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
@@ -226,12 +225,17 @@
   				                      '&sort=indice&type=desc') ?>
   				</p>
   			</div>
+  		
 
 
-
+                      
   			
-              <?php include_component('parlamentare', 'attiPresentati', 
+                    <?php include_component('parlamentare', 'attiPresentati', 
                                 array('parlamentare' => $parlamentare)) ?>
+                 
+                 <?php endif ?>             
+              
+                               
 
 		 
   		</div>
@@ -245,13 +249,14 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  
-  <?php if($ramo =='senato' ): ?>
+  <?php if ($carica) : ?>
+   <?php if($ramo =='senato' ): ?>
     <?php echo link_to('senatori', '@parlamentari?ramo=senato') ?> /
     Sen. 
-  <?php else: ?>
+   <?php else: ?>
     <?php echo link_to('deputati', '@parlamentari?ramo=camera') ?> /
     On.
-  <?php endif; ?>
+   <?php endif; ?>
+   <?php endif; ?> 
   <?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?>
 <?php end_slot() ?>

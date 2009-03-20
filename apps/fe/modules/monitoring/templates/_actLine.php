@@ -19,13 +19,24 @@
     <?php endif; ?>
 
 	</th>
-	<th>
-	  <!-- link alla pagina dell'atto -->
-    <?php echo link_to(Text::denominazioneAtto($act, 'list'), 'atto/index?id='.$act->getId()) ?>
-    
-
-   
-	</th>
+	<th scope="row">
+          <p class="content-meta">
+          
+          <span class="date"><?php echo format_date($act->getDataPres(), 'dd/MM/yyyy') ?>,</span>
+            <span><?php echo $act->getOppTipoAtto()->getDescrizione() ?><?php echo($act->getRamo()=='C' ? ' alla Camera' : ' al Senato') ?>
+            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($act->getId()); ?>
+            <?php if (count($f_signers)>0) : ?>
+               <?php $c = new Criteria() ?>
+               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
+               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
+               <?php echo ' di '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
+             <?php endif; ?>   
+            </span> 
+          </p>
+	      <p>
+            <?php echo link_to(Text::denominazioneAtto($act, 'list'), 'atto/index?id='.$act->getId()) ?>
+          </p>
+        </th>  	
 	<td>
 	  <p class="date"><?php echo $act->getStatoLastDate('d/m/Y') ?></p>
 	  <p class="gold">

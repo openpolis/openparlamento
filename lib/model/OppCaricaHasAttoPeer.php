@@ -18,11 +18,11 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
         break;
       
       case 'R':
-        $val = 4;
-        break;
+        $val = 6;
+        break; 
         
       case 'C':
-        $val = 2;
+        $val = 3;
         break;
         
       default:

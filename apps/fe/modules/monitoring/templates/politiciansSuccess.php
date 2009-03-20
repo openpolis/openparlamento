@@ -33,7 +33,8 @@
   	  <?php foreach ($monitored_politicians as $politician): ?>  		  
   			<tr id="pol_<?php echo $politician->getId();?>">
   				<th scope="row"><p class="politician-id">
-  				  <?php echo image_tag('no-avatar40.png', array('alt' => '', 'width' => '40', 'height' => '55'))?>
+  				  <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politician->getId()), 
+                                 'icona parlamentare') ?>
   				  <?php echo link_to($politician, '@parlamentare?id='.$politician->getId()); ?></p>
   				</th>
   				<td><p class="float-right"><a class="btn-open-table action" href="#">

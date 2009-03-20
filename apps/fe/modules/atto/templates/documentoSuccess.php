@@ -27,7 +27,11 @@
       <?php endif; ?>
 
       <?php if($documento->getTesto()): ?>
-        <?php echo $documento->getTesto() ?>
+        <?php if($documento->getOppAtto()->getTipoAttoId()>1 && $documento->getOppAtto()->getTipoAttoId()<12 ): ?>
+           <?php echo "<div id='testo_atto'><br />".$documento->getTesto()."</div>" ?>
+        <?php else: ?>
+           <?php echo $documento->getTesto() ?>
+        <?php endif; ?>    
       <?php else: ?>
         testo non disponibile
       <?php endif; ?>  

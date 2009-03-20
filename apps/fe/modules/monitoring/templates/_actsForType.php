@@ -1,5 +1,5 @@
 <?php if (count($monitored_acts) > 0): ?>
-	<h5 id="type_<?php echo $type_id;?>"class="subsection"><?php echo $type_denominazione; ?></h5>
+<h5 id="type_<?php echo $type_id;?>"class="subsection"><?php echo $type_denominazione; ?></h5>
 
 	<table class="list-table column-table">
 		<thead>
@@ -15,11 +15,11 @@
 		</thead>
 		<tbody>
       <?php foreach ($monitored_acts as $act): ?>
-        <?php  echo include_component('monitoring', 'actLine', 
+        <?php echo include_component('monitoring', 'actLine', 
                                      array('act' => $act, 
                                            'user' => $user, 
                                            'user_id' => $user_id, 
-                                           'user_voting_act' => $act->getUserVoting($user_id))); ?>
+                                           'user_voting_act' => $act->getUserVoting($user_id))); ?>                                   
       <?php endforeach ?>
 		</tbody>
 	</table>

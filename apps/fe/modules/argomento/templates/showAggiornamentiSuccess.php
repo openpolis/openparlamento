@@ -63,11 +63,11 @@
                               array('triple_value' => $triple_value)) ?>
 
       <h5 class="subsection-alt">ci sono <big><?php echo $pager->getNbResults() ?></big> notizie sull'argomento:</h5>
-      <div class="more-results float-container">			
+     		
         <?php include_partial('newsFilter',
                               array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
         <?php include_partial('news/newslist', array('pager' => $pager, 'triple_value' => $triple_value)); ?>
-      </div>
+      
 	  </div>
 
 

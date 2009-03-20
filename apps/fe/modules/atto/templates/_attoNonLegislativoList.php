@@ -15,8 +15,16 @@
       <tr>
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
-            <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?>, <?php echo($ddl->getRamo()=='C' ? 'alla Camera' : 'al Senato') ?></span>
+            <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>
+            <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?><?php echo($ddl->getRamo()=='C' ? ' alla Camera' : ' al Senato') ?>
+            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($ddl->getId()); ?>
+            <?php if (count($f_signers)>0) : ?>
+               <?php $c = new Criteria() ?>
+               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
+               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
+               <?php echo ' di '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
+             <?php endif; ?>   
+            </span> 
           </p>
 	      <p>
             <?php echo link_to(Text::denominazioneAtto($ddl, 'list'), 'atto/index?id='.$ddl->getId()) ?>

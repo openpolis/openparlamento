@@ -8,7 +8,7 @@
   	<ul>
   	  <?php foreach ($politici as $carica_id => $relevance): ?>
   	    <li style="font-size:12px; padding:5px 0 0 0;">
-  	    <?php echo link_to_politicoNomeTipoFromCaricaId($carica_id, $relevance); ?>
+  	     <?php echo link_to_politicoNomeTipoFromCaricaId($carica_id, $relevance); ?>
   	    </li>
   	  <?php endforeach ?>
           <?php if ($n_remaining_politici > 0): ?>

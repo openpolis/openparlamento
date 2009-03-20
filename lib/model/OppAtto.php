@@ -334,9 +334,15 @@ class OppAtto extends BaseOppAtto
   public function getTitolo()
   {
     if ($this->getTitoloAggiuntivo() && $this->getTitoloAggiuntivo() != '')
-      return $this->getTitoloAggiuntivo() . ' - ' . parent::getTitolo();
-    else
+     {
+       if (parent::getTitolo()!=$this->getNumfase())
+        return parent::getTitolo()."[".$this->getTitoloAggiuntivo()."]";
+       else   
+        return $this->getTitoloAggiuntivo();
+     }    
+     else
       return parent::getTitolo();
+      
   }
   
   public function getTitoloCompleto()

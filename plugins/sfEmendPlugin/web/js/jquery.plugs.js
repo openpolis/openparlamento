@@ -274,18 +274,37 @@ jQuery.extend( jQuery.easing,
 		return jQuery.easing.easeInOutBack(x, t, b, c, d);
 	}
 });(function($) {
+	
   // removes whitespace-only text node childrens
 	$.fn.cleanWhitespace = function(deep) {
+		// white space chars
+		
 		var element = this[0];
 		if ($(element).hasClass('keep-whitespace')) return element;
 		var node = element.firstChild;
 		while (node) {
+			//console.log(node.nodeType);
 			var nextNode = node.nextSibling;
-			if (node.nodeType == 3 && !/\S/.test(node.nodeValue)) {
-				element.removeChild(node);
+			
+			if (node.nodeType == 3) {
+				if(!/\S/.test(node.nodeValue)) {
+					element.removeChild(node);
+				} else {
+					var str = node.nodeValue;
+					str = str.replace(/[\t\n\r\f]/g,'');
+					/*
+					var start = -1, end = str.length;
+					while( str.charCodeAt(--end) < 33 );
+					while( str.charCodeAt(++start) < 33 );
+					str = str.slice( start, end + 1 );
+				*/
+					str = str.replace(/\ {2,}/g,' ');
+					node.nodeValue = str;
+				}
 			} else if(deep && node.nodeType == 1) {
 				$(node).cleanWhitespace(deep);
 			}
+			//console.log('^'+node.nodeValue+'^');
 			node = nextNode;
 		}
 		return element;

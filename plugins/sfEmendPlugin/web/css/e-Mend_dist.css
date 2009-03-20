@@ -72,7 +72,7 @@ TEASERS
 #eMend-VISUAL-Overlay #HOLteaser li { border: 5px solid #ff3d00; text-align: center; background-color: #ff3d00; margin-bottom: 10px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; display: table; -moz-user-select: none; user-select: none; }
 #HOLteaser img {float: left; }
 #HOLteaser h2 {font: 17px sans-serif; letter-spacing: -0.05px; color: #000; border:none;}
-.HOLbg { height: 80px; background-color: #FFA400; background-repeat: repeat-x; display: table-cell; vertical-align: middle; width: 100%;}
+.HOLbg { height: 100px; background-color: #FFA400; background-repeat: repeat-x; display: table-cell; vertical-align: middle; width: 100%;}
 .helpOnLine {  margin: 0; padding: 8px; }
 
 /* jqModal base Styling courtesy of;
@@ -182,6 +182,8 @@ color: #333333;
 font-size: 10px;
 font-weight: bold;
 float: left;
+text-align: center;
+width: 100px;
 }
 
 form.Emend button.submit:active
@@ -220,7 +222,7 @@ span.ico.confirm {
 	text-align: center;	
 	background: none;
 	min-height: 16px;	
-	line-height: 12px;	
+	line-height: 12px;
 }
 
 span.ico.confirm img {

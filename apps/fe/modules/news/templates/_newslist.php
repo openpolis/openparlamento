@@ -1,5 +1,5 @@
 <?php echo use_helper('PagerNavigation', 'DeppNews'); ?>
-
+<div class="more-results float-container">	
 <ul>
   <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
     <li>
@@ -18,3 +18,4 @@
     </li>
   <?php endforeach; ?>
 </ul>
+</div>

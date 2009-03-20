@@ -20,12 +20,16 @@ class OppAttoPeer extends BaseOppAttoPeer
     switch ($tipo_atto_id)
     {
       case 1:
-        $val = 6;
+        $val = 10;
         $break;
       
+       case 3:
        case 4:
        case 5:
        case 6:
+       	$val = 3;
+        break;
+        
       case 10:
       case 11: 
       case 12:
@@ -38,11 +42,13 @@ class OppAttoPeer extends BaseOppAttoPeer
         break;
         
       case 2:
-      case 3:
+      	$val = 6;
+        break;
+     
       case 7:
       case 8:
       case 9:
-        $val = 3;
+        $val = 5;
         break;
       
       default:

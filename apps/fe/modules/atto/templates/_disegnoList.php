@@ -15,8 +15,16 @@
       <tr>
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span>
-            <span>, <?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?></span>
+            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>,</span>
+            <span><?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?>
+            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
+            <?php if (count($f_signers)>0) : ?>
+               <?php $c = new Criteria() ?>
+               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
+               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
+               <?php echo ' da '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
+             <?php endif; ?>   
+            </span>
           </p>
           <p>
             <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), 'atto/index?id='.$atto->getId()) ?>

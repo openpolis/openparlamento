@@ -60,8 +60,10 @@ class argomentoComponents extends sfComponents
   
   public function executeDeputatisioccupanodi()
   {
-    $options = array('limit' => 10, 'sort_by_relevance' => true);
-
+      $options = array('limit' => 10, 'sort_by_relevance' => true);
+     
+      
+      
     // estrazione cariche, tipo firma, tipo atto
     $c = new Criteria();
     $c->addJoin(OppCaricaPeer::ID, OppCaricaHasAttoPeer::CARICA_ID);
@@ -115,7 +117,7 @@ class argomentoComponents extends sfComponents
    public function executeSenatorisioccupanodi()
   {
     $options = array('limit' => 10, 'sort_by_relevance' => true);
-
+    
     // estrazione cariche, tipo firma, tipo atto
     $c = new Criteria();
     $c->addJoin(OppCaricaPeer::ID, OppCaricaHasAttoPeer::CARICA_ID);

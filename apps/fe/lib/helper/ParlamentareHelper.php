@@ -13,7 +13,11 @@ function link_to_politicoNomeTipoFromCaricaId($carica_id, $relevance)
   
   $str=$str. " (".$gruppo_attuale->getOppGruppo()->getAcronimo().")";
   
-  return link_to($str, '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => $relevance));
+  // Visualizzazione dell'indice di rilevanza
+  //return link_to($str." [".$relevance."]", '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => $relevance));
+  
+  // Visualizza senza indice di rilevanza
+    return link_to($str, '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => $relevance));
 }
 
 function ribelleStyle($voto_parlamentare, $voto_gruppo)

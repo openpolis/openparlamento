@@ -31,7 +31,8 @@
     <tr>
   	  <th scope="row">
   	   <p class="politician-id">
-            <?php echo image_tag('no-avatar40.png') ?>	
+            <?php echo image_tag(OppPoliticoPeer::getThumbUrl($ribelle['id']), 
+                                 'icona parlamentare') ?>	
             <?php echo link_to($cognome, '@parlamentare?id='.$ribelle['id']) ?><?php echo ' ('.$ribelle['gruppo'].')'  ?>
            </p>
           </th>

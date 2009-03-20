@@ -82,8 +82,19 @@ class parlamentareComponents extends sfComponents
   
   public function executeAttiPresentati()
   {
-	  $carica = $this->parlamentare->getCaricaDepSenCorrente();
-
+  
+    $carica = $this->parlamentare->getCaricaDepSenCorrente();
+    /*
+    //CALCOLA GLI ATTI PER TUTTE LE CARICHE DELLA LEGISLATURA
+    $c= new Criteria();
+    $c->addJoin(OppPoliticoPeer::ID,OppCaricaPeer::POLITICO_ID);
+    $c->add(OppPoliticoPeer::ID,$this->parlamentare->getId());
+    $cariche=OppCaricaPeer::doSelect($c);
+    
+    foreach ($cariche as $carica) {
+    */
+    
+    
     /* select raw 
     select ta.descrizione, ca.tipo, count(ta.id) 
      from opp_carica_has_atto ca, opp_atto a, opp_tipo_atto ta 
@@ -118,7 +129,7 @@ class parlamentareComponents extends sfComponents
       $tipo_id = $rs->getString('tipo_id');
       if (!array_key_exists($tipo, $atti))
       {
-        $atti[$tipo] = array('id' => $tipo_id, 'C' => 0, 'P' => 0);
+        $atti[$tipo] = array('id' => $tipo_id, 'C' => 0, 'P' => 0,'R' => 0);
       }
       $firma = $rs->getString('firma');
       $cnt = $rs->getInt('cnt');
@@ -126,6 +137,8 @@ class parlamentareComponents extends sfComponents
     }
     
     $this->atti_presentati = $atti;
+    
+   //} end del FOR delle CARICHE 
   }
   
      public function executeVotiComparati()

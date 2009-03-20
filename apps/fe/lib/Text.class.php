@@ -97,16 +97,16 @@ class Text
         if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return "<em>".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
+            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
-            return $atto->getTitolo();
+            return strip_tags(Text::shorten($descrizione, 200));
         }    
         else
         {  
           if($action=='list')
-            return $atto->getNumfase().' '.$atto->getTitolo();
+            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".$atto->getTitolo();
           else  
-            return $atto->getTitolo()." - ".strip_tags(Text::shorten($descrizione, 200));
+            return $atto->getTitolo();
         }
         break;   
               
@@ -154,6 +154,9 @@ class Text
       case '14':
         return $atto->getOppTipoAtto()->getDescrizione();
         break;
+      case '13':
+        return $atto->getOppTipoAtto()->getDescrizione();
+        break;  
       default:
         if($atto->getRamo())
           return $atto->getRamo().'.'.$atto->getNumfase();

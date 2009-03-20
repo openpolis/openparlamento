@@ -12,6 +12,7 @@
   <div id="main">
     
     <div class="W25_100 float-right">
+    <?php if($atto->getTipoAttoId()!=13 ): ?>
       <?php echo include_component('atto', 'monitor_n_vote', array('atto' => $atto)); ?>
 
       <?php echo include_partial('news/newsbox', 
@@ -20,31 +21,51 @@
                                        'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
                                        'rss_link' => '@feed_atto?id='.$atto->getId())); 
       ?>
+       <?php endif; ?>  
     </div>
     
     <div class="W73_100 float-left">
+     <?php if($atto->getTipoAttoId()!=13 ): ?>
+     
       <h5 class="grey-888">
-        <?php if($atto->getTipoAttoId()!=14): ?>
+        <?php if($atto->getTipoAttoId()!=14 ): ?>
           <?php if($atto->getRamo()): ?>
             <?php if($atto->getRamo()=='C'): ?>
               Camera,
-            <?php else: ?>
+            <?php endif; ?>  
+             <?php if($atto->getRamo()=='S'): ?>
               Senato,
             <?php endif; ?>
           <?php endif; ?>          
-          <?php echo $atto->getOppTipoAtto()->getDescrizione() ?>
+            <?php echo $atto->getOppTipoAtto()->getDescrizione() ?>
+            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
+            <?php if (count($f_signers)>0) : ?>
+               <?php $c = new Criteria() ?>
+               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
+               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
+                <?php if($atto->getTipoAttoId()==1 ): ?>
+                   <?php echo ' presentato da ' ?>
+                <?php else : ?>
+                   <?php echo ' di ' ?>
+                <?php endif; ?>      
+               <?php echo link_to($f_signer->getNome().' '.$f_signer->getCognome(),'parlamentare/'.$f_signer->getId()).(count($f_signers)>1 ? ' e altri' : '') ?>
+             <?php endif; ?>   
         <?php else: ?>
           <?php if($atto->getRamo()): ?>
             <?php if($atto->getRamo()=='C'): ?>
               Camera
-            <?php else: ?>
+            <?php endif; ?>  
+             <?php if($atto->getRamo()=='S'): ?>
               Senato
             <?php endif; ?>
           <?php endif; ?>  
         <?php endif; ?>
       </h5>
+      
+      <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
+     <?php endif; ?>
 	  
-	   <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
+	   
 	  
 	  <!-- SINOSSI -->
 	  <p class="synopsis">

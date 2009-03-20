@@ -93,6 +93,7 @@ class attoComponents extends sfComponents
 	$this->rel_array_index = array();
     foreach($this->relatori as $id => $relatore)
       array_push($this->rel_array_index, $id);
+         
        
   }
   

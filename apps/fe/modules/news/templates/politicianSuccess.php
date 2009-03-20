@@ -1,4 +1,6 @@
 <?php use_helper('PagerNavigation', 'DeppNews') ?>
+<?php setlocale(LC_TIME,"it_IT") ?>
+
 
 <div id="content" class="float-container">
   <div id="main" class="monitored_acts monitoring">
@@ -17,31 +19,42 @@
       </div>      
     </div>
     
-    <h3>Tutte le notizie relative a <?php echo $politician ?></h3>
+    <div class="W73_100 float-left">
+    <h4 class="subsection">Tutte le notizie relative a <?php echo $politician ?><?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '/', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
+   <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
-    Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
-    di <?php echo $pager->getNbResults() ?><br/>
-
+   <div class="more-results float-container">	
     <ul>
       <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
-        <li>
-          <h6>
+        <li class="news-day float-container">
+          <!--<h6>-->   
           <?php if ($date_ts > 0): ?>
-            <?php echo date("d/m/Y", $date_ts); ?>
+          <div class="news-time">
+	    <strong class="day"><?php echo date("d", $date_ts); ?></strong>
+            <strong class="month"><?php echo strftime("%b", $date_ts); ?></strong>
+            <strong class="year"><?php echo date("Y", $date_ts); ?></strong>
+          </div>
           <?php else: ?>
-            nessuna data
+          <div class="news-time">
+           <strong class="day">NO</strong>
+            <strong class="month">data</strong>
+            <strong class="year"></strong>
+          </div>  
           <?php endif ?>
-          </h6>
-          <ul class="square-bullet">
+          <!--</h6>-->
+          <ul class="news-list">
           <?php foreach ($news as $n): ?>
             <li><?php echo news_text($n) ?></li>
           <?php endforeach ?>
           </ul>
+          
         </li>
       <?php endforeach; ?>
     </ul>
+   </div> 
 
     <?php echo pager_navigation($pager, '@news_parlamentare?id='.$politician_id, true, 7) ?>
 
   </div>
+ </div>
 </div>

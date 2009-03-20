@@ -1,3 +1,5 @@
+<?php use_helper('I18N', 'Date') ?>
+
 <?php echo include_component('monitoring', 'submenu', array('current' => 'acts')); ?>
 
 <div id="content" class="tabbed-orange float-container">
@@ -29,7 +31,7 @@
     			<li><?php echo link_to('<i>bloccati</i>', 'monitoring/blockedActs') ?></li>
     		</ul>
     	</div>
-
+   
       <?php foreach ($monitored_acts_types as $type): ?>
         <?php echo include_component('monitoring', 'actsForType', 
                                      array('user' => $user, 'user_id' => $user_id,
@@ -38,8 +40,6 @@
                                            'filters' => $filters,
                                            'tag_filtering_criteria' => $tag_filtering_criteria)); ?>
       <?php endforeach ?>
-			
-
 
     </div>
   </div>

@@ -2187,18 +2187,37 @@ jQuery.extend( jQuery.easing,
 		return jQuery.easing.easeInOutBack(x, t, b, c, d);
 	}
 });(function($) {
+	
   // removes whitespace-only text node childrens
 	$.fn.cleanWhitespace = function(deep) {
+		// white space chars
+		
 		var element = this[0];
 		if ($(element).hasClass('keep-whitespace')) return element;
 		var node = element.firstChild;
 		while (node) {
+			//console.log(node.nodeType);
 			var nextNode = node.nextSibling;
-			if (node.nodeType == 3 && !/\S/.test(node.nodeValue)) {
-				element.removeChild(node);
+			
+			if (node.nodeType == 3) {
+				if(!/\S/.test(node.nodeValue)) {
+					element.removeChild(node);
+				} else {
+					var str = node.nodeValue;
+					str = str.replace(/[\t\n\r\f]/g,'');
+					/*
+					var start = -1, end = str.length;
+					while( str.charCodeAt(--end) < 33 );
+					while( str.charCodeAt(++start) < 33 );
+					str = str.slice( start, end + 1 );
+				*/
+					str = str.replace(/\ {2,}/g,' ');
+					node.nodeValue = str;
+				}
 			} else if(deep && node.nodeType == 1) {
 				$(node).cleanWhitespace(deep);
 			}
+			//console.log('^'+node.nodeValue+'^');
 			node = nextNode;
 		}
 		return element;
@@ -3570,7 +3589,7 @@ comment: '<div class="actions"><a href="#" title="_(delete_note_H)" class="delet
 
 comment_more: '...<img src="_(baseURI)/more.png" alt="_(readmore)" class="readmore" /><img src="_(baseURI)/less.png" alt="_(readless)" class="readless" style="display:none;" />', 
 
-commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);" style="background-image: url(_(baseURI)/bg-fff-diag.gif);"><fieldset><legend>_(comment)</legend><p><label for="noteSubject">_(subject):</label><span><input type="text" id="noteSubject" name="noteSubject" size="29" /></span><br/></p><p><label for="noteText">_(note):</label><span><textarea id="noteText" name="noteText" cols="28" rows="10" ></textarea></span><br class="clear"/></p><!--<p><label for="noteTags">_(tags):</label><span><input type="text" id="noteTags" name="noteTags" size="29" /></span><br/></p>--><p class="Emend-left"><button type="button" class="submit" id="cancelNote" onclick="return false; void(0);" style="background: #FFFFFF url(_(baseURI)/bg_form_element.png) repeat-x;"><span class="ico cancel"><img src="_(baseURI)/ico-cancel.png" />_(cancel)</span></button></p><p class="Emend-right"><button type="button" class="submit" id="submitNote" onclick="return false; void(0);" style="background: #FFFFFF url(_(baseURI)/bg_form_element.png) repeat-x;"><span class="ico confirm">_(confirm)<img src="_(baseURI)/ico-confirm.png" /></span></button></p></fieldset></form>',
+commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);" style="background-image: url(_(baseURI)/bg-fff-diag.gif);"><fieldset><legend>_(comment)</legend><p><label for="noteSubject">_(subject):</label><span><input type="text" id="noteSubject" name="noteSubject" size="29" /></span><br/></p><p><label for="noteText">_(note):</label><span><textarea id="noteText" name="noteText" cols="28" rows="10" ></textarea></span><br class="clear"/></p><!--<p><label for="noteTags">_(tags):</label><span><input type="text" id="noteTags" name="noteTags" size="29" /></span><br/></p>--><p class="Emend-right"><button type="button" class="submit" id="submitNote" onclick="return false; void(0);" style="background: #FFFFFF url(_(baseURI)/bg_form_element.png) repeat-x;"><span class="ico confirm">_(confirm)<img src="_(baseURI)/ico-confirm.png" /></span></button></p><p class="Emend-left"><button type="button" class="submit" id="cancelNote" onclick="return false; void(0);" style="background: #FFFFFF url(_(baseURI)/bg_form_element.png) repeat-x;"><span class="ico cancel"><img src="_(baseURI)/ico-cancel.png" />_(cancel)</span></button></p></fieldset></form>',
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
@@ -3799,7 +3818,7 @@ eMend.dataset.prototype = {
       noteIdx: noteIdx
     };
     
-    var l = this._comments[userIdx].push(new eMend.comment(commentdata));
+    var l = this._comments[userIdx].push(new eMend.comment(commentdata,{animate: false}));
     
     this.insertNoteByDate(date,userIdx,l-1);    
     this.lastComment = {user:userIdx, idx: l-1};
@@ -3851,6 +3870,7 @@ eMend.dataset.prototype = {
     if(typeof userIdx == 'undefined') userIdx = this._currentUser;
 
     var s = $.getSelection(true);
+    //console.log(s.startOffset,s.endOffset);
 
     switch (s.startContainer.parentNode.tagName) {
       case 'NODEBLOCK':
@@ -3881,6 +3901,7 @@ eMend.dataset.prototype = {
       console.log(sel[0],sel[1],sel[2].xpath);  
     }
     */
+    
     var l = this._selections[userIdx].push(sel);
     this.lastSelection = {user:userIdx, idx: l-1};
   },
@@ -4200,7 +4221,7 @@ eMend.dataset.prototype = {
 //dump('***' + startChunkText + '\n');
 //console.log("fragments: ",fragments);
 //console.log("fragmentsMap: ",fragmentsMap);				
-console.log('startChunk,endChunk',startChunk,endChunk);
+//console.log('startChunk,endChunk',startChunk,endChunk);
 //=================================================
 
         // cuts the text chunks before and after the selection start boundary in their respective fragments
@@ -4486,7 +4507,7 @@ eMend.comment.prototype = {
 	getElement: function(className) {
         if(!this.element) {
             var id = this.data.userIdx+'_'+this.data.noteIdx;
-            console.log(this.data);
+            //console.log(this.data);
             var tpl = $.template(this.template).apply(this.data);
             //var tpl = this.template_C.apply(this.data);	// <-- in firefox this is faster
             
@@ -4792,13 +4813,13 @@ eMend.commentTrigger = function (options) {
               _self.show(3,1000);
               $(document).unbind('keyup.commentTrigger');
               $(document).unbind('keydown.commentTrigger');
-              var targ = $(eMend.config.comment_target);
+              //var targ = $(eMend.config.comment_target);
               //console.log(targ.css('color') == '');
-              var orig_color = targ.css('color') ? targ.css('color') : '';
+              //var orig_color = targ.css('color') ? targ.css('color') : '';
               
               
-              targ.css("color", "#ff0000");
-              targ.animate({ opacity: "1" }, {duration: 1000, callback: function(){targ.css("color",orig_color)} });
+              //targ.css("color", "#ff0000");
+              //targ.animate({ opacity: "1" }, {duration: 1000, callback: function(){targ.css("color",orig_color)} });
             }
             
           } else {
@@ -5999,6 +6020,9 @@ eMend.init = function($) {
 	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB})
 	  , ln = eMend.linker({target: VO, positions: ps});
 	  //, tr = new $.textResizeDetector({target: VO});
+	  
+	var emend_lastScrollTimer = -1;
+    var emend_lastScrollPosition = window.scrollY;
 	
 	//events binding
 	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
@@ -6010,15 +6034,21 @@ eMend.init = function($) {
 	  , F_refRender = function(){ eMend.highlight(ds); rn.renderNotes(); }
 	  , F_openSB = function(){ SB.open(); }
 	  , F_afterscroll = function(){
-			var now = new Date();
-			emend_lastScrollTime = now.getTime();
-			window.setTimeout(function(){
-				var now = new Date();
-				if(now.getTime() < emend_lastScrollTime + 450) return;
-				$(document).trigger('emend.afterscroll');
-			},600);
-		}
+            window.clearTimeout(emend_lastScrollTimer);
+            emend_lastScrollTimer = window.setTimeout(function(){
+                $(document).trigger('emend.afterscroll');
+            },450);
+	    }
 	;
+    
+    delayedRefresh = function() {
+        // filter spurious scroll events for Webkit based browsers
+        if(emend_lastScrollPosition != window.scrollY) {
+            F_hideLinks();
+            F_afterscroll();
+            emend_lastScrollPosition = window.scrollY;
+        }
+    };
 	
 	$(document).bind('emend.addComment',F_refRender);
 	$(document).bind('emend.opensidebar',function(){F_refLinks()});
@@ -6041,13 +6071,12 @@ eMend.init = function($) {
 	
     // scroll refresh delay
 	if(eMend.config.scroll_refresh_delay) {
-		$(window).scroll(F_hideLinks);
-		$(window).scroll(F_afterscroll);
+		$(window).scroll(delayedRefresh);
 	} else {
 		$(window).scroll(F_refLinks);
 		$(window).scroll(F_afterscroll);        
 	}
-	
+    
     // backstore tiddly
     if(eMend.config.backstore_tiddly) {
         var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
@@ -6073,6 +6102,8 @@ if (!window.console || !window.console.firebug) {
          window.console[names[i]] = function() {};  
      }
 }
+
+
 
 if(typeof eMendInit != 'undefined' && eMendInit == true) eMend.init(jQuery);
 $(document).ready(function(){ eMend.init(jQuery) });
