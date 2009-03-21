@@ -16,7 +16,8 @@ class attoActions extends sfActions
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('votes_filter', 'sf_admin/opp_votazione/sort',
                                                         'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
-                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',
+                                                        'monitoring_filter'));
 
   }
 
@@ -47,24 +48,22 @@ class attoActions extends sfActions
     $filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
-    {
-      if ($this->hasRequestParameter('filter_tags_category'))
-        $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'acts_filter');
+  
+    if ($this->hasRequestParameter('filter_tags_category'))
+      $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'acts_filter');
 
-      if ($this->hasRequestParameter('filter_initiative_type'))
-        $this->session->setAttribute('initiative_type', $this->getRequestParameter('filter_initiative_type'), 'acts_filter');
+    if ($this->hasRequestParameter('filter_initiative_type'))
+      $this->session->setAttribute('initiative_type', $this->getRequestParameter('filter_initiative_type'), 'acts_filter');
 
-      if ($this->hasRequestParameter('filter_act_ramo'))
-        $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'acts_filter');
+    if ($this->hasRequestParameter('filter_act_ramo'))
+      $this->session->setAttribute('act_ramo', $this->getRequestParameter('filter_act_ramo'), 'acts_filter');
 
-      if ($this->hasRequestParameter('filter_act_stato'))
-        $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'acts_filter');
+    if ($this->hasRequestParameter('filter_act_stato'))
+      $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'acts_filter');
 
-      if ($this->hasRequestParameter('filter_act_type'))
-        $this->session->setAttribute('act_type', $this->getRequestParameter('filter_act_type'), 'acts_filter');
+    if ($this->hasRequestParameter('filter_act_type'))
+      $this->session->setAttribute('act_type', $this->getRequestParameter('filter_act_type'), 'acts_filter');
 
-    }
 
 
     // legge sempre i filtri dalla sessione utente (quelli attivi)
@@ -82,8 +81,6 @@ class attoActions extends sfActions
 
     if (in_array('act_type', $active_filters))
       $filters['act_type'] = $this->session->getAttribute('act_type', '0', 'acts_filter');    
-
-    sfLogger::getInstance()->info('xxx: filter:' . $this->session->getAttribute('tags_category', '0', 'acts_filter') . ":");
 
     $this->filters = $filters;
 
@@ -150,7 +147,16 @@ class attoActions extends sfActions
     $this->_reset_session_vars();
     
     $this->session = $this->getUser();
-    
+
+    // reset dei filtri
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_initiative_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+    }
+
     $this->processFilters(array('tags_category', 'initiative_type', 'act_ramo', 'act_stato'));
 
     // if all filters were reset, then restart
@@ -241,6 +247,14 @@ class attoActions extends sfActions
     // reset di filtri e ordinamento se cambio modulo
     $this->_reset_session_vars();
 
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+    }
+
+
     $this->processFilters(array('tags_category', 'act_stato'));
 
     // if all filters were reset, then restart
@@ -297,6 +311,14 @@ class attoActions extends sfActions
     // reset di filtri e ordinamento se cambio modulo
     $this->_reset_session_vars();
 
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_type', '0');      
+    }
+
+
     $this->processFilters(array('tags_category', 'act_type'));
 
     // if all filters were reset, then restart
@@ -348,7 +370,25 @@ class attoActions extends sfActions
     // reset di filtri e ordinamento se cambio modulo
     $this->_reset_session_vars();
 
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+    }
+
     $this->processFilters(array('tags_category', 'act_type', 'act_ramo', 'act_stato'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_act_type') == '0' &&
+        $this->getRequestParameter('filter_act_ramo') == '0' &&
+        $this->getRequestParameter('filter_act_stato') == '0')
+    {
+      $this->redirect('@attiNonLegislativi');
+    }
 
   	$this->processAttoNonLegislativoListSort();
 	

@@ -45,11 +45,11 @@ feed_atto:
 
 
 monitoring_news:
-  url: /monitoring_news/:user_token
+  url: /monitoring_news/:user_token/*
   param: { module: monitoring, action: news}
 
 monitoring_acts:
-  url: /monitoring_acts/:user_token
+  url: /monitoring_acts/:user_token/*
   param: { module: monitoring, action: acts}
 
 monitoring_politicians:
@@ -109,15 +109,15 @@ attiSearch:
   param: { module: sfSolr, action: attiSearch }
 
 attiDisegni:
-  url: /attiDisegni
+  url: /attiDisegni/*
   param: { module: atto, action: disegnoList }
   
 attiDecretiLegge:
-  url: /attiDecretiLegge
+  url: /attiDecretiLegge/*
   param: { module: atto, action: decretoList }
 
 attiDecretiLegislativi:
-  url: /attiDecretiLegislativi
+  url: /attiDecretiLegislativi/*
   param: { module: atto, action: decretoLegislativoList }
 
 attiNonLegislativi:
@@ -163,7 +163,7 @@ votazioniSearch:
   param: { module: sfSolr, action: votazioniSearch }
 
 votazioni:
-  url:   /votazioni/:sort/:type
+  url:   /votazioni/:sort/:type/*
   param: { module: votazione, action: list, sort: data, type: desc, display: false }
 
 votazione:
@@ -176,7 +176,7 @@ parlamentariSearch:
   param: { module: sfSolr, action: parlamentariSearch }
 
 parlamentari:
-  url:   /parlamentari/:ramo/:sort/:type/*
+  url:   /parlamentari/:ramo/*
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 parlamentare:

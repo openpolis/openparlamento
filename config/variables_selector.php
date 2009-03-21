@@ -5,8 +5,8 @@ if (array_key_exists('SERVER_NAME', $_SERVER))
     $site_url = 'op_openparlamento.openpolis.it';
     $remote_guard_host = 'op_accesso.openpolis.it';
     $op_openpolis_host = 'op_openpolis.openpolis.it';
-  } else if ($_SERVER['SERVER_NAME'] == 'lapgu_openpolis.openpolis.it') {
-    $site_url = 'lapgu_openpolis.openpolis.it';
+  } else if ($_SERVER['SERVER_NAME'] == 'lapgu_openparlamento.openpolis.it') {
+    $site_url = 'lapgu_openparlamento.openpolis.it';
     $remote_guard_host = 'lapgu_accesso.openpolis.it';
     $op_openpolis_host = 'lapgu_openpolis.openpolis.it';
   } else if ($_SERVER['SERVER_NAME'] == 'parlamentodev.openpolis.it') {

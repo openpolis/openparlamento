@@ -33,7 +33,8 @@
 
       <?php include_partial('attiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
 
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
+                                                             'route' => '@parlamentare_atti?id='.$parlamentare->getId())); ?>
 
       <?php include_partial('attiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>

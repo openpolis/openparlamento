@@ -16,7 +16,8 @@ class argomentoActions extends sfActions
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('acts_filter', 'sf_admin/opp_atto/sort',
                                                         'votes_filter', 'sf_admin/opp_votazione/sort',
-                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort'));
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
+                                                        'monitoring_filter'));
   }
 
 
@@ -91,6 +92,14 @@ class argomentoActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
 
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_act_leggi_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');
+    }
+
     $this->processFilters(array('act_leggi_type', 'act_ramo', 'act_stato'));
 
     // if all filters were reset, then restart
@@ -132,6 +141,14 @@ class argomentoActions extends sfActions
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
+
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_nonleg_act_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');
+    }
 
     $this->processFilters(array('act_nonleg_type', 'act_ramo', 'act_stato'));
 

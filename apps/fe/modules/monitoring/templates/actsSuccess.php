@@ -31,6 +31,12 @@
     			<li><?php echo link_to('<i>bloccati</i>', 'monitoring/blockedActs') ?></li>
     		</ul>
     	</div>
+
+
+      <?php if (deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters))): ?>
+        <?php echo link_to('rimuovi i filtri',  
+                           '@monitoring_acts?user_token=' .$sf_user->getToken(). '&reset_filters=true') ?>
+      <?php endif ?>        
    
       <?php foreach ($monitored_acts_types as $type): ?>
         <?php echo include_component('monitoring', 'actsForType', 

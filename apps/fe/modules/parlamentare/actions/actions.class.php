@@ -16,7 +16,8 @@ class parlamentareActions extends sfActions
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('acts_filter', 'sf_admin/opp_atto/sort',
                                                         'votes_filter', 'sf_admin/opp_votazione/sort',
-                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',
+                                                        'monitoring_filter'));
   }
   
 
@@ -33,73 +34,72 @@ class parlamentareActions extends sfActions
 	  $this->carica = $this->parlamentare->getCaricaDepSenCorrente();
   }
   
-  
   public function executeCosa()
   {
-   $this->_getAndCheckParlamentare(); 
+    $this->_getAndCheckParlamentare(); 
    
     if ($this->carica)
-     {
-    	   $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
-    	   $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
-    	   $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
-	  
-    	   $this->circoscrizione = $this->carica->getCircoscrizione();	  
-	  // $this->cariche = $this->parlamentare->getAltreCariche();
+    {
+  	  $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+  	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
+  	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
+  
+  	  $this->circoscrizione = $this->carica->getCircoscrizione();	  
+      // $this->cariche = $this->parlamentare->getAltreCariche();
     
 
-	    // reset sessioni utente filtri e ordinamento
-	    $this->session = $this->getUser();
-	    $this->session->getAttributeHolder()->removeNamespace('acts_filter');
-	    $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_atti/sort');
-	    $this->session->getAttributeHolder()->removeNamespace('votes_filter');
-	    $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_voti/sort');
+      // reset sessioni utente filtri e ordinamento
+      $this->session = $this->getUser();
+      $this->session->getAttributeHolder()->removeNamespace('acts_filter');
+      $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_atti/sort');
+      $this->session->getAttributeHolder()->removeNamespace('votes_filter');
+      $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_voti/sort');
+
+
+      if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+      if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+      $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+      if ($this->ramo=='camera')
+         $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
+      else
+         $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
+
+      $nparl = OppCaricaPeer::getNParlamentari($ramo);
+
+      $this->presenze = $this->carica->getPresenze();
+      $this->assenze = $this->carica->getAssenze();
+      $this->missioni = $this->carica->getMissioni();
+      $this->nvotazioni = $this->presenze + $this->assenze + $this->missioni;
+      $this->presenze_perc = $this->presenze * 100 / $this->nvotazioni;
+      $this->assenze_perc = $this->assenze * 100 / $this->nvotazioni;
+      $this->missioni_perc = $this->missioni * 100 / $this->nvotazioni;
+
+      $this->presenze_media = OppCaricaPeer::getSomma('presenze', $ramo) / $nparl;
+      $this->assenze_media = OppCaricaPeer::getSomma('assenze', $ramo) / $nparl;    
+      $this->missioni_media = OppCaricaPeer::getSomma('missioni', $ramo) / $nparl;
+      $this->nvotazioni_media = $this->presenze_media + $this->assenze_media + $this->missioni_media;
+
+      $this->presenze_media_perc = $this->presenze_media * 100 / $this->nvotazioni_media;
+      $this->assenze_media_perc = $this->assenze_media * 100 / $this->nvotazioni_media;
+      $this->missioni_media_perc = $this->missioni_media * 100 / $this->nvotazioni_media;
+
+      // calcolo totale ribellioni e presenze ai fini del calcolo delle perc. a partire dai gruppi
+      $pres_ribelli = 0;
+      $ribellioni = 0;
+      foreach ($this->gruppi as $acronimo => $gruppo) {
+        $pres_ribelli += $gruppo['presenze'];
+        $ribellioni += $gruppo['ribelle'];
+      }
+      $this->nvoti_validi = $pres_ribelli;
+      $pres_ribelli_media = OppCaricaHasGruppoPeer::getSomma('presenze', $ramo) / $nparl;
+
+      $this->ribelli = $ribellioni;
+      $this->ribelli_perc = $ribellioni * 100 / $this->nvoti_validi;
+
+      $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
+      $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
     
-
-	    if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
-	    if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
-	    $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-	    if ($this->ramo=='camera')
-	       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
-	    else
-	       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
-	    
-	    $nparl = OppCaricaPeer::getNParlamentari($ramo);
-
-	    $this->presenze = $this->carica->getPresenze();
-	    $this->assenze = $this->carica->getAssenze();
-	    $this->missioni = $this->carica->getMissioni();
-	    $this->nvotazioni = $this->presenze + $this->assenze + $this->missioni;
-	    $this->presenze_perc = $this->presenze * 100 / $this->nvotazioni;
-	    $this->assenze_perc = $this->assenze * 100 / $this->nvotazioni;
-	    $this->missioni_perc = $this->missioni * 100 / $this->nvotazioni;
-	    
-	    $this->presenze_media = OppCaricaPeer::getSomma('presenze', $ramo) / $nparl;
-	    $this->assenze_media = OppCaricaPeer::getSomma('assenze', $ramo) / $nparl;    
-	    $this->missioni_media = OppCaricaPeer::getSomma('missioni', $ramo) / $nparl;
-	    $this->nvotazioni_media = $this->presenze_media + $this->assenze_media + $this->missioni_media;
-	    
-	    $this->presenze_media_perc = $this->presenze_media * 100 / $this->nvotazioni_media;
-	    $this->assenze_media_perc = $this->assenze_media * 100 / $this->nvotazioni_media;
-	    $this->missioni_media_perc = $this->missioni_media * 100 / $this->nvotazioni_media;
-	
-	    // calcolo totale ribellioni e presenze ai fini del calcolo delle perc. a partire dai gruppi
-	    $pres_ribelli = 0;
-	    $ribellioni = 0;
-	    foreach ($this->gruppi as $acronimo => $gruppo) {
-	      $pres_ribelli += $gruppo['presenze'];
-	      $ribellioni += $gruppo['ribelle'];
-	    }
-	    $this->nvoti_validi = $pres_ribelli;
-	    $pres_ribelli_media = OppCaricaHasGruppoPeer::getSomma('presenze', $ramo) / $nparl;
-
-	    $this->ribelli = $ribellioni;
-	    $this->ribelli_perc = $ribellioni * 100 / $this->nvoti_validi;
-	    
-	    $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
-	    $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
-	    
-	 }   
+    }   
     
     
   }
@@ -107,58 +107,63 @@ class parlamentareActions extends sfActions
   public function executeAtti()
   {
     $this->_getAndCheckParlamentare(); 
-    
+  
     if ($this->carica) {
-       if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
-       if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
-       $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-       if ($this->ramo=='camera')
-          $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
-       else
-          $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+      if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+      if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+      $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+      if ($this->ramo=='camera')
+        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+     else
+        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
     }
     else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
-          
-    
+        
+  
     $this->session = $this->getUser();
-   
+ 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+    }
 
     $this->processAttiFilters(array('tags_category', 'act_type', 'act_firma', 'act_stato'));
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_tags_category') == '0' &&
-        $this->getRequestParameter('filter_act_type') == '0' &&
-        $this->getRequestParameter('filter_act_firma') == '0' && 
-        $this->getRequestParameter('filter_act_stato') == '0')
+      $this->getRequestParameter('filter_act_type') == '0' &&
+      $this->getRequestParameter('filter_act_firma') == '0' && 
+      $this->getRequestParameter('filter_act_stato') == '0')
     {
       $this->redirect('@parlamentare_atti?id='.$this->getRequestParameter('id'));
     }
-    
-     $this->processAttiSort();
-	
-	  if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
   
-     $this->pager = new sfPropelPager('OppCaricaHasAtto', $itemsperpage);
-    
-    
-      $c = new Criteria();
-      $c->addJoin(OppAttoPeer::ID, OppCaricaHasAttoPeer::ATTO_ID);
-      $c->add(OppCaricaHasAttoPeer::CARICA_ID, $this->carica->getId());
+    $this->processAttiSort();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppCaricaHasAtto', $itemsperpage);
+
+    $c = new Criteria();
+    $c->addJoin(OppAttoPeer::ID, OppCaricaHasAttoPeer::ATTO_ID);
+    $c->add(OppCaricaHasAttoPeer::CARICA_ID, $this->carica->getId());
 	  $this->addAttiFiltersCriteria($c);    
 	  $this->addAttiSortCriteria($c);
-	  
+  
   	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
   	$this->pager->setCriteria($c);
-      $this->pager->setPage($this->getRequestParameter('page', 1));
-      $this->pager->setPeerMethod('doSelectJoinOppAtto');
-      $this->pager->init();
-     
-    
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppAtto');
+    $this->pager->init();
   }
 
   protected function processAttiSort()
@@ -275,6 +280,15 @@ class parlamentareActions extends sfActions
     else
        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
 
+     // reset dei filtri se richiesto esplicitamente
+     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+     {
+       $this->getRequest()->getParameterHolder()->set('filter_vote_type', '0');
+       $this->getRequest()->getParameterHolder()->set('filter_vote_vote', '0');
+       $this->getRequest()->getParameterHolder()->set('filter_vote_result', '0');
+       $this->getRequest()->getParameterHolder()->set('filter_vote_rebel', '0');      
+     }
+
     $this->processVotiFilters(array('vote_type', 'vote_vote', 'vote_result', 'vote_rebel'));
 
     // if all filters were reset, then restart
@@ -319,21 +333,17 @@ class parlamentareActions extends sfActions
     $this->filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
-    {
-      if ($this->hasRequestParameter('filter_vote_type'))
-        $this->session->setAttribute('vote_type', $this->getRequestParameter('filter_vote_type'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_vote_type'))
+      $this->session->setAttribute('vote_type', $this->getRequestParameter('filter_vote_type'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_vote_vote'))
-        $this->session->setAttribute('vote_vote', $this->getRequestParameter('filter_vote_vote'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_vote_vote'))
+      $this->session->setAttribute('vote_vote', $this->getRequestParameter('filter_vote_vote'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_vote_result'))
-        $this->session->setAttribute('vote_result', $this->getRequestParameter('filter_vote_result'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_vote_result'))
+      $this->session->setAttribute('vote_result', $this->getRequestParameter('filter_vote_result'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_vote_rebel'))
-        $this->session->setAttribute('vote_rebel', $this->getRequestParameter('filter_vote_rebel'), 'votes_filter');
-
-    }
+    if ($this->hasRequestParameter('filter_vote_rebel'))
+      $this->session->setAttribute('vote_rebel', $this->getRequestParameter('filter_vote_rebel'), 'votes_filter');
     
     // legge sempre i filtri dalla sessione utente (quelli attivi)
     if (in_array('vote_type', $active_filters))
@@ -446,10 +456,25 @@ class parlamentareActions extends sfActions
     // estrae le circoscrizioni, compreso il valore 0
     $this->all_constituencies = OppCaricaPeer::getAllConstituencies($ramo, 'tutte');
     
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_group', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_const', '0');
+    }
+    
     //estrazione parlamentari
     $this->processFilters(array('group', 'const'), $ramo);
 
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_group') == '0' &&
+        $this->getRequestParameter('filter_const') == '0') 
+    {
+      $this->redirect('@parlamentari?ramo='.$ramo);
+    }
+
     $this->processSort();
+    
     $c = new Criteria();
     $c->clearSelectColumns();
     $c->addSelectColumn(OppCaricaPeer::ID);
@@ -587,38 +612,22 @@ class parlamentareActions extends sfActions
     $this->filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
-    {
-      if ($this->hasRequestParameter('filter_group'))
-        $this->session->setAttribute('group', $this->getRequestParameter('filter_group'), "pol_{$ramo}_filter");
+    if ($this->hasRequestParameter('filter_group'))
+      $this->session->setAttribute('group', $this->getRequestParameter('filter_group'), "pol_{$ramo}_filter");
 
-      if ($this->hasRequestParameter('filter_const'))
-        $this->session->setAttribute('const', $this->getRequestParameter('filter_const'), "pol_{$ramo}_filter");
+    if ($this->hasRequestParameter('filter_const'))
+      $this->session->setAttribute('const', $this->getRequestParameter('filter_const'), "pol_{$ramo}_filter");
 
-    } 
 
     // legge i filtri attivi dalla sessione utente o dalle variabili passate in GET
     if (in_array('group', $active_filters))
     {
-      if ($this->getRequest()->getMethod() == sfRequest::GET && 
-          $this->hasRequestParameter('filter_group'))
-        {
-          $this->filters['group'] = $this->getRequestParameter('filter_group');
-          $this->filters['const'] = '0';
-        }
-      else
-        $this->filters['group'] = $this->session->getAttribute('group', '0', "pol_{$ramo}_filter");      
+      $this->filters['group'] = $this->session->getAttribute('group', '0', "pol_{$ramo}_filter");      
     }
 
     if (in_array('const', $active_filters))
     {
-      if ($this->getRequest()->getMethod() == sfRequest::GET && $this->hasRequestParameter('filter_const'))
-      {
-        $this->filters['const'] = $this->getRequestParameter('filter_const');
-        $this->filters['group'] = '0';
-      }
-      else
-        $this->filters['const'] = $this->session->getAttribute('const', '0', "pol_{$ramo}_filter");
+      $this->filters['const'] = $this->session->getAttribute('const', '0', "pol_{$ramo}_filter");
     }
 
   }
@@ -649,8 +658,6 @@ class parlamentareActions extends sfActions
     }
      
   }
-
-
 
 
   

@@ -33,7 +33,8 @@
                                                 'triple_value' => $triple_value,
                                                 'route' => '@argomento_nonleg')) ?>
 
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
+                                                             'route' => '@argomento_nonleg?triple_value='.$triple_value)); ?>
    
       <?php include_partial('nonlegList', 
                             array('pager' => $pager, 'triple_value' => $triple_value)) ?>

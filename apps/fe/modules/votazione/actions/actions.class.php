@@ -16,7 +16,8 @@ class votazioneActions extends sfActions
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('acts_filter', 'sf_admin/opp_atto/sort',
                                                         'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
-                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',));
+                                                        'monitoring_filter'
   }
   
   /**
@@ -103,21 +104,17 @@ class votazioneActions extends sfActions
     $this->filters = array();
 
     // legge i filtri dalla request e li scrive nella sessione utente
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
-    {
-      if ($this->hasRequestParameter('filter_tags_category'))
-        $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_tags_category'))
+      $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_ramo'))
-        $this->session->setAttribute('ramo', $this->getRequestParameter('filter_ramo'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_ramo'))
+      $this->session->setAttribute('ramo', $this->getRequestParameter('filter_ramo'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_esito'))
-        $this->session->setAttribute('esito', $this->getRequestParameter('filter_esito'), 'votes_filter');
+    if ($this->hasRequestParameter('filter_esito'))
+      $this->session->setAttribute('esito', $this->getRequestParameter('filter_esito'), 'votes_filter');
 
-      if ($this->hasRequestParameter('filter_type'))
-        $this->session->setAttribute('type', $this->getRequestParameter('filter_type'), 'votes_filter');
-
-    }
+    if ($this->hasRequestParameter('filter_type'))
+      $this->session->setAttribute('type', $this->getRequestParameter('filter_type'), 'votes_filter');
 
 
     // legge sempre i filtri dalla sessione utente (quelli attivi)
@@ -132,7 +129,6 @@ class votazioneActions extends sfActions
 
     if (in_array('type', $active_filters))
       $this->filters['type'] = $this->session->getAttribute('type', '0', 'votes_filter');    
-
 
   }
 
@@ -272,6 +268,15 @@ class votazioneActions extends sfActions
    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_esito', '0');      
+    }
 
     $this->processFilters(array('tags_category', 'type', 'ramo', 'esito'));
 

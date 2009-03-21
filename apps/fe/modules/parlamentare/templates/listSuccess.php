@@ -19,7 +19,7 @@
 
       <?php include_partial('sort') ?>   
 
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $n_parlamentari)); ?>
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $n_parlamentari, 'route' => '@parlamentari?ramo='.$sf_params->get('ramo'))); ?>
 	  
     </div>
 

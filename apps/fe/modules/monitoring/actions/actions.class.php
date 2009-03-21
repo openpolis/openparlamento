@@ -10,6 +10,16 @@
  */
 class monitoringActions extends sfActions
 {
+  
+  public function preExecute()
+  {
+    deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
+                                                  array('acts_filter', 'sf_admin/opp_atto/sort',
+                                                        'votes_filter', 'sf_admin/opp_votazione/sort',
+                                                        'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
+                                                        'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
+  }
+  
   /**
    * Executes index action
    *
@@ -25,11 +35,24 @@ class monitoringActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - le tue notizie');
+    $this->getResponse()->setTitle('le tue notizie - ' . sfConfig::get('app_main_title'));
 
     $filters = array();
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET) 
     {
+
+      // reset dei filtri se richiesto esplicitamente
+      if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+      {
+        $this->getRequest()->getParameterHolder()->set('filter_tag_id', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_act_type_id', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_date', '0');      
+        $this->getRequest()->getParameterHolder()->set('filter_main_all', 'main');      
+      }
+
+
       // legge i filtri dalla request e li scrive nella sessione utente
       if ($this->hasRequestParameter('filter_tag_id'))
         $this->session->setAttribute('tag_id', $this->getRequestParameter('filter_tag_id'), 'monitoring_filter');
@@ -242,9 +265,21 @@ class monitoringActions extends sfActions
     
     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i tuoi atti');
 
+
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tag_id', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_type_id', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');
+    }
+
+
     // legge i filtri dalla request
     $filters = array();
-    if ($this->getRequest()->getMethod() == sfRequest::POST) 
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET) 
     {
       // legge i filtri dalla request e li scrive nella sessione utente
       if ($this->hasRequestParameter('filter_tag_id'))
@@ -264,7 +299,8 @@ class monitoringActions extends sfActions
 
       if ($this->getRequestParameter('filter_tag_id') == '0' &&
           $this->getRequestParameter('filter_act_type_id') == '0' &&
-          $this->getRequestParameter('filter_act_ramo') == '0')
+          $this->getRequestParameter('filter_act_ramo') == '0' &&
+          $this->getRequestParameter('filter_act_stato') == '0')          
       {
         $this->redirect('monitoring/acts');
       }

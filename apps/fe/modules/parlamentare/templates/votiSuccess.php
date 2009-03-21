@@ -32,7 +32,8 @@
 
       <?php include_partial('votiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
 
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
+                                                             'route' => '@parlamentare_voti?id='.$parlamentare->getId())); ?>
 
       <?php include_partial('votiList', 
                             array('pager' => $pager, 
