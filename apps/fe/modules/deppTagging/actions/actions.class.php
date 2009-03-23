@@ -76,7 +76,7 @@ class deppTaggingActions extends BasedeppTaggingActions
     // transform tag values into triple names
     // add the tag to the associated tag pool
     if ($tag_search != '') {
-      $tags_names = $this->_getNamesFromValues($tag_search);
+      $tags_names = $this->_getNamesFromValues($tag_search);      
       $content->addTag($tags_names);
       $content->save();      
     }

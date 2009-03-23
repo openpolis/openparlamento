@@ -1,6 +1,6 @@
 indexSuccess:
-  javascripts:    [-*, fe/jquery-1.2.6.pack.js, fe/openparlamento.lists.js]
-  stylesheets:    [-*, screen, monitoring]
+  javascripts:    [-*, fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.autocomplete.min.js]
+  stylesheets:    [-*, screen, monitoring, jquery.autocomplete.css]
 
 documentoSuccess:
   javascripts:    [/sfEmendPlugin/emend.boot.js]
