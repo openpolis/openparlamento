@@ -556,6 +556,8 @@ img.prev-active, img.next-active { display: none; }
 #vote-yes-results .vote-bar { background-color: #39aa2d; }
 #vote-no-results .vote-bar { background-color: #bd3a2e; }
 
+div.show-all-results {float:right; align-text: right; margin-top: -40px; margin-right: 10px;}
+
 /*
  * METER BAR
  *----------------------------------------------*/

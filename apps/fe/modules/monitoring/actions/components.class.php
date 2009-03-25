@@ -58,6 +58,7 @@ class monitoringComponents extends sfComponents
     $this->type_id = $this->type->getId();
     $this->type_denominazione = $this->type->getDescrizione();
     
+    
     // filtri per ramo e stato avanzamento
     $act_filtering_criteria = null;
     if ($this->filters['act_ramo'] != '0')
@@ -84,6 +85,7 @@ class monitoringComponents extends sfComponents
       $act_filtering_criteria->add(OppAttoPeer::ID, $blocked_acts_pks, Criteria::NOT_IN);
     }
 
+
     $indirectly_monitored_acts = OppAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, 
       $this->type, $this->tag_filtering_criteria, $this->my_monitored_tags_pks, $act_filtering_criteria);
     
@@ -92,7 +94,12 @@ class monitoringComponents extends sfComponents
     else
       $directly_monitored_acts = array();
     
-    $this->monitored_acts = OppAttoPeer::merge($indirectly_monitored_acts, $directly_monitored_acts);
+    $monitored_acts = OppAttoPeer::merge($indirectly_monitored_acts, $directly_monitored_acts);
+    $this->n_total_acts = count($monitored_acts);
+    if ($this->filters['act_type_id'] == 0) 
+      $monitored_acts = array_slice($monitored_acts, 0, sfConfig::get('app_monitored_acts_per_type_limit'));
+    
+    $this->monitored_acts = $monitored_acts;
     
   }
 

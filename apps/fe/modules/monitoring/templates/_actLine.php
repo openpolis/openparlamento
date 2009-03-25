@@ -1,4 +1,4 @@
-<?php echo use_helper('I18N'); ?>
+<?php echo use_helper('I18N', 'Date'); ?>
 
 
 <tr id="act_<?php echo $act->getPrimaryKey()?>">

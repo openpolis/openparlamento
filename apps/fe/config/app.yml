@@ -33,6 +33,8 @@ all:
 
   solr_routes: true
   
+  monitored_acts_per_type_limit: 5
+  
   sfEmendPlugin:    
     user:
       cu_id_method:    getId

@@ -257,6 +257,12 @@ class monitoringActions extends sfActions
     $this->blocked_acts = sfBookmarkingPeer::getAllNegativelyBookmarked($this->user_id);    
   }
   
+  /**
+   * acts list grouped by types
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function executeActs()
   {
     $this->user_id = $this->getUser()->getId();
@@ -285,7 +291,7 @@ class monitoringActions extends sfActions
       if ($this->hasRequestParameter('filter_tag_id'))
       {
         $this->session->setAttribute('tag_id', $this->getRequestParameter('filter_tag_id'), 'monitoring_filter');
-        $this->filter_tag = TagPeer::retrieveByPK($filters['tag_id']);        
+        // $this->filter_tag = TagPeer::retrieveByPK($filters['tag_id']);        
       }
 
       if ($this->hasRequestParameter('filter_act_type_id'))
@@ -358,6 +364,7 @@ class monitoringActions extends sfActions
     
     $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
+
 
   public function executePoliticians()
   {
