@@ -548,6 +548,7 @@ img.prev-active, img.next-active { display: none; }
 #monitor-n-vote .vote { padding: 0 3px; margin-bottom: 1em; }
 #monitor-n-vote .vote a { margin-right: 8px; }
 
+#monitor-n-vote ul#voting-items li img { margin-right: 8px;} 
 #vote-yes-results { background-color: #d9ebd7; margin-bottom: 7px; }
 #vote-no-results { background-color: #efdad8;  margin-bottom: 7px; }
 .vote-bar { padding: 2px; color: #333; font-weight: bold; text-align: right; }

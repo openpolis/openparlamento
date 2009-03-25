@@ -20,8 +20,6 @@
       </h6>
     <?php endif ?>
 
-    <p><?php echo format_number_choice('[0]<strong>Nessuno</strong> monitora|[1]<strong>Un</strong> utente monitora|(1,+Inf]<strong>%1%</strong> utenti monitorano', array('%1%' => $nMonitoringUsers), $nMonitoringUsers) ?> questo <?php echo $item_type ?></p>
-    
   </div> 
 
 <?php else: ?>
@@ -30,3 +28,7 @@
   </h6>
 <?php endif ?>  
 
+
+<?php echo include_partial('monitoring/monitoringDetails', 
+                           array('nMonitoringUsers' => $nMonitoringUsers, 
+                                 'item_type' => $item_type)); ?>

@@ -19,6 +19,12 @@ class monitoringComponents extends sfComponents
   
   public function executeManageItem()
   {
+
+    if ($this->item == 'atto' || $this->item == 'politico')
+      $this->nMonitoringUsers = $this->item->countAllMonitoringUsers();
+    else
+      $this->nMonitoringUsers = count($this->item->getMonitoringUsersPKs());
+
     if ($this->getUser()->isAuthenticated())
     {
       $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
@@ -30,10 +36,6 @@ class monitoringComponents extends sfComponents
       }
       $this->item_model = get_class($this->item);
       $this->item_pk = $this->item->getPrimaryKey();
-      if ($this->item == 'atto' || $this->item == 'politico')
-        $this->nMonitoringUsers = $this->item->countAllMonitoringUsers();
-      else
-        $this->nMonitoringUsers = count($this->item->getMonitoringUsersPKs());
         
       $this->is_monitoring = $user->isMonitoring($this->item_model, $this->item_pk);
       switch ($this->item_model)

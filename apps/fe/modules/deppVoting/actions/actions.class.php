@@ -1,109 +1,87 @@
 <?php
+require_once(dirname(__FILE__).'/../../../../../plugins/deppPropelActAsVotableBehaviorPlugin/modules/deppVoting/lib/BasedeppVotingActions.class.php');
 /**
- * deppPropelActAsVotableBehaviorPlugin base actions.
+ * deppPropelActAsVotableBehaviorPlugin actions. Feel free to override this class
+ * in your dedicated app module.
  * 
  * @package    plugins
  * @subpackage voting 
+ * @author     Guglielmo Celata <guglielmo.celata@gmail.com>
  */
-class BasedeppVotingActions extends sfActions
+class deppVotingActions extends BasedeppVotingActions
 {
   
   /**
-   * Here we will initiate system messages translatable strings
-   * 
-   */
-  public function preExecute()
-  {
-    parent::preExecute();
-    sfLoader::loadHelpers('I18N');
-    $this->messages = array(
-      'already_voted'    => __('You have already voted'),
-      'missing_params'   => __('Parameters are missing to retrieve ratable object'),
-      'post_only'        => __('POST requests only'),
-      'votable_error'    => __('Unable to retrieve votable object: %s'),
-      'anonymous_not_allowed' => __('Anonymous voting is not allowed'),
-      'thank_you'        => __('Thank you for your vote'),
-      'thank_unvote'     => __('Thank you'),
-      'thank_you_update' => __('Thanks for updating your vote'),
-      'user_error'       => __('A problem has occured, sorry for the inconvenience'),
-    );
-  }
-
-
-  /**
-   * <p>Revoke a vote from an object. This action is typically executed from an AJAX 
-   * request.</p>
+   * <p>Revoke a vote from an object in an un-ajax way</p>
    * 
    * @see  deppPropelActAsVotableBehavior API
    */
-  public function executeUnvote()
+  public function executeUnvoteNoAjax()
   {
     if ($this->getRequest()->getMethod() !== sfRequest::POST)
     {
-      return $this->renderText($this->messages['post_only']);
+      $this->setError($this->messages['post_only']);
     }
 
     // Retrieve parameters from request
     $token  = $this->getRequestParameter('token');
-    $this->domid  = $this->getRequestParameter('domid');
     
-    // Retrieve ratable propel object
+    // Retrieve votable propel object
     if (is_null($token))
     {
-      return $this->renderFatalError($this->messages['missing_params']);
+      $this->setError($this->messages['missing_params']);
     }
 
     $object = deppPropelActAsVotableBehaviorToolkit::retrieveFromToken($token);
     
     if (is_null($object))
     {
-      return $this->renderFatalError($this->message['votable_error']);
+      $this->setError($this->message['votable_error']);
     }
 
     $user_id = deppPropelActAsVotableBehaviorToolkit::getUserId();
     if ((is_null($user_id) || $user_id == '') && !$object->allowsAnonymousVoting())
     {
-      return $this->renderFatalError($this->message['anonymous_not_allowed']);      
+      $this->setError($this->message['anonymous_not_allowed']);      
     }
     
     $object->clearUserVoting($user_id);
-    $this->message = $this->messages['thank_unvote'];              
-    $this->object = $object;
+
+    $message = $this->messages['thank_unvote'];              
+    $this->setFlash('depp_voting_message', $message);
+    $this->redirect($this->getRequest()->getReferer());
   }
   
   /**
-   * <p>Vote a propel object. This action is typically executed from an AJAX 
-   * request.</p>
+   * <p>Vote a propel object, un-ajax style</p>
    * 
    * @see  deppPropelActAsVotableBehavior API
    */
-  public function executeVote()
+  public function executeVoteNoAjax()
   {
     
     try
     {
       if ($this->getRequest()->getMethod() !== sfRequest::POST)
       {
-        return $this->renderText($this->messages['post_only']);
+        $this->setError($this->messages['post_only']);
       }
       
       // Retrieve parameters from request
       $token  = $this->getRequestParameter('token');
       $voting = $this->getRequestParameter('voting');
-      $this->domid  = $this->getRequestParameter('domid');
-
       
       // Retrieve ratable propel object
       if (is_null($token) or is_null($voting))
       {
-        return $this->renderFatalError($this->messages['missing_params']);
+        $this->setError($this->messages['missing_params']);
       }
       
       $object = deppPropelActAsVotableBehaviorToolkit::retrieveFromToken($token);
       
       if (is_null($object))
       {
-        return $this->renderFatalError($this->message['votable_error']);
+        $this->setError($this->message['votable_error']);
       }
       
       // User retrieval
@@ -114,7 +92,7 @@ class BasedeppVotingActions extends sfActions
         {
           $msg = $this->messages['anonymous_not_allowed'];
           sfLogger::getInstance()->warning($msg);
-          return $this->renderText($msg);
+          $this->setError($msg);
         }
         else
         {
@@ -130,7 +108,7 @@ class BasedeppVotingActions extends sfActions
             {
               $msg = $this->messages['neutral_not_allowed'];
               sfLogger::getInstance()->warning($msg);
-              return $this->renderText($msg);
+              $this->setError($msg);
             }
             else 
             {
@@ -156,7 +134,7 @@ class BasedeppVotingActions extends sfActions
           {
             $msg = $this->messages['neutral_not_allowed'];
             sfLogger::getInstance()->warning($msg);
-            return $this->renderText($msg);
+            $this->setError($msg);
           }
           else
           {
@@ -165,34 +143,21 @@ class BasedeppVotingActions extends sfActions
           }          
         }
       }
+
+      $this->setFlash('depp_voting_message', $message);
+      $this->redirect($this->getRequest()->getReferer());
       
-      $this->object = $object;
-      $this->voting = $object->getVoting();
-      $this->message = $message;
     }
     catch (Exception $e)
     {
-      return $this->renderFatalError($e->getMessage());
+      $this->setError($e->getMessage());
     }
   }
   
-
-
-  
-  
-  /**
-   * This methods will returns a basic user error message while logging a 
-   * complete one if provided in the debug log file 
-   * 
-   * @param string  $log_info  Log information message
-   */
-  protected function renderFatalError($log_info = null)
+  protected function setError($err_msg)
   {
-    if (!is_null($log_info))
-    {
-      sfLogger::getInstance()->warning('Voting error: '.$log_info);
-    }
-    return $this->renderText($this->messages['user_error']);
+    $this->setFlash('depp_voting_message', $err_msg);
+    $this->redirect($this->getRequest()->getReferer());
   }
-  
+   
 }
