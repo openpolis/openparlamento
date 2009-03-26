@@ -32,8 +32,10 @@ all:
     limit:                       1000
 
   solr_routes: true
-  
+
+  # varie
   monitored_acts_per_type_limit: 5
+  legislatura_corrente: 16
   
   sfEmendPlugin:    
     user:

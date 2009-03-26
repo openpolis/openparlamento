@@ -19,6 +19,39 @@ class OppPolitico extends BaseOppPolitico
     $c->add(OppCaricaPeer::POLITICO_ID, $this->getId());
     return OppCaricaPeer::doSelectOne($c);
   }
+
+  /**
+   * estrae l'elenco di cariche di un parlamentare, per la legislatura corrente
+   * se il parlamentare è un senatore a vita, vengono estratte solo le cariche attuali (la legislatura non conta)
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function getCaricheCorrentiIds()
+  {
+    $c = new Criteria();
+    
+    $cton = $c->getNewCriterion(OppCaricaPeer::POLITICO_ID, $this->getId());
+    $cton->addAnd($c->getNewCriterion(OppCaricaPeer::LEGISLATURA, sfConfig::get('app_legislatura_corrente')));
+    
+    $cton_vita = $c->getNewCriterion(OppCaricaPeer::POLITICO_ID, $this->getId());
+    $cton_vita->addAnd($c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5));
+    $cton_vita->addAnd($c->getNewCriterion(OppCaricaPeer::DATA_FINE, null, Criteria::ISNULL));
+
+    $cton->addOr($cton_vita); 
+    $c->add($cton);  
+
+
+    $c->clearSelectColumns(); 
+    $c->addSelectColumn(OppCaricaPeer::ID);
+    $rs = OppCaricaPeer::doSelectRS($c);
+
+    $cariche = array();
+    while ($rs->next())
+      $cariche []= $rs->getInt(1);
+
+    return $cariche;
+  }
   
   public function getGruppoCorrente()
   {

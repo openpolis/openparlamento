@@ -94,7 +94,10 @@ class parlamentareActions extends sfActions
       $pres_ribelli_media = OppCaricaHasGruppoPeer::getSomma('presenze', $ramo) / $nparl;
 
       $this->ribelli = $ribellioni;
-      $this->ribelli_perc = $ribellioni * 100 / $this->nvoti_validi;
+      if ($ribellioni == 0)
+        $this->ribelli_perc = 0;
+      else
+        $this->ribelli_perc = $ribellioni * 100 / $this->nvoti_validi;
 
       $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
@@ -153,9 +156,12 @@ class parlamentareActions extends sfActions
 
     $this->pager = new sfPropelPager('OppCaricaHasAtto', $itemsperpage);
 
+    // estrazione cariche parlamentare
+    $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
+    
     $c = new Criteria();
     $c->addJoin(OppAttoPeer::ID, OppCaricaHasAttoPeer::ATTO_ID);
-    $c->add(OppCaricaHasAttoPeer::CARICA_ID, $this->carica->getId());
+    $c->add(OppCaricaHasAttoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
 	  $this->addAttiFiltersCriteria($c);    
 	  $this->addAttiSortCriteria($c);
   

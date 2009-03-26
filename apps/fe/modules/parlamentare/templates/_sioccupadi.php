@@ -7,7 +7,7 @@
   	    &nbsp;&nbsp;
   	  <?php endforeach ?>
   	</p>
-	  <?php if ($n_remaining_tags > 0): ?>
+	  <?php if (isset($n_remaining_tags) && $n_remaining_tags > 0): ?>
 	  <p class="pad10">
 	   ... e altri <?php echo $n_remaining_tags ?> argomenti
 	   </p>

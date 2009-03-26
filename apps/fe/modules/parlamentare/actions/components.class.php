@@ -80,21 +80,25 @@ class parlamentareComponents extends sfComponents
     }
   }
   
+  /**
+   * estrae tutti gli atti presentati dal parlamentare nel corso della legislatura
+   * sono considerate tutte le cariche ricoperte
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function executeAttiPresentati()
   {
   
-    $carica = $this->parlamentare->getCaricaDepSenCorrente();
-    /*
-    //CALCOLA GLI ATTI PER TUTTE LE CARICHE DELLA LEGISLATURA
-    $c= new Criteria();
-    $c->addJoin(OppPoliticoPeer::ID,OppCaricaPeer::POLITICO_ID);
-    $c->add(OppPoliticoPeer::ID,$this->parlamentare->getId());
-    $cariche=OppCaricaPeer::doSelect($c);
+    $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
+    if (count($cariche_ids) == 0)
+    {
+      $this->atti_presentati = array();
+      return;
+    }
     
-    foreach ($cariche as $carica) {
-    */
-    
-    
+    $cariche_ids_as_string = join($cariche_ids, ",");
+
     /* select raw 
     select ta.descrizione, ca.tipo, count(ta.id) 
      from opp_carica_has_atto ca, opp_atto a, opp_tipo_atto ta 
@@ -105,7 +109,7 @@ class parlamentareComponents extends sfComponents
     $connection = Propel::getConnection();
     $query = "SELECT %s AS tipo, %s AS tipo_id, %s AS firma, count(%s) AS cnt " .
              "FROM %s, %s, %s " . 
-             "WHERE %s=%s and %s=%s and %s=%s " . 
+             "WHERE %s=%s and %s=%s and %s in ($cariche_ids_as_string)" . 
              "GROUP BY %s, %s " . 
              "ORDER BY %s";
 
@@ -114,7 +118,7 @@ class parlamentareComponents extends sfComponents
                              OppCaricaHasAttoPeer::TABLE_NAME, OppAttoPeer::TABLE_NAME, OppTipoAttoPeer::TABLE_NAME,
                              OppCaricaHasAttoPeer::ATTO_ID, OppAttoPeer::ID, 
                              OppAttoPeer::TIPO_ATTO_ID, OppTipoAttoPeer::ID,
-                             OppCaricaHasAttoPeer::CARICA_ID, $carica->getId(),
+                             OppCaricaHasAttoPeer::CARICA_ID,
                              OppTipoAttoPeer::ID, OppCaricaHasAttoPeer::TIPO, 
                              OppTipoAttoPeer::ID);
     
@@ -138,7 +142,6 @@ class parlamentareComponents extends sfComponents
     
     $this->atti_presentati = $atti;
     
-   //} end del FOR delle CARICHE 
   }
   
      public function executeVotiComparati()
