@@ -48,7 +48,7 @@ class sfSolr
 
     if (!$this->loadModelsConfig())
     {
-      throw new sfSolrException(sprintf('Error while reading the configuration.'));
+      throw new sfSolrException(sprintf('Error while loading the model.'));
     }
 
     if (sfConfig::get('sf_logging_enabled'))

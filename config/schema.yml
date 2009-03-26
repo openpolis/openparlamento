@@ -290,24 +290,25 @@ propel:
 
   opp_votazione:
     id:
-    seduta_id:        { type: integer, required: true, index: true, foreignTable: opp_seduta, foreignReference: id, onDelete: CASCADE }
-    numero_votazione: { type: smallint, required: true }   
-    titolo:           { type: longvarchar }
-    presenti:         { type: integer }
-    votanti:          { type: integer }
-    maggioranza:      { type: integer }
-    astenuti:         { type: integer }
-    favorevoli:       { type: integer }
-    contrari:         { type: integer }
-    esito:            { type: varchar(20) }
-    ribelli:          { type: integer }
-    margine:          { type: integer }
-    tipologia:        { type: varchar(20) }
-    descrizione:      { type: longvarchar }
-    url:              { type: varchar(255) }
-    finale:           { type: integer, required: true, default: 0 }
-    nb_commenti:      { type: integer, required: true, default: 0 }
-    is_imported:      { type: tinyint, required: true, default: 0 }
+    seduta_id:          { type: integer, required: true, index: true, foreignTable: opp_seduta, foreignReference: id, onDelete: CASCADE }
+    numero_votazione:   { type: smallint, required: true }   
+    titolo:             { type: longvarchar }
+    titolo_aggiuntivo:  { type: longvarchar }
+    presenti:           { type: integer }
+    votanti:            { type: integer }
+    maggioranza:        { type: integer }
+    astenuti:           { type: integer }
+    favorevoli:         { type: integer }
+    contrari:           { type: integer }
+    esito:              { type: varchar(20) }
+    ribelli:            { type: integer }
+    margine:            { type: integer }
+    tipologia:          { type: varchar(20) }
+    descrizione:        { type: longvarchar }
+    url:                { type: varchar(255) }
+    finale:             { type: integer, required: true, default: 0 }
+    nb_commenti:        { type: integer, required: true, default: 0 }
+    is_imported:        { type: tinyint, required: true, default: 0 }
     
 
   opp_votazione_has_atto:

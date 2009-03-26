@@ -2,9 +2,6 @@
 dev:
   query_debug: 1
 
-sviluppo_dev:
-  query_debug: 1
-    
 # parametri per la connessione al solr
 all:
   query_debug: 0

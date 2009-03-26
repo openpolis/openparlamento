@@ -1,0 +1,20 @@
+# Define any application specific rules to your models here
+# such as routing, partials, etc.
+
+SolrIndex:
+  models:
+    Tag:
+      route: argomento/showAggiornamenti?triple_value=%triple_value%
+      partial: argomento/searchResult
+    OppAtto:
+      route: atto/index?id=%propel_id%
+      partial: atto/searchResult
+    OppDocumento:
+      route: atto/documento?id=%propel_id%
+      partial: atto/searchResultDoc
+    OppVotazione:
+      route: votazione/index?id=%propel_id%
+      partial: votazione/searchResult
+    OppPolitico:
+      route: parlamentare/cosa?id=%propel_id%
+      partial: parlamentare/searchResult

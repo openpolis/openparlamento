@@ -12,9 +12,14 @@ class OppVotazione extends BaseOppVotazione
   
   public function getTitolo()
   {
-    return str_replace( ';NULL', '', preg_replace("<a([^\'\n]+)\/a>",'${2}',$this->titolo) );
-  
-  } 
+    
+    if ($this->getTitoloAggiuntivo() && $this->getTitoloAggiuntivo() != '')
+    {
+        return "[".$this->getTitoloAggiuntivo()."] " . parent::getTitolo();
+    }    
+    else
+      return parent::getTitolo();      
+  }
   
   public function getEsito()
   {

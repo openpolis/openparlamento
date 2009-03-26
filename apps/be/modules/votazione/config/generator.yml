@@ -4,8 +4,29 @@ generator:
     model_class:      OppVotazione
     theme:            default
 
+    fields:          
+      titolo:            { name: 'Titolo' }
+      titolo_aggiuntivo: { name: 'Titolo aggiuntivo' }
+    
+
     list:
       title:          Elenco votazioni
-      display:        [_ramo, _data, esito, margine, ribelli]
-#      peer_method:    doSelectJoinOppSeduta
-      filters:        [legislatura, ramo]
+      layout:         stacked
+      display:        [=titolo, titolo_aggiuntivo]
+      params:          |
+         <strong>%%=titolo%%</strong><br/>
+         Titolo aggiuntivo: <strong>%%titolo_aggiuntivo%%</strong>
+      filters:        [legislatura, titolo]
+      
+    edit: 
+      title:           "Modifica titolo aggiuntivo atto %%titolo%%"
+      display:        
+        "Atto":         [titolo, titolo_aggiuntivo]
+      fields: 
+        titolo:            { name: "Titolo risultante", params: "disabled=true size=60x5" }
+        titolo_aggiuntivo: { name: 'Titolo aggiuntivo', params: "size=60x5" }
+      actions:
+        _list:          -
+        _save:          -
+        _delete:        none
+    
