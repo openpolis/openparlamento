@@ -352,8 +352,8 @@ class NewsPeer extends BaseNewsPeer
   public static function getNewsForItem($item_type, $item_id, $limit = 0)
   {    
     $c = self::getNewsForItemCriteria($item_type, $item_id);      
-    $c->addDescendingOrderByColumn(self::CREATED_AT);
     $c->addDescendingOrderByColumn(self::DATE);
+    $c->addDescendingOrderByColumn(self::CREATED_AT);
     if ($limit > 0)
       $c->setLimit($limit);
     return self::doSelect($c);
