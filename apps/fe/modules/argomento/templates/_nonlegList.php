@@ -3,7 +3,6 @@
 <table class="disegni-decreti column-table">
   <thead>
     <tr>
-      <th scope="col">tipologia:</th>      
       <th scope="col">atto:</th>
       <th scope="col">ultimo<br />aggiornamento:</th>
       <th scope="col">interventi in<br />Parlamento:</th>
@@ -14,7 +13,6 @@
   <tbody>		  
     <?php foreach ($pager->getResults() as $ddl): ?>
       <tr>
-        <td width="10%"><p><?php echo $ddl->getOppTipoAtto()->getDenominazione() ?></p></td>
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>

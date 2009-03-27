@@ -696,8 +696,9 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .disegni-decreti { margin-bottom: 1em; }
 .disegni-decreti thead th { padding: 0 5px 5px 5px; font-size: 11px; vertical-align: bottom; }
-.disegni-decreti tbody th, .disegni-decreti tbody td  { padding: 10px 0 5px 0; border-bottom: 1px solid #dfe0e0; border-top: 1px solid #fff; color: #000; }
+.disegni-decreti tbody th, .disegni-decreti tbody td  { padding: 10px 0 5px 0; border-bottom: 1px solid #dfe0e0; border-top: 1px solid #fff; color: #000;}
 .disegni-decreti tbody tr { padding-bottom: 3px; }
+.disegni-decreti tbody tr:hover { background-color: #fffaea; }
 .disegni-decreti tr.ribelli { background-color: #faf8ef;}
 .disegni-decreti td span.small { font-size:11px; color:#888888;}
 

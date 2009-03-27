@@ -3,8 +3,7 @@
 <table class="disegni-decreti column-table">
   <thead>
     <tr>
-      <th scope="col"><br />sigla/titolo:</th>
-      <th scope="col"><br />data voto:</th>
+      <th scope="col"><br />voto:</th>
       <th scope="col">voto del<br />parlamentare:</th>
       <th scope="col">voto del<br />gruppo:</th>
       <th scope="col">esito in<br />Parlamento:</th>
@@ -19,8 +18,12 @@
       <?php $voto_parlamentare =  $votazione_has_carica->getVoto() ?>
       <?php $voto_gruppo = $votazione->getVotoGruppo($id_gruppo_corrente) ?>
       <tr class="<?php echo ribelleStyle($voto_parlamentare, $voto_gruppo) ?>">
-        <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></td>
-        <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>
+        <th scope="row">
+        <p class="content-meta">
+        <span class="date"><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></span>
+        </p>
+        <p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p>
+        </th>
         <td><p><?php echo $voto_parlamentare ?></p></td>
         <td><p><?php echo $voto_gruppo?></p></td>
   	    <td>

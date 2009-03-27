@@ -18,7 +18,6 @@ class votazioneActions extends sfActions
                                                         'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',
                                                         'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',
                                                         'monitoring_filter'));
-                                                        
   }
   
   /**

@@ -3,7 +3,6 @@
 <table class="disegni-decreti column-table">
   <thead>
     <tr> 
-      <th scope="col">tipologia:</th>      
       <th scope="col">atto:</th>
       <th scope="col">ultimo<br />aggiornamento:</th>  
       <th scope="col">interventi in<br />Parlamento:</th>
@@ -14,11 +13,10 @@
   <tbody>		
     <?php foreach ($pager->getResults() as $atto): ?>
       <tr>
-        <td width="10%"><p><?php echo $atto->getOppTipoAtto()->getDenominazione() ?></p></td>
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>,</span>
-            <span><?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?>
+            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>, </span>
+            <span><?php echo $atto->getOppTipoAtto()->getDescrizione() ?> <?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : '') ?><?php echo($atto->getRamo()=='S' ? 'presentato al Senato' : '') ?>
             <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
             <?php if (count($f_signers)>0) : ?>
                <?php $c = new Criteria() ?>

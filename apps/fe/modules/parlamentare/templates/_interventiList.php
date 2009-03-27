@@ -27,6 +27,9 @@
           </p>
         </td>
         <th scope="row">
+         <p class="content-meta">
+         <?php echo $atto->getOppTipoAtto()->getDescrizione().($atto->getRamo()=='C' ? ' alla Camera' : ' al Senato') ?>
+         </p>
           <p>
             <?php echo link_to(Text::denominazioneAtto($atto, 'list'), 'atto/index?id='.$atto->getId()) ?>
           </p>

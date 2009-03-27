@@ -18,8 +18,16 @@
         <td><p><?php echo $carica_has_atto->getTipo() ?></p></td>
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span>
-            <span><?php echo $atto->getOppTipoAtto()->getDescrizione() ?>, <?php echo($atto->getRamo()=='C' ? 'alla Camera' : 'al Senato') ?></span>
+          <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>, </span>
+            <span><?php echo $atto->getOppTipoAtto()->getDescrizione() ?> <?php echo($atto->getRamo()=='C' ? 'alla Camera' : '') ?><?php echo($atto->getRamo()=='S' ? 'al Senato' : '') ?>
+            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
+            <?php if (count($f_signers)>0) : ?>
+               <?php $c = new Criteria() ?>
+               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
+               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
+               <?php echo ' di '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
+             <?php endif; ?>   
+            </span>
           </p>
           <p>
             <?php echo link_to(Text::denominazioneAtto($atto, 'list'), 'atto/index?id='.$atto->getId()) ?>

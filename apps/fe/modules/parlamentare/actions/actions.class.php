@@ -495,6 +495,7 @@ class parlamentareActions extends sfActions
     $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
     $c->addSelectColumn(OppCaricaPeer::MEDIA);
     $c->addSelectColumn(OppCaricaPeer::RIBELLE);
+    $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 
     if ($ramo == 'camera')

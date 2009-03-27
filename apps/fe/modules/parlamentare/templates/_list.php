@@ -8,6 +8,7 @@
       <th scope="col" class="evident">assenze:</th>
       <th scope="col" class="evident">missioni:</th>
       <th scope="col">circoscrizione:</th>
+      <th scope="col">utenti che lo seguono:</th>
     </tr>
   </thead>
 
@@ -70,11 +71,11 @@
           </td>
         <?php endif; ?>
         <?php if($parlamentari->getString(5)!=""): ?>
-        <td><p><?php echo $parlamentari->getString(5) ?></p></td>
+        <td><span class="small"><?php echo $parlamentari->getString(5) ?></span></td>
          <?php else: ?>
-         <td><p><?php echo '* Senatore a vita' ?></p></td>
+         <td><span class="small"><?php echo '* Senatore a vita' ?></span></td>
         <?php endif; ?>
-        
+       <td><p><?php echo $parlamentari->getInt(13) ?></p></td> 
       </tr>
     <?php endwhile; ?>
   </tbody>    
