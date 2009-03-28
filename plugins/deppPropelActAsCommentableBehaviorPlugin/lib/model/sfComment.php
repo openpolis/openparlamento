@@ -10,3 +10,12 @@
 class sfComment extends BasesfComment
 {
 }
+
+# nel progetto Openparlamento, questa classe è anche
+# generatore di notizie di community
+sfPropelBehavior::add(
+  'sfComment',
+  array('deppPropelActAsCommunityNewsGeneratorBehavior' =>
+        array('rel_model_getter' => 'getCommentableModel',
+              'rel_id_getter'    => 'getCommentableId',
+        )));

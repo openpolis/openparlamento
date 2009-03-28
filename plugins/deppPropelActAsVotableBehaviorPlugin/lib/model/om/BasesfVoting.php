@@ -215,7 +215,6 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	
 	public function save($con = null)
 	{
-
     foreach (sfMixer::getCallables('BasesfVoting:save:pre') as $callable)
     {
       $affectedRows = call_user_func($callable, $this, $con);

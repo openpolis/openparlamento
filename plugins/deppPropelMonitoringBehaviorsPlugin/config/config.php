@@ -47,7 +47,7 @@ sfPropelBehavior::registerMethods('deppPropelActAsMonitorerBehavior', array (
 
 
 /**
- * hooks and methods for the actAsGenerator behavior
+ * hooks and methods for the actAsNewsGenerator behavior
  *
  **/
 sfPropelBehavior::registerHooks('deppPropelActAsNewsGeneratorBehavior', array (
@@ -64,4 +64,23 @@ sfPropelBehavior::registerMethods('deppPropelActAsNewsGeneratorBehavior', array 
   array('deppPropelActAsNewsGeneratorBehavior', 'getNewsPriority'),      
   array('deppPropelActAsNewsGeneratorBehavior', 'getRelatedMonitorableObjects'),  
   array('deppPropelActAsNewsGeneratorBehavior', 'getRelatedMonitorableObject'),  
+));                 
+
+
+/**
+ * hooks and methods for the actAsCommunityNewsGenerator behavior
+ *
+ **/
+sfPropelBehavior::registerHooks('deppPropelActAsCommunityNewsGeneratorBehavior', array (
+  ':delete:pre' => array ('deppPropelActAsCommunityNewsGeneratorBehavior', 'preDelete'),
+  ':save:pre'   => array ('deppPropelActAsCommunityNewsGeneratorBehavior', 'preSave'),
+  ':save:post'  => array ('deppPropelActAsCommunityNewsGeneratorBehavior', 'postSave'),
+));
+
+sfPropelBehavior::registerMethods('deppPropelActAsCommunityNewsGeneratorBehavior', array (
+  array('deppPropelActAsCommunityNewsGeneratorBehavior', 'generateCreationCommunityNews'),    
+  array('deppPropelActAsCommunityNewsGeneratorBehavior', 'generateRemovalCommunityNews'),    
+  array('deppPropelActAsCommunityNewsGeneratorBehavior', 'getGeneratedNews'),    
+  array('deppPropelActAsCommunityNewsGeneratorBehavior', 'getPrimaryKeysArray'),
+  array('deppPropelActAsCommunityNewsGeneratorBehavior', 'getRelatedObject'),  
 ));                 

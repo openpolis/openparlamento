@@ -28,3 +28,19 @@ propel:
     _indexes:
       relmodel_date_priority_tipoatto:        [related_monitorable_model, date, priority, tipo_atto_id]
       relmodel_tipoatto_priority:             [related_monitorable_model, tipo_atto_id, priority]
+
+  sf_community_news_cache:
+    _attributes:    { phpName: CommunityNews, package: plugins.deppPropelMonitoringBehaviorsPlugin.lib.model }
+    id:
+    created_at:
+    generator_model:           { type: varchar(50), required: true, index: multiple }
+    generator_primary_keys:    { type: varchar(512) }
+    related_model:             { type: varchar(50), required: true, index: multiple }
+    related_id:                { type: integer, index: multiple }
+    username:                  { type: varchar(128) }
+    type:                      { type: char, size: 1 }
+    vote:                      { type: integer }
+    total:                     { type: integer }
+    _indexes:
+      relmodel_creation:            [related_model, created_at]
+      relmodel_creation_username:   [related_model, created_at, username]

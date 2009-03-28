@@ -34,7 +34,13 @@
       <?php echo link_to('Argomenti', '@argomenti') ?>
     <?php endif; ?>
   </li>
-  <li><?php echo link_to('Comunit&agrave;', '#') ?></li>
+  <li>
+    <?php if($this->getContext()->getModuleName() == 'community'): ?>
+      <?php echo link_to('Comunit&agrave;', 'community', array('class' => 'current')) ?>
+    <?php else: ?>
+      <?php echo link_to('Comunit&agrave;', 'community') ?>
+    <?php endif; ?>
+  </li>
   <li>
     <?php if($this->getContext()->getModuleName() == 'sfSimpleBlog'): ?>
       <?php echo link_to('Blog', '@blog_index', array('class' => 'current')) ?>

@@ -268,6 +268,94 @@ function news_text($news)
   
 }
 
+function community_news_text($news)
+{
+  $news_string = "";
+  
+  // fetch del modello e dell'oggetto che ha generato la notizia
+  $generator_model = $news->getGeneratorModel();
+
+  $related_model = $news->getRelatedModel();
+  $related_id = $news->getRelatedId();
+
+  // fetch dell'item
+  $item = call_user_func_array($related_model.'Peer::retrieveByPK', array($related_id));
+
+  if (is_null($item))
+    return "notizia su oggetto inesistente: ($related_model:$related_id)";
+  
+  // costruzione del link all'item (differente a seconda dell'item)
+  switch ($related_model)
+  {
+    case 'OppPolitico':
+      // link al politico
+      $item_type = 'il parlamentare';
+      $link = link_to_in_mail($item, 
+                             '@parlamentare?id=' . $related_id,
+                             array('title' => 'Vai alla scheda del politico'));
+      break;
+
+    case 'OppAtto':
+      // link all'atto
+      $item_type = 'l\'atto';
+      $link = link_to_in_mail($item->getRamo() . '.' . $item->getNumfase(), 
+                              'atto/index?id=' . $related_id,
+                              array('title' => $item->getTitolo()));
+      break;
+
+    case 'OppVotazione':
+      // link alla votazione
+      $item_type = 'la votazione';
+      $link = link_to_in_mail($item->getTitolo(), 
+                              '@votazione?id=' . $related_id,
+                              array('title' => 'Vai alla pagina della votazione'));
+      break;
+
+    case 'Tag':
+      // link all'argomento
+      $item_type = 'l\'argomento';
+      $link = link_to_in_mail($item->getTripleValue(), 
+                              '@argomento?triple_value=' . $item->getTripleValue(),
+                              array('title' => 'Vai alla pagina dell\'argomento'));
+      break;
+  }      
+
+  
+  switch ($generator_model) 
+  {
+    case 'sfComment':
+      return sprintf("%s ha commentato %s %s", $news->getUsername(), $item_type, $link);
+      break;
+    case 'Monitoring':
+      if ($news->getType() == 'C')
+        return sprintf("un utente si è aggiunto agli altri %d che stanno monitorando %s %s", 
+                      $news->getTotal(), $item_type, $link);
+      else
+        return sprintf("un utente ha smesso di monitorare %s %s", 
+                       $item_type, $link);          
+      break;
+    case 'sfVoting':
+      if ($news->getType() == 'C')
+      {
+        if ($news->getVote() == 1) $fav_contr = 'favorevoli';
+        else $fav_contr = 'contrari';
+        return sprintf("un utente si è aggiunto agli altri %d %s per %s %s", 
+                      $news->getTotal(), $fav_contr, $item_type, $link);
+      } else {
+        return sprintf("un utente ha ritirato il suo voto per %s %s", 
+                       $item_type, $link);          
+      }
+      break;
+    case 'nahoWikiRevision':
+      return sprintf("%s ha modificato la descrizione wiki per %s %s", $news->getUsername(), $item_type, $link);
+      break;
+  }
+  
+  
+}
+
+
+
 function troncaTesto($testo, $caratteri) { 
 
     if (strlen($testo) <= $caratteri) return $testo; 

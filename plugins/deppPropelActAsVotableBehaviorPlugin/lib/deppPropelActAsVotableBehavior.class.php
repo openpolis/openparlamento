@@ -189,7 +189,9 @@ class deppPropelActAsVotableBehavior
     $c = new Criteria();
     $c->add(sfVotingPeer::VOTABLE_ID, $object->getReferenceKey());
     $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
-    $ret = sfVotingPeer::doDelete($c);
+    $votes = sfVotingPeer::doSelect($c);
+    foreach ($votes as $v)
+      $v->delete();    
     self::setVotingToObject($object, 0);
     self::setVotingDetailsToObject($object, null);
     return $ret;
@@ -212,7 +214,8 @@ class deppPropelActAsVotableBehavior
     $c->add(sfVotingPeer::VOTABLE_ID, $object->getReferenceKey());
     $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
     $c->add(sfVotingPeer::USER_ID, $user_id);
-    $ret = sfVotingPeer::doDelete($c);
+    $v = sfVotingPeer::doSelectOne($c);
+    $v->delete();
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
     self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
     return $ret;

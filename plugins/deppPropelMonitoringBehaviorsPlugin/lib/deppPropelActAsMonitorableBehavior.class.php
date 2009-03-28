@@ -65,7 +65,8 @@ class deppPropelActAsMonitorableBehavior
     $c->add(MonitoringPeer::MONITORABLE_ID, $this->getReferenceKey($object));
     $c->add(MonitoringPeer::MONITORABLE_MODEL, get_class($object));
     $c->add(MonitoringPeer::USER_ID, $user_id);
-    $ret = MonitoringPeer::doDelete($c);
+    $m = MonitoringPeer::doSelectOne($c);
+    $m->delete();
     
     // update the caches
     $user = call_user_func_array(array($this->getMonitorerModel($object) . "Peer", 'retrieveByPK'), array($user_id));
