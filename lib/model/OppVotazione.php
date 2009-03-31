@@ -21,6 +21,12 @@ class OppVotazione extends BaseOppVotazione
       return parent::getTitolo();      
   }
   
+  
+  public function getShortTitle()
+  {
+    return $this->getTitolo();
+  }
+  
   public function getEsito()
   {
     switch(strtolower($this->esito))
@@ -259,5 +265,6 @@ sfPropelBehavior::add('OppVotazione',
 
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsTaggableBehavior'));
 sfPropelBehavior::add('OppVotazione', array('deppPropelActAsCommentableBehavior'));
+sfPropelBehavior::add('OppVotazione', array('deppPropelActAsLaunchableBehavior'));
 
 sfSolrPropelBehavior::getInitializer()->setupModel('OppVotazione');

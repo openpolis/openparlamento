@@ -13,6 +13,12 @@
   <div id="main">
   
    <div class="W25_100 float-right">
+     <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('administrator')): ?>
+       <h6>lanci in home page</h6>
+       <?php echo include_partial('deppLaunching/launcher', array('object' => $votazione, 'namespace' => 'home')); ?>    
+       <hr class="dotted" />
+     <?php endif ?>
+     
     <div style="background-color:#f7f7ff; padding: 5px;">
      <div style="background-color:#fff; padding:5px; color:#828199; font-weight:bold; font-size:15px; border: 1px solid #e4e4e8;">esito della votazione</div>
      <div style="padding: 5px;">

@@ -135,6 +135,28 @@
         <target>I commenti sono chiusi.</target>
       </trans-unit>
 
+
+      <trans-unit>
+        <source>Only administrators can launch an object</source>
+        <target>Solo gli amministratori possono lanciare un oggetto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Launch the object</source>
+        <target>Lancia questo oggetto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Take the launch back</source>
+        <target>Ritira questo oggetto dai lanci</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Increase the priority</source>
+        <target>Aumenta priorità</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Decrease priority</source>
+        <target>Diminuisci priorità</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

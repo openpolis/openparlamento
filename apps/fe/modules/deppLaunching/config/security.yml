@@ -1,0 +1,5 @@
+# chiudi l'accesso al modulo deppLaunching
+# il modulo è tutto nei plugins (deppPropelActAsLaunchableBehaviorPlugin)
+default:
+  is_secure: on
+  credentials: administrator

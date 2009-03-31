@@ -345,6 +345,11 @@ class OppAtto extends BaseOppAtto
       
   }
   
+  public function getShortTitle()
+  {
+    return Text::denominazioneAttoShort($this);
+  }
+  
   public function getTitoloCompleto()
   {
     return Text::denominazioneAtto($this, 'list');
@@ -455,6 +460,8 @@ sfPropelBehavior::add(
 sfPropelBehavior::add(
   'OppAtto', 
   array('deppPropelActAsBookmarkableBehavior' => array()));
+
+sfPropelBehavior::add('OppAtto', array('deppPropelActAsLaunchableBehavior'));
 
 // add the ActAsMonitorable behavior
 // the field OppUserPeer::N_MONITORED_ATTOS of objects of this type monitored

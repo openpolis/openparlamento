@@ -1,0 +1,126 @@
+= deppPropelActAsLaunchableBehaviorPlugin =
+
+This plugin is a Propel Behavior that makes any Propel object Launchable.
+By ''Launchable'', we intend that the user can Launch the object in another page.
+That can be useful when building the Home page of a web site, where objects in the site need to be shown in the Home page.
+
+== Installation ==
+
+To install the plugin, run this command within your symfony project :
+
+{{{
+symfony plugin-install http://symfony-plugins.depp.it/deppPropelActAsLaunchableBehaviorPlugin
+}}}
+
+
+The source code is also available:
+ * TODO
+   [http://?????????/deppPropelActAsLaunchableBehaviorPlugin/ from the SVN repository] 
+   (please always use a tagged version in production)
+   
+
+== Configuration ==
+
+To activate this Propel behavior in Symfony, you must first activate behaviors 
+in your propel.ini file :
+
+{{{
+propel.builder.addBehaviors = true
+}}}
+
+In one (or more) of your existing model object classes, apply the behavior. Eg. 
+for an {{{Article}}} Propel model class:
+
+{{{
+<?php
+#!php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add('Article', array('deppPropelActAsLaunchableBehavior'));
+}}}
+
+You can fine-tune behavior with optional parameters, see the 
+[#Behavioroptionalparameters advanced configuration section].
+
+Once your model is configured, you have to rebuild it:
+
+{{{
+symfony propel-build-all
+}}}
+
+And clear the cache :
+
+{{{
+symfony cc
+}}}
+
+== Advanced configuration ==
+
+=== Behavior optional parameters ===
+
+{{{
+#!php
+<?php
+class Article extends BaseArticle
+{
+}
+sfPropelBehavior::add(
+  'Article', 
+  array('deppPropelActAsLaunchableBehavior' => array()));  
+}}}
+
+
+== API Usage ==
+{{{
+#!php
+<?php
+ setLaunching($namespace)                           // void    - launch the object in $namespace
+ removeLaunching($namespace)                        // object  - remove the object from launches in $namespace
+ hasBeenLaunched()                                  // array   - an array of namespaces where the object has been launched
+}}}
+
+== Unit testing ==
+The plugin is provided with a test suite located in the {{{./test}}} directory. 
+To run the tests, type this line from the root of your project :
+
+{{{
+$ php plugins/deppPropelActAsLaunchableBehaviorPlugin/test/unit/deppPropelActAsLaunchableBehaviorTest.php
+}}}
+
+Note that you have to provide a Propel test object class name to run the test in the test file:
+
+{{{
+define('TEST_CLASS', 'Article');
+}}}
+
+== Uninstallation ==
+{{{
+symfony plugin-uninstall symfony/deppPropelActAsLaunchableBehaviorPlugin
+}}}
+
+You will need to remove the behavior to all your model, then rebuild your model
+and purge your cache.
+
+
+== TODO ==
+
+ * Add functional tests
+ 
+== Changelog ==
+
+=== 2009-03-30 | v0.1 ===
+ * Initial revision
+
+== Maintener ==
+
+This plugin is maintened by Guglielmo Celata
+({{{guglielmo.celata}}} -> {{{gmail.com}}})
+
+Feel free to send feture request, enhancement suggestion or idealy a patch.
+ 
+== Credits ==
+ * The whole plugin inherits lousely from the sfPropelActAsRatableBehaviorPlugin
+   by Nicolas Perriault
+
+

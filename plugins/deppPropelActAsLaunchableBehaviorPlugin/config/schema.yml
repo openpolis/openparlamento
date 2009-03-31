@@ -1,0 +1,16 @@
+propel:
+  _attributes:        { package: plugins.deppPropelActAsLaunchableBehaviorPlugin.lib.model }
+
+  sf_launching:
+    _attributes:      { phpName: sfLaunching, package: plugins.deppPropelActAsLaunchableBehaviorPlugin.lib.model }
+    id:
+    object_model:    { type: varchar, size: 50, required: true }
+    object_id:       { type: integer, required: true }
+    namespace:       { type: varchar, size: 100, required: true, default: 'home' }
+    created_at:
+    priority:        { type: integer, required: true, default: 0 }
+    _uniques:
+      namespace_priority_index: [namespace, priority]
+      model_id_namespace_index:  [object_model, object_id, namespace]
+
+  
