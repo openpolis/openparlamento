@@ -6,16 +6,13 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * Generates the matrix of distances between MPs
- *
  */
 ?>
 <?php
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/..'));
 define('SF_APP',         'fe');
-define('SF_ENVIRONMENT', 'dev');
-define('SF_DEBUG',       true);
+define('SF_ENVIRONMENT', 'prod');
+define('SF_DEBUG',       false);
 
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
@@ -115,40 +112,47 @@ foreach ($cariche as $i => $carica) {
   unset($res);
   $nvoti = count($voti);
   
-  // legge le firme dal DB e li mette nell'array firme
-  $c = new Criteria();
-  $c->clearSelectColumns();
-  $c->addSelectColumn(OppCaricaHasAttoPeer::ATTO_ID);
-  $c->addSelectColumn(OppCaricaHasAttoPeer::TIPO);
-  $c->add(OppCaricaHasAttoPeer::CARICA_ID, $carica->getId());
-  $res = OppCaricaHasAttoPeer::doSelectRS($c);
-
-  $firme = array();
-  while ($res->next())
-  {
-    $firme[$res->getInt(1)] = $res->getString(2);
-  }  
-  $politici[$i]['firme'] = $firme;
-  unset($res);
-  $nfirme = count($firme);
-
-  echo " ($nvoti voti, $nfirme firme)\n";
+  echo " ($nvoti voti)\n";
 
 }
 
 
-// aggiornamento della matrice simmetrica delle similarità
-// tranne la diagonale che rimane sempre nulla
+// scrittura completa della matrice simmetrica delle similarità
+// tranne la diagonale che è nulla per default
 for ($i = 0; $i<$ncariche; $i++)
 {
+  $dd = OppSimilaritaPeer::retrieveByPK($politici[$i]['id'], $politici[$i]['id']);
+  if (is_null($dd))
+  {
+    $dd = new OppSimilarita();
+    $dd->setCaricaFromId($politici[$i]['id']);
+    $dd->setCaricaToId($politici[$i]['id']);
+  }
+  
+  $dd->save();
+  $dd = null;
+  unset($dd);
+  
   for ($j = $i+1; $j<$ncariche; $j++)
   {
     $d = OppSimilaritaPeer::retrieveByPK($politici[$i]['id'], $politici[$j]['id']);
+    if (is_null($d))
+    {
+      $d = new OppSimilarita();
+      $d->setCaricaFromId($politici[$i]['id']);
+      $d->setCaricaToId($politici[$j]['id']);      
+    }
     $d->setVotingSimilarity(OppSimilaritaPeer::similarityForVotes($politici[$i], $politici[$j], $ramo) / $ncariche);
     $d->save();
     
     // scrittura elemento simmetrico
     $ds = OppSimilaritaPeer::retrieveByPK($politici[$j]['id'], $politici[$i]['id']);
+    if (is_null($ds))
+    {
+      $ds = new OppSimilarita();
+      $ds->setCaricaFromId($d->getCaricaToId());
+      $ds->setCaricaToId($d->getCaricaFromId());      
+    }
     $ds->setVotingSimilarity($d->getVotingSimilarity());
     $ds->save();
   

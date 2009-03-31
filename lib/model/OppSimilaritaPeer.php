@@ -50,7 +50,7 @@ class OppSimilaritaPeer extends BaseOppSimilaritaPeer
    *  come trasformazione monotòna decrescente (exp(-x)) di un fattore di similarità
    *  il fattore di similarità è la somma delle similarità tra voti:
    *  Stesso voto:  
-   *  CON - FAV  : -5
+   *  CON - FAV  : -6
    *  AST - FAV  : 2C | -4S
    *  AST - CON  : 2C |  4S
    *  Assenza o invalidità: 0  
@@ -73,6 +73,28 @@ class OppSimilaritaPeer extends BaseOppSimilaritaPeer
   		$sim += $s;
   	}	
   	return $sim;
+  }
+
+
+  /**
+   *  Funzione che calcola la similarità tra due politici, per quanto riguarda un solo voto
+   *  Stesso voto:  +6
+   *  CON - FAV  : -6
+   *  AST - FAV  : 2C | -4S
+   *  AST - CON  : 2C |  4S
+   *  Assenza o invalidità: 0  
+   */
+  public static function similarityForVote($v1, $v2, $ramo){
+	  if ($v1 == $v2) $s = 6;
+	  elseif ($v1 == 'CON' && $v2 == 'FAV' || 
+	          $v2 == 'CON' && $v1 == 'FAV') $s = -6;
+	  elseif ($v1 == 'AST' && $v2 == 'FAV' || 
+	          $v1 == 'FAV' && $v2 == 'AST') $s = ($ramo=='C')?2:-4;
+	  elseif ($v1 == 'AST' && $v2 == 'CON' || 
+	          $v1 == 'CON' && $v2 == 'AST') $s = ($ramo=='C')?2:4;
+	  else $s = 0;
+
+  	return $s;
   }
 
   

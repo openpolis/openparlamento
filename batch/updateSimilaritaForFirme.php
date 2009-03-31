@@ -12,7 +12,7 @@
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/..'));
 define('SF_APP',         'fe');
 define('SF_ENVIRONMENT', 'prod');
-define('SF_DEBUG',       true);
+define('SF_DEBUG',       false);
 
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
@@ -22,11 +22,17 @@ $args = arguments($argv);
 $argv = $args['input'];
 $argc = count($argv);
 
+if ( array_key_exists('deleteAll', $args) )
+{
+  OppSimilaritaPeer::doDeleteAll();
+  print "rimosse tutte le informazioni di similarita\n";
+  exit;
+}
 
 # controllo sintassi
 if ( $argc < 2 ) 
 {
-  print "sintassi: php batch/updateMPSDistanceForVotes C|S NLEG [--deleteAll]\n";  
+  print "sintassi: php batch/updateSimilaritaForVotes C|S NLEG [--deleteAll]\n";  
   print "            C|S - (C)amera o (S)enato\n";
   print "            NLEG - 15, 16\n";
   exit;
@@ -109,16 +115,36 @@ foreach ($cariche as $i => $carica) {
 // update dei valori delle firme
 for ($i = 0; $i<$ncariche; $i++)
 {
+  $dd = OppSimilaritaPeer::retrieveByPK($politici[$i]['id'], $politici[$i]['id']);
+  if (is_null($dd))
+  {
+    $dd = new OppSimilarita();
+    $dd->setCaricaFromId($politici[$i]['id']);
+    $dd->setCaricaToId($politici[$i]['id']);
+  }
+
   for ($j = $i+1; $j<$ncariche; $j++)
   {
     
     $d = OppSimilaritaPeer::retrieveByPK($politici[$i]['id'], $politici[$j]['id']);
+    if (is_null($d))
+    {
+      $d = new OppSimilarita();
+      $d->setCaricaFromId($politici[$i]['id']);
+      $d->setCaricaToId($politici[$j]['id']);      
+    }
     $d->setSigningSimilarity(OppSimilaritaPeer::similarityForSignatures($politici[$i], $politici[$j]) / $ncariche);
     $d->save();
 
     
     // scrittura elemento simmetrico
     $ds = OppSimilaritaPeer::retrieveByPK($politici[$j]['id'], $politici[$i]['id']);
+    if (is_null($ds))
+    {
+      $ds = new OppSimilarita();
+      $ds->setCaricaFromId($d->getCaricaToId());
+      $ds->setCaricaToId($d->getCaricaFromId());      
+    }
     $ds->setSigningSimilarity($d->getSigningSimilarity());
     $ds->save();
   
