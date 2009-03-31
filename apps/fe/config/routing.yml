@@ -206,6 +206,12 @@ get_logged_user:
 sf_captcha:
   url:   /captcha/:rk
   param: { module: sfCaptcha, action: index, rk: 0 }
+  
+# pagine statiche
+progetto:
+  url:  /progetto
+  param: { module: static, action: progetto }
+
 
 # default rules
 homepage:
