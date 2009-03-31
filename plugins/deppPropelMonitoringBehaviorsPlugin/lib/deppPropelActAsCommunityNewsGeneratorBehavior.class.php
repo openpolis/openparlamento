@@ -76,15 +76,6 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
       // fetch the object related to this generator
       $mobj = $this->getRelatedObject($object);
 
-
-      $n = new CommunityNews();
-      $n->setGeneratorModel(get_class($object));
-      $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray($object)));
-      $n->setRelatedModel(get_class($mobj));
-      $n->setRelatedId($mobj->getPrimaryKey());      
-
-      $n->setType('C');      
-
       // fetch and set of the user name (wiki case and the rest)
       if ($object instanceof nahoWikiRevision)
         $username = $object->getUserName();
@@ -95,8 +86,20 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
         $user = OppUserPeer::retrieveByPK($object->getUserId());
         $username = $user->__toString();
       }
-      $n->setUsername($username);
+      // skip the admin user
+      if ($username == 'admin') return;
 
+
+      $n = new CommunityNews();
+      $n->setGeneratorModel(get_class($object));
+      $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray($object)));
+      $n->setRelatedModel(get_class($mobj));
+      $n->setRelatedId($mobj->getPrimaryKey());      
+
+      $n->setType('C');      
+
+      $n->setUsername($username);
+      
       // sets total and vote in case the generator is sfVoting
       // only OppAttos can be voted
       if ($object instanceof sfVoting)
