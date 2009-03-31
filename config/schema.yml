@@ -102,8 +102,8 @@ propel:
   opp_similarita:
     carica_from_id:     { type: integer, required: true, primaryKey: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     carica_to_id:       { type: integer, required: true, primaryKey: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    voting_similarity:  { type: integer, required: true, default: 0 }
-    signing_similarity: { type: integer, required: true, default: 0 }
+    voting_similarity:  { type: float, index: true, required: true, default: 0 }
+    signing_similarity: { type: float, index: true, required: true, default: 0 }
     
   opp_documento:
     id:
