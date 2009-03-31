@@ -66,7 +66,7 @@ class PluginsfSimpleBlogPost extends BasesfSimpleBlogPost
       $tags[] = $rs->getString(1);
     }
 
-    return implode($tags, ' ');
+    return implode($tags, ',');
   }
 
   public function setTagsAsString($tagString)
@@ -75,7 +75,7 @@ class PluginsfSimpleBlogPost extends BasesfSimpleBlogPost
     $c->add(sfSimpleBlogTagPeer::SF_BLOG_POST_ID, $this->getId());
     sfSimpleBlogTagPeer::doDelete($c);
 
-    $tags = explode(' ', $tagString);
+    $tags = explode(',', $tagString);
 
     foreach ($tags as $tag)
     {

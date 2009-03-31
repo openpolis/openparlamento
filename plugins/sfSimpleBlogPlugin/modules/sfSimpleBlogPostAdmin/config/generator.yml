@@ -21,7 +21,7 @@ generator:
       title:            Edit post "%%title%%"
       display:          [author_id, title, extract, content, tags_as_string, allow_comments, is_published]
       fields:
-        tags_as_string: { name: Tags, type: input_tag }
+        tags_as_string: { name: Tags, type: input_tag, params: size=80 }
         content:        { params: size=60x30 <?php if(sfConfig::get('app_sfSimpleBlog_use_rich_text', false)): echo 'rich=true'; endif; ?> <?php if(sfConfig::get('app_sfSimpleBlog_use_media_library', false)): echo 'tinymce_options=\'file_browser_callback:"sfMediaLibrary.fileBrowserCallBack"\''; endif; ?> }
       actions: 
         _save:          ~
