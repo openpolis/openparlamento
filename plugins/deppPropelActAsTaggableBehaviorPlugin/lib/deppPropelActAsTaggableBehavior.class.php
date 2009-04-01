@@ -573,7 +573,12 @@ class deppPropelActAsTaggableBehavior
     {
       $c->add(TaggingPeer::USER_ID, $user_id);
     }
-    TaggingPeer::doDelete($c);
+    
+    // delete e non doDelete, in modo che anche sul tagging si possano attivare i behavior (per le news)
+    // TaggingPeer::doDelete($c);
+    $tags_to_delete = TaggingPeer::doSelect($c);
+    foreach ($tags_to_delete as $tag_to_delete)
+      $tag_to_delete->delete();
 
     $tags = array_merge(self::get_tags($object), $this->getSavedTags($object));
     self::set_saved_tags($object, $tags);

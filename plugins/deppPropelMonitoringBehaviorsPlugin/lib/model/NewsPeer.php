@@ -272,10 +272,9 @@ class NewsPeer extends BaseNewsPeer
   {
     $c = new Criteria();
     $c->add(self::PRIORITY, 1);
-
+    $c->add(self::GENERATOR_MODEL, 'Tagging', Criteria::NOT_EQUAL);
     return $c;
   }
-
 
   // some static constants used to defint the type of acts
   const ATTI_DDL_TIPO_IDS = "1";
@@ -324,6 +323,7 @@ class NewsPeer extends BaseNewsPeer
 
     $c->add(self::TIPO_ATTO_ID, $atto_type_ids_arr, Criteria::IN);      
     $c->add(self::PRIORITY, $max_priority, Criteria::LESS_EQUAL);
+    $c->add(self::GENERATOR_MODEL, 'Tagging', Criteria::NOT_EQUAL);
 
     if (!is_null($limit))
       $c->setLimit($limit);
@@ -339,6 +339,7 @@ class NewsPeer extends BaseNewsPeer
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, $item_type);
     $c->add(self::RELATED_MONITORABLE_ID, $item_id);
+    $c->add(self::GENERATOR_MODEL, 'Tagging', Criteria::NOT_EQUAL);
 
     return $c;
   }

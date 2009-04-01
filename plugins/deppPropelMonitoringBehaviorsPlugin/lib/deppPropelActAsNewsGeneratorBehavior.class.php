@@ -100,6 +100,7 @@ class deppPropelActAsNewsGeneratorBehavior
         $n->setCreatedAt($object->getCreatedAt());
       
       $n->setDate($object->getNewsDate());
+      
       if (!is_null($priority))
         $n->setPriority($priority);
       else
@@ -251,7 +252,7 @@ class deppPropelActAsNewsGeneratorBehavior
    **/
   public function postSave(BaseObject $object)
   {
-    if ($this->wasNew === true)
+    if (isset($this->wasNew) && $this->wasNew === true)
     {
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;

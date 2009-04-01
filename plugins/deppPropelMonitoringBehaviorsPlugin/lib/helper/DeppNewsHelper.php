@@ -254,6 +254,18 @@ function news_text($news)
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
     } 
     
+    else if ($generator_model == 'Tagging')
+    {
+      $news_string .= ($gender=='m'?"il ":"la ");
+      $news_string .= $tipo->getDescrizione() . " ";
+      $news_string .= $atto_link . " ";
+      $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
+      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
+      $news_string .= "il " . $news->getDate('d/m/Y') . " ";
+      $news_string .= "&egrave; stat".($gender=='m'?'o':'a'). " associat".($gender=='m'?'o':'a'). " all'argomento ";
+      $news_string .= $generator->getTag()->getTripleValue();
+    }
+    
     else $news_string .= $generator_model;
                                   
     
