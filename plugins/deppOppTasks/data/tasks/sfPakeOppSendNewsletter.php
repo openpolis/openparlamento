@@ -11,7 +11,7 @@
 <?php
 /**
  * @package    
- * @subpackage Task that fetch today's news for objects mopnitored by subscribers and send them by emails
+ * @subpackage Task that fetch today's news for objects monitored by subscribers and send them by emails
  * @author     Guglielmo Celata <guglielmo.celata@depp.it>
  */
 pake_desc("fetch today's news for subscribers and send them via e-mail");

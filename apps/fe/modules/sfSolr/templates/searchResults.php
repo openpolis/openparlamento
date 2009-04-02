@@ -12,6 +12,7 @@
   <li class="current"><h2>Risultati della ricerca per <i><?php echo $query ?></i></h2></li>
 </ul>
 
+
 <div class="tabbed float-container" id="content">
 	<div id="main">
 	  <div class="W100_100 float-left" style="margin-bottom: 20px">

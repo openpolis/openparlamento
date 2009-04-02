@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext" date="2004-12-28T18:10:19Z">
+    <body>
+      <trans-unit id="1">
+        <source>Add</source>
+        <target>Lisää</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Media library (%1%)</source>
+        <target>Mediakirjasto (%1%)</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Add a file:</source>
+        <target>Lisää tiedosto</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Create a dir:</source>
+        <target>Luo hakemisto</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Create</source>
+        <target>Lisää</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Rename in process...</source>
+        <target>Uudelleennimeäminen käynnissä...</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Cancel</source>
+        <target>Peruuta</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Delete</source>
+        <target>Poista</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Click to edit</source>
+        <target>Muokkaa osoittamalla</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Are you sure to want to delete this folder?</source>
+        <target>Haluatko varmasti poistaa hakemiston?</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Are you sure to want to delete this file?</source>
+        <target>Haluatko varmasti poistaa tiedoston?</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Rename</source>
+        <target>Nimeä uudelleen</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>Please choose a file first</source>
+        <target>Valitse ensin tiedosto</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Please enter a directory name first</source>
+        <target>Anna hakemiston nimi</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

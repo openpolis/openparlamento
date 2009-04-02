@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext" date="2004-12-28T18:10:19Z">
+    <body>
+      <trans-unit id="1">
+        <source>Add</source>
+        <target>افزودن</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Media library (%1%)</source>
+        <target>کتابخانه مدیا (%1%)</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Add a file:</source>
+        <target>افزودن یک فایل:</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Create a dir:</source>
+        <target>پوشه بسازید:</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Create</source>
+        <target>ساختن</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Rename in process...</source>
+        <target>در حال تغییر نام...</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Cancel</source>
+        <target>لغو</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Delete</source>
+        <target>حذف</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Click to edit</source>
+        <target>برای ویرایش کلیک کنید</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Are you sure to want to delete this folder?</source>
+        <target>آیا مطمئن هستید که می‌خواهید این پوشه را حذف کنید ؟</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Are you sure to want to delete this file?</source>
+        <target>آیا مطمئن هستید که می‌خواهید این فایل را حذف کنید ؟</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Rename</source>
+        <target>تغییر نام</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>Please choose a file first</source>
+        <target>لطفا ابتدا یک فایل انتخاب کنید</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Please enter a directory name first</source>
+        <target>لطفا ابتدا یک نام پوشه وارد کنید</target>
+      </trans-unit>      
+    </body>
+  </file>
+</xliff>

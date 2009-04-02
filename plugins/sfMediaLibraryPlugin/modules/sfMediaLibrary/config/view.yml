@@ -1,0 +1,6 @@
+all:
+  stylesheets: [%SF_ADMIN_WEB_DIR%/css/main, /sfMediaLibraryPlugin/css/media]
+
+choiceSuccess:
+  has_layout: false
+  stylesheets: [-*, %SF_ADMIN_WEB_DIR%/css/main, /sfMediaLibraryPlugin/css/media]

@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext" date="2007-08-01T09:35:00Z">
+    <body>
+      <trans-unit id="1">
+        <source>Add</source>
+        <target>Toevoegen</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Media library (%1%)</source>
+        <target>Mediabibliotheek (%1%)</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Add a file:</source>
+        <target>Voeg een bestand toe:</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Create a dir:</source>
+        <target>Voeg een directory toe:</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Create</source>
+        <target>Maken</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Rename in process...</source>
+        <target>Hernoemen...</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Cancel</source>
+        <target>Annuleren</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Delete</source>
+        <target>Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Click to edit</source>
+        <target>Klik om te bewerken</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Are you sure to want to delete this folder?</source>
+        <target>Weet u zeker dat u deze directory wilt verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Are you sure to want to delete this file?</source>
+        <target>Weet u zeker dat u dit bestand wilt verwijderen?</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Rename</source>
+        <target>Hernoemen</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>Please choose a file first</source>
+        <target>Kies eerst een bestand a.u.b.</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Please enter a directory name first</source>
+        <target>Kies eerst een directory a.u.b.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

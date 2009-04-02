@@ -1,0 +1,63 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file orginal="global" source-language="en_US" datatype="plaintext" date="2004-12-28T18:10:19Z">
+    <body>
+      <trans-unit id="1">
+        <source>Add</source>
+        <target>Hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Media library (%1%)</source>
+        <target>Medienbibliothek (%1%)</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Add a file:</source>
+        <target>Eine Datei hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Create a dir:</source>
+        <target>Ein Verzeichnis erstellen</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Create</source>
+        <target>Erstellen</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Rename in process...</source>
+        <target>Umbenennen in Arbeit...</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Cancel</source>
+        <target>Abbrechen</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Delete</source>
+        <target>Löschen</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Click to edit</source>
+        <target>Anklicken zum Bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Are you sure to want to delete this folder?</source>
+        <target>Möchten Sie diesen Ordner wirklich löschen?</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Are you sure to want to delete this file?</source>
+        <target>Möchten Sie diese Datei wirklich löschen?</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Rename</source>
+        <target>Umbenennen</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>Please choose a file first</source>
+        <target>Bitte wählen Sie zunächst eine Datei aus</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Please enter a directory name first</source>
+        <target>Bitte geben Sie zunächst einen Namen für das Verzeichnis ein</target>
+      </trans-unit>      
+    </body>
+  </file>
+</xliff>

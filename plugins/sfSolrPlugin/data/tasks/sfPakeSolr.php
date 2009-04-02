@@ -315,7 +315,7 @@ function solr_update_propel_model($iMan, $model, $n_bulk)
   echo "\n\n";
 
   $n_global_docs = $iMan->search('*:*')->response->numFound;
-  $n_model_docs = $iMan->search("model:$model")->response->numFound;
+  $n_model_docs = $iMan->search("sfl_model:$model")->response->numFound;
   echo 'There are now ';
   echo pakeColor::colorize(sprintf('%d', $n_model_docs), array('fg' => 'cyan'));
   echo ' documents for ' . $model;

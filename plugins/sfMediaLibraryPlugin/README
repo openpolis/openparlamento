@@ -1,0 +1,181 @@
+= sfMediaLibrary plugin =
+
+The `sfMediaLibraryPlugin` provides an easy-to-use interface to manage web assets (images, PDF documents, Flash objects, and so on). It also provides an extension to tinyMCE so that the media inclusion feature of rich text editors uses the assets uploaded through the plugin's module.
+
+This plug-in consists of:
+
+ - one module
+ - one helper group
+ - one JavaScript script
+ 
+== Screenshot ==
+
+[[Image(sfMediaLibrary.png)]]
+
+== Installation ==
+
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+{{{
+$ php symfony plugin-install http://plugins.symfony-project.com/sfMediaLibraryPlugin
+}}}
+
+Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory. You will also have to copy the contents of the `myproject/plugins/sfMediaLibraryPlugin/web/` directory into a `myproject/web/sfMediaLibraryPlugin/` directory.
+
+Enable the new module in your application, via the `settings.yml` file.
+{{{
+// in myproject/apps/frontend/config/settings.yml
+all:
+  .settings:
+    enabled_modules:        [default, sfMediaLibrary]
+}}}
+
+Clear the cache to enable the autoloading to find the new classes:
+{{{
+$ php symfony cc
+}}}
+
+Start using the new module by making a request to:
+
+{{{
+http://myproject/frontend_dev.php/sfMediaLibrary
+}}}
+
+By default, all uploaded files are stored in the `uploads/assets` directory under the `web` directory.
+You can customize this directory by changing the `upload_dir` setting in `app.yml` (you must provide a relative path to the `web` directory):
+
+{{{
+all:
+  sfMediaLibrary:
+    upload_dir: media
+}}}
+
+In the above example, uploaded files will be in the `web/media` directory.
+
+== The `sfMediaLibrary` module ==
+
+The module allows for the upload, renaming and deletion of all types of files (image, pdf, spreadsheet, etc). Click on an asset name to rename it, click on the trashcan icon to delete it.
+
+You can create, rename and delete subdirectories as well, resulting in a real tree structure that will keep your media assets organized.
+
+The module is fully i18n'ed, and the plugin comes with English, French, Spanish and Brazilian Portuguese translations.
+
+Uploaded assets end up under the `myproject/web/uploads/assets/` directory. This means that when you want to include them in a template with, for instance, an `image_tag()`, you must use an absolute path, as follows:
+
+{{{
+<?php echo image_tag('/uploads/assets/path_to_asset.suffix') ?>
+}}}
+
+== Interface with the `sfThumbnailPlugin` ==
+
+If the [wiki:sfThumbnailPlugin] is installed in your project, `sfMediaLibrary` will automatically use it to create thumbnail images of the images you upload. To deactivate this behavior, change the following setting in the `app.yml`:
+
+{{{
+all:
+  sfMediaLibrary:
+    use_thumbnails: true
+    thumbnails_dir: thumbnails
+}}}
+
+By default, thumbnail images are stored under a `thumbnail/` subdirectory of the image directory. You can change the name of this directory through another setting of the `app.yml`:
+
+{{{
+all:
+  sfMediaLibrary:
+    thumbnails_dir: thumbnail
+}}}
+
+== Using the media library with TinyMCE ==
+
+If you want to use the sfMediaLibrary plugin as a replacement for tinyMCE's file browser for image insertion, you must first initiate the plugin with a helper in the template:
+
+{{{
+<?php use_helper('sfMediaLibrary') ?>
+<?php echo init_media_library() ?>
+}}}
+
+The next thing to do is to pass a special JavaScript callback function to the TinyMCE object at initialization. This is done with the `tinymce_options` option of the `textarea_tag()` helper:
+
+{{{
+<?php echo textarea_tag('content', '', array (
+  'rich' => true,
+  'tinymce_options' => 'file_browser_callback:"sfMediaLibrary.fileBrowserCallBack"',
+  )); ?>
+}}}
+
+That's it, the TinyMCE file browser is now the sfMediaLibrary's one. I'm not sure if this is the case for everyone, but I had to add the advimage plugin to the list of tinymce plugins for it to fully work without javascript errors.
+
+Tip: For use with an admin generated module, place the `init_media_library()` call in the `_edit_header.php` partial in the `templates/` directory of the module. To define the callback in a `generator.yml`, do as follows:
+
+{{{
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      Post
+    theme:            default
+        
+    edit:
+      fields:
+        content: { params: rich=true tinymce_options=\'file_browser_callback:"sfMediaLibrary.fileBrowserCallBack"\' }
+}}}
+
+== Using the Media Library input_file helper ==
+
+Traditionally, when an asset has to be referenced in a form, a file input is used (`<input type='file'>`). It allows the user to upload a file from his computer to the server, and this file can be further embedded in a rich text content.
+
+Using the sfMediaLibrary, you can change this control into some sort of file input that wouldn't refer to the client's computer, but to the media library itself, or, to put it differently, to the files located in `web/uploads/assets/`. The plugin comes with a special helper for that purpose, the `input_asset_tag()`. Use is just like a regular `input_tag()`:
+
+{{{
+<?php echo form_tag('foo/bar') ?>
+  <?php echo input_asset_tag('my_asset_field', '') ?>
+</form>
+}}}
+
+The input is not a real file input tag, meaning that the chosen asset file will not be posted woth the request. It is iseless anyway, since the file is already on the server. Instead, the action will be able to retrieve the asset file path relative to the web root, exactly what is needed to display it.
+
+Optionally, you can restrict the choice of possible assets in this input to images only, as follows:
+
+{{{
+<?php echo input_asset_tag('my_asset_field', '', array('images_only' => true)) ?>
+}}}
+
+== TODO ==
+
+ * Improve CSS and design
+ * Improve compatibility
+ * Allow to move an asset to another directory
+ * Make path clickable to go up in the tree structure
+ * More translations for the `sfMediaLibrary` module
+
+== Changelog ==
+
+=== Trunk ===
+
+ * fabien: fixed JS breaking with Adblock/Filterset.G (#2625)
+
+=== 2007-11-12 | 0.9.0 Beta === 
+
+ * fabien: fixed input_asset_tag requires i18n helper (#2171)
+ * fabien: Added it, de and nl translations (#2036, #2055, #2194)
+ * fabien: Cleaned up a bit the templates
+ * fabien: Added an example of thumbnails_dir setting
+ * fabien: Fixed use_thumbnails setting as per the documentation
+ * fabien: Added a new setting to override the upload directory
+ * fabien: Added a new object_input_asset_tag() helper (to be used in the admin generator for example)
+ * fabien: Fixed images that have a size to 0 when using thumbnails
+ * fabien: Fixed thumbnail creation for non image media (#1981)
+
+=== 2007-07-10 | 0.8.2 Beta === 
+
+ * francois: Fixed Asset URL incorrect when using sandbox
+ * francois: Fixed error with i18n helper
+ * francois: Use [wiki:sfThumbnailPlugin] when available
+ * Jose.Luis.Di.Biase: Added Spanish translation
+ * Rimenes.Ribeiro: Added translation for Brazilian Portuguese
+
+=== 2007-04-16 | 0.8.1 Beta === 
+
+ * francois: Fixed a conflict with URL rewriting rules making folder navigation impossible
+
+=== 2007-04-13 | 0.8.0 Beta === 
+
+ * francois: Initial release

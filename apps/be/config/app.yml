@@ -8,7 +8,11 @@ all:
   sfSimpleBlog:
     user_class:          OppUser
     use_bundled_layout:  false
+    use_rich_text:       true
+    use_media_library:   true
 
+  sfMediaLibrary:
+#    upload_dir: upload/assets        # directory di default per l'upload
 
   # cookies
   cookies:

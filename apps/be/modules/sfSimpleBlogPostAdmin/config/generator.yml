@@ -23,7 +23,7 @@ generator:
       fields:
         allow_comments: { name: Commenti }
         tags_as_string: { name: Tags, type: input_tag }
-        content:        { params: size=60x30 <?php if(sfConfig::get('app_sfSimpleBlog_use_rich_text', false)): echo 'rich=true'; endif; ?> tinymce_options='<?php if(sfConfig::get('app_sfSimpleBlog_use_media_library', false)): echo 'file_browser_callback:"sfMediaLibrary.fileBrowserCallBack"'; endif; ?>' }
+        content:        { params: rich=true tinymce_options=height:200}
       actions: 
         _save:          ~
         togglePublish:  { name: publish/unpublish, action: togglePublish }
