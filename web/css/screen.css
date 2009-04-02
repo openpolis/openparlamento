@@ -330,6 +330,37 @@ p.wiki-form-submit { margin-left: 20px;}
 -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
 }
 
+
+#footer #footer-cont {
+	width:98%;
+	margin:0 auto 0 auto;
+}
+#footer #footer-cont img {
+	margin:0 0 0 0;
+}
+
+#footer #footer-cont a:hover, #footer #footer-cont a:active {
+	color:#2a76d4;
+	text-decoration:underline;
+}
+
+#footer #footer-cont ul {
+	margin:10px 0 20px 0;
+	width:19%;
+	float:left;
+}
+#footer #footer-cont ul li {
+	list-style-type:none;
+	padding:2px 0 0 0;
+	width:90%; 
+}
+
+#footer #footer-cont ul li.footer-title {
+	font-size:13px;
+	font-weight:bold;
+	color:#333333;
+}
+
 #teasers { padding: 12px 10px 10px 12px;  }
 
 #main { padding: 12px 19px 12px 23px;  }
