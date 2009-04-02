@@ -212,6 +212,10 @@ progetto:
   url:  /progetto
   param: { module: static, action: progetto }
 
+faq:
+  url:  /faq
+  param: { module: static, action: faq }
+
 
 # default rules
 homepage:

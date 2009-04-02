@@ -11,10 +11,12 @@
     </tr>
   </thead>
 
-  <tbody>		
+  <tbody>
+  <?php $tr_class = 'even' ?>		
     <?php foreach ($pager->getResults() as $carica_has_atto): ?>
       <?php $atto = $carica_has_atto->getOppAtto(); ?>
-      <tr>
+      <tr class="<?php echo $tr_class; ?>">
+       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
         <td><p><?php echo $carica_has_atto->getTipo() ?></p></td>
         <th scope="row">
           <p class="content-meta">
@@ -44,7 +46,7 @@
             <?php $c = new Criteria() ?>
             <?php $c->add(OppIterPeer::ID, $status_iter, Criteria::EQUAL); ?>
             <?php $iter = OppIterPeer::doSelectOne($c) ?>
-            <p class="gold"><?php echo $iter->getFase() ?></p>
+                <p class="<?php echo $iter->getColor() ?>"><?php echo strtolower($iter->getFase()) ?></p>
           <?php endforeach; ?>
         </td>
         <td><p><?php echo $atto->getNInterventi() ?></p></td>

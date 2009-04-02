@@ -13,8 +13,10 @@
 <?php $totale_assenti = 0 ?>  
 <?php $totale_missioni = 0 ?> 	
   <tbody>
+  <?php $tr_class = 'even' ?>
   <?php foreach ($risultati as $gruppo => $risultato): ?>
-  <tr>
+   <tr class="<?php echo $tr_class; ?>">
+   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
   	<?php $direttiva_gruppo = max($risultato['Favorevole'], $risultato['Contrario'], $risultato['Astenuto']) ?>
   	 <?php $gruppo_non_voto=0 ?>
   	<?php if (($risultato['Favorevole']== $risultato['Contrario'] && $direttiva_gruppo==$risultato['Favorevole']) 

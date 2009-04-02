@@ -1,13 +1,15 @@
 var eMend = {
   config: {
     comment_target: '#testo_atto',
-    baseURI: "/sfEmendPlugin/",                            // load eMend assets from this URI
+    baseURI: "/sfEmendPlugin/",                            // load eMend assets from this server path 
     backstore_tiddly: true,                                // enable/disable tiddly backstore
     backstore_sfEmendPlugin: true,                         // enable/disable symfony plugin backstore
     scroll_refresh_delay: true,                            // delay comments visual link refresh to save CPU cycles
     jquery_noconflict: true,                               // enable/disable jQuery no conflict mode
     jquery_googleapis: false,                              // enable/disable loading jQuery from googleapis
     jquery_min_version: '1.2.6',                           // minimum version of jQuery
+    login_needed_to_post: true,                            // checks if user is logged-in and eventually redirects
+    login_page: "/login",                                  // login page 
     debug: true                                            // enable/disable uncompressed scripts inclusion for debug
   }
 };	

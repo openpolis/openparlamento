@@ -309,6 +309,7 @@ p.wiki-form-submit { margin-left: 20px;}
  *----------------------------------------------*/
 
 #wrapper { min-width:1004px; width: auto !important; width: 1004px; margin: 1px auto 10px auto; }
+#wrapper-800 { min-width:750px; width: auto !important; width: 750px; margin: 1px auto 10px auto; }
 #header { margin: 0 12px; }
 #tools { background: #758d9c url(../images/bg-tools.png) repeat-x top left; height: 85px; font-size: 11px; color: #fff; padding: 12px 20px 0 45px;
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px;
@@ -480,6 +481,8 @@ img.prev-active, img.next-active { display: none; }
 .green h5, span.green { color: #34961d; }
 .red h5, span.red { color: #b13311; }
 .gold { color: #c39c11; }
+.green { color: #4d8f3f; }
+.red { color: #aa4f36; }
 .green td { background-color: #4d8f3f; }
 .red td { background-color: #aa4f36; }
 .green td.cam { padding: 0 0 0 8px; background: #4d8f3f url(../images/bg-green.png) no-repeat top left; }
@@ -696,9 +699,12 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .disegni-decreti { margin-bottom: 1em; }
 .disegni-decreti thead th { padding: 0 5px 5px 5px; font-size: 11px; vertical-align: bottom; }
-.disegni-decreti tbody th, .disegni-decreti tbody td  { padding: 10px 0 5px 0; border-bottom: 1px solid #dfe0e0; border-top: 1px solid #fff; color: #000;}
+.disegni-decreti tbody th, .disegni-decreti tbody td  { padding: 10px 1px 5px 0; border-bottom: 1px solid #dfe0e0; border-top: 1px solid #fff; color: #000;}
 .disegni-decreti tbody tr { padding-bottom: 3px; }
-.disegni-decreti tbody tr:hover { background-color: #fffaea; }
+.disegni-decreti tbody tr.even { background-color: #ffffff; }
+.disegni-decreti tbody tr.odd { background-color: #fafafa; }
+.disegni-decreti tbody tr.even:hover { background-color: #fffaea; }
+.disegni-decreti tbody tr.odd:hover { background-color: #fffaea; }
 .disegni-decreti tr.ribelli { background-color: #faf8ef;}
 .disegni-decreti td span.small { font-size:11px; color:#888888;}
 
@@ -778,6 +784,8 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 #search-main-field { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd;  width: 175px; font-size: 16px; margin-right: 3px; }
 #search-main-go { vertical-align: bottom; }
 
+#wrapper-800 #search-main-field { width: 100px; }
+
 /*
  * MAIN NAVIGATION
  *----------------------------------------------*/
@@ -789,6 +797,8 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 #navigation a, #navigation .current { color: #f58300; font-size: 17px; padding: 0 6px; margin-right: 15px; 
 -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 #navigation a:hover, #navigation .current { color: #fff; background-color: #f58300; text-decoration: none; }
+#wrapper-800 #navigation { padding-left: 15px; }
+#wrapper-800 #navigation a, #wrapper-800 #navigation .current { margin-right: 10px; }
 
 /*
  * ICONS

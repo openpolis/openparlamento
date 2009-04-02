@@ -215,6 +215,7 @@ class monitoringActions extends sfActions
     $mail->setSender('vilas@deddo.palomarlab.net', 'Test');
     $mail->setFrom('vilas@deddo.palomarlab.net', 'Test');
 
+
     $mail->addAddress($user->getEmail());
 
     $mail->setSubject('Openparlamento: newsletter quotidiana' );
@@ -227,6 +228,7 @@ class monitoringActions extends sfActions
     $this->mail_text_body = $mail_text_body;
     $this->mail = $mail;    
     
+
   }
   
   public function executeFavouriteActs()

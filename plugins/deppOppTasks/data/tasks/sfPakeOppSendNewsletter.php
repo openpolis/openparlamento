@@ -89,13 +89,21 @@ function opp_send_single_newsletter($user)
 
   // invoke the action that sends the email
   sfContext::getInstance()->getRequest()->setParameter('user_id',$user->getId());
-  $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendNewsletter');
+  try {
+    $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendNewsletter');
+    // log the email
+    sfContext::getInstance()->getLogger()->debug($raw_email);
+  } catch (Exception $e) {
+   
+   echo pakeColor::colorize(sprintf("%s", $e->getMessage()), array('fg' => 'red'));
 
-  // log the email
-  sfContext::getInstance()->getLogger()->debug($raw_email);
+   // log the email
+   sfContext::getInstance()->getLogger()->err($e->getMessage());
+  }
+
   
   $execution_time = microtime(true) - $start_time;
-  if ($raw_email != '') echo " ok (";
+  if (isset($raw_email) && $raw_email != '') echo " ok (";
   else echo " no mail (";
   echo pakeColor::colorize(sprintf("%f", $execution_time), array('fg' => 'cyan'));
   echo ")\n";

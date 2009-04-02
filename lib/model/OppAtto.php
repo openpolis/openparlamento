@@ -58,7 +58,7 @@ class OppAtto extends BaseOppAtto
     $c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
     $iters = $this->getOppAttoHasItersJoinOppIter($c);
     if (count($iters))
-      return $iters[0];
+      return strtolower($iters[0]);
     else
       return null;
   }

@@ -13,6 +13,7 @@
   </thead>
 
   <tbody>
+  
     <?php foreach ($pager->getResults() as $votazione_has_carica): ?>
       <?php $votazione = $votazione_has_carica->getOppVotazione(); ?>
       <?php $voto_parlamentare =  $votazione_has_carica->getVoto() ?>

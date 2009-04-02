@@ -26,9 +26,11 @@
     </tr>
   </thead>  
   
-  <?php foreach ($ribelli as $cognome => $ribelle): ?>  
   <tbody>
-    <tr>
+  <?php $tr_class = 'even' ?>
+  <?php foreach ($ribelli as $cognome => $ribelle): ?>  
+   <tr class="<?php echo $tr_class; ?>">
+   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
   	  <th scope="row">
   	   <p class="politician-id">
             <?php echo image_tag(OppPoliticoPeer::getThumbUrl($ribelle['id']), 
@@ -42,8 +44,7 @@
 	    <?php echo (($voto_gruppo->getOppGruppo()->getNome()==$ribelle['gruppo']) ? $voto_gruppo->getVoto() : '') ?>
 	  <?php endforeach; ?> 
 	  </td> 	    
-    </tr>
-  </tbody>  
-   
+    </tr> 
   <?php endforeach; ?>  
+  </tbody>  
 </table>

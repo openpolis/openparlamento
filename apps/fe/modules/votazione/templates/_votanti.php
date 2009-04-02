@@ -8,9 +8,10 @@
     </tr>
   </thead> 
   <tbody>
-
+  <?php $tr_class = 'even' ?>
   <?php while($votanti->next()): ?>
-   <tr> 
+   <tr class="<?php echo $tr_class; ?>">
+   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
   	<th scope="row" <?php echo ( $votanti->getString(8)==1 ? 'class="evident"' :'') ?>><?php echo link_to($votanti->getString(2).' '.$votanti->getString(3), '@parlamentare?id='.$votanti->getInt(1))." (".$votanti->getString(7).")" ?></th>
 	<td><?php echo $votanti->getString(6) ?></td>
 	<?php if($votanti->getString(5)!=""): ?>

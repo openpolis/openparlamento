@@ -12,10 +12,12 @@
     </tr>
   </thead>
 
-  <tbody>		
+  <tbody>
+  <?php $tr_class = 'even' ?>			
     <?php foreach ($pager->getResults() as $intervento): ?>
       <?php $atto = $intervento->getOppAtto(); ?>
-      <tr>
+       <tr class="<?php echo $tr_class; ?>">
+       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo $intervento->getCreatedAt('d-m-Y') ?></span>

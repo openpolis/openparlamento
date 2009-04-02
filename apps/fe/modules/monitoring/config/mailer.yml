@@ -2,4 +2,4 @@ task-test:
   deliver: off
 
 all:
-  deliver: sendmail
+  mailer: sendmail

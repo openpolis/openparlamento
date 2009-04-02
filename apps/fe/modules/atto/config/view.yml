@@ -5,6 +5,7 @@ indexSuccess:
 documentoSuccess:
   javascripts:    [/sfEmendPlugin/emend.boot.js]
   stylesheets:    [-*, screen, testo_atto]
+  layout:         layoutDoc
 
 all:
   javascripts:    

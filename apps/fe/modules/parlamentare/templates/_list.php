@@ -12,9 +12,12 @@
     </tr>
   </thead>
 
-  <tbody>				  
+  <tbody>
+  
+    <?php $tr_class = 'even' ?>				  
     <?php while($parlamentari->next()): ?>
-      <tr>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="politician-id">
             <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 

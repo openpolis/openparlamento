@@ -7,10 +7,12 @@
       </tr>
     </thead>
 
-    <tbody>		
+    <tbody>
+    <?php $tr_class = 'even' ?>		
       <?php foreach ($atti_taggati as $tipo => $values): ?>
-        <tr>
-          <td><?php echo $tipo ?></td>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
+           <th scope="row"><?php echo $tipo ?></th>
           <?php if ($values['n'] > 0): ?>
             <td><?php echo link_to($values['n'],
                              sprintf('@argomento_%s?triple_value=%s&filter_act_%s_type=%s',

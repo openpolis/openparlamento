@@ -1,5 +1,5 @@
 <h5 class="subsection">i voti relativi al disegno di legge:</h5>
-<h5 class="subsection-spec">l'ultimo voto:</h5>
+<h5 class="subsection-spec">i pi&ugrave; recenti:</h5>
 
 <table class="disegni-decreti column-table">
   <thead>
@@ -12,9 +12,11 @@
     </tr>
   </thead>
   <tbody>
+   <?php $tr_class = 'even' ?>
     <?php foreach($votazioni as $votazione): ?>
 	  <?php if($limit_count < $limit): ?>
-	    <tr>
+	  <tr class="<?php echo $tr_class; ?>">
+          <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
           <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
           <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
           <td>
@@ -54,10 +56,12 @@
         </tr>
       </thead>
       <tbody>
+      <?php $tr_class = 'even' ?>
         <?php $limit_count = 0; ?>      	
         <?php foreach($votazioni as $votazione): ?>
           <?php if ($limit_count >= $limit): ?>
-		    <tr>
+	    <tr class="<?php echo $tr_class; ?>">
+            <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
               <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
               <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
               <td>

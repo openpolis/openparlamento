@@ -11,8 +11,10 @@
   </thead>
 
   <tbody>		
+   <?php $tr_class = 'even' ?>	
     <?php foreach ($pager->getResults() as $atto): ?>
-      <tr>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>,</span>
@@ -37,7 +39,7 @@
             <?php $c = new Criteria() ?>
             <?php $c->add(OppIterPeer::ID, $status_iter, Criteria::EQUAL); ?>
             <?php $iter = OppIterPeer::doSelectOne($c) ?>
-            <p class="gold"><?php echo $iter->getFase() ?></p>
+            <p class="<?php echo $iter->getColor() ?>"><?php echo $iter->getFase() ?></p>
           <?php endforeach; ?>
         </td>
         <td><p><?php echo $atto->getNInterventi() ?></p></td>

@@ -10,9 +10,11 @@
       </tr>
     </thead>
 
-    <tbody>		
+    <tbody>	
+     <?php $tr_class = 'even' ?>	
       <?php foreach ($atti_presentati as $tipo => $values): ?>
-        <tr>
+        <tr class="<?php echo $tr_class; ?>">
+        <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
           <th scope="row" style="padding-left:3px;"><?php echo $tipo ?></th>
           <?php if ($values['P'] > 0): ?>
             <td><?php echo link_to($values['P'],

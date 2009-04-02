@@ -10,9 +10,11 @@
     </tr>
   </thead>
 
-  <tbody>		  
+  <tbody>	
+  <?php $tr_class = 'even' ?>		  
     <?php foreach ($pager->getResults() as $ddl): ?>
-      <tr>
+       <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>

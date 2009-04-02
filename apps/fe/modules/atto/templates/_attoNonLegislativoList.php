@@ -11,8 +11,10 @@
   </thead>
 
   <tbody>		  
+    <?php $tr_class = 'even' ?>
     <?php foreach ($pager->getResults() as $ddl): ?>
-      <tr>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>
@@ -34,10 +36,10 @@
           <?php //include_component('atto', 'statoAttoNonLegislativo', array('ddl' => $ddl)) ?>
           <?php if($ddl->getStatoFase()!=''): ?>
             <p class="date"><?php echo format_date($ddl->getStatoLastDate() , 'dd/MM/yyyy') ?></p>
-            <p class="gold"><?php echo $ddl->getStatoFase() ?></p>
+            <p class="gold"><?php echo strtolower($ddl->getStatoFase()) ?></p>
           <?php else: ?>
             <p class="date"><?php echo format_date($ddl->getDataPres() , 'dd/MM/yyyy') ?></p>
-            <p class="gold">PRESENTATO</p>
+            <p class="gold">presentato</p>
           <?php endif; ?>  
         </td>
         <td><?php echo $ddl->getNInterventi() ?></td>

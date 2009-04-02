@@ -12,8 +12,10 @@
   </thead>
 
   <tbody>
+   <?php $tr_class = 'even' ?>
     <?php foreach ($pager->getResults() as $votazione): ?>
-      <tr>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></span>

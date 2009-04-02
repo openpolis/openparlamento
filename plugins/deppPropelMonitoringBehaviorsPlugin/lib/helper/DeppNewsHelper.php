@@ -310,7 +310,7 @@ function community_news_text($news)
     case 'OppAtto':
       // link all'atto
       $item_type = 'l\'atto';
-      $link = link_to_in_mail($item->getRamo() . '.' . $item->getNumfase(), 
+      $link = link_to_in_mail(Text::denominazioneAtto($item, 'list'), 
                               'atto/index?id=' . $related_id,
                               array('title' => $item->getTitolo()));
       break;
@@ -336,30 +336,64 @@ function community_news_text($news)
   switch ($generator_model) 
   {
     case 'sfComment':
-      return sprintf("%s ha commentato %s %s", $news->getUsername(), $item_type, $link);
+      return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato %s</p><p> %s</p>", 
+                     image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
       break;
+      
     case 'Monitoring':
       if ($news->getType() == 'C')
-        return sprintf("un utente si è aggiunto agli altri %d che stanno monitorando %s %s", 
-                      $news->getTotal(), $item_type, $link);
+      {
+          if ($news->getTotal()>0)
+          {
+            if ($news->getTotal()>1)
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto agli  %d che stanno monitorando %s</p><p> %s", 
+                              image_tag('/images/ico-type-monitoring.png', array('alt' => 'monitor')),$news->getTotal(), $item_type, $link); 
+            else
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto a un altro che sta monitorando %s</p><p> %s", 
+                              image_tag('/images/ico-type-monitoring.png', array('alt' => 'monitor')),$item_type, $link); 
+          }                    
+          else
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un primo utente ha avviato il monitoraggio per %s</p><p> %s", 
+                              image_tag('/images/ico-type-monitoring.png', array('alt' => 'monitor')),$item_type, $link);      
+      }                              
       else
-        return sprintf("un utente ha smesso di monitorare %s %s", 
-                       $item_type, $link);          
+         return sprintf("<div class='ico-type float-left'>%s</div><p>un utente ha smesso di monitorare %s</p><p> %s</p>", 
+                              image_tag('/images/ico-type-monitoring.png', array('alt' => 'monitor')),$item_type, $link);
       break;
+      
     case 'sfVoting':
       if ($news->getType() == 'C')
       {
-        if ($news->getVote() == 1) $fav_contr = 'favorevoli';
-        else $fav_contr = 'contrari';
-        return sprintf("un utente si è aggiunto agli altri %d %s per %s %s", 
-                      $news->getTotal(), $fav_contr, $item_type, $link);
+        if ($news->getVote() == 1) $fav_contr = '<span style="color:green; font-weight:bold;">favorevoli</span>';
+        else $fav_contr = '<span style="color:red; font-weight:bold;">contrari</span>';
+        if ($news->getTotal()>0)
+        {
+           if ($news->getTotal()>1)
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto agli altri %d %s al%s </p><p> %s</p>", 
+                              image_tag('/images/ico-type-votazione-user.png', array('alt' => 'voto')),$news->getTotal(), $fav_contr, $item_type, $link);
+           else
+           {
+               if (substr_count($fav_contr,'favorevoli') == 1) $fav_contr = '<span style="color:green; font-weight:bold;">favorevole</span>';
+               else $fav_contr = '<span style="color:red; font-weight:bold;">contrario</span>';
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto a un altro %s al%s</p><p>%s</p>", 
+                              image_tag('/images/ico-type-votazione-user.png', array('alt' => 'voto')),$fav_contr, $item_type, $link);
+           }                    
+        }                      
+        else
+        {
+               if (substr_count($fav_contr,'favorevoli') == 1) $fav_contr = '<span style="color:green; font-weight:bold;">favorevole</span>';
+               else $fav_contr = '<span style="color:red; font-weight:bold;">contrario</span>';
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente &egrave; %s al%s</p><p> %s</p>", 
+                               image_tag('/images/ico-type-votazione-user.png', array('alt' => 'voto')),$fav_contr, $item_type, $link);           
+        }                           
       } else {
-        return sprintf("un utente ha ritirato il suo voto per %s %s", 
-                       $item_type, $link);          
+        return sprintf("<div class='ico-type float-left'>%s</div><p>utente ha ritirato il suo voto per %s</p><p> %s</p>", 
+                      image_tag('/images/ico-type-votazione-user.png', array('alt' => 'voto')),$item_type, $link);          
       }
       break;
     case 'nahoWikiRevision':
-      return sprintf("%s ha modificato la descrizione wiki per %s %s", $news->getUsername(), $item_type, $link);
+      return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha modificato la descrizione wiki per %s</p><p> %s</p>", 
+                     image_tag('/images/ico-type-descrizione.png', array('alt' => 'wiki!')),strtolower($news->getUsername()), $item_type, $link);
       break;
   }
   

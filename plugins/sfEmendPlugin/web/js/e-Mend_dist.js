@@ -3955,11 +3955,11 @@ eMend.dataset.prototype = {
     //this.currentMode = 'read';
   },
 
-  loginAs: function(user,pass) {
+  loginAs: function(user) {
     this._author = user;
-    this._password = pass;
+    //this._password = pass;
     this._currentUser = this.addUser(user);
-    this._authorHash = emendCRYPTOutils.md5(user+pass);
+    //this._authorHash = emendCRYPTOutils.md5(user+pass);
     //this.loadLocal();
     //this.renderAll();
     //this.refreshLinks();
@@ -4834,70 +4834,70 @@ eMend.commentTrigger = function (options) {
   );
   this.template = $.template(eMend.templates.commentTrigger,{ regx: 'gettext' }).apply(eMend.dictionary.commentTrigger);
   this.create();
-  this.show(0);
+  //this.show(0);
 }
 
 eMend.commentTrigger.prototype = {
-	create: function() {
-      var commentTrigger = $('#HOLteaser').remove();
-      if(!commentTrigger.length) {
-        commentTrigger = $.create('div',{'id':'HOLteaser', 'style':'cursor: pointer;'});
-        commentTrigger[0].innerHTML = this.template;      
-      }
-
-      //var _self = this;
-      //$(commentTrigger).bind('click',function(){ _self.activate(); });
-      this.opts.target.appendChild(commentTrigger[0]);
-      $(commentTrigger).find('li').hide();
-      
-      return commentTrigger;
-	},
-	show: function(n, delay) {
-      if(this.status == n) return;
-      
-      var _self = this;
-      
-      $('.eMend-jGrowl div.close').trigger('click.jGrowl');
-      var v = $('#HOLteaser').find('li')[n];
-      var pos = this.opts.sidebar.isOpen() == false ? 'bottom-right' : 'bottom-left';
-      
-      $.jGrowl.defaults.closer = false;
-      $.jGrowl.defaults.position = pos;
-      
-      if (!this.opts.hideHOL) window.setTimeout(function(){
-        $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
-        
-        $('.emendHideHOL').click( function(){
-            _self.opts.hideHOL = true;
-            $.aqCookie.set('hideHOL','true');
-          }
-        );
-      }, 500);
-      
-      this.status = n;
-      
-      _self.isCtrl = false;
-      $(document).bind('keyup.commentTrigger',function (e) {
-        if(e.which == 17) _self.isCtrl=false;
-        if(e.which == 67 && _self.isCtrl == false) {
-          e.stopPropagation();
-          _self.activate();
-        }        
-      }).bind('keydown.commentTrigger',function (e) {
-          if(e.which == 17) _self.isCtrl=true;
-      });       
-	},
-    hide: function(n, delay){
-      $(document).unbind('keyup.commentTrigger');
-      $(document).unbind('keydown.commentTrigger');
-    },
-    activate: function() {
-      if(this.status != 2 ) {
-        this.hide();
-        this.show(2);
-        this.opts.form.show();
-      }
+  create: function() {
+    var commentTrigger = $('#HOLteaser').remove();
+    if(!commentTrigger.length) {
+      commentTrigger = $.create('div',{'id':'HOLteaser', 'style':'cursor: pointer;'});
+      commentTrigger[0].innerHTML = this.template;      
     }
+
+    //var _self = this;
+    //$(commentTrigger).bind('click',function(){ _self.activate(); });
+    this.opts.target.appendChild(commentTrigger[0]);
+    $(commentTrigger).find('li').hide();
+    
+    return commentTrigger;
+  },
+  show: function(n, delay) {
+    if(this.status == n) return;
+    
+    var _self = this;
+    
+    $('.eMend-jGrowl div.close').trigger('click.jGrowl');
+    var v = $('#HOLteaser').find('li')[n];
+    var pos = this.opts.sidebar.isOpen() == false ? 'bottom-right' : 'bottom-left';
+    
+    $.jGrowl.defaults.closer = false;
+    $.jGrowl.defaults.position = pos;
+    
+    if (!this.opts.hideHOL) window.setTimeout(function(){
+      $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
+      
+      $('.emendHideHOL').click( function(){
+	  _self.opts.hideHOL = true;
+	  $.aqCookie.set('hideHOL','true');
+	}
+      );
+    }, 500);
+    
+    this.status = n;
+    
+    _self.isCtrl = false;
+    $(document).bind('keyup.commentTrigger',function (e) {
+      if(e.which == 17) _self.isCtrl=false;
+      if(e.which == 67 && _self.isCtrl == false) {
+	e.stopPropagation();
+	_self.activate();
+      }        
+    }).bind('keydown.commentTrigger',function (e) {
+	if(e.which == 17) _self.isCtrl=true;
+    });       
+  },
+  hide: function(n, delay){
+    $(document).unbind('keyup.commentTrigger');
+    $(document).unbind('keydown.commentTrigger');
+  },
+  activate: function() {
+    if(this.status != 2 ) {
+      this.hide();
+      this.show(2);
+      this.opts.form.show();
+    }
+  }
 }
 })(jQuery);
 /* 
@@ -5912,6 +5912,7 @@ eMend.backstore.sfEmendPlugin = function (options) {
     var loc = window.location.pathname.split('/');
     loc.shift();
     this.resourceID = loc.join('_');
+    this.getLoggedUser();
     this.getComments();
 };
 
@@ -5924,50 +5925,62 @@ eMend.backstore.sfEmendPlugin.prototype = {
             //console.log('sfEmendPlugin.addcomment',s,c);
         
 
-        c.selection = $.toJSON(s);
-        //console.log(c);
-        $.ajax({
-            url: '/fe_dev.php/emend.addComment/'+this.resourceID,
-            data: c,
-            success: function(msg){
-              //console.log("Data Saved: ",msg);
-            }
-        });
-		//var data = $.toJSON({"s":s,"c":c});
-
+		c.selection = $.toJSON(s);
+		//console.log(c);
+		$.ajax({
+		    url: '/fe_dev.php/emend.addComment/'+this.resourceID,
+		    data: c,
+		    success: function(msg){
+		      //console.log("Data Saved: ",msg);
+		    }
+		});
 	},
 	getComments: function(container) {
 		var ds = this.opts.dataset;
-        /*
-		container.children().each(function(){
-			var o = $.evalJSON($(this).attr('data')); //$.secureEvalJSON ? secure :) ?
+		$.ajax({
+		    url: '/fe_dev.php/emend.getComments/'+this.resourceID,
+		    success: function(data, textStatus){
+		      //console.log("Data loaded: ",textStatus, data);
+		      var obj = $.evalJSON(data);
+		      //console.log("JSON: ",obj);
+		      
+		      var i,l,o;
+		    
+		      for(i=0, l=obj.comments.length; i<l; i++) {
+			o = obj.comments[i];
 			ds.importEmendment(o.s,o.c);
+		      }
+		      $(document).trigger('emend.importData');              
+		    },
+		    error: function (XMLHttpRequest, textStatus, errorThrown) {
+		      //console.log(textStatus, errorThrown)
+		      // typically only one of textStatus or errorThrown 
+		      // will have info
+		      this; // the options for this ajax request
+		    }           
 		});
-        */
-        $.ajax({
-            url: '/fe_dev.php/emend.getComments/'+this.resourceID,
-            success: function(data, textStatus){
-              //console.log("Data loaded: ",textStatus, data);
-              var obj = $.evalJSON(data);
-              //console.log("JSON: ",obj);
-              
-              var i,l,o;
-            
-              for(i=0, l=obj.comments.length; i<l; i++) {
-                o = obj.comments[i];
-                ds.importEmendment(o.s,o.c);
-              }
-              $(document).trigger('emend.importData');              
-            },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
-              //console.log(textStatus, errorThrown)
-              // typically only one of textStatus or errorThrown 
-              // will have info
-              this; // the options for this ajax request
-            }           
-        });        
-		//$(document).trigger('emend.importData');
-		
+	},
+	getLoggedUser: function() {
+		var ds = this.opts.dataset;
+		$.ajax({
+		    url: '/get_logged_user',
+		    success: function(data, textStatus){
+		      //console.log("Data loaded: ",textStatus, data);
+		      var obj = $.evalJSON(data);
+		      //console.log("JSON: ",obj);
+		      
+		      if(typeof obj.name != 'undefined') {
+			ds.loginAs(obj.name);
+		      }
+
+		    },
+		    error: function (XMLHttpRequest, textStatus, errorThrown) {
+		      //console.log(textStatus, errorThrown)
+		      // typically only one of textStatus or errorThrown 
+		      // will have info
+		      this; // the options for this ajax request
+		    }           
+		});		
 	}
 };
 
@@ -6008,9 +6021,6 @@ eMend.init = function($) {
 	var pf = eMend.prefetch({datastore: DO});
 	var SB = eMend.sidebar({target: VO});
 	var SBc = SB.getContainer();
-    //$.jGrowl.defaults.appendTo = VO;
-
-	//$(window).wresize(function(){ });
 	
 	var ds = eMend.dataset({target: document.body, datastore: DO})
 	  , ps = eMend.positions()        
@@ -6022,7 +6032,7 @@ eMend.init = function($) {
 	  //, tr = new $.textResizeDetector({target: VO});
 	  
 	var emend_lastScrollTimer = -1;
-    var emend_lastScrollPosition = window.scrollY;
+	var emend_lastScrollPosition = window.scrollY;
 	
 	//events binding
 	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
@@ -6054,7 +6064,7 @@ eMend.init = function($) {
 	$(document).bind('emend.opensidebar',function(){F_refLinks()});
 	$(document).bind('emend.opensidebar',F_refnavbar);
 	$(document).bind('emend.closesidebar',function(){ F_hideLinks(); window.setTimeout(F_clearLinks,500); });
-    $(document).bind('emend.addComment',function(){ ct.show(0); });
+	$(document).bind('emend.addComment',function(){ ct.show(0); });
 	//$(ln).bind('emend.hidelinks',function(){SB.closesidebar()});
 	//$(document).bind('textResize',F_refLinks);
 	$(document).bind('emend.highlight',F_updHL);

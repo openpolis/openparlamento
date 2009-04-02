@@ -11,11 +11,13 @@
     </tr>
   </thead>
   <tbody>
+  <?php $tr_class = 'even' ?>	
     <?php foreach($interventi as $intervento): ?>
       <?php $interventi_array = explode('@', $intervento['link'] ); ?>
       <?php foreach($interventi_array as $intervento_singolo): ?>	  	
         <?php if($limit_count < $limit): ?>  	
-          <tr>
+           <tr class="<?php echo $tr_class; ?>">
+           <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
             <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
             <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
             <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
@@ -45,12 +47,14 @@
         </tr>
       </thead>
       <tbody>
+      <?php $tr_class = 'even' ?>	
         <?php $limit_count = 0; ?> 
         <?php foreach($interventi as $intervento): ?>
           <?php $interventi_array = explode('@', $intervento['link'] ); ?>
           <?php foreach($interventi_array as $intervento_singolo): ?>	  	
             <?php if ($limit_count >= $limit): ?>
-              <tr>
+              <tr class="<?php echo $tr_class; ?>">
+           <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
                 <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
                 <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
                 <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>

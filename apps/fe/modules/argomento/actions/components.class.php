@@ -31,32 +31,6 @@ class argomentoComponents extends sfComponents
   
   }
   
-    public function executeNumeroAtti()
-  {
-    $C_atti=array();
-    $S_atti=array();
-   for ($y=1;$y<=2;$y++) { 
-    if ($y==1) $ramo='C';
-    else $ramo='S'; 
-   
-    for ($x=1;$x<18;$x++) {	
-	    $c = new Criteria();
-	    $c->addJoin(TaggingPeer::TAGGABLE_ID, OppAttoPeer::ID);
-	    $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
-	    $c->add(TaggingPeer::TAG_ID, $this->tag->getId());
-	    $c->add(OppAttoPeer::TIPO_ATTO_ID, $x);
-	    $c->add(OppAttoPeer::RAMO, $ramo);
-	    $atti = TaggingPeer::doCount($c);
-	    if ($ramo=='C')  array_push($C_atti,$atti);
-	    else  array_push($S_atti,$atti);
-	   
-     }	  
-   }  
-     $this->C_atti=$C_atti;  
-     $this->S_atti=$S_atti;
-     $arr_tipologia=array("disegno di legge","mozione","interpellanza","interrogazione a risposta orale","interrogazione a risposta scritta","interrogazione in commissione","risoluzione in assemblea","risoluzione in commissione","risoluzione conclusiva","ordine del giorno in assemblea         ","ordine del giorno in commissione","decreto legge","comunicato del governo","audizione","decreto legislativo attuativo di legge delega","decreto legislativo attuativo di direttive comunitarie","decreto legislativo attuativo di statuti speciali");
-     $this->arr_tipologia=$arr_tipologia;
-  }
   
   public function executeDeputatisioccupanodi()
   {

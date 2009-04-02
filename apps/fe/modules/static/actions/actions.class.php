@@ -10,6 +10,13 @@
  */
 class staticActions extends sfActions
 {
-  public function executeProgetto(){}
+  public function executeProgetto()
+  {
+  $this->getResponse()->setTitle('il progetto | '.sfConfig::get('app_main_title'));
+  }
+  public function executeFaq()
+  {
+  $this->getResponse()->setTitle('faq | '.sfConfig::get('app_main_title'));
+  }
   
 }
