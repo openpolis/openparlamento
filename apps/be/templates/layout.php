@@ -20,6 +20,7 @@
       'sfSimpleBlogCommentAdmin' => 'Commenti del Blog',
       'sfEmendAdmin' => 'Commenti eMend',
       'atto' => 'Titoli aggiuntivi Atti',
+      'votazione' => 'Titoli aggiuntivi Votazioni',
       'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
     $menu_sep = '|';
