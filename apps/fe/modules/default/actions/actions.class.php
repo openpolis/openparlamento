@@ -22,7 +22,7 @@ class defaultActions extends sfActions
     $opp_user = OppUserPeer::retrieveByPK($user->getId());
     if ($user->isAuthenticated())
     {
-      $this->json_out = '{"name": "' . $opp_user->getFirstName().' '.$opp_user->getLastName() . '"}';
+      $this->json_out = '{"name": "' . (string)$opp_user . '"}';
     } else {
       $this->json_out = '{"err": "L\'utente corrente non e\' loggato."}';
     }
