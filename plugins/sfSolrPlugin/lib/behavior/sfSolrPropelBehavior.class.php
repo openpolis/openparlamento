@@ -81,6 +81,11 @@ class sfSolrPropelBehavior
         break;
       }
     }
+    
+    // commit changes
+    $indexManager = sfSolr::getInstance();
+    $indexManager->commit();
+    
   }
 
   /**
@@ -124,10 +129,15 @@ class sfSolrPropelBehavior
         break;
       }
     }
+    
+    // commit changes
+    $indexManager = sfSolr::getInstance();
+    $indexManager->commit();
+    
   }
 
   /**
-   * Saves index by deleting and inserting.
+   * Saves index by deleting, inserting and committing
    */
   public function saveIndex($node)
   {

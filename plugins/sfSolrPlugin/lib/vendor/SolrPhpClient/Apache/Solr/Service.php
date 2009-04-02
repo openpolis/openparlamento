@@ -665,7 +665,6 @@ class Apache_Solr_Service
 		$rawPost = '<add allowDups="' . $dupValue . '" overwritePending="' . $pendingValue . '" overwriteCommitted="' . $committedValue . '">';
 		$rawPost .= $this->_documentToXmlFragment($document);
 		$rawPost .= '</add>';
-
 		return $this->add($rawPost);
 	}
 
