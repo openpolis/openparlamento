@@ -10,4 +10,24 @@
  */
 class attoActions extends autoattoActions
 {
+  protected function saveOppAtto($opp_atto)
+  {
+    $opp_atto->save();
+
+    // commit changes
+    $indexManager = sfSolr::getInstance();
+    $indexManager->commit();
+    
+
+  }
+
+  protected function deleteOppAtto($opp_atto)
+  {
+    $opp_atto->delete();
+
+    // commit changes
+    $indexManager = sfSolr::getInstance();
+    $indexManager->commit();
+  }
+  
 }

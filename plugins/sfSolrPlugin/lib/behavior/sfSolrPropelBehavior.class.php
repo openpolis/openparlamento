@@ -82,10 +82,6 @@ class sfSolrPropelBehavior
       }
     }
     
-    // commit changes
-    $indexManager = sfSolr::getInstance();
-    $indexManager->commit();
-    
   }
 
   /**
@@ -130,14 +126,10 @@ class sfSolrPropelBehavior
       }
     }
     
-    // commit changes
-    $indexManager = sfSolr::getInstance();
-    $indexManager->commit();
-    
   }
 
   /**
-   * Saves index by deleting, inserting and committing
+   * Saves index by deleting and inserting
    */
   public function saveIndex($node)
   {
