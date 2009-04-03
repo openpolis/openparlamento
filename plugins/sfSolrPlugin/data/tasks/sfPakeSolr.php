@@ -54,7 +54,6 @@ function run_solr_count_documents($task, $args)
 
 pake_desc('provides information about the status of the index');
 pake_task('solr-status', 'project_exists');
-
 function run_solr_status($task, $args)
 {
 
@@ -331,7 +330,6 @@ function solr_update_propel_model($iMan, $model, $n_bulk)
 
 pake_desc('initialize configuration files');
 pake_task('solr-init', 'project_exists');
-
 function run_solr_init($task, $args)
 {
   _standard_solr_load($args);
@@ -353,7 +351,6 @@ function run_solr_init($task, $args)
 
 pake_desc('initialize an sfSolr module that you can override');
 pake_task('solr-init-module', 'project_exists');
-
 function run_solr_init_module($task, $args)
 {
   _standard_solr_load($args);
@@ -412,5 +409,37 @@ function _load_solr_application_environment($args)
 
     $loaded = true;
   }
+}
+
+
+pake_desc('commit and optimize the index');
+pake_task('solr-commit', 'project_exists');
+function run_solr_commit($task, $args)
+{
+  if (count($args) < 1 || count($args) > 1)
+  {
+    throw new Exception('Usage: solr-commit $APP.');
+  }
+
+  $app    = $args[0];
+  _load_solr_application_environment(array($app));
+  
+  $start_time = microtime(true);
+  $iMan = sfSolr::getInstance();
+
+  pake_echo_action('solr', 'Optimizing...');
+  $iMan->optimize();
+
+  pake_echo_action('solr', 'Committing...');
+  $iMan->commit();
+
+  $execution_time = microtime(true) - $start_time;
+
+  echo pakeColor::colorize('Done!', 'INFO') . " ";
+
+  echo 'Committed and optimized in ';
+  echo pakeColor::colorize(sprintf('%f', $execution_time), array('fg' => 'cyan'));
+  echo ' seconds.';
+  echo "\n\n";
 }
 
