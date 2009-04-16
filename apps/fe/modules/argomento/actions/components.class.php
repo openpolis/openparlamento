@@ -34,7 +34,8 @@ class argomentoComponents extends sfComponents
   
   public function executeDeputatisioccupanodi()
   {
-      $options = array('limit' => 10, 'sort_by_relevance' => true);
+   $options = array('limit' => 10, 'sort_by_relevance' => true);
+   //$options = array('sort_by_relevance' => true);
      
       
       
@@ -90,7 +91,8 @@ class argomentoComponents extends sfComponents
   
    public function executeSenatorisioccupanodi()
   {
-    $options = array('limit' => 10, 'sort_by_relevance' => true);
+   $options = array('limit' => 10, 'sort_by_relevance' => true);
+   //$options = array('sort_by_relevance' => true);
     
     // estrazione cariche, tipo firma, tipo atto
     $c = new Criteria();

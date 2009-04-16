@@ -19,7 +19,7 @@
       </div>      
     </div>
     
-    <div class="W73_100 float-left">
+   <div class="W73_100 float-left">
     <h4 class="subsection">Tutte le notizie relative a <?php echo $politician ?><?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '/', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
    <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
@@ -44,7 +44,7 @@
           <!--</h6>-->
           <ul class="news-list">
           <?php foreach ($news as $n): ?>
-            <li><?php echo news_text($n) ?></li>
+            <li><?php echo news_text($n,2) ?></li>
           <?php endforeach ?>
           </ul>
           

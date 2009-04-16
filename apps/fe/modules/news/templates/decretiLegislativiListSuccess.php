@@ -8,23 +8,22 @@
         <h6>Collegamenti</h6>
         <div class="float-container">
           <ul>
-            <li><?php echo link_to('Decreti legislativi', '@attiDecretiLegislativi') ?></li>
+            <li><?php echo link_to('Lista dei decreti legislativi', '@attiDecretiLegislativi') ?></li>
           </ul>
         </div>
       </div>      
     </div>
     
-    <?php include_partial('filter',
+    <div class="W73_100 float-left">
+      <h4 class="subsection">Tutte le notizie relative ai decreti legge</h4>
+      <?php include_partial('filter',
                           array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
+      <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
-    <h3>Tutte le notizie relative ai decreti legislativi</h3>
+      <?php echo include_partial('news/newslist',array('pager' => $pager,'context' => 1)); ?>
 
-    Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
-    di <?php echo $pager->getNbResults() ?><br/>
-
-    <?php echo include_partial('news/newslist', array('pager' => $pager)); ?>
-
-    <?php echo pager_navigation($pager, 'news/decretiLegislativiList') ?>
+       <?php echo pager_navigation($pager, 'news/decretiLegislativiList') ?>
+    </div>  
 
   </div>
 </div>

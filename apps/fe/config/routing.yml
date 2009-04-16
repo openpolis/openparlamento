@@ -73,7 +73,7 @@ news_home:
   param: { module: news, action: homeAll }
   
 news_tag:
-  url: /news_tag/:name/*
+  url: /news_tag/:id/*
   param: { module: news, action: tag }
 
 news_atto:

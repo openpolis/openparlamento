@@ -634,7 +634,7 @@ class TagPeer extends BaseTagPeer
   public static function retrieveByTagname($tagname)
   {
     $c = new Criteria();
-    $c->add(TagPeer::NAME, $tagname);
+    $c->add(TagPeer::TRIPLE_VALUE, $tagname);
     return TagPeer::doSelectOne($c);
   }
 

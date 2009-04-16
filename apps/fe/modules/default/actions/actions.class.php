@@ -39,7 +39,7 @@ class defaultActions extends sfActions
                                                         'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',
                                                         'monitoring_filter'));
                                                         
-    $this->latest_activities = CommunityNewsPeer::getLatestActivities(10);                                                    
+    $this->latest_activities = CommunityNewsPeer::getLatestActivities(4);                                                    
   }
   
   public function executeError404()

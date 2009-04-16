@@ -19,6 +19,7 @@
                                  array('title' => 'Disegni di legge', 
                                        'all_news_url' => '@news_attiDisegni', 
                                        'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DDL_TIPO_IDS, 10),
+                                       'context' => 1,
                                        'rss_link' => '@feed_disegni')); ?>
 
 	  </div>

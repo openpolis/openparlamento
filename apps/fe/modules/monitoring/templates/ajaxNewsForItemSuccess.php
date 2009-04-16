@@ -15,7 +15,7 @@
         <?php foreach ($news as $n): ?>
           <li id="news_<?php echo $n->getId()?>" 
               class="<?php echo date('U', strtotime($n->getCreatedAt())) > date('U', strtotime($sf_user->getAttribute('last_login', null, 'subscriber')))?'new':''?>">
-            <?php echo news_text($n) ?>
+            <?php echo news_text($n,1) ?>
           </li>
         <?php endforeach ?>
         </ul>

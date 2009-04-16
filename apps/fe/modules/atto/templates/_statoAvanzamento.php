@@ -58,7 +58,8 @@
    <?php endforeach; ?> 
 <?php else : ?> 
      <?php if ($atto->getTipoAttoId()==1) : ?>
-         <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><p>presentato<?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
+         <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
+         <p>presentato<?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
      <?php endif; ?> 
 <?php endif; ?> 
 
@@ -67,23 +68,27 @@
    <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
       <?php if($rappresentazione_this[7]!='12') : ?>
          <?php if(substr_count($rappresentazione_this[2],'ritirato')>0 or substr_count($rappresentazione_this[2],'respinto')>0 or substr_count($rappresentazione_this[2],'decreto legge decaduto')>0 or substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')>0)  : ?>
-             <li class="step-no"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?></p></li>
+             <li class="step-no"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
+             <p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?></p></li>
          <?php endif; ?>
         <?php if(substr_count($rappresentazione_this[2],'ritirato')==0 and substr_count($rappresentazione_this[2],'respinto')==0 and substr_count($rappresentazione_this[2],'decreto legge decaduto')==0 and substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')==0 and  $rappresentazione_this[2]!=='approvato definitivamente. Legge') : ?>
-            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?> </p></li>
+            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
+            <p><?php echo NomeIter($rappresentazione_this[2],$rappresentazione_this[3]) ?> </p></li>
         <?php endif; ?> 
         
         <?php if($rappresentazione_this[2]=='approvato definitivamente. Legge') : ?>
-            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><p><?php echo "approvato" ?> <?php echo ($rappresentazione_this[3]=='C' ? ' alla Camera':' al Senato') ?></p></li>
+            <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
+            <p><?php echo "approvato" ?> <?php echo ($rappresentazione_this[3]=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php endif; ?>
       <?php else: ?>
-       <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span>
+       <li class="step-yes"><span class="date"><?php echo format_date($rappresentazione_this[1], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo "DL.".$atto->getNumfase() ?></strong>
        <p>entrata in vigore del DL</p></li> 
       <?php endif; ?>  
     <?php endforeach; ?>
          
 <?php else: ?> 
-         <li class="step-now"><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
+         <li class="step-now"><span class="date">&nbsp;</span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
+         <p>da approvare<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
 <?php endif; ?>
    
   
@@ -118,7 +123,8 @@
                    <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($lettura_parlamentare_ultima->getRamo().'.'.$lettura_parlamentare_ultima->getNumfase(), 'atto/index?id='.$lettura_parlamentare_ultima->getId()) ?></strong>
                    <p>da approvare<?php echo ($lettura_parlamentare_ultima->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
                  <?php endif; ?>   
-                <li><span class="date">&nbsp;</span><p>diventa legge</p></li>
+                <li><span class="date">&nbsp;</span>
+                <p>diventa legge</p></li>
              <?php endif; ?>   
           <?php endforeach; ?>   
       <?php else: ?>
@@ -192,7 +198,7 @@
                              
        <?php else: ?>
          <?php foreach($leggi_this as $legge_this): ?>
-             <li class="step-yes"><span class="date"><?php echo format_date($legge_this[1], 'dd/MM/yyyy') ?></span> 
+             <li class="step-yes"><span class="date"><?php echo format_date($legge_this[1], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().".".$atto->getNumfase() ?></strong>
              <p>divenuto legge</p></li>
              <?php if($legge) : ?>  
                   </ul>

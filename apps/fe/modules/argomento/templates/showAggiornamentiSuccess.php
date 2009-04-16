@@ -62,11 +62,12 @@
       <?php include_component('argomento', 'attiTaggati', 
                               array('triple_value' => $triple_value)) ?>
 
-      <h5 class="subsection-alt">ci sono <big><?php echo $pager->getNbResults() ?></big> notizie sull'argomento:</h5>
+      <h5 class="subsection-alt">ci sono <big><?php echo $pager->getNbResults() ?></big> notizie sull'argomento:</h5> 
      		
         <?php include_partial('newsFilter',
                               array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
-        <?php include_partial('news/newslist', array('pager' => $pager, 'triple_value' => $triple_value)); ?>
+        <?php include_partial('news/newslist', array('pager' => $pager, 'triple_value' => $triple_value, 'context' => 1)); ?> 
+        <div style="text-align:right;"><?php echo link_to("<strong>vedi tutta la cronologia</strong>", '@news_tag?id='.$argomento->getId()) ?></div>
       
 	  </div>
 

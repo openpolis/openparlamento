@@ -19,6 +19,7 @@
                                  array('title' => 'Atto', 
                                        'all_news_url' => '@news_atto?id='.$atto->getId(), 
                                        'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
+                                       'context' => 0,
                                        'rss_link' => '@feed_atto?id='.$atto->getId())); 
       ?>
        <?php endif; ?>  

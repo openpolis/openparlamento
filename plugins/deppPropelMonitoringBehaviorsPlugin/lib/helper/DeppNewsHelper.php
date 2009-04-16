@@ -14,9 +14,9 @@
  * @version    SVN: $Id$
  */
 
-function news($news)
+function news($news,$context=1)
 {
-  return news_date($news->getDate('d/m/Y')). "<p>" . news_text($news). "</p>";
+  return news_date($news->getDate('d/m/Y')). "<p>" . news_text($news,$context). "</p>";
 }
 
 function news_date($newsdate)
@@ -63,7 +63,7 @@ function news_list($news)
 }
 
 
-function news_text($news)
+function news_text($news,$context)
 {
   $news_string = "";
   
@@ -76,35 +76,42 @@ function news_text($news)
     {
       if ($news->getPriority() == 1)
       {
+        
         $news_string .= 'si &egrave; svolta almeno una VOTAZIONE';
         $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato ';        
       } else {
+       
         $news_string .= 'si &egrave; svolta una VOTAZIONE';
-        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato ';        
-        $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
-        
+        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
+        if ($context==1)
+        {    
+           $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
         // link all'atto
-        $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
+           $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                            $news->getRelatedMonitorableId());
         
-        $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+           $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                              'atto/index?id=' . $atto->getId(),
                              array('title' => $atto->getTitolo()));
-        $news_string .= $atto_link;
+           $news_string .= $atto_link;
+        }   
       }
     } else if ($generator_model == 'OppIntervento') {
       $news_string .= 'c\'&egrave; stato almeno un intervento ';
-      $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  ' ';
-      $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
+      $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia().' '.OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  ' ';
+      if ($context==1)
+      {    
+          $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDescrizione() .  ' ';
 
-      // link all'atto
-      $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
+          // link all'atto
+          $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                          $news->getRelatedMonitorableId());
       
-      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+          $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
-      $news_string .= $atto_link;
+          $news_string .= $atto_link;
+       }   
       
     }
       
@@ -136,38 +143,85 @@ function news_text($news)
 
     // nuovo incarico
     if ($generator_model == 'OppCarica'){
-      $news_string .= $politico_link . " assume l'incarico di " . $generator->getCarica();
+      if ($context!=2)
+        $news_string .= $politico_link . " assume l'incarico di " . $generator->getCarica();
+      else
+        $news_string .= "Assume l'incarico di " . $generator->getCarica();  
     }
     
     // nuovo gruppo
-    else if ($generator_model == 'OppCaricaHasGruppo'){
-      $news_string .= $politico_link . " si unisce al gruppo " . $generator->getOppGruppo()->getNome();
+    else if ($generator_model == 'OppCaricaHasGruppo') {
+      if ($context!=2)
+        $news_string .= $politico_link . " si unisce al gruppo " . $generator->getOppGruppo()->getNome();
+      else
+        $news_string .= "Si unisce al gruppo " . $generator->getOppGruppo()->getNome();  
     }
 
     // intervento
     else if ($generator_model == 'OppIntervento'){
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto();
-      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+      $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
-                           
-      $news_string .= $politico_link . " interviene su ";
-      $news_string .= $tipo->getDenominazione() . " ";
-      $news_string .= $atto_link;
+      if ($context==1) 
+      {                    
+        $news_string .= $politico_link . " interviene su ";
+        $news_string .= $tipo->getDescrizione() . " ";
+        $news_string .= $atto_link;
+      }
+      if ($context==0) 
+      {                    
+        $news_string .= $politico_link . " ha effettuato un intervento sull'atto ";
+      }  
+      if ($context==2) 
+      {                    
+        $news_string .= "Interviene su ";
+        $news_string .= $tipo->getDescrizione() . " ";
+        $news_string .= $atto_link;
+      }
+      $news_string .=" in ";
+      if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+      $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));
     }
 
     // firma
     else if ($generator_model == 'OppCaricaHasAtto'){
       $atto = $generator->getOppAtto();
       $tipo = $atto->getOppTipoAtto(); 
-      $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+      $tipo_firma=$generator->getTipo();
+      switch ($tipo_firma) {
+        case "P":
+        $tipo_firma='presenta';
+        break;
+        case "C":
+        $tipo_firma='firma';
+        break;
+        case "R":
+        $tipo_firma='&egrave; relatore';
+        break;
+      }
+      
+      $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
-                           
-      $news_string .= $politico_link . " firma ";
-      $news_string .= $tipo->getDenominazione() . " ";
-      $news_string .= $atto_link;
+      if ($context==2)                      
+          $news_string .= ucfirst($tipo_firma)." ";
+      else
+          $news_string .= $politico_link ." ".$tipo_firma." ";
+      if ($context!=0)
+      {    
+         $news_string .= $tipo->getDescrizione() . " ";
+         $news_string .= $atto_link;
+      }
+      else
+      {
+        if ($tipo_firma=='&egrave; relatore')
+          $news_string .= "dell'atto";
+        else
+          $news_string .= "l'atto";
+      }    
     }
 
     else $news_string .= $generator_model;
@@ -187,7 +241,7 @@ function news_text($news)
     
     // tipo di atto e genere per gli articoli e la desinenza
     $tipo = $atto->getOppTipoAtto();
-    if (in_array($tipo->getId(), array(1, 10, 11)))
+    if (in_array($tipo->getId(), array(1, 10, 11,12,13,15,16,17)))
       $gender = 'm';
     else
       $gender = 'f';
@@ -199,10 +253,17 @@ function news_text($news)
     
     // presentazione
     if ($generator_model == 'OppAtto'){
-      $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
-      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
-      $news_string .= $tipo->getDescrizione() . " ";
-      $news_string .= $atto_link;
+      $news_string .= "Presentat" .($gender=='m'?'o':'a') . " ";
+      if ($news->getRamoVotazione()=='C') $news_string .= ' alla Camera ';
+      else
+      {
+        if ($news->getRamoVotazione()=='S') $news_string .= ' al Senato ';
+      }
+      if ($context!=0)
+      {
+        $news_string .= $tipo->getDescrizione() . " ";
+        $news_string .= $atto_link;
+      }  
     }
     
     // intervento
@@ -212,44 +273,80 @@ function news_text($news)
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
                            
-      $news_string .= $politico_link . " interviene su ";
-      $news_string .= $tipo->getDescrizione() . " ";
-      $news_string .= $atto_link;
+      $news_string .= $politico_link . " interviene su";
+      if ($context!=0)
+      {
+        $news_string .= " ".$tipo->getDescrizione() . " ";
+        $news_string .= $atto_link;
+      }
+      else 
+        $news_string .= "ll'atto";
+        
+       $news_string .=" in ";
+      if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+      $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione())); 
     }
 
     // firma
     else if ($generator_model == 'OppCaricaHasAtto'){
+     $tipo_firma=$generator->getTipo();
+      switch ($tipo_firma) {
+        case "P":
+        $tipo_firma='presentat';
+        break;
+        case "C":
+        $tipo_firma='firmat';
+        break;
+        case "R":
+        $tipo_firma='&egrave; relatore';
+        break;
+      }
       $politico = $generator->getOppCarica()->getOppPolitico();
       $politico_link = link_to_in_mail($politico, 
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
-
-      $news_string .= ' firmat' . ($gender=='m'?'o':'a') . " ";
-      $news_string .= $tipo->getDescrizione() . " ";
-      $news_string .= $atto_link;
-      $news_string .= " da " . $politico_link;      
+      if ($tipo_firma!='&egrave; relatore' )
+      { 	
+        $news_string .= ' '.$tipo_firma. ($gender=='m'?'o':'a') . " ";
+        $news_string .= $tipo->getDescrizione() . " ";
+        $news_string .= $atto_link;
+        $news_string .= " da " . $politico_link;
+      }        
     }
     
     // spostamento in commissione
     else if ($generator_model == 'OppAttoHasSede'){
-      $news_string .= $tipo->getDenominazione() . " ";
-      $news_string .= $atto_link . " ";
+      if ($context!=0)
+      {
+         $news_string .= $tipo->getDenominazione() . " ";
+         $news_string .= $atto_link . " ";
+      }
+      else
+         $news_string .= "L'atto" . " ";
+         
       $news_string .= "&egrave; spostat" . ($gender=='m'?'o':'a') . " in ";
+      $news_string .= $generator->getOppSede()->getTipologia()." ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppSede()->getDenominazione())));
     }
     
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
-      $news_string .= ' si &egrave; svolta la votazione finale relativa a ';
-      $news_string .= $tipo->getDescrizione() . " ";
-      $news_string .= $atto_link;        
-    }
+      $news_string .= ' si &egrave; svolta la <strong>votazione finale</strong> relativa a';
+      if ($context!=0)
+      {
+         $news_string .= " ".$tipo->getDescrizione() . " ";
+         $news_string .= $atto_link; 
+      }
+      else
+         $news_string .= "ll'atto";     
+    } 
     
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter'){
       $news_string .= "lo status del" .($gender=='m'?"l'":"la ");
       $news_string .= $tipo->getDescrizione() . " ";
-      $news_string .= $atto_link . " ";
+      if ($context!=0) $news_string .= $atto_link . " ";
       $news_string .= "&egrave; ora ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
     } 
@@ -260,10 +357,26 @@ function news_text($news)
       $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link . " ";
       $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
-      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
+      if ($news->getRamoVotazione()=='C') $news_string .= ' alla Camera ';
+      else
+      {
+        if ($news->getRamoVotazione()=='S') $news_string .= ' al Senato ';
+      }
       $news_string .= "il " . $news->getDate('d/m/Y') . " ";
       $news_string .= "&egrave; stat".($gender=='m'?'o':'a'). " associat".($gender=='m'?'o':'a'). " all'argomento ";
       $news_string .= $generator->getTag()->getTripleValue();
+    }
+    
+    else if ($generator_model == 'OppDocumento')
+    {
+     $news_string .= "E' disponibile il nuovo documento ";
+     $news_string .= '"'.link_to($generator->getTitolo(),'atto/documento?id='.$generator->getId()).'"';
+     if ($context!=0)
+     {
+      $news_string .= " riferito ".($gender=='m'?'al ':'alla ');
+      $news_string .= $generator->getOppAtto()->getOppTipoAtto()->getDescrizione()." ";
+      $news_string .=link_to($generator->getOppAtto()->getRamo().".".$generator->getOppAtto()->getNumfase()." ".troncaTesto(Text::denominazioneAtto($generator->getOppAtto(),'list'),200),'atto/index?id='.$generator->getOppAtto()->getId());
+     } 
     }
     
     else $news_string .= $generator_model;
@@ -296,6 +409,8 @@ function community_news_text($news)
   if (is_null($item))
     return "notizia su oggetto inesistente: ($related_model:$related_id)";
   
+ 
+  
   // costruzione del link all'item (differente a seconda dell'item)
   switch ($related_model)
   {
@@ -309,7 +424,12 @@ function community_news_text($news)
 
     case 'OppAtto':
       // link all'atto
-      $item_type = 'l\'atto';
+       if (in_array($item->getTipoAttoId(), array(1, 10, 11,12,13,15,16,17))) 
+          $gender = 'm';
+       else
+          $gender = 'f';  
+          
+      $item_type = ($gender=='m'?'':'la')." ".$item->getOppTipoAtto()->getDescrizione()." ";
       $link = link_to_in_mail(Text::denominazioneAtto($item, 'list'), 
                               'atto/index?id=' . $related_id,
                               array('title' => $item->getTitolo()));

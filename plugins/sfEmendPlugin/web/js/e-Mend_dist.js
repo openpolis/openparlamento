@@ -45,80 +45,101 @@ return true;return false;};}})(Array.prototype);// Copyright 2006 Google Inc.
 //   (http://www.whatwg.org/specs/web-apps/current-work/#the-doctype)
 //   or use Box Sizing Behavior from WebFX
 //   (http://webfx.eae.net/dhtml/boxsizing/boxsizing.html)
+// * Non uniform scaling does not correctly scale strokes.
 // * Optimize. There is always room for speed improvements.
 
-// only add this code if we do not already have a canvas implementation
-if (!window.CanvasRenderingContext2D) {
+// Only add this code if we do not already have a canvas implementation
+if (!document.createElement('canvas').getContext) {
 
-(function () {
+(function() {
 
   // alias some functions to make (compiled) code shorter
   var m = Math;
   var mr = m.round;
   var ms = m.sin;
   var mc = m.cos;
+  var abs = m.abs;
+  var sqrt = m.sqrt;
 
   // this is used for sub pixel precision
   var Z = 10;
   var Z2 = Z / 2;
 
+  /**
+   * This funtion is assigned to the <canvas> elements as element.getContext().
+   * @this {HTMLElement}
+   * @return {CanvasRenderingContext2D_}
+   */
+  function getContext() {
+    return this.context_ ||
+        (this.context_ = new CanvasRenderingContext2D_(this));
+  }
+
+  var slice = Array.prototype.slice;
+
+  /**
+   * Binds a function to an object. The returned function will always use the
+   * passed in {@code obj} as {@code this}.
+   *
+   * Example:
+   *
+   *   g = bind(f, obj, a, b)
+   *   g(c, d) // will do f.call(obj, a, b, c, d)
+   *
+   * @param {Function} f The function to bind the object to
+   * @param {Object} obj The object that should act as this when the function
+   *     is called
+   * @param {*} var_args Rest arguments that will be used as the initial
+   *     arguments when the function is called
+   * @return {Function} A new function that has bound this
+   */
+  function bind(f, obj, var_args) {
+    var a = slice.call(arguments, 2);
+    return function() {
+      return f.apply(obj, a.concat(slice.call(arguments)));
+    };
+  }
+
   var G_vmlCanvasManager_ = {
-    init: function (opt_doc) {
-      var doc = opt_doc || document;
+    init: function(opt_doc) {
       if (/MSIE/.test(navigator.userAgent) && !window.opera) {
-        var self = this;
-        doc.attachEvent("onreadystatechange", function () {
-          self.init_(doc);
-        });
+        var doc = opt_doc || document;
+        // Create a dummy element so that IE will allow canvas elements to be
+        // recognized.
+        doc.createElement('canvas');
+        doc.attachEvent('onreadystatechange', bind(this.init_, this, doc));
       }
     },
 
-    init_: function (doc) {
-      if (doc.readyState == "complete") {
-        // create xmlns
-        if (!doc.namespaces["g_vml_"]) {
-          doc.namespaces.add("g_vml_", "urn:schemas-microsoft-com:vml");
-        }
+    init_: function(doc) {
+      // create xmlns
+      if (!doc.namespaces['g_vml_']) {
+        doc.namespaces.add('g_vml_', 'urn:schemas-microsoft-com:vml',
+                           '#default#VML');
 
-        // setup default css
+      }
+      if (!doc.namespaces['g_o_']) {
+        doc.namespaces.add('g_o_', 'urn:schemas-microsoft-com:office:office',
+                           '#default#VML');
+      }
+
+      // Setup default CSS.  Only add one style sheet per document
+      if (!doc.styleSheets['ex_canvas_']) {
         var ss = doc.createStyleSheet();
-        ss.cssText = "canvas{display:inline-block;overflow:hidden;" +
+        ss.owningElement.id = 'ex_canvas_';
+        ss.cssText = 'canvas{display:inline-block;overflow:hidden;' +
             // default size is 300x150 in Gecko and Opera
-            "text-align:left;width:300px;height:150px}" +
-            "g_vml_\\:*{behavior:url(#default#VML)}";
+            'text-align:left;width:300px;height:150px}' +
+            'g_vml_\\:*{behavior:url(#default#VML)}' +
+            'g_o_\\:*{behavior:url(#default#VML)}';
 
-        // find all canvas elements
-        var els = doc.getElementsByTagName("canvas");
-        for (var i = 0; i < els.length; i++) {
-          if (!els[i].getContext) {
-            this.initElement(els[i]);
-          }
-        }
       }
-    },
 
-    fixElement_: function (el) {
-      // in IE before version 5.5 we would need to add HTML: to the tag name
-      // but we do not care about IE before version 6
-      var outerHTML = el.outerHTML;
-
-      var newEl = el.ownerDocument.createElement(outerHTML);
-      // if the tag is still open IE has created the children as siblings and
-      // it has also created a tag with the name "/FOO"
-      if (outerHTML.slice(-2) != "/>") {
-        var tagName = "/" + el.tagName;
-        var ns;
-        // remove content
-        while ((ns = el.nextSibling) && ns.tagName != tagName) {
-          ns.removeNode();
-        }
-        // remove the incorrect closing tag
-        if (ns) {
-          ns.removeNode();
-        }
+      // find all canvas elements
+      var els = doc.getElementsByTagName('canvas');
+      for (var i = 0; i < els.length; i++) {
+        this.initElement(els[i]);
       }
-      el.parentNode.replaceChild(newEl, el);
-      return newEl;
     },
 
     /**
@@ -129,35 +150,37 @@ if (!window.CanvasRenderingContext2D) {
      * @param {HTMLElement} el The canvas element to initialize.
      * @return {HTMLElement} the element that was created.
      */
-    initElement: function (el) {
-      el = this.fixElement_(el);
-      el.getContext = function () {
-        if (this.context_) {
-          return this.context_;
+    initElement: function(el) {
+      if (!el.getContext) {
+
+        el.getContext = getContext;
+
+        // Remove fallback content. There is no way to hide text nodes so we
+        // just remove all childNodes. We could hide all elements and remove
+        // text nodes but who really cares about the fallback content.
+        el.innerHTML = '';
+
+        // do not use inline function because that will leak memory
+        el.attachEvent('onpropertychange', onPropertyChange);
+        el.attachEvent('onresize', onResize);
+
+        var attrs = el.attributes;
+        if (attrs.width && attrs.width.specified) {
+          // TODO: use runtimeStyle and coordsize
+          // el.getContext().setWidth_(attrs.width.nodeValue);
+          el.style.width = attrs.width.nodeValue + 'px';
+        } else {
+          el.width = el.clientWidth;
         }
-        return this.context_ = new CanvasRenderingContext2D_(this);
-      };
-
-      // do not use inline function because that will leak memory
-      el.attachEvent('onpropertychange', onPropertyChange);
-      el.attachEvent('onresize', onResize);
-
-      var attrs = el.attributes;
-      if (attrs.width && attrs.width.specified) {
-        // TODO: use runtimeStyle and coordsize
-        // el.getContext().setWidth_(attrs.width.nodeValue);
-        el.style.width = attrs.width.nodeValue + "px";
-      } else {
-        el.width = el.clientWidth;
+        if (attrs.height && attrs.height.specified) {
+          // TODO: use runtimeStyle and coordsize
+          // el.getContext().setHeight_(attrs.height.nodeValue);
+          el.style.height = attrs.height.nodeValue + 'px';
+        } else {
+          el.height = el.clientHeight;
+        }
+        //el.getContext().setCoordsize_()
       }
-      if (attrs.height && attrs.height.specified) {
-        // TODO: use runtimeStyle and coordsize
-        // el.getContext().setHeight_(attrs.height.nodeValue);
-        el.style.height = attrs.height.nodeValue + "px";
-      } else {
-        el.height = el.clientHeight;
-      }
-      //el.getContext().setCoordsize_()
       return el;
     }
   };
@@ -167,11 +190,11 @@ if (!window.CanvasRenderingContext2D) {
 
     switch (e.propertyName) {
       case 'width':
-        el.style.width = el.attributes.width.nodeValue + "px";
+        el.style.width = el.attributes.width.nodeValue + 'px';
         el.getContext().clearRect();
         break;
       case 'height':
-        el.style.height = el.attributes.height.nodeValue + "px";
+        el.style.height = el.attributes.height.nodeValue + 'px';
         el.getContext().clearRect();
         break;
     }
@@ -231,43 +254,45 @@ if (!window.CanvasRenderingContext2D) {
     o2.shadowOffsetX = o1.shadowOffsetX;
     o2.shadowOffsetY = o1.shadowOffsetY;
     o2.strokeStyle   = o1.strokeStyle;
+    o2.globalAlpha   = o1.globalAlpha;
     o2.arcScaleX_    = o1.arcScaleX_;
     o2.arcScaleY_    = o1.arcScaleY_;
+    o2.lineScale_    = o1.lineScale_;
   }
 
   function processStyle(styleString) {
     var str, alpha = 1;
 
     styleString = String(styleString);
-    if (styleString.substring(0, 3) == "rgb") {
-      var start = styleString.indexOf("(", 3);
-      var end = styleString.indexOf(")", start + 1);
-      var guts = styleString.substring(start + 1, end).split(",");
+    if (styleString.substring(0, 3) == 'rgb') {
+      var start = styleString.indexOf('(', 3);
+      var end = styleString.indexOf(')', start + 1);
+      var guts = styleString.substring(start + 1, end).split(',');
 
-      str = "#";
+      str = '#';
       for (var i = 0; i < 3; i++) {
         str += dec2hex[Number(guts[i])];
       }
 
-      if ((guts.length == 4) && (styleString.substr(3, 1) == "a")) {
+      if (guts.length == 4 && styleString.substr(3, 1) == 'a') {
         alpha = guts[3];
       }
     } else {
       str = styleString;
     }
 
-    return [str, alpha];
+    return {color: str, alpha: alpha};
   }
 
   function processLineCap(lineCap) {
     switch (lineCap) {
-      case "butt":
-        return "flat";
-      case "round":
-        return "round";
-      case "square":
+      case 'butt':
+        return 'flat';
+      case 'round':
+        return 'round';
+      case 'square':
       default:
-        return "square";
+        return 'square';
     }
   }
 
@@ -277,7 +302,7 @@ if (!window.CanvasRenderingContext2D) {
    * @param {HTMLElement} surfaceElement The element that the 2D context should
    * be associated with
    */
-   function CanvasRenderingContext2D_(surfaceElement) {
+  function CanvasRenderingContext2D_(surfaceElement) {
     this.m_ = createMatrixIdentity();
 
     this.mStack_ = [];
@@ -285,12 +310,12 @@ if (!window.CanvasRenderingContext2D) {
     this.currentPath_ = [];
 
     // Canvas context properties
-    this.strokeStyle = "#000";
-    this.fillStyle = "#000";
+    this.strokeStyle = '#000';
+    this.fillStyle = '#000';
 
     this.lineWidth = 1;
-    this.lineJoin = "miter";
-    this.lineCap = "butt";
+    this.lineJoin = 'miter';
+    this.lineCap = 'butt';
     this.miterLimit = Z * 1;
     this.globalAlpha = 1;
     this.canvas = surfaceElement;
@@ -305,67 +330,88 @@ if (!window.CanvasRenderingContext2D) {
     this.element_ = el;
     this.arcScaleX_ = 1;
     this.arcScaleY_ = 1;
-  };
+    this.lineScale_ = 1;
+  }
 
   var contextPrototype = CanvasRenderingContext2D_.prototype;
   contextPrototype.clearRect = function() {
-    this.element_.innerHTML = "";
-    this.currentPath_ = [];
+    this.element_.innerHTML = '';
   };
 
   contextPrototype.beginPath = function() {
     // TODO: Branch current matrix so that save/restore has no effect
     //       as per safari docs.
-
     this.currentPath_ = [];
   };
 
   contextPrototype.moveTo = function(aX, aY) {
-    this.currentPath_.push({type: "moveTo", x: aX, y: aY});
-    this.currentX_ = aX;
-    this.currentY_ = aY;
+    var p = this.getCoords_(aX, aY);
+    this.currentPath_.push({type: 'moveTo', x: p.x, y: p.y});
+    this.currentX_ = p.x;
+    this.currentY_ = p.y;
   };
 
   contextPrototype.lineTo = function(aX, aY) {
-    this.currentPath_.push({type: "lineTo", x: aX, y: aY});
-    this.currentX_ = aX;
-    this.currentY_ = aY;
+    var p = this.getCoords_(aX, aY);
+    this.currentPath_.push({type: 'lineTo', x: p.x, y: p.y});
+
+    this.currentX_ = p.x;
+    this.currentY_ = p.y;
   };
 
   contextPrototype.bezierCurveTo = function(aCP1x, aCP1y,
                                             aCP2x, aCP2y,
                                             aX, aY) {
-    this.currentPath_.push({type: "bezierCurveTo",
-                           cp1x: aCP1x,
-                           cp1y: aCP1y,
-                           cp2x: aCP2x,
-                           cp2y: aCP2y,
-                           x: aX,
-                           y: aY});
-    this.currentX_ = aX;
-    this.currentY_ = aY;
+    var p = this.getCoords_(aX, aY);
+    var cp1 = this.getCoords_(aCP1x, aCP1y);
+    var cp2 = this.getCoords_(aCP2x, aCP2y);
+    bezierCurveTo(this, cp1, cp2, p);
   };
+
+  // Helper function that takes the already fixed cordinates.
+  function bezierCurveTo(self, cp1, cp2, p) {
+    self.currentPath_.push({
+      type: 'bezierCurveTo',
+      cp1x: cp1.x,
+      cp1y: cp1.y,
+      cp2x: cp2.x,
+      cp2y: cp2.y,
+      x: p.x,
+      y: p.y
+    });
+    self.currentX_ = p.x;
+    self.currentY_ = p.y;
+  }
 
   contextPrototype.quadraticCurveTo = function(aCPx, aCPy, aX, aY) {
     // the following is lifted almost directly from
     // http://developer.mozilla.org/en/docs/Canvas_tutorial:Drawing_shapes
-    var cp1x = this.currentX_ + 2.0 / 3.0 * (aCPx - this.currentX_);
-    var cp1y = this.currentY_ + 2.0 / 3.0 * (aCPy - this.currentY_);
-    var cp2x = cp1x + (aX - this.currentX_) / 3.0;
-    var cp2y = cp1y + (aY - this.currentY_) / 3.0;
-    this.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, aX, aY);
+
+    var cp = this.getCoords_(aCPx, aCPy);
+    var p = this.getCoords_(aX, aY);
+
+    var cp1 = {
+      x: this.currentX_ + 2.0 / 3.0 * (cp.x - this.currentX_),
+      y: this.currentY_ + 2.0 / 3.0 * (cp.y - this.currentY_)
+    };
+    var cp2 = {
+      x: cp1.x + (p.x - this.currentX_) / 3.0,
+      y: cp1.y + (p.y - this.currentY_) / 3.0
+    };
+
+    bezierCurveTo(this, cp1, cp2, p);
   };
 
   contextPrototype.arc = function(aX, aY, aRadius,
                                   aStartAngle, aEndAngle, aClockwise) {
     aRadius *= Z;
-    var arcType = aClockwise ? "at" : "wa";
+    var arcType = aClockwise ? 'at' : 'wa';
 
-    var xStart = aX + (mc(aStartAngle) * aRadius) - Z2;
-    var yStart = aY + (ms(aStartAngle) * aRadius) - Z2;
+    var xStart = aX + mc(aStartAngle) * aRadius - Z2;
+    var yStart = aY + ms(aStartAngle) * aRadius - Z2;
 
-    var xEnd = aX + (mc(aEndAngle) * aRadius) - Z2;
-    var yEnd = aY + (ms(aEndAngle) * aRadius) - Z2;
+    var xEnd = aX + mc(aEndAngle) * aRadius - Z2;
+    var yEnd = aY + ms(aEndAngle) * aRadius - Z2;
 
     // IE won't render arches drawn counter clockwise if xStart == xEnd.
     if (xStart == xEnd && !aClockwise) {
@@ -373,14 +419,18 @@ if (!window.CanvasRenderingContext2D) {
                        // that can be represented in binary
     }
 
+    var p = this.getCoords_(aX, aY);
+    var pStart = this.getCoords_(xStart, yStart);
+    var pEnd = this.getCoords_(xEnd, yEnd);
+
     this.currentPath_.push({type: arcType,
-                           x: aX,
-                           y: aY,
+                           x: p.x,
+                           y: p.y,
                            radius: aRadius,
-                           xStart: xStart,
-                           yStart: yStart,
-                           xEnd: xEnd,
-                           yEnd: yEnd});
+                           xStart: pStart.x,
+                           yStart: pStart.y,
+                           xEnd: pEnd.x,
+                           yEnd: pEnd.y});
 
   };
 
@@ -393,44 +443,55 @@ if (!window.CanvasRenderingContext2D) {
   };
 
   contextPrototype.strokeRect = function(aX, aY, aWidth, aHeight) {
-    // Will destroy any existing path (same as FF behaviour)
+    var oldPath = this.currentPath_;
     this.beginPath();
+
     this.moveTo(aX, aY);
     this.lineTo(aX + aWidth, aY);
     this.lineTo(aX + aWidth, aY + aHeight);
     this.lineTo(aX, aY + aHeight);
     this.closePath();
     this.stroke();
+
+    this.currentPath_ = oldPath;
   };
 
   contextPrototype.fillRect = function(aX, aY, aWidth, aHeight) {
-    // Will destroy any existing path (same as FF behaviour)
+    var oldPath = this.currentPath_;
     this.beginPath();
+
     this.moveTo(aX, aY);
     this.lineTo(aX + aWidth, aY);
     this.lineTo(aX + aWidth, aY + aHeight);
     this.lineTo(aX, aY + aHeight);
     this.closePath();
     this.fill();
+
+    this.currentPath_ = oldPath;
   };
 
   contextPrototype.createLinearGradient = function(aX0, aY0, aX1, aY1) {
-    var gradient = new CanvasGradient_("gradient");
+    var gradient = new CanvasGradient_('gradient');
+    gradient.x0_ = aX0;
+    gradient.y0_ = aY0;
+    gradient.x1_ = aX1;
+    gradient.y1_ = aY1;
     return gradient;
   };
 
-  contextPrototype.createRadialGradient = function(aX0, aY0,
-                                                   aR0, aX1,
-                                                   aY1, aR1) {
-    var gradient = new CanvasGradient_("gradientradial");
-    gradient.radius1_ = aR0;
-    gradient.radius2_ = aR1;
-    gradient.focus_.x = aX0;
-    gradient.focus_.y = aY0;
+  contextPrototype.createRadialGradient = function(aX0, aY0, aR0,
+                                                   aX1, aY1, aR1) {
+    var gradient = new CanvasGradient_('gradientradial');
+    gradient.x0_ = aX0;
+    gradient.y0_ = aY0;
+    gradient.r0_ = aR0;
+    gradient.x1_ = aX1;
+    gradient.y1_ = aY1;
+    gradient.r1_ = aR1;
     return gradient;
   };
 
-  contextPrototype.drawImage = function (image, var_args) {
+  contextPrototype.drawImage = function(image, var_args) {
     var dx, dy, dw, dh, sx, sy, sw, sh;
 
     // to find the original width we overide the width and height
@@ -471,7 +532,7 @@ if (!window.CanvasRenderingContext2D) {
       dw = arguments[7];
       dh = arguments[8];
     } else {
-      throw "Invalid number of arguments";
+      throw Error('Invalid number of arguments');
     }
 
     var d = this.getCoords_(dx, dy);
@@ -488,7 +549,7 @@ if (!window.CanvasRenderingContext2D) {
     vmlStr.push(' <g_vml_:group',
                 ' coordsize="', Z * W, ',', Z * H, '"',
                 ' coordorigin="0,0"' ,
-                ' style="width:', W, ';height:', H, ';position:absolute;');
+                ' style="width:', W, 'px;height:', H, 'px;position:absolute;');
 
     // If filters are necessary (rotation exists), create them
     // filters are bog-slow, so only create them if abbsolutely necessary
@@ -499,12 +560,12 @@ if (!window.CanvasRenderingContext2D) {
       var filter = [];
 
       // Note the 12/21 reversal
-      filter.push("M11='", this.m_[0][0], "',",
-                  "M12='", this.m_[1][0], "',",
-                  "M21='", this.m_[0][1], "',",
-                  "M22='", this.m_[1][1], "',",
-                  "Dx='", mr(d.x / Z), "',",
-                  "Dy='", mr(d.y / Z), "'");
+      filter.push('M11=', this.m_[0][0], ',',
+                  'M12=', this.m_[1][0], ',',
+                  'M21=', this.m_[0][1], ',',
+                  'M22=', this.m_[1][1], ',',
+                  'Dx=', mr(d.x / Z), ',',
+                  'Dy=', mr(d.y / Z), '');
 
       // Bounding box calculation (need to minimize displayed area so that
       // filters don't waste time on unused pixels.
@@ -513,20 +574,20 @@ if (!window.CanvasRenderingContext2D) {
       var c3 = this.getCoords_(dx, dy + dh);
       var c4 = this.getCoords_(dx + dw, dy + dh);
 
-      max.x = Math.max(max.x, c2.x, c3.x, c4.x);
-      max.y = Math.max(max.y, c2.y, c3.y, c4.y);
+      max.x = m.max(max.x, c2.x, c3.x, c4.x);
+      max.y = m.max(max.y, c2.y, c3.y, c4.y);
 
-      vmlStr.push("padding:0 ", mr(max.x / Z), "px ", mr(max.y / Z),
-                  "px 0;filter:progid:DXImageTransform.Microsoft.Matrix(",
-                  filter.join(""), ", sizingmethod='clip');")
+      vmlStr.push('padding:0 ', mr(max.x / Z), 'px ', mr(max.y / Z),
+                  'px 0;filter:progid:DXImageTransform.Microsoft.Matrix(',
+                  filter.join(''), ", sizingmethod='clip');")
     } else {
-      vmlStr.push("top:", mr(d.y / Z), "px;left:", mr(d.x / Z), "px;")
+      vmlStr.push('top:', mr(d.y / Z), 'px;left:', mr(d.x / Z), 'px;');
     }
 
     vmlStr.push(' ">' ,
                 '<g_vml_:image src="', image.src, '"',
-                ' style="width:', Z * dw, ';',
-                ' height:', Z * dh, ';"',
+                ' style="width:', Z * dw, 'px;',
+                ' height:', Z * dh, 'px;"',
                 ' cropleft="', sx / w, '"',
                 ' croptop="', sy / h, '"',
                 ' cropright="', (w - sx - sw) / w, '"',
@@ -534,28 +595,25 @@ if (!window.CanvasRenderingContext2D) {
                 ' />',
                 '</g_vml_:group>');
 
-    this.element_.insertAdjacentHTML("BeforeEnd",
-                                    vmlStr.join(""));
+    this.element_.insertAdjacentHTML('BeforeEnd',
+                                    vmlStr.join(''));
   };
 
   contextPrototype.stroke = function(aFill) {
     var lineStr = [];
     var lineOpen = false;
     var a = processStyle(aFill ? this.fillStyle : this.strokeStyle);
-    var color = a[0];
-    var opacity = a[1] * this.globalAlpha;
+    var color = a.color;
+    var opacity = a.alpha * this.globalAlpha;
 
     var W = 10;
     var H = 10;
 
     lineStr.push('<g_vml_:shape',
-                 ' fillcolor="', color, '"',
-                 ' filled="', Boolean(aFill), '"',
-                 ' style="position:absolute;width:', W, ';height:', H, ';"',
+                 ' filled="', !!aFill, '"',
+                 ' style="position:absolute;width:', W, 'px;height:', H, 'px;"',
                  ' coordorigin="0 0" coordsize="', Z * W, ' ', Z * H, '"',
                  ' stroked="', !aFill, '"',
-                 ' strokeweight="', this.lineWidth, '"',
-                 ' strokecolor="', color, '"',
                  ' path="');
 
     var newSeq = false;
@@ -564,37 +622,36 @@ if (!window.CanvasRenderingContext2D) {
 
     for (var i = 0; i < this.currentPath_.length; i++) {
       var p = this.currentPath_[i];
+      var c;
 
-      if (p.type == "moveTo") {
-        lineStr.push(" m ");
-        var c = this.getCoords_(p.x, p.y);
-        lineStr.push(mr(c.x), ",", mr(c.y));
-      } else if (p.type == "lineTo") {
-        lineStr.push(" l ");
-        var c = this.getCoords_(p.x, p.y);
-        lineStr.push(mr(c.x), ",", mr(c.y));
-      } else if (p.type == "close") {
-        lineStr.push(" x ");
-      } else if (p.type == "bezierCurveTo") {
-        lineStr.push(" c ");
-        var c = this.getCoords_(p.x, p.y);
-        var c1 = this.getCoords_(p.cp1x, p.cp1y);
-        var c2 = this.getCoords_(p.cp2x, p.cp2y);
-        lineStr.push(mr(c1.x), ",", mr(c1.y), ",",
-                     mr(c2.x), ",", mr(c2.y), ",",
-                     mr(c.x), ",", mr(c.y));
-      } else if (p.type == "at" || p.type == "wa") {
-        lineStr.push(" ", p.type, " ");
-        var c  = this.getCoords_(p.x, p.y);
-        var cStart = this.getCoords_(p.xStart, p.yStart);
-        var cEnd = this.getCoords_(p.xEnd, p.yEnd);
-
-        lineStr.push(mr(c.x - this.arcScaleX_ * p.radius), ",",
-                     mr(c.y - this.arcScaleY_ * p.radius), " ",
-                     mr(c.x + this.arcScaleX_ * p.radius), ",",
-                     mr(c.y + this.arcScaleY_ * p.radius), " ",
-                     mr(cStart.x), ",", mr(cStart.y), " ",
-                     mr(cEnd.x), ",", mr(cEnd.y));
+      switch (p.type) {
+        case 'moveTo':
+          c = p;
+          lineStr.push(' m ', mr(p.x), ',', mr(p.y));
+          break;
+        case 'lineTo':
+          lineStr.push(' l ', mr(p.x), ',', mr(p.y));
+          break;
+        case 'close':
+          lineStr.push(' x ');
+          p = null;
+          break;
+        case 'bezierCurveTo':
+          lineStr.push(' c ',
+                       mr(p.cp1x), ',', mr(p.cp1y), ',',
+                       mr(p.cp2x), ',', mr(p.cp2y), ',',
+                       mr(p.x), ',', mr(p.y));
+          break;
+        case 'at':
+        case 'wa':
+          lineStr.push(' ', p.type, ' ',
+                       mr(p.x - this.arcScaleX_ * p.radius), ',',
+                       mr(p.y - this.arcScaleY_ * p.radius), ' ',
+                       mr(p.x + this.arcScaleX_ * p.radius), ',',
+                       mr(p.y + this.arcScaleY_ * p.radius), ' ',
+                       mr(p.xStart), ',', mr(p.yStart), ' ',
+                       mr(p.xEnd), ',', mr(p.yEnd));
+          break;
       }
 
 
@@ -603,97 +660,126 @@ if (!window.CanvasRenderingContext2D) {
 
       // Figure out dimensions so we can do gradient fills
       // properly
-      if(c) {
-        if (min.x == null || c.x < min.x) {
-          min.x = c.x;
+      if (p) {
+        if (min.x == null || p.x < min.x) {
+          min.x = p.x;
         }
-        if (max.x == null || c.x > max.x) {
-          max.x = c.x;
+        if (max.x == null || p.x > max.x) {
+          max.x = p.x;
         }
-        if (min.y == null || c.y < min.y) {
-          min.y = c.y;
+        if (min.y == null || p.y < min.y) {
+          min.y = p.y;
         }
-        if (max.y == null || c.y > max.y) {
-          max.y = c.y;
+        if (max.y == null || p.y > max.y) {
+          max.y = p.y;
         }
       }
     }
     lineStr.push(' ">');
 
-    if (typeof this.fillStyle == "object") {
-      var focus = {x: "50%", y: "50%"};
-      var width = (max.x - min.x);
-      var height = (max.y - min.y);
-      var dimension = (width > height) ? width : height;
+    if (!aFill) {
+      var lineWidth = this.lineScale_ * this.lineWidth;
 
-      focus.x = mr((this.fillStyle.focus_.x / width) * 100 + 50) + "%";
-      focus.y = mr((this.fillStyle.focus_.y / height) * 100 + 50) + "%";
-
-      var colors = [];
-
-      // inside radius (%)
-      if (this.fillStyle.type_ == "gradientradial") {
-        var inside = (this.fillStyle.radius1_ / dimension * 100);
-
-        // percentage that outside radius exceeds inside radius
-        var expansion = (this.fillStyle.radius2_ / dimension * 100) - inside;
-      } else {
-        var inside = 0;
-        var expansion = 100;
+      // VML cannot correctly render a line if the width is less than 1px.
+      // In that case, we dilute the color to make the line look thinner.
+      if (lineWidth < 1) {
+        opacity *= lineWidth;
       }
 
-      var insidecolor = {offset: null, color: null};
-      var outsidecolor = {offset: null, color: null};
+      lineStr.push(
+        '<g_vml_:stroke',
+        ' opacity="', opacity, '"',
+        ' joinstyle="', this.lineJoin, '"',
+        ' miterlimit="', this.miterLimit, '"',
+        ' endcap="', processLineCap(this.lineCap), '"',
+        ' weight="', lineWidth, 'px"',
+        ' color="', color, '" />'
+      );
+    } else if (typeof this.fillStyle == 'object') {
+      var fillStyle = this.fillStyle;
+      var angle = 0;
+      var focus = {x: 0, y: 0};
 
-      // We need to sort 'colors' by percentage, from 0 > 100 otherwise ie
-      // won't interpret it correctly
-      this.fillStyle.colors_.sort(function (cs1, cs2) {
+      // additional offset
+      var shift = 0;
+      // scale factor for offset
+      var expansion = 1;
+
+      if (fillStyle.type_ == 'gradient') {
+        var x0 = fillStyle.x0_ / this.arcScaleX_;
+        var y0 = fillStyle.y0_ / this.arcScaleY_;
+        var x1 = fillStyle.x1_ / this.arcScaleX_;
+        var y1 = fillStyle.y1_ / this.arcScaleY_;
+        var p0 = this.getCoords_(x0, y0);
+        var p1 = this.getCoords_(x1, y1);
+        var dx = p1.x - p0.x;
+        var dy = p1.y - p0.y;
+        angle = Math.atan2(dx, dy) * 180 / Math.PI;
+
+        // The angle should be a non-negative number.
+        if (angle < 0) {
+          angle += 360;
+        }
+
+        // Very small angles produce an unexpected result because they are
+        // converted to a scientific notation string.
+        if (angle < 1e-6) {
+          angle = 0;
+        }
+      } else {
+        var p0 = this.getCoords_(fillStyle.x0_, fillStyle.y0_);
+        var width  = max.x - min.x;
+        var height = max.y - min.y;
+        focus = {
+          x: (p0.x - min.x) / width,
+          y: (p0.y - min.y) / height
+        };
+
+        width  /= this.arcScaleX_ * Z;
+        height /= this.arcScaleY_ * Z;
+        var dimension = m.max(width, height);
+        shift = 2 * fillStyle.r0_ / dimension;
+        expansion = 2 * fillStyle.r1_ / dimension - shift;
+      }
+
+      // We need to sort the color stops in ascending order by offset,
+      // otherwise IE won't interpret it correctly.
+      var stops = fillStyle.colors_;
+      stops.sort(function(cs1, cs2) {
         return cs1.offset - cs2.offset;
       });
 
-      for (var i = 0; i < this.fillStyle.colors_.length; i++) {
-        var fs = this.fillStyle.colors_[i];
+      var length = stops.length;
+      var color1 = stops[0].color;
+      var color2 = stops[length - 1].color;
+      var opacity1 = stops[0].alpha * this.globalAlpha;
+      var opacity2 = stops[length - 1].alpha * this.globalAlpha;
 
-        colors.push( (fs.offset * expansion) + inside, "% ", fs.color, ",");
-
-        if (fs.offset > insidecolor.offset || insidecolor.offset == null) {
-          insidecolor.offset = fs.offset;
-          insidecolor.color = fs.color;
-        }
-
-        if (fs.offset < outsidecolor.offset || outsidecolor.offset == null) {
-          outsidecolor.offset = fs.offset;
-          outsidecolor.color = fs.color;
-        }
+      var colors = [];
+      for (var i = 0; i < length; i++) {
+        var stop = stops[i];
+        colors.push(stop.offset * expansion + shift + ' ' + stop.color);
       }
-      colors.pop();
 
-      lineStr.push('<g_vml_:fill',
-                   ' color="', outsidecolor.color, '"',
-                   ' color2="', insidecolor.color, '"',
-                   ' type="', this.fillStyle.type_, '"',
-                   ' focusposition="', focus.x, ', ', focus.y, '"',
-                   ' colors="', colors.join(""), '"',
-                   ' opacity="', opacity, '" />');
-    } else if (aFill) {
-      lineStr.push('<g_vml_:fill color="', color, '" opacity="', opacity, '" />');
+      // When colors attribute is used, the meanings of opacity and o:opacity2
+      // are reversed.
+      lineStr.push('<g_vml_:fill type="', fillStyle.type_, '"',
+                   ' method="none" focus="100%"',
+                   ' color="', color1, '"',
+                   ' color2="', color2, '"',
+                   ' colors="', colors.join(','), '"',
+                   ' opacity="', opacity2, '"',
+                   ' g_o_:opacity2="', opacity1, '"',
+                   ' angle="', angle, '"',
+                   ' focusposition="', focus.x, ',', focus.y, '" />');
     } else {
-      lineStr.push(
-        '<g_vml_:stroke',
-        ' opacity="', opacity,'"',
-        ' joinstyle="', this.lineJoin, '"',
-        ' miterlimit="', this.miterLimit, '"',
-        ' endcap="', processLineCap(this.lineCap) ,'"',
-        ' weight="', this.lineWidth, 'px"',
-        ' color="', color,'" />'
-      );
+      lineStr.push('<g_vml_:fill color="', color, '" opacity="', opacity,
+                   '" />');
     }
 
-    lineStr.push("</g_vml_:shape>");
+    lineStr.push('</g_vml_:shape>');
 
-    this.element_.insertAdjacentHTML("beforeEnd", lineStr.join(""));
-
-    this.currentPath_ = [];
+    this.element_.insertAdjacentHTML('beforeEnd', lineStr.join(''));
   };
 
   contextPrototype.fill = function() {
@@ -701,16 +787,17 @@ if (!window.CanvasRenderingContext2D) {
   }
 
   contextPrototype.closePath = function() {
-    this.currentPath_.push({type: "close"});
+    this.currentPath_.push({type: 'close'});
   };
 
   /**
    * @private
    */
   contextPrototype.getCoords_ = function(aX, aY) {
+    var m = this.m_;
     return {
-      x: Z * (aX * this.m_[0][0] + aY * this.m_[1][0] + this.m_[2][0]) - Z2,
-      y: Z * (aX * this.m_[0][1] + aY * this.m_[1][1] + this.m_[2][1]) - Z2
+      x: Z * (aX * m[0][0] + aY * m[1][0] + m[2][0]) - Z2,
+      y: Z * (aX * m[0][1] + aY * m[1][1] + m[2][1]) - Z2
     }
   };
 
@@ -727,6 +814,33 @@ if (!window.CanvasRenderingContext2D) {
     this.m_ = this.mStack_.pop();
   };
 
+  function matrixIsFinite(m) {
+    for (var j = 0; j < 3; j++) {
+      for (var k = 0; k < 2; k++) {
+        if (!isFinite(m[j][k]) || isNaN(m[j][k])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  function setM(ctx, m, updateLineScale) {
+    if (!matrixIsFinite(m)) {
+      return;
+    }
+    ctx.m_ = m;
+
+    if (updateLineScale) {
+      // Get the line scale.
+      // Determinant of this.m_ means how much the area is enlarged by the
+      // transformation. So its square root can be used as a scale factor
+      // for width.
+      var det = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+      ctx.lineScale_ = sqrt(abs(det));
+    }
+  }
+
   contextPrototype.translate = function(aX, aY) {
     var m1 = [
       [1,  0,  0],
@@ -734,7 +848,7 @@ if (!window.CanvasRenderingContext2D) {
       [aX, aY, 1]
     ];
 
-    this.m_ = matrixMultiply(m1, this.m_);
+    setM(this, matrixMultiply(m1, this.m_), false);
   };
 
   contextPrototype.rotate = function(aRot) {
@@ -747,7 +861,7 @@ if (!window.CanvasRenderingContext2D) {
       [0,  0, 1]
     ];
 
-    this.m_ = matrixMultiply(m1, this.m_);
+    setM(this, matrixMultiply(m1, this.m_), false);
   };
 
   contextPrototype.scale = function(aX, aY) {
@@ -759,7 +873,27 @@ if (!window.CanvasRenderingContext2D) {
       [0,  0,  1]
     ];
 
-    this.m_ = matrixMultiply(m1, this.m_);
+    setM(this, matrixMultiply(m1, this.m_), true);
+  };
+
+  contextPrototype.transform = function(m11, m12, m21, m22, dx, dy) {
+    var m1 = [
+      [m11, m12, 0],
+      [m21, m22, 0],
+      [dx,  dy,  1]
+    ];
+
+    setM(this, matrixMultiply(m1, this.m_), true);
+  };
+
+  contextPrototype.setTransform = function(m11, m12, m21, m22, dx, dy) {
+    var m = [
+      [m11, m12, 0],
+      [m21, m22, 0],
+      [dx,  dy,  1]
+    ];
+
+    setM(this, m, true);
   };
 
   /******** STUBS ********/
@@ -778,15 +912,20 @@ if (!window.CanvasRenderingContext2D) {
   // Gradient / Pattern Stubs
   function CanvasGradient_(aType) {
     this.type_ = aType;
-    this.radius1_ = 0;
-    this.radius2_ = 0;
+    this.x0_ = 0;
+    this.y0_ = 0;
+    this.r0_ = 0;
+    this.x1_ = 0;
+    this.y1_ = 0;
+    this.r1_ = 0;
     this.colors_ = [];
-    this.focus_ = {x: 0, y: 0};
   }
 
   CanvasGradient_.prototype.addColorStop = function(aOffset, aColor) {
     aColor = processStyle(aColor);
-    this.colors_.push({offset: 1-aOffset, color: aColor});
+    this.colors_.push({offset: aOffset,
+                       color: aColor.color,
+                       alpha: aColor.alpha});
   };
 
   function CanvasPattern_() {}
@@ -1911,7 +2050,52 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 };
-//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
+jQuery.getScroll = function (e){ 
+    if (e) { 
+        t = e.scrollTop; 
+        l = e.scrollLeft; 
+        w = e.scrollWidth; 
+        h = e.scrollHeight; 
+    } else { 
+        if (document.documentElement && document.documentElement.scrollTop) { 
+            t = document.documentElement.scrollTop; 
+            l = document.documentElement.scrollLeft; 
+            w = document.documentElement.scrollWidth; 
+            h = document.documentElement.scrollHeight; 
+        } else if (document.body) { 
+            t = document.body.scrollTop; 
+            l = document.body.scrollLeft; 
+            w = document.body.scrollWidth; 
+            h = document.body.scrollHeight; 
+        } 
+    } 
+    return { t: t, l: l, w: w, h: h }; 
+}; (function($) { 
+
+$.escapeReturns = function(text){
+//console.log(text);
+    text = escape(text); //encode text string's carriage returns
+    
+    for(i=0; i<text.length; i++){
+    
+        if(text.indexOf("%0D%0A") > -1){
+            //Windows encodes returns as \r\n hex
+            text=text.replace("%0D%0A","<br/>");
+        } else if(text.indexOf("%0A") > -1){
+            //Unix encodes returns as \n hex
+            text=text.replace("%0A","<br/>");
+        } else if(text.indexOf("%0D") > -1){
+            //Macintosh encodes returns as \r hex
+            text=text.replace("%0D","<br/>");
+        }
+    }
+    
+    text = unescape(text); //unescape all other encoded characters
+//console.log(text);    
+    return text;
+}
+
+})(jQuery);//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
 if(jQuery && jQuery.browser.opera && jQuery.browser.version >= 9.50) {
     var height_ = jQuery.fn.height;
     jQuery.fn.height = function() {
@@ -2288,6 +2472,21 @@ jQuery.extend( jQuery.easing,
 			endOffset = r2.endOffset,
 			selectedText = userSelection.toString();
 			
+//=================================================
+//console.log("startContainer: ",startContainer);
+//console.log("endContainer",endContainer);
+//=================================================  			
+			
+			if(startContainer.nodeType == 1) {
+			  startContainer = $(startContainer).textNodes(true)[startOffset];
+			  startOffset = 0;
+			}
+			
+			if(endContainer.nodeType == 1) {
+			  endContainer = $(endContainer).textNodes(true)[endOffset-1];
+			  endOffset = endContainer.length;
+			}			
+			
 			if(reset) userSelection.removeAllRanges();
 								
 		} else if (document.selection) {
@@ -2300,10 +2499,10 @@ jQuery.extend( jQuery.easing,
             
             var r1 = r.duplicate(), r2 = r.duplicate();
 			r1.collapse(true); r2.collapse(false);
-							
+			
 			var startParent = r1.parentElement();
 			var endParent = r2.parentElement();
-
+			
 			var v = document.body.createTextRange(),
             len = v.text.length;
 			v.moveToElementText(startParent);
@@ -2325,10 +2524,13 @@ jQuery.extend( jQuery.easing,
 			while(r.compareEndPoints('EndToEnd',v) != 0 && endOffset < len) {
 				endOffset++;
 				v.move('character');
-			}            
+			}
 			
 			var startSiblings = $(startParent).textNodes(true),
 			startContainer;
+//=================================================
+//console.log(startParent.innerHTML,startSiblings.length);
+//=================================================
 			if(startSiblings.length == 1) {
 				startContainer = startSiblings[0];
 			} else {	
@@ -2344,11 +2546,14 @@ jQuery.extend( jQuery.easing,
 			
 			var endSiblings = $(endParent).textNodes(true),
 			endContainer;
+//=================================================
+//console.log(endParent.innerHTML,endSiblings.length);
+//=================================================
 			if(endSiblings.length == 1) {
 				endContainer = endSiblings[0];
 			} else {
 				var Eidx = 0, chrSum = 0, prevSum = 0;
-				while(chrSum <= endOffset) {
+				while(chrSum <= endOffset && Eidx < endSiblings.length) {
 					prevSum = chrSum;						
 					chrSum += endSiblings[Eidx].length;
 					Eidx++;
@@ -3555,7 +3760,8 @@ eMend.dictionary = {
     "activate_comment": "premi 'C' per commentare il testo selezionato",
     "write_comment": "scrivi nel commento ci&ograve; che pensi",
     "disable_HOL": "non mostrare pi&ugrave; i messaggi di aiuto",
-    "outside_boudaries": "la selezione &egrave; fuori dall'area commentabile"
+    "outside_boudaries": "la selezione &egrave; fuori dall'area commentabile",
+    "login_needed": "per inviare un commento &egrave; necessario il login"
   },
   sidebar: {
     "hidelink": "Nascondi collegamento visuale",
@@ -3564,6 +3770,57 @@ eMend.dictionary = {
   }
 };
 /* 
+    e-Mend - a web comment system.
+    Copyright (C) 2006-2008 MemeFarmers, Collective.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+(function($) {
+eMend.users = function (options) {
+  
+  if ( !(this instanceof arguments.callee) ) 
+  return new eMend.users(options);
+  
+  this.opts = $.extend({}, eMend.users.defaults, options);
+
+// INTERNAL PROPERTIES
+  this._currentUser = null;
+
+// INIT
+
+};
+
+eMend.users.defaults = {};
+
+eMend.users.prototype = {
+  login: function(event,data){
+    this._currentUser = data.name;
+    this.opts.dataset.loginAs(this._currentUser);
+  },
+  
+  logout: function(){
+    this._currentUser = null;
+  },
+  
+  getCurrentUser: function() {
+    return this._currentUser;
+  }  
+};
+
+})(jQuery);/* 
     e-Mend - a web comment system.
     Copyright (C) 2006-2008 MemeFarmers, Collective.
 
@@ -3593,9 +3850,9 @@ commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
-commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li></ul>',
+commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/password.png"/><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
 
-sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;3</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;3</sup></div><div id="sidebar-body"></div></div>'
+sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
 }
 
 })(jQuery);/* 
@@ -3805,8 +4062,8 @@ eMend.dataset.prototype = {
     var date = d.format(Date.ISO8601c);
     var noteIdx = this._comments[userIdx].length;
     var auth = this._users[userIdx];
-    //subject = subject.stripScripts().stripTags(); // this used a prototype extension
-    //text = text.stripScripts().stripTags(); // this used a prototype extension
+    subject = $.escapeReturns(subject);
+    text = $.escapeReturns(text);
 
     var status = 0;
     var commentdata = {
@@ -3870,7 +4127,11 @@ eMend.dataset.prototype = {
     if(typeof userIdx == 'undefined') userIdx = this._currentUser;
 
     var s = $.getSelection(true);
-    //console.log(s.startOffset,s.endOffset);
+    
+//=================================================
+//console.log("Selection object: ",s);
+//console.log("Offsets",s.startOffset,s.endOffset);
+//=================================================    
 
     switch (s.startContainer.parentNode.tagName) {
       case 'NODEBLOCK':
@@ -4144,11 +4405,9 @@ eMend.dataset.prototype = {
         XcS = r[2]; XcE = r[3] ? r[3] : r[2]; // startContainer, endContainer XPath expressions
 
 //=================================================
-//dump(XcS.base+'\n');	
-//dump(XcE.base+'\n');
+//console.log("XcS.base: ",XcS.base);	
+//console.log("XcE.base: ",XcE.base);
 //=================================================
-
-
 
         switch(xpathmethod) {
           case 0:
@@ -4167,13 +4426,11 @@ eMend.dataset.prototype = {
         }
 
 //=================================================
-//dump('context start:'+cS+'\n');
-//dump('context end:'+cE+'\n');
+//console.log("XcS.xpath: ",XcS.xpath,"XcE.xpath: ",XcE.xpath);
+//console.log("context start: ",cS,"context end: ",cE);
+//console.log("nodes: ",nodes.length);
 //=================================================
-
-        //console.log('nodes', nodes.length, typeof cS, typeof cE);
-        
-
+     
         startNode = endNode = -1
         for(var j=0, len3=nodes.length; j <= len3; j++) {
             if(cS == nodes[j]) startNode = j;
@@ -4601,6 +4858,16 @@ eMend.commentGroup.prototype = {
 			this.counter = $.create('h6',{'unselectable': 'on'})[0];
 			this.element.appendChild(this.counter);
             var _self = this;
+		
+		// BEAHVIOURS
+			// scroll to the first note highlight when a commentGroup title is clicked
+			$(this.counter).click( function(){
+				var firstNoteInGroup = $(this).parent().find('.emend-note').get(0);
+				var noteId = $(firstNoteInGroup).attr('note');
+				$(window).scrollTo('.n'+noteId,{duration: 500, easing: 'swing'});
+			});
+			
+			// open/close group when +/- icon is clicked
             $(this.element).find('.closegroup, .opengroup').click(function(){_self.toggleGroup(_self.element)});
 		}
 		return this.element;
@@ -4610,7 +4877,7 @@ eMend.commentGroup.prototype = {
 		var str = num > 1 ? num +' '+eMend.dictionary.commentGroup.comments : num +' '+eMend.dictionary.commentGroup.comment;
         $(this.counter).text(str);
 		num = Math.min(num,40);
-		this.counter.className = 'a'+num;
+		this.counter.className = 'a'+num+' emendGroupTitle';
 	},
 	
 	appendChild: function(element) {
@@ -4807,7 +5074,11 @@ eMend.commentTrigger = function (options) {
             var startsInside = $(so.startContainer).parents(eMend.config.comment_target);
             var endsInside = $(so.endContainer).parents(eMend.config.comment_target);
             
-            if(startsInside.length & endsInside.length) {
+            if(eMend.config.login_needed_to_post && _self.opts.users.getCurrentUser() == null) {
+              _self.show(4,1000);
+              $(document).unbind('keyup.commentTrigger');
+              $(document).unbind('keydown.commentTrigger');              
+            } else if(startsInside.length & endsInside.length) {
               _self.show(1,1000);
             } else {              
               _self.show(3,1000);
@@ -4856,7 +5127,7 @@ eMend.commentTrigger.prototype = {
     if(this.status == n) return;
     
     var _self = this;
-    
+    window.clearTimeout(this.timeOut);
     $('.eMend-jGrowl div.close').trigger('click.jGrowl');
     var v = $('#HOLteaser').find('li')[n];
     var pos = this.opts.sidebar.isOpen() == false ? 'bottom-right' : 'bottom-left';
@@ -4864,7 +5135,7 @@ eMend.commentTrigger.prototype = {
     $.jGrowl.defaults.closer = false;
     $.jGrowl.defaults.position = pos;
     
-    if (!this.opts.hideHOL) window.setTimeout(function(){
+    if (!this.opts.hideHOL) this.timeOut = window.setTimeout(function(){
       $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
       
       $('.emendHideHOL').click( function(){
@@ -5123,13 +5394,19 @@ eMend.sidebar.prototype = {
 		});
         $('#eMend-sidebar').attr('className','open');
         this.status = 'open';
+		window.setTimeout(function(){
+			$('#memefarmers').animate({bottom: "-20px"},1000, 'swing');
+		}, 3000)
 	},
     
 	close: function() {
 		$(document.body).css({marginRight: "27px"});
         $(document).trigger('emend.closesidebar');
 		$('.sidebar-wrapper').animate({right: "-260px"}, 500, 'swing', function(){
-			$('.sidebar-Y-header').animate({right: "0"},500,'swing');
+			$('.sidebar-Y-header').css({right: "-280px"});
+			$('.sidebar-Y-header').animate({right: "0"},500,'swing', function(){
+				$('.sidebar-Y-header').css({bottom: "0"});
+			});
 		});
         $('#eMend-sidebar').attr('className','closed');
         this.status = 'closed';
@@ -5912,7 +6189,7 @@ eMend.backstore.sfEmendPlugin = function (options) {
     var loc = window.location.pathname.split('/');
     loc.shift();
     this.resourceID = loc.join('_');
-    this.getLoggedUser();
+    this.getCurrentUser();
     this.getComments();
 };
 
@@ -5923,7 +6200,8 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		var s = this.opts.dataset.getLastSelection()
 		  , c = this.opts.dataset.getLastComment().data;
             //console.log('sfEmendPlugin.addcomment',s,c);
-        
+
+        //console.log(c);        
 
 		c.selection = $.toJSON(s);
 		//console.log(c);
@@ -5960,27 +6238,25 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		    }           
 		});
 	},
-	getLoggedUser: function() {
-		var ds = this.opts.dataset;
+	getCurrentUser: function(callback) {
 		$.ajax({
-		    url: '/get_logged_user',
-		    success: function(data, textStatus){
-		      //console.log("Data loaded: ",textStatus, data);
-		      var obj = $.evalJSON(data);
-		      //console.log("JSON: ",obj);
-		      
-		      if(typeof obj.name != 'undefined') {
-			ds.loginAs(obj.name);
-		      }
-
-		    },
-		    error: function (XMLHttpRequest, textStatus, errorThrown) {
-		      //console.log(textStatus, errorThrown)
-		      // typically only one of textStatus or errorThrown 
-		      // will have info
-		      this; // the options for this ajax request
-		    }           
-		});		
+		  url: '/get_logged_user',
+		  success: function(data, textStatus){
+		    var obj = $.evalJSON(data);
+		    
+		    if(typeof obj.name != 'undefined') {
+		      $(document).trigger('emend.loggedIn',obj);
+		    } else {
+              $(document).trigger('emend.loggedOut');
+            }
+		  },
+		  error: function (XMLHttpRequest, textStatus, errorThrown) {
+		    //console.log(textStatus, errorThrown)
+		    // typically only one of textStatus or errorThrown 
+		    // will have info
+		    this; // the options for this ajax request
+		  }           
+		});
 	}
 };
 
@@ -6006,9 +6282,12 @@ eMend.backstore.sfEmendPlugin.prototype = {
 (function($) {
 eMend.init = function($) {
 	if(eMend.status == 'running') return;
-    	
+    
+    // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
 	document.body.normalize();	
 	$(document).cleanWhitespace(true);
+    
+    // creates and attaches DATA and VISUAL containers
 	var DO = $('#eMend-DATA-Overlay').remove()[0] || $.create('div',{id:'eMend-DATA-Overlay', className:'hidden write-protect'})[0];
 	var VO = $('#eMend-VISUAL-Overlay').remove()[0] || $.create('div',{id:'eMend-VISUAL-Overlay', className:'write-protect'})[0];
 	
@@ -6018,32 +6297,53 @@ eMend.init = function($) {
 		$(document.body.parentNode).append(DO).append(VO);
 	}
 	
+    // instances and binds modules
 	var pf = eMend.prefetch({datastore: DO});
 	var SB = eMend.sidebar({target: VO});
 	var SBc = SB.getContainer();
 	
 	var ds = eMend.dataset({target: document.body, datastore: DO})
-	  , ps = eMend.positions()        
+	  , ps = eMend.positions()
+      , usr = eMend.users({dataset: ds})
 	  , rn = eMend.renderNotes({dataset: ds, target: SBc, positions: ps})
 	  , nb = eMend.navbar({target: SBc.parentNode, positions: ps})
 	  , cf = eMend.commentForm({dataset: ds, target: VO})
-	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB})
+	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB, users: usr})
 	  , ln = eMend.linker({target: VO, positions: ps});
-	  //, tr = new $.textResizeDetector({target: VO});
+      
+    // backend
+    if(eMend.config.backend) {
+        switch(eMend.config.backend) {
+            case "sfEmendPlugin":
+                var sfbk = eMend.backstore.sfEmendPlugin({dataset: ds});
+                $(document).bind('emend.addComment',function(){ sfbk.addComment(); });
+            break;
+        }
+    };
 	  
 	var emend_lastScrollTimer = -1;
-	var emend_lastScrollPosition = window.scrollY;
+	var emend_lastScrollPosition = $.getScroll().t;
 	
-	//events binding
-	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
-	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); }
-	  , F_hideLinks = function(){ ln.hideLinks(); }
-	  , F_clearLinks = function(){ ln.clearLinks(); }
-	  , F_refnavbar = function(){ nb.refresh(); }
-	  , F_updHL = function(){ ps.invalidate('highlights','references'); }
-	  , F_refRender = function(){ eMend.highlight(ds); rn.renderNotes(); }
-	  , F_openSB = function(){ SB.open(); }
-	  , F_afterscroll = function(){
+// EVENTS HANDLERS
+    
+    // if sidebar is open refresh links
+	var F_refLinks = function(event, data){ if(SB.isOpen()) ln.refreshLinks(); }
+    // if sidebar is open refresh view
+	  , F_viewChange = function(event, data){ if(SB.isOpen()) rn.refreshView(); }
+    // hide links
+	  , F_hideLinks = function(event, data){ ln.hideLinks(); }
+    //clear links
+	  , F_clearLinks = function(event, data){ ln.clearLinks(); }
+    // refresh navbar
+	  , F_refnavbar = function(event, data){ nb.refresh(); }
+    // invalidate position cache when highlights are updated
+	  , F_updHL = function(event, data){ ps.invalidate('highlights','references'); }
+    // refresh highlights and sidebar notes 
+	  , F_refRender = function(event, data){ eMend.highlight(ds); rn.renderNotes(); }
+    // open sidebar
+	  , F_openSB = function(event, data){ SB.open(); }
+    // sends an event 450ms after scroll is over
+	  , F_afterscroll = function(event, data){
             window.clearTimeout(emend_lastScrollTimer);
             emend_lastScrollTimer = window.setTimeout(function(){
                 $(document).trigger('emend.afterscroll');
@@ -6052,56 +6352,119 @@ eMend.init = function($) {
 	;
     
     delayedRefresh = function() {
+        var scroll_Y = $.getScroll().t;
         // filter spurious scroll events for Webkit based browsers
-        if(emend_lastScrollPosition != window.scrollY) {
+        if(emend_lastScrollPosition != scroll_Y ) {
             F_hideLinks();
             F_afterscroll();
-            emend_lastScrollPosition = window.scrollY;
+            emend_lastScrollPosition = scroll_Y;
         }
     };
-	
-	$(document).bind('emend.addComment',F_refRender);
+
+//=================================================	
+// EVENTS BINDING
+//=================================================
+
+// when sidebar is opened
+
+    // refresh links
 	$(document).bind('emend.opensidebar',function(){F_refLinks()});
+    // refresh navbar
 	$(document).bind('emend.opensidebar',F_refnavbar);
+    
+// when sidebar is closed
+
+    // hide links then clear theme
 	$(document).bind('emend.closesidebar',function(){ F_hideLinks(); window.setTimeout(F_clearLinks,500); });
+    
+// when a comment is posted
+
+    // refresh render
+	$(document).bind('emend.addComment',F_refRender);
+    
+    // shows a GUI message 
 	$(document).bind('emend.addComment',function(){ ct.show(0); });
-	//$(ln).bind('emend.hidelinks',function(){SB.closesidebar()});
-	//$(document).bind('textResize',F_refLinks);
+    
+// when new data is imported in dataset
+
+    // refresh render
+    $(document).bind('emend.importData',function(){ F_refRender(); });
+
+// when highlights are repainted
+
+    // invalidates positions cache
 	$(document).bind('emend.highlight',F_updHL);
-	$(document).bind('emend.importData',function(){ F_refRender(); });
+    
+	
 	$(rn).bind('emend.notesHover',F_refLinks);
-	$(rn).bind('emend.rendernotes',F_openSB);
+	
+// when notes are rendered
+
+    // open sidebar
+    $(rn).bind('emend.rendernotes',F_openSB);
+    
+    
 	$(document).bind('emend.afterscroll',F_viewChange);
 	$(document).bind('emend.afterviewscroll',F_refLinks);
 	//$(document).bind('emend.toggleGroup',F_refLinks);
-	$(document).bind('emend.toggleGroup',function(){ F_refLinks();});
-	$(window).wresize(F_updHL);
-	$(window).wresize(F_refLinks);
-	$(window).wresize(F_refnavbar);
-	
-    // scroll refresh delay
-	if(eMend.config.scroll_refresh_delay) {
-		$(window).scroll(delayedRefresh);
-	} else {
-		$(window).scroll(F_refLinks);
-		$(window).scroll(F_afterscroll);        
-	}
     
-    // backstore tiddly
-    if(eMend.config.backstore_tiddly) {
-        var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
-        $(document).bind('emend.addComment',function(){ bk.addComment(); });
-    };
-    
-    // backstore sfEmendPlugin
-    if(eMend.config.backstore_sfEmendPlugin) {
-        var bkSf = eMend.backstore.sfEmendPlugin({dataset: ds});
-        $(document).bind('emend.addComment',function(){ bkSf.addComment(); });
-    };
-	
-	eMend.status = 'running';    
-};
+// when a comment group is opened/closed
 
+    // refresh links
+	$(document).bind('emend.toggleGroup',function(){ F_refLinks(); });
+    
+// when the window is resized
+
+    // invalidates positions cache
+	$(window).wresize(F_updHL);
+    
+    // refresh links
+	$(window).wresize(F_refLinks);
+    
+    // refresh navbar
+	$(window).wresize(F_refnavbar);
+
+//=================================================    
+// OPTIONAL BINDINGS
+//=================================================
+	
+//
+// scroll_refresh_delay: [true/false]
+//
+
+if(eMend.config.scroll_refresh_delay) {
+    // hide links and repaint view after a certain delay after the last scroll event
+    $(window).scroll(delayedRefresh);
+} else {
+    // immediately repaint after each scroll event
+    $(window).scroll(F_refLinks);
+    $(window).scroll(F_afterscroll);        
+}
+
+//
+// backend: [sfEmendPlugin(/Wordpress/MediaWiki)]
+//
+
+if(eMend.config.backend) {
+    $(document).bind('emend.loggedIn', function(event, data) { usr.login(event,data); ct.show(0); });
+    $(document).bind('emend.loggedOut', function(event, data) { usr.logout(); ct.show(4); });
+}
+
+//  
+// backstore_tiddly: [true/false]
+//
+
+if(eMend.config.backstore_tiddly) {
+    // instances tiddly module
+    var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
+    // ping it when a comment is added
+    $(document).bind('emend.addComment',function(){ bk.addComment(); });
+};
+    
+        
+    eMend.status = 'running';    
+};
+/*
 if (!window.console || !window.console.firebug) {  
      var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
                   "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
@@ -6112,6 +6475,7 @@ if (!window.console || !window.console.firebug) {
          window.console[names[i]] = function() {};  
      }
 }
+*/
 
 
 

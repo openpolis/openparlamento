@@ -18,7 +18,8 @@
   	  <div id="navigation">	
        <?php include_partial('global/navigation') ?> 
   	  </div>
-    	<?php include_partial('global/breadcrumbs') ?> 
+  	  
+    	<?php if ($this->getContext()->getModuleName()!='default') include_partial('global/breadcrumbs') ?> 
     </div>
 
 	  <?php echo $sf_data->getRaw('sf_content') ?>

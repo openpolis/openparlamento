@@ -30,7 +30,8 @@ eMend.dictionary = {
     "activate_comment": "premi 'C' per commentare il testo selezionato",
     "write_comment": "scrivi nel commento ci&ograve; che pensi",
     "disable_HOL": "non mostrare pi&ugrave; i messaggi di aiuto",
-    "outside_boudaries": "la selezione &egrave; fuori dall'area commentabile"
+    "outside_boudaries": "la selezione &egrave; fuori dall'area commentabile",
+    "login_needed": "per inviare un commento &egrave; necessario il login"
   },
   sidebar: {
     "hidelink": "Nascondi collegamento visuale",
@@ -39,6 +40,57 @@ eMend.dictionary = {
   }
 };
 /* 
+    e-Mend - a web comment system.
+    Copyright (C) 2006-2008 MemeFarmers, Collective.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+(function($) {
+eMend.users = function (options) {
+  
+  if ( !(this instanceof arguments.callee) ) 
+  return new eMend.users(options);
+  
+  this.opts = $.extend({}, eMend.users.defaults, options);
+
+// INTERNAL PROPERTIES
+  this._currentUser = null;
+
+// INIT
+
+};
+
+eMend.users.defaults = {};
+
+eMend.users.prototype = {
+  login: function(event,data){
+    this._currentUser = data.name;
+    this.opts.dataset.loginAs(this._currentUser);
+  },
+  
+  logout: function(){
+    this._currentUser = null;
+  },
+  
+  getCurrentUser: function() {
+    return this._currentUser;
+  }  
+};
+
+})(jQuery);/* 
     e-Mend - a web comment system.
     Copyright (C) 2006-2008 MemeFarmers, Collective.
 
@@ -68,9 +120,9 @@ commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
-commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li></ul>',
+commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/pressC.png"/><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/chat.png"/><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/selectText.png"/><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><h2 class="helpOnLine"><img src="_(baseURI)/password.png"/><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
 
-sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;3</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;3</sup></div><div id="sidebar-body"></div></div>'
+sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
 }
 
 })(jQuery);/* 
@@ -280,8 +332,8 @@ eMend.dataset.prototype = {
     var date = d.format(Date.ISO8601c);
     var noteIdx = this._comments[userIdx].length;
     var auth = this._users[userIdx];
-    //subject = subject.stripScripts().stripTags(); // this used a prototype extension
-    //text = text.stripScripts().stripTags(); // this used a prototype extension
+    subject = $.escapeReturns(subject);
+    text = $.escapeReturns(text);
 
     var status = 0;
     var commentdata = {
@@ -345,7 +397,11 @@ eMend.dataset.prototype = {
     if(typeof userIdx == 'undefined') userIdx = this._currentUser;
 
     var s = $.getSelection(true);
-    //console.log(s.startOffset,s.endOffset);
+    
+//=================================================
+//console.log("Selection object: ",s);
+//console.log("Offsets",s.startOffset,s.endOffset);
+//=================================================    
 
     switch (s.startContainer.parentNode.tagName) {
       case 'NODEBLOCK':
@@ -619,11 +675,9 @@ eMend.dataset.prototype = {
         XcS = r[2]; XcE = r[3] ? r[3] : r[2]; // startContainer, endContainer XPath expressions
 
 //=================================================
-//dump(XcS.base+'\n');	
-//dump(XcE.base+'\n');
+//console.log("XcS.base: ",XcS.base);	
+//console.log("XcE.base: ",XcE.base);
 //=================================================
-
-
 
         switch(xpathmethod) {
           case 0:
@@ -642,13 +696,11 @@ eMend.dataset.prototype = {
         }
 
 //=================================================
-//dump('context start:'+cS+'\n');
-//dump('context end:'+cE+'\n');
+//console.log("XcS.xpath: ",XcS.xpath,"XcE.xpath: ",XcE.xpath);
+//console.log("context start: ",cS,"context end: ",cE);
+//console.log("nodes: ",nodes.length);
 //=================================================
-
-        //console.log('nodes', nodes.length, typeof cS, typeof cE);
-        
-
+     
         startNode = endNode = -1
         for(var j=0, len3=nodes.length; j <= len3; j++) {
             if(cS == nodes[j]) startNode = j;
@@ -1076,6 +1128,16 @@ eMend.commentGroup.prototype = {
 			this.counter = $.create('h6',{'unselectable': 'on'})[0];
 			this.element.appendChild(this.counter);
             var _self = this;
+		
+		// BEAHVIOURS
+			// scroll to the first note highlight when a commentGroup title is clicked
+			$(this.counter).click( function(){
+				var firstNoteInGroup = $(this).parent().find('.emend-note').get(0);
+				var noteId = $(firstNoteInGroup).attr('note');
+				$(window).scrollTo('.n'+noteId,{duration: 500, easing: 'swing'});
+			});
+			
+			// open/close group when +/- icon is clicked
             $(this.element).find('.closegroup, .opengroup').click(function(){_self.toggleGroup(_self.element)});
 		}
 		return this.element;
@@ -1085,7 +1147,7 @@ eMend.commentGroup.prototype = {
 		var str = num > 1 ? num +' '+eMend.dictionary.commentGroup.comments : num +' '+eMend.dictionary.commentGroup.comment;
         $(this.counter).text(str);
 		num = Math.min(num,40);
-		this.counter.className = 'a'+num;
+		this.counter.className = 'a'+num+' emendGroupTitle';
 	},
 	
 	appendChild: function(element) {
@@ -1282,7 +1344,11 @@ eMend.commentTrigger = function (options) {
             var startsInside = $(so.startContainer).parents(eMend.config.comment_target);
             var endsInside = $(so.endContainer).parents(eMend.config.comment_target);
             
-            if(startsInside.length & endsInside.length) {
+            if(eMend.config.login_needed_to_post && _self.opts.users.getCurrentUser() == null) {
+              _self.show(4,1000);
+              $(document).unbind('keyup.commentTrigger');
+              $(document).unbind('keydown.commentTrigger');              
+            } else if(startsInside.length & endsInside.length) {
               _self.show(1,1000);
             } else {              
               _self.show(3,1000);
@@ -1331,7 +1397,7 @@ eMend.commentTrigger.prototype = {
     if(this.status == n) return;
     
     var _self = this;
-    
+    window.clearTimeout(this.timeOut);
     $('.eMend-jGrowl div.close').trigger('click.jGrowl');
     var v = $('#HOLteaser').find('li')[n];
     var pos = this.opts.sidebar.isOpen() == false ? 'bottom-right' : 'bottom-left';
@@ -1339,7 +1405,7 @@ eMend.commentTrigger.prototype = {
     $.jGrowl.defaults.closer = false;
     $.jGrowl.defaults.position = pos;
     
-    if (!this.opts.hideHOL) window.setTimeout(function(){
+    if (!this.opts.hideHOL) this.timeOut = window.setTimeout(function(){
       $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
       
       $('.emendHideHOL').click( function(){
@@ -1598,13 +1664,19 @@ eMend.sidebar.prototype = {
 		});
         $('#eMend-sidebar').attr('className','open');
         this.status = 'open';
+		window.setTimeout(function(){
+			$('#memefarmers').animate({bottom: "-20px"},1000, 'swing');
+		}, 3000)
 	},
     
 	close: function() {
 		$(document.body).css({marginRight: "27px"});
         $(document).trigger('emend.closesidebar');
 		$('.sidebar-wrapper').animate({right: "-260px"}, 500, 'swing', function(){
-			$('.sidebar-Y-header').animate({right: "0"},500,'swing');
+			$('.sidebar-Y-header').css({right: "-280px"});
+			$('.sidebar-Y-header').animate({right: "0"},500,'swing', function(){
+				$('.sidebar-Y-header').css({bottom: "0"});
+			});
 		});
         $('#eMend-sidebar').attr('className','closed');
         this.status = 'closed';
@@ -2387,7 +2459,7 @@ eMend.backstore.sfEmendPlugin = function (options) {
     var loc = window.location.pathname.split('/');
     loc.shift();
     this.resourceID = loc.join('_');
-    this.getLoggedUser();
+    this.getCurrentUser();
     this.getComments();
 };
 
@@ -2398,7 +2470,8 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		var s = this.opts.dataset.getLastSelection()
 		  , c = this.opts.dataset.getLastComment().data;
             //console.log('sfEmendPlugin.addcomment',s,c);
-        
+
+        //console.log(c);        
 
 		c.selection = $.toJSON(s);
 		//console.log(c);
@@ -2435,27 +2508,25 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		    }           
 		});
 	},
-	getLoggedUser: function() {
-		var ds = this.opts.dataset;
+	getCurrentUser: function(callback) {
 		$.ajax({
-		    url: '/get_logged_user',
-		    success: function(data, textStatus){
-		      //console.log("Data loaded: ",textStatus, data);
-		      var obj = $.evalJSON(data);
-		      //console.log("JSON: ",obj);
-		      
-		      if(typeof obj.name != 'undefined') {
-			ds.loginAs(obj.name);
-		      }
-
-		    },
-		    error: function (XMLHttpRequest, textStatus, errorThrown) {
-		      //console.log(textStatus, errorThrown)
-		      // typically only one of textStatus or errorThrown 
-		      // will have info
-		      this; // the options for this ajax request
-		    }           
-		});		
+		  url: '/get_logged_user',
+		  success: function(data, textStatus){
+		    var obj = $.evalJSON(data);
+		    
+		    if(typeof obj.name != 'undefined') {
+		      $(document).trigger('emend.loggedIn',obj);
+		    } else {
+              $(document).trigger('emend.loggedOut');
+            }
+		  },
+		  error: function (XMLHttpRequest, textStatus, errorThrown) {
+		    //console.log(textStatus, errorThrown)
+		    // typically only one of textStatus or errorThrown 
+		    // will have info
+		    this; // the options for this ajax request
+		  }           
+		});
 	}
 };
 
@@ -2481,9 +2552,12 @@ eMend.backstore.sfEmendPlugin.prototype = {
 (function($) {
 eMend.init = function($) {
 	if(eMend.status == 'running') return;
-    	
+    
+    // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
 	document.body.normalize();	
 	$(document).cleanWhitespace(true);
+    
+    // creates and attaches DATA and VISUAL containers
 	var DO = $('#eMend-DATA-Overlay').remove()[0] || $.create('div',{id:'eMend-DATA-Overlay', className:'hidden write-protect'})[0];
 	var VO = $('#eMend-VISUAL-Overlay').remove()[0] || $.create('div',{id:'eMend-VISUAL-Overlay', className:'write-protect'})[0];
 	
@@ -2493,32 +2567,53 @@ eMend.init = function($) {
 		$(document.body.parentNode).append(DO).append(VO);
 	}
 	
+    // instances and binds modules
 	var pf = eMend.prefetch({datastore: DO});
 	var SB = eMend.sidebar({target: VO});
 	var SBc = SB.getContainer();
 	
 	var ds = eMend.dataset({target: document.body, datastore: DO})
-	  , ps = eMend.positions()        
+	  , ps = eMend.positions()
+      , usr = eMend.users({dataset: ds})
 	  , rn = eMend.renderNotes({dataset: ds, target: SBc, positions: ps})
 	  , nb = eMend.navbar({target: SBc.parentNode, positions: ps})
 	  , cf = eMend.commentForm({dataset: ds, target: VO})
-	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB})
+	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB, users: usr})
 	  , ln = eMend.linker({target: VO, positions: ps});
-	  //, tr = new $.textResizeDetector({target: VO});
+      
+    // backend
+    if(eMend.config.backend) {
+        switch(eMend.config.backend) {
+            case "sfEmendPlugin":
+                var sfbk = eMend.backstore.sfEmendPlugin({dataset: ds});
+                $(document).bind('emend.addComment',function(){ sfbk.addComment(); });
+            break;
+        }
+    };
 	  
 	var emend_lastScrollTimer = -1;
-	var emend_lastScrollPosition = window.scrollY;
+	var emend_lastScrollPosition = $.getScroll().t;
 	
-	//events binding
-	var F_refLinks = function(){ if(SB.isOpen()) ln.refreshLinks(); }
-	  , F_viewChange = function(){ if(SB.isOpen()) rn.refreshView(); }
-	  , F_hideLinks = function(){ ln.hideLinks(); }
-	  , F_clearLinks = function(){ ln.clearLinks(); }
-	  , F_refnavbar = function(){ nb.refresh(); }
-	  , F_updHL = function(){ ps.invalidate('highlights','references'); }
-	  , F_refRender = function(){ eMend.highlight(ds); rn.renderNotes(); }
-	  , F_openSB = function(){ SB.open(); }
-	  , F_afterscroll = function(){
+// EVENTS HANDLERS
+    
+    // if sidebar is open refresh links
+	var F_refLinks = function(event, data){ if(SB.isOpen()) ln.refreshLinks(); }
+    // if sidebar is open refresh view
+	  , F_viewChange = function(event, data){ if(SB.isOpen()) rn.refreshView(); }
+    // hide links
+	  , F_hideLinks = function(event, data){ ln.hideLinks(); }
+    //clear links
+	  , F_clearLinks = function(event, data){ ln.clearLinks(); }
+    // refresh navbar
+	  , F_refnavbar = function(event, data){ nb.refresh(); }
+    // invalidate position cache when highlights are updated
+	  , F_updHL = function(event, data){ ps.invalidate('highlights','references'); }
+    // refresh highlights and sidebar notes 
+	  , F_refRender = function(event, data){ eMend.highlight(ds); rn.renderNotes(); }
+    // open sidebar
+	  , F_openSB = function(event, data){ SB.open(); }
+    // sends an event 450ms after scroll is over
+	  , F_afterscroll = function(event, data){
             window.clearTimeout(emend_lastScrollTimer);
             emend_lastScrollTimer = window.setTimeout(function(){
                 $(document).trigger('emend.afterscroll');
@@ -2527,56 +2622,119 @@ eMend.init = function($) {
 	;
     
     delayedRefresh = function() {
+        var scroll_Y = $.getScroll().t;
         // filter spurious scroll events for Webkit based browsers
-        if(emend_lastScrollPosition != window.scrollY) {
+        if(emend_lastScrollPosition != scroll_Y ) {
             F_hideLinks();
             F_afterscroll();
-            emend_lastScrollPosition = window.scrollY;
+            emend_lastScrollPosition = scroll_Y;
         }
     };
-	
-	$(document).bind('emend.addComment',F_refRender);
+
+//=================================================	
+// EVENTS BINDING
+//=================================================
+
+// when sidebar is opened
+
+    // refresh links
 	$(document).bind('emend.opensidebar',function(){F_refLinks()});
+    // refresh navbar
 	$(document).bind('emend.opensidebar',F_refnavbar);
+    
+// when sidebar is closed
+
+    // hide links then clear theme
 	$(document).bind('emend.closesidebar',function(){ F_hideLinks(); window.setTimeout(F_clearLinks,500); });
+    
+// when a comment is posted
+
+    // refresh render
+	$(document).bind('emend.addComment',F_refRender);
+    
+    // shows a GUI message 
 	$(document).bind('emend.addComment',function(){ ct.show(0); });
-	//$(ln).bind('emend.hidelinks',function(){SB.closesidebar()});
-	//$(document).bind('textResize',F_refLinks);
+    
+// when new data is imported in dataset
+
+    // refresh render
+    $(document).bind('emend.importData',function(){ F_refRender(); });
+
+// when highlights are repainted
+
+    // invalidates positions cache
 	$(document).bind('emend.highlight',F_updHL);
-	$(document).bind('emend.importData',function(){ F_refRender(); });
+    
+	
 	$(rn).bind('emend.notesHover',F_refLinks);
-	$(rn).bind('emend.rendernotes',F_openSB);
+	
+// when notes are rendered
+
+    // open sidebar
+    $(rn).bind('emend.rendernotes',F_openSB);
+    
+    
 	$(document).bind('emend.afterscroll',F_viewChange);
 	$(document).bind('emend.afterviewscroll',F_refLinks);
 	//$(document).bind('emend.toggleGroup',F_refLinks);
-	$(document).bind('emend.toggleGroup',function(){ F_refLinks();});
-	$(window).wresize(F_updHL);
-	$(window).wresize(F_refLinks);
-	$(window).wresize(F_refnavbar);
-	
-    // scroll refresh delay
-	if(eMend.config.scroll_refresh_delay) {
-		$(window).scroll(delayedRefresh);
-	} else {
-		$(window).scroll(F_refLinks);
-		$(window).scroll(F_afterscroll);        
-	}
     
-    // backstore tiddly
-    if(eMend.config.backstore_tiddly) {
-        var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
-        $(document).bind('emend.addComment',function(){ bk.addComment(); });
-    };
-    
-    // backstore sfEmendPlugin
-    if(eMend.config.backstore_sfEmendPlugin) {
-        var bkSf = eMend.backstore.sfEmendPlugin({dataset: ds});
-        $(document).bind('emend.addComment',function(){ bkSf.addComment(); });
-    };
-	
-	eMend.status = 'running';    
-};
+// when a comment group is opened/closed
 
+    // refresh links
+	$(document).bind('emend.toggleGroup',function(){ F_refLinks(); });
+    
+// when the window is resized
+
+    // invalidates positions cache
+	$(window).wresize(F_updHL);
+    
+    // refresh links
+	$(window).wresize(F_refLinks);
+    
+    // refresh navbar
+	$(window).wresize(F_refnavbar);
+
+//=================================================    
+// OPTIONAL BINDINGS
+//=================================================
+	
+//
+// scroll_refresh_delay: [true/false]
+//
+
+if(eMend.config.scroll_refresh_delay) {
+    // hide links and repaint view after a certain delay after the last scroll event
+    $(window).scroll(delayedRefresh);
+} else {
+    // immediately repaint after each scroll event
+    $(window).scroll(F_refLinks);
+    $(window).scroll(F_afterscroll);        
+}
+
+//
+// backend: [sfEmendPlugin(/Wordpress/MediaWiki)]
+//
+
+if(eMend.config.backend) {
+    $(document).bind('emend.loggedIn', function(event, data) { usr.login(event,data); ct.show(0); });
+    $(document).bind('emend.loggedOut', function(event, data) { usr.logout(); ct.show(4); });
+}
+
+//  
+// backstore_tiddly: [true/false]
+//
+
+if(eMend.config.backstore_tiddly) {
+    // instances tiddly module
+    var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
+    // ping it when a comment is added
+    $(document).bind('emend.addComment',function(){ bk.addComment(); });
+};
+    
+        
+    eMend.status = 'running';    
+};
+/*
 if (!window.console || !window.console.firebug) {  
      var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
                   "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
@@ -2587,6 +2745,7 @@ if (!window.console || !window.console.firebug) {
          window.console[names[i]] = function() {};  
      }
 }
+*/
 
 
 

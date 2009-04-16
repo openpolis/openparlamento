@@ -1,4 +1,49 @@
-//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
+jQuery.getScroll = function (e){ 
+    if (e) { 
+        t = e.scrollTop; 
+        l = e.scrollLeft; 
+        w = e.scrollWidth; 
+        h = e.scrollHeight; 
+    } else { 
+        if (document.documentElement && document.documentElement.scrollTop) { 
+            t = document.documentElement.scrollTop; 
+            l = document.documentElement.scrollLeft; 
+            w = document.documentElement.scrollWidth; 
+            h = document.documentElement.scrollHeight; 
+        } else if (document.body) { 
+            t = document.body.scrollTop; 
+            l = document.body.scrollLeft; 
+            w = document.body.scrollWidth; 
+            h = document.body.scrollHeight; 
+        } 
+    } 
+    return { t: t, l: l, w: w, h: h }; 
+}; (function($) { 
+
+$.escapeReturns = function(text){
+//console.log(text);
+    text = escape(text); //encode text string's carriage returns
+    
+    for(i=0; i<text.length; i++){
+    
+        if(text.indexOf("%0D%0A") > -1){
+            //Windows encodes returns as \r\n hex
+            text=text.replace("%0D%0A","<br/>");
+        } else if(text.indexOf("%0A") > -1){
+            //Unix encodes returns as \n hex
+            text=text.replace("%0A","<br/>");
+        } else if(text.indexOf("%0D") > -1){
+            //Macintosh encodes returns as \r hex
+            text=text.replace("%0D","<br/>");
+        }
+    }
+    
+    text = unescape(text); //unescape all other encoded characters
+//console.log(text);    
+    return text;
+}
+
+})(jQuery);//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
 if(jQuery && jQuery.browser.opera && jQuery.browser.version >= 9.50) {
     var height_ = jQuery.fn.height;
     jQuery.fn.height = function() {
@@ -375,6 +420,21 @@ jQuery.extend( jQuery.easing,
 			endOffset = r2.endOffset,
 			selectedText = userSelection.toString();
 			
+//=================================================
+//console.log("startContainer: ",startContainer);
+//console.log("endContainer",endContainer);
+//=================================================  			
+			
+			if(startContainer.nodeType == 1) {
+			  startContainer = $(startContainer).textNodes(true)[startOffset];
+			  startOffset = 0;
+			}
+			
+			if(endContainer.nodeType == 1) {
+			  endContainer = $(endContainer).textNodes(true)[endOffset-1];
+			  endOffset = endContainer.length;
+			}			
+			
 			if(reset) userSelection.removeAllRanges();
 								
 		} else if (document.selection) {
@@ -387,10 +447,10 @@ jQuery.extend( jQuery.easing,
             
             var r1 = r.duplicate(), r2 = r.duplicate();
 			r1.collapse(true); r2.collapse(false);
-							
+			
 			var startParent = r1.parentElement();
 			var endParent = r2.parentElement();
-
+			
 			var v = document.body.createTextRange(),
             len = v.text.length;
 			v.moveToElementText(startParent);
@@ -412,10 +472,13 @@ jQuery.extend( jQuery.easing,
 			while(r.compareEndPoints('EndToEnd',v) != 0 && endOffset < len) {
 				endOffset++;
 				v.move('character');
-			}            
+			}
 			
 			var startSiblings = $(startParent).textNodes(true),
 			startContainer;
+//=================================================
+//console.log(startParent.innerHTML,startSiblings.length);
+//=================================================
 			if(startSiblings.length == 1) {
 				startContainer = startSiblings[0];
 			} else {	
@@ -431,11 +494,14 @@ jQuery.extend( jQuery.easing,
 			
 			var endSiblings = $(endParent).textNodes(true),
 			endContainer;
+//=================================================
+//console.log(endParent.innerHTML,endSiblings.length);
+//=================================================
 			if(endSiblings.length == 1) {
 				endContainer = endSiblings[0];
 			} else {
 				var Eidx = 0, chrSum = 0, prevSum = 0;
-				while(chrSum <= endOffset) {
+				while(chrSum <= endOffset && Eidx < endSiblings.length) {
 					prevSum = chrSum;						
 					chrSum += endSiblings[Eidx].length;
 					Eidx++;

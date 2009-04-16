@@ -13,14 +13,16 @@
         </div>
       </div>      
     </div>
-    <h3>Tutte le notizie (Home)</h3>
+    <div class="W73_100 float-left">
+      <h4 class="subsection">Tutte le notizie principali dal Parlamento</h4>
+      <?php include_partial('filter',
+                          array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
+      <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
-    Dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>
-    di <?php echo $pager->getNbResults() ?><br/>
+      <?php echo include_partial('news/newslist',array('pager' => $pager,'context' => 1)); ?>
 
-    <?php echo include_partial('news/newslist', array('pager' => $pager)); ?>
-
-    <?php echo pager_navigation($pager, 'news/homeAll') ?>
+      <?php echo pager_navigation($pager, 'news/homeAll') ?>
+    </div>  
 
   </div>
 </div>

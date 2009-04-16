@@ -457,7 +457,7 @@ p.wiki-form-submit { margin-left: 20px;}
  * TEASER BOX
  *----------------------------------------------*/
 
-.teaser-box { border: 1px solid #999; min-height:138px; height: auto !important; height: 138px; padding: 12px 0;
+.teaser-box { border: 1px solid #999; min-height:200px; height: auto !important; height: 200px; padding: 12px 0;
 -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
 }
 .teaser-box em { color: #023558; font-style: normal; }
