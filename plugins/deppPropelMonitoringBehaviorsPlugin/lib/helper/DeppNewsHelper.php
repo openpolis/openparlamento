@@ -63,7 +63,7 @@ function news_list($news)
 }
 
 
-function news_text($news,$context)
+function news_text($news,$context=1)
 {
   $news_string = "";
   
@@ -76,13 +76,13 @@ function news_text($news,$context)
     {
       if ($news->getPriority() == 1)
       {
-        
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';      
         $news_string .= 'si &egrave; svolta almeno una VOTAZIONE';
-        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato ';        
+          
       } else {
-       
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
         $news_string .= 'si &egrave; svolta una VOTAZIONE';
-        $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera ' : ' al Senato '; 
+         
         if ($context==1)
         {    
            $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
@@ -97,6 +97,7 @@ function news_text($news,$context)
         }   
       }
     } else if ($generator_model == 'OppIntervento') {
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
       $news_string .= 'c\'&egrave; stato almeno un intervento ';
       $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia().' '.OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  ' ';
       if ($context==1)
@@ -253,21 +254,23 @@ function news_text($news,$context)
     
     // presentazione
     if ($generator_model == 'OppAtto'){
-      $news_string .= "Presentat" .($gender=='m'?'o':'a') . " ";
-      if ($news->getRamoVotazione()=='C') $news_string .= ' alla Camera ';
+      if ($tipo->getId()!=13 ) {
+          $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+          $news_string .= "Presentat" .($gender=='m'?'o':'a') . " ";
+      }    
       else
-      {
-        if ($news->getRamoVotazione()=='S') $news_string .= ' al Senato ';
-      }
+          $news_string .= "";    
+      
       if ($context!=0)
       {
         $news_string .= $tipo->getDescrizione() . " ";
         $news_string .= $atto_link;
       }  
-    }
+    } 
     
     // intervento
     else if ($generator_model == 'OppIntervento'){
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
       $politico = $generator->getOppCarica()->getOppPolitico();
       $politico_link = link_to_in_mail($politico, 
                            '@parlamentare?id=' . $politico->getId(),
@@ -307,7 +310,8 @@ function news_text($news,$context)
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
       if ($tipo_firma!='&egrave; relatore' )
-      { 	
+      {
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
         $news_string .= ' '.$tipo_firma. ($gender=='m'?'o':'a') . " ";
         $news_string .= $tipo->getDescrizione() . " ";
         $news_string .= $atto_link;
@@ -319,6 +323,7 @@ function news_text($news,$context)
     else if ($generator_model == 'OppAttoHasSede'){
       if ($context!=0)
       {
+         $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
          $news_string .= $tipo->getDenominazione() . " ";
          $news_string .= $atto_link . " ";
       }
@@ -332,6 +337,7 @@ function news_text($news,$context)
     
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
       $news_string .= ' si &egrave; svolta la <strong>votazione finale</strong> relativa a';
       if ($context!=0)
       {
@@ -344,7 +350,8 @@ function news_text($news,$context)
     
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter'){
-      $news_string .= "lo status del" .($gender=='m'?"l'":"la ");
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+      $news_string .= "Lo status del" .($gender=='m'?" ":"la ");
       $news_string .= $tipo->getDescrizione() . " ";
       if ($context!=0) $news_string .= $atto_link . " ";
       $news_string .= "&egrave; ora ";
@@ -353,6 +360,7 @@ function news_text($news,$context)
     
     else if ($generator_model == 'Tagging')
     {
+      
       $news_string .= ($gender=='m'?"il ":"la ");
       $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link . " ";
@@ -369,6 +377,7 @@ function news_text($news,$context)
     
     else if ($generator_model == 'OppDocumento')
     {
+     $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
      $news_string .= "E' disponibile il nuovo documento ";
      $news_string .= '"'.link_to($generator->getTitolo(),'atto/documento?id='.$generator->getId()).'"';
      if ($context!=0)

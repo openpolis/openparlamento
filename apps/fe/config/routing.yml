@@ -103,6 +103,10 @@ news_attiNonLegislativi:
 news_votazioni:
   url: /news_votazioni
   param: { module: news, action: votazioni }
+  
+news_comunita:
+  url: /news_comunita
+  param: { module: news, action: comunita }  
 
 attiSearch:
   url: /attiSearch/:type/*

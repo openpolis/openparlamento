@@ -58,3 +58,10 @@
   </div>
  </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+    <?php echo link_to("home", "@homepage") ?> /
+    <?php echo link_to("argomenti", "@argomenti") ?> /
+    <?php echo link_to($tag,'@argomento?triple_value='.$tag) ?> /
+    tutte le notizie   
+<?php end_slot() ?>

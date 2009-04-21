@@ -25,99 +25,29 @@ preview del grafico delle distanze
      <div id="main">
        <div class="W45_100 float-right">
             <!-- Box rotazione parlamentari -->
-            <div class="section-box">   
-		<a class="section-box-rss" href="#"><img alt="rss" src="images/ico-rss.png"/></a>
-		<h3>i deputati pi&ugrave; <span style="color:red">assenti</span></h3>
-		<table class="disegni-decreti column-table">
-		<tbody>		  
-                 <tr class="even">
-                  <th scope="row">
-                    <p class="politician-id">
-                    <img width="40" height="53" src="/images/parlamentari/thumb/332669.jpeg" alt="4573" />	
-                      <a href="/parlamentare/4573">Giancarlo ABELLI</a> (PdL)
-	               </p>
-                   </th>
-                   <td>
-                     <b>86</b>% <br /><span class="small">(2626 su 3041 votazioni)</span>
-                   </td>
-
-                  </tr>
-                  <tr class="odd">
-                  <th scope="row">
-                    <p class="politician-id">
-                    <img width="40" height="53" src="/images/parlamentari/thumb/332669.jpeg" alt="4573" />	
-                      <a href="/parlamentare/4573">Rosa Maria VILLECCO CALIPARI</a> (PD)
-	               </p>
-                   </th>
-                   <td>
-                     <b>86</b>% <br /><span class="small">(2626 su 3041 votazioni)</span>
-                   </td>
-                  </tr>
-                  <tr class="even">
-                  <th scope="row">
-                    <p class="politician-id">
-                    <img width="40" height="53" src="/images/parlamentari/thumb/332669.jpeg" alt="4573" />	
-                      <a href="/parlamentare/4573">Giancarlo ABELLI</a> (PdL)
-	               </p>
-                   </th>
-                   <td>
-                     <b>86</b>% <br /><span class="small">(2626 su 3041 votazioni)</span>
-                   </td>
-                  </tr>
-                   <th scope="row">
-                    
-                   </th>
-                   <td>
-                     <a href="#"><strong>vai alla classifica</strong></a>
-                   </td>
-                  </tr>
-                </tbody>
-                </table>    
-	      <div class="clear-both"></div>
-	    </div>
+            <div class="section-box"> 
+            <h3>i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
+            </div> 
+            <?php echo include_partial('boxparlamentari',array('parlamentari' => $parlamentari, 'cosa' => $cosa, 'nome_carica' => $nome_carica)); ?>
+		
+	    <div class="clear-both"></div>
+	    
             <!-- Box news dal parlamento -->
-            <div class="section-box">   
-		<a class="section-box-rss" href="#"><img alt="rss" src="images/ico-rss.png"/></a>
+            <div class="section-box">
+                <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
+		
 		<h3>le ultime dal parlamento</h3>
-		<ul>
-		  <li class="float-container">
-						<div class="date">04-10-2008</div>
-						<div class="ico-type float-left"><img src="images/ico-type-votazione.png" alt=" " /></div>
-						<p>votazione, alla <a href="#">Camera</a></p>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-
-					</li>
-					<li class="float-container">
-						<div class="date">29-09-2008</div>
-						<div class="ico-type float-left"><img src="images/ico-type-votazione.png" alt=" " /></div>
-						<p>votazione, alla <a href="#">Camera</a></p>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>					
-					</li>
-
-					<li class="float-container">
-						<div class="date">28-09-2008</div>
-						<div class="ico-type float-left"><img src="images/ico-type-proposta.png" alt=" " /></div>
-						<p>votazione, alla <a href="#">Camera</a></p>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>					
-					</li>
-					<li class="float-container">
-
-						<div class="date">19-09-2008</div>
-						<div class="ico-type float-left"><img src="images/ico-type-approvato.png" alt=" " /></div>
-						<p>votazione, alla <a href="#">Camera</a></p>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>					
-					</li>
-					
-
-		  </ul>
-		  <div class="section-box-scroller tools-container has-next">
-		       <a href="#" class="see-all"><strong>vedi tutta la cronologia</strong></a>
-		  </div>
+		</div>
+		<?php echo include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
+		
+		
+		  
+		  
 	      <div class="clear-both"></div>
-	    </div>
+	   
 	    <!-- Box attivita' utenti -->
             <div class="section-box">   
-		<a class="section-box-rss" href="#"><img alt="rss" src="images/ico-rss.png"/></a>
+		
 		<h3>le ultime dalla comunit&agrave;</h3>
 		<ul>
 		  <?php foreach ($latest_activities as $activity): ?>
@@ -131,7 +61,7 @@ preview del grafico delle distanze
                       <?php endforeach; ?>
 		  </ul>
 		  <div class="section-box-scroller tools-container has-next">
-		       <a href="#" class="see-all"><strong>vedi tutta la cronologia</strong></a>
+		       <?php echo link_to('<strong>vedi le ultime 100 attivit&agrave;</strong>','@news_comunita',array('class' => 'see-all')) ?>
 		  </div> 
 	      <div class="clear-both"></div>
 	    </div>
@@ -142,7 +72,7 @@ preview del grafico delle distanze
            <!-- in evidenza dal blog -->
           <div class="W52_100 float-left"> 
           <div class="section-box"  style="padding-bottom:20px;">
-             <a class="section-box-rss" href="#"><img alt="rss" src="images/ico-rss.png"/></a>
+             <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
              <h3>in evidenza dal blog</h3>
              <div class="news-disegni-decreti float-container" >
 		<ul>
@@ -177,12 +107,12 @@ preview del grafico delle distanze
 		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
 	          </li>                  
 		</ul>
-		<a href="/news_attiDisegni" class="see-all tools-container">vai al blog di OpenParlamento</a>
+		<a href="/blog" class="see-all tools-container">vai al blog di OpenParlamento</a>
 	      </div>	
 	  </div>
 	   <!-- box in evidenza dal parlamento -->
           <div class="section-box">
-	      <a href="#" class="section-box-rss"><img src="images/ico-rss.png" alt="RSS" /></a>
+	      
 			<h3>in evidenza dal parlamento</h3>
 				<ul class="section-tab-switch float-container tools-container">
 					<li class="current">disegni di legge e altri atti</li>

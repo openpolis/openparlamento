@@ -18,7 +18,13 @@
         <th scope="row">
           <p class="content-meta">
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>
-            <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?><?php echo($ddl->getRamo()=='C' ? ' alla Camera' : ' al Senato') ?>
+            <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?>
+            <?php if ($ddl->getRamo()=='C') : ?>
+              <?php echo ' alla Camera' ?>
+            <?php endif; ?>
+            <?php if ($ddl->getRamo()=='S') : ?>
+              <?php echo ' al Senato' ?>
+            <?php endif; ?>
             <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($ddl->getId()); ?>
             <?php if (count($f_signers)>0) : ?>
                <?php $c = new Criteria() ?>

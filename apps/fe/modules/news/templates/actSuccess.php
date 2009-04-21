@@ -54,3 +54,28 @@
    </div>
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+    <?php echo link_to("home", "@homepage") ?> /
+    <?php if ($act->getTipoAttoId()==1): ?>
+	<?php echo link_to("disegni di legge", "atto/disegnoList") ?>
+    <?php endif; ?> 
+    	
+    <?php if ($act->getTipoAttoId()==12): ?>
+	<?php echo link_to("decreti legge", "atto/decretoList") ?>
+    <?php endif; ?> 
+    
+    <?php if ($act->getTipoAttoId()==15 || $act->getTipoAttoId()==16 || $act->getTipoAttoId()==17): ?>
+	<?php echo link_to("decreti legislativi", "atto/decretoLegislativoList") ?>
+    <?php endif; ?> 
+    
+    <?php if (($act->getTipoAttoId()<12 && $act->getTipoAttoId()!=1) || $act->getTipoAttoId()==14): ?>
+	<?php echo link_to("atti non legislativi", "atto/attoNonLegislativoList") ?>
+    <?php endif; ?> 
+
+    /
+    <?php echo link_to(Text::denominazioneAttoShort($act),'@singolo_atto?id='.$act_id) ?> /
+    tutte le notizie
+
+     
+<?php end_slot() ?>

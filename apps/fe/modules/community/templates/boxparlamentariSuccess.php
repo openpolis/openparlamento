@@ -1,0 +1,1 @@
+ <?php echo include_component('community','boxparlamentari', array('type' => $type)); ?>

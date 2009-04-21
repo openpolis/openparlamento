@@ -7,7 +7,7 @@
     <label for="filter_act_type">tipo:</label>
     <label for="filter_act_firma">come:</label>
     <label for="filter_act_stato">stato:</label>
-  </fieldset>
+  </fieldset> 
   <p>filtra per</p>
   <fieldset>
     <?php echo select_tag('filter_tags_category', 
@@ -17,21 +17,16 @@
     <?php echo select_tag('filter_act_type', 
                           options_for_select(array('0' => 'tutte',
                                                    '1' => 'disegni di legge',
-                                                   '12' => 'decreti legge',
-                                                   '15' => 'decreti legislativi - attuativo di legge delega',
-                                                   '16' => 'decreti legislativi - attuativo di direttive comunitarie',
-                                                   '17' => 'decreti legislativi - attuativo di statuti speciali',
-                                                   '2' => 'attuativo di legge delega',
-                                                   '3' => 'interpellanza',
-                                                   '4' => 'interrogazione a risposta orale',
-                                                   '5' => 'interrogazione a risposta scritta',
-                                                   '6' => 'interrogazione a risposta in commissione',
-                                                   '7' => 'risoluzione in assemblea',
-                                                   '8' => 'risoluzione in commissione',
-                                                   '9' => 'risoluzione conclusiva',
+                                                   '2' => 'mozioni',
+                                                   '7' => 'risoluzioni in assemblea',
+                                                   '8' => 'risoluzioni in commissione',
+                                                   '9' => 'risoluzioni conclusive',
                                                    '10' => 'odg - in assemblea',
                                                    '11' => 'odg - in commissione',
-                                                   '14' => 'audizione'), $selected_act_type)) ?>
+                                                   '3' => 'interpellanze',
+                                                   '4' => 'interrogazioni a risposta orale',
+                                                   '5' => 'interrogazioni a risposta scritta',
+                                                   '6' => 'interrogazioni a risposta in commissione'), $selected_act_type)) ?>
 
     <?php echo select_tag('filter_act_firma', 
                           options_for_select(array('0' => 'tutte',

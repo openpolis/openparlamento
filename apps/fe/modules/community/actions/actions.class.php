@@ -16,6 +16,20 @@ class communityActions extends sfActions
    */
   public function executeIndex()
   {
+    // ultime 10 attivita' della community
     $this->latest_activities = CommunityNewsPeer::getLatestActivities(10);
+    
+    
   }
+  
+   public function executeBoxparlamentari()
+  {
+    $this->type = $this->getRequestParameter('type'); 
+  }
+  
+   public function executeAttiutenti()
+  {
+    $this->type = $this->getRequestParameter('type'); 
+  }
+  
 }

@@ -173,11 +173,10 @@ class feedActions extends sfActions
 
     foreach ($news as $n)
     {
-      $news_list .= strip_tags(html_entity_decode(news_text($n), ENT_COMPAT, 'UTF-8')) . "\n";
+      $news_list .= strip_tags(html_entity_decode(news_text($n,1), ENT_COMPAT, 'UTF-8')) . "\n";
     }
 
     return $news_list . "\n\n"; 
   }
-
 
 }

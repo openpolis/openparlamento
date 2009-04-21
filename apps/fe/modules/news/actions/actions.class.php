@@ -24,6 +24,8 @@ class newsActions extends sfActions
     $this->session = $this->getUser();
     
     $this->n_news = NewsPeer::countHomeNews();
+    
+    $this->getResponse()->setTitle('tutte le notizie dal Parlamento - '.sfConfig::get('app_main_title'));
 
     $c = NewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
@@ -44,21 +46,25 @@ class newsActions extends sfActions
   public function executeDisegniList()
   {
     $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
+    $this->getResponse()->setTitle('tutte le notizie sui disegni di legge - '.sfConfig::get('app_main_title'));
   }
 
   public function executeDecretiList()
   {
     $this->_getAttiList(NewsPeer::ATTI_DECRETI_TIPO_IDS);
+    $this->getResponse()->setTitle('tutte le notizie sui decreti legge - '.sfConfig::get('app_main_title'));
   }
 
   public function executeDecretiLegislativiList()
   {
     $this->_getAttiList(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
+    $this->getResponse()->setTitle('tutte le notizie sui decreti legislativi - '.sfConfig::get('app_main_title'));
   }
 
   public function executeAttiNonLegislativiList()
   {
     $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+    $this->getResponse()->setTitle('tutte le notizie sugli atti non legislativi - '.sfConfig::get('app_main_title'));
   }
   
   
@@ -99,12 +105,20 @@ class newsActions extends sfActions
   }
 
   
-  public function executePolitician()
+  public function executePolitician() 
   {
 
     $this->politician_id = $this->getRequestParameter('id');
     $this->politician = OppPoliticoPeer::retrieveByPK($this->politician_id);
     $this->n_news = NewsPeer::countNewsForItem('OppPolitico', $this->politician_id);
+    
+    $this->getResponse()->setTitle('tutte le notizie sul parlamentare '.$this->politician->getNome().' '.$this->politician->getCognome().' - '.sfConfig::get('app_main_title'));
+    
+    $c = new Criteria();
+    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1, 4, 5), Criteria::IN);
+    $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::ISNULL);
+    $c->add(OppCaricaPeer::POLITICO_ID, $this->politician_id);
+    $this->carica= OppCaricaPeer::doSelectOne($c);
 
     $c = NewsPeer::getNewsForItemCriteria('OppPolitico', $this->politician_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
@@ -127,6 +141,8 @@ class newsActions extends sfActions
     $this->act_id = $this->getRequestParameter('id');
     $this->act = OppAttoPeer::retrieveByPK($this->act_id);
     $this->n_news = NewsPeer::countNewsForItem('OppAtto', $this->act_id);
+    
+    $this->getResponse()->setTitle('tutte le notizie su '.$this->act->getOppTipoAtto()->getDescrizione().' '.Text::denominazioneAttoShort($this->act).' - '.sfConfig::get('app_main_title'));
 
     $c = NewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
@@ -154,6 +170,8 @@ class newsActions extends sfActions
     // due righe modificate per la chiamata con id
     $this->tag_id = $this->getRequestParameter('id');
     $this->tag = TagPeer::retrieveByPK($this->tag_id);
+    
+    $this->getResponse()->setTitle('tutte le notizie sull\'argomento '.$this->tag->getTripleValue().' - '.sfConfig::get('app_main_title'));
 
     $this->n_news = NewsPeer::countNewsForTag($this->tag_id);
     $c = NewsPeer::getNewsForTagCriteria($this->tag_id);
@@ -169,6 +187,14 @@ class newsActions extends sfActions
     $pager->init();
     $this->pager = $pager;
 
+  }
+  
+  public function executeComunita() 
+  {
+   $this->getResponse()->setTitle("le ultime 100 attivita' della comunita' - ".sfConfig::get('app_main_title'));
+   $this->latest_activities = CommunityNewsPeer::getLatestActivities(100);
+    
+    
   }
   
   

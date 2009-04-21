@@ -17,7 +17,7 @@
    
     
    <div class="W73_100 float-left">
-    <h4 class="subsection">Tutte le notizie relative ai disegni di legge</h4>
+    <h4 class="subsection">Tutte le notizie relative ai disegni di legge<?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed_disegni', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
      <?php include_partial('filter',
                           array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
     <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
@@ -29,3 +29,9 @@
 
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+    <?php echo link_to("disegni di legge", "atto/disegnoList") ?> /
+   tutte le notizie
+<?php end_slot() ?>

@@ -14,9 +14,8 @@
       </div>      
     </div>
     <div class="W73_100 float-left">
-      <h4 class="subsection">Tutte le notizie principali dal Parlamento</h4>
-      <?php include_partial('filter',
-                          array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
+      <h4 class="subsection">Tutte le notizie dal Parlamento<?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '@feed', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
+      
       <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
       <?php echo include_partial('news/newslist',array('pager' => $pager,'context' => 1)); ?>
@@ -26,4 +25,9 @@
 
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+    <?php echo link_to("home", "@homepage") ?> /
+    tutte le notizie dal Parlamento
+<?php end_slot() ?>
 

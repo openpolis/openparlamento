@@ -20,7 +20,15 @@
     </div>
     
    <div class="W73_100 float-left">
-    <h4 class="subsection">Tutte le notizie relative a <?php echo $politician ?><?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '/', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
+    <h4 class="subsection">Tutte le notizie relative
+   <?php if ($carica) : ?>
+    <?php if($carica->getTipoCaricaId() !=1 ): ?>
+      <?php echo " al Sen. " ?>
+    <?php else: ?>
+      <?php echo " all'On. " ?>
+    <?php endif; ?> 
+   <?php endif; ?>   
+   <?php echo $politician ?><?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed_politico?id='.$politician_id, array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
    <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
    <div class="more-results float-container">	
@@ -58,3 +66,18 @@
   </div>
  </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php if ($carica) : ?>
+   <?php if($carica->getTipoCaricaId() !=1 ): ?>
+    <?php echo link_to('senatori', '@parlamentari?ramo=senato') ?> /
+    Sen. 
+   <?php else: ?>
+    <?php echo link_to('deputati', '@parlamentari?ramo=camera') ?> /
+    On.
+   <?php endif; ?>
+   <?php endif; ?> 
+  <?php echo link_to($politician,'@parlamentare?id='.$politician_id) ?> /
+   tutte le notizie
+<?php end_slot() ?>

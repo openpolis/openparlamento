@@ -1,0 +1,1 @@
+<?php echo include_component('community','attiutenti', array('type' => $type)); ?>	
