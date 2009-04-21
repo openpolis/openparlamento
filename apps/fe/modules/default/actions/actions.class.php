@@ -133,6 +133,36 @@ class defaultActions extends sfActions
    
     $c->setLimit(3);
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+    
+    // atti e voti in evidenza
+     $this->lanci=array();
+     $c = new Criteria();
+     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     $evidences=sfLaunchingPeer::doSelect($c);
+     foreach ($evidences as $evidence) {
+        $c1= new Criteria();
+        
+     	if ($evidence->getObjectModel()=='OppAtto') {
+     		$c1->add(OppAttoPeer::ID,$evidence->getObjectId());
+     		$this->lanci[]=array(OppAttoPeer::doSelectOne($c1),$evidence->getObjectModel());
+     	}
+     	else
+     	{
+     		$c1->add(OppVotazionePeer::ID,$evidence->getObjectId());
+     		$this->lanci[]=array(OppVotazionePeer::doSelectOne($c1),$evidence->getObjectModel());
+     	}
+     }	
+     
+     // post del blog
+     $this->post_pager = sfSimpleBlogPostPeer::getTaggedPager(
+      'in evidenza',
+      sfConfig::get('app_sfSimpleBlog_post_max_per_page', 10),
+      $this->getRequestParameter('page', 1)
+       ); 	
+     	
+     	
+     
+    
                                                           
   }
   

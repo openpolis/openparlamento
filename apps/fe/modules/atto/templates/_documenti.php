@@ -4,8 +4,8 @@
   <h5 class="subsection">leggi e commenta i testi di questo <?php echo $tipo_atto ?> :</h5>
   <table>
     <thead>
-      <tr>
-        <th scope="col">titolo</th>
+      <tr> 
+        <th scope="col">&nbsp;</th>
         <th scope="col">n. commenti <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
       </tr>
     </thead>
@@ -18,7 +18,33 @@
 	    <?php if($limit_count < $limit): ?>    
           <tr>
             <th><?php echo link_to('<strong>'.$i.'</strong>&nbsp;'.$documento->getTitolo(), 'atto/documento?id='.$documento->getId() ) ?></th>
-            <td><a href="#">198</a> <span class="activity-meter" style="width: 75px;">&nbsp;</span></td>
+            <td>
+            <?php $num_comm=count(sfEmendCommentPeer::getAllCommentsForResource('atto_documento_id_'.$documento->getId())) ?>
+            <?php echo link_to($num_comm,'atto/documento?id='.$documento->getId()) ?>
+            <?php switch($num_comm) : 
+               case 0 : 
+                  $actvitity=0; 
+                  break; 
+               case $num_comm<6 : 
+                  $actvitity=15; 
+                  break;  
+               case $num_comm<11 : 
+                  $actvitity=20; 
+                  break;  
+               case $num_comm<16 : 
+                  $actvitity=30; 
+                  break;      
+               case $num_comm<21 : 
+                  $actvitity=45; 
+                  break;       
+               case $num_comm<26 : 
+                  $actvitity=60; 
+                  break;  
+               case $num_comm>30 : 
+                  $actvitity=75; 
+                  break;   ?>   
+             <?php endswitch ?>                    
+            <span class="activity-meter" style="width: <?php echo $actvitity ?>px;">&nbsp;</span></td>
           </tr>
           <?php $limit_count++; ?>
 		  <?php $i++ ?>
@@ -51,7 +77,33 @@
 	        <?php if ($limit_count >= $limit): ?>	   		
               <tr>
                 <th><?php echo link_to('<strong>'.$i.'</strong>&nbsp;'.$documento->getTitolo(), 'atto/documento?id='.$documento->getId() ) ?></th>
-                <td><a href="#">198</a> <span class="activity-meter" style="width: 75px;">&nbsp;</span></td>
+            <td>
+            <?php $num_comm=count(sfEmendCommentPeer::getAllCommentsForResource('atto_documento_id_'.$documento->getId())) ?>
+            <?php echo link_to($num_comm,'atto/documento?id='.$documento->getId()) ?>
+            <?php switch($num_comm) : 
+               case 0 : 
+                  $actvitity=0; 
+                  break; 
+               case $num_comm<6 : 
+                  $actvitity=15; 
+                  break;  
+               case $num_comm<11 : 
+                  $actvitity=20; 
+                  break;  
+               case $num_comm<16 : 
+                  $actvitity=30; 
+                  break;      
+               case $num_comm<21 : 
+                  $actvitity=45; 
+                  break;       
+               case $num_comm<26 : 
+                  $actvitity=60; 
+                  break;  
+               case $num_comm>30 : 
+                  $actvitity=75; 
+                  break;   ?>   
+             <?php endswitch ?>                    
+            <span class="activity-meter" style="width: <?php echo $actvitity ?>px;">&nbsp;</span></td>
               </tr>
 			  <?php $i++ ?>
             <?php else: ?>

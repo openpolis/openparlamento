@@ -1,4 +1,4 @@
-<?php echo use_helper('DeppNews'); ?>
+<?php echo use_helper('DeppNews', 'Date'); ?>
 
 <div id="content" class="float-container">
    
@@ -38,7 +38,7 @@ preview del grafico delle distanze
 		
 		<h3>le ultime dal parlamento</h3>
 		</div>
-		<?php echo include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
+		<?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
 		
 		
 		  
@@ -70,103 +70,35 @@ preview del grafico delle distanze
 	 </div>     
           
            <!-- in evidenza dal blog -->
-          <div class="W52_100 float-left"> 
+          <div class="W52_100 float-left">
+          <?php if (count($post_pager)>0) : ?>
           <div class="section-box"  style="padding-bottom:20px;">
              <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
              <h3>in evidenza dal blog</h3>
              <div class="news-disegni-decreti float-container" >
 		<ul>
-		  <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>        
-	          <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>      
-	          <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>
-	          <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>        
-	          <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>      
-	          <li>
-		    <strong>25/04/2009</strong>   
-		    <p style="font-size:14px; font-weight: bolder; "><a href="#">Lorem blehevv vv3 vghvh dvhgv vhgvd dvhgvd dvhgvd</a></p>
-		    <p>testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo testo </p>
-	          </li>                  
+		<?php foreach($post_pager->getResults() as $post): ?> 
+		     <?php include_partial('post',array('post' => $post)); ?>
+		<?php endforeach; ?>
 		</ul>
 		<a href="/blog" class="see-all tools-container">vai al blog di OpenParlamento</a>
 	      </div>	
+	   <?php endif; ?>   
 	  </div>
+	  
 	   <!-- box in evidenza dal parlamento -->
+	  <?php if (count($lanci)>0) : ?>
           <div class="section-box">
 	      
-			<h3>in evidenza dal parlamento</h3>
-				<ul class="section-tab-switch float-container tools-container">
-					<li class="current">disegni di legge e altri atti</li>
-					<li><a href="#">votazioni</a></li>
-					
-				</ul>				
+			<h3>in evidenza dal parlamento</h3>				
 				<ul id="law-n-acts-proposals">
-					<li class="float-container">
-						<p>02/04/2009, disegno di legge al Senato di FLERES</p>
-
-						<div class="user-votes"><span class="green thumb-up">9.677</span> <span class="red thumb-down">21.903</span></div>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-						<div class="user-comments"><a href="#">130 <strong>commenti</strong></a></div>
-					</li>
-					<li class="float-container">
-
-						<p>02/04/2009, disegno di legge al Senato di FLERES</p>
-						<div class="user-votes"><span class="green thumb-up">677</span> <span class="red thumb-down">903</span></div>											
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-						<div class="user-comments"><a href="#">1.130 <strong>commenti</strong></a></div>
-
-					</li>
-					<li class="float-container">
-						<p>02/04/2009, mozione al Senato di FLERES</p>
-						<div class="user-votes"><span class="green thumb-up">5.677</span> <span class="red thumb-down">1.903</span></div>																	
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-
-						<div class="user-comments"><a href="#">30 <strong>commenti</strong></a></div>
-					</li>
-					<li class="float-container">
-						<p>02/04/2009, disegno di legge al Senato di FLERES</p>
-
-						<div class="user-votes"><span class="green thumb-up">9.677</span> <span class="red thumb-down">21.903</span></div>					
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-						<div class="user-comments"><a href="#">130 <strong>commenti</strong></a></div>
-					</li>
-					<li class="float-container">
-
-						<p>02/04/2009, disegno di legge al Senato di FLERES</p>
-						<div class="user-votes"><span class="green thumb-up">677</span> <span class="red thumb-down">903</span></div>											
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-						<div class="user-comments"><a href="#">1.130 <strong>commenti</strong></a></div>
-
-					</li>
-					<li class="float-container">
-						<p>02/04/2009, mozione al Senato di FLERES</p>
-						<div class="user-votes"><span class="green thumb-up">5.677</span> <span class="red thumb-down">1.903</span></div>																	
-						<p><a href="singolo_atto.html"><em>C.1256</em> Conversione in legge, con modificazioni, del decreto-legge 25 giugno 2008 n. 112, recante disposizioni urgenti per lo...</a></p>
-
-						<div class="user-comments"><a href="#">30 <strong>commenti</strong></a></div>
-					</li>
+				 <?php foreach ($lanci as $lancio) : ?>  
+				     <?php include_partial('lanci',array('lancio' => $lancio)); ?> 
+				  <?php endforeach; ?>	
 					
 				</ul>
-			</div>		
+			</div>	
+			<?php endif; ?>	
 	</div>
 	  
       </div>

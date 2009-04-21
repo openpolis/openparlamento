@@ -64,6 +64,7 @@
 <ul id="law-n-acts-proposals">
 <?php foreach ($atti as $atto): ?>
 		<li class="float-container">
+		        <div class="float-right" style="margin-right:30px;"><small>utenti:</small></div>
 			<p><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>, <?php echo $atto->getOppTipoAtto()->getDescrizione() ?><?php echo ($atto->getRamo()=='C') ? ' alla Camera' : ' al Senato' ?>
 			<?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
 		        <?php if (count($f_signers)>0) : ?>
