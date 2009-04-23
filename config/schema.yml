@@ -365,3 +365,9 @@ propel:
     id:
     picture:           { type: varbinary }
 
+  tmp_nuovi_atti:
+    id:
+    tipo_atto:         { type: varchar(255), required: true }
+    titolo:            { type: varchar(255), required: true }
+    url:               { type: varchar(255), required: true }
+    data:              { type: timestamp }

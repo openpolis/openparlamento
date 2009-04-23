@@ -21,6 +21,7 @@
       'sfEmendAdmin' => 'Commenti eMend',
       'atto' => 'Titoli aggiuntivi Atti',
       'votazione' => 'Titoli aggiuntivi Votazioni',
+      'nuoviatti' => 'Nuovi atti',
       'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
     $menu_sep = '|';

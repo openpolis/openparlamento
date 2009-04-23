@@ -1,0 +1,15 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      TmpNuoviAtti
+    theme:            default
+
+    list:
+      title:           "Elenco dei nuovi atti"
+      display:         [titolo, tipo_atto, _url, data]
+      filters:         [data, tipo_atto]
+      object_actions:
+        _delete:       -
+      actions:
+        _create:      none
+
