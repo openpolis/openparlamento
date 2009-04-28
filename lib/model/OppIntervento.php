@@ -13,12 +13,9 @@ class OppIntervento extends BaseOppIntervento
   
   public function save($con = null)
   {
-    if ($this->isNew())
-      $updateInterventi = true;
-
     $affected_rows = parent::save($con);
 
-    if ($updateInterventi)
+    if ($this->isNew())
     {
       $atto = $this->getOppAtto();
       $atto->setNInterventi($atto->countOppInterventos());
