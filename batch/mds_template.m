@@ -23,7 +23,7 @@ B=H*A*H;
 # output data to coordinate file
 ff = fopen(coords_file, "wt");
 for i=1:mps
-  fprintf(ff, "%d %f %f %f %s \n", i, sqrt(S(1,1))*U(i,1),sqrt(S(2,2))*U(i,2),sqrt(S(3,3))*U(i,3),ps(i,:));
+  fprintf(ff, "%d,%f,%f,%f,%s\n", i, sqrt(S(1,1))*U(i,1),sqrt(S(2,2))*U(i,2),sqrt(S(3,3))*U(i,3),ps(i,:));
 endfor
 fclose(ff);
   

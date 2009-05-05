@@ -11,8 +11,6 @@ class OppSimilaritaPeer extends BaseOppSimilaritaPeer
 {
 
   /**
-   *  Funzione che calcola la distanza tra due politici, per quanto riguarda le firme
-   *  come trasformazione monotòna decrescente (exp(-x)) di un fattore di similarità
    *  il fattore di similarità è la somma delle similarità per le singole firme:
    *  P - P  : 6
    *  P - R  : 6
@@ -46,10 +44,8 @@ class OppSimilaritaPeer extends BaseOppSimilaritaPeer
 
 
   /**
-   *  Funzione che calcola la distanza tra due politici, per quanto riguarda i voti
-   *  come trasformazione monotòna decrescente (exp(-x)) di un fattore di similarità
    *  il fattore di similarità è la somma delle similarità tra voti:
-   *  Stesso voto:  
+   *  Stesso voto: +6
    *  CON - FAV  : -6
    *  AST - FAV  : 2C | -4S
    *  AST - CON  : 2C |  4S
@@ -95,6 +91,33 @@ class OppSimilaritaPeer extends BaseOppSimilaritaPeer
 	  else $s = 0;
 
   	return $s;
+  }
+  
+  
+  public static function getMaxSimilarityForVotes()
+  {
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = "SELECT MAX(voting_similarity) FROM opp_similarita"; 
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_NUM);
+    if($rs->next())
+      return $rs->getFloat(1);
+    else
+      return null;
+    
+      
+  }
+  public static function getMaxSimilarityForSignatures()
+  {
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = "SELECT MAX(signing_similarity) FROM opp_similarita"; 
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_NUM);
+    if($rs->next())
+      return $rs->getFloat(1);
+    else
+      return null;
+    
   }
 
   
