@@ -64,8 +64,8 @@ XML;
 $xml = new SimpleXMLElement($xmlstr);
 
 // apertura file delle coordinate octave
-$tmp_path = DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'tmp';
-$coords_file = $tmp_path . DIRECTORY_SEPARATOR . 'opp_'.$tipo.'_'.$legislatura.'_'.$ramo.'.coords';
+$coords_path = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'mds';
+$coords_file = $coords_path . DIRECTORY_SEPARATOR . 'opp_'.$tipo.'_'.$legislatura.'_'.$ramo.'.coords';
 $fp = fopen($coords_file, "r");
 if (!$fp) {
 	die ("Impossibile aprire il file $coords_file\n");

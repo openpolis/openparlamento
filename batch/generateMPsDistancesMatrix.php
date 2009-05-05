@@ -139,7 +139,8 @@ try {
 	}
 	fprintf($fp, "];\n");
 
-	$coords_file = $tmp_path.DIRECTORY_SEPARATOR.'opp_'.$tipo.'_'.$legislatura.'_'.$ramo.".coords";
+  $coords_path = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'mds';
+	$coords_file = $coords_path.DIRECTORY_SEPARATOR.'opp_'.$tipo.'_'.$legislatura.'_'.$ramo.".coords";
 	fprintf($fp, "coords_file=\"%s\";\n", $coords_file);
 
 	// copio il template mds_template.m nel file temporaneo
