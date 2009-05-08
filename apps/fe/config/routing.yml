@@ -1,3 +1,7 @@
+grafico_distanze:
+  url: /grafico_distanze/:tipo
+  param: { module: default, action: graficoDistanze, tipo: 'votes_16_C' }
+
 blog_index:
   url: /blog
   param: { module: sfSimpleBlog, action: index }

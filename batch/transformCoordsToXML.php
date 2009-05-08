@@ -113,7 +113,7 @@ foreach($coords_content as $coords_line){
 
 
 // apertura file xml in scrittura
-$xml_file = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'opp_'.$tipo.'_'.$legislatura.'_'.$ramo.'.xml';
+$xml_file = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'posizioni/opp_'.$tipo.'_'.$legislatura.'_'.$ramo.'.xml';
 $xml_fp = fopen($xml_file, "w");
 if (!$xml_fp) {
 	die ("Impossibile aprire il file $xml_file\n");

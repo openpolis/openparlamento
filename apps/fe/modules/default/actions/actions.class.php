@@ -29,6 +29,10 @@ class defaultActions extends sfActions
  
   }
 
+  public function executeGraficoDistanze()
+  {
+    $this->tipo = $this->getRequestParameter('tipo', 'votes_16_C');
+  }
   
   public function executeIndex()
   {
