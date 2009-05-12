@@ -117,17 +117,36 @@ class OppAtto extends BaseOppAtto
 	$c->add(OppAttoHasIterPeer::ATTO_ID, $this->getId(), Criteria::EQUAL);
 	$c->addJoin(OppAttoHasIterPeer::ITER_ID, OppIterPeer::ID, Criteria::LEFT_JOIN);
 	$c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
-	$c->addDescendingOrderByColumn(OppIterPeer::CONCLUSO);
-	$c->addDescendingOrderByColumn(OppIterPeer::ID);
-	$c->setLimit(1);
+	//$c->addDescendingOrderByColumn(OppIterPeer::CONCLUSO);
+	//$c->addDescendingOrderByColumn(OppIterPeer::ID);
+	//$c->setLimit(1);
 	$rs = OppAttoHasIterPeer::doSelectRS($c);
 	
+	$count=0;
 	while ($rs->next())
-    {
-	  if($rs->get(1)!='0000-00-00')
-	    $status[$rs->getDate(1, 'Y-m-d')] = $rs->getInt(2);
-	  else
-	    $status[1] = $rs->getInt(2);	
+	{
+	  if ($rs->getInt(2)==28)
+	  {
+        
+	    if($rs->get(1)!='0000-00-00')
+	      $status[$rs->getDate(1, 'Y-m-d')] = $rs->getInt(2);
+	    else
+	      $status[1] = $rs->getInt(2);	
+	      
+	    break;
+	   } 
+	   else {
+	     if ($count==0)
+	     {
+	       if($rs->get(1)!='0000-00-00')
+	         $status[$rs->getDate(1, 'Y-m-d')] = $rs->getInt(2);
+	       else
+	         $status[1] = $rs->getInt(2);	
+	         
+	       $count=1;
+	     }
+	   }       
+	      
 	}  
   
     return $status;

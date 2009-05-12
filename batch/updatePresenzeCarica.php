@@ -38,7 +38,10 @@ foreach ($cariche as $carica) {
 			if ($voto->getVoto()=='Assente') $ass=$ass+1;
 			else {
 				if ($voto->getVoto()=='In missione') $miss=$miss+1;
-				else $pres=$pres+1;
+				else {
+					if ($voto->getVoto()!='Votazione annullata')
+						$pres=$pres+1;
+				}		
 			}
 	} 
 	$carica->setPresenze($pres);

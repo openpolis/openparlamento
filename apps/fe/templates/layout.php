@@ -5,7 +5,7 @@
 <?php include_http_metas() ?>
 <?php include_metas() ?>
 <?php include_title() ?>
-
+ 
 <link rel="shortcut icon" href="/favicon.ico" />
 
 </head>
@@ -19,7 +19,7 @@
        <?php include_partial('global/navigation') ?> 
   	  </div>
   	  
-    	<?php if ($this->getContext()->getModuleName()!='default') include_partial('global/breadcrumbs') ?> 
+    	<?php if ($this->getContext()->getModuleName()!='default' || $this->getContext()->getActionName()!='index') include_partial('global/breadcrumbs') ?> 
     </div>
 
 	  <?php echo $sf_data->getRaw('sf_content') ?>

@@ -35,7 +35,6 @@
   
 
 <div id="identity">
-  <?php echo link_to(image_tag('logo-open2public.png', array('alt' => 'open 2 public')), '/') ?>	
-  &egrave; uno strumento
+  <?php echo link_to(image_tag('logo-openparlamento.png', array('alt' => 'openparlamento')), '/') ?>	
   <?php echo link_to(image_tag('logo-openpolis.png', array('alt' => 'openpolis')), 'http://www.openpolis.it') ?> 
 </div>

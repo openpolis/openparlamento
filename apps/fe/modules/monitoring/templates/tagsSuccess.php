@@ -18,7 +18,7 @@
           <li title="click per visualizzare le notizie relative"> 
             <?php 
               list($tag, $ns, $key, $value) = deppPropelActAsTaggableToolkit::extractTriple($my_tag_name);
-              $tag_id=TagPeer::retrieveByTagname($value);
+              $tag_id=TagPeer::retrieveByTagname($my_tag_name);
               echo link_to(strtolower($value), '@news_tag?id='.$tag_id->getId(), array('class' => 'folk'.($popularity+3))); 
             ?>
             <?php echo link_to('x', '@removeTagFromMyMonitoredTags?name='.$tag, array('class' => 'ico-stop_monitoring', 'title' => 'smetti di monitorare questo argomento')) ?>

@@ -125,6 +125,7 @@
                  <?php endif; ?>   
                 <li><span class="date">&nbsp;</span>
                 <p>diventa legge</p></li>
+                <?php break; ?>
              <?php endif; ?>   
           <?php endforeach; ?>   
       <?php else: ?>

@@ -31,7 +31,11 @@ class defaultActions extends sfActions
 
   public function executeGraficoDistanze()
   {
-    $this->tipo = $this->getRequestParameter('tipo', 'votes_16_C');
+    $this->tipo = $this->getRequestParameter('tipo');
+    if ($this->tipo=='votes_16_C')
+       $this->getResponse()->setTitle('le distanze tra i deputati - '.sfConfig::get('app_main_title'));
+    else 
+       $this->getResponse()->setTitle('le distanze tra i senatori - '.sfConfig::get('app_main_title'));   
   }
   
   public function executeIndex()

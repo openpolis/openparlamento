@@ -29,7 +29,7 @@
 		        <?php print" (". $nome.")" ?>
 	          <?php endif; ?> 
 	     <?php endforeach; ?> 
-	     <?php if($parlamentari->getInt(10)=='-1'): ?>
+	       <?php if($parlamentari->getInt(10)=='-1'): ?> 
 		<br />cessato il <?php echo format_date($parlamentari->getDate(13, 'Y-m-d'), 'dd/MM/yyyy') ?> 
 	     <?php endif; ?>
           </p>
@@ -78,7 +78,13 @@
          <?php else: ?>
          <td><span class="small"><?php echo '* Senatore a vita' ?></span></td>
         <?php endif; ?>
-       <td><p><?php echo $parlamentari->getInt(13) ?></p></td> 
+       <td><p>
+       <?php if($parlamentari->getInt(10)!='-1'): ?>
+          <?php echo $parlamentari->getInt(13) ?>
+       <?php else : ?>
+          <?php echo $parlamentari->getInt(14) ?>
+       <?php endif; ?>
+       </p></td> 
       </tr>
     <?php endwhile; ?>
   </tbody>    

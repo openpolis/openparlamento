@@ -366,6 +366,7 @@ class argomentoActions extends sfActions
     $c->addJoin(OppTagHasTtPeer::TAG_ID, TagPeer::ID);
     $c->addAscendingOrderByColumn(TagPeer::TRIPLE_VALUE);
     $this->tags = TagPeer::getPopulars($c);
+   
   }
 
   

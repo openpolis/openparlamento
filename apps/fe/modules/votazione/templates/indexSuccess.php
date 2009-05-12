@@ -22,12 +22,16 @@
     <div style="background-color:#f7f7ff; padding: 5px;">
      <div style="background-color:#fff; padding:5px; color:#828199; font-weight:bold; font-size:15px; border: 1px solid #e4e4e8;">esito della votazione</div>
      <div style="padding: 5px;">
-     <?php if ($votazione->getEsito()=='APPROVATA') : ?>
+     <?php if (($votazione->getEsito()=='APPROVATA') && (strtolower($votazione->getTitolo())!='votazione annullata')) : ?>
           <?php echo image_tag('ico-votazione-yes.png', array('style' => 'vertical-align: middle; padding: 0 8px 0 0')) ?>	
           <span style="background-color: #39aa2d; color:white; font-weight:bold; font-size:16px; padding: 5px;"><?php echo $votazione->getEsito() ?></span>
       <?php else : ?>
-           <?php echo image_tag('ico-votazione-no.png', array('style' => 'vertical-align: middle; padding: 0 8px 0 0')) ?>	
-          <span style="background-color: #e10032; color:white; font-weight:bold; font-size:16px; padding: 5px;"><?php echo $votazione->getEsito() ?></span>
+          <?php if (strtolower($votazione->getTitolo())!='votazione annullata') : ?>
+             <?php echo image_tag('ico-votazione-no.png', array('style' => 'vertical-align: middle; padding: 0 8px 0 0')) ?>	
+             <span style="background-color: #e10032; color:white; font-weight:bold; font-size:16px; padding: 5px;"><?php echo $votazione->getEsito() ?></span>
+           <?php else : ?> 
+             <div style="padding: 5px;"><span style="background-color: #e10032; color:white; font-weight:bold; font-size:16px; padding: 5px;">ANNULLATA</span></div> 
+           <?php endif ?> 
       <?php endif ?>    
       
       <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>

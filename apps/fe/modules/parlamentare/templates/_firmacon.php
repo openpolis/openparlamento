@@ -1,5 +1,5 @@
 <div class="evidence-box float-container">
-	<h5 class="subsection">Firma atti più spesso come...</h5>
+	<h5 class="subsection">Firma atti più spesso con...</h5>
 	<div class="pad10">
 		<ul>
 		  <?php foreach ($nearest as $i => $politico): ?>

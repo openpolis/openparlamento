@@ -4,7 +4,8 @@
     <?php 
       echo link_to(strtolower($value), 
                    "@argomento?triple_value=${value}", 
-                   array('class' => 'folk'.($popularity+3))); 
-    ?>
+                  array('class' => 'folk'.($popularity+3))); 
+    ?> 
+    
   </li>
 <?php endforeach ?>

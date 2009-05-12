@@ -130,6 +130,8 @@ class TagPeer extends BaseTagPeer
     $c->addGroupByColumn(TaggingPeer::TAG_ID);
     $c->addDescendingOrderByColumn('counter');
     $c->addAscendingOrderByColumn(TagPeer::NAME);
+    
+   
 
     if (Propel::VERSION >= '1.3')
     {
@@ -634,7 +636,7 @@ class TagPeer extends BaseTagPeer
   public static function retrieveByTagname($tagname)
   {
     $c = new Criteria();
-    $c->add(TagPeer::TRIPLE_VALUE, $tagname);
+    $c->add(TagPeer::NAME, $tagname);
     return TagPeer::doSelectOne($c);
   }
 

@@ -2,7 +2,7 @@
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/..'));
 define('SF_APP',         'fe');
 define('SF_ENVIRONMENT', 'prod');
-define('SF_DEBUG',       false);
+define('SF_DEBUG',       true);
  
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
@@ -84,6 +84,8 @@ foreach($coords_content as $coords_line){
   if (abs($y) > $xy_max) $xy_max = $y;
 }
 
+$arr_gruppi=array();
+
 // produzione XML
 foreach($coords_content as $coords_line){
 
@@ -100,7 +102,8 @@ foreach($coords_content as $coords_line){
 	
 	$person_node = $xml->addChild('person');
 	$id_node = $person_node->addChild('id',$id);
-	$group_node = $person_node->addChild('group',$gruppo_id);
+	$group_node = $person_node->addChild('groupid',$gruppo_id);
+	if (!in_array($gruppo_id, $arr_gruppi)) $arr_gruppi[]=$gruppo_id;
 	$name_node = $person_node->addChild('name',$nome);
 	$surname_node = $person_node->addChild('surname',$cognome);
 	$x_node = $person_node->addChild('x', sprintf('%7.2f', norm($x, $XY_MAX, $xy_max)));
@@ -110,6 +113,17 @@ foreach($coords_content as $coords_line){
 	                                           norm($z, $XY_MAX, $xy_max), 
 	                                           $nome, $cognome, $gruppo_id, $id);
 }
+
+$c = new Criteria();
+$c->add(OppGruppoPeer::ID,$arr_gruppi,Criteria::IN);
+$c->addAscendingOrderByColumn(OppGruppoPeer::ID);
+$gruppi=OppGruppoPeer::doSelect($c);
+
+foreach ($gruppi as $gruppo) {
+   $group_node = $xml->addChild('group');
+   $id_group = $group_node->addChild('id',$gruppo->getId());
+   $name_group = $group_node->addChild('name',$gruppo->getAcronimo());
+}   
 
 
 // apertura file xml in scrittura

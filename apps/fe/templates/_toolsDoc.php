@@ -35,5 +35,5 @@
   
 
 <div id="identity">
-  <?php echo link_to(image_tag('logo-open2public.png', array('alt' => 'open 2 public')), '/') ?>	
+  <?php echo link_to(image_tag('logo-openparlamento.png', array('alt' => 'openparlamento')), '/') ?>	
 </div>
