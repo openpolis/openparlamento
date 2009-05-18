@@ -1,3 +1,6 @@
+<div class="section-box"> 
+            <h3>i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
+            </div> 
 <table class="disegni-decreti column-table">
 <tbody>	
 <?php $tr_class = 'even' ?>				  
@@ -42,7 +45,7 @@
         </td> 
      <?php elseif ($cosa==6) : ?> 
         <td>
-             <span class="small">voti diversi dal suo gruppo</span><br/><?php echo $parlamentari->getInt(12) ?><span class="small"> su <?php echo $parlamentari->getInt(6) ?> votazioni</span>
+             <span class="small">voti diversi dal suo gruppo:</span><br/><?php echo $parlamentari->getInt(12) ?><span class="small"> su <?php echo $parlamentari->getInt(6) ?> votazioni</span>
         </td>       
      <?php endif; ?>        
      
@@ -52,6 +55,9 @@
 <?php endwhile; ?>    
  <tr>
  <td>&nbsp;</td>
+ <?php if ($quale_pagina==0) : ?> 
+    <td><?php echo link_to('vai a tutte le classifiche','/default/classifiche') ?></td>
+ <?php else : ?>   
     <?php if ($cosa==1) : ?>
         
         <td>
@@ -75,9 +81,10 @@
         </td>  
      <?php elseif ($cosa==6) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+           <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
         </td>      
-     <?php endif; ?>        
+     <?php endif; ?> 
+   <?php endif; ?>            
     </tr>
 </tbody>
 </table>    

@@ -662,8 +662,8 @@ eMend.dataset.prototype = {
       comments = groupCom[u];
 
 //=================================================
-//dump(selections+'\n');
-//dump(comments+'\n');
+//console.log("selections: ",selections.length);
+//console.log("comments: ",comments.length);
 //=================================================
 
       for(var i=0, len2=selections.length; i < len2; i++) {
@@ -677,6 +677,7 @@ eMend.dataset.prototype = {
 //=================================================
 //console.log("XcS.base: ",XcS.base);	
 //console.log("XcE.base: ",XcE.base);
+//console.log("xpathmethod",xpathmethod);
 //=================================================
 
         switch(xpathmethod) {
@@ -697,7 +698,8 @@ eMend.dataset.prototype = {
 
 //=================================================
 //console.log("XcS.xpath: ",XcS.xpath,"XcE.xpath: ",XcE.xpath);
-//console.log("context start: ",cS,"context end: ",cE);
+//console.log("context start:",cS.nodeValue);
+//console.log("context end:",cE.nodeValue);
 //console.log("nodes: ",nodes.length);
 //=================================================
      
@@ -713,10 +715,12 @@ eMend.dataset.prototype = {
         var endFragment = fragments[endNode];				
         var startFragmentMap = fragmentsMap[startNode];
         var endFragmentMap = fragmentsMap[endNode];
-        
-        //console.log('startNode', startNode);
-        //console.log('endNode', endNode);
-        //console.log('startFragmentMap', typeof startFragmentMap);
+
+//=================================================        
+//console.log('startNode:', startNode);
+//console.log('endNode:', endNode);
+//console.log('startFragmentMap', typeof startFragmentMap);
+//=================================================        
 
         // Find which chunks the selection boundaries are within
         startChunk = endChunk = -1;
@@ -729,14 +733,14 @@ eMend.dataset.prototype = {
         for(var j=0, len3=endFragmentMap.length; j < len3; j++) {
           if(endChunk == -1 && oE >= endFragmentMap[j][0] && oE <= endFragmentMap[j][1]) {
             endChunk = j;
+//=================================================
+//console.debug("  offsetEnd found in fragment "+j+" ["+endFragmentMap[j][0]+" <= "+oE+" <= "+endFragmentMap[j][1]+"]");					
+//=================================================            
             break;
-
-//=================================================
-//console.debug("  offsetEnd found in fragment "+j+" ["+fragmentsMap[j][0]+" < "+offsetEnd+" < "+fragmentsMap[j][1]+"]");					
-//=================================================
-
           }
         }
+        
+        if(endChunk == -1) endChunk = j-1;
 //=================================================
 //console.log("startChunk,endChunk",startChunk,endChunk);
 //=================================================

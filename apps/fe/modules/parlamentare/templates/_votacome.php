@@ -20,4 +20,10 @@
 		  <span class="folk0 violet">di altri gruppi</span>
 		</p>
 	</div>
+	<?php if($carica->getTipoCaricaId()==1) : ?>
+	   <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '1','parlamentare_id'=>$parlamentare->getId(), 'ramo' => '1', 'select2'=>'null')) ?>  
+        <?php else : ?>
+           <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '1','parlamentare_id'=>$parlamentare->getId(), 'ramo' => '2', 'select2'=>'null')) ?>
+        <?php endif; ?>   
+        
 </div>		

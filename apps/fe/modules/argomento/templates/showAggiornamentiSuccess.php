@@ -31,6 +31,8 @@
 	    <?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'aggiornamenti', 
 	                                     'triple_value' => $triple_value)); ?>
+      
+      <!--
       <div class="W48_100 float-left">                                     	
        <h5 class="subsection">indice di discussione</h5>
        <p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
@@ -53,7 +55,8 @@
   	   </div>
   	</div>
       <?php echo include_component('argomento','quantodiscusso', array('tag' => $argomento)); ?>
-      </div>
+      </div> 
+      -->
       
       <div class="clear-both"/></div>
 

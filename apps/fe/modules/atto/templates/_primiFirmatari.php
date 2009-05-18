@@ -1,4 +1,5 @@
 <b>Primi firmatari</b>
+
 <br />
 <?php foreach($primi_firmatari as $id => $primo_firmatario): ?>
   <?php $info_array = explode('*', $primo_firmatario ); ?>

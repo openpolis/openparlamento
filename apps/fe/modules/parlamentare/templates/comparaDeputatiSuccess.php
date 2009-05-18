@@ -1,19 +1,22 @@
 <?php use_helper('I18N', 'Date') ?>
 
 <ul id="content-tabs" class="float-container tools-container">
-  <li class="current">
-    <h2>
-      Parlamentari a confronto
-    </h2>
+   <li class="<?php echo($ramo==1 ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Deputati a confronto', '/parlamentare/comparaDeputati?id1=0&id2=0&ramo=1') ?></h2>   
+  </li><li class="<?php echo($ramo==2 ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Senatori a confronto', '/parlamentare/comparaDeputati?id1=0&id2=0&ramo=2') ?></h2>   
   </li>
 </ul>
 
 <div id="content" class="tabbed float-container">
 <a name="top"></a>
   <div id="main">
-
-<?php //echo link_to('Confronta altri due parlamentari','/votazioni/comparaParlamentari') ?>  
-
+  <?php if ($parlamentare1!=null) : ?>
+     <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>$parlamentare1->getOppPolitico()->getId(),'select2' =>$parlamentare2->getOppPolitico()->getId() )) ?> 
+  <?php else : ?>
+     <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>'null','select2' =>'null' )) ?>    
+  <?php endif ?>
+  
 <?php if ($compara_ok==1) : ?>
 <?php include_partial('parlarmentariComparati', 
                       array('parlamentare1' => $parlamentare1, 
@@ -34,7 +37,7 @@
                               'pager' => $pager))?>
                               
 <?php else : ?>   
-<?php include_component('parlamentare', 'tendinaDeputati') ?>                           
+<?php //include_component('parlamentare', 'tendinaParlamentari') ?>                           
 <?php endif; ?>                              
                               
 </div>                 
@@ -43,7 +46,11 @@
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
   <?php echo link_to("parlamentari", "@parlamentari") ?>/
-  parlamentari a confronto
+  <?php if ($ramo==1) : ?>
+  deputati a confronto
+  <?php else : ?>
+  senatori a confronto
+  <?php endif ?> 
   <?php if ($compara_ok==1) : ?>
    <?php echo ': '.$parlamentare1->getOppPolitico()->getCognome().' vs '.$parlamentare2->getOppPolitico()->getCognome() ?>
   <?php endif ?> 

@@ -16,11 +16,12 @@
 <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">
-      <?php echo link_to('approfondisci su<br />'.image_tag('ico-wikipedia.png', array('alt' => 'wikipedia').'<strong>Wikipedia</strong>'), '#') ?>
+      
     </div>
     <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>
     <h5>cos'&egrave; lo stato di avanzamento ?</h5>
-    <p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+    <p>L'Iter &egrave; l'insieme dei passi successivi (status) previsti perch&egrave; un <b>disegno di legge</b> arrivi alla sua approvazione finale o conclusione. Un disegno di legge per diventare legge deve essere approvato da entrambi i rami (Camera e Senato) del Parlamento.<br />
+    Per un <b>atto non legislativo</b> l'iter &egrave; l'insieme di passi necessari per la sua conclusione. </p>
   </div>
 </div>
 <br />

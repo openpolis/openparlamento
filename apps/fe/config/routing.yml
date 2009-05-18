@@ -184,7 +184,8 @@ parlamentariSearch:
   param: { module: sfSolr, action: parlamentariSearch }
 
 parlamentari:
-  url:   /parlamentari/:ramo/*
+#  url:   /parlamentari/:ramo/*
+  url:   /parlamentari/:ramo/:sort/:type/*
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 parlamentare:
@@ -203,9 +204,9 @@ parlamentare_interventi:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
 
-comparaParlamentari:
-  url:   /parlamentare/comparaParlamentari/:id1/:id2/*
-  param: { module: parlamentare, action: comparaParlamentari, id1: 0, id2: 0, display: false }    
+comparaDeputati:
+  url:   /parlamentare/comparaDeputati/:id1/:id2/:ramo/*
+  param: { module: parlamentare, action: comparaDeputati, id1: 0, id2: 0, ramo: 1, display: false }    
 
 get_logged_user:
   url: /get_logged_user

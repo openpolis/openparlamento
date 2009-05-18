@@ -45,10 +45,10 @@
         
         <td>
           <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
-            <?php printf('<b>%01.2f</b>%%', number_format($parlamentari->getInt(12)/$parlamentari->getInt(6) *100,2), $parlamentari->getInt(12), $parlamentari->getInt(6)) ?>
-	      <?php else: ?>
-	        <?php print('<b>0</b>% ') ?>
-	      <?php endif; ?>
+                <b><?php echo $parlamentari->getInt(12) ?></b>
+	  <?php else: ?>
+	        <?php print('<b>0</b>') ?>
+	  <?php endif; ?>
         </td>    
         
 	<?php $num_votazioni = $parlamentari->getInt(6) + $parlamentari->getInt(7) + $parlamentari->getInt(8) ?>

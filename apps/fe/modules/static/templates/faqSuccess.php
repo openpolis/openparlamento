@@ -6,66 +6,54 @@
   </li>
 </ul>
 
-<div id="content" class="tabbed float-container">
+<div id="content" class="tabbed float-container"> 
 
   <div id="main">
-    <div class="W100_100">
-      In questa pagine trovi le risposte alle domande pi&ugrave; frequenti.
+    <div class="W73_100">
+    <div style="font-size:13px; padding:5px;">
+      In questa pagine trovi le risposte alle domande pi&ugrave; frequenti.<br /><br /> 
       
-      Generale
+    <b>Domande di carattere generale</b><br /><br />
 
-    * Cos'� openparlamento? 
+    <?php echo link_to('»&nbsp;Cos\'&egrave; openparlamento?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;A cosa serve?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Chi siete?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;E\' gratuito?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Come posso contattarvi?','#') ?><br /> <br />
+    
+    <b>Domande sui contenuti</b><br /><br />
 
-E' un servizio che permette di conoscere quello che i rappresentanti discutono e decidono ogni giorno nel Parlamento e consente ai cittadini di esprimere la loro posizione con voti e commenti su ogni provvedimento.
+    <?php echo link_to('»&nbsp;Da dove prendete i dati?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Come sono ricavate le presenze dei parlamentari?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Cos\'&egrave; l\'indice di attivit&agrave; di un parlamentare?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Chi sono i parlamentari ribelli?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Da chi sono indicati gli argomenti associati agli atti? ','#') ?><br />
+    <?php echo link_to('»&nbsp;Che sono i titoli degli atti nelle parentesi quadre? ','#') ?><br />
+    <?php echo link_to('»&nbsp;Come sono calcolate nel grafico le distanze tra i parlamentari? ','#') ?><br />
+    <?php echo link_to('»&nbsp;Ci sono i flussi rss e xml?','#') ?><br />
+    <?php echo link_to('»&nbsp;Che tipo di software avete utilizzato? ','#') ?><br /> <br />
+    
+    <b>Domande su come contribuire</b><br /><br />
 
-    * A che serve? 
+    <?php echo link_to('»&nbsp;Come descrivere un atto?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Come aggiungere commenti ad un testo con emend?','#') ?><br />
+    <?php echo link_to('»&nbsp;Dove posso suggerire nuove future funzionalit&agrave;?','#') ?><br /><br /> 
+    
+    <b>Domande sul monitoraggio e sulla pagina personale</b><br /><br />
+    
+    <?php echo link_to('»&nbsp;In cosa consiste il monitoraggio?','#') ?><br />
+    <?php echo link_to('»&nbsp;Come posso monitorare un politico o un atto?','#') ?><br />
+    <?php echo link_to('»&nbsp;Come posso monitorare un argomento?','#') ?><br />
+    <?php echo link_to('»&nbsp;Come accedo alla mia pagina personale?','#') ?><br />
+    <?php echo link_to('»&nbsp;Cosa sono le miei notizie?','#') ?><br />  
+     <?php echo link_to('»&nbsp;Cosa sono i miei argomenti?','#') ?><br /> 
+    <?php echo link_to('»&nbsp;Dove posso suggerire nuove future funzionalit&agrave;?','#') ?><br /><br /> 
+    
+    <b>Domande sui servizi premium</b><br /><br />
 
-L'obiettivo � di rendere trasparente l'attivit� del Parlamento mettendo disposizione di ognuno strumenti di controllo e intervento che facilitino la rapprsentanza democratica e il confronto tra gli interessi.
+    <?php echo link_to('»&nbsp;Offrite servizi a pagamento?','#') ?><br /> 
 
-    * Chi siete? 
-
-link a openpolis
-
-    * E' gratis? 
-
-S�. La consultazione e la registrazione al sito sono gratuiti. Mentre sono a pagamento servizi avanzati per professionisti e aziende [link ai servizi]
-
-    * Come posso contattarvi? 
-
-contatti
-
-I contenuti
-
-    * Da dove prendete i dati? 
-
-I dati sono di fonte ufficiale e vengono ricavati dai siti di Camera e Senato
-
-    * Come sono ricavate le presenze dei parlamentari? 
-
-I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono in Aula della Camera e del Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit� parlamentari (lavori preparatori, interventi, etc. in Aula e nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.
-
-    * Cos'� l'indice di attivit� di un parlamentare? 
-
-E' un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti (firmati e cofirmati) e interventi fatti dal singolo parlamentare. I dati vengono estratti giornalmente da documenti ufficiali pubblicati dai siti di Camera e Senato. Per approfondire vai nella pagina [link]
-
-    * Chi sono i parlamentari ribelli? 
-
-Un parlamentare � considerato ribelle quando eprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo.
-
-    * Ci sono i flussi rss e xml? 
-
-Come contribuire
-
-    * Come descrivere un atto?
-    * Come aggiungere commenti con emend?
-    * Perch� dovrei darvi i miei soldi?
-    * Suggerimenti, critiche? 
-
-Monitoraggio (dopo)
-
-    * Quanti atti/parlamentari/argomenti posso monitorare?
-    * Come aggiungere/togliere un atto/parlamentare/argomento al monitoraggio
-    * ... 
+   </div> 
     </div>
   </div>
 

@@ -9,7 +9,7 @@
 <div class="tabbed float-container" id="content">
 	<div id="main">
 		<div class="W25_100 float-right">
-			<p class="last-update">data di ultimo aggiornamento: <strong>25-11-2008</strong></p>
+			<p class="last-update">data di ultimo aggiornamento: <strong></strong></p>
 
 			<div id="monitor-n-vote">
       	<h6>monitora questo politico</h6>
@@ -65,7 +65,8 @@
 
            <?php if ($nvoti_validi>0): ?>
              <?php echo include_component('parlamentare', 'votacome', 
-                                       array('carica' => $carica, 
+                                       array('carica' => $carica,
+                                             'parlamentare' => $parlamentare,
                                              'acronimo' => $acronimo_gruppo_corrente)); ?>          
            <?php endif ?>
 
@@ -112,21 +113,28 @@
   					    </p>
   					 <?php endif ?> 
   				    <?php endif ?>	 
-  					  
-  					<p><label>dal:</label> <strong>dd/mm/yyyy</strong> <label>al:</label> <strong>dd/mm/yyyy</strong><br/> 
-  					<strong>CARICA PRECEDENTE O CONTEMPORANEA A QUELLA ATTUALE</strong></p>
+  					
+  					
+  					   <?php echo include_partial('altreCariche',array('descrizione_cariche' => $descrizione_cariche)); ?> 
+  					
   				</div>
   			</div>
   			
 		    <?php if ($carica) : ?>
 		    
   			<h5 class="subsection-alt">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
-  			<p class="float-right">ultima votazione: <strong>gg-mm-aaaa</strong></p>
+  			<p class="float-right">ultima votazione: <strong>
+  			<?php if ($ramo=='camera') : ?>
+  			   <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>
+  			<?php else : ?>
+  			   <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>
+  			<?php endif; ?>   
+  			</strong></p> 
   			<p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>come sono calcolate ?</h5>
-  					<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  					<a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le presenze ?</h5>
+  					<p>I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit&agrave; parlamentari (lavori preparatori nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.</p>
   				</div>
   			</div>
 			
@@ -159,11 +167,11 @@
 		 
   			<h5 class="subsection-alt">Voti ribelli su <?php echo $nvoti_validi ?> votazioni nominali</h5>
 			
-  			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
+  			<p class="tools-container"><a class="ico-help" href="#">quando un parlamentare &egrave; ribelle</a></p>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>come viene calcolato ?</h5>
-  					<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  					<a class="ico-close" href="#">chiudi</a><h5>quando un parlamentare &egrave; ribelle ?</h5>
+  					<p>Un parlamentare &egrave; considerato ribelle quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo.</p>
   				</div>
   			</div>
 			
@@ -193,8 +201,8 @@
   			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>come viene calcolato ?</h5>
-  					<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di attivit&agrave; ?</h5>
+  					<p>&Egrave; un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro.<br /> Per dettagli e commenti <a href="/blog/2009/03/31/l-indice-di-attivita-parlamentare">vai qui</a></p>
   				</div>
   			</div>
 
@@ -219,7 +227,7 @@
   			</div>
   			<div class="meter-bar float-container">
   				<label class="mb-idx-label">classifica:</label>
-  				<div class="pos-idx"><strong><?php echo $carica->getPosizione() ?></strong> su 630 deputati</div>
+  				<div class="pos-idx"><strong><?php echo $carica->getPosizione()."&deg;" ?></strong> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?></div>
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .

@@ -14,16 +14,24 @@
 	<?php $c = new Criteria() ?>
     <?php $c->add(OppIterPeer::ID, $status_iter, Criteria::EQUAL); ?>
     <?php $iter = OppIterPeer::doSelectOne($c) ?>
-    <p class="gold"><?php echo $iter->getFase() ?></p>
+    <?php if($iter->getId()!=63): ?>
+       <p class="gold"><?php echo $iter->getFase() ?></p>
+    <?php else: ?>
+       <p class="green"><?php echo $iter->getFase() ?></p>
+    <?php endif; ?>   
   
  <?php else: ?>
-  <span class="gold">
+  
     <?php if($differenza >= 0): ?>
       <?php $differenza=intval($differenza); ?>
+      <span class="gold">
       <?php echo format_number_choice('[0] In scadenza oggi|[1] 1 giorno alla scadenza|(1,+Inf] %1% giorni alla scadenza', array('%1%' => $differenza), $differenza) ?>
+      </span>
     <?php else: ?>
+     <span class="red">
       Decaduto
+      </span>
     <?php endif; ?>
-  </span>	  
+  	  
  <?php endif; ?>
 <?php endforeach; ?>

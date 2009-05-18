@@ -2,13 +2,10 @@
   <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">
-      <?php echo link_to('approfondisci su<br />'.image_tag('ico-wikipedia.png', array('alt' => 'wikipedia').'<strong>Wikipedia</strong>'), '#') ?>
+      <?php echo link_to('approfondisci su<br />'.image_tag('ico-wikipedia.png', array('alt' => 'wikipedia').'<strong>Wikipedia</strong>'), 'http://it.wikipedia.org/wiki/Progetto_di_legge') ?>
     </div>
     <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>	   	  
     <h5>cosa sono i disegni di legge ?</h5>
-    <p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, 
-    maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, 
-    qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e 
-    como medical national per. (fonte: <?php echo link_to('Wikipedia', '#') ?>)</p>
+    <p>Il disegno (o progetto o proposta) di legge (DDL) &egrave; un testo suddiviso in articoli che viene presentato alla Camera o al Senato per essere esaminato, discusso e votato e infine per diventare legge. (approfondisci su: <?php echo link_to('Wikipedia', 'http://it.wikipedia.org/wiki/Progetto_di_legge') ?>)</p>
   </div>
 </div>	  

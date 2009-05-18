@@ -3,30 +3,30 @@
 
 <ul>
   <li class="footer-title">openparlamento</li>
-  <li><a lang="it" href="">»&nbsp;progetto</a></li>
+  <li><?php echo link_to('»&nbsp;progetto','/static/progetto',array('lang'=>'it')) ?></li>
   <li><a lang="it" href="">»&nbsp;chi siamo</a></li>
-  <li><a lang="it" href="">»&nbsp;dicono di noi</a></li>
+  <!-- <li><a lang="it" href="">»&nbsp;dicono di noi</a></li> -->
   <li><a lang="it" href="">»&nbsp;contatti</a></li>
 </ul>
 
 <ul>
   <li class="footer-title">servizi</li>
     <li><a lang="it" href="">»&nbsp;premium</a></li>
-  <li><a lang="it" href="">»&nbsp;rss/xml</a></li>
+  <li><?php echo link_to('»&nbsp;rss/xml','/static/rssxml',array('lang'=>'it')) ?></li>
 </ul>
 
 <ul>
   <li class="footer-title">avvertenze</li>
-  <li><a lang="it" href="">»&nbsp;regolamento</a></li>  
-  <li><a lang="it" href="">»&nbsp;condizioni d'uso</a></li>  
-  <li><a lang="it" href="">»&nbsp;informativa sui dati personali</a></li>
+  <li><?php echo link_to('»&nbsp;regolamento','/static/regolamento',array('lang'=>'it')) ?></li>
+  <li><?php echo link_to('»&nbsp;condizioni d\'uso','/static/condizioni',array('lang'=>'it')) ?></li>  
+  <li><?php echo link_to('»&nbsp;informativa sui dati personali','/static/informativa',array('lang'=>'it')) ?></li>
 
 </ul>
 
 <ul>
   <li class="footer-title">aiuto</li>
   <li><a lang="it" href="">»&nbsp;per cominciare</a></li>  
-  <li><a lang="it" href="">»&nbsp;faq</a></li>  
+  <li><?php echo link_to('»&nbsp;faq','/static/faq',array('lang'=>'it')) ?></li>
 
 </ul>
 

@@ -68,17 +68,35 @@ class OppVotazionePeer extends BaseOppVotazionePeer
   public static function doSelectCountVotazioniPerPeriodo($data_inizio, $data_fine, $legislatura, $ramo)
   {
     $c = new Criteria();
-	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer, Criteria::LEFT_JOIN);
-	$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
+	//$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
 	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
 	$c->add(OppSedutaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
 	if($data_inizio!='') 
-	  $c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATHER_EQUAL);
+	  $c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
 	
 	if($data_fine!='') 
-	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, $data_fine, Criteria::LESS_EQUAL);
+	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
 		
-	return $count = OppVotazione::doCount($c);
+	return $count = OppVotazionePeer::doCount($c);
+  }  
+  
+  public static function doSelectDataUltimaVotazione($data_inizio, $data_fine, $legislatura, $ramo)
+  {
+    $c = new Criteria();
+	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
+	//$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
+	$c->add(OppSedutaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
+	if($data_inizio!='') 
+	  $c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
+	
+	if($data_fine!='') 
+	  $c->add(OppSedutaPeer::DATA, $data_fine, Criteria::LESS_EQUAL);
+		
+	$c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+	$result=OppSedutaPeer::doSelectOne($c);
+	return $result->getData();
   }  
 }
 ?>

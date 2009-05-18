@@ -86,6 +86,8 @@ foreach($coords_content as $coords_line){
 
 $arr_gruppi=array();
 
+$people_node = $xml->addChild('people');
+
 // produzione XML
 foreach($coords_content as $coords_line){
 
@@ -100,7 +102,7 @@ foreach($coords_content as $coords_line){
   list($dummy, $gruppo_id) = explode(":", $gruppo_field);
   
 	
-	$person_node = $xml->addChild('person');
+	$person_node = $people_node->addChild('person');
 	$id_node = $person_node->addChild('id',$id);
 	$group_node = $person_node->addChild('groupid',$gruppo_id);
 	if (!in_array($gruppo_id, $arr_gruppi)) $arr_gruppi[]=$gruppo_id;
@@ -113,6 +115,7 @@ foreach($coords_content as $coords_line){
 	                                           norm($z, $XY_MAX, $xy_max), 
 	                                           $nome, $cognome, $gruppo_id, $id);
 }
+$groups_node = $xml->addChild('groups');
 
 $c = new Criteria();
 $c->add(OppGruppoPeer::ID,$arr_gruppi,Criteria::IN);
@@ -120,7 +123,7 @@ $c->addAscendingOrderByColumn(OppGruppoPeer::ID);
 $gruppi=OppGruppoPeer::doSelect($c);
 
 foreach ($gruppi as $gruppo) {
-   $group_node = $xml->addChild('group');
+   $group_node = $groups_node->addChild('group');
    $id_group = $group_node->addChild('id',$gruppo->getId());
    $name_group = $group_node->addChild('name',$gruppo->getAcronimo());
 }   

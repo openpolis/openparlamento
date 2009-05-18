@@ -12,11 +12,27 @@ class staticActions extends sfActions
 {
   public function executeProgetto()
   {
-  $this->getResponse()->setTitle('il progetto | '.sfConfig::get('app_main_title'));
+  $this->getResponse()->setTitle('il progetto | '.sfConfig::get('app_main_title')); 
   }
   public function executeFaq()
   {
   $this->getResponse()->setTitle('faq | '.sfConfig::get('app_main_title'));
+  }
+  public function executeRegolamento()
+  {
+  $this->getResponse()->setTitle('regolamento | '.sfConfig::get('app_main_title'));
+  }
+  public function executeCondizioni()
+  {
+  $this->getResponse()->setTitle('condizioni d\'uso | '.sfConfig::get('app_main_title')); 
+  }
+  public function executeInformativa()
+  {
+  $this->getResponse()->setTitle('informativa sui dati personali | '.sfConfig::get('app_main_title')); 
+  }
+  public function executeRssxml()
+  {
+  $this->getResponse()->setTitle('rss/xml | '.sfConfig::get('app_main_title')); 
   }
   
 }

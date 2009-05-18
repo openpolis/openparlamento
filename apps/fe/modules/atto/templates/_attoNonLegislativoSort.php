@@ -6,14 +6,44 @@
     <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'data_pres'): ?>
         <?php echo link_to('data presentazione', '@attiNonLegislativi?sort=data_pres&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
-	  <?php else: ?>
+      <?php else: ?>
         <?php echo link_to('data presentazione', '@attiNonLegislativi?sort=data_pres&type=asc') ?>
       <?php endif; ?>
-	</li>		
-    <li><a href="#">ultimo aggiornamento</a></li>
-    <li><a href="#">interventi</a></li>			
-    <li><a href="#">utenti favorevoli</a></li>
-    <li><a href="#">utenti contrari</a></li>
-    <li><a href="#">commenti</a></li>	
+    </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'stato_last_date'): ?>
+        <?php echo link_to('ultimo aggiornamento', '@attiNonLegislativi?sort=stato_last_date&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('ultimo aggiornamento', '@attiNonLegislativi?sort=stato_last_date&type=asc') ?>
+      <?php endif; ?>
+    </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'n_interventi'): ?>
+        <?php echo link_to('interventi', '@attiNonLegislativi?sort=n_interventi&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('interventi', '@attiNonLegislativi?sort=n_interventi&type=asc') ?>
+      <?php endif; ?>
+    </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'ut_fav'): ?>
+        <?php echo link_to('utenti favorevoli', '@attiNonLegislativi?sort=ut_fav&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('utenti favorevoli', '@attiNonLegislativi?sort=ut_fav&type=asc') ?>
+      <?php endif; ?>
+    </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'ut_contr'): ?>
+        <?php echo link_to('utenti contrari', '@attiNonLegislativi?sort=ut_contr&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('utenti contrari', '@attiNonLegislativi?sort=ut_contr&type=asc') ?>
+      <?php endif; ?>
+    </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_atto/sort') == 'nb_commenti'): ?>
+        <?php echo link_to('commenti', '@attiNonLegislativi?sort=nb_commenti&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_atto/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('commenti', '@attiNonLegislativi?sort=nb_commenti&type=asc') ?>
+      <?php endif; ?>
+    </li>
   </ul>
 </div>

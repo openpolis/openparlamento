@@ -16,7 +16,7 @@ preview del grafico delle distanze
 	 </h4>			
 	 <h3>
          <strong>Intervieni</strong>, <strong>organizzati</strong> e<br />
-	 <strong>monitora</strong>. Ti riguarda, <strong>ci riguarda</strong>.
+	 <strong>monitora</strong>. Ti riguarda, <strong>ci riguarda</strong>. 
 	 </h3>
       </div>
       <div class="clear-both"></div>
@@ -25,10 +25,8 @@ preview del grafico delle distanze
      <div id="main">
        <div class="W45_100 float-right">
             <!-- Box rotazione parlamentari -->
-            <div class="section-box"> 
-            <h3>i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
-            </div> 
-            <?php echo include_partial('boxparlamentari',array('parlamentari' => $parlamentari, 'cosa' => $cosa, 'nome_carica' => $nome_carica)); ?>
+            
+            <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
 		
 	    <div class="clear-both"></div>
 	    

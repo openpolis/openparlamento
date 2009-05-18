@@ -158,17 +158,19 @@ class parlamentareComponents extends sfComponents
        
   }
   
-  public function executeTendinaDeputati()
+  public function executeTendinaParlamentari()
     {  
-    
+        if ($this->ramo==1) $this->tipo_carica=1;
+        else $this->tipo_carica=4;
+        
         $c = new Criteria();
 	$c->clearSelectColumns();
-	$c->addSelectColumn(OppCaricaPeer::ID);
+	$c->addSelectColumn(OppPoliticoPeer::ID);
 	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
 	$c->addSelectColumn(OppPoliticoPeer::NOME);   
-        $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+        $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
         $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-        $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+        $c->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica, Criteria::EQUAL);
         $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL); 
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->parlamentari = OppCaricaPeer::doSelectRS($c);

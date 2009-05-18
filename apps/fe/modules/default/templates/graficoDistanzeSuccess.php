@@ -268,7 +268,7 @@ function AC_GetArgs(args, ext, srcParamName, classid, mimeType){
       default:
         ret.embedAttrs[args[i]] = ret.params[args[i]] = args[i+1];
     }
-  }
+  } 
   ret.objAttrs["classid"] = classid;
   if (mimeType) ret.embedAttrs["type"] = mimeType;
   return ret;
@@ -286,15 +286,26 @@ function AC_GetArgs(args, ext, srcParamName, classid, mimeType){
 
 <div id="content" class="tabbed float-container">
 <div>
-<p style="padding:5px;">
-Testo di spiegazione del grafico Testo di spiegazione del grafico Testo di spiegazione del grafico Testo di spiegazione del grafico Testo di spiegazione del grafico
+<p style="padding:10px; font-size:14px;">
+Il grafico mostra le distanze tra i <?php echo ($tipo=="votes_16_C" ? 'deputati' : 'senatori') ?> ricavate confrontando i voti espressi nelle  
+<?php if ($tipo=="votes_16_C") : ?>
+   <b><?php echo OppVotazionePeer::doSelectCountVotazioniPerPeriodo('','','16','C') ?> votazioni elettroniche d'aula finora svolte (ultima votazione del <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>).</b>
+<?php else : ?>
+   <b><?php echo OppVotazionePeer::doSelectCountVotazioniPerPeriodo('','','16','S') ?> votazioni elettroniche d'aula finora svolte (ultima votazione del <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>).</b>
+<?php endif; ?>   
+<br />Si vuole mostrare quali <?php echo ($tipo=="votes_16_C" ? 'deputati' : 'senatori') ?> tra di loro sono vicini e quali lontani.
+Un calcolo non ideologico, che parte da dati oggettivi: i voti d'aula effettivi espressi da ciascuno.<br />
+Naturalmente il grafico mostra solo un'approssimazione, seppur affidabile, delle distanze.
+Il grafico <b>non mostra</b> quali sono i <?php echo ($tipo=="votes_16_C" ? 'deputati' : 'senatori') ?> di destra e di sinistra, quelli liberali e quelli statalisti.<br />
+In questo caso destra/sinistra, in alto/in basso non hanno alcun significato. <b>Conta soltanto la distanza di ogni <?php echo ($tipo=="votes_16_C" ? 'deputato' : 'senatore') ?> dagli altri!</b>
 </p>
+<?php $swfname = $tipo == "votes_16_S" ? "/swf/DistanceGraph_S" : "/swf/DistanceGraph_C" ?>
 <script language="JavaScript" type="text/javascript">
 	AC_FL_RunContent(
 		'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0',
 		'width', '900',
 		'height', '700',
-		'src', '/swf/DistanceGraph',
+		'src', '/swf/DistanceGraph<?php echo($swfname) ?>',
 		'quality', 'high',
 		'pluginspage', 'http://www.adobe.com/go/getflashplayer',
 		'align', 'middle',
@@ -309,7 +320,7 @@ Testo di spiegazione del grafico Testo di spiegazione del grafico Testo di spieg
 		'menu', 'true',
 		'allowFullScreen', 'false',
 		'allowScriptAccess','sameDomain',
-		'movie', '/swf/DistanceGraph',
+		'movie', '<?php echo($swfname) ?>',
 		'salign', ''
 		); //end AC code
 </script>
@@ -317,11 +328,9 @@ Testo di spiegazione del grafico Testo di spiegazione del grafico Testo di spieg
 	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="900" height="700" id="DistanceGraph" align="middle">
 	<param name="allowScriptAccess" value="sameDomain" />
 	<param name="allowFullScreen" value="false" />
-	<param name="movie" value="/swf/DistanceGraph.swf" /><param name="quality" value="high" /><param name="wmode" value="gpu" /><param name="bgcolor" value="#ffffff" />	<embed src="/swf/DistanceGraph.swf" quality="high" wmode="gpu" bgcolor="#ffffff" width="900" height="700" name="DistanceGraph" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" />
+	<param name="movie" value="<?php echo($swfname) ?>.swf" /><param name="quality" value="high" /><param name="wmode" value="gpu" /><param name="bgcolor" value="#ffffff" />	<embed src="<?php echo($swfname) ?>.swf" quality="high" wmode="gpu" bgcolor="#ffffff" width="900" height="700" name="DistanceGraph" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" />
 	</object>
 </noscript>
-
-<?php echo $tipo ?>
 
 
   </div>

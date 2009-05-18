@@ -170,28 +170,28 @@ class attoActions extends sfActions
 
     $this->processDisegnoListSort();
 
-	  if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    if ($this->hasRequestParameter('itemsperpage'))
+    $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
 
-	  $this->addFiltersCriteria($c);    
-	  $this->addDisegnoListSortCriteria($c);
+    $this->addFiltersCriteria($c);    
+    $this->addDisegnoListSortCriteria($c);
 
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
-  	$this->pager->setCriteria($c);
+    $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
+    $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
 
     // estrazione data ultimo aggiornamento
     $c = new Criteria();
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
-  	$this->last_updated_item = OppAttoPeer::doSelectOne($c);      
+    $c->addDescendingOrderByColumn(OppAttoPeer::DATA_AGG);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, 1, Criteria::EQUAL);
+    $this->last_updated_item = OppAttoPeer::doSelectOne($c);      
    
   }
 
@@ -206,7 +206,7 @@ class attoActions extends sfActions
 
     if (!$this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
     {
-	    $this->session->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
       $this->session->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
     }
   }
@@ -265,8 +265,9 @@ class attoActions extends sfActions
     }
 
 
-    // $this->processDecretoListSort(); ?
+    $this->processDecretoListSort();
     
+
     
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -274,11 +275,12 @@ class attoActions extends sfActions
 
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
-	  $this->addFiltersCriteria($c);    
+    $this->addFiltersCriteria($c);    
+    $this->addDecretoListSortCriteria($c);
 
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
-  	$this->pager->setCriteria($c);
+    $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, 12, Criteria::EQUAL);
+    $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
     $this->pager->init();
@@ -290,6 +292,38 @@ class attoActions extends sfActions
   	$this->last_updated_item = OppAttoPeer::doSelectOne($c);    
     
   }
+
+  protected function processDecretoListSort()
+  {
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->session->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
+    }
+
+    if (!$this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $this->session->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
+    }
+  }
+  
+  protected function addDecretoListSortCriteria($c)
+  {
+    if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $sort_column = OppAttoPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->session->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
+  }
+ 
   
   /**
   * Executes Decreto legislativo list action
@@ -328,16 +362,19 @@ class attoActions extends sfActions
       $this->redirect('@attiDecretiLegislativi');
     }
     
+    $this->processDecretoLegislativoListSort();
+
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
     
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);
     $c = new Criteria();
-	  $this->addFiltersCriteria($c);    
-  	$c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
-  	$c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
-  	$this->pager->setCriteria($c);
+    $this->addFiltersCriteria($c);    
+    $this->addDecretoLegislativoListSortCriteria($c);
+    $c->addDescendingOrderByColumn(OppAttoPeer::DATA_PRES);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, $decreti_legislativi_ids, Criteria::IN);
+    $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinOppTipoAtto');
     $this->pager->init();
@@ -350,6 +387,38 @@ class attoActions extends sfActions
     
   }
   
+  protected function processDecretoLegislativoListSort()
+  {
+    if ($this->getRequestParameter('sort'))
+    {
+      $this->session->setAttribute('sort', $this->getRequestParameter('sort'), 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', $this->getRequestParameter('type', 'asc'), 'sf_admin/opp_atto/sort');
+    }
+
+    if (!$this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $this->session->setAttribute('sort', 'data_pres', 'sf_admin/opp_atto/sort');
+      $this->session->setAttribute('type', 'desc', 'sf_admin/opp_atto/sort');
+    }
+  }
+  
+  protected function addDecretoLegislativoListSortCriteria($c)
+  {
+    if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_atto/sort'))
+    {
+      $sort_column = OppAttoPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->session->getAttribute('type', null, 'sf_admin/opp_atto/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
+  }
+
+   
   /**
   * Executes Atto non legislativo list action
   *
@@ -629,19 +698,55 @@ class attoActions extends sfActions
 	//titolo del wiki
 	switch($this->atto->getTipoAttoId())
     {
-	  case '1':
-	    $this->titolo_wiki = "cosa sono i disegni di legge";  
+      case '1':
+	$this->titolo_wiki = "cosa sono i disegni di legge";  
         break;
+      case '2':
+	$this->titolo_wiki = "cosa sono le mozioni";  
+        break;
+      case '3':
+	$this->titolo_wiki = "cosa sono le interpellanze";  
+        break;      
+      case '4':
+	$this->titolo_wiki = "cosa sono le interrogazioni a risposta orale";  
+        break;   
+      case '5':
+	$this->titolo_wiki = "cosa sono le interrogazioni a risposta scritta";  
+        break;   
+      case '6':
+	$this->titolo_wiki = "cosa sono le interrogazioni in commissione";  
+        break; 
+      case '7':
+	$this->titolo_wiki = "cosa sono le risoluzioni in assemblea";  
+        break;
+      case '8':
+	$this->titolo_wiki = "cosa sono le risoluzioni in commissione";  
+        break;
+      case '9':
+	$this->titolo_wiki = "cosa sono le risoluzioni conclusive";  
+        break;
+      case '10':
+	$this->titolo_wiki = "cosa sono gli ordini del giorno in assemblea";  
+        break;  
+      case '11':
+	$this->titolo_wiki = "cosa sono gli ordini del giorno in commissione";  
+        break;                       
       case '12': 
         $this->titolo_wiki = "cosa sono i decreti legge";  
         break;
+      case '13': 
+        $this->titolo_wiki = "cosa sono i comunicati del governo";  
+        break;
+      case '14': 
+        $this->titolo_wiki = "cosa sono le audizioni";  
+        break;    
       case '15':
       case '16':
       case '17':
         $this->titolo_wiki = "cosa sono i decreti legislativi";  
         break;
-      default: 
-        $this->titolo_wiki = "cosa sono gli atti non legislativi";  
+      default:
+        $this->titolo_wiki = "";  
         break;
     }      
   }

@@ -55,15 +55,25 @@ class parlamentareActions extends sfActions
       $this->session->getAttributeHolder()->removeNamespace('votes_filter');
       $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_voti/sort');
 
-
+      $c= new Criteria();
+      $c->addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
+      
       if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
       if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
       $this->ramo = $ramo=='C' ? 'camera' : 'senato';
       if ($this->ramo=='camera')
+      {
          $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
+         $c->add(OppSedutaPeer::RAMO,'C');
+      }   
       else
+      {
          $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
-
+         $c->add(OppSedutaPeer::RAMO,'S');
+      }
+      $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+      $result=OppSedutaPeer::doSelectOne($c);
+      $this->ultima_votazione=$result->getData();
       $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
       $this->presenze = $this->carica->getPresenze();
@@ -101,6 +111,15 @@ class parlamentareActions extends sfActions
 
       $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
+      
+      // altre cariche
+      $xml= simplexml_load_file("http://www.openpolis.it/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
+      $this->descrizione_cariche=array();
+      if ($xml)
+      {
+          $this->descrizione_cariche = $xml->xpath("//description"); 
+      }
+      
     
     }   
     
@@ -713,13 +732,15 @@ class parlamentareActions extends sfActions
     }
   }
   
-  public function executeComparaParlamentari()
+  public function executeComparaDeputati()
   {
-      if ($this->hasRequestParameter('id1') && $this->hasRequestParameter('id2'))
+      	  
+      if ($this->hasRequestParameter('id1') && $this->hasRequestParameter('id2') && $this->hasRequestParameter('ramo'))
        {
+        $this->ramo=$this->getRequestParameter('ramo');
         if ($this->getRequestParameter('id1')!=0 && $this->getRequestParameter('id2')!=0)
          {
-      
+           $this->getResponse()->setTitle('parlamentari a confronto - '.sfConfig::get('app_main_title'));
 	  $this->session = $this->getUser();
           $this->query = $this->getRequestParameter('query', '');
           
@@ -728,22 +749,27 @@ class parlamentareActions extends sfActions
           $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
          
-          $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
+          $this->pager = new sfPropelPager('OppVotazione', $itemsperpage); 
           
+          // estrae le cariche dei due parlamentari 
+          $politico=OppPoliticoPeer::retrieveByPk($this->getRequestParameter('id1'));
+          $carica1=$politico->getCaricaDepSenCorrente();
+         
+          $politico=OppPoliticoPeer::retrieveByPk($this->getRequestParameter('id2')); 
+          $carica2=$politico->getCaricaDepSenCorrente();
+         
           
-
-	  
           $c1= new Criteria();
 	  $c1->add(OppVotazioneHasCaricaPeer::VOTO,array('Favorevole','Contrario','Astenuto'),Criteria::IN);
-	  $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,array($this->getRequestParameter('id1'),$this->getRequestParameter('id2')),Criteria::IN);
+	  $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,array($carica1->getId(),$carica2->getId()),Criteria::IN);
 	  $results=OppVotazioneHasCaricaPeer::doSelect($c1);
 	  
 	  $arr1=array();
 	  $arr2=array();
 	  foreach ($results as $result) {
-		if ($result->getCaricaId()==$this->getRequestParameter('id1'))
+		if ($result->getCaricaId()==$carica1->getId())
 		    $arr1[$result->getVotazioneId()]=$result->getVoto();
-		else
+		else 
 		    $arr2[$result->getVotazioneId()]=$result->getVoto();    
 	  }
 	
@@ -761,21 +787,12 @@ class parlamentareActions extends sfActions
  	  $this->arr1=$arr1;
  	  $this->arr2=$arr2;
  	  
- 	  $c1= new Criteria();
- 	  $c1->add(OppCaricaPeer::ID,$this->getRequestParameter('id1'));
- 	  $parlamentare1=OppCaricaPeer::doSelectOne($c1);
- 	  if ($parlamentare1) {
- 	  	$this->parlamentare1=$parlamentare1;
- 	  	$this->assenze1=round($parlamentare1->getAssenze()*100/($parlamentare1->getPresenze()+$parlamentare1->getAssenze()+$parlamentare1->getMissioni()),1);
- 	  }
+
+ 	  $this->parlamentare1=$carica1;
+ 	  $this->assenze1=round($carica1->getAssenze()*100/($carica1->getPresenze()+$carica1->getAssenze()+$carica1->getMissioni()),1);
  	  
- 	  $c1= new Criteria();
- 	  $c1->add(OppCaricaPeer::ID,$this->getRequestParameter('id2'));
- 	  $parlamentare2=OppCaricaPeer::doSelectOne($c1);
- 	  if ($parlamentare2) {
- 	  	$this->parlamentare2=$parlamentare2;
- 	  	$this->assenze2=round($parlamentare2->getAssenze()*100/($parlamentare2->getPresenze()+$parlamentare2->getAssenze()+$parlamentare2->getMissioni()),1);
- 	  }	
+ 	  $this->parlamentare2=$carica2;
+ 	  $this->assenze2=round($carica2->getAssenze()*100/($carica2->getPresenze()+$carica2->getAssenze()+$carica2->getMissioni()),1);
  	  
 	  
  	  $this->compara_ok='1';
@@ -783,10 +800,31 @@ class parlamentareActions extends sfActions
  	  
  	  
  	}
- 	else $this->compara_ok='0';
+ 	else 
+ 	{
+ 	  $this->compara_ok='0';
+ 	  $this->parlamentare1=null;
+ 	}  
  	
       } 
+
+  if ($this->getRequest()->getMethod() != sfRequest::POST)
+  {
+    // Display the form
+    return sfView::SUCCESS;
   }
+  else
+  {
+    // Handle the form submission
+    $parlamentare1=$this->getRequestParameter('parlamentare1');
+    $parlamentare2=$this->getRequestParameter('parlamentare2');
+    $ramo=$this->getRequestParameter('ramo');
+    if ($ramo==1)
+      $this->redirect('/parlamentare/comparaDeputati/?id1='.$parlamentare1.'&id2='.$parlamentare2.'&ramo=1'); 
+    else
+      $this->redirect('/parlamentare/comparaDeputati/?id1='.$parlamentare1.'&id2='.$parlamentare2.'&ramo=2');    
+  }
+ }
   
   
 }

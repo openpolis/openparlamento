@@ -344,6 +344,7 @@ jQuery.extend( jQuery.easing,
 					str = str.slice( start, end + 1 );
 				*/
 					str = str.replace(/\ {2,}/g,' ');
+					str = str.replace(/^\ */,'');
 					node.nodeValue = str;
 				}
 			} else if(deep && node.nodeType == 1) {

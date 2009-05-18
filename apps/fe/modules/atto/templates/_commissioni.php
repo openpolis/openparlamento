@@ -5,11 +5,13 @@
 <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">
-      <?php echo link_to('approfondisci su<br />'.image_tag('ico-wikipedia.png', array('alt' => 'wikipedia').'<strong>Wikipedia</strong>'), '#') ?>
+      <?php echo link_to('approfondisci su<br />'.image_tag('ico-wikipedia.png', array('alt' => 'wikipedia').'<strong>Wikipedia</strong>'), 'http://it.wikipedia.org/wiki/Commissione_parlamentare') ?>
 	</div>
     <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close action')) ?>
     <h5>cosa sono le commissioni ?</h5>
-    <p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+    <p>La <b>Commissione in sede referente</b> di norma esamina un disegno di legge e ne prepara il testo per la successiva discussione nell'Aula (o Assemblea) della Camera o del Senato. Al termine dell'esame la Commissione approva il testo e nomina un relatore che riferir&agrave; all'Assemblea (di qui "sede referente") cio&egrave; presenter&agrave; il testo e il lavoro svolto (approfondisci su <a href="http://it.wikipedia.org/wiki/Commissione_parlamentare#Commissione_in_sede_referente">Wikipedia</a>).<br />
+       La <b>Commissione in sede redigente</b> si occupa non solo di esaminare il testo di un disegno di legge (DDL) - come avviene di norma - ma anche di redigere e approvare uno ad uno gli articoli di cui si compone. In questo modo la procedura &egrave; pi&ugrave; breve perch&egrave; poi in Aula (o Assemblea) al Senato e alla Camera si procede speditamente alla votazione finale. (approfondisci su <a href="http://it.wikipedia.org/wiki/Commissione_parlamentare#Commissione_in_sede_redigente">Wikipedia</a>).<br />
+       La <b>Commissione in sede deliberante</b> (legislativa), in alcuni casi sempre pi&ugrave; rari, pu&ograve; essere incaricata non solo di elaborare il testo di un disegno di legge - DDL - (come avviene di norma) ma anche di approvarlo definitivamente. In questi casi la Commissione si dice legislativa o deliberante perch&egrave; fa la legge senza passare per l'Aula (Assemblea) della Camera o del Senato. (approfondisci su <a href="http://it.wikipedia.org/wiki/Commissione_parlamentare#Commissione_in_sede_legislativa_.28o_deliberativa.29">Wikipedia</a>).</p>
   </div>
 </div>
 

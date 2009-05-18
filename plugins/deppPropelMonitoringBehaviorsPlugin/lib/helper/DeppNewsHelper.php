@@ -371,8 +371,8 @@ function news_text($news,$context=1)
         if ($news->getRamoVotazione()=='S') $news_string .= ' al Senato ';
       }
       $news_string .= "il " . $news->getDataPresentazioneAtto('d/m/Y') . " ";
-      $news_string .= "&egrave; stat".($gender=='m'?'o':'a'). " associat".($gender=='m'?'o':'a'). " all'argomento ";
-      $news_string .= $generator->getTag()->getTripleValue();
+      $news_string .= "&egrave; stat".($gender=='m'?'o':'a'). " <b>associat".($gender=='m'?'o':'a'). " all'argomento ";
+      $news_string .= $generator->getTag()->getTripleValue()."</b>";
     }
     
     else if ($generator_model == 'OppDocumento')
