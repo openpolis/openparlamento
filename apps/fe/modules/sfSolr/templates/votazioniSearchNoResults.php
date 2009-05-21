@@ -20,7 +20,7 @@
       	  <div class="W100_100 float-left" style="margin-bottom: 20px">
 
             <h2></h2>
-            <p style="height: 300px; margin-top: 50px; margin-left: auto; margin-right: auto; font-size: 14px; font-weight: bold">La tua ricerca del termine <em><?php echo $query ?></em> nelle votazioni non ha prodotto alcun risultato</p>
+            <p style="height: 100px; margin-top: 20px; margin-left: auto; margin-right: auto; font-size: 16px; font-weight: bold">La tua ricerca del termine <em><?php echo $query ?></em> nelle votazioni non ha prodotto alcun risultato</p>
 
           </div>
         </div>

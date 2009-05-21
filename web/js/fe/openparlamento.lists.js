@@ -86,11 +86,16 @@ $(document).ready(function(){
 		}
 	);
 	
+	// Cambio del numero di risultati per pagina
+	$('#itemsperpage').change(function(){
+		$(this).parent().get(0).submit();
+	});
+
 
 	// mostra tasto applica al cambio filtri
 	$('#disegni-decreti-filter select').change( function() { $('#disegni-decreti-filter-apply').show(); } );
-	
-	
+
+		
 	$('#disegni-decreti-order a').click(
 		function(){
 			var $this = $(this)
@@ -106,6 +111,9 @@ $(document).ready(function(){
 		}
 	);
 	if($.browser.mozilla || $.browser.msie) {
+
+
+	    function initComboBox() {
 		$('#disegni-decreti-filter select').combobox(
 			{
 				comboboxContainerClass: "comboboxContainer",
@@ -123,6 +131,21 @@ $(document).ready(function(){
 			},
 			function() { $('#disegni-decreti-filter-apply').show(); }
 		);
+		$('.comboboxValueContainer').css({width: '130px',height: '23px'});
+		$('.comboboxValueContent').css({top: '5.5px'});
+
+		// evidenzia combobox se filtro attivo
+		$('#disegni-decreti-filter option:first-child').each(
+			function(i) {
+		 		if(!this.selected){
+				$(this.parentNode.parentNode).find('.comboboxValueContent').css({color:'#00aa00','fontWeight':'bold'});
+				}
+			}
+		);
+
+
+	   }
+	   setTimeout(initComboBox, 100);
 	}
 			
 	$('#identity').pngFix();

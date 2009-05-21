@@ -12,12 +12,12 @@
 		</li>
     <li class="<?php echo($current=='voti' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php echo link_to('Come ha votato', $current=='voti'?'#':'@parlamentare_voti?id='.$parlamentare_id) ?>
+	      <?php echo link_to('I suoi voti', $current=='voti'?'#':'@parlamentare_voti?id='.$parlamentare_id) ?>
 		  </h5>
 		</li>
     <li class="<?php echo($current=='interventi' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php echo link_to('I suoi interventi parlamentari', $current=='interventi'?'#':'@parlamentare_interventi?id='.$parlamentare_id) ?>
+	      <?php echo link_to('I suoi interventi', $current=='interventi'?'#':'@parlamentare_interventi?id='.$parlamentare_id) ?>
 		 </h5>
 		</li>
 	</ul>

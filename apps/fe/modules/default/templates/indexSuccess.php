@@ -46,7 +46,7 @@ preview del grafico delle distanze
 	    <!-- Box attivita' utenti -->
             <div class="section-box">   
 		
-		<h3>le ultime dalla comunit&agrave;</h3>
+		<h3 class="section-box-no-rss">le ultime dalla comunit&agrave;</h3>
 		<ul>
 		  <?php foreach ($latest_activities as $activity): ?>
 		    <?php $news_text = community_news_text($activity); ?>
@@ -88,7 +88,7 @@ preview del grafico delle distanze
 	  <?php if (count($lanci)>0) : ?>
           <div class="section-box">
 	      
-			<h3>in evidenza dal parlamento</h3>				
+			<h3 class="section-box-no-rss">in evidenza dal parlamento</h3>				
 				<ul id="law-n-acts-proposals">
 				 <?php foreach ($lanci as $lancio) : ?>  
 				     <?php include_partial('lanci',array('lancio' => $lancio)); ?> 

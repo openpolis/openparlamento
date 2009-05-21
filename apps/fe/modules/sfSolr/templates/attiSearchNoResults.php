@@ -13,7 +13,7 @@
 
   	</div>
 
-    <div class="W73_100 float-left">
+ <div class="W73_100 float-left">
 
 
       <div class="tabbed float-container" id="content">
@@ -21,7 +21,7 @@
       	  <div class="W100_100 float-left" style="margin-bottom: 20px">
 
             <h2></h2>
-            <p style="height: 300px; margin-top: 50px; margin-left: auto; margin-right: auto; font-size: 14px; font-weight: bold">La tua ricerca del termine <em><?php echo $query ?></em>  <?php echo $title ?> non ha prodotto alcun risultato</p>
+            <p style="height: 100px; margin-top: 20px; margin-left: auto; margin-right: auto; font-size: 16px; font-weight: bold">La tua ricerca del termine <em><?php echo $query ?></em> non ha prodotto alcun risultato</p>
 
           </div>
         </div>
@@ -34,9 +34,6 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to('Home', '@homepage') ?> /
-  <?php echo link_to($pages_names[$type], $pages_routes[$type]) ?> / 
+  <?php echo link_to('Votazioni', '@votazioni') ?> / 
   Ricerca per <i><?php echo $query ?></i>
 <?php end_slot() ?>
-
-
-

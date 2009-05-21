@@ -82,8 +82,8 @@
            <?php endif; ?>    
            <?php include_partial('atti', array( 'voto_atti' => $voto_atti)) ?>  
        <?php endif; ?> 
-     
-      
+	 
+	 
       <!-- DESCRIZIONE -->
     	<h5 class="description">descrivi questa votazione:</h5>
     	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative a questa votazione</p>
@@ -105,6 +105,8 @@
       <?php include_partial('gruppi', array('votazione' => $votazione, 'risultati' => $risultati)) ?> 
       
      </div>  
+     
+    
       
       <?php if ($ribelli): ?>
       

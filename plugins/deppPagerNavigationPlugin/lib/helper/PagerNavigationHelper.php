@@ -136,7 +136,7 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
     
     // previous page
     if ($pager->getPage() != 1)
-      $navigation .= link_to('precedente', $uri.$pager->getPreviousPage()).'&nbsp;';
+      $navigation .= link_to('&lt;&lt;', $uri.$pager->getPreviousPage()).'&nbsp;';
     
     // first page
     if ($pager->getPage() >= $num_links-1 && $has_first_last)
@@ -174,7 +174,7 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
 
     // next page
     if ($pager->getPage() != $pager->getLastPage())
-      $navigation .= '&nbsp;'.link_to('successiva', $uri.$pager->getNextPage());
+      $navigation .= '&nbsp;'.link_to('&gt;&gt;', $uri.$pager->getNextPage());
       
 
     // goto page

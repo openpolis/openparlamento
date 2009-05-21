@@ -23,6 +23,9 @@ class sfSolrActions extends BasesfSolrActions
    * This allows to constrain the search, specifying filters (date, section, types of objects)
    * Categories 
    */
+  
+
+   
   public function executeAttiSearch()
   {
     // determine if the user pressed the "Advanced"  button

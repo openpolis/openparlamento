@@ -1,4 +1,13 @@
-﻿.comboboxContainer
+.comboboxContainer.selected .comboboxValueContainer
+{ 
+	background-position: 0 -23px;
+}
+.comboboxContainer.selected .comboboxDropDownButton{
+
+	background-position: -25px 0;
+}
+
+.comboboxContainer
 {
 	border: none;
 	font-family: Helvetica, Arial;	

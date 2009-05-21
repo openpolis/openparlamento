@@ -1,5 +1,5 @@
 <div class="section-box"> 
-            <h3>i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
+            <h3 class="section-box-no-rss">i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
             </div> 
 <table class="disegni-decreti column-table">
 <tbody>	
@@ -51,7 +51,6 @@
      
     </tr>
     
-   
 <?php endwhile; ?>    
  <tr>
  <td>&nbsp;</td>
@@ -61,27 +60,28 @@
     <?php if ($cosa==1) : ?>
         
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+        
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=presenze&type=desc' : '@parlamentari?ramo=senato&sort=presenze&type=desc') ?>
         </td>  
      <?php elseif ($cosa==2) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=assenza&type=desc' :'@parlamentari?ramo=senato&sort=assemze&type=desc') ?> 
         </td>  
      <?php elseif ($cosa==3) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=indice&type=desc' :'@parlamentari?ramo=senato&sort=indice&type=desc') ?>
         </td>  
      <?php elseif ($cosa==4) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=indice&type=asc' :'@parlamentari?ramo=senato&sort=indice&type=asc') ?>
         </td>  
      <?php elseif ($cosa==5) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+            
         </td>  
      <?php elseif ($cosa==6) : ?> 
         <td>
-           <?php echo link_to('vai alla classifica',($nome_carica='deputati') ? '' :'') ?>
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=ribelle&type=desc' :'@parlamentari?ramo=senato&sort=ribelle&type=desc') ?>
         </td>      
      <?php endif; ?> 
    <?php endif; ?>            

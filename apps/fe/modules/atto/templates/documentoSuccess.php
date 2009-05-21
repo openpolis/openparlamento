@@ -38,7 +38,7 @@
 
     </div>
 
-    <div class="clear-both"/></div>
+    <div class="clear-both"></div>
   </div>
 </div>
 

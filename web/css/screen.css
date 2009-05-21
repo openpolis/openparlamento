@@ -470,6 +470,7 @@ p.wiki-form-submit { margin-left: 20px;}
 
 .section-box { background: transparent url(../images/bg-section-header.png) no-repeat top left; }
 .section-box-rss { background: transparent url(../images/bg-section-header.png) no-repeat top right; float: right; padding: 12px 15px 0 0; }
+.section-box-no-rss { background: transparent url(../images/bg-section-header-no-rss.png) no-repeat top right; } 
 .section-box h3 { padding: 5px 12px; color: #4e8480; }
 .section-box h6 { padding: 10px 12px; color: #4e8480; }
 .section-box .date { color: #bebebe; font-size: 11px; font-weight: bold; margin-bottom: 4px; padding-left: 2px; }
@@ -542,7 +543,7 @@ img.prev-active, img.next-active { display: none; }
 #disegni-decreti-filter-apply { vertical-align: bottom; }
 #disegni-decreti-order a.ascending { background: #e5e7e8 url(../images/ico-arrow-asc.png) no-repeat center right; }
 #disegni-decreti-order a.descending { background: #e5e7e8 url(../images/ico-arrow-desc.png) no-repeat center right; }
-#disegni-decreti-filter.active { background: #eaebec;}
+/*#disegni-decreti-filter.active { background: #eaebec;}*/
 #disegni-decreti-filter { padding: 5px;}
 /*
  * SEARCH DDL
@@ -760,7 +761,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .pagenav { font-size: 16px; border: 1px solid #ee7f00; padding: 5px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; float: left; }
 
 .pagenav em { color: #ee7f00; font-weight: bold; font-size: 20px; }
-.pagenav label { color: #888; margin-left: 20px; }
+.pagenav label { color: #888; margin-left: 10px; }
 .pagenav.tools-container .pagenav-jumpto a { color: #888; }
 .pagenav.tools-container .pagenav-jumpto a:hover { color: #0066ff; }
 #itemsperpage { margin-right: 20px; }
@@ -915,6 +916,27 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .signers img {vertical-align: middle; border: 2px solid #e3e3e4; margin-right: 3px;}
 
 /*
+ * SEARCH RESULTS TABLE
+ *----------------------------------------------*/
+
+.search-results-table {
+	width: 100%;
+}
+
+.search-results-table td { text-align: left; border: 3px solid #fff; }
+.search-results-table td.odd{ background-color:#f2f2f2; }
+
+/*
+ * RESULTS METER BAR
+ *----------------------------------------------*/
+
+.results-meter { width: 240px; }
+.results-meter .results-meter-value { float: left; width: 30px; color: #42d372; text-align: right; padding-right: 5px; }
+.results-meter .results-meter-scale { float: left; width: 200px; height: 11px; background-color:#ddd; }
+.results-meter .results-meter-bar { background-color: #42d372; height: 11px; padding: 0; }
+
+
+/*
  * BLOG
  *------------------------------------------------*/
 #blog-posts { list-style-type: none; font-size: 12px; margin-bottom: 36px;}
@@ -991,7 +1013,7 @@ input.blur { color:#AAAAAA; }
 
 /*
  * FLOAT CONTAINER
- *----------------------------------------------*/
+ *----------------------------------------------*/ 
 
 .float-container:after {
     content: ".";
@@ -1008,7 +1030,7 @@ input.blur { color:#AAAAAA; }
 
 .search-controls input#query { width: 200px; height: 20px; font-size: 14px; color: #343434; border: 1px solid #333;}
 
-ul.monitoring-list { min-height: 30px;}
+ul.monitoring-list { min-height: 30px;} 
 li.top_term li a:hover { background-color: #ededed;}
 
 #tag_edit .ac_input {
@@ -1023,3 +1045,4 @@ li.top_term li a:hover { background-color: #ededed;}
 .tags span.remover:hover { cursor: pointer;}
 
 .sfWebDebugLogs td { text-align: left; }
+

@@ -1,4 +1,4 @@
-<table class="disegni-decreti column-table">
+<table class="disegni-decreti column-table"> 
   <thead>
     <tr>
   	<th scope="col">Gruppo</th>

@@ -2568,12 +2568,14 @@ jQuery.extend( jQuery.easing,
 		}
 		
 		if(startContainer != endContainer || startOffset != endOffset) {
-			return {startContainer: startContainer,
+			var sObj = {startContainer: startContainer,
 							endContainer: endContainer,
 							startOffset: startOffset,
 							endOffset: endOffset,
 							text: selectedText
 			}
+			console.log(sObj);
+			return sObj;
 		} else {
 			return null;
 		}
@@ -4428,9 +4430,9 @@ eMend.dataset.prototype = {
         }
 
 //=================================================
-//console.log("XcS.xpath: ",XcS.xpath,"XcE.xpath: ",XcE.xpath);
-//console.log("context start:",cS.nodeValue);
-//console.log("context end:",cE.nodeValue);
+//console.log("XcS.xpath: "+XcS.xpath+" XcE.xpath: "+XcE.xpath);
+//console.log("context start: "+cS.nodeValue);
+//console.log("context end: "+cE.nodeValue);
 //console.log("nodes: ",nodes.length);
 //=================================================
      
@@ -4442,14 +4444,18 @@ eMend.dataset.prototype = {
         }
         if(startNode == -1 || endNode == -1) continue; //skip filtered nodes
         
+//=================================================        
+//console.log('startNode: '+startNode);
+//console.log('endNode: '+endNode);
+//console.log('fragmentsMap.length: '+fragmentsMap.length);
+//=================================================
+        
         var startFragment = fragments[startNode];
         var endFragment = fragments[endNode];				
         var startFragmentMap = fragmentsMap[startNode];
         var endFragmentMap = fragmentsMap[endNode];
 
 //=================================================        
-//console.log('startNode:', startNode);
-//console.log('endNode:', endNode);
 //console.log('startFragmentMap', typeof startFragmentMap);
 //=================================================        
 
@@ -6291,6 +6297,7 @@ eMend.init = function($) {
     // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
 	document.body.normalize();	
 	$(document).cleanWhitespace(true);
+    document.body.normalize();
     
     // creates and attaches DATA and VISUAL containers
 	var DO = $('#eMend-DATA-Overlay').remove()[0] || $.create('div',{id:'eMend-DATA-Overlay', className:'hidden write-protect'})[0];

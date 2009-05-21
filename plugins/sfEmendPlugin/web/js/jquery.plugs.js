@@ -516,12 +516,14 @@ jQuery.extend( jQuery.easing,
 		}
 		
 		if(startContainer != endContainer || startOffset != endOffset) {
-			return {startContainer: startContainer,
+			var sObj = {startContainer: startContainer,
 							endContainer: endContainer,
 							startOffset: startOffset,
 							endOffset: endOffset,
 							text: selectedText
 			}
+			console.log(sObj);
+			return sObj;
 		} else {
 			return null;
 		}
