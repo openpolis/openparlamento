@@ -29,8 +29,8 @@ propel:
     pred:               { type: integer }
     succ:               { type: integer }
     voto_medio:         { type: float }
-    ut_fav:             { type: integer }
-    ut_contr:           { type: integer }
+    ut_fav:             { type: integer, required: true, default: 0 }
+    ut_contr:           { type: integer, required: true, default: 0 }
     nb_commenti:        { type: integer, required: true, default: 0 }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     n_interventi:       { type: integer, required: true, default: 0, index: multiple }
