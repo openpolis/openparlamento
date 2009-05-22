@@ -2522,12 +2522,14 @@ jQuery.extend( jQuery.easing,
 			  var nodeText = '';
 			  for(var i=0, len=Number(t.length); i<len; i++) {
 				tn = t[i].data.replace(/\s/g,' ');
-				pMatch = selectedText.substr(stL-tn.length).replace(/\s/g,' ');
+				tnL = tn.length;
+				pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
 
 				for(var j=i-1; tn == pMatch; j--) {
 				  tn = t[j].data.replace(/\s/g,' ') + tn;
+				  tnL = tn.length;
 				  //console.log(stL,tn.length);
-				  pMatch = selectedText.substr(stL-tn.length).replace(/\s/g,' ');
+				  pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
 
 				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 ) {
 				  console.log(tn)
