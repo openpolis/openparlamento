@@ -43,7 +43,36 @@ $.escapeReturns = function(text){
     return text;
 }
 
-})(jQuery);//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
+})(jQuery);(function($) {
+    $.fixOperaRangeSelectionBug = function ()
+    {
+        
+        function isNbsp(textNode)
+        {
+            if (textNode.nodeType != 3)
+                return false;
+            var pat = /\u00A0/;
+            return textNode.nodeValue.match(pat);
+        }    
+        
+        var brCollection = document.body.getElementsByTagName('br');
+        for (var num1 = 0;num1 < brCollection.length; num1++)
+        {
+            var br = brCollection[num1];
+            var prevSibling = br.previousSibling;
+            if (prevSibling != null)
+            {
+                var hasNbsp = isNbsp(prevSibling);
+                if (!hasNbsp)
+                {
+                    // insert the invisible non-breaking-whitespace
+                    br.parentNode.insertBefore(document.createTextNode('\u00A0'), br);
+                }
+            }
+        }
+    }
+})(jQuery);
+//This plugin is a workaround for an Opera >= 9.50 bug witch returns wrong window width and height sizes
 if(jQuery && jQuery.browser.opera && jQuery.browser.version >= 9.50) {
     var height_ = jQuery.fn.height;
     jQuery.fn.height = function() {
@@ -403,7 +432,7 @@ jQuery.extend( jQuery.easing,
   $.getSelection = function(reset) {
 		if (window.getSelection) {
 			var userSelection = window.getSelection();
-			if (userSelection.getRangeAt) {
+			if (false && userSelection.getRangeAt) {
 				var	r = userSelection.getRangeAt(0);
 			} else { // Safari!
 				var r = document.createRange();
@@ -432,7 +461,32 @@ jQuery.extend( jQuery.easing,
 			}
 			
 			if(endContainer.nodeType == 1) {
-			  endContainer = $(endContainer).textNodes(true)[endOffset-1];
+			  var t = $(endContainer).textNodes(true);
+			  var stL = selectedText.length;
+			  var pMatch = '', tmpMatch = '', idxMatch = -1;
+			  maxcount = 0;
+
+			  
+			  var nodeText = '';
+			  for(var i=0, len=Number(t.length); i<len; i++) {
+				tn = t[i].data.replace(/\s/g,' ');
+				pMatch = selectedText.substr(stL-tn.length).replace(/\s/g,' ');
+
+				for(var j=i-1; tn == pMatch; j--) {
+				  tn = t[j].data.replace(/\s/g,' ') + tn;
+				  //console.log(stL,tn.length);
+				  pMatch = selectedText.substr(stL-tn.length).replace(/\s/g,' ');
+
+				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 ) {
+				  console.log(tn)
+				  console.log(pMatch);				  					
+					console.log('>>>>>>>>>>>>>>>>>>>');
+				  }
+				}
+			  }
+
+			  
+			  endContainer = t[idxMatch];
 			  endOffset = endContainer.length;
 			}			
 			
@@ -522,7 +576,7 @@ jQuery.extend( jQuery.easing,
 							endOffset: endOffset,
 							text: selectedText
 			}
-			console.log(sObj);
+			//console.log(sObj);
 			return sObj;
 		} else {
 			return null;

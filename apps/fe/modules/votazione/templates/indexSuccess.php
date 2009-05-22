@@ -37,13 +37,13 @@
       <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>
     </div>
      <div style="padding: 5px">
-     <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#39aa2d;">FAVOREVOLI: <?php echo $votazione->getFavorevoli()." (".round($votazione->getFavorevoli()*100/$votazione->getPresenti(),1)."%)" ?></div>
+     <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#39aa2d;">FAVOREVOLI: <?php echo $votazione->getFavorevoli()." (".round($votazione->getFavorevoli()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
       <br />
-      <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#e10032;">CONTRARI: <?php echo $votazione->getContrari()." (".round($votazione->getContrari()*100/$votazione->getPresenti(),1)."%)" ?></div>
+      <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#e10032;">CONTRARI: <?php echo $votazione->getContrari()." (".round($votazione->getContrari()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
       <br />
-      <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px;">ASTENUTI: <?php echo $votazione->getAstenuti()." (".round($votazione->getAstenuti()*100/$votazione->getPresenti(),1)."%)" ?></div>
+      <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px;">ASTENUTI: <?php echo $votazione->getAstenuti()." (".round($votazione->getAstenuti()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
       <br />
-      <div style="background-color:white; padding:5px; font-weight:bold; font-size:14px;">voti di scarto: <?php echo $votazione->getMargine() ?></div>
+      <div style="background-color:white; padding:5px; font-weight:bold; font-size:14px;">voti di scarto: <?php echo $votazione->getMargine() ?></div> 
        <br />
        <?php if ($ribelli): ?>
           <div style="background-color:white; padding:5px; font-weight:bold; font-size:14px;">parlamentari ribelli: <a href="#ribelli"><?php echo $votazione->getRibelli() ?></a></div>

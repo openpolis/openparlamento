@@ -126,17 +126,17 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
   if ($pager->haveToPaginate())
   {  
     $navigation .= form_tag($uri, array("method" => "get", "class" => "pagenav tools-container", 
-                                      "style" => "margin: 20px 0; padding-right: 20px"));
+                                      "style" => "margin: 20px 0; padding-right: 3px"));
  
     $uri .= (preg_match('/\?/', $uri) ? '&' : '?').'page=';
 
-    $navigation .= content_tag('label', 'pagina: ');
+    $navigation .= content_tag('label', 'pag: ');
     
     $pagelinks = "";
     
     // previous page
     if ($pager->getPage() != 1)
-      $navigation .= link_to('&lt;&lt;', $uri.$pager->getPreviousPage()).'&nbsp;';
+      $navigation .= link_to(image_tag('/images/ico-prev.png',array('align'=>'absmiddle', 'alt'=>'pagine precedente')), $uri.$pager->getPreviousPage()).'&nbsp;';
     
     // first page
     if ($pager->getPage() >= $num_links-1 && $has_first_last)
@@ -174,22 +174,22 @@ function pager_navigation($pager, $uri, $has_first_last = true, $num_links = 0)
 
     // next page
     if ($pager->getPage() != $pager->getLastPage())
-      $navigation .= '&nbsp;'.link_to('&gt;&gt;', $uri.$pager->getNextPage());
+      $navigation .= '&nbsp;'.link_to(image_tag('/images/ico-next.png',array('align'=>'absmiddle', 'alt'=>'pagine successiva')), $uri.$pager->getNextPage());
       
 
     // goto page
-    $navigation .= content_tag('label', 'vai a pag.: ', array('for'=>'page'));
+    $navigation .= content_tag('label', 'vai: ', array('for'=>'page'));
     $navigation .= input_tag('page', $pager->getPage(), array('maxlength' => '5', 'size'=>'3', 'class' => 'input-text'));
-    $navigation .= submit_image_tag("ico-arrow-jump.png", array('name'=>'gotopage-go'));
+    $navigation .= submit_image_tag("ico-vai.png", array('name'=>'gotopage-go','style' =>'padding-left:3px;'));
 		
 		// items per page selector
     $navigation .= content_tag('label', 'mostra: ', array('for'=>'itemsperpage'));
     $navigation .= select_tag('itemsperpage', 
-                              options_for_select(array(15 => '15 elementi', 
-                                                       30 => '30 elementi', 
-                                                       60 => '60 elementi', 
-                                                       90 => '90 elementi', 
-                                                       150 => '150 elementi'),
+                              options_for_select(array(15 => '15 righe', 
+                                                       30 => '30 righe', 
+                                                       60 => '60 righe', 
+                                                       90 => '90 righe', 
+                                                       150 => '150 righe'),
                                                  $pager->getMaxPerPage()));
 
     $navigation .= "</form>";

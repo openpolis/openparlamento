@@ -338,7 +338,10 @@ function news_text($news,$context=1)
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
-      $news_string .= ' si &egrave; svolta la <strong>votazione finale</strong> relativa a';
+      if ($news->getPriority()==1) 
+           $news_string .= link_to(' <strong>si &egrave; svolta la votazione finale</strong>','/votazione/'.$generator->getOppVotazione()->getId())." relativa a";
+      else
+           $news_string .= " si &egrave; svolta la votazione per ".link_to($generator->getOppVotazione()->getTitolo(),'/votazione/'.$generator->getOppVotazione()->getId())."relativa a";     
       if ($context!=0)
       {
          $news_string .= " ".$tipo->getDescrizione() . " ";

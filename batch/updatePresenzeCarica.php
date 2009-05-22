@@ -85,6 +85,7 @@ foreach ($cariche as $carica) {
 	echo $carica->getOppPolitico()->getCognome()." pres. ".$pres." ass. ".$ass." miss. ".$miss."\n";
 }
 
+mail("e.dicesare@depp.it", "OK - Update Presenze", "aggiornamento a buon fine", "From: BatchOpp");
 
 ?>
 
