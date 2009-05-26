@@ -4,7 +4,7 @@ class myUser extends sfRemoteGuardSecurityUser
 {
   public function getToken()
   {
-    return md5($this->getAttribute('name', '', 'subscriber'));
+    return $this->getAttribute('hash', '', 'subscriber');
   }
   
   public function getFirstname()

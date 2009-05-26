@@ -19,7 +19,10 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 
 	  // legge i permission dall'xml user
     $permissions = array();
-    foreach ($xml_user->permissions->permission as $perm) $permissions[]=$perm;
+    foreach ($xml_user->permissions->permission as $perm) 
+    {
+      $permissions[] = (string)$perm;
+    }
 
 	  $this->setAttribute('subscriber_id', (string)$xml_user->subscriber_id, 'subscriber');
 	  
@@ -48,19 +51,14 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
   		                                                   $cookie_path, $cookie_domain);	    
 	  }
 	
+	  // default credential for subscribed users
 	  $this->addCredential('subscriber');
 	
-	  if (in_array('moderatore', $permissions))
-	  {
-	    $this->addCredential('moderator');
+	  // add all credentials from groups and direct permissions
+	  foreach ($permissions as $perm) {
+	    $this->addCredential((string)$perm);
 	  }
-	
-	  if (in_array('amministratore', $permissions))
-	  {
-	    $this->addCredential('moderator');
-	    $this->addCredential('administrator');
-	  }
-	
+	  
 	  $this->setAttribute('name', (string)$xml_user->name, 'subscriber');
 	  $this->setAttribute('firstname', (string)$xml_user->firstname, 'subscriber');
 	  $this->setAttribute('hash', (string)$xml_user->hash, 'subscriber');
@@ -76,7 +74,7 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
     
     // go home if something really wrong happens (could not write last_login to db)
     if (!$xml->ok instanceof SimpleXMLElement)
-      sfLogger::getInstance()->info('xxx: not ok: ' . (string)$xml->error);
+      sfLogger::getInstance()->info('xxx: last login set failed: ' . (string)$xml->error);
 	}
 	
 	public function __toString()

@@ -1,0 +1,10 @@
+default:
+  is_secure: off
+
+sottoscrizioniPro:
+  is_secure: on
+  credentials: subscriber
+  
+sottoscrizionePremium:
+  is_secure: on
+  credentials: subscriber

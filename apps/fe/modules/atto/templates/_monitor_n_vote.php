@@ -12,7 +12,6 @@
                                array('item' => $atto, 'item_type' => 'atto')); ?>
   <hr class="dotted" />			
 
-
   <h6>sei favorevole o contrario?</h6>
 
   <!-- blocco voting -->

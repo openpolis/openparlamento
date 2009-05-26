@@ -340,7 +340,7 @@ class NewsPeer extends BaseNewsPeer
     $c->add(self::RELATED_MONITORABLE_MODEL, $item_type);
     $c->add(self::RELATED_MONITORABLE_ID, $item_id);
     $c->add(self::GENERATOR_MODEL, 'Tagging', Criteria::NOT_EQUAL);
-
+    // $c->add(self::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
     return $c;
   }
 
@@ -364,6 +364,7 @@ class NewsPeer extends BaseNewsPeer
   {
     $c = new Criteria();
     $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
+    // $c->add(self::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
     
     // extracts all Attos tagged by the given tag
     $attos_ids = array();

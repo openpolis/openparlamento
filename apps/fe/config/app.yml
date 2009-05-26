@@ -13,6 +13,9 @@ all:
     default_adapter: GD # GD or ImageMagick
     default_image: { mime_type: image/jpeg, filename: Untitled.jpeg }
 
+  premium:
+    max_items: 15
+    max_tags: 5
   
   # cookies
   cookies:

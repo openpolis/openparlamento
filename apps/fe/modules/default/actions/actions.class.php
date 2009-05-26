@@ -29,6 +29,101 @@ class defaultActions extends sfActions
  
   }
 
+
+  public function executeSottoscrizioniPro()
+  {
+    # code...
+  }
+
+  public function executeSottoscrizionePremiumDemo()
+  {
+    if ($this->getUser()->hasCredential('premium'))
+      $this->redirect('@homepage');
+    
+    // processes the form if posted
+    if ($this->getRequest()->getMethod() == sfRequest::POST)
+    {
+        $this->redirect_to = $this->getUser()->getAttribute('page_before_buy', '@homepage');
+
+        // TODO: DB Storage for form data
+        
+        // richiesta di upgrade della sottoscrizione utente
+        $token = $this->getUser()->getToken();
+        $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+        if (sfConfig::get('sf_environment') == 'dev')
+          $controller = 'be_dev.php';
+        else
+          $controller = 'index.php';
+        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUserDemo/$token");
+
+        // show message if something really wrong happens (could not write last_login to db)
+        if (!$xml->ok instanceof SimpleXMLElement)
+        {
+          sfLogger::getInstance()->info('xxx: user promotion failed: ' . (string)$xml->error);
+          $this->error = (string)$xml->error;
+          return sfView::ERROR;
+        } else {
+          
+          // modify monitoring limits
+          $user = OppUserPeer::retrieveByPK($this->getUser()->getAttribute('subscriber_id', 0, 'subscriber'));
+          $user->setNMaxMonitoredItems(sfConfig::get('app_premium_max_items', 10));
+          $user->setNMaxMonitoredTags(sfConfig::get('app_premium_max_tags', 5));
+          $user->save();
+
+        }
+
+
+        // clean session variable and redirect
+        $this->getUser()->getAttributeHolder()->remove('page_before_buy');
+        $this->redirect($this->redirect_to);
+    }
+  }
+
+  public function handleErrorSottoscrizionePremiumDemo()
+  {
+    return sfView::SUCCESS;
+  }
+  
+
+  public function executeSottoscrizionePremium()
+  {
+    if ($this->getUser()->hasCredential('premium'))
+      $this->redirect('@homepage');
+    
+    // processes the form if posted
+    if ($this->getRequest()->getMethod() == sfRequest::POST)
+    {
+        // TODO: DB Storage for form data
+        
+        // richiesta di upgrade della sottoscrizione utente
+        $token = $this->getUser()->getPassword();
+        $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+        if (sfConfig::get('sf_environment') == 'dev')
+          $controller = 'be_dev.php';
+        else
+          $controller = 'index.php';
+        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUser/$token");
+
+        // go home if something really wrong happens (could not write last_login to db)
+        if (!$xml->ok instanceof SimpleXMLElement)
+          sfLogger::getInstance()->info('xxx: user promotion failed: ' . (string)$xml->error);
+
+        // clean session variable and redirect
+        $redirect_to = $this->getUser()->getAttribute('page_before_buy', '@homepage');
+        $this->getUser()->getAttributeHolder()->remove('page_before_buy');
+        $this->redirect($redirect_to);
+    }
+  }
+
+  public function handleErrorSottoscrizionePremium()
+  {
+    return sfView::SUCCESS;
+  }
+  
+
+  
+  
+  
   public function executeGraficoDistanze()
   {
     $this->tipo = $this->getRequestParameter('tipo');

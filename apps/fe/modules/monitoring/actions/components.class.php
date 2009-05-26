@@ -20,7 +20,23 @@ class monitoringComponents extends sfComponents
   public function executeManageItem()
   {
 
-    if ($this->item == 'atto' || $this->item == 'politico')
+    $this->item_model = get_class($this->item);
+    switch ($this->item_model)
+    {
+      case 'OppPolitico':
+        $this->item_type = 'politico';
+        break;
+      case 'OppAtto':
+        $this->item_type = 'atto';
+        break;
+      case 'Tag';
+        $this->item_type = 'argomento';
+        break;
+    }
+    
+    sfLogger::getInstance()->info('xxx: ' . $this->item_type);
+
+    if ($this->item_type == 'atto' || $this->item_type == 'politico')
       $this->nMonitoringUsers = $this->item->countAllMonitoringUsers();
     else
       $this->nMonitoringUsers = count($this->item->getMonitoringUsersPKs());
@@ -29,27 +45,9 @@ class monitoringComponents extends sfComponents
     {
       $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
       
-      if ($user->getNMaxMonitoredItems())
-      {
-        $monitored = $user->countMonitoredObjects('OppAtto') + $user->countMonitoredObjects('OppPolitico');
-        $this->remaining_items = $user->getNMaxMonitoredItems() - $monitored;
-      }
-      $this->item_model = get_class($this->item);
       $this->item_pk = $this->item->getPrimaryKey();
         
       $this->is_monitoring = $user->isMonitoring($this->item_model, $this->item_pk);
-      switch ($this->item_model)
-      {
-        case 'OppPolitico':
-          $this->item_type = 'politico';
-          break;
-        case 'OppAtto':
-          $this->item_type = 'atto';
-          break;
-        case 'Tag';
-          $this->item_type = 'argomento';
-          break;
-      }
     }
   }
   

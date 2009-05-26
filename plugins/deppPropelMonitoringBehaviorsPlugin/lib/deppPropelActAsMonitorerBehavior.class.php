@@ -56,6 +56,22 @@ class deppPropelActAsMonitorerBehavior
     return $monitored->removeMonitoringUser($this->getReferenceKey($user));
   }
 
+  /**
+   * Remove all monitoring on a class of objects previously monitored by a user
+   *
+   * @param BaseObject $user 
+   * @param string $object_model 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function removeAllMonitoredObjects(BaseObject $user, $object_model = null)
+  {
+    $monitored_objects = $this->getMonitoredObjects($user, $object_model);
+    foreach ($monitored_objects as $monitored) {
+      $removed = $monitored->removeMonitoringUser($this->getReferenceKey($user));
+    }
+    
+  }
 
   /**
    * Retrieve a list of pk's of object of a given type, monitored by the user

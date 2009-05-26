@@ -1,3 +1,16 @@
+sottoscrizioni_pro:
+  url: /sottoscrizioni_pro
+  param: { module: default, action: sottoscrizioniPro }
+
+sottoscrizione_premium_demo:
+  url: /sottoscrizione_premium_demo
+  param: { module: default, action: sottoscrizionePremiumDemo }
+  
+sottoscrizione_premium:
+  url: /sottoscrizione_premium
+  param: { module: default, action: sottoscrizionePremium }
+
+
 grafico_distanze:
   url: /grafico_distanze/:tipo
   param: { module: default, action: graficoDistanze, tipo: 'votes_16_C' }

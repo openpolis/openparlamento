@@ -29,7 +29,7 @@ jQuery(document).ready(function(){
     <?php echo image_tag('indicator.gif', array('id'=>'tag_removal_indicator', 'style' => 'display:none')) ?>
   </div>
 
-  <?php if ($sf_user->hasCredential('administrator')): ?>
+  <?php if ($sf_user->hasCredential('amministratore')): ?>
     <div id="tag_edit">
       Cerca tag: 
       <?php echo form_remote_tag(array(

@@ -6,15 +6,13 @@
   
     <?php if ($is_monitoring): ?>
       <h6 class="start-monitoring">
-        <?php echo link_to('interrompi il monitoraggio di questo contenuto' . 
-                             (isset($remaining_items)?' (ancora '.$remaining_items.' token)':''),
+        <?php echo link_to('interrompi il monitoraggio di questo contenuto',
                            'monitoring/removeItemFromMyMonitoredItems?item_model='.$item_model.'&item_pk='.$item_pk,
                            array('post' => true)) ?>
       </h6>
     <?php else: ?>
       <h6 class="stop-monitoring">
-        <?php echo link_to('avvia il monitoraggio per questo contenuto' . 
-                            (isset($remaining_items)?' (ancora '.$remaining_items.' token)':''),
+        <?php echo link_to('avvia il monitoraggio per questo contenuto',
                            'monitoring/addItemToMyMonitoredItems?item_model='.$item_model.'&item_pk='.$item_pk,
                            array('post' => true)) ?>
       </h6>

@@ -481,7 +481,12 @@ class monitoringActions extends sfActions
     $tag_name = $this->getRequestParameter('name');
     $tag = TagPeer::retrieveByTagname($tag_name);
 
-    $this->_addTagToMyMonitoredTags($tag, $opp_user);
+    // try to add tag to my monitored tags or redirect to buypage if limit reached
+    if ($this->_addTagToMyMonitoredTags($tag, $opp_user) == -1)
+    {
+        $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+        $this->redirect('@sottoscrizioni_pro');
+    }
 
     // a tag was added, clear the cache for the news, acts and tags page
     $cacheManager = $this->getContext()->getViewCacheManager(); 
@@ -509,7 +514,12 @@ class monitoringActions extends sfActions
     $tag_value = $this->getRequestParameter('tag_value');
     $tag = TagPeer::retrieveFirstByTripleValue($tag_value);
 
-    $this->_addTagToMyMonitoredTags($tag, $opp_user);
+    // try to add tag to my monitored tags or redirect to buypage if limit reached
+    if ($this->_addTagToMyMonitoredTags($tag, $opp_user) == -1)
+    {
+        $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+        $this->redirect('@sottoscrizioni_pro');
+    }
     
     // a tag was added, clear the cache for the news, acts and tags page
     $cacheManager = $this->getContext()->getViewCacheManager(); 
@@ -538,7 +548,7 @@ class monitoringActions extends sfActions
   {
     // check if the user can add a new tag to the monitored pool
     $remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
-    if ($remaining_tags == 0)
+    if ($remaining_tags <= 0)
       return -1;
 
     // add the tag to the monitorable pool
@@ -600,16 +610,23 @@ class monitoringActions extends sfActions
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     
     
-    // check limitations (unless unlimited (0))
-    if ($user->getNMaxMonitoredItems() != 0)
+    
+    
+    // check limitations (for non-adhoc subscribers)
+    if (!$this->getUser()->hasCredential('adhoc'))
     {
-      $this->remaining_items = $user->getNMaxMonitoredItems() - 
-                               $user->countMonitoredObjects('OppAtto') -
-                               $user->countMonitoredObjects('OppPolitico');
+      if ($this->item_model == 'OppAtto' || $this->item_model == 'OppPolitico')
+      {
+        $monitored = $user->countMonitoredObjects('OppAtto') + $user->countMonitoredObjects('OppPolitico');
+        $this->remaining_items = $user->getNMaxMonitoredItems() - $monitored;          
+      } else {
+        $monitored = $user->countMonitoredObjects('Tag');
+        $this->remaining_items = $user->getNMaxMonitoredTags() - $monitored;         
+      }
 
-      if ($this->remaining_items == 0){
-        $this->renderText('Hai raggiunto il numero massimo di oggetti monitorabili, acquistane di più!');
-        return sfView::NONE;
+      if ($this->remaining_items <= 0){
+        $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+        $this->redirect('@sottoscrizioni_pro');
       }      
     }
 

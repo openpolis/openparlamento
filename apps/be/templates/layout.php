@@ -28,7 +28,7 @@
     $module_name = $sf_context->getModuleName(); 
   ?>
   <!-- menu principale -->
-  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('administrator')): ?>
+  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <ul id="main_menu">
         <?php $cnt = 0; foreach($menu_items as $k=>$v): ?>
           <li <?php echo ($module_name==$k)?'class="selected"':'';?>><?php echo link_to($v, "/$k"); ?></li>

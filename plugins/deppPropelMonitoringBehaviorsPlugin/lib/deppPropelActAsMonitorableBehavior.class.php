@@ -73,8 +73,6 @@ class deppPropelActAsMonitorableBehavior
     $user->countMonitoredObjects(get_class($object), null, true);    
     $this->countMonitoringUsers($object, true);
 
-    // return the removed object
-    return $ret;
   }  
 
   /**
