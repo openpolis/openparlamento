@@ -451,6 +451,6 @@ div.jGrowl div.jGrowl-closer {
 div#jGrowl div.eMend-jGrowl { text-align: center; width: 235px; border: 5px solid #ff3d00; color: #333; background-color: #ff3d00; padding:0; margin-right: 0; opacity: 1; filter: alpha(opacity = 100); -moz-user-select: none; }
 div#jGrowl div.eMend-jGrowl input { vertical-align: middle; }
 div#jGrowl div.eMend-jGrowl label { color: #333; cursor: pointer; }
-.HOLbg img { display: block; margin-left: 50px; }
-.HOLbg h2 {font: 17px sans-serif; letter-spacing: -0.05px; color: #000; border:none;}
+.HOLbg img { display: block; margin: 0 0 0 50px; }
+.HOLbg h2.helpOnLine { font: 17px sans-serif; letter-spacing: -0.05px; color: #000; border:none; clear: both; padding:0; margin: 0;}
 div.jGrowl div.jGrowl-closer { width: 270px; visibility: none; background-color: #ff3d00; opacity: 1; filter: alpha(opacity = 100); color: #333;}

@@ -1674,7 +1674,7 @@ eMend.sidebar.prototype = {
         this.status = 'open';
 		window.setTimeout(function(){
 			$('#memefarmers').animate({bottom: "-20px"},1000, 'swing');
-		}, 3000)
+		}, 10000)
 	},
     
 	close: function() {

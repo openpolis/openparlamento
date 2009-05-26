@@ -364,17 +364,21 @@ jQuery.extend( jQuery.easing,
 				if(!/\S/.test(node.nodeValue)) {
 					element.removeChild(node);
 				} else {
-					var str = node.nodeValue;
-					str = str.replace(/[\t\n\r\f]/g,'');
-					/*
-					var start = -1, end = str.length;
-					while( str.charCodeAt(--end) < 33 );
-					while( str.charCodeAt(++start) < 33 );
-					str = str.slice( start, end + 1 );
-				*/
-					str = str.replace(/\ {2,}/g,' ');
-					str = str.replace(/^\ */,'');
-					node.nodeValue = str;
+					if(node.innerHTML) {
+					var str = node.innerHTML;
+						str = str.replace(/[\t\n\r\f]/g,'');						
+						str = str.replace(/\ {2,}/g,'&nbsp;');						
+						str = str.replace(/^\ */,'&nbsp;');
+						str = str.replace(/$\ */,'&nbsp;');						
+						node.innerHTML = str;
+					} else {
+					var str = node.nodeValue;						
+						str = str.replace(/[\t\n\r\f]/g,'');						
+						str = str.replace(/\ {2,}/g,'\u00A0');						
+						str = str.replace(/^\ */,'\u00A0');
+						str = str.replace(/$\ */,'\u00A0');
+						node.nodeValue = str;						
+					}	
 				}
 			} else if(deep && node.nodeType == 1) {
 				$(node).cleanWhitespace(deep);
@@ -432,7 +436,7 @@ jQuery.extend( jQuery.easing,
   $.getSelection = function(reset) {
 		if (window.getSelection) {
 			var userSelection = window.getSelection();
-			if (false && userSelection.getRangeAt) {
+			if (userSelection.getRangeAt) {
 				var	r = userSelection.getRangeAt(0);
 			} else { // Safari!
 				var r = document.createRange();
@@ -454,42 +458,62 @@ jQuery.extend( jQuery.easing,
 //console.log("startContainer: ",startContainer);
 //console.log("endContainer",endContainer);
 //=================================================  			
-			
+			/*
 			if(startContainer.nodeType == 1) {
 			  startContainer = $(startContainer).textNodes(true)[startOffset];
 			  startOffset = 0;
 			}
+			*/
 			
+			// fix for browsers giving endContainer.parent as result when selecting over a <br/> tag
 			if(endContainer.nodeType == 1) {
+			  var t = endContainer.childNodes;
+			  //console.log(t);
+			  var o = t[endOffset];
+			  if(o.tagName.toLowerCase() == "br") {
+				o = o.previousSibling;
+				if(o.nodeType == 1) {
+				 o = $(o).textNodes(true);
+				 endContainer = o[o.length-1];
+				 endOffset = endContainer.length;
+				}
+				
+				//console.log(endOffset,endContainer)
+			  }
+			  
+			  //console.log($(endContainer).textNodes(true));
+			  endOffset = endContainer.length-1;
+			  /*
+			  
 			  var t = $(endContainer).textNodes(true);
 			  var stL = selectedText.length;
-			  var pMatch = '', tmpMatch = '', idxMatch = -1;
-			  maxcount = 0;
+			  var pMatch, tn, idxFound = -1, count, maxcount = 0;
+			  var i,j,len,subL;
 
-			  
-			  var nodeText = '';
-			  for(var i=0, len=Number(t.length); i<len; i++) {
+			  for(i=0, len=t.length; i<len; i++) {
 				tn = t[i].data.replace(/\s/g,' ');
 				tnL = tn.length;
 				pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
 
-				for(var j=i-1; tn == pMatch; j--) {
+				count = 0;
+				for(j=i-1; j>-1 && tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1; j--) {
+				  count++;
 				  tn = t[j].data.replace(/\s/g,' ') + tn;
 				  tnL = tn.length;
-				  //console.log(stL,tn.length);
-				  pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
+				  subL = stL-tnL > 0 ? stL-tnL : 0;
+				  pMatch = selectedText.substr(subL).replace(/\s/g,' ');
 
-				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 ) {
-				  console.log(tn)
-				  console.log(pMatch);				  					
-					console.log('>>>>>>>>>>>>>>>>>>>');
+				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 && count > maxcount) {
+					maxcount = count;
+					idxFound = i;
 				  }
 				}
 			  }
+*/			  
 
 			  
-			  endContainer = t[idxMatch];
-			  endOffset = endContainer.length;
+			  //endContainer = t[idxFound];
+			  //endOffset = endContainer.length;
 			}			
 			
 			if(reset) userSelection.removeAllRanges();
@@ -559,7 +583,10 @@ jQuery.extend( jQuery.easing,
 			} else {
 				var Eidx = 0, chrSum = 0, prevSum = 0;
 				while(chrSum <= endOffset && Eidx < endSiblings.length) {
-					prevSum = chrSum;						
+					prevSum = chrSum;
+//=================================================					
+//console.log(endSiblings[Eidx].nodeValue);
+//=================================================					
 					chrSum += endSiblings[Eidx].length;
 					Eidx++;
 				}
@@ -1415,13 +1442,13 @@ m=function(e){var h=H[A[A.length-1]],r=(!$(e.target).parents('.jqmID'+h.s)[0]);i
 hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function() {
  if(!this[c]){this[c]=[];$(this).click(function(){for(var i in {jqmShow:1,jqmHide:1})for(var s in this[i])if(H[this[i][s]])H[this[i][s]].w[i](this);return F;});}this[c].push(s);});});};
 })(jQuery);/**
- * jGrowl 1.1.1
+ * jGrowl 1.2.0
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * Written by Stan Lemon <stanlemon@mac.com>
- * Last updated: 2008.08.17
+ * Last updated: 2009.05.11
  *
  * jGrowl is a jQuery plugin implementing unobtrusive userland notifications.  These 
  * notifications function similarly to the Growl Framework available for
@@ -1429,6 +1456,15 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
  *
  * To Do:
  * - Move library settings to containers and allow them to be changed per container
+ *
+ * Changes in 1.2.0
+ * - Added message pooling to limit the number of messages appearing at a given time.
+ * - Closing a notification is now bound to the notification object and triggered by the close button.
+ *
+ * Changes in 1.1.2
+ * - Added iPhone styled example
+ * - Fixed possible IE7 bug when determining if the ie6 class shoudl be applied.
+ * - Added template for the close button, so that it's content could be customized.
  *
  * Changes in 1.1.1
  * - Fixed CSS styling bug for ie6 caused by a mispelling
@@ -1481,7 +1517,7 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 	/** jGrowl Wrapper - Establish a base jGrowl Container for compatibility with older releases. **/
 	$.jGrowl = function( m , o ) {
 		// To maintain compatibility with older version that only supported one instance we'll create the base container.
-		if ( $('#jGrowl').size() == 0 ) $('<div id="jGrowl"></div>').addClass($.jGrowl.defaults.position).appendTo($.jGrowl.defaults.appendTo);
+		if ( $('#jGrowl').size() == 0 ) $('<div id="jGrowl"></div>').addClass($.jGrowl.defaults.position).appendTo('body');
 		// Create a notification on the container.
 		$('#jGrowl').jGrowl(m,o);
 	};
@@ -1505,7 +1541,7 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 				if ( $.isFunction($(this).data('jGrowl.instance')[m]) ) {
 					$(this).data('jGrowl.instance')[m].apply( $(this).data('jGrowl.instance') , $.makeArray(args).slice(1) );
 				} else {
-					$(this).data('jGrowl.instance').notification( m , o );
+					$(this).data('jGrowl.instance').create( m , o );
 				}
 			});
 		};
@@ -1515,24 +1551,26 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 
 		/** Default JGrowl Settings **/
 		defaults: {
+			pool: 			0,
 			header: 		'',
+			group: 			'',
 			sticky: 		false,
 			position: 		'top-right', // Is this still needed?
 			glue: 			'after',
 			theme: 			'default',
 			corners: 		'10px',
-			check: 			500,
+			check: 			250,
 			life: 			3000,
 			speed: 			'normal',
 			easing: 		'swing',
 			closer: 		true,
+			closeTemplate: '&times;',
 			closerTemplate: '<div>[ close all ]</div>',
 			log: 			function(e,m,o) {},
 			beforeOpen: 	function(e,m,o) {},
 			open: 			function(e,m,o) {},
 			beforeClose: 	function(e,m,o) {},
 			close: 			function(e,m,o) {},
-			appendTo:		'body',
 			animateOpen: 	{
 				opacity: 	'show'
 			},
@@ -1541,6 +1579,8 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 			}
 		},
 		
+		notifications: [],
+		
 		/** jGrowl Container Node **/
 		element: 	null,
 	
@@ -1548,17 +1588,22 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 		interval:   null,
 		
 		/** Create a Notification **/
-		notification: 	function( message , o ) {
-			var self = this;
+		create: 	function( message , o ) {
 			var o = $.extend({}, this.defaults, o);
 
+			this.notifications[ this.notifications.length ] = { message: message , options: o };
+			
 			o.log.apply( this.element , [this.element,message,o] );
+		},
+		
+		render: 		function( notification ) {
+			var self = this;
+			var message = notification.message;
+			var o = notification.options;
 
-			var notification = $('<div class="jGrowl-notification"><div class="close">&times;</div><div class="header">' + o.header + '</div><div class="message">' + message + '</div></div>')
+			var notification = $('<div class="jGrowl-notification' + ((o.group != undefined && o.group != '') ? ' ' + o.group : '') + '"><div class="close">' + o.closeTemplate + '</div><div class="header">' + o.header + '</div><div class="message">' + message + '</div></div>')
 				.data("jGrowl", o).addClass(o.theme).children('div.close').bind("click.jGrowl", function() {
-					$(this).unbind('click.jGrowl').parent().trigger('jGrowl.beforeClose').animate(o.animateClose, o.speed, o.easing, function() {
-						$(this).trigger('jGrowl.close').remove();
-					});
+					$(this).parent().trigger('jGrowl.close');
 				}).parent();
 				
 			( o.glue == 'after' ) ? $('div.jGrowl-notification:last', this.element).after(notification) : $('div.jGrowl-notification:first', this.element).before(notification);
@@ -1575,7 +1620,10 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 			}).bind('jGrowl.beforeClose', function() {
 				o.beforeClose.apply( self.element , [self.element,message,o] );
 			}).bind('jGrowl.close', function() {
-				o.close.apply( self.element , [self.element,message,o] );
+				$(this).trigger('jGrowl.beforeClose').animate(o.animateClose, o.speed, o.easing, function() {
+					$(this).remove();
+					o.close.apply( self.element , [self.element,message,o] );
+				});
 			}).trigger('jGrowl.beforeOpen').animate(o.animateOpen, o.speed, o.easing, function() {
 				$(this).data("jGrowl").created = new Date();
 			}).trigger('jGrowl.open');
@@ -1598,9 +1646,13 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 			$(this.element).find('div.jGrowl-notification:parent').each( function() {
 				if ( $(this).data("jGrowl") != undefined && $(this).data("jGrowl").created != undefined && ($(this).data("jGrowl").created.getTime() + $(this).data("jGrowl").life)  < (new Date()).getTime() && $(this).data("jGrowl").sticky != true && 
 					 ($(this).data("jGrowl").pause == undefined || $(this).data("jGrowl").pause != true) ) {
-					$(this).children('div.close').trigger('click.jGrowl');
+					$(this).trigger('jGrowl.close');
 				}
 			});
+
+			if ( this.notifications.length > 0 && (this.defaults.pool == 0 || $(this.element).find('div.jGrowl-notification:parent').size() < this.defaults.pool) ) {
+				this.render( this.notifications.shift() );
+			}
 
 			if ( $(this.element).find('div.jGrowl-notification:parent').size() < 2 ) {
 				$(this.element).find('div.jGrowl-closer').animate(this.defaults.animateClose, this.defaults.speed, this.defaults.easing, function() {
@@ -1612,9 +1664,11 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 		/** Setup the jGrowl Notification Container **/
 		startup:	function(e) {
 			this.element = $(e).addClass('jGrowl').append('<div class="jGrowl-notification"></div>');
-			this.interval = setInterval( function() { jQuery(e).data('jGrowl.instance').update(); }, this.defaults.check);
+			this.interval = setInterval( function() { 
+				jQuery(e).data('jGrowl.instance').update(); 
+			}, this.defaults.check);
 			
-			if ($.browser.msie && parseInt($.browser.version) < 7) $(this.element).addClass('ie6');
+			if ($.browser.msie && parseInt($.browser.version) < 7 && !window["XMLHttpRequest"]) $(this.element).addClass('ie6');
 		},
 
 		/** Shutdown jGrowl, removing it and clearing the interval **/
