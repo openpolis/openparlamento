@@ -132,6 +132,8 @@ class TagPeer extends BaseTagPeer
     $c->addAscendingOrderByColumn(TagPeer::NAME);
     
    
+    
+   
 
     if (Propel::VERSION >= '1.3')
     {
@@ -152,7 +154,7 @@ class TagPeer extends BaseTagPeer
       }
     }
 
-    if (!isset($options['sort_by_popularity']) || (true !== $options['sort_by_popularity']))
+   if (!isset($options['sort_by_popularity']) || (true !== $options['sort_by_popularity']))
     {
       ksort($tags);
     }
@@ -253,9 +255,10 @@ class TagPeer extends BaseTagPeer
     {
       $c->setLimit(sfConfig::get('app_deppPropelActAsTaggableBehaviorPlugin_limit', 100));
     }
-
+    
     $all_tags = TagPeer::getAllWithCount($c, $options);
     return deppPropelActAsTaggableToolkit::normalize($all_tags);
+    
   }
 
   /**

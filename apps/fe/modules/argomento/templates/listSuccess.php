@@ -1,11 +1,22 @@
 <?php echo use_helper('Javascript'); ?>
 
-<div id="content" class="float-container">
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      Argomenti
+    </h2> 
+  </li>
+</ul>
+
+<div id="content" class="tabbed float-container">
   <div id="main">
+  <div style="font-size:14px;">In questa pagina trovi i <strong><?php echo count($tag_count) ?></strong> argomenti presenti su openparlamento.<br />
+  Per trovarne uno puoi cercarlo per parola chiave o navigare le <?php echo count($teseo_tts_with_counts) ?> categorie in cui sono stati raggruppati.<br />
+  Selezionane uno: troverai tutto quello che succede in parlamento sull'argomento e i politici che se ne occupano.</div>
 
-    <?php echo include_partial('deppTagging/searchWithAutocompleter', array('name' => 'search_tag')); ?>
+    <?php echo include_partial('deppTagging/searchWithAutocompleter', array('name' => 'search_tag','tag_count'=>$tag_count)); ?>
 
-    <h5 class="subsection">... oppure naviga per categorie</h5>
+    <h5 class="subsection">... oppure naviga le <?php echo count($teseo_tts_with_counts) ?> categorie</h5> 
 
     <div id="top_terms_drill_down" class="W73_100 float-left">
       <ul class="topics-list">
@@ -21,6 +32,7 @@
           </li>
         <?php endforeach ?>
   		</ul>
+  <br />		
     </div>
 
   </div>

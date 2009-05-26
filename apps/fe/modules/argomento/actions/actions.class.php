@@ -32,6 +32,9 @@ class argomentoActions extends sfActions
     }
     */
     $this->teseo_tts_with_counts = $teseo_tts_with_counts;
+    
+    $tag_count=TagPeer::getAllWithCount();
+    $this->tag_count=$tag_count; 
   }
 
 

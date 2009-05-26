@@ -14,6 +14,14 @@ class staticActions extends sfActions
   {
   $this->getResponse()->setTitle('il progetto | '.sfConfig::get('app_main_title')); 
   }
+  public function executeChisiamo()
+  {
+  $this->getResponse()->setTitle('chi siamo | '.sfConfig::get('app_main_title')); 
+  }
+  public function executeContatti()
+  {
+  $this->getResponse()->setTitle('contatti | '.sfConfig::get('app_main_title')); 
+  }
   public function executeFaq()
   {
   $this->getResponse()->setTitle('faq | '.sfConfig::get('app_main_title'));

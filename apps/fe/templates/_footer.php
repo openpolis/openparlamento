@@ -4,14 +4,14 @@
 <ul>
   <li class="footer-title">openparlamento</li>
   <li><?php echo link_to('»&nbsp;progetto','/static/progetto',array('lang'=>'it')) ?></li>
-  <li><a lang="it" href="">»&nbsp;chi siamo</a></li>
+  <li><?php echo link_to('»&nbsp;chi siamo','/static/chisiamo',array('lang'=>'it')) ?></li>
   <!-- <li><a lang="it" href="">»&nbsp;dicono di noi</a></li> -->
-  <li><a lang="it" href="">»&nbsp;contatti</a></li>
+   <li><?php echo link_to('»&nbsp;contatti','/static/contatti',array('lang'=>'it')) ?></li>
 </ul>
 
 <ul>
   <li class="footer-title">servizi</li>
-    <li><a lang="it" href="">»&nbsp;premium</a></li>
+    <li><a lang="it" href="">»&nbsp;servizi premium/ad hoc</a></li>
   <li><?php echo link_to('»&nbsp;rss/xml','/static/rssxml',array('lang'=>'it')) ?></li>
 </ul>
 

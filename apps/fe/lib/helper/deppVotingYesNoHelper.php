@@ -165,7 +165,9 @@ function depp_voter_no_ajax($object, $message='', $options = array())
   // anonymous votes
   if ( (is_null($user_id) || $user_id == '') && !$object->allowsAnonymousVoting())
   {
-    $msg = link_to('effettua il login per votare', '/login');
+  
+  
+    $msg = "<ul id='voting-items'>".link_to('<li>'.image_tag('/images/btn-voted-yes.png', array('alt'=> 'effettua il login per votare')).'</li><li>'.image_tag('/images/btn-voted-no.png', array('alt'=> 'effettua il login per votare')).'</li></ul><br />effettua il login per votare', '/login');
     return content_tag('div', $msg, array('id' => 'voting-message')) . 
            content_tag('div', $results, array('id' => 'voting-results'));
   }
@@ -207,9 +209,9 @@ function depp_voter_no_ajax($object, $message='', $options = array())
     {
       $text  = ($i==1?'yes':'no');
       $label = sprintf(__('Vote %s!'), $text);
-      if ($object->hasBeenVotedByUser($user_id))
+      if ($object->hasBeenVotedByUser($user_id)) 
       {
-        $image_name = ($object->getUserVoting($user_id) == $i?"btn-voted-$text.png":"btn-non-voted-$text.png");  
+        $image_name = ($object->getUserVoting($user_id) == $i?"btn-has-voted-$text.png":"btn-non-voted-$text.png");  
         $list_content .= content_tag('li', image_tag($image_name, $label));
       }
       else

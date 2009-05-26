@@ -20,7 +20,7 @@ jQuery.noConflict();
   })(jQuery);
 </script>
 <div class="W50_100">
-<h5 class="subsection">Cerca tra gli argomenti ...</h5>
+<h5 class="subsection">Cerca tra i <?php echo count($tag_count) ?> argomenti ...</h5>
   <?php echo form_tag('@argomento_search', array('id' => 'search-autocompleter')); ?>
 		
 		<fieldset id="search-autocompleter-fbox">

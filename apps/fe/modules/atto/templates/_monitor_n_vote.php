@@ -19,6 +19,7 @@
   <?php echo depp_voting_block_no_ajax($atto, $sf_flash->has('depp_voting_message')?$sf_flash->get('depp_voting_message'):'') ?>
   <hr class="dotted" />
   
+   <!-- blocco lanci home x admin -->
   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('administrator')): ?>
     <h6>lanci in home page</h6>
     <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'home')); ?>    
