@@ -15,11 +15,10 @@
  *
  * @author     Guglielmo Celata <guglielmo.celata@depp.it>
  */
+
+
 pake_desc("downgrade expired premium subscriptions");
 pake_task('opp-downgrade-expired-premium', 'project_exists');
-
-pake_desc("downgrade a single user (by email)");
-pake_task('opp-downgrade-premium', 'project_exists');
 
 /**
 * Fetch users with premium subscriptions and check if their subscription is expired
@@ -35,7 +34,7 @@ function run_opp_downgrade_expired_premium($task, $args)
     define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
     define('SF_APP', 'be');
     define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', false);
+    define('SF_DEBUG', true);
 
     require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
                   DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
@@ -54,20 +53,20 @@ function run_opp_downgrade_expired_premium($task, $args)
   $start_time = microtime(true);
 
   # fetch of all expired premium subscribers (op_accesso)
-  $opaccesso_api_key = sfConfig::get('app_opaccesso_api_key', '--XXX(-:-)XXX--');
+  $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
   $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
   if (sfConfig::get('sf_environment') == 'dev')
     $controller = 'be_dev.php';
   else
     $controller = 'index.php';
-  $xml = simplexml_load_file("http://$remote_guard_host/$controller/getSubscribers/expired_premium/$opaccesso_api_key");
+  $xml = simplexml_load_file("http://$remote_guard_host/$controller/getSubscribers/expired_premium/$opaccesso_key");
 
   # debug
   #echo $xml->asXML();
   
   if ($xml->error)
   {
-    echo "http://$remote_guard_host/$controller/getSubscribers/expired_premium/$opaccesso_api_key\n";
+    echo "http://$remote_guard_host/$controller/getSubscribers/expired_premium/$opaccesso_key\n";
     echo (string)$xml->error . "\n";
     exit;
   }
@@ -89,6 +88,9 @@ function run_opp_downgrade_expired_premium($task, $args)
   
 }
 
+
+pake_desc("downgrade a single user (by ID)");
+pake_task('opp-downgrade-premium', 'project_exists');
 
 /**
 * force a downgrade on a single user, by email
@@ -163,13 +165,15 @@ function downgrade($user_id, $user_email)
   # rimozione della credential 'premium'
   # set a NULL della data di scadenza
   # downgrade on op_accesso
-  $opaccesso_api_key = sfConfig::get('app_opaccesso_api_key', '--XXX(-:-)XXX--');
+  $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
   $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
   if (sfConfig::get('sf_environment') == 'dev')
     $controller = 'be_dev.php';
   else
     $controller = 'index.php';
-  $xml = simplexml_load_file("http://$remote_guard_host/$controller/downgradePremium/$user_id/$opaccesso_api_key");
+  $xml = simplexml_load_file("http://$remote_guard_host/$controller/downgradePremium/$user_id/$opaccesso_key");
+
+echo "opaccessokey: $opaccesso_key\n";
 
   $success = false;
   if ($xml->ok)

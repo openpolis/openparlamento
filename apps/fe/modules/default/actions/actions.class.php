@@ -49,12 +49,13 @@ class defaultActions extends sfActions
         
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getToken();
+        $opaccesso_key = sfConfig::get('api_opaccessokey', '--XXX(-:-)XXX--');
         $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
         if (sfConfig::get('sf_environment') == 'dev')
           $controller = 'be_dev.php';
         else
           $controller = 'index.php';
-        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUserDemo/$token");
+        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUserDemo/$token/$opaccesso_key");
 
         // show message if something really wrong happens (could not write last_login to db)
         if (!$xml->ok instanceof SimpleXMLElement)
@@ -97,12 +98,13 @@ class defaultActions extends sfActions
         
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getPassword();
+        $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
         $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
         if (sfConfig::get('sf_environment') == 'dev')
           $controller = 'be_dev.php';
         else
           $controller = 'index.php';
-        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUser/$token");
+        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUser/$token/$opaccesso_key");
 
         // go home if something really wrong happens (could not write last_login to db)
         if (!$xml->ok instanceof SimpleXMLElement)

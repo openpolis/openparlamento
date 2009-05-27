@@ -28,5 +28,8 @@
   <!--
   <script type="text/javascript">jQuery.noConflict();</script>
   -->
+  <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
+    <?php include_partial('global/googleAnalytics') ?>	  
+  <?php endif ?>
 </body>
 </html>

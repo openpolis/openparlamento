@@ -15,3 +15,6 @@ sfPropelBehavior::registerHooks('wikifiableBehavior', array(
   ':save:post'               => array('wikifiableBehavior', 'postSave'),  
   ':delete:pre'               => array('wikifiableBehavior', 'preDelete'),    
 ));
+
+// need to include this to use the api.yml config file
+require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));

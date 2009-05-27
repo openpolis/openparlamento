@@ -5,8 +5,6 @@ all:
   remote_guard_host:      '<?php echo $remote_guard_host ?>'
   site_url:               '<?php echo $site_url ?>'
   
-  opaccesso_api_key:     'x'
-
   sfSimpleBlog:
     user_class:          OppUser
     use_bundled_layout:  false

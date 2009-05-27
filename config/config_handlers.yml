@@ -1,0 +1,4 @@
+config/api.yml:
+  class: sfDefineEnvironmentConfigHandler
+  param:
+    prefix: api_
