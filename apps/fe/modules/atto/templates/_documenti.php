@@ -1,16 +1,16 @@
 <?php if($atto->countOppDocumentos() != 0): ?>
 
 <div class="coo-mind float-container">
-  <h5 class="subsection">leggi e commenta i testi di questo <?php echo $tipo_atto ?> :</h5>
+  <h5 class="subsection">leggi e annota i testi di questo <?php echo $tipo_atto ?> :</h5>
   <table>
     <thead>
       <tr> 
         <th scope="col">&nbsp;</th>
-        <th scope="col">n. commenti <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
+        <th scope="col">n. annotazioni <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
       </tr>
     </thead>
     <!-- per activity-meter la larghezza max e' 75px ....
-         per calcolare la larghezza si potrebbe stabilire che e' pari al 100% (75px) quando maggiore di N commenti (es: 30)
+         per calcolare la larghezza si potrebbe stabilire che e' pari al 100% (75px) quando maggiore di N annotazioni (es: 30)
          o meglio si potrebbe calcolare un indice di attivita' tipo quello dei parlamentari	-->
     <tbody>
       <?php $i=1 ?>	
@@ -65,7 +65,7 @@
         <thead>
           <tr style="visibility: hidden;">
             <th scope="col">titolo</th>
-            <th scope="col">n. commenti <img src="imgs/ico-coo-mind.png" alt="coo-mind" /></th>
+            <th scope="col">n. annotazioni <img src="imgs/ico-coo-mind.png" alt="coo-mind" /></th>
           </tr>
         </thead>
           <!-- per activity-meter la larghezza max e' 75px ....

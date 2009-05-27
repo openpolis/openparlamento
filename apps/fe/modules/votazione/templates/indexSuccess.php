@@ -134,7 +134,7 @@
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
        
       <!-- blocco dei commenti -->
-       <a name="comment"></a>
+      <a name="comment"></a>
       <div id="comments-block">
         <a name="comments"></a>
         <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>

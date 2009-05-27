@@ -79,7 +79,7 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
       // fetch and set of the user name (wiki case and the rest)
       if ($object instanceof nahoWikiRevision)
         $username = $object->getUserName();
-      else if ($object instanceof sfComment || $object instanceof sfEdemComment)
+      else if ($object instanceof sfComment || $object instanceof sfEmendComment)
         $username = $object->getAuthorName();
       else
       {
@@ -149,6 +149,8 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
       // fetch and set of the user name (wiki case and the rest)
       if ($object instanceof nahoWikiRevision)
         $username = $object->getUserName();
+      else if ($object instanceof sfComment || $object instanceof sfEmendComment)
+        $username = $object->getAuthorName();
       else
       {
         $user = OppUserPeer::retrieveByPK($object->getUserId());
@@ -182,12 +184,17 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
     $related_model = call_user_func(array($object, $related_model_getter));
     $related_id    = call_user_func(array($object, $related_id_getter));
 
-    sfLogger::getInstance()->info('xxx:'.$related_model);
-    sfLogger::getInstance()->info('xxx:'.$related_id);
+    // sfLogger::getInstance()->info('xxx:'.$related_model);
+    // sfLogger::getInstance()->info('xxx:'.$related_id);
 
-    $rel_obj = call_user_func_array($related_model.'Peer::retrieveByPK', array($related_id));
-    sfLogger::getInstance()->info('xxx');
-    
+    // awful patch to have it work
+    // else it fails with segmentation fault (only for OppDocumento objects)
+    if ($related_model == 'OppDocumento')
+      $rel_obj = OppDocumentoPeer::retrieveByPK($related_id);
+    else
+      $rel_obj = call_user_func_array($related_model.'Peer::retrieveByPK', array($related_id));
+
+    // sfLogger::getInstance()->info('xxx');
     
     return $rel_obj;
   }  

@@ -9,6 +9,7 @@
 </ul>
 
 <div id="content" class="tabbed float-container">
+  <a name="top"></a>
   <div id="main">
     
     <div class="W25_100 float-right">
@@ -164,6 +165,21 @@
       <a name="antiusersdo"></a>
       <?php echo include_component('atto', 'antiusersdo', array('item' => $atto)); ?>
 	  
+	  
+      <a name="comment"></a>
+      <div id="comments-block">
+        <a name="comments"></a>
+        <?php include_partial('deppCommenting/commentsList', array('content' => $atto)) ?>
+    
+	      <hr/>
+  
+        <?php include_component('deppCommenting', 'addComment', 
+                                array('content' => $atto,
+                                      'read_only' => sfConfig::get('app_comments_enabled', false),
+                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+  
+        <hr/>
+      </div>    
     </div>
 
     <div class="clear-both"></div>

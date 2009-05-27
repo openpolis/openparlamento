@@ -492,7 +492,7 @@ function community_news_text($news)
         $atto_article = 'alla ';  
           
       $atto_link = $atto_article.$related_atto->getOppTipoAtto()->getDescrizione()." ";
-      $atto_link .= link_to_in_mail(Text::denominazioneAtto($related_Atto, 'list'), 
+      $atto_link .= link_to_in_mail(Text::denominazioneAtto($related_atto, 'list'), 
                                    'atto/index?id=' . $related_atto->getId(),
                                    array('title' => $related_atto->getTitolo()));
       
@@ -532,9 +532,10 @@ function community_news_text($news)
   switch ($generator_model) 
   {
     case 'sfEmendComment':
-      return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
-                     image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),
-                     strtolower($news->getUsername()), $link, $atto_link);
+      if ($news->getType() == 'C')
+        return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
+                       image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),
+                       strtolower($news->getUsername()), $link, $atto_link);      
       break;
     
     
