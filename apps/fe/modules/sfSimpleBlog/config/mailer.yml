@@ -1,0 +1,8 @@
+dev:
+  deliver: off
+  
+test:
+  deliver: off
+  
+all:
+  deliver: sendmail

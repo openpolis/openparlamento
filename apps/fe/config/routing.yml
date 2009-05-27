@@ -149,6 +149,9 @@ singolo_atto:
   url: /singolo_atto/:id
   param: { module: atto, action: index }
 
+documento:
+  url: /documento/:id
+  parma: { module: atto, action: documento}
 
 argomenti:
   url:   /argomenti    

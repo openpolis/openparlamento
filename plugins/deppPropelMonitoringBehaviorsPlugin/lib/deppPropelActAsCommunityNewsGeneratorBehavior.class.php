@@ -79,7 +79,7 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
       // fetch and set of the user name (wiki case and the rest)
       if ($object instanceof nahoWikiRevision)
         $username = $object->getUserName();
-      else if ($object instanceof sfComment)
+      else if ($object instanceof sfComment || $object instanceof sfEdemComment)
         $username = $object->getAuthorName();
       else
       {
@@ -181,8 +181,15 @@ class deppPropelActAsCommunityNewsGeneratorBehavior
       
     $related_model = call_user_func(array($object, $related_model_getter));
     $related_id    = call_user_func(array($object, $related_id_getter));
+
+    sfLogger::getInstance()->info('xxx:'.$related_model);
+    sfLogger::getInstance()->info('xxx:'.$related_id);
+
+    $rel_obj = call_user_func_array($related_model.'Peer::retrieveByPK', array($related_id));
+    sfLogger::getInstance()->info('xxx');
     
-    return call_user_func_array($related_model.'Peer::retrieveByPK', array($related_id));
+    
+    return $rel_obj;
   }  
   
   

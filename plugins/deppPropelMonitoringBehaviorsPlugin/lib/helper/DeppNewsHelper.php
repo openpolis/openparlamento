@@ -474,8 +474,32 @@ function community_news_text($news)
                              array('title' => 'Vai alla scheda del politico'));
       break;
 
+
+    case 'OppDocumento':
+      // link al documento
+      $link = link_to_in_mail($item->getTitolo(), 
+                              '@documento?id=' . $related_id,
+                              array('title' => $item->getTitolo()));
+
+      $related_atto = OppAttoPeer::retrieveByPK($item->getAttoId());
+
+      // costruzione del link all'atto relativo al documento
+      if (in_array($related_atto->getTipoAttoId(), array(1, 3, 4, 5, 6, 10, 11, 14))) 
+        $atto_article = 'all\'';
+      elseif (in_array($related_atto->getTipoAttoId(), array(12, 13, 15, 16, 17)))
+        $atto_article = 'al ';
+      else
+        $atto_article = 'alla ';  
+          
+      $atto_link = $atto_article.$related_atto->getOppTipoAtto()->getDescrizione()." ";
+      $atto_link .= link_to_in_mail(Text::denominazioneAtto($related_Atto, 'list'), 
+                                   'atto/index?id=' . $related_atto->getId(),
+                                   array('title' => $related_atto->getTitolo()));
+      
+      break;
+
     case 'OppAtto':
-      // link all'atto
+       // link all'atto
        if (in_array($item->getTipoAttoId(), array(1, 10, 11,12,13,15,16,17))) 
           $gender = 'm';
        else
@@ -507,6 +531,13 @@ function community_news_text($news)
   
   switch ($generator_model) 
   {
+    case 'sfEmendComment':
+      return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
+                     image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),
+                     strtolower($news->getUsername()), $link, $atto_link);
+      break;
+    
+    
     case 'sfComment':
       return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato %s</p><p> %s</p>", 
                      image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
