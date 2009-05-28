@@ -517,6 +517,40 @@ function community_news_text($news)
       
       break;
 
+    case 'OppAtto': 
+      // link all'atto 
+      if (in_array($item->getTipoAttoId(), array(1, 10, 11,12,13,15,16,17)))  
+        $gender = 'm'; 
+      else 
+        $gender = 'f';   
+
+      $item_type = ($gender=='m'?'':'la')." ".$item->getOppTipoAtto()->getDescrizione()." "; 
+      $link = link_to_in_mail(Text::denominazioneAtto($item, 'list'),  
+                            'atto/index?id=' . $related_id, 
+                            array('title' => $item->getTitolo())); 
+      break; 
+
+    case 'OppVotazione': 
+      // link alla votazione 
+      $item_type = 'la votazione'; 
+      $link = link_to_in_mail($item->getTitolo(),  
+                            '@votazione?id=' . $related_id, 
+                            array('title' => 'Vai alla pagina della votazione')); 
+      break; 
+
+    case 'Tag': 
+      // link all'argomento 
+      $item_type = 'l\'argomento'; 
+      $link = link_to_in_mail($item->getTripleValue(),  
+                            '@argomento?triple_value=' . $item->getTripleValue(), 
+                            array('title' => 'Vai alla pagina dell\'argomento')); 
+      break; 
+ 	}       
+ 	 
+ 	   
+ 	switch ($generator_model)  
+ 	{ 
+
     case 'sfEmendComment':
       if ($news->getType() == 'C')
         return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
@@ -581,6 +615,7 @@ function community_news_text($news)
                       image_tag('/images/ico-type-votazione-user.png', array('alt' => 'voto')),$item_type, $link);          
       }
       break;
+
     case 'nahoWikiRevision':
       return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha modificato la descrizione wiki per %s</p><p> %s</p>", 
                      image_tag('/images/ico-type-descrizione.png', array('alt' => 'wiki!')),strtolower($news->getUsername()), $item_type, $link);
