@@ -148,6 +148,10 @@ attiNonLegislativi:
 singolo_atto:
   url: /singolo_atto/:id
   param: { module: atto, action: index }
+  
+commenti_atto:
+  url: /commenti_atto/:id
+  param: { module: atto, action: commenti }
 
 documento:
   url: /documento/:id

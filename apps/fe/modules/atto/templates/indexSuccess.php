@@ -1,16 +1,6 @@
 <?php use_helper('Date', 'I18N') ?>
 
-<?php $nb_comments = $atto->getNbPublicComments(); ?>
-
-<ul id="content-tabs" class="float-container tools-container">
-  <li class="<?php echo($current == 'atto' ? 'current' : '' ) ?>">
-    <h2><?php echo link_to(Text::denominazioneAttoShort($atto), '@singolo_atto?id='.$atto->getId()) ?></h2>
-  </li>
-  <li class="<?php echo($current == 'commenti' ? 'current' : '' ) ?>">
-    <h2><?php echo link_to(format_number_choice('[0]Commenti|[1]Un commento|(1,+Inf]%1% commenti', 
-                           array('%1%' => $nb_comments), $nb_comments), '@commenti_atto?id='.$atto->getId()) ?></h2>
-  </li>
-</ul>
+<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'atto', 'nb_comments' => $atto->getNbPublicComments())) ?>
 
 <div id="content" class="tabbed float-container">
   <a name="top"></a>
@@ -169,21 +159,6 @@
       <a name="antiusersdo"></a>
       <?php echo include_component('atto', 'antiusersdo', array('item' => $atto)); ?>
 	  
-	  
-      <a name="comment"></a>
-      <div id="comments-block">
-        <a name="comments"></a>
-        <?php include_partial('deppCommenting/commentsList', array('content' => $atto)) ?>
-    
-	      <hr/>
-  
-        <?php include_component('deppCommenting', 'addComment', 
-                                array('content' => $atto,
-                                      'read_only' => sfConfig::get('app_comments_enabled', false),
-                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
-  
-        <hr/>
-      </div>    
     </div>
 
     <div class="clear-both"></div>

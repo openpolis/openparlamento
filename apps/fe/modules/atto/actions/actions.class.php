@@ -514,6 +514,11 @@ class attoActions extends sfActions
     }
   }
 
+  public function executeCommenti()
+  {
+    $this->atto = OppAttoPeer::retrieveByPK($this->getRequestParameter('id'));
+  }
+
   /**
    * Executes index action
    *
@@ -527,7 +532,7 @@ class attoActions extends sfActions
     $this->atto = $this->atti[0];
     $this->forward404Unless($this->atto);
     
-     $this->getResponse()->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
     
     
     //individuazione link fonte
