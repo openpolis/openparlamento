@@ -9,7 +9,7 @@
         <?php $c = new Criteria() ?>
         <?php $c->add(OppIterPeer::ID, $status_iter, Criteria::EQUAL); ?>
         <?php $iter = OppIterPeer::doSelectOne($c) ?>
-        <?php echo $iter->getFase() ?>  
+        <?php echo ($atto->getRamo()=='C'?'Camera':'Senato').": ".$iter->getFase() ?>   
              
     </p>
   <?php endforeach; ?>

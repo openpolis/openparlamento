@@ -3,7 +3,7 @@
    <ul class="square-bullet">
    <?php foreach($iter_completo as $iter => $data): ?>
      
-        <li><em><?php echo format_date($data, 'dd/MM/yyyy') ?></em><br /> <?php echo $iter ?></li>
+        <li><em><?php echo format_date($data, 'dd/MM/yyyy') ?></em><br /> <?php echo ($atto->getRamo()=='C'?'Camera':'Senato').": ".$iter ?></li>
 
       
     <?php endforeach; ?>

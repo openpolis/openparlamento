@@ -8,7 +8,7 @@
 <?php while($parlamentari->next()): ?>
    <?php $i++ ?>
    <tr class="<?php echo $tr_class; ?>">
-   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
    <th scope="row">
    <h3 class="position-<?php echo $color ?>"><?php echo $i ?></h3>
    <p class="politician-id">

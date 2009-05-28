@@ -2505,12 +2505,6 @@ jQuery.extend( jQuery.easing,
 //console.log("startContainer: ",startContainer);
 //console.log("endContainer",endContainer);
 //=================================================  			
-			/*
-			if(startContainer.nodeType == 1) {
-			  startContainer = $(startContainer).textNodes(true)[startOffset];
-			  startOffset = 0;
-			}
-			*/
 			
 			// fix for browsers giving endContainer.parent as result when selecting over a <br/> tag
 			if(endContainer.nodeType == 1) {
@@ -2522,45 +2516,9 @@ jQuery.extend( jQuery.easing,
 				if(o.nodeType == 1) {
 				 o = $(o).textNodes(true);
 				 endContainer = o[o.length-1];
-				 endOffset = endContainer.length;
-				}
-				
-				//console.log(endOffset,endContainer)
-			  }
-			  
-			  //console.log($(endContainer).textNodes(true));
-			  endOffset = endContainer.length-1;
-			  /*
-			  
-			  var t = $(endContainer).textNodes(true);
-			  var stL = selectedText.length;
-			  var pMatch, tn, idxFound = -1, count, maxcount = 0;
-			  var i,j,len,subL;
-
-			  for(i=0, len=t.length; i<len; i++) {
-				tn = t[i].data.replace(/\s/g,' ');
-				tnL = tn.length;
-				pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
-
-				count = 0;
-				for(j=i-1; j>-1 && tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1; j--) {
-				  count++;
-				  tn = t[j].data.replace(/\s/g,' ') + tn;
-				  tnL = tn.length;
-				  subL = stL-tnL > 0 ? stL-tnL : 0;
-				  pMatch = selectedText.substr(subL).replace(/\s/g,' ');
-
-				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 && count > maxcount) {
-					maxcount = count;
-					idxFound = i;
-				  }
+				 endOffset = endContainer.length-1;
 				}
 			  }
-*/			  
-
-			  
-			  //endContainer = t[idxFound];
-			  //endOffset = endContainer.length;
 			}			
 			
 			if(reset) userSelection.removeAllRanges();
@@ -6397,8 +6355,93 @@ eMend.backstore.sfEmendPlugin.prototype = {
 */
 
 (function($) {
+eMend.backstore = eMend.backstore || {};
+eMend.backstore.sfEmendPluginLog = function (options) {
+	if ( !(this instanceof arguments.callee) ) 
+	return new eMend.backstore.sfEmendPluginLog(options);
+    
+    this.username = 'anonymous';
+	this.opts = $.extend({}, eMend.backstore.sfEmendPluginLog.defaults, options);
+    
+    var loc = window.location.pathname.split('/');
+    loc.shift();
+    this.resourceID = loc.join('_');
+    this.getCurrentUser();
+};
+
+eMend.backstore.sfEmendPluginLog.defaults = {};
+
+eMend.backstore.sfEmendPluginLog.prototype = {
+	add: function(type, msg) {
+        msg += '<p> resource id: <strong>'+this.resourceID+'</strong></p>';
+        msg += '<p> username:'+this.username+'</p>';
+        msg += '<p> user agent: '+navigator.userAgent+'</p>';
+		var log = { msg_type: type,
+                    msg: msg
+        }
+
+		$.ajax({
+		    url: '/fe_dev.php/emend.addLog/'+this.resourceID,
+		    data: log,
+		    success: function(msg){
+		      //console.log("Data Saved: ",msg);
+		    }
+		});
+	},
+	getCurrentUser: function(callback) {
+		$.ajax({
+		  url: '/get_logged_user',
+		  success: function(data, textStatus){
+		    var obj = $.evalJSON(data);
+		    
+		    if(typeof obj.name != 'undefined') {
+		      this.username = obj.name;
+		    } else {
+              this.username = 'anonymous';
+            }
+		  },
+		  error: function (XMLHttpRequest, textStatus, errorThrown) {
+		    //console.log(textStatus, errorThrown)
+		    // typically only one of textStatus or errorThrown 
+		    // will have info
+		    this; // the options for this ajax request
+		  }           
+		});
+	}
+};
+
+})(jQuery);/* 
+    e-Mend - a web comment system.
+    Copyright (C) 2006-2008 MemeFarmers, Collective.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
+(function($) {
 eMend.init = function($) {
 	if(eMend.status == 'running') return;
+    
+    // backend
+    if(eMend.config.backend_debug) {
+        switch(eMend.config.backend_debug) {
+            case "sfEmendPluginLog":
+                eMend.log = eMend.backstore.sfEmendPluginLog();
+            break;
+        }
+    };
+    
     
     // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
 	document.body.normalize();
@@ -6451,7 +6494,7 @@ eMend.init = function($) {
             break;
         }
     };
-	  
+    	  
 	var emend_lastScrollTimer = -1;
 	var emend_lastScrollPosition = $.getScroll().t;
 	

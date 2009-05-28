@@ -45,8 +45,8 @@
         <td><?php echo $ddl->getNInterventi() ?></td>
         <td>
           <div class="user-stats-column">
-            <span class="green thumb-up">10.677</span><span class="red thumb-down">17.903</span>
-            <p><?php echo link_to('1.130 <strong>commenti</strong>', '#') ?></p>
+            <span class="green thumb-up"><?php echo $ddl->getUtFav() ?></span><span class="red thumb-down"><?php echo $ddl->getUtContr() ?></span>
+            <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '#') ?></p>
           </div>
         </td>
       </tr>

@@ -453,12 +453,6 @@ jQuery.extend( jQuery.easing,
 //console.log("startContainer: ",startContainer);
 //console.log("endContainer",endContainer);
 //=================================================  			
-			/*
-			if(startContainer.nodeType == 1) {
-			  startContainer = $(startContainer).textNodes(true)[startOffset];
-			  startOffset = 0;
-			}
-			*/
 			
 			// fix for browsers giving endContainer.parent as result when selecting over a <br/> tag
 			if(endContainer.nodeType == 1) {
@@ -470,45 +464,9 @@ jQuery.extend( jQuery.easing,
 				if(o.nodeType == 1) {
 				 o = $(o).textNodes(true);
 				 endContainer = o[o.length-1];
-				 endOffset = endContainer.length;
-				}
-				
-				//console.log(endOffset,endContainer)
-			  }
-			  
-			  //console.log($(endContainer).textNodes(true));
-			  endOffset = endContainer.length-1;
-			  /*
-			  
-			  var t = $(endContainer).textNodes(true);
-			  var stL = selectedText.length;
-			  var pMatch, tn, idxFound = -1, count, maxcount = 0;
-			  var i,j,len,subL;
-
-			  for(i=0, len=t.length; i<len; i++) {
-				tn = t[i].data.replace(/\s/g,' ');
-				tnL = tn.length;
-				pMatch = selectedText.substr(stL-tnL).replace(/\s/g,' ');
-
-				count = 0;
-				for(j=i-1; j>-1 && tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1; j--) {
-				  count++;
-				  tn = t[j].data.replace(/\s/g,' ') + tn;
-				  tnL = tn.length;
-				  subL = stL-tnL > 0 ? stL-tnL : 0;
-				  pMatch = selectedText.substr(subL).replace(/\s/g,' ');
-
-				  if(tn.indexOf(pMatch) != -1 || pMatch.indexOf(tn) != -1 && count > maxcount) {
-					maxcount = count;
-					idxFound = i;
-				  }
+				 endOffset = endContainer.length-1;
 				}
 			  }
-*/			  
-
-			  
-			  //endContainer = t[idxFound];
-			  //endOffset = endContainer.length;
 			}			
 			
 			if(reset) userSelection.removeAllRanges();

@@ -4,7 +4,7 @@
 
 <ul id="content-tabs" class="float-container tools-container">
   <li class="<?php echo($current == 'atto' ? 'current' : '' ) ?>">
-    <h2><?php echo link_to(Text::denominazioneAttoShort($atto), '@singolo_atto?id='.$atto->getId() ?></h2>
+    <h2><?php echo link_to(Text::denominazioneAttoShort($atto), '@singolo_atto?id='.$atto->getId()) ?></h2>
   </li>
   <li class="<?php echo($current == 'commenti' ? 'current' : '' ) ?>">
     <h2><?php echo link_to(format_number_choice('[0]Commenti|[1]Un commento|(1,+Inf]%1% commenti', 
@@ -25,7 +25,7 @@
                                        'all_news_url' => '@news_atto?id='.$atto->getId(), 
                                        'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
                                        'context' => 0,
-                                       'rss_link' => '@feed_atto?id='.$atto->getId())); 
+                                       'rss_link' => '@feed_atto?id='.$atto->getId()));  
       ?>
        <?php endif; ?>  
     </div>
@@ -126,10 +126,10 @@
 						  'legge'                       => $legge           )) ?>
 						  
  	   <!-- tutto l'iter -->
-	   <?php include_partial('status', array('status' => $status)) ?>
+	   <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
 	
 	   <?php if(count($iter_completo)!=0): ?>
-	     <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo)) ?>
+	     <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
 	   <?php endif; ?>
 	
 	<?php endif; ?>

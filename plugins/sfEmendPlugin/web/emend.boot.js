@@ -4,6 +4,7 @@ var eMend = {
     baseURI: "/sfEmendPlugin/",                            // load eMend assets from this URI
     backstore_tiddly: true,                                // enable/disable tiddly backstore
     backend: "sfEmendPlugin",                              // sfEmendPlugin [to implement: Wordpress/Mediawiki]
+    backend_debug: "sfEmendPluginLog",
     scroll_refresh_delay: true,                            // delay comments visual link refresh to save CPU cycles
     jquery_noconflict: true,                               // enable/disable jQuery no conflict mode
     jquery_googleapis: false,                              // enable/disable loading jQuery from googleapis

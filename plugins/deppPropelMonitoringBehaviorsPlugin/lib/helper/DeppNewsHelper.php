@@ -16,7 +16,7 @@
 
 function news($news,$context=1)
 { 
-  return news_date($news->getDate('d/m/Y')). "<p>" . news_text($news,$context). "</p>";
+  return news_date($news->getDate('d/m/Y')) . news_text($news,$context,0);
 }
 
 function news_date($newsdate)
@@ -63,7 +63,7 @@ function news_list($news)
 }
 
 
-function news_text($news,$context=1)
+function news_text($news,$context=1,$img=1)
 {
   $news_string = "";
   
@@ -76,14 +76,16 @@ function news_text($news,$context=1)
     {
       if ($news->getPriority() == 1)
       {
-        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
+        if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>";
        	
         $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '.'</p>';      
         $news_string .= '<p>si &egrave; svolta almeno una VOTAZIONE</p></td>';
           
       } else {
-        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
+        if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>";
         $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
         $news_string .= 'si &egrave; svolta una VOTAZIONE</p>';
@@ -103,7 +105,8 @@ function news_text($news,$context=1)
         else $news_string .= '</td>';
       }
     } else if ($generator_model == 'OppIntervento') {
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>'; 
+               if ($img==1)
+                   $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>'; 
        $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
       $news_string .= 'c\'&egrave; stato almeno un intervento ';
@@ -154,12 +157,14 @@ function news_text($news,$context=1)
     // nuovo incarico
     if ($generator_model == 'OppCarica'){
       if ($context!=2) {
-               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
+        if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
        $news_string .= "<td><p>assume l'incarico di " . $generator->getCarica()." il politico</p>";
        $news_string .= "<p>".$politico_link."</p></td>";
       }
       else {
-                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
+         if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>Assume l'incarico di " . $generator->getCarica()."</p></td>";  
       }  
     }
@@ -167,12 +172,14 @@ function news_text($news,$context=1)
     // nuovo gruppo
     else if ($generator_model == 'OppCaricaHasGruppo') {
       if ($context!=2) {
-                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
+        if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>si unisce al gruppo " . $generator->getOppGruppo()->getNome()." il politico</p>";
         $news_string .= "<p>".$politico_link."</p></td>";
       }  
       else {
-                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
+         if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>Si unisce al gruppo " . $generator->getOppGruppo()->getNome()."</p></td>";  
       }  
     }
@@ -186,7 +193,8 @@ function news_text($news,$context=1)
                            array('title' => $atto->getTitolo()));
       if ($context==1) 
       {      
-         $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';               
+          if ($img==1)
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';               
          $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
@@ -199,7 +207,8 @@ function news_text($news,$context=1)
       }
       if ($context==0) 
       {                    
-          $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';       
+           if ($img==1)
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';       
          $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
@@ -209,7 +218,8 @@ function news_text($news,$context=1)
       }  
       if ($context==2) 
       {  
-        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';                                
+         if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';                                
         $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
@@ -243,7 +253,8 @@ function news_text($news,$context=1)
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
       
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';                      
+       if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';                      
       if ($context==2)                      
           $news_string .= '<td><p>'.ucfirst($tipo_firma)." ";
       else
@@ -291,11 +302,14 @@ function news_text($news,$context=1)
     
     // presentazione
     if ($generator_model == 'OppAtto'){ 
-         if (in_array($tipo->getId(), array(1, 12, 15,16,17)))
-            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
-         else
-            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )).'</td>';
-                 
+         if (in_array($tipo->getId(), array(1, 12, 15,16,17))) {
+             if ($img==1)
+                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
+         }
+         else {
+             if ($img==1)
+               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )).'</td>';
+         }        
       if ($tipo->getId()!=13 ) {
           $news_string .= "<td><p>";
           $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
@@ -314,7 +328,8 @@ function news_text($news,$context=1)
     
     // intervento 
     else if ($generator_model == 'OppIntervento'){
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';  
+       if ($img==1)
+          $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>";
       if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
@@ -357,7 +372,8 @@ function news_text($news,$context=1)
                            array('title' => 'Vai alla scheda del politico'));
       if ($tipo_firma!='&egrave; relatore' )
       {
-                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';  
+         if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';  
         $news_string .= "<td><p>";
         $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
         $news_string .= ' '.$tipo_firma. ($gender=='m'?'o':'a') . " ";
@@ -370,7 +386,8 @@ function news_text($news,$context=1)
     
     // spostamento in commissione
     else if ($generator_model == 'OppAttoHasSede'){
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
+       if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       $news_string .= "&egrave; discuss" . ($gender=='m'?'o':'a') . " in ";
@@ -390,7 +407,8 @@ function news_text($news,$context=1)
     
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>';  
+       if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       if ($news->getPriority()==1) 
@@ -408,7 +426,8 @@ function news_text($news,$context=1)
     
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter') {
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
+       if ($img==1)
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       $news_string .= "Lo status &egrave; ora ";
@@ -421,7 +440,8 @@ function news_text($news,$context=1)
     
     else if ($generator_model == 'Tagging')
     {
-              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-etichetta.png',array('width' => '44','height' => '42' )).'</td>';  
+       if ($img==1)
+          $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-etichetta.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>".($gender=='m'?"il ":"la ");
       $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link . " ";
@@ -438,7 +458,8 @@ function news_text($news,$context=1)
     
     else if ($generator_model == 'OppDocumento')
     {
-             $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )).'</td>';  
+      if ($img==1)
+         $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )).'</td>';  
      $news_string .= "<td><p>";
      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
      $news_string .= "E' disponibile il nuovo documento ";
