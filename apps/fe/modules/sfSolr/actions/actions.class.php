@@ -24,6 +24,77 @@ class sfSolrActions extends BasesfSolrActions
    * Categories 
    */
   
+  
+ /**
+ * Executes the search action.  If there is a search query present in the request
+ * parameters, then a search is executed and uses a paged result.  If not, then
+ * the search box is displayed to prompt the user to enter controls.
+ */
+ public function executeSearch()
+ {
+   // determine if the user pressed the "Advanced"  button
+   if ($this->getRequestParameter('commit') == $this->translate('Advanced'))
+   {
+     // user did, so redirect to advanced search
+     $this->redirect($this->getModuleName() . '/advancedSearch');
+   }
+
+   $this->advanced_enabled = sfConfig::get('sf_solr_interface_advanced', true);
+
+   $query = $this->getRequestParameter('query');
+   $page = (int) $this->getRequestParameter('page', 1);
+
+   if ($this->hasRequestParameter('itemsperpage'))
+     $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+   $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+   // did user enter a query?
+   if ($query)
+   {
+     
+     $pager = new sfSolrPager();
+     $pager->setMaxPerPage($itemsperpage);
+
+     $offset = ($page - 1) * $pager->getMaxPerPage();
+     
+     $pager->setSearch($this->getSolrInstance());
+     $pager->setResults($this->getResults($query, $offset, $pager->getMaxPerPage()));
+     
+     $num = $pager->getNbResults();
+
+     // were any results returned?
+     if ($num > 0)
+     {
+       $this->safelySetPagerPage($pager, $page);
+
+       $this->num = $num;
+       $pager_results = $pager->getResults();
+       
+       $this->qTime = $pager_results->getQTime();
+       $this->start = $pager_results->getStart();
+       $this->rows = min($pager_results->getRows(), $num);
+       $this->pager = $pager;
+       $this->query = $query;
+
+       $this->setTitle($query);
+
+       return 'Results';
+     }
+     else
+     {
+       // display error
+       $this->setTitle($query);                                                                                      
+       return 'NoResults';
+     }
+   }
+   else
+   {
+     // on direct visit
+     $this->redirect($this->getRequest()->getReferer());
+   }
+ }
+
+  
 
    
   public function executeAttiSearch()
