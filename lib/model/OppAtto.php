@@ -11,7 +11,7 @@ class OppAtto extends BaseOppAtto
 {
   protected $collIMTags;
   protected $lastIMTagsCriteria = null;
-  
+  public $priority_override = 0;
   
   public function countDirectlyMonitoringUsers()
   {
@@ -406,6 +406,18 @@ class OppAtto extends BaseOppAtto
     return "false";
   }
 
+
+  // override per modificare la proprietà dei comunicati di governo
+  public function save($con = null)
+  {
+    
+    if ($this->getTipoAttoId() == 13)
+    {
+      $this->priority_override = 2;
+    }
+    return parent::save();
+
+  }
 
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare
