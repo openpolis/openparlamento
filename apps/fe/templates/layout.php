@@ -1,14 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
 
+<head>
+<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
+  <meta name="verify-v1" content="NkhveoVfinSZhsdVK8a+kN89DuYfXmo4BDwljNkry2M=" >
+<?php endif ?>
 <?php include_http_metas() ?>
 <?php include_metas() ?>
 <?php include_title() ?>
  
 <link rel="shortcut icon" href="/favicon.ico" />
-
 </head>
+
 <body>
   <div id="wrapper">
     <div id="header">
