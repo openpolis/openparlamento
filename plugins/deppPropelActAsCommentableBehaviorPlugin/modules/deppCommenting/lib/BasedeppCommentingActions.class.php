@@ -95,7 +95,7 @@ class BasedeppCommentingActions extends sfActions
     }
     else
     {
-      $this->redirect($original_url."#comments");
+      $this->redirect($this->original_url."#comments");
     }
 
   }

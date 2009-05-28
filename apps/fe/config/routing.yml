@@ -153,6 +153,7 @@ commenti_atto:
   url: /commenti_atto/:id
   param: { module: atto, action: commenti }
 
+
 documento:
   url: /documento/:id
   parma: { module: atto, action: documento}
@@ -197,6 +198,10 @@ votazioni:
 votazione:
   url:   /votazione/:id
   param: { module: votazione, action: index }
+
+commenti_votazione:
+  url: /commenti_votazione/:id
+  param: { module: votazione, action: commenti }
  
 
 parlamentariSearch:

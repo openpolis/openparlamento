@@ -1,2 +1,6 @@
+commentiSuccess:
+  javascripts:    [-*, prototype]
+  stylesheets:    [-*, screen]
+
 default:
   javascripts:    [fe/jquery-1.2.6.pack.js, fe/jquery.combobox.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]

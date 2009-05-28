@@ -33,7 +33,6 @@
       <p style="margin-left: 20px;"><img src="<?php echo url_for('@sf_captcha?rk='.rand()); ?>" alt="captcha" /></p>
     <?php endif ?>
    
-
     <?php echo form_error('text') ?>
     <p><label for="text">scrivi qui sotto il tuo commento</label><br/>      
       <?php echo textarea_tag('text', $sf_request->hasErrors()?$sf_params->get('text'):'', 'id=comment_text size=60x10') ?>   

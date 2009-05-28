@@ -118,7 +118,7 @@ all:
     
 
   comments:                enabled
-  comments_use_ajax:       true
+  comments_use_ajax:       false
   comment_automoderation:  'captcha'    # comment automoderation; possible values are:
                                         # on: comments are not published until a moderator accepts them
                                         # first_post: the first comment of a user must be accepted, 

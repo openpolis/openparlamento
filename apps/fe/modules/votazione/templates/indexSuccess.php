@@ -1,12 +1,6 @@
 <?php use_helper('Date', 'sfRating') ?>
 
-<ul id="content-tabs" class="float-container tools-container">
-  <li class="current">
-    <h2>
-      <?php echo $ramo." - votazione n. ".$votazione->getNumeroVotazione()." (seduta n. ".$votazione->getOppSeduta()->getNumero(). " del ".format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy').")"  ?>  
-    </h2>
-  </li>
-</ul>
+<?php include_partial('votazione_tabs', array('votazione' => $votazione, 'current' => 'votazione', 'nb_comments' => $votazione->getNbPublicComments(), 'ramo' => $ramo)) ?>
 
 <div id="content" class="tabbed float-container">
 <a name="top"></a>

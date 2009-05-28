@@ -20,6 +20,14 @@ class votazioneActions extends sfActions
                                                         'monitoring_filter'));
   }
   
+  public function executeCommenti()
+  {
+    $this->votazione = OppVotazionePeer::retrieveByPK($this->getRequestParameter('id'));
+    $this->ramo = $this->votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ; 
+  }
+
+  
+  
   /**
    * Executes index action
    *
