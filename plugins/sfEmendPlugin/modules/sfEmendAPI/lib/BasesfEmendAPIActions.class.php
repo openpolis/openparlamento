@@ -35,6 +35,18 @@ class BasesfEmendAPIActions extends sfActions
       $this->error = 'It was not possible to add the comment to the document. ' . $e->getMessage();
     }
   }
+
+  public function executeAddLog()
+  {
+    try {      
+      $this->log = sfEmendLogPeer::add(
+        array('msg_type'  => $this->getRequestParameter('msg_type'),
+              'msg'       => $this->getRequestParameter('msg'),
+              ));
+    } catch (Exception $e) {
+      $this->error = 'It was not possible to add the log to the document. ' . $e->getMessage();
+    }
+  }
   
   /**
    * da qualcosa_atto_documento_id_$ID_qualcosaltro

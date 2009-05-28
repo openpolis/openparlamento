@@ -25,5 +25,10 @@ if ($enabled_module)
     '/emend.addComment/:url',
     array('module' => 'sfEmendAPI', 
           'action' => 'addComment'));  
+
+  $r->prependRoute('emend_addLog',
+    '/emend.addLog/*',
+    array('module' => 'sfEmendAPI', 
+          'action' => 'addLog'));  
 }
  

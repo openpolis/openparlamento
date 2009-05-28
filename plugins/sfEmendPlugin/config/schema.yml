@@ -18,3 +18,10 @@ propel:
     author_name:       varchar(50)
     created_at:
     is_public:         { type: tinyint, required: true, default: 1 }      
+    
+  sf_emend_log:
+    _attributes:       { phpName: sfEmendLog, package: plugins.sfEmendPlugin.lib.model }
+    id:
+    msg_type:          varchar(10)
+    msg:               longvarchar
+    created_at:  

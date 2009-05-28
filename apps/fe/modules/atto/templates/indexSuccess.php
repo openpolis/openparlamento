@@ -1,10 +1,14 @@
 <?php use_helper('Date', 'I18N') ?>
 
+<?php $nb_comments = $atto->getNbPublicComments(); ?>
+
 <ul id="content-tabs" class="float-container tools-container">
-  <li class="current">
-    <h2>
-      <?php echo Text::denominazioneAttoShort($atto) ?>  
-    </h2>
+  <li class="<?php echo($current == 'atto' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to(Text::denominazioneAttoShort($atto), '@singolo_atto?id='.$atto->getId() ?></h2>
+  </li>
+  <li class="<?php echo($current == 'commenti' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to(format_number_choice('[0]Commenti|[1]Un commento|(1,+Inf]%1% commenti', 
+                           array('%1%' => $nb_comments), $nb_comments), '@commenti_atto?id='.$atto->getId()) ?></h2>
   </li>
 </ul>
 

@@ -1,0 +1,16 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      sfEmendLog
+    theme:            default
+
+    list:
+      title: Emend Log messages
+      filters: [created_at, msg_type]
+      sort:    [created_at]
+      layout: stacked
+      params: %%_log%%
+      display: [Messaggio] 
+      actions: [ ]
+      object_actions: 
+        _delete: ~

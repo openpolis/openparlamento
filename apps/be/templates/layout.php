@@ -19,6 +19,7 @@
       'sfSimpleBlogPostAdmin' => 'Post del Blog',
       'sfSimpleBlogCommentAdmin' => 'Commenti del Blog',
       'sfEmendAdmin' => 'Commenti eMend',
+      'sfEmendLogAdmin' => 'Log eMend',
       'atto' => 'Titoli aggiuntivi Atti',
       'votazione' => 'Titoli aggiuntivi Votazioni',
       'nuoviatti' => 'Nuovi atti',
