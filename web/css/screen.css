@@ -32,6 +32,35 @@ table tbody td { text-align: center; }
 .clear-both { clear: both; }
 
 /*
+ * SPECIAL TITLES
+ *----------------------------------------------*/
+
+h1.bluebox, h1.redbox { color: #fff; padding: 12px 14px; margin-bottom: 6px; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
+h1.bluebox { background-color: #56a2c6; }
+h1.redbox { background-color: #b72b14; }
+hr.bluebox, hr.redbox { height: 3px; margin: 18px 0 25px 0;}
+hr.bluebox { background-color: #56a2c6; }
+hr.redbox { background-color: #b72b14; }
+
+.position-green, .position-blue, .position-red, .position-violet, .position-orange { color: #fff; float: left; width: 30px; height: 30px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; text-align: center; line-height: 30px; margin-top: 15px; margin-right: 6px; }
+.position-green{ background-color: #428842; }
+.position-blue{ background-color: #1581bc; }
+.position-red{ background-color: #da3f21; }
+.position-violet{ background-color: #aa3eaa; }
+.position-orange { background-color: #dc7108; }
+
+
+/*
+ * COLORS
+ *----------------------------------------------*/
+.green { color: #34961d; }
+.blue { color: #1581bc; }
+.violet { color: #aa3eaa; }
+.red { color: #da3f21; }
+.orange { color: #dc7108; }
+
+
+/*
  * TYPOGRAPHY
  *----------------------------------------------*/
 
@@ -870,6 +899,21 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .monitoring-list .ico-stop_monitoring:visited, .ico-stop_monitoring:visited, .ico-stop_monitoring:active { color: #fff; }
 
 .more-results .ico-stop_monitoring { display: inline-block; }
+
+/*
+ * LISTA NEWS
+ *----------------------------------------------*/
+.news-time { padding: 0px; margin: 0px; left: -15px; top: 3px; background: url(../images/bg-news-time.png) no-repeat; height: 60px; width: 67px; text-align: center; color:#fff; float:left; clear:left;}
+.news-time strong { display: block; line-height: 9px; font-family: 'Verdana';}
+.news-time .day { font-size: 16px; line-height: 18px; letter-spacing: -1px; padding-top: 6px; font-family: 'Arial';}
+.news-time .month { font-size: 10px; text-transform: lowercase;}
+.news-time .year { padding-top: 7px; font-weight: normal; }
+.table-news { width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px; }
+.table-news tr { text-align: left; vertical-align: middle;} 
+.table-news tr.data {border-top: 1px solid rgb(223, 224, 224); padding-top: 10px; text-align: left; vertical-align: middle;}
+.table-news td { text-align: left; vertical-align: middle; padding-bottom:10px; } 
+.table-news .icon-id img { background: transparent url(../images/bg-ico-type.png) no-repeat center center; padding: 6px; margin: 0 2px; vertical-align: middle; }
+
 
 /*
  * PORTRAITS

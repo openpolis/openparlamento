@@ -3,17 +3,8 @@
 <div id="content" class="float-container">
   <div id="main" class="monitored_acts monitoring">
 
-    <div class="W25_100 float-right">
-      <div class="section-box">
-        <h6>Collegamenti</h6>
-        <div class="float-container">
-          <ul>
-            <li><?php echo link_to('Home page', '/') ?></li>
-          </ul>
-        </div>
-      </div>      
-    </div>
-    <div class="W73_100 float-left">
+    
+    <div class="W100_100 float-left">
       <h4 class="subsection">Tutte le notizie dal Parlamento<?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '@feed', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
       
       <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>

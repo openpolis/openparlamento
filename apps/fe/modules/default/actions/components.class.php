@@ -51,7 +51,7 @@ class defaultComponents extends sfComponents
     
     // random sul cosa
     if ($this->classifica==0)
-      $random=rand(1,6);
+      $random=rand(1,5);
     else
        $random=$this->classifica;
        
@@ -72,31 +72,32 @@ class defaultComponents extends sfComponents
       
       case 3:
         $c->addDescendingOrderByColumn(OppCaricaPeer::INDICE);
-        $this->color='green';
+        $this->color='blue';
         $this->string='pi&ugrave; attivi';
         $this->cosa=3;
       break;
       
        case 4:
-        $c->addAscendingOrderByColumn(OppCaricaPeer::INDICE);
-        $this->color='red';
-        $this->string='meno attivi';
+        $c->addDescendingOrderByColumn(OppPoliticoPeer::N_MONITORING_USERS);
+        $this->color='orange';
+        $this->string='pi&ugrave; monitorati dagli utenti';
         $this->cosa=4;
       break;
       
        case 5:
-        $c->addDescendingOrderByColumn(OppPoliticoPeer::N_MONITORING_USERS);
-        $this->color='';
-        $this->string='pi&ugrave; monitorati dagli utenti';
+        $c->addDescendingOrderByColumn(OppCaricaPeer::RIBELLE);
+        $this->color='violet';
+        $this->string='pi&ugrave; ribelli al proprio gruppo';
         $this->cosa=5;
       break;
-      
+      /*
        case 6:
-        $c->addDescendingOrderByColumn(OppCaricaPeer::RIBELLE);
-        $this->color='';
-        $this->string='pi&ugrave; ribelli al proprio gruppo';
+        $c->addAscendingOrderByColumn(OppCaricaPeer::INDICE);
+        $this->color='violet';
+        $this->string='meno attivi';
         $this->cosa=6;
       break;
+      */
     
     }
    

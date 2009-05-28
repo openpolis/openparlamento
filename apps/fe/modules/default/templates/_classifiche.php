@@ -1,13 +1,16 @@
 <div class="section-box"> 
             <h3 class="section-box-no-rss">i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
             </div> 
-<table class="disegni-decreti column-table">
+<table class="disegni-decreti column-table v-align-middle">
 <tbody>	
-<?php $tr_class = 'even' ?>				  
+<?php $tr_class = 'even' ?>	
+<?php $i=0 ?>			  
 <?php while($parlamentari->next()): ?>
+   <?php $i++ ?>
    <tr class="<?php echo $tr_class; ?>">
    <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
    <th scope="row">
+   <h3 class="position-<?php echo $color ?>"><?php echo $i ?></h3>
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 
                         array('width' => '40','height' => '53' )) ?>	
@@ -35,15 +38,12 @@
         <td>
             <span class="small">indice di attivit&agrave;: </span><?php echo $parlamentari->getFloat(9) ?> 
         </td>   
+
      <?php elseif ($cosa==4) : ?> 
-        <td>
-            <span class="small">indice di attivit&agrave;: </span><?php echo $parlamentari->getFloat(9) ?> 
-        </td> 
-     <?php elseif ($cosa==5) : ?> 
         <td>
              <span class="small">&egrave; monitorato da</span><br/><?php echo $parlamentari->getInt(13) ?><span class="small"> utenti</span>     
         </td> 
-     <?php elseif ($cosa==6) : ?> 
+     <?php elseif ($cosa==5) : ?> 
         <td>
              <span class="small">voti diversi dal suo gruppo:</span><br/><?php echo $parlamentari->getInt(12) ?><span class="small"> su <?php echo $parlamentari->getInt(6) ?> votazioni</span>
         </td>       
@@ -71,15 +71,12 @@
         <td>
             <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=indice&type=desc' :'@parlamentari?ramo=senato&sort=indice&type=desc') ?>
         </td>  
+
      <?php elseif ($cosa==4) : ?> 
-        <td>
-            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=indice&type=asc' :'@parlamentari?ramo=senato&sort=indice&type=asc') ?>
-        </td>  
-     <?php elseif ($cosa==5) : ?> 
         <td>
             
         </td>  
-     <?php elseif ($cosa==6) : ?> 
+     <?php elseif ($cosa==5) : ?> 
         <td>
             <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=ribelle&type=desc' :'@parlamentari?ramo=senato&sort=ribelle&type=desc') ?>
         </td>      

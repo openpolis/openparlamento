@@ -26,14 +26,14 @@
           <tr>
          
           <?php if ($result->getInternalPartial()=='parlamentare/searchResult') : ?>
-               <td><div class="ico-type"><?php echo image_tag('/images/no-avatar40.png',array('width' => '44','height' => '42' )) ?></div></td> 
+               <td><div class="ico-type"><?php echo image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )) ?></div></td> 
                <?php elseif ($result->getInternalPartial()=='atto/searchResultDoc') : ?>
                    <td><div class="ico-type"><?php echo image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )) ?></div></td> 
                    <?php elseif ($result->getInternalPartial()=='atto/searchResult') : ?>
                         <?php if (OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==1 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==12 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==15 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==16 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==17) : ?>
                             <td><div class="ico-type"><?php echo image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )) ?></div></td>
                         <?php else : ?>
-                            <td><div class="ico-type"><?php echo image_tag('/images/ico-type-descrizione.png',array('width' => '44','height' => '42' )) ?></div></td>
+                            <td><div class="ico-type"><?php echo image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )) ?></div></td>
                         <?php endif ?>    
                         <?php elseif ($result->getInternalPartial()=='votazione/searchResult') : ?>
                             <td><div class="ico-type"><?php echo image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )) ?></div></td>

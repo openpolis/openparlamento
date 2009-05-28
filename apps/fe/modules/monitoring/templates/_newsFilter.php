@@ -16,7 +16,7 @@
                                                  'include_zero_custom=tutti')) ?>
                           
     <?php echo select_tag('filter_act_type_id', 
-                          adv_objects_for_select($types, 'getId', 'getDenominazione', $selected_act_type_id,
+                          adv_objects_for_select($types, 'getId', 'getDescrizione', $selected_act_type_id,
                                                  'include_zero_custom=tutte')) ?>
 
     <?php echo select_tag('filter_act_ramo', 

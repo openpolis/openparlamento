@@ -8,31 +8,7 @@
 <div class="tabbed-orange float-container" id="content">
 	<div id="main">
 
-		<div class="W25_100 float-right">
-			<form id="search-ddl" action="#">
-				<h6>nelle tue notizie</h6>
-				<fieldset id="search-ddl-fbox">
-					<input type="text" class="blur" id="search-ddl-field"/>
-					<input type="image" alt="cerca" src="imgs/btn-cerca-small.png" id="search-ddl-go"/>
-					<div class="search-ddl-type-container">
-						<div style="display: none;" id="search-ddl-type">
-							<input type="radio" checked="checked" value="0" id="search-ddl-0" name="search-ddl-type"/>
-							<label class="focus" for="search-ddl-0">tutto</label><br/>
-							<input type="radio" value="1" id="search-ddl-1" name="search-ddl-type"/>
-							<label for="search-ddl-1">codice DDL</label><br/>
-							<input type="radio" value="2" id="search-ddl-2" name="search-ddl-type"/>
-							<label for="search-ddl-2">titolo DDL</label><br/>
-							<input type="radio" value="3" id="search-ddl-3" name="search-ddl-type"/>
-							<label for="search-ddl-3">descrizione</label><br/>
-							<input type="radio" value="4" id="search-ddl-4" name="search-ddl-type"/>
-							<label for="search-ddl-4">teseo</label><br/>
-							<input type="radio" value="5" id="search-ddl-5" name="search-ddl-type"/>
-							<label for="search-ddl-5">cofirmatari e relatori</label><br/>					
-						</div>
-					</div>						
-				</fieldset>
-			</form>			
-		</div>
+		
 			
 	  <div class="W73_100 float-left">
 
@@ -60,33 +36,41 @@
 	    </h5>
 
 
-    	<div class="more-results float-container">			
-    	<ul>
+       <table class="table-news">
           <?php foreach ($pager->getGroupedResults() as $date_ts => $news): ?>
-            <li class="news-day float-container">
-      <?php if ($date_ts > 0): ?>
-          <div class="news-time">
-	    <strong class="day"><?php echo date("d", $date_ts); ?></strong>
-            <strong class="month"><?php echo strftime("%b", $date_ts); ?></strong>
-            <strong class="year"><?php echo date("Y", $date_ts); ?></strong>
-          </div>
-          <?php else: ?>
-          <div class="news-time">
-           <strong class="day">NO</strong>
-            <strong class="month">data</strong>
-            <strong class="year"></strong>
-          </div>  
-          <?php endif ?>
+            <?php $primo_item=1 ?>
+            <?php echo ($primo_item==1 ? '<tr class="data"><td>&nbsp;</td></tr>' : '') ?>
+	      <tr>
+	      <?php if ($date_ts > 0): ?>
+	             <?php $primo_item=1 ?>
+	           <td style="width: 80px;">
+	           <div class="news-time">
+		    <strong class="day"><?php echo date("d", $date_ts); ?></strong>
+	            <strong class="month"><?php echo strftime("%b", $date_ts); ?></strong>
+	            <strong class="year"><?php echo date("Y", $date_ts); ?></strong>
+	          </div> 
+	          </td> 
+	          <?php else: ?>
+	            <?php $primo_item=1 ?>
+	           <td style="width: 80px;">
+	           <div class="news-time">
+	           <strong class="day">NO</strong>
+	           <strong class="month">data</strong>
+	           <strong class="year"></strong>
+	          </div>  
+	          </td> 
+	          <?php endif ?>
           
-         <ul class="news-list">
+         
               <?php foreach ($news as $n): ?>
-                <li><?php echo news_text($n,1) ?></li>
+                <?php if($primo_item==0) echo "<tr><td>&nbsp;</td>" ?>
+                 <?php echo news_text($n,1) ?>
+                <?php $primo_item=0 ?>
+                </tr>  
               <?php endforeach ?>
-              </ul>
-            </li>
-          <?php endforeach; ?>
-    		</ul>
-    	</div>
+              
+         <?php endforeach; ?>
+       </table>
 
       <?php echo pager_navigation($pager, 'monitoring/news') ?>
       

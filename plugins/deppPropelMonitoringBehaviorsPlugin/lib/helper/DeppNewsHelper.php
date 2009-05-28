@@ -76,12 +76,16 @@ function news_text($news,$context=1)
     {
       if ($news->getPriority() == 1)
       {
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
-        $news_string .= '<td><p>'.($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '.'</p>';      
+        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
+        $news_string .= "<td><p>";
+       	
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '.'</p>';      
         $news_string .= '<p>si &egrave; svolta almeno una VOTAZIONE</p></td>';
           
       } else {
-        $news_string .= '<td><p>'.($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>'; 
+        $news_string .= "<td><p>";
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
         $news_string .= 'si &egrave; svolta una VOTAZIONE</p>';
          
         if ($context==1)
@@ -99,9 +103,10 @@ function news_text($news,$context=1)
         else $news_string .= '</td>';
       }
     } else if ($generator_model == 'OppIntervento') {
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>'; 
+       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
-      $news_string .= '<td><p>c\'&egrave; stato almeno un intervento ';
+      $news_string .= 'c\'&egrave; stato almeno un intervento ';
       $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia().' '.OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  '</p>';
       if ($context==1)
       {    
@@ -149,12 +154,12 @@ function news_text($news,$context=1)
     // nuovo incarico
     if ($generator_model == 'OppCarica'){
       if ($context!=2) {
-       $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
+               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
        $news_string .= "<td><p>assume l'incarico di " . $generator->getCarica()." il politico</p>";
        $news_string .= "<p>".$politico_link."</p></td>";
       }
       else {
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
+                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>Assume l'incarico di " . $generator->getCarica()."</p></td>";  
       }  
     }
@@ -162,12 +167,12 @@ function news_text($news,$context=1)
     // nuovo gruppo
     else if ($generator_model == 'OppCaricaHasGruppo') {
       if ($context!=2) {
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
+                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>si unisce al gruppo " . $generator->getOppGruppo()->getNome()." il politico</p>";
         $news_string .= "<p>".$politico_link."</p></td>";
       }  
       else {
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';
+                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )).'</td>'; 
         $news_string .= "<td><p>Si unisce al gruppo " . $generator->getOppGruppo()->getNome()."</p></td>";  
       }  
     }
@@ -181,31 +186,36 @@ function news_text($news,$context=1)
                            array('title' => $atto->getTitolo()));
       if ($context==1) 
       {      
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';              
-        
+         $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';               
+         $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
-         $news_string .= "<td><p>".$generator->getOppSede()->getTipologia()." ";
-        $news_string .= "<td><p>".ucfirst(strtolower($generator->getOppSede()->getDenominazione()));
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+
+        $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));
         
-        $news_string .= $politico_link . " interviene su ";
+        $news_string .= $politico_link . " - interviene su ";
         $news_string .= $tipo->getDescrizione() . "</p>";
         $news_string .= "<p>".$atto_link."</p></td>";
       }
       if ($context==0) 
       {                    
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';      
+          $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';       
+         $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
-         $news_string .= "<td><p>".$generator->getOppSede()->getTipologia()." ";
-        $news_string .= "<td><p>".ucfirst(strtolower($generator->getOppSede()->getDenominazione()));        
-        $news_string .= $politico_link . " ha effettuato un intervento sull'atto </p></td>";
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+
+        $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));       
+        $news_string .= $politico_link . " - ha effettuato un intervento sull'atto </p></td>";
       }  
       if ($context==2) 
       {  
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';                                
+        $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';                                
+        $news_string .= "<td><p>";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
-         $news_string .= "<td><p>".$generator->getOppSede()->getTipologia()." ";
-        $news_string .= "<td><p>".ucfirst(strtolower($generator->getOppSede()->getDenominazione()));
-        $news_string .= "Interviene su ";
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+        $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));
+        
+        $news_string .= " - interviene su ";
         $news_string .= $tipo->getDescrizione() . "</p>";
         $news_string .= "<p>".$atto_link."</p></td>";
       }
@@ -233,7 +243,7 @@ function news_text($news,$context=1)
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
       
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>';                     
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';                      
       if ($context==2)                      
           $news_string .= '<td><p>'.ucfirst($tipo_firma)." ";
       else
@@ -280,10 +290,15 @@ function news_text($news,$context=1)
                          array('title' => $atto->getTitolo()));
     
     // presentazione
-    if ($generator_model == 'OppAtto'){
+    if ($generator_model == 'OppAtto'){ 
+         if (in_array($tipo->getId(), array(1, 12, 15,16,17)))
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
+         else
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )).'</td>';
+                 
       if ($tipo->getId()!=13 ) {
-          $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-          $news_string .= "<td><p>".($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+          $news_string .= "<td><p>";
+          $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
           $news_string .= "Presentat" .($gender=='m'?'o':'a') . " ";
       }    
       else
@@ -297,15 +312,15 @@ function news_text($news,$context=1)
       else  $news_string .= "</p></td>"; 
     } 
     
-    // intervento
+    // intervento 
     else if ($generator_model == 'OppIntervento'){
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-      
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('width' => '44','height' => '42' )).'</td>';  
+      $news_string .= "<td><p>";
       if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
-         $news_string .= '<td><p>'.$generator->getOppSede()->getTipologia()." ";
-      $news_string .= '<td><p>'.ucfirst(strtolower($generator->getOppSede()->getDenominazione())); 
+         $news_string .= $generator->getOppSede()->getTipologia()." ";
+      $news_string .= strtoupper($generator->getOppSede()->getDenominazione()); 
       
-      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+      $news_string .= ($news->getRamoVotazione()=='C')?' Camera -  ' : ' Senato - ';
       $politico = $generator->getOppCarica()->getOppPolitico();
       $politico_link = link_to_in_mail($politico, 
                            '@parlamentare?id=' . $politico->getId(),
@@ -318,7 +333,7 @@ function news_text($news,$context=1)
         $news_string .= '<p>'.$atto_link.'</p></td>';
       }
       else 
-        $news_string .= "ll'atto'</p></td>'";
+        $news_string .= "ll'atto</p></td>";
       
     }
 
@@ -342,27 +357,29 @@ function news_text($news,$context=1)
                            array('title' => 'Vai alla scheda del politico'));
       if ($tipo_firma!='&egrave; relatore' )
       {
-        $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-        $news_string .= '<td><p>'.($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
+                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('width' => '44','height' => '42' )).'</td>';  
+        $news_string .= "<td><p>";
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
         $news_string .= ' '.$tipo_firma. ($gender=='m'?'o':'a') . " ";
          $news_string .= " da " . $politico_link;
         $news_string .= $tipo->getDescrizione() . "</p>";
         $news_string .= '<p>'.$atto_link.'</p></td>';
-       
+        
       }        
     }
     
     // spostamento in commissione
     else if ($generator_model == 'OppAttoHasSede'){
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-      $news_string .= "<td><p>".($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
-      $news_string .= "&egrave; spostat" . ($gender=='m'?'o':'a') . " in ";
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
+      $news_string .= "<td><p>";
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
+      $news_string .= "&egrave; discuss" . ($gender=='m'?'o':'a') . " in ";
       $news_string .= $generator->getOppSede()->getTipologia()." ";
-      $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppSede()->getDenominazione())));
+      $news_string .= content_tag('b', strtoupper($generator->getOppSede()->getDenominazione()));
       if ($context!=0)
       {
         
-         $news_string .= $tipo->getDenominazione() . "</p>";
+         $news_string .= " ".$tipo->getDescrizione() . "</p>";
          $news_string .= "<p>".$atto_link . "</p></td>";
       }
       else
@@ -373,8 +390,9 @@ function news_text($news,$context=1)
     
     // votazioni
     else if ($generator_model == 'OppVotazioneHasAtto'){
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-      $news_string .= "<td><p>".($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )).'</td>';  
+      $news_string .= "<td><p>";
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       if ($news->getPriority()==1) 
            $news_string .= link_to(' <strong>si &egrave; svolta la votazione finale</strong>','/votazione/'.$generator->getOppVotazione()->getId())." relativa a";
       else
@@ -390,11 +408,12 @@ function news_text($news,$context=1)
     
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter') {
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-      $news_string .= "<td><p>".($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('width' => '44','height' => '42' )).'</td>';  
+      $news_string .= "<td><p>";
+      $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       $news_string .= "Lo status &egrave; ora ";
       $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
-      $news_string .= "per " .($gender=='m'?" ":"la "). $tipo->getDescrizione() . "</p>";
+      $news_string .= " per " .($gender=='m'?" ":"la "). $tipo->getDescrizione() . "</p>";
       if ($context!=0) $news_string .= "<p>".$atto_link . "</p></td>";
       else  $news_string .= "</td>";
      
@@ -402,7 +421,7 @@ function news_text($news,$context=1)
     
     else if ($generator_model == 'Tagging')
     {
-      $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
+              $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-etichetta.png',array('width' => '44','height' => '42' )).'</td>';  
       $news_string .= "<td><p>".($gender=='m'?"il ":"la ");
       $news_string .= $tipo->getDescrizione() . " ";
       $news_string .= $atto_link . " ";
@@ -419,8 +438,9 @@ function news_text($news,$context=1)
     
     else if ($generator_model == 'OppDocumento')
     {
-     $news_string .= '<td style="width: 60px;">'.image_tag('/images/ico-type-commento.png', array('style'=>'display: block; border: none; background: transparent url(http://openparlamento.stage.htrex.keybit.net/email/imgs/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;')).'</td>'; 
-     $news_string .= "<td><p>".($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+             $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )).'</td>';  
+     $news_string .= "<td><p>";
+     $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
      $news_string .= "E' disponibile il nuovo documento ";
      $news_string .= '"'.link_to($generator->getTitolo(),'atto/documento?id='.$generator->getId()).'"';
      if ($context!=0)
@@ -474,7 +494,6 @@ function community_news_text($news)
                              array('title' => 'Vai alla scheda del politico'));
       break;
 
-
     case 'OppDocumento':
       // link al documento
       $link = link_to_in_mail($item->getTitolo(), 
@@ -498,39 +517,6 @@ function community_news_text($news)
       
       break;
 
-    case 'OppAtto':
-       // link all'atto
-       if (in_array($item->getTipoAttoId(), array(1, 10, 11,12,13,15,16,17))) 
-          $gender = 'm';
-       else
-          $gender = 'f';  
-          
-      $item_type = ($gender=='m'?'':'la')." ".$item->getOppTipoAtto()->getDescrizione()." ";
-      $link = link_to_in_mail(Text::denominazioneAtto($item, 'list'), 
-                              'atto/index?id=' . $related_id,
-                              array('title' => $item->getTitolo()));
-      break;
-
-    case 'OppVotazione':
-      // link alla votazione
-      $item_type = 'la votazione';
-      $link = link_to_in_mail($item->getTitolo(), 
-                              '@votazione?id=' . $related_id,
-                              array('title' => 'Vai alla pagina della votazione'));
-      break;
-
-    case 'Tag':
-      // link all'argomento
-      $item_type = 'l\'argomento';
-      $link = link_to_in_mail($item->getTripleValue(), 
-                              '@argomento?triple_value=' . $item->getTripleValue(),
-                              array('title' => 'Vai alla pagina dell\'argomento'));
-      break;
-  }      
-
-  
-  switch ($generator_model) 
-  {
     case 'sfEmendComment':
       if ($news->getType() == 'C')
         return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
@@ -541,7 +527,7 @@ function community_news_text($news)
     
     case 'sfComment':
       return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato %s</p><p> %s</p>", 
-                     image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
+                     image_tag('/images/ico-type-approvato.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
       break;
       
     case 'Monitoring':

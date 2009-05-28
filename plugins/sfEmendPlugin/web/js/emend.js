@@ -677,7 +677,7 @@ eMend.dataset.prototype = {
 //=================================================
 //console.log("XcS.base: ",XcS.base);	
 //console.log("XcE.base: ",XcE.base);
-//console.log("xpathmethod",xpathmethod);
+//console.log("xpathmethod: "+xpathmethod);
 //=================================================
 
         switch(xpathmethod) {
@@ -2564,7 +2564,19 @@ eMend.init = function($) {
     // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
 	document.body.normalize();
     $.fixOperaRangeSelectionBug();
-	$(document).cleanWhitespace(true);
+    var t = $(eMend.config.comment_target).get(0) || document.body;
+   
+    var html = t.innerHTML;
+    html = html.replace(/[\t\n\r\f]/gm, " ");  
+    html = html.replace(/>\s+</gm, "><");  
+    html = html.replace(/\s{2,}/gm, " ");      
+    t.innerHTML = html;
+
+    $(eMend.config.comment_target).cleanWhitespace(true);
+    $('a').each(function(){
+        this.nodeValue = $.trim(this.nodeValue);
+    });     
+    
     document.body.normalize();
     
     // creates and attaches DATA and VISUAL containers

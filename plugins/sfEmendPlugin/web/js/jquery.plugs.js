@@ -356,29 +356,24 @@ jQuery.extend( jQuery.easing,
 		var element = this[0];
 		if ($(element).hasClass('keep-whitespace')) return element;
 		var node = element.firstChild;
+		var SPACE_SX = new RegExp('^'+String.fromCharCode(32)+'*','m');
+		var SPACE_DX = new RegExp('$'+String.fromCharCode(32)+'*','m');
+		var SPACE_DBL = new RegExp(String.fromCharCode(32)+'{2,}','gm');
+		var NBSP = new RegExp(String.fromCharCode(160),'gm');
 		while (node) {
 			//console.log(node.nodeType);
 			var nextNode = node.nextSibling;
 			
 			if (node.nodeType == 3) {
-				if(!/\S/.test(node.nodeValue)) {
+				if(!/\S/.test(node.nodeValue) && !NBSP.test(node.nodeValue)) {
 					element.removeChild(node);
 				} else {
-					if(node.innerHTML) {
-					var str = node.innerHTML;
-						str = str.replace(/[\t\n\r\f]/g,'');						
-						str = str.replace(/\ {2,}/g,'&nbsp;');						
-						str = str.replace(/^\ */,'&nbsp;');
-						str = str.replace(/$\ */,'&nbsp;');						
-						node.innerHTML = str;
-					} else {
 					var str = node.nodeValue;						
-						str = str.replace(/[\t\n\r\f]/g,'');						
-						str = str.replace(/\ {2,}/g,'\u00A0');						
-						str = str.replace(/^\ */,'\u00A0');
-						str = str.replace(/$\ */,'\u00A0');
+						str = str.replace(/[\t\n\r\f]/gm,'');						
+						str = str.replace(SPACE_DBL,String.fromCharCode(160));						
+						str = str.replace(SPACE_SX,String.fromCharCode(160));
+						str = str.replace(SPACE_DX,String.fromCharCode(160));
 						node.nodeValue = str;						
-					}	
 				}
 			} else if(deep && node.nodeType == 1) {
 				$(node).cleanWhitespace(deep);
@@ -586,10 +581,11 @@ jQuery.extend( jQuery.easing,
 					prevSum = chrSum;
 //=================================================					
 //console.log(endSiblings[Eidx].nodeValue);
-//=================================================					
+//=================================================
 					chrSum += endSiblings[Eidx].length;
 					Eidx++;
 				}
+			
 				endOffset -= prevSum;
 				endContainer = endSiblings[--Eidx];
 			}
