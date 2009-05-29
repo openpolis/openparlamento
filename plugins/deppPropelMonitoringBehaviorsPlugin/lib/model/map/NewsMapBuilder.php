@@ -56,5 +56,7 @@ class NewsMapBuilder {
 
 		$tMap->addColumn('SEDE_INTERVENTO_ID', 'SedeInterventoId', 'int', CreoleTypes::INTEGER, false, null);
 
+		$tMap->addColumn('SUCC', 'Succ', 'int', CreoleTypes::INTEGER, false, null);
+
 	} 
 } 

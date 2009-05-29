@@ -70,6 +70,7 @@ function news_text($news,$context=1,$img=1)
   // fetch del modello e dell'oggetto che ha generato la notizia
   $generator_model = $news->getGeneratorModel();
 
+  // notizie di gruppo (votazioni o interventi)
   if (is_null($news->getGeneratorPrimaryKeys()))
   {
     if ($generator_model == 'OppVotazioneHasAtto')
@@ -300,31 +301,70 @@ function news_text($news,$context=1,$img=1)
                          'atto/index?id=' . $atto->getId(),
                          array('title' => $atto->getTitolo()));
     
-    // presentazione
-    if ($generator_model == 'OppAtto'){ 
-         if (in_array($tipo->getId(), array(1, 12, 15,16,17))) {
-             if ($img==1)
-                $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
-         }
-         else {
-             if ($img==1)
-               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )).'</td>';
-         }        
-      if ($tipo->getId()!=13 ) {
+    // presentazione o passaggio di stato
+    if ($generator_model == 'OppAtto')
+    { 
+      if ($tipo->getId() == 1 && $news->getSucc() !== null)
+      {
+        // passaggio di stato (cambio ramo?)
+
+        // fetch dell'oggetto succ
+        $succ_atto = OppAttoPeer::retrieveByPK($news->getSucc());
+        $succ_atto_link = link_to_in_mail($succ_atto->getRamo() . "." . $succ_atto->getNumFase(), 
+                             'atto/index?id=' . $succ_atto->getId(),
+                             array('title' => $succ_atto->getTitolo()));
+        $this_atto_link = link_to_in_mail($atto->getRamo() . "." . $atto->getNumFase(), 
+                             'atto/index?id=' . $atto->getId(),
+                             array('title' => $atto->getTitolo()));
+
+        if ($img==1)
+          $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
+
+        $news_string .= "<td><p>";
+        $news_string .= "il ddl $this_atto_link, approvato ";
+        
+        if ($atto->getRamo()=='C') $news_string .= "alla Camera, ";
+        else $news_string .= "al Senato, ";
+        
+        $news_string .= "&egrave; ora approdato ";
+
+        if ($succ_atto->getRamo()=='C') $news_string .= "alla Camera ";
+        else $news_string .= "al Senato ";
+        
+        $news_string .= "come $succ_atto_link.";
+        
+        $news_string .= "</p></td>";
+        
+      } else {
+
+        // presentazione atto
+        if (in_array($tipo->getId(), array(1, 12, 15,16,17))) 
+        {
+          if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )).'</td>';
+        } else {
+          if ($img==1)
+            $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )).'</td>';
+        }        
+        if ($tipo->getId()!=13 ) 
+        {
           $news_string .= "<td><p>";
           $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
           $news_string .= "Presentat" .($gender=='m'?'o':'a') . " ";
-      }    
-      else
+        }    
+        else
           $news_string .= "<td><p>";    
+
+        if ($context!=0)
+        {
+          $news_string .= $tipo->getDescrizione() . "</p>";
+          $news_string .= "<p>".$atto_link."</p></td>";
+        }  
+        else  $news_string .= "</p></td>"; 
+      } 
       
-      if ($context!=0)
-      {
-        $news_string .= $tipo->getDescrizione() . "</p>";
-        $news_string .= "<p>".$atto_link."</p></td>";
-      }  
-      else  $news_string .= "</p></td>"; 
-    } 
+    }
+      
     
     // intervento 
     else if ($generator_model == 'OppIntervento'){

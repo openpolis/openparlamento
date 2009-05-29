@@ -55,6 +55,10 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	
 	protected $sede_intervento_id;
 
+
+	
+	protected $succ;
+
 	
 	protected $alreadyInSave = false;
 
@@ -188,6 +192,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	{
 
 		return $this->sede_intervento_id;
+	}
+
+	
+	public function getSucc()
+	{
+
+		return $this->succ;
 	}
 
 	
@@ -386,6 +397,22 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 	} 
 	
+	public function setSucc($v)
+	{
+
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
+			$v = (int) $v;
+		}
+
+		if ($this->succ !== $v) {
+			$this->succ = $v;
+			$this->modifiedColumns[] = NewsPeer::SUCC;
+		}
+
+	} 
+	
 	public function hydrate(ResultSet $rs, $startcol = 1)
 	{
 		try {
@@ -414,11 +441,13 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 
 			$this->sede_intervento_id = $rs->getInt($startcol + 11);
 
+			$this->succ = $rs->getInt($startcol + 12);
+
 			$this->resetModified();
 
 			$this->setNew(false);
 
-						return $startcol + 12; 
+						return $startcol + 13; 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating News object", $e);
 		}
@@ -619,6 +648,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			case 11:
 				return $this->getSedeInterventoId();
 				break;
+			case 12:
+				return $this->getSucc();
+				break;
 			default:
 				return null;
 				break;
@@ -641,6 +673,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			$keys[9] => $this->getDataPresentazioneAtto(),
 			$keys[10] => $this->getRamoVotazione(),
 			$keys[11] => $this->getSedeInterventoId(),
+			$keys[12] => $this->getSucc(),
 		);
 		return $result;
 	}
@@ -692,6 +725,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 			case 11:
 				$this->setSedeInterventoId($value);
 				break;
+			case 12:
+				$this->setSucc($value);
+				break;
 		} 	}
 
 	
@@ -711,6 +747,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[9], $arr)) $this->setDataPresentazioneAtto($arr[$keys[9]]);
 		if (array_key_exists($keys[10], $arr)) $this->setRamoVotazione($arr[$keys[10]]);
 		if (array_key_exists($keys[11], $arr)) $this->setSedeInterventoId($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setSucc($arr[$keys[12]]);
 	}
 
 	
@@ -730,6 +767,7 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(NewsPeer::DATA_PRESENTAZIONE_ATTO)) $criteria->add(NewsPeer::DATA_PRESENTAZIONE_ATTO, $this->data_presentazione_atto);
 		if ($this->isColumnModified(NewsPeer::RAMO_VOTAZIONE)) $criteria->add(NewsPeer::RAMO_VOTAZIONE, $this->ramo_votazione);
 		if ($this->isColumnModified(NewsPeer::SEDE_INTERVENTO_ID)) $criteria->add(NewsPeer::SEDE_INTERVENTO_ID, $this->sede_intervento_id);
+		if ($this->isColumnModified(NewsPeer::SUCC)) $criteria->add(NewsPeer::SUCC, $this->succ);
 
 		return $criteria;
 	}
@@ -781,6 +819,8 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 		$copyObj->setRamoVotazione($this->ramo_votazione);
 
 		$copyObj->setSedeInterventoId($this->sede_intervento_id);
+
+		$copyObj->setSucc($this->succ);
 
 
 		$copyObj->setNew(true);

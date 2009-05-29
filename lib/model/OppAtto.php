@@ -406,8 +406,38 @@ class OppAtto extends BaseOppAtto
     return "false";
   }
 
+  /**
+   * delete all news related to this object before deleting the object
+   *
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function delete($con=null)
+  {
+    try
+    {
+      $c = new Criteria();
+      $c->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+      $c->add(NewsPeer::RELATED_MONITORABLE_ID, $this->getPrimaryKey());
+      NewsPeer::doDelete($c);          
+    }
+    catch (Exception $e)
+    {
+      throw new deppPropelActAsNewsGeneratorException(
+        'Unable to delete related monitorable object records');
+    }
+    
+    parent::delete($con);
+  }
 
-  // override per modificare la proprietà dei comunicati di governo
+  /**
+   * override per modificare la proprietà dei comunicati di governo
+   *
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function save($con = null)
   {
     

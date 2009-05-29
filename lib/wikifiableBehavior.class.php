@@ -32,6 +32,7 @@ class wikifiableBehavior
   {
     $prefix = sfConfig::get(sprintf('propel_behavior_wikifiableBehavior_%s_prefix', get_class($object)));
     $wiki_page = nahoWikiPagePeer::retrieveByName($prefix . "_" . $object->getId());
-    $wiki_page->delete();
+    if (!is_null($wiki_page))
+      $wiki_page->delete();
   }
 }

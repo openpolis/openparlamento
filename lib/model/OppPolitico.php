@@ -238,7 +238,13 @@ class OppPolitico extends BaseOppPolitico
     return $count;    
   }
   
-  
+  /**
+   * delete all news related to this object before deleting the object
+   *
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function delete($con=null)
   {
     try

@@ -21,6 +21,7 @@ class deppPropelActAsNewsGeneratorBehavior
 {
   
   protected $wasNew;
+  protected $succNews = false;
   
   
   /**
@@ -86,6 +87,21 @@ class deppPropelActAsNewsGeneratorBehavior
       // the following methods store data related to the generating object in the cache
       // only data needed to sort, sum, average, or count, are cached
       
+      if ($object->getCreatedAt() != null)
+        $n->setCreatedAt($object->getCreatedAt());
+      
+      $n->setDate($object->getNewsDate());
+      
+      if (!is_null($priority))
+        $n->setPriority($priority);
+      else
+        $n->setPriority($object->getNewsPriority());
+
+
+
+      # TODO: spostare le eccezioni fuori dal plugin, in un contesto di applicazione
+      // eccezioni
+      
       // eccezione per non generare notizia alla presentazione di un decreto legge
       if ($object instanceof OppAtto && $object->getTipoAttoId() == 12) continue;
 
@@ -96,15 +112,14 @@ class deppPropelActAsNewsGeneratorBehavior
         $n->setRamoVotazione($obj->getRamo());
       }
       
-      if ($object->getCreatedAt() != null)
-        $n->setCreatedAt($object->getCreatedAt());
-      
-      $n->setDate($object->getNewsDate());
-      
-      if (!is_null($priority))
-        $n->setPriority($priority);
-      else
-        $n->setPriority($object->getNewsPriority());
+      // eccezione per modifica valore campo succ (opp_atto)
+      if (isset($this->succNews) && $this->succNews)
+      {
+        $n->setSucc($object->getSucc());
+        
+        # TODO: la data per ora  è il momento in cui la modifica è fatta (non so quale altra data mettere)
+        $n->setDate(date('Y-m-d h:i:s'));
+      }
 
       $n->save();
       $n_gen_news ++;
@@ -240,6 +255,12 @@ class deppPropelActAsNewsGeneratorBehavior
   public function preSave(BaseObject $object)
   {
     $this->wasNew = $object->isNew();
+
+    // gestisce eccezione generazione passaggi di iter
+    if ($object instanceof OppAtto && !$object->isNew() && $object->isColumnModified(OppAttoPeer::SUCC))
+    {
+      $this->succNews = true;
+    }
   }
   
   /**
@@ -252,7 +273,7 @@ class deppPropelActAsNewsGeneratorBehavior
    **/
   public function postSave(BaseObject $object)
   {
-    if (isset($this->wasNew) && $this->wasNew === true)
+    if ((isset($this->wasNew) && $this->wasNew === true) || (isset($this->succNews) && $this->succNews === true))
     {
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;
@@ -268,6 +289,7 @@ class deppPropelActAsNewsGeneratorBehavior
         $object->generateNews();        
         
       unset($this->wasNew);    
+      unset($this->succNews);
     }
   }
   

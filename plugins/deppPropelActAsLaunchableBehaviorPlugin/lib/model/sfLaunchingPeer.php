@@ -42,6 +42,8 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
     $namespaces = array();
     while($rs->next())
       $namespaces []= $rs->getString(1);
+      
+    return $namespaces;
   }
 
   public static function getAllByNamespace($namespace)
@@ -101,7 +103,7 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
       $namespaces = self::getAllNamespaces();
     else
       $namespaces = array($namespace);
-      
+    
     foreach ($namespaces as $namespace)
     {
       $c = self::getAllByNamespaceInverseCriteria($namespace);
