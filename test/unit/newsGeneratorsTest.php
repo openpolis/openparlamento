@@ -9,7 +9,7 @@ include(dirname(__FILE__).'/../bootstrap/unit.php');
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
-$t = new lime_test(30, new lime_output_color());
+$t = new lime_test(31, new lime_output_color());
 
 $t->diag('unit test to verify the mechanisms of news generation');
 
@@ -249,7 +249,22 @@ $n_related_news = count($related_news);
 $t->ok($n_related_news == 13, 'Thirteen news related to the act (a weird news)');
 dumpNews($t, "news related to the act", $related_news);
 
-$t->diag('Remove the act and pol object');
+$t->diag('Add three different tags to the object');
+$tagging_ar = array();
+foreach (array(3, 4, 5) as $tag_id) {
+  $tagging = new Tagging();
+  $tagging->setTaggableModel('OppAtto');
+  $tagging->setTaggableId($obj->getId());
+  $tagging->setTagId($tag_id);
+  $tagging->save();
+  $tagging_ar []= $tagging;
+}
+$related_news = getRelatedNews($obj);
+$n_related_news = count($related_news);
+$t->ok($n_related_news == 16, 'Sixteen news related to the act (three with tag_id not null)');
+dumpNews($t, "news related to the act", $related_news);
+
+$t->diag('Remove the act, taggings and pol object');
 $pol->delete();
 
 $pol_related_news = getRelatedNews($pol);
@@ -259,23 +274,26 @@ $t->ok($n_pol_related_news == 0, 'news related to the politician were zapped');
 $obj->delete();
 $related_news = getRelatedNews($obj);
 $t->ok(count($related_news) == 0, 'news related to the test act were zapped');
-dumpNews($t, "news related to the act", $related_news);
+
+foreach ($tagging_ar as $tagging) {
+  $tagging->delete();
+}
 
 function dumpNews($t, $msg, $news_to_dump)
 {
   $t->diag($msg);
   $t->diag(str_repeat("=", strlen($msg)));
-  $t->diag(sprintf("%-6s %-10s %-20s %-54s %-8s %1s %-6s %-10s %-4s %-6s %-16s", 
-                   "Id", "RelModel", "GeneratorModel", "GeneratorPKs", "Date", "P", "Succ", "DataPres", "Ramo", "SedeI", "CreatedAt"));
+  $t->diag(sprintf("%-6s %-10s %-20s %-54s %-8s %1s %-6s %-10s %-4s %6d %-16s", 
+                   "Id", "RelModel", "GeneratorModel", "GeneratorPKs", "Date", "P", "Succ", "DataPres", "Ramo", "TagID", "CreatedAt"));
   foreach ($news_to_dump as $news)
   {
-    $t->diag(sprintf("%-6d %-10s %-20s %-54s %-8s %1d %6d %-10s %-4s %-6d %-16s", 
+    $t->diag(sprintf("%-6d %-10s %-20s %-54s %-8s %1d %6d %-10s %-4s %6d %-16s", 
                      $news->getId(), 
                      $news->getRelatedMonitorableModel(),
                      $news->getGeneratorModel(), substr($news->getGeneratorPrimaryKeys(), 0, 100),
                      $news->getDate('Ymd'), $news->getPriority(),
                      $news->getSucc(), $news->getDataPresentazioneAtto('Ymd'), 
-                     $news->getRamoVotazione(), $news->getSedeInterventoId(), $news->getCreatedAt('Ymd h:i')));
+                     $news->getRamoVotazione(), $news->getTagId(), $news->getCreatedAt('Ymd h:i')));
   }
   $t->diag("");
   

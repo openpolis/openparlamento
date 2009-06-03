@@ -23,49 +23,43 @@ preview del grafico delle distanze
      </div>
      
      <div id="main">
+       
        <div class="W45_100 float-right">
-            <!-- Box rotazione parlamentari -->
-            
-            <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
-		
-	    <div class="clear-both"></div>
-	    
-            <!-- Box news dal parlamento -->
-            <div class="section-box">
-                <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
-		
-		<h3>le ultime dal parlamento</h3>
-		</div>
-		<?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
-		
-		
-		  
+
+        <!-- Box rotazione parlamentari -->    
+        <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+
+        <div class="clear-both"></div>
+
+        <!-- Box news dal parlamento -->
+        <div class="section-box">
+          <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
+      		<h3>le ultime dal parlamento</h3>
+    		</div>
+        <?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
 		  
 	      <div class="clear-both"></div>
 	   
-	    <!-- Box attivita' utenti -->
-            <div class="section-box">   
-		
-		<h3 class="section-box-no-rss">le ultime dalla comunit&agrave;</h3>
-		<ul>
-		  <?php foreach ($latest_activities as $activity): ?>
-		    <?php $news_text = community_news_text($activity); ?>
-		      <?php if ($news_text != ''): ?>
-		         <li class="float-container">
-			     <div class="date"> <?php echo $activity->getCreatedAt("d/m/Y H:i"); ?></div>							
-			     <?php echo $news_text ?>
-			  </li>         
-                       <?php endif ?>
-                      <?php endforeach; ?>
-		  </ul>
-		  <div class="section-box-scroller tools-container has-next">
-		       <?php echo link_to('<strong>vedi le ultime 100 attivit&agrave;</strong>','@news_comunita',array('class' => 'see-all')) ?>
-		  </div> 
-	      <div class="clear-both"></div>
-	    </div>
-         
-            
-	 </div>     
+	      <!-- Box attivita' utenti -->
+        <div class="section-box">   
+		      <h3 class="section-box-no-rss">le ultime dalla comunit&agrave;</h3>
+		      <ul>
+    		  <?php foreach ($latest_activities as $activity): ?>
+    		    <?php $news_text = community_news_text($activity); ?>
+    		    <?php if ($news_text != ''): ?>
+    		      <li class="float-container">
+    			      <div class="date"> <?php echo $activity->getCreatedAt("d/m/Y H:i"); ?></div>							
+    			      <?php echo $news_text ?>
+    			    </li>         
+            <?php endif ?>
+          <?php endforeach; ?>
+		      </ul>
+    		  <div class="section-box-scroller tools-container has-next">
+  		       <?php echo link_to('<strong>vedi le ultime 100 attivit&agrave;</strong>','@news_comunita',array('class' => 'see-all')) ?>
+    		  </div> 
+	        <div class="clear-both"></div>
+	      </div>
+	     </div>     
           
            <!-- in evidenza dal blog -->
           <div class="W52_100 float-left">

@@ -13,7 +13,7 @@ abstract class BaseTaggingPeer {
 	const CLASS_DEFAULT = 'plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.Tagging';
 
 	
-	const NUM_COLUMNS = 5;
+	const NUM_COLUMNS = 6;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,23 +35,26 @@ abstract class BaseTaggingPeer {
 	const USER_ID = 'sf_tagging.USER_ID';
 
 	
+	const CREATED_AT = 'sf_tagging.CREATED_AT';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('ID', 'TagId', 'TaggableModel', 'TaggableId', 'UserId', ),
-		BasePeer::TYPE_COLNAME => array (TaggingPeer::ID, TaggingPeer::TAG_ID, TaggingPeer::TAGGABLE_MODEL, TaggingPeer::TAGGABLE_ID, TaggingPeer::USER_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'tag_id', 'taggable_model', 'taggable_id', 'user_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('ID', 'TagId', 'TaggableModel', 'TaggableId', 'UserId', 'CreatedAt', ),
+		BasePeer::TYPE_COLNAME => array (TaggingPeer::ID, TaggingPeer::TAG_ID, TaggingPeer::TAGGABLE_MODEL, TaggingPeer::TAGGABLE_ID, TaggingPeer::USER_ID, TaggingPeer::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'tag_id', 'taggable_model', 'taggable_id', 'user_id', 'created_at', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'TagId' => 1, 'TaggableModel' => 2, 'TaggableId' => 3, 'UserId' => 4, ),
-		BasePeer::TYPE_COLNAME => array (TaggingPeer::ID => 0, TaggingPeer::TAG_ID => 1, TaggingPeer::TAGGABLE_MODEL => 2, TaggingPeer::TAGGABLE_ID => 3, TaggingPeer::USER_ID => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'tag_id' => 1, 'taggable_model' => 2, 'taggable_id' => 3, 'user_id' => 4, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
+		BasePeer::TYPE_PHPNAME => array ('ID' => 0, 'TagId' => 1, 'TaggableModel' => 2, 'TaggableId' => 3, 'UserId' => 4, 'CreatedAt' => 5, ),
+		BasePeer::TYPE_COLNAME => array (TaggingPeer::ID => 0, TaggingPeer::TAG_ID => 1, TaggingPeer::TAGGABLE_MODEL => 2, TaggingPeer::TAGGABLE_ID => 3, TaggingPeer::USER_ID => 4, TaggingPeer::CREATED_AT => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'tag_id' => 1, 'taggable_model' => 2, 'taggable_id' => 3, 'user_id' => 4, 'created_at' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
@@ -114,6 +117,8 @@ abstract class BaseTaggingPeer {
 		$criteria->addSelectColumn(TaggingPeer::TAGGABLE_ID);
 
 		$criteria->addSelectColumn(TaggingPeer::USER_ID);
+
+		$criteria->addSelectColumn(TaggingPeer::CREATED_AT);
 
 	}
 

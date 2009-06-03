@@ -25,6 +25,7 @@ propel:
     taggable_model:   varchar(30)
     taggable_id:      integer
     user_id:          { type: integer }
+    created_at:
     _indexes:
       tag:            [tag_id]
       taggable:       [taggable_model, taggable_id]

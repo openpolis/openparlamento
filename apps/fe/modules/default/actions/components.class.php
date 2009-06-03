@@ -2,31 +2,29 @@
 class defaultComponents extends sfComponents
 {
 
- public function executeClassifiche()
- {
+  public function executeClassifiche()
+  {
 
-// box rotazione politici
+    // box rotazione politici
     
     // random del ramo
     if ($this->ramo==0 ) {
-	if (rand(1,2)==1) {
+	    if (rand(1,2)==1) {
 	    	$tipo_carica=1;
 	    	$this->nome_carica='deputati';
-	}
-	else {
+	    } else {
 	    	$tipo_carica=4;
 	    	$this->nome_carica='senatori';
-	}
-     }
-     if ($this->ramo==1) {
-	    	$tipo_carica=1;
-	    	$this->nome_carica='deputati';
-     } 	
-     if ($this->ramo==2) {
-	    	$tipo_carica=4;
-	    	$this->nome_carica='senatori';
-     }	    
-    	
+	    }
+    }
+    if ($this->ramo==1) {
+    	$tipo_carica=1;
+    	$this->nome_carica='deputati';
+    } 	
+    if ($this->ramo==2) {
+    	$tipo_carica=4;
+    	$this->nome_carica='senatori';
+    }	        	
     
     $c = new Criteria();
     $c->clearSelectColumns();
@@ -47,7 +45,7 @@ class defaultComponents extends sfComponents
     $c->add(OppCaricaPeer::DATA_FINE,NULL,Criteria::ISNULL);
     $c->add(OppCaricaPeer::TIPO_CARICA_ID,$tipo_carica);
     
-     $this->quale_pagina=$this->classifica;
+    $this->quale_pagina=$this->classifica;
     
     // random sul cosa
     if ($this->classifica==0)
@@ -103,7 +101,6 @@ class defaultComponents extends sfComponents
    
     $c->setLimit($this->limit); 
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
-   
     
   }
 

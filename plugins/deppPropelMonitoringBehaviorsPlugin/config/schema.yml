@@ -26,7 +26,8 @@ propel:
     ramo_votazione:            { type: char, size: 1, index: multiple }
     sede_intervento_id:        { type: integer, index: multiple }
     succ:                      { type: integer }
-    
+    tag_id:                    { type: integer }
+      
     _indexes:
       relmodel_date_priority_tipoatto:        [related_monitorable_model, date, priority, tipo_atto_id]
       relmodel_tipoatto_priority:             [related_monitorable_model, tipo_atto_id, priority]

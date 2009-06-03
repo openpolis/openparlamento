@@ -49,10 +49,30 @@ class argomentoActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
 
+    // fetch di tutte le notizie legate ad atti taggati con il tag corrente
     $c = new Criteria();
     $c->add(TaggingPeer::TAG_ID, $this->argomento->getId());
     $c->addJoin(TaggingPeer::TAGGABLE_ID, NewsPeer::RELATED_MONITORABLE_ID);
 
+    # TODO: va aggiunto un filtro per elmiminare le notizie generate dal tagging dell'atto con tag diversi
+    # per questo filtro bisogna:
+    # - aggiungere un campo tag_id alla sf_news_cache (memorizza il tag_id se il generatore è tagging) 
+    # - prendere le notizie relative all'atto, generate da tagging, con tag_id != $this->argomento_id
+    # aggiungere al criterio NOT IN
+    $cf = clone $c;
+    $cf->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
+    $cf->add(NewsPeer::TAG_ID, $this->argomento->getId(), Criteria::NOT_EQUAL);
+    $cf->clearSelectColumns();
+    $cf->addSelectColumn(NewsPeer::ID);
+    $rs = NewsPeer::doSelectRS($cf);
+    $to_zap_ids = array();
+    while ($rs->next())
+    {
+      $to_zap_ids []= $rs->getInt(1);
+    }
+    
+    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);
+    
     $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
     {

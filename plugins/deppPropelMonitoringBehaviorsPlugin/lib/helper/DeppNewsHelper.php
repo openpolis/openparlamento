@@ -1,5 +1,6 @@
 <?php 
 
+
 /*
  * This file is part of the deppPropelMonitoringBehaviors package.
  * (c) 2008 Guglielmo Celata
@@ -65,6 +66,8 @@ function news_list($news)
 
 function news_text($news,$context=1,$img=1)
 {
+  sfLoader::loadHelpers('Asset');
+  
   $news_string = "";
   
   // fetch del modello e dell'oggetto che ha generato la notizia

@@ -17,6 +17,10 @@ all:
     max_items: 15
     max_tags: 5
   
+  # json api
+  api:
+    classifiche_limit: 10
+  
   # cookies
   cookies:
     path:                 '/'

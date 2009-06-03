@@ -13,7 +13,7 @@ abstract class BaseNewsPeer {
 	const CLASS_DEFAULT = 'plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.News';
 
 	
-	const NUM_COLUMNS = 13;
+	const NUM_COLUMNS = 14;
 
 	
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -59,23 +59,26 @@ abstract class BaseNewsPeer {
 	const SUCC = 'sf_news_cache.SUCC';
 
 	
+	const TAG_ID = 'sf_news_cache.TAG_ID';
+
+	
 	private static $phpNameMap = null;
 
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'GeneratorModel', 'GeneratorPrimaryKeys', 'RelatedMonitorableModel', 'RelatedMonitorableId', 'Date', 'Priority', 'TipoAttoId', 'DataPresentazioneAtto', 'RamoVotazione', 'SedeInterventoId', 'Succ', ),
-		BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::CREATED_AT, NewsPeer::GENERATOR_MODEL, NewsPeer::GENERATOR_PRIMARY_KEYS, NewsPeer::RELATED_MONITORABLE_MODEL, NewsPeer::RELATED_MONITORABLE_ID, NewsPeer::DATE, NewsPeer::PRIORITY, NewsPeer::TIPO_ATTO_ID, NewsPeer::DATA_PRESENTAZIONE_ATTO, NewsPeer::RAMO_VOTAZIONE, NewsPeer::SEDE_INTERVENTO_ID, NewsPeer::SUCC, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'generator_model', 'generator_primary_keys', 'related_monitorable_model', 'related_monitorable_id', 'date', 'priority', 'tipo_atto_id', 'data_presentazione_atto', 'ramo_votazione', 'sede_intervento_id', 'succ', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CreatedAt', 'GeneratorModel', 'GeneratorPrimaryKeys', 'RelatedMonitorableModel', 'RelatedMonitorableId', 'Date', 'Priority', 'TipoAttoId', 'DataPresentazioneAtto', 'RamoVotazione', 'SedeInterventoId', 'Succ', 'TagId', ),
+		BasePeer::TYPE_COLNAME => array (NewsPeer::ID, NewsPeer::CREATED_AT, NewsPeer::GENERATOR_MODEL, NewsPeer::GENERATOR_PRIMARY_KEYS, NewsPeer::RELATED_MONITORABLE_MODEL, NewsPeer::RELATED_MONITORABLE_ID, NewsPeer::DATE, NewsPeer::PRIORITY, NewsPeer::TIPO_ATTO_ID, NewsPeer::DATA_PRESENTAZIONE_ATTO, NewsPeer::RAMO_VOTAZIONE, NewsPeer::SEDE_INTERVENTO_ID, NewsPeer::SUCC, NewsPeer::TAG_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'created_at', 'generator_model', 'generator_primary_keys', 'related_monitorable_model', 'related_monitorable_id', 'date', 'priority', 'tipo_atto_id', 'data_presentazione_atto', 'ramo_votazione', 'sede_intervento_id', 'succ', 'tag_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'GeneratorModel' => 2, 'GeneratorPrimaryKeys' => 3, 'RelatedMonitorableModel' => 4, 'RelatedMonitorableId' => 5, 'Date' => 6, 'Priority' => 7, 'TipoAttoId' => 8, 'DataPresentazioneAtto' => 9, 'RamoVotazione' => 10, 'SedeInterventoId' => 11, 'Succ' => 12, ),
-		BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::CREATED_AT => 1, NewsPeer::GENERATOR_MODEL => 2, NewsPeer::GENERATOR_PRIMARY_KEYS => 3, NewsPeer::RELATED_MONITORABLE_MODEL => 4, NewsPeer::RELATED_MONITORABLE_ID => 5, NewsPeer::DATE => 6, NewsPeer::PRIORITY => 7, NewsPeer::TIPO_ATTO_ID => 8, NewsPeer::DATA_PRESENTAZIONE_ATTO => 9, NewsPeer::RAMO_VOTAZIONE => 10, NewsPeer::SEDE_INTERVENTO_ID => 11, NewsPeer::SUCC => 12, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'generator_model' => 2, 'generator_primary_keys' => 3, 'related_monitorable_model' => 4, 'related_monitorable_id' => 5, 'date' => 6, 'priority' => 7, 'tipo_atto_id' => 8, 'data_presentazione_atto' => 9, 'ramo_votazione' => 10, 'sede_intervento_id' => 11, 'succ' => 12, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CreatedAt' => 1, 'GeneratorModel' => 2, 'GeneratorPrimaryKeys' => 3, 'RelatedMonitorableModel' => 4, 'RelatedMonitorableId' => 5, 'Date' => 6, 'Priority' => 7, 'TipoAttoId' => 8, 'DataPresentazioneAtto' => 9, 'RamoVotazione' => 10, 'SedeInterventoId' => 11, 'Succ' => 12, 'TagId' => 13, ),
+		BasePeer::TYPE_COLNAME => array (NewsPeer::ID => 0, NewsPeer::CREATED_AT => 1, NewsPeer::GENERATOR_MODEL => 2, NewsPeer::GENERATOR_PRIMARY_KEYS => 3, NewsPeer::RELATED_MONITORABLE_MODEL => 4, NewsPeer::RELATED_MONITORABLE_ID => 5, NewsPeer::DATE => 6, NewsPeer::PRIORITY => 7, NewsPeer::TIPO_ATTO_ID => 8, NewsPeer::DATA_PRESENTAZIONE_ATTO => 9, NewsPeer::RAMO_VOTAZIONE => 10, NewsPeer::SEDE_INTERVENTO_ID => 11, NewsPeer::SUCC => 12, NewsPeer::TAG_ID => 13, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'created_at' => 1, 'generator_model' => 2, 'generator_primary_keys' => 3, 'related_monitorable_model' => 4, 'related_monitorable_id' => 5, 'date' => 6, 'priority' => 7, 'tipo_atto_id' => 8, 'data_presentazione_atto' => 9, 'ramo_votazione' => 10, 'sede_intervento_id' => 11, 'succ' => 12, 'tag_id' => 13, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	
@@ -154,6 +157,8 @@ abstract class BaseNewsPeer {
 		$criteria->addSelectColumn(NewsPeer::SEDE_INTERVENTO_ID);
 
 		$criteria->addSelectColumn(NewsPeer::SUCC);
+
+		$criteria->addSelectColumn(NewsPeer::TAG_ID);
 
 	}
 

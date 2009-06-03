@@ -67,10 +67,14 @@ class deppPropelActAsNewsGeneratorBehavior
    * create as many news as the number of monitorable objects related to the 
    * generating object
    *
-   * @return void
+   * @param BaseObject $object - the generator object
+   * @param int $priority - the priority (it's an override if not null)
+   * @param bool $isSuccNews - flag to generate a succNews (only called from batch script)
+   *
+   * @return int - the number of generated news
    * @author Guglielmo Celata
    **/
-  public function generateNews(BaseObject $object, $priority = null)
+  public function generateNews(BaseObject $object, $priority = null, $isSuccNews = null)
   {
     $n_gen_news = 0;
     
@@ -113,13 +117,17 @@ class deppPropelActAsNewsGeneratorBehavior
       }
       
       // eccezione per modifica valore campo succ (opp_atto)
-      if (isset($this->succNews) && $this->succNews)
+      if (isset($this->succNews) && $this->succNews || $isSuccNews)
       {
         $n->setSucc($object->getSucc());
         
-        # TODO: la data per ora  è il momento in cui la modifica è fatta (non so quale altra data mettere)
-        $n->setDate(date('Y-m-d h:i:s'));
+        $succ_obj = OppAttoPeer::retrieveByPK($object->getSucc());
+        $n->setDate($succ_obj->getDataPres('Y-m-d h:i:s'));
       }
+      
+      // eccezione per news generate dal tagging
+      if ($object instanceof Tagging)
+        $n->setTagId($object->getTagId());
 
       $n->save();
       $n_gen_news ++;
