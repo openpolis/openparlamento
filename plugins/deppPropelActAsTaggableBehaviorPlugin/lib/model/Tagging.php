@@ -21,7 +21,7 @@ class Tagging extends BaseTagging
   
   public function getNewsDate()
   {
-    return date('Y-m-d');
+    return $this->getCreatedAt('Y-m-d');
   }
   
 }

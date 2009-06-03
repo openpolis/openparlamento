@@ -22,10 +22,16 @@ require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.D
 sfContext::getInstance();
 
 // uncomment to clean all news
-echo "Removing all news ...\n";
-NewsPeer::doDeleteAll();
+// echo "Removing all news ...\n";
+// NewsPeer::doDeleteAll();
+
+echo "Removing all taggings";
+$c = new Criteria();
+$c->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
+NewsPeer::doDelete($c);
 
 // define all news generators and the corresponding date fields (null = no field) for sorting purposes
+/*
 $generators = array('OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
                     'OppVotazioneHasAtto' => null,
                     'OppDocumento'        => OppDocumentoPeer::DATA,
@@ -37,6 +43,9 @@ $generators = array('OppCaricaHasAtto'    => OppCaricaHasAttoPeer::DATA,
                     'OppCarica'           => OppCaricaPeer::DATA_INIZIO,
                     'Tagging'             => null,
                     );
+*/
+
+$generators = array('Tagging' => null);
 
 $tot_cnt = 0;
 foreach ($generators as $model => $date_field)
