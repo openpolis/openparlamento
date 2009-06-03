@@ -332,8 +332,6 @@ class NewsPeer extends BaseNewsPeer
   }
 
 
-
-
   public static function getNewsForItemCriteria($item_type, $item_id)
   {    
     $c = new Criteria();
@@ -400,12 +398,15 @@ class NewsPeer extends BaseNewsPeer
   {    
     // costruzione dell'array associativo tipo_oggetto => array_di_id
     $monitored_hash = array('OppAtto' => array(), 'OppPolitico' => array());
+    
+    $monitored_tags_ids = array();
     foreach ($monitored_objects as $obj)
     {
       if (in_array(get_class($obj), array('OppAtto', 'OppPolitico')))
         array_push($monitored_hash[get_class($obj)], $obj->getId());
       if (get_class($obj) == 'Tag')
       {
+        $monitored_tags_ids [] = $obj->getId();
         $tagged_with = $obj->getTaggedWith();
         foreach ($tagged_with as $tagged_obj) {
           array_push($monitored_hash[get_class($tagged_obj)], $tagged_obj->getId());
@@ -431,6 +432,20 @@ class NewsPeer extends BaseNewsPeer
     $crit0->addOr($crit2);
 
     $c->add($crit0);
+
+    // filtro per rimuovere le notizie di tagging non riferite ai tag in monitoraggio
+    $to_zap_ids = array();
+    $cf = clone $c;
+    $cf->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
+    $cf->add(NewsPeer::TAG_ID, $monitored_tags_ids, Criteria::NOT_IN);
+    $cf->clearSelectColumns();
+    $cf->addSelectColumn(NewsPeer::ID);
+    $rs = NewsPeer::doSelectRS($cf);
+    while ($rs->next())
+    {
+      $to_zap_ids []= $rs->getInt(1);
+    }
+    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);
     
     return $c;
     

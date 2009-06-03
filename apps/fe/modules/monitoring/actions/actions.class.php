@@ -117,6 +117,8 @@ class monitoringActions extends sfActions
       $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
     }
     
+    // le news di gruppo non sono considerate, perché ridondanti (#247)
+    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
 
     // aggiunta filtri su tipi di atto, ramo e data
     if ($filters['act_type_id'] != '0')
@@ -187,7 +189,10 @@ class monitoringActions extends sfActions
       }
       $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
     }
-
+    
+    // le news di gruppo non sono considerate, perché ridondanti (#247)
+    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
+    
     // add a filter on the date (today's news) or a test date
     if (SF_ENVIRONMENT == 'task-test') $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
     else
@@ -201,8 +206,8 @@ class monitoringActions extends sfActions
     $mail_html_body = "<ul>"; $mail_text_body = '';
     foreach ($news as $n)
     {
-      $mail_html_body .= "\n\t<li>" . $n->getCreatedAt('d/m/Y') . " - " . news_text($n, true) . "</li>";
-      $mail_text_body .= "\n" . $n->getCreatedAt('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
+      $mail_html_body .= "\n\t<li>" . $n->getDate('d/m/Y') . " - " . news_text($n, true) . "</li>";
+      $mail_text_body .= "\n" . $n->getDate('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
     }
     $mail_html_body .= "\n</ul>";
     
@@ -212,13 +217,14 @@ class monitoringActions extends sfActions
     $mail->setContentType('text/html');
 
     // definition of the required parameters
-    $mail->setSender('vilas@deddo.palomarlab.net', 'Test');
-    $mail->setFrom('vilas@deddo.palomarlab.net', 'Test');
-
+    $mail->setSender(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
+                     sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+    $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
+                   sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
 
     $mail->addAddress($user->getEmail());
 
-    $mail->setSubject('Openparlamento: newsletter quotidiana' );
+    $mail->setSubject('openparlamento: newsletter del ' . date('d/m/Y') );
     $mail->addEmbeddedImage(sfConfig::get('sf_web_dir').'/images/logo_op_mail_footer.png', 
                             'CID1', 'Open2Public', 'base64', 'image/png');
                             
