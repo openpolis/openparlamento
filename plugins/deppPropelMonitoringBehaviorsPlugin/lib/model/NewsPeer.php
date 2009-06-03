@@ -363,18 +363,24 @@ class NewsPeer extends BaseNewsPeer
   public static function getNewsForTagCriteria($tag_id)
   {
     $c = new Criteria();
-    $c->add(self::RELATED_MONITORABLE_MODEL, 'OppAtto');
-    // $c->add(self::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
-    
-    // extracts all Attos tagged by the given tag
-    $attos_ids = array();
-    $attos_rs = TaggingPeer::getTaggableIDsByTagAndTaggableModel($tag_id, 'OppAtto');
-    while($attos_rs->next()){   
-      $attos_ids[] = $attos_rs->getInt(1);
-    } 
-    
-    $c->add(self::RELATED_MONITORABLE_ID, $attos_ids, Criteria::IN);
+    $c->add(TaggingPeer::TAG_ID, $tag_id);
+    $c->addJoin(TaggingPeer::TAGGABLE_ID, NewsPeer::RELATED_MONITORABLE_ID);
 
+    // filtro per rimuovere le notizie di tagging non riferite al tag in visualizzazione
+    $cf = clone $c;
+    $cf->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
+    $cf->add(NewsPeer::TAG_ID, $tag_id, Criteria::NOT_EQUAL);
+    $cf->clearSelectColumns();
+    $cf->addSelectColumn(NewsPeer::ID);
+    $rs = NewsPeer::doSelectRS($cf);
+    $to_zap_ids = array();
+    while ($rs->next())
+    {
+      $to_zap_ids []= $rs->getInt(1);
+    }
+    
+    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);    
+    
     return $c;
   }
 

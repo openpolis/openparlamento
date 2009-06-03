@@ -54,11 +54,7 @@ class argomentoActions extends sfActions
     $c->add(TaggingPeer::TAG_ID, $this->argomento->getId());
     $c->addJoin(TaggingPeer::TAGGABLE_ID, NewsPeer::RELATED_MONITORABLE_ID);
 
-    # TODO: va aggiunto un filtro per elmiminare le notizie generate dal tagging dell'atto con tag diversi
-    # per questo filtro bisogna:
-    # - aggiungere un campo tag_id alla sf_news_cache (memorizza il tag_id se il generatore è tagging) 
-    # - prendere le notizie relative all'atto, generate da tagging, con tag_id != $this->argomento_id
-    # aggiungere al criterio NOT IN
+    // filtro per rimuovere le notizie di tagging non riferite al tag in visualizzazione
     $cf = clone $c;
     $cf->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
     $cf->add(NewsPeer::TAG_ID, $this->argomento->getId(), Criteria::NOT_EQUAL);
@@ -71,7 +67,7 @@ class argomentoActions extends sfActions
       $to_zap_ids []= $rs->getInt(1);
     }
     
-    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);
+    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);    
     
     $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 

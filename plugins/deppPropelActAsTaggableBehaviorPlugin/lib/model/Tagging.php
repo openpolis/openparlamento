@@ -19,10 +19,6 @@ class Tagging extends BaseTagging
     return $item;
   }
   
-  public function getCreatedAt()
-  {
-    return null;
-  }
   public function getNewsDate()
   {
     return date('Y-m-d');

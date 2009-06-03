@@ -34,8 +34,6 @@ class monitoringComponents extends sfComponents
         break;
     }
     
-    sfLogger::getInstance()->info('xxx: ' . $this->item_type);
-
     if ($this->item_type == 'atto' || $this->item_type == 'politico')
       $this->nMonitoringUsers = $this->item->countAllMonitoringUsers();
     else

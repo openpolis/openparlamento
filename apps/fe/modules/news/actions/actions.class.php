@@ -162,11 +162,6 @@ class newsActions extends sfActions
   public function executeTag()
   {
 
-     // prima veniva chiamato per trple_value ma dare errore col paginatore	
-    //$this->tag_name = $this->getRequestParameter('name');
-    //$this->tag = TagPeer::retrieveByTagname($this->tag_name);
-    //$this->tag_id = $this->tag->getId();
-    
     // due righe modificate per la chiamata con id
     $this->tag_id = $this->getRequestParameter('id');
     $this->tag = TagPeer::retrieveByPK($this->tag_id);
