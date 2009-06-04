@@ -5,9 +5,6 @@ all:
   # settaggio differenziato per differenti hostname
   remote_guard_host:      '<?php echo $remote_guard_host ?>'
   site_url:               '<?php echo $site_url ?>'
-  remote:
-    api_key:                           '<?php echo $api_key ?>'
-    politicians_images_service_url:    'http://<?php echo $op_openpolis_host ?>/getPolImage'
   
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick

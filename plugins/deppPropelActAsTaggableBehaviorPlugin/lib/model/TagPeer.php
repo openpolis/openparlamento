@@ -128,11 +128,12 @@ class TagPeer extends BaseTagPeer
     $c->addSelectColumn('COUNT('.TagPeer::NAME.') as counter');
     $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID, Criteria::RIGHT_JOIN);
     $c->addGroupByColumn(TaggingPeer::TAG_ID);
-    $c->addDescendingOrderByColumn('counter');
-    $c->addAscendingOrderByColumn(TagPeer::NAME);
-    
-   
-    
+    if (isset($options['sort_by_popularity']))
+    {
+      $c->addDescendingOrderByColumn('counter');
+    } else {
+      $c->addAscendingOrderByColumn(TagPeer::TRIPLE_VALUE);      
+    }
    
 
     if (Propel::VERSION >= '1.3')
@@ -154,10 +155,16 @@ class TagPeer extends BaseTagPeer
       }
     }
 
-   if (!isset($options['sort_by_popularity']) || (true !== $options['sort_by_popularity']))
+    /* 
+     * questo ordinava per la chiave (NAME) e quindi in modo errato
+     * ora il comportamento di default è di ordinare per NAME
+     * mentre se si vuole l'ordinamento per popolarità va specificato nelle options
+     * come prima
+    if (!isset($options['sort_by_popularity']) || (true !== $options['sort_by_popularity']))
     {
       ksort($tags);
     }
+    */
 
     return $tags;
   }
@@ -257,6 +264,7 @@ class TagPeer extends BaseTagPeer
     }
     
     $all_tags = TagPeer::getAllWithCount($c, $options);
+    
     return deppPropelActAsTaggableToolkit::normalize($all_tags);
     
   }

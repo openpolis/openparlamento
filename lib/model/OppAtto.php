@@ -432,7 +432,7 @@ class OppAtto extends BaseOppAtto
   }
 
   /**
-   * override per modificare la proprietà dei comunicati di governo
+   * override per modificare la priorità dei comunicati di governo
    *
    * @param string $con 
    * @return void
@@ -443,7 +443,7 @@ class OppAtto extends BaseOppAtto
     
     if ($this->getTipoAttoId() == 13)
     {
-      $this->priority_override = 2;
+      $this->priority_override = 3;
     }
     return parent::save();
 

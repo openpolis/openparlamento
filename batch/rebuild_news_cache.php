@@ -92,6 +92,49 @@ foreach ($generators as $model => $date_field)
     // fetch the object (needed to call the generateNews method)
     // then destroys it, in order to release memory
     $object = call_user_func_array(array($model.'Peer', 'retrieveByPK'), $pk_values);
+
+    // tutta la logica di override dei metodi save() va ripetuta qui
+    if ($object instanceof OppCaricaHasAtto)
+    {
+      $object->skip_news_generation = false;
+      if ($object->getTipo() != 'R' && $object->getData() <= $object->getOppAtto()->getDataPres())
+      {
+        $object->skip_news_generation = true;
+        $object->generateNewsForPolitico();
+      }      
+    }
+    
+    if ($object instanceof OppVotazioneHasAtto && $object->getOppVotazione()->getFinale() == 1)
+    {
+      $object->priority_override = 1;
+    }
+
+    if ($object instanceof OPpAttoHasIter)
+    {
+      // override della priorità, nel caso di cambiamento di stato conclusivo, ma non CONCLUSO
+      if ($object->getOppIter()->getConcluso() == 1 && $object->getOppIter()->getFase() != 'CONCLUSO')
+        $object->priority_override = 1;
+
+      // cache in opp_atto, solo però se non è già APprovato o REspinto
+      $atto = $object->getOppAtto();
+      $stato_cod = $atto->getStatoCod();
+      $iter = $object->getOppIter();
+      if ($stato_cod != 'AP' && $stato_cod != 'RE')
+      {
+        $atto->setStatoCod($iter->getCacheCod());
+        $atto->setStatoFase($iter->getFase());
+        $atto->setStatoLastDate($object->getData());
+        $atto->save();
+      }
+    }
+    
+    if ($object instanceof OppAtto && $object->getTipoAttoId() == 13)
+      $object->priority_override = 3;
+
+    
+    
+    
+    
     try{
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;

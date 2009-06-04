@@ -432,8 +432,8 @@ class monitoringActions extends sfActions
     $c = new Criteria();
     $c->add(OppTagHasTtPeer::TESEOTT_ID, $top_term_id);
     $c->addJoin(OppTagHasTtPeer::TAG_ID, TagPeer::ID);
-    $c->addAscendingOrderByColumn(TagPeer::TRIPLE_VALUE);
     $this->tags = TagPeer::getPopulars($c);
+    
   }
 
   public function executeAjaxNewsForItem()

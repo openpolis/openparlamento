@@ -29,7 +29,7 @@
 
     <h5 class="subsection">Aggiungi un argomento</h5>
 
-    <?php if ($opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
+    <?php if ($sf_user->hasCredential('adhoc') || $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
       <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array('name' => 'search_tag')); ?>
     <?php endif ?>
 
