@@ -1,12 +1,12 @@
 <?php if($atto->countOppDocumentos() != 0): ?>
 
 <div class="coo-mind float-container">
-  <h5 class="subsection">leggi e annota i testi di questo <?php echo $tipo_atto ?> :</h5>
+  <h4 class="subsection">leggi i testi ufficiali dell'atto e aggiungi le tue note :</h4>
   <table>
     <thead>
       <tr> 
         <th scope="col">&nbsp;</th>
-        <th scope="col">n. annotazioni <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
+        <th scope="col">note degli utenti <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
       </tr>
     </thead>
     <!-- per activity-meter la larghezza max e' 75px ....

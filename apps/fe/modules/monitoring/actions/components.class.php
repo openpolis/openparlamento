@@ -10,10 +10,10 @@ class monitoringComponents extends sfComponents
 {
   public function executeSubmenu()
   {
-    $this->sub_menu_items = array('news' => 'Le tue notizie',
-                                  'acts' => 'I tuoi atti',
-                                  'politicians' => 'I tuoi parlamentari',
-                                  'tags' => 'I tuoi argomenti');
+    $this->sub_menu_items = array('news' => 'Le mie notizie',
+                                  'acts' => 'I miei atti',
+                                  'politicians' => 'I miei parlamentari',
+                                  'tags' => 'I miei argomenti');
   }
   
   

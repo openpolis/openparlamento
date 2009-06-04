@@ -35,7 +35,7 @@ class monitoringActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
     
-    $this->getResponse()->setTitle('le tue notizie - ' . sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('le mie notizie - ' . sfConfig::get('app_main_title'));
 
     $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST ||
@@ -277,7 +277,7 @@ class monitoringActions extends sfActions
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->session = $this->getUser();
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i tuoi atti');
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i miei atti');
 
 
     // reset dei filtri se richiesto esplicitamente
@@ -369,7 +369,7 @@ class monitoringActions extends sfActions
     }
 
     $this->filters = $filters;
-    
+     
     $this->tag_filtering_criteria = $tag_filtering_criteria;
   }
 
@@ -377,7 +377,7 @@ class monitoringActions extends sfActions
   public function executePoliticians()
   {
   	
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i tuoi parlamentari');
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i miei parlamentari');
     	
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();
@@ -392,7 +392,7 @@ class monitoringActions extends sfActions
   public function executeTags()
   { 
     
-    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i tuoi argomenti');
+    $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i miei argomenti');
     
     // embed javascripts for advanced javascripts
     $response = sfContext::getInstance()->getResponse();

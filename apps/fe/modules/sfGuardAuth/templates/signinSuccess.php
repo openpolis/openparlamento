@@ -1,9 +1,17 @@
 <?php use_helper('Validation', 'I18N') ?>
 
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      Entra in openparlamento
+    </h2>
+  </li>
+</ul>
 
-<div id="content" class="float-container" style="margin-top: 5px">
+<div id="content" class="tabbed float-container">
   <div id="main" style="padding: 50px 0">
-    <div id="sf_guard_auth_form" style="margin: 0">
+ 
+    <div id="sf_guard_auth_form">
       <?php echo form_tag('@sf_guard_signin') ?>
 
         <fieldset>
@@ -11,7 +19,7 @@
           <div class="form-row" id="sf_guard_auth_username">
             <?php
             echo form_error('username'),
-            label_for('username', __('username:')),
+            label_for('username', __('e-mail:')),
             input_tag('username', $sf_data->get('sf_params')->get('username'));
             ?>
           </div>
@@ -31,7 +39,8 @@
             ?>
           </div>
         </fieldset>
-        <?php echo submit_tag("Entra") ?>
+        <?php //echo submit_tag("Entra") ?>
+        <?php echo submit_image_tag("/images/btn-entra.png",array("alt"=>"Entra")) ?>
         <?php echo checkbox_tag('remember'); ?>
         <?php echo label_for('remember', 'ricordati di me su questo sito'); ?>
 
@@ -39,12 +48,14 @@
     </div>
     
     <div class="registrati">
-        <h2>Non hai una password? Registrati!</h2>
-        <br/>
-        <strong>Tutti possono registrarsi</strong>, serve meno di un minuto.<br/>
-
-        <br/>
-        <div class="bottone"><a href="">registrati!</a></div>
+    <?php echo link_to('<h2>Non hai una password? Registrati!</h2><br/><strong>Tutti possono registrarsi</strong>, serve meno di un minuto.<br/>', 
+                            "http://".sfConfig::get('app_remote_guard_host',
+                                                    'lapgu.accesso.openpolis.it').
+                            (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
+                            "/aggiungi_utente" , 
+                           array('class' => 'sign-on')) ?>	
+        
+      
       </div>
     
   </div>
@@ -52,6 +63,6 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to('Home', '@homepage') ?> /
-  Login
+  Entra
 <?php end_slot() ?>
 

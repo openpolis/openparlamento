@@ -315,7 +315,7 @@ In questo caso destra/sinistra, in alto/in basso non hanno alcun significato.
 		'codebase', 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0',
 		'width', '870',
 		'height', '540',
-		'src', '/swf/DistanceGraph<?php echo($swfname) ?>',
+		'src', '/swf/DistanceGraph<?php echo($swfname) ?>-20090528',
 		'quality', 'high',
 		'pluginspage', 'http://www.adobe.com/go/getflashplayer',
 		'align', 'middle',
@@ -330,7 +330,7 @@ In questo caso destra/sinistra, in alto/in basso non hanno alcun significato.
 		'menu', 'true',
 		'allowFullScreen', 'false',
 		'allowScriptAccess','sameDomain',
-		'movie', '<?php echo($swfname) ?>',
+		'movie', '<?php echo($swfname) ?>-20090528',
 		'salign', ''
 		); //end AC code
 </script>
@@ -338,7 +338,7 @@ In questo caso destra/sinistra, in alto/in basso non hanno alcun significato.
 	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=10,0,0,0" width="870" height="540" id="DistanceGraph" align="middle">
 	<param name="allowScriptAccess" value="sameDomain" />
 	<param name="allowFullScreen" value="false" />
-	<param name="movie" value="<?php echo($swfname) ?>.swf" /><param name="quality" value="high" /><param name="wmode" value="gpu" /><param name="bgcolor" value="#ffffff" />	<embed src="<?php echo($swfname) ?>.swf" quality="high" wmode="gpu" bgcolor="#ffffff" width="900" height="700" name="DistanceGraph" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" />
+	<param name="movie" value="<?php echo($swfname) ?>.swf" /><param name="quality" value="high" /><param name="wmode" value="gpu" /><param name="bgcolor" value="#ffffff" />	<embed src="<?php echo($swfname) ?>-20090528.swf" quality="high" wmode="gpu" bgcolor="#ffffff" width="900" height="700" name="DistanceGraph" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer" />
 	</object>
 </noscript>
 

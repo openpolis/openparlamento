@@ -472,6 +472,8 @@ jQuery.extend( jQuery.easing,
 			if(reset) userSelection.removeAllRanges();
 								
 		} else if (document.selection) {
+		  
+		  try {
 
 			var userSelection = document.selection,
 			r = userSelection.createRange();
@@ -550,6 +552,15 @@ jQuery.extend( jQuery.easing,
 			endOffset = Math.min(endOffset, endContainer.length);
 
 			if(reset) userSelection.empty();
+		  
+		  } catch(err) {
+			if(eMend.log) {
+			  err.funct = '$.getSelection';
+			  //err.selection = $.getSelectedText();
+			  eMend.log.add('warning',err);
+			}
+		  }
+		  
 		}
 		
 		if(startContainer != endContainer || startOffset != endOffset) {

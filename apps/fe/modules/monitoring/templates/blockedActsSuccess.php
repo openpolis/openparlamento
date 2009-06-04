@@ -4,16 +4,17 @@
 <div id="content" class="tabbed-orange float-container">
   <div id="main">
     <div class="W100_100 float-left">
-    <p class="tools-container"><a class="ico-help" href="#">cosa sono gli atti bloccati</a></p>
+    <p class="tools-container"><a class="ico-help" href="#">cosa sono gli atti scartati</a></p>
   		<div style="display: none;" class="help-box float-container">
   			<div class="inner float-container">
 
-  				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-  				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  				<a class="ico-close" href="#">chiudi</a><h5>cosa sono gli atti scartati ?</h5>
+  				<p>Gli atti scartati sono quegli associati a un determinato argomento che stai monitorando, che hai scelto di non seguire.<br />
+  				</p>
   			</div>
   		</div>
 
-    <h5 id="type_<?php echo $type_id;?>"class="subsection">Elenco degli atti bloccati</h5>
+    <h5 id="type_<?php echo $type_id;?>"class="subsection">Elenco degli atti scartati</h5>
     <div class="show-all-results">
     <?php echo link_to('<strong>mostra tutti gli atti monitorati</strong>', 
                        '@monitoring_acts?user_token='.$sf_user->getToken(), 
@@ -29,7 +30,7 @@
 				<th class="evident" scope="col">argomenti</th>
 				<th class="evident W20_100" scope="col"><br/>notizie relative (<?php echo image_tag('ico-new.png', array('alt' => 'nuovo')) ?>):</th>
 				<th class="evident" scope="col">il tuo voto:</th>
-				<th class="evident" scope="col">Ri-monitora</th>
+				<th class="evident" scope="col">aggiungi ai monitorati</th>
 			</tr>
 		</thead>
 		<tbody>

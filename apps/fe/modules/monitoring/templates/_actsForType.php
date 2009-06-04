@@ -2,13 +2,13 @@
 <h5 id="type_<?php echo $type_id;?>"class="subsection"><?php echo $type_denominazione; ?></h5>
 <?php if ($n_total_acts > sfConfig::get('app_monitored_acts_per_type_limit') && $filters['act_type_id'] == 0): ?>
   <div class="show-all-results">
-    <?php echo link_to('mostra tutti i '. $n_total_acts . ' risultati', 
+    <?php echo link_to('mostra elenco completo ('. $n_total_acts . ')', 
                        '@monitoring_acts?user_token=' .$sf_user->getToken(). 
                        '&filter_act_type_id=' . $type_id, 
                        array('post' => true)); ?>
   </div>  
 <?php endif ?>
-	<table class="list-table column-table">
+	<table class="list-table column-table"> 
 		<thead>
 			<tr>
 				<th class="evident" scope="col">aggiungi o rimuovi<br/>dai preferiti:</th>

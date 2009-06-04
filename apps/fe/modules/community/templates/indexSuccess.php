@@ -21,7 +21,7 @@
 
    <div class="W52_100 float-right">
    <div class="section-box">
-	<h3>gli atti pi&ugrave; seguiti dagli utenti</h3>
+	<h3 class="section-box-no-rss">gli atti pi&ugrave; seguiti dagli utenti</h3>
 	<div id="atti_community">				
 	  <?php echo include_component('community','attiutenti', array('type' => 'voti')); ?>	
 	</div> 
@@ -31,7 +31,7 @@
        <p>&nbsp;</p>	
        
       <div class="section-box">
-	<h3>i parlamentari pi&ugrave; monitorati</h3>
+	<h3 class="section-box-no-rss" style="color:orange;">i parlamentari pi&ugrave; monitorati</h3> 
         <div id="monitor_community">				
 	  <?php echo include_component('community','boxparlamentari', array('type' => 'deputati')); ?>	
 	</div> 
@@ -42,7 +42,7 @@
     <div class="W45_100 float-left">
       <div class="section-box">   
 		
-		<h3>le ultime dalla comunit&agrave;</h3>
+		<h3 class="section-box-no-rss">le ultime dalla comunit&agrave;</h3>
 		<ul>
 		  <?php foreach ($latest_activities as $activity): ?>
 		    <?php $news_text = community_news_text($activity); ?>
@@ -52,7 +52,7 @@
 			     <?php echo $news_text ?>
 			  </li>         
                        <?php endif ?>
-                      <?php endforeach; ?>
+                      <?php endforeach; ?> 
 		  </ul>
 		  <div class="section-box-scroller tools-container has-next">
 		       <?php echo link_to('<strong>vedi le ultime 100 attivit&agrave;</strong>','@news_comunita',array('class' => 'see-all')) ?>

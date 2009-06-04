@@ -208,7 +208,7 @@ Altro
  * EVIDENCE-BOX
  *----------------------------------------------*/
  
-.evidence-box { -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px;  }
+.evidence-box { -moz-border-radius: 8px; -webkit-border-radius: 8px; border-radius: 8px; border:1px solid #DBDBDB; margin-top: 20px; margin-bottom:20px;} 
 .evidence-box .subsection { background-color: #f0f4f4;
 -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0; 
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px;
@@ -626,19 +626,23 @@ div.show-all-results {float:right; align-text: right; margin-top: -40px; margin-
  * METER BAR
  *----------------------------------------------*/
 
-.meter-bar { padding: 10px; position: relative; }
-.meter-average { position: absolute; top: -8px; z-index: 10; background: transparent url(../images/line-meter.png) no-repeat top left; height: 28px; width: 10px; margin-left: -2px; }
-.meter-bar .meter-average label { margin-top: 29px; margin-left: 2px; padding: 2px 10px; background-color: #ffc500; display: none; font-size: 12px; font-weight: bold; color: #fff; }
-.meter-bar:hover .meter-average { height: 40px; width: 200px;}
+.meter-bar { padding: 20px 10px 10px 10px; position: relative; }
+.meter-bar-container { padding-bottom: 5px;  }
+.meter-average { position: absolute; top: -8px; z-index: 10; background: transparent url(/images/line-meter.png) no-repeat top left; height: 28px; width: 10px; margin-left: -2px; }
+.meter-bar .meter-average label { margin-top: 29px; margin-left: 2px; padding: 2px; background-color: #fff; display: none; font-size: 12px; font-weight: bold; color: #000; border: 1px solid #7e858b; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; position: relative; left: -50%; text-align: center; width: 150px;}
+.meter-bar:hover .meter-average { height: 40px; width: 150px;}
 .meter-bar:hover .meter-average label { display: block; }
 
-.green-meter-bar { background-color: #d9ebd7; margin-bottom: 7px; }
-.red-meter-bar { background-color: #efdad8;  margin-bottom: 7px; }
-.blue-meter-bar { background-color: #ddeaea;  margin-bottom: 7px; }
-.violet-meter-bar { background-color: #f3cff0;  margin-bottom: 7px; }
+.green-meter-bar { background-color: #d9ebd7; margin-bottom: 7px; margin-right: 100px; }
+.red-meter-bar { background-color: #efdad8;  margin-bottom: 7px; margin-right: 100px; }
+.blue-meter-bar { background-color: #ddeaea;  margin-bottom: 7px; margin-right: 100px; }
+.violet-meter-bar { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 100px; }
+.violet-meter-bar-short { background-color: #f3cff0;  margin-bottom: 7px; margin-right: 200px; }
 .meter-bar { color: #333; font-weight: bold; text-align: right; }
 .meter-value { position: absolute; padding: 2px; color: #333; font-weight: bold; left: 0; }
-.meter-label { position: absolute; z-index: 15; padding: 2px; left: 0; }
+.meter-label { position: absolute; z-index: 15; padding: 2px; right: 0; width: 100px; text-align: left; }
+.meter-label-long { position: absolute; z-index: 15; padding: 2px; right: 0; width: 200px; text-align: left; }
+.meter-label strong { font-size: 120%; } 
 
 .green-meter-bar .meter-bar { background-color: #39aa2d; padding: 3px;}
 .red-meter-bar .meter-bar { background-color: #bd3a2e; padding: 3px; }
@@ -646,25 +650,30 @@ div.show-all-results {float:right; align-text: right; margin-top: -40px; margin-
 .meter-bar .green-meter-bar,
 .meter-bar .red-meter-bar,
 .meter-bar .blue-meter-bar,
-.meter-bar .violet-meter-bar { margin-left: 90px; position: relative; margin-bottom: 30px; height: 18px;}
+.meter-bar .violet-meter-bar,
+.meter-bar .violet-meter-bar-short { margin-left: 90px; position: relative; margin-bottom: 30px; height: 18px;}
 
 .meter-bar .evidence-box { border: 1px solid #eac4e7; padding: 10px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
-.meter-bar .evidence-box .violet-meter-bar { margin-left: 130px; }
+.meter-bar .evidence-box .violet-meter-bar,
+.meter-bar .evidence-box .violet-meter-bar-short{ margin-left: 130px; }
 
 .meter-bar label { display: block; float: left; font-size: 14px; color: #555; }
 
-.green-meter-bar .meter-value { background-color: #39aa2d; }
-.red-meter-bar .meter-value { background-color: #bd3a2e; }
-.blue-meter-bar .meter-value { background-color: #589292; }
-.violet-meter-bar .meter-value { background-color: #ab2ba2; }
+.green-meter-bar .meter-value { background-color: #43ca34; }
+.red-meter-bar .meter-value { background-color: #d54235; }
+.blue-meter-bar .meter-value { background-color: #67abab; }
+.violet-meter-bar .meter-value { background-color: #ce35c4; }
+.violet-meter-bar-short .meter-value { background-color: #ce35c4; }
 
-.mb-idx { margin-left: 90px; position: relative; padding-top: 5px; }
+.mb-idx { margin-left: 90px; position: relative; padding-top: 5px; text-align: left;}
 .mb-idx-label { line-height: 20px; padding-top: 5px; }
 .mb-idx .meter-label { line-height: 20px; }
+
 .mb-idx .meter-average { height: 35px; margin-top: 5px; margin-left: -5px; }
+
 .mb-idx .meter-average label { margin-top: 36px; }
-.mb-idx ul { position: relative; z-index: 10; }
-.mb-idx li { float: left; width: 10%; text-align: right; height: 25px; }
+.mb-idx ul {  }
+.mb-idx li { float: left; width: 10%; text-align: right; height: 25px; position: relative; }
 .mb-idx li p { position: relative; top: -1.25em; }
 
 .pos-idx { text-align: left; margin-left: 90px; }
@@ -704,7 +713,7 @@ div.show-all-results {float:right; align-text: right; margin-top: -40px; margin-
 
 
 
-.clipwrapper{ position:absolute; z-index: 20; height:25px; }
+.clipwrapper{ position:absolute; z-index: 20; height:25px; } 
 .meter-palette { width: 100%; height: 25px; float: left; }
 
 
@@ -712,7 +721,8 @@ div.show-all-results {float:right; align-text: right; margin-top: -40px; margin-
 #monitor-n-vote .vote-no-more-results { color: #bd3a2e; margin-bottom: 15px; }
 #monitor-n-vote .vote-yes-more-results strong, #monitor-n-vote .vote-no-more-results strong { font-size: 15px; }
 
-hr.dotted { background: transparent url(../images/hr-dotted-orange.png) repeat-x top left; height: 1px; margin-bottom: 10px; width: 95%; }
+hr.dotted { background: transparent url(/images/hr-dotted-orange.png) repeat-x top left; height: 1px; margin-bottom: 10px; width: 95%; }
+
 
 
 
@@ -721,7 +731,7 @@ hr.dotted { background: transparent url(../images/hr-dotted-orange.png) repeat-x
  * DISEGNI-DECRETI NEWS
  *----------------------------------------------*/
  
-.news-disegni-decreti { background-color: #f2f6f6; padding: 0 10px 15px 10px; margin-top: 5px; }
+.news-disegni-decreti { background-color: #f2f6f6; padding: 5px 10px 15px 10px; margin-top: 5px; }
 .news-disegni-decreti strong { color: #a2a2a2; font-size: 12px; line-height: 1.2em;}
 .news-disegni-decreti p { padding-left: 8px; line-height: 1.1em; }
 .news-disegni-decreti li { border-bottom: 1px dotted #4e8480; }
@@ -817,8 +827,14 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .sign-on { padding-left: 5px; }
 .sign-in { padding-right: 15px;  }
 
-#main #sf_guard_auth_form, #main #left-box { float: left; width: 48%; padding: 10px 1% 50px; }
+#main #sf_guard_auth_form, #main #left-box { float: left; width: 48%; padding: 10px 1% 50px; background: transparent url(../images/bg-login-form.png) no-repeat top left; }
+#main #sf_guard_auth_form { padding: 15px 0; margin: 0 0 0 50px; }
 #main .registrati, #main #right-box { float: left; width: 45%; padding: 10px 1% 0 10px; }
+#main #sf_guard_auth_form #sf_guard_auth_username,
+#main #sf_guard_auth_form #sf_guard_auth_password { font-weight: bold; color: #ee4604; margin-left: 0; } 
+
+#main #sf_guard_auth_form #sf_guard_auth_username label,
+#main #sf_guard_auth_form #sf_guard_auth_password label { width: 85px; } 
 
 /*
  * LISTA ARGOMENTI

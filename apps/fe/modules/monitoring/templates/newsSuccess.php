@@ -81,5 +81,5 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  le tue notizie
+  le mie notizie
 <?php end_slot() ?>

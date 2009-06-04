@@ -7,7 +7,7 @@
     <label for="filter_act_type_id">tipologia:</label>
     <label for="filter_act_ramo">ramo:</label>
     <!--<label for="filter_date">data:</label>-->
-    <label for="filter_main_all">principali:</label>
+    <label for="filter_main_all">rilevanza:</label>
   </fieldset>
   <p>filtra per</p>
   <fieldset>
@@ -30,8 +30,8 @@
                                                    'M' => 'ultimo mese'), $selected_date)) ?>
     -->
     <?php echo select_tag('filter_main_all',
-                          options_for_select(array('main' => 'principali',
-                                                   'all'  => 'tutte'), $selected_main_all))?>
+                          options_for_select(array('main' => 'solo le principali',
+                                                   'all'  => 'tutte le mie notizie'), $selected_main_all))?>
 
     <?php echo submit_image_tag('btn-applica.png', array('id' => 'disegni-decreti-filter-apply', 'alt' => 'applica', 'style' => 'display: none;', 'name' => 'disegni-decreti-filter-apply' )) ?>
   </fieldset>

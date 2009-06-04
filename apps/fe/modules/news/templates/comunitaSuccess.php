@@ -14,7 +14,8 @@
       </div>      
     </div>
     <div class="W73_100 float-left">
-      <div class="section-box"><h3>Le ultime 100 attivit&agrave; della comunit&agrave;</h3>
+     
+     <div class="section-box"><h3 class="section-box-no-rss">Le ultime 100 attivit&agrave; della comunit&agrave;</h3>
         <ul>
         <?php foreach ($latest_activities as $activity): ?>
           <?php $news_text = community_news_text($activity); ?>

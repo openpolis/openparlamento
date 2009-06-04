@@ -12,6 +12,8 @@
 class Text
 {
 
+
+  
   /** 
 	* Metodo statico per prendere solo una parte di un testo 
 	* 
@@ -35,6 +37,7 @@ class Text
 		
 		return $str_to_shorten;
 	}
+
 
   /**
    * Metodo statico per la visualizzazione completa dell'esito della votazione
@@ -69,6 +72,7 @@ class Text
     }
       
   }
+  
   
   /**
    * Metodo statico per la costruzione della denominazione di un atto
@@ -162,9 +166,7 @@ class Text
           return $atto->getRamo().'.'.$atto->getNumfase();
         else return $atto->getNumfase();  
     }
-  }
-  
-  
+  }  
     
 }
 

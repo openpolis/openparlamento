@@ -28,8 +28,9 @@
     	<div class="float-container tools-container" id="disegni-decreti-order">
     		<p>mostra solo</p>
     		<ul>
-    			<li><?php echo link_to('preferiti', 'monitoring/favouriteActs') ?></li>		
-    			<li><?php echo link_to('<i>bloccati</i>', 'monitoring/blockedActs') ?></li>
+    			<li><?php echo link_to(image_tag('/images/ico-star-on.png',array()).' i tuoi atti preferiti', 'monitoring/favouriteActs') ?></li>		
+    			<li><?php echo link_to(image_tag('/images/ico-stop_monitoring.png',array()).'<i> gli atti che hai scartato</i>', 'monitoring/blockedActs') ?></li>
+    			
     		</ul>
     	</div>
 
@@ -54,7 +55,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  i tuoi atti
+  i miei atti
 <?php end_slot() ?>
 
 

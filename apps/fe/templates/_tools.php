@@ -6,9 +6,9 @@
         <?php echo link_to('[Esci]', 'logout', array('class' => 'logout')); ?>
 		<span class="username"><em>Ciao</em>&nbsp;<?php echo $sf_user->getFirstname() ?></span>
         <div class="userdata">
-          <?php echo link_to('<strong>il tuo monitoraggio</strong>', 'monitoring') ?>     	
+          <?php echo link_to('<strong>monitoraggio</strong>', 'monitoring') ?>     	
           <span> | </span>
-          <?php echo link_to('il tuo profilo',
+          <?php echo link_to('profilo',
                              "http://".sfConfig::get('app_remote_guard_host',
                                                      'lapgu.accesso.openpolis.it').
                              (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').

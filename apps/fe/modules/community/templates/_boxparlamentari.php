@@ -1,6 +1,6 @@
  <?php use_helper('Date', 'Javascript') ?> 
  
- <div id="proposte_indicator" style="display:none">
+ <div id="proposte_indicator" style="display:none"> 
   <div class="indicator"></div>
 </div>
  
@@ -26,13 +26,16 @@
   <?php endif ?>
 </ul>	
 
-<table class="disegni-decreti column-table">
+<table class="disegni-decreti column-table v-align-middle">
 <tbody>	
-<?php $tr_class = 'even' ?>				  
+<?php $tr_class = 'even' ?>	
+<?php $i=0 ?>			  
 <?php while($parlamentari->next()): ?>
+   <?php $i++ ?>			  
    <tr class="<?php echo $tr_class; ?>">
    <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
    <th scope="row">
+   <h3 class="position-orange" style="color:#FFFFFF; height:30px; margin-right:6px; margin-top:15px; text-align:center; width:30px; float:left; padding:0px"><?php echo $i ?></h3>
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 
                         array('width' => '40','height' => '53' )) ?>	

@@ -69,7 +69,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  i tuoi parlamentari
+  i miei parlamentari
 <?php end_slot() ?>
 
 

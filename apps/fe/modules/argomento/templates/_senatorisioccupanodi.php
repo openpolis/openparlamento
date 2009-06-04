@@ -1,9 +1,10 @@
 <?php echo use_helper('Parlamentare') ?>
 
 <?php if (count($politici) > 0): ?>
- <div class="float-left">
+ <div class="evidence-box float-container">
  
-  <h6>senatori che si occupano di questo argomento</h6>
+  <h5 class="subsection">senatori che si occupano di questo argomento</h5>
+   <div class="pad10">
      
   	<ul>
   	  <?php foreach ($politici as $carica_id => $relevance): ?>
@@ -20,7 +21,7 @@
            <li>&nbsp;</li>
        </ul>
       
-  
+  </div>
  </div>
 
 <?php endif ?>

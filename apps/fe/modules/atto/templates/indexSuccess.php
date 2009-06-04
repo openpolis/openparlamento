@@ -7,7 +7,7 @@
   <div id="main">
     
     <div class="W25_100 float-right">
-    <?php if($atto->getTipoAttoId()!=13 || $atto->getTipoAttoId()!=14): ?>
+    <?php if($atto->getTipoAttoId()!=13 && $atto->getTipoAttoId()!=14): ?>
       <?php echo include_component('atto', 'monitor_n_vote', array('atto' => $atto)); ?>
 
       <?php echo include_partial('news/newsbox', 

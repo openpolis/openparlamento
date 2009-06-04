@@ -120,6 +120,9 @@ class parlamentareActions extends sfActions
           $this->descrizione_cariche = $xml->xpath("//description"); 
       }
       
+      
+
+  
     
     }   
     

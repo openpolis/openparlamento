@@ -103,9 +103,9 @@
                              'deppBookmarking/negativeBookmark?item_model=OppAtto&item_pk=' . $act_id,
                              array('class' => 'ico-stop_monitoring', 'title' => 'smetti di monitorare')) ?>          
         <?php else: ?>
-          <?php echo link_to('ri-aggiungi ai monitorati', 
+          <?php echo link_to(image_tag('/images/ico-monitoring.png'), 
                              'deppBookmarking/negativeUnbookmark?item_model=OppAtto&item_pk=' . $act_id,
-                              array('class' => 'ico-start_monitoring', 'title' => 'ri-aggiungi ai monitorati')) ?>          
+                              array('class' => 'ico-start_monitoring', 'title' => 'aggiungi ai monitorati')) ?>          
         <?php endif; ?>
       <?php endif ?>
     <?php endif ?>

@@ -6,13 +6,13 @@
   
     <?php if ($is_monitoring): ?>
       <h6 class="start-monitoring">
-        <?php echo link_to('interrompi il monitoraggio di questo contenuto',
+        <?php echo link_to('stai monitorando<br />[smetti di monitorare]',
                            'monitoring/removeItemFromMyMonitoredItems?item_model='.$item_model.'&item_pk='.$item_pk,
                            array('post' => true)) ?>
       </h6>
     <?php else: ?>
       <h6 class="stop-monitoring">
-        <?php echo link_to('avvia il monitoraggio per questo contenuto',
+        <?php echo link_to('avvia il monitoraggio',
                            'monitoring/addItemToMyMonitoredItems?item_model='.$item_model.'&item_pk='.$item_pk,
                            array('post' => true)) ?>
       </h6>
@@ -22,7 +22,7 @@
 
 <?php else: ?>
   <h6 class="start-monitoring">
-    <?php echo link_to('effettua il login per monitorare', '/login') ?>
+    <?php echo link_to('avvia il monitoraggio', '/login') ?>
   </h6>
 <?php endif ?>  
 

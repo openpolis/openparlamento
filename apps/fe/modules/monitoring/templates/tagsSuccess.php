@@ -54,7 +54,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  i tuoi argomenti
+  i miei argomenti
 <?php end_slot() ?>
 
 <!-- slider jQuery per gli atti e le notizie relative -->

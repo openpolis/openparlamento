@@ -695,6 +695,26 @@ eMend.dataset.prototype = {
             cE = $.simpleXpath(XcE.xpath,cEel);            
           break;
         }
+        
+        if(!cS) {
+			if(eMend.log) {
+              err = {};
+			  err.funct = 'markNodeMap';
+              err.msg = "couldn't find node XcS.xpath: "+XcS.xpath;
+			  eMend.log.add('error',err);
+			}
+            continue;
+        }
+        
+        if(!cE) {
+			if(eMend.log) {
+              err = {};
+			  err.funct = 'markNodeMap';
+              err.msg = "couldn't find node XcE.xpath: "+XcE.xpath;
+			  eMend.log.add('error',err);
+			}
+            continue;
+        }        
 
 //=================================================
 //console.log("XcS.xpath: "+XcS.xpath+" XcE.xpath: "+XcE.xpath);
@@ -704,7 +724,7 @@ eMend.dataset.prototype = {
 //=================================================
      
         startNode = endNode = -1
-        for(var j=0, len3=nodes.length; j <= len3; j++) {
+        for(var j=0, len3=nodes.length; j < len3; j++) {
             if(cS == nodes[j]) startNode = j;
             if(cE == nodes[j]) endNode = j;
             if(startNode != -1 && endNode != -1) break;
@@ -1066,11 +1086,11 @@ eMend.comment.prototype = {
     },
     over: function() {
         var hlClass = '.n' + this.id.substr(4);
-        $(hlClass).css({borderTop:'1px dashed red', borderBottom:'1px dashed red'});
+        $(hlClass).addClass('eMend-highlight-over');
     },
     out: function() {
         var hlClass = '.n' + this.id.substr(4);
-        $(hlClass).css({borderTop:'none', borderBottom:'none'});        
+        $(hlClass).removeClass('eMend-highlight-over');
     },
     morelesstext: function(el) {
         var fc = el.firstChild;
@@ -1152,8 +1172,8 @@ eMend.commentGroup.prototype = {
 	},
 	
 	updateCounter: function(num) {
-		var str = num > 1 ? num +' '+eMend.dictionary.commentGroup.comments : num +' '+eMend.dictionary.commentGroup.comment;
-        $(this.counter).text(str);
+		var str = num > 1 ? num +' <em>'+eMend.dictionary.commentGroup.comments+'</em>' : num +' <em>'+eMend.dictionary.commentGroup.comment+'</em>';
+        $(this.counter).html(str);
 		num = Math.min(num,40);
 		this.counter.className = 'a'+num+' emendGroupTitle';
 	},
@@ -1180,11 +1200,14 @@ eMend.commentGroup.prototype = {
          $(document).trigger('emend.toggleGroup');
     },
     closeGroup: function(){
-         $(this.element).addClass('readpart').removeClass('readfull');
+         $(this.element).addClass('readpart').removeClass('readfull').removeClass('minify');
     },
     openGroup: function(){
-         $(this.element).addClass('readfull').removeClass('readpart');
-    }    
+         $(this.element).addClass('readfull').removeClass('readpart').removeClass('minify');
+    },
+	minifyGroup: function(){
+         $(this.element).removeClass('readfull').removeClass('readpart').addClass('minify');
+    }
 }
 
 })(jQuery);
@@ -2123,19 +2146,27 @@ eMend.renderNotes.prototype = {
 		var o = this.positions.getVisibleHighlights()
 		  , Ihl = o.invisible
 		  , Vhl = o.visible
-		  , In, Vn;
+		  , In, Vn
+		  , IhlL = Ihl.length
+		  , VhlL = Vhl.length
+		  ;
 
-		for(i=0, l=Ihl.length; i < l; i++) {
+		for(i=0; i < IhlL; i++) {
 			var In = this.renderedNotes[Ihl[i]];
-			In.comment.hide();
-			In.group.closeGroup();
-			//$('#note'+Ihl[i]).parent().addClass('readpart').removeClass('readfull');
+			if(In) {
+				In.comment.hide();
+				In.group.closeGroup();
+				if(VhlL > 3 || IhlL > 3) In.group.minifyGroup();
+				//$('#note'+Ihl[i]).parent().addClass('readpart').removeClass('readfull');
+			}
 		}
-		for(i=0, l=Vhl.length; i < l; i++) {
+		for(i=0; i < VhlL; i++) {
 			var Vn = this.renderedNotes[Vhl[i]];
-			Vn.comment.show();
-			Vn.group.openGroup();
-			//$('#note'+Vhl[i]).parent().addClass('readfull').removeClass('readpart');
+			if(Vn) {
+				Vn.comment.show();
+				Vn.group.openGroup();
+				//$('#note'+Vhl[i]).parent().addClass('readfull').removeClass('readpart');
+			}
 		}
 
 		var ntID = Vhl[Vhl.length-1];
@@ -2576,11 +2607,20 @@ eMend.backstore.sfEmendPluginLog.defaults = {};
 
 eMend.backstore.sfEmendPluginLog.prototype = {
 	add: function(type, msg) {
-        msg += '<p> resource id: <strong>'+this.resourceID+'</strong></p>';
-        msg += '<p> username:'+this.username+'</p>';
-        msg += '<p> user agent: '+navigator.userAgent+'</p>';
+        var o = '';
+        if(typeof msg == 'object') {
+            for(k in msg) {
+                o += '<p>'+k+': <strong>'+msg[k]+'</strong></p>';
+            }
+        } else {
+            o += msg;
+        }
+        o += '<p> resource id: <strong>'+this.resourceID+'</strong></p>';
+        o += '<p> username:'+this.username+'</p>';
+        o += '<p> user agent: '+navigator.userAgent+'</p>';
+        //console.log(o);
 		var log = { msg_type: type,
-                    msg: msg
+                    msg: o
         }
 
 		$.ajax({
@@ -2632,8 +2672,30 @@ eMend.backstore.sfEmendPluginLog.prototype = {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+if (!window.console || !window.console.firebug) {
+
+    if (window.opera && !window.console) {
+      window.console = {};
+      function fn() { opera.postError(arguments); };
+      ['log', 'debug', 'info', 'warn', 'error', 'assert', 'dir', 'dirxml', 'group', 'groupEnd',
+       'time', 'timeEnd', 'count', 'trace', 'profile', 'profileEnd'].forEach(function(name) {
+        window.console[name] = fn;
+      });
+    } else {
+         var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
+                      "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
+                     ];  
+         window.console = {};  
+         // no more javascript errors in non-firefox browsers  
+         for (i in names) {  
+             window.console[names[i]] = function() {};  
+         }
+     }
+}
+
 (function($) {
 eMend.init = function($) {
+//eMend.init = function() {
 	if(eMend.status == 'running') return;
     
     // backend
@@ -2647,6 +2709,7 @@ eMend.init = function($) {
     
     
     // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
+    $('pre').addClass('keep-whitespace');
 	document.body.normalize();
     $.fixOperaRangeSelectionBug();
     var t = $(eMend.config.comment_target).get(0) || document.body;
@@ -2837,29 +2900,17 @@ if(eMend.config.backstore_tiddly) {
     // ping it when a comment is added
     $(document).bind('emend.addComment',function(){ bk.addComment(); });
 };
-    
-        
+
     eMend.status = 'running';    
 };
-/*
-if (!window.console || !window.console.firebug) {  
-     var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
-                  "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
-                 ];  
-     window.console = {};  
-     // no more javascript errors in non-firefox browsers  
-     for (i in names) {  
-         window.console[names[i]] = function() {};  
-     }
-}
-*/
 
 
 
 if(typeof eMendInit != 'undefined' && eMendInit == true) eMend.init(jQuery);
 $(document).ready(function(){ eMend.init(jQuery) });
+//jQuery(document).ready(function(){ eMend.init(jQuery) });
 
 })(jQuery);
 if(eMend.config.jquery_noconflict) {
-  jQuery.noConflict();
+  //jQuery.noConflict();
 };

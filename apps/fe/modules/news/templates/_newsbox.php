@@ -7,11 +7,12 @@
     <?php endif ?>
     <h6>News - <?php echo $title ?></h6>
     <div class="news-disegni-decreti float-container"> 
-      
+        <table class="table-news">
         <?php foreach ($news as $news_item): ?>
           <?php echo news($news_item,$context); ?>
         <?php endforeach ?>
-      <?php echo link_to("vedi tutta la cronologia", $all_news_url, array('class'=>"see-all tools-container")) ?>
+        </table>
+      <?php echo link_to("<strong>vedi tutta la cronologia</strong>", $all_news_url, array('class'=>"see-all tools-container")) ?>
     </div>
   </div>  
 <?php endif ?>
