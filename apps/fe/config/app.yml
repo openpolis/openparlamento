@@ -34,7 +34,7 @@ all:
   deppPropelActAsTaggableBehaviorPlugin:
     anonymous_tagging:           false
     allows_tagging_removal:      'self'
-    tagging_removal_credentials: ['moderator']
+    tagging_removal_credentials: ['moderatore']
     use_unique_triple_values:    true
     limit:                       1000
 
