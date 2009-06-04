@@ -19,7 +19,7 @@
   <hr class="dotted" />
   
    <!-- blocco lanci home x admin -->
-  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('administrator')): ?>
+  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <h6>lanci in home page</h6>
     <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'home')); ?>    
     <hr class="dotted" />
