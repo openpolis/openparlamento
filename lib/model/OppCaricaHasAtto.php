@@ -39,12 +39,11 @@ class OppCaricaHasAtto extends BaseOppCaricaHasAtto
       $n->setCreatedAt($this->getCreatedAt());
 
     $n->setDate($this->getNewsDate());
+
     $n->setPriority(2);
 
     $n->save();
-    
-    return 1;
-    
+
   }
   
 }
