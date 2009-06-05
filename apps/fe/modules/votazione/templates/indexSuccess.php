@@ -79,6 +79,7 @@
 	 
 	 
       <!-- DESCRIZIONE -->
+      <div class="wiki-box-container">
     	<h5 class="description">descrivi questa votazione:</h5>
     	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative a questa votazione</p>
     	<div class="help-box float-container" style="display: none;">
@@ -93,6 +94,7 @@
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
       <?php include_partial('deppCommenting/commentsNumber', array('content' => $votazione)) ?>
+      </div>
       
    
       <h5 class="subsection">come hanno votato i gruppi</h5>

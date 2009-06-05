@@ -167,7 +167,7 @@ class argomentoComponents extends sfComponents
     $connection = Propel::getConnection();
     $query = "SELECT %s AS tipo, %s AS tipo_id, count(%s) AS cnt " .
              "FROM %s, %s, %s, %s " . 
-             "WHERE %s='%s' and %s=%s and %s='%s' and %s=%s and %s=%s " . 
+             "WHERE %s='%s' and %s=%s and %s='%s' and %s=%s and %s=%s and %s='%s' " . 
              "GROUP BY %s " . 
              "ORDER BY %s";
 
@@ -179,8 +179,9 @@ class argomentoComponents extends sfComponents
                              TaggingPeer::TAGGABLE_MODEL, 'OppAtto',
                              TaggingPeer::TAGGABLE_ID, OppAttoPeer::ID,
                              OppAttoPeer::TIPO_ATTO_ID, OppTipoAttoPeer::ID,
+                             OppAttoPeer::RAMO, $this->ramo,
                              OppTipoAttoPeer::ID, 
-                             OppTipoAttoPeer::ID);
+                             OppTipoAttoPeer::ID); 
     
     
     

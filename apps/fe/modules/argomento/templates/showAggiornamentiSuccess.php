@@ -40,7 +40,8 @@
 
 			<h5 class="subsection-alt">Atti presentati sull'argomento</h5>
       <?php include_component('argomento', 'attiTaggati', 
-                              array('triple_value' => $triple_value)) ?>
+                              array('triple_value' => $triple_value,
+                                    'ramo'=> 'C')) ?>
 
       <h5 class="subsection-alt">ci sono <big><?php echo $pager->getNbResults() ?></big> notizie sull'argomento:</h5> 
      		

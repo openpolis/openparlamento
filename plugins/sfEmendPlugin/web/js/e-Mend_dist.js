@@ -3885,8 +3885,10 @@ eMend.users.defaults = {};
 
 eMend.users.prototype = {
   login: function(event,data){
-    this._currentUser = data.name;
-    this.opts.dataset.loginAs(this._currentUser);
+    if(data && typeof data.name == 'string') {
+        this._currentUser = data.name;
+        this.opts.dataset.loginAs(this._currentUser);
+    }
   },
   
   logout: function(){
@@ -4134,7 +4136,6 @@ eMend.dataset.prototype = {
 
 // COMMENTS
   addComment: function(subject, text, userIdx) {
-    
     if(typeof userIdx == 'undefined') userIdx = this._currentUser;
     var d = new Date();
     var date = d.format(Date.ISO8601c);
@@ -4173,7 +4174,7 @@ eMend.dataset.prototype = {
   },
   
   getLastComment: function() {
-	return this._comments[this.lastComment.user][this.lastComment.idx];
+    if(this.lastComment) return this._comments[this.lastComment.user][this.lastComment.idx];
   },
   remapSelectionToContent: function(s) {
     
@@ -4246,7 +4247,7 @@ eMend.dataset.prototype = {
   },
   
   getLastSelection: function() {
-    return this._selections[this.lastSelection.user][this.lastSelection.idx];
+    if(this.lastSelection) return this._selections[this.lastSelection.user][this.lastSelection.idx];
   },
   
   removeLastSelection: function() {
@@ -5174,7 +5175,7 @@ eMend.commentTrigger = function (options) {
     function(event){
       window.setTimeout(function(){
         var s = $.getSelectedText();
-        
+              
         if(!_self.opts.form.isActive() && s && s.length) {
           
           // is selection outside of commentable area?
@@ -5344,8 +5345,8 @@ eMend.linker.prototype = {
       this.canvas = canvas;
       this.ctx = canvas.getContext('2d');
       this.ctx.lineWidth = 1;
-    
-      $(canvas).click(this.hideLinks);      
+      var _self = this;
+      $(canvas).click( function(){ _self.hideLinks(); } );      
     }
     this.ctx.strokeStyle = "#09f";    
   },
@@ -5682,21 +5683,23 @@ eMend.positions.prototype = {
 		this.highlights = {};
 		var hl = this.highlightEls;
 		
-		var hlEL, ntIDs, ntID, o;
-		
-		for(var i=hl.length-1; i>=0; i--) {
-		  hlEL = hl[i]; // highlight element reference			
-		  ntIDs = hlEL.className.split(' '); // multiple notes IDs
-		  ntIDs.pop(); ntIDs.shift(); // trashes 'highlight' and 'aX' class
-		
-		  for(var j=0, l=ntIDs.length; j < l; j++) {
-			ntID = ntIDs[j].substring(1); // note ID
-			if(!this.highlights[ntID]) {
-			  o = $(hlEL).offset({lite:true});
-			  this.highlights[ntID] = o;
-			  this.highlights[ntID].bottom = o.top + $(hlEL).height();
+		if(hl && hl.length) {
+			var hlEL, ntIDs, ntID, o;
+			
+			for(var i=hl.length-1; i>=0; i--) {
+			  hlEL = hl[i]; // highlight element reference			
+			  ntIDs = hlEL.className.split(' '); // multiple notes IDs
+			  ntIDs.pop(); ntIDs.shift(); // trashes 'highlight' and 'aX' class
+			
+			  for(var j=0, l=ntIDs.length; j < l; j++) {
+				ntID = ntIDs[j].substring(1); // note ID
+				if(!this.highlights[ntID]) {
+				  o = $(hlEL).offset({lite:true});
+				  this.highlights[ntID] = o;
+				  this.highlights[ntID].bottom = o.top + $(hlEL).height();
+				}
+			  }
 			}
-		  }
 		}
 		//console.timeEnd('refPositions');
 	},
@@ -6255,14 +6258,16 @@ eMend.backstore.tiddly.prototype = {
 		return $(dc);
 	},
 	addComment: function() {
-		var s = this.opts.dataset.getLastSelection()
-		  , c = this.opts.dataset.getLastComment().data
-		  , t = $.create('div',{});
-		  
-		$(t).attr('data', $.toJSON({"s":s,"c":c}));
-		t[0].innerHTML = c.body;
-		this.container.append(t);
-		//console.log('addcomment',s,c);
+		var s = this.opts.dataset.getLastSelection() || null;
+		var c = this.opts.dataset.getLastComment() || null;
+		var cD = c ? c.data : null;
+		var t = $.create('div',{});
+		if(s && cD) {
+			$(t).attr('data', $.toJSON({"s":s,"c":cD}));
+			t[0].innerHTML = c.body;
+			this.container.append(t);
+			//console.log('addcomment',s,c);
+		}
 	},
 	importData: function(container) {
 		var ds = this.opts.dataset;

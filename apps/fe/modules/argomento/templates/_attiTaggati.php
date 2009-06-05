@@ -3,7 +3,8 @@
     <thead>
       <tr> 
         <th scope="col">tipo:</th>
-        <th scope="col">numero di atti:</th>
+        <th scope="col">numero atti:</th>
+     
       </tr>
     </thead>
 

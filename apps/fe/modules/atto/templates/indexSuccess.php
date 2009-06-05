@@ -89,6 +89,7 @@
       
       
       <!-- DESCRIZIONE -->
+      <div class="wiki-box-container">
     	<h5 class="description">descrivi questo atto:</h5>
     	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative al disegno di legge</p>
     	<div class="help-box float-container" style="display: none;">
@@ -100,7 +101,8 @@
     	</div>
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId() )) ?>
-      
+      </div>
+ 
       <?php if($status): ?>
       <!-- rappresentazione grafica dell'iter -->
 	  <?php include_partial('statoAvanzamento', 

@@ -16,21 +16,20 @@
   </div>
     <div class="W73_100 float-left">
   
-<p>L'informatica e la rete hanno introdotto ovunque elementi di novit&agrave; nei processi tradizionali di produzione e scambio dell'informazione e di conseguenza in quelli di formazione delle opinioni. Novit&agrave; che anche da noi possono giocare un ruolo importante per consentire evoluzioni nel modo di accedere alle informazioni e di partecipare ai processi politici.</p>
+<p>La politica &egrave; tipicamente il regno delle opinioni e in democrazia tutte le opinioni sono lecite. Ma non tutte sono uguali, alcune si basano sui fatti altre no. 
+<br />Democrazia &egrave; il libero confronto delle opinioni sui fatti, quando invece confondiamo fatti e opinioni siamo nel regno della propaganda e della demagogia che non portano solitamete buone soluzioni. N&eacute; pi&ugrave; libert&agrave; n&eacute; pi&ugrave; rispetto per le persone.</p>
 <br />
-<p>I nostri progetti si inseriscono in questo quadro con l'ambizione di introdurre nel mercato dell'informazione e nel dibattito pubblico strumenti che consentano l'accesso diretto, universale (coi limiti della diffusione della rete italiana) e gratuito alle informazioni istituzionali e politiche.</p>
+<p>openparlamento aiuta a rintracciare i dati di fatto almeno su quello che succede in Parlamento. Propone i dati di fatto, le informazioni di fonte ufficiale in modo che tutti possano usarle e confrontarle con il flusso continuo di notizie e opinioni di norma prive di riferimenti e dei riscontri possibili (a proposito, piccolo suggerimento per i giornalisti: quando parlate di un disegno di legge o di un decreto, prendete la buona abitudine di indicare tra parentesi il titolo e il codice identificativo ufficiali, cos&igrave; chi legge se vuole pu&ograve; anche andarselo a trovare).</p>
 <br />
-<p>Si tratta in sostanza di immettere nel discorso pubblico una buona volta i dati di fatto, le informazioni di fonte ufficiale in modo che tutti possano usarle e confrontarle con il flusso continuo di notizie e opinioni di norma prive riferimenti e dei riscontri possibili.</p>
+<p>Informazioni accessibili e il pi&ugrave; possibile adeguate ai non addetti ai lavori, che vengono messe in rete perch&eacute; ciascuno ne faccia l'uso che crede ma anche perch&eacute; possano essere discusse, valutate dibattute.</p>
 <br />
-<p>Con <a href="http://www.openpolis.it">openpolis</a> ci occupiamo dell'ambito locale, con openparlamento in particolare estraiamo i dati ufficiali di fonte parlamentare per calarli in un contesto in cui la materia parlamentare possa pi&ugrave; facilmente essere compresa maneggiata e dibattuta anche dai non addetti ai lavori.</p>
+<p>I primi strumenti di openparlamento permettono di seguire passo passo le attivit&agrave; del singolo parlamentare, le vicende del disegno di legge o della mozione. Forniscono aggiornamenti nella pagina personale dell'utente o via email su tutto ci&ograve; che viene prodotto in Parlamento a proposito di un determinato argomento: dai rifiuti alla scuola, dall'Afghanistan fino al nostro piccolo comune. </p>
 <br />
-<p>Quanto quotidianamente viene detto, proposto e deciso in Parlamento pu&ograve; ora essere facilmente seguito attraverso le pagine personali dell'utente del sito o ricevendo aggiornamenti nella propria email. Si possono monitorare passo passo le attivit&agrave; del singolo parlamentare, gli atti di cui si occupa, le materie alle quali si interessa di pi&ugrave;, i voti che esprime. E si possono confrontare tutti questi dati per capire le differenze - quando ci sono e dove ci sono - che i fatti e i numeri rivelano, prima e oltre le opinioni che ciascuno pu&ograve; avere.</p>
+<p>Questo modo ci pare aiuti a dare senso alla rappresentanza degli eletti, perch&eacute; pu&ograve; contribuire a stabilire relazioni tra rappresentanti e cittadini che siano continue nel tempo e valutabili per quello che viene fatto e votato in Parlamento, non solo per quello che dice la tv. Ci pare un modo pi&ugrave; umano e pi&ugrave; politico insieme, perch&eacute; non solo le informazioni divengono accessibili ma si ha anche la possiblit&agrave; di dire quello che si pensa (commenti e voti) sulla singola proposta, sul singolo voto e decisione che ogni giorno i nostri rappresentanti assumono in Parlamento e che ogni giorno pesano sulla nostra vita. </p>
 <br />
-<p>Gli utenti possono commentare e votare gli atti e le decisioni dei rappresentanti in un contesto in cui gli interessi e le opinoni possano incontrarsi e scontrarsi in maniera trasperente e potendo disporre di informazioni e strumenti assai pi&ugrave; paritari di quanto normalmente avviene.</p>
+<p>Vorremmo poi che le persone con interessi comuni potessero comunicare e se ne hanno voglia organizzarsi per sostenere o contrastare le scelte che il Parlamento vuole adottare. Vorremmo che gli interessi che orientano queste scelte potessero confrontarsi alla luce del sole e con strumenti il pi&ugrave; possibile paritari. Vorremmo fare queste cose e altre ancora...  </p>
 <br />
-<p>openparlamento &egrave; tra i pi&ugrave; avanzati progetti a livello europeo e internazionale di informazione e partecipazione dei cittadini al dibattito parlamentare. Progetti analoghi sono presenti negli Stati Uniti e nel mondo anglosassone.</p>
 <br />
-<p>openparlamento &egrave; nella sua versione <i>beta</i>: agli strumenti presenti se ne aggiungeranno presto degli altri  (...)</p><br />
     </div>
   </div>
 

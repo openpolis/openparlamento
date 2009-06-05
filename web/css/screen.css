@@ -144,6 +144,17 @@ thead th { font-size: 12px; vertical-align: top; }
 /*
  * WIKI-BOX
  *----------------------------------------------*/
+.wiki-box-container { background-color: #bfc8c4; border: 1px solid #929292; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; margin-bottom: 44px; }
+.wiki-box-container .description { background: none; color: #fff; margin-top: 0; }
+.wiki-box-container .wiki-box { margin-bottom:0; border-top: 1px solid #929292;
+-moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-left-radius: 0;
+-moz-border-radius-topright: 0; -webkit-border-top-right-radius: 0; border-top-right-radius: 0;
+}
+.wiki-box-container .wiki-box-edit { border-color: #83869d; 
+-moz-border-radius-bottomleft: 0; -webkit-border-bottom-left-radius: 0; border-bottom-left-radius: 0; 
+-moz-border-radius-bottomright: 0; -webkit-border-bottom-right-radius: 0; border-bottom-right-radius: 0;
+}
+
  
 .wiki-box { background-color: #f1f3fe; border: 1px solid #ebeaf2; 
             -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;  margin-bottom: 44px; }

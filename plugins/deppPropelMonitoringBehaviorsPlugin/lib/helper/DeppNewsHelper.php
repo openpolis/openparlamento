@@ -327,10 +327,10 @@ function news_text($news,$context=1,$img=1)
         if ($atto->getRamo()=='C') $news_string .= "alla Camera, ";
         else $news_string .= "al Senato, ";
         
-        $news_string .= "&egrave; ora approdato ";
+        $news_string .= "<strong>&egrave; ora approdato ";
 
-        if ($succ_atto->getRamo()=='C') $news_string .= "alla Camera ";
-        else $news_string .= "al Senato ";
+        if ($succ_atto->getRamo()=='C') $news_string .= "alla Camera</strong> ";
+        else $news_string .= "al Senato</strong> ";
         
         $news_string .= "come $succ_atto_link.";
         
@@ -352,18 +352,19 @@ function news_text($news,$context=1,$img=1)
           $news_string .= "<td><p>";
           $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
           $news_string .= "<strong>Presentat" .($gender=='m'?'o':'a') . "</strong> ";
+          if ($context!=0)
+          {
+            $news_string .= $tipo->getDescrizione() . "</p>";
+            $news_string .= "<p>".$atto_link."</p></td>";
+          }  
+          else  $news_string .= "</p></td>"; 
         }    
         else {
           $news_string .= "<td><p>Comunicato del governo: "; 
           $news_string .= $atto_link."</p></td>";
        }      
 
-        if ($context!=0)
-        {
-          $news_string .= $tipo->getDescrizione() . "</p>";
-          $news_string .= "<p>".$atto_link."</p></td>";
-        }  
-        else  $news_string .= "</p></td>"; 
+        
       } 
       
     }

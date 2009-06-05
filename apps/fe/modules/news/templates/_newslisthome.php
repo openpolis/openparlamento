@@ -6,6 +6,7 @@
      <?php $primo_item=1 ?>
       <?php echo ($primo_item==1 ? '<tr><td>&nbsp;</td></tr>' : '') ?>
       <tr>
+      
       <?php if ($date_ts > 0): ?>
       <td style="width: 80px;">
           <div class="news-time">
@@ -27,7 +28,7 @@
      
       <?php foreach ($news as $n): ?>
       <?php if($primo_item==0) echo "<tr><td>&nbsp;</td>" ?>
-      <?php echo news_text($n,$context) ?> 
+      <?php  echo news_text($n,$context) ?> 
        <?php $primo_item=0 ?>
       </tr>  
       <?php endforeach ?>

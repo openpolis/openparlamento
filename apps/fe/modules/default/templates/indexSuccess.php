@@ -12,7 +12,7 @@ preview del grafico delle distanze
       <div class="teaser-box W66_100 float-left">
 	 <h4>
 	 Ogni giorno in parlamento si propongono, discutono e votano<br />
-	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>.
+	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
 	 </h4>			
 	 <h3>
          <strong>Intervieni</strong>, <strong>organizzati</strong> e<br />
