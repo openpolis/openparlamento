@@ -1,11 +1,5 @@
-<?php require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'variables_selector.php'); ?>
-
 # default values
 all:
-  # settaggio differenziato per differenti hostname
-  remote_guard_host:      '<?php echo $remote_guard_host ?>'
-  site_url:               '<?php echo $site_url ?>'
-  
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick
     default_image: { mime_type: image/jpeg, filename: Untitled.jpeg }
@@ -161,4 +155,6 @@ all:
     from_tag:     "openparlamento"
     
   mail_per_redazione:
-    site_address: '<?php echo "http://".$site_url ?>'
+    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openis.it')?>"
+  
+    

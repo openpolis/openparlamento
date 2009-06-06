@@ -51,7 +51,7 @@ class sfRemoteGuardLoginValidator extends sfValidator
 	   if (!$remember) $remember = 0;
 	   
      // controllo validità utente e password in remoto
-     $remote_guard_host = sfConfig::get('app_remote_guard_host', 'guard.openpolis.it' ); 
+     $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
      $xml = simplexml_load_file("http://$remote_guard_host/index.php/getUser/$username/$password/$remember");
 
      // l'API di op_guard torna un oggetto error e quindi il corrispettivo oggetto user è vuoto

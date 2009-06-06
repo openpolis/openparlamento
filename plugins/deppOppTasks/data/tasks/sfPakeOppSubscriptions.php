@@ -54,7 +54,7 @@ function run_opp_downgrade_expired_premium($task, $args)
 
   # fetch of all expired premium subscribers (op_accesso)
   $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
-  $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+  $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
   if (sfConfig::get('sf_environment') == 'dev')
     $controller = 'be_dev.php';
   else
@@ -166,14 +166,14 @@ function downgrade($user_id, $user_email)
   # set a NULL della data di scadenza
   # downgrade on op_accesso
   $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
-  $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+  $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
   if (sfConfig::get('sf_environment') == 'dev')
     $controller = 'be_dev.php';
   else
     $controller = 'index.php';
   $xml = simplexml_load_file("http://$remote_guard_host/$controller/downgradePremium/$user_id/$opaccesso_key");
 
-echo "opaccessokey: $opaccesso_key\n";
+  echo "opaccessokey: $opaccesso_key\n";
 
   $success = false;
   if ($xml->ok)

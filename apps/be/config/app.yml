@@ -2,9 +2,6 @@
 
 # default values
 all:
-  remote_guard_host:      '<?php echo $remote_guard_host ?>'
-  site_url:               '<?php echo $site_url ?>'
-  
   sfSimpleBlog:
     user_class:          OppUser
     use_bundled_layout:  false

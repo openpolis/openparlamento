@@ -50,7 +50,9 @@ class defaultActions extends sfActions
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getToken();
         $opaccesso_key = sfConfig::get('api_opaccessokey', '--XXX(-:-)XXX--');
-        $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+        $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
+
+        // finezza: se sono in dev, rimane in dev
         if (sfConfig::get('sf_environment') == 'dev')
           $controller = 'be_dev.php';
         else
@@ -99,7 +101,9 @@ class defaultActions extends sfActions
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getPassword();
         $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
-        $remote_guard_host = sfConfig::get('app_remote_guard_host', 'accesso.openpolis.it' ); 
+        $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
+        
+        // finezza: se sono in dev, rimane in dev
         if (sfConfig::get('sf_environment') == 'dev')
           $controller = 'be_dev.php';
         else

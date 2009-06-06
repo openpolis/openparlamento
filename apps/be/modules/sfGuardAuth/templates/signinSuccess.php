@@ -28,7 +28,9 @@
         <div class="form-row" id="sf_guard_auth_remember"  style="margin-left: 10em">
           <?php 
             echo link_to('Hai dimenticato la password?', 
-                         'http://' . sfConfig::get('app_remote_guard_host') . '/userProfile/passwordRequest', 
+                         'http://' . sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it') . 
+                         (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
+                         '/userProfile/passwordRequest', 
                          array('id' => 'sf_guard_auth_forgot_password')) 
           ?>
         </div>

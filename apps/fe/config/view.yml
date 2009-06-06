@@ -1,12 +1,13 @@
 default:
   http_metas:
-    content-type: text/html
+    content-type: "text/html"
 
   metas:
-    title:        OpenParlamento
-    robots:       index, follow
-    description:  Il progetto Openpolis per il monitoring del Parlamento
-    keywords:     Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento
+    title:        "OpenParlamento"
+    robots:       "<?php echo sfConfig::get('site_url') == 'parlamento.openpolis.it' ? 'index, follow' : 'noindex, nofollow' ?>"
+    <?php echo (sfConfig::get('site_url') != 'parlamento,openpolis.it' ? 'googlebot: noarchive,nosnippet' : '') . "\n" ?>
+    description:  "Il progetto Openpolis per il monitoring del Parlamento"
+    keywords:     "Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento"
     language:     it
 
   stylesheets:    [screen, combobox_openpolis]

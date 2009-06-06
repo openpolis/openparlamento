@@ -9,8 +9,8 @@
           <?php echo link_to('<strong>monitoraggio</strong>', 'monitoring') ?>     	
           <span> | </span>
           <?php echo link_to('profilo',
-                             "http://".sfConfig::get('app_remote_guard_host',
-                                                     'lapgu.accesso.openpolis.it').
+                             "http://".sfConfig::get('sf_remote_guard_host',
+                                                     'op_accesso.openpolis.it').
                              (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
                              "/aggiorna_profilo"
           ) ?>
@@ -21,8 +21,8 @@
     <div id="login">
       <div class="inner">
         <?php echo link_to('Registrati', 
-                            "http://".sfConfig::get('app_remote_guard_host',
-                                                    'lapgu.accesso.openpolis.it').
+                            "http://".sfConfig::get('sf_remote_guard_host',
+                                                    'op_accesso.openpolis.it').
                             (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
                             "/aggiungi_utente" , 
                            array('class' => 'sign-on')) ?>	

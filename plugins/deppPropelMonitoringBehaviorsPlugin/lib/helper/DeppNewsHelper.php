@@ -33,7 +33,7 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
   $html_options = _parse_attributes($options);
   $html_options = _convert_options_to_javascript($html_options);
 
-  $site_url = sfConfig::get('app_site_url', '');
+  $site_url = sfConfig::get('sf_site_url', 'op_openparlamento.openpolis.it');
   if (isset($html_options['site_url']))
   {
     $site_url = $html_options['site_url'];

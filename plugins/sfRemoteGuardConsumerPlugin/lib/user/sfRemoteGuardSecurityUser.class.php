@@ -67,7 +67,7 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	  $this->setAttribute('last_login', (string)$xml_user->last_login, 'subscriber');
 
     // store the new last_login ts (now) in the DB
-    $remote_guard_host = sfConfig::get('app_remote_guard_host', 'guard.openpolis.it' ); 
+    $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
     $set_last_login_url = "http://$remote_guard_host/index.php/setLastLogin/" . (string)$xml_user->hash . 
                           "/" .  urlencode(date('Y-m-d H:i:s'));
     $xml = simplexml_load_file($set_last_login_url);
