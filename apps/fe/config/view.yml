@@ -5,7 +5,7 @@ default:
   metas:
     title:        "OpenParlamento"
     robots:       "<?php echo sfConfig::get('site_url') == 'parlamento.openpolis.it' ? 'index, follow' : 'noindex, nofollow' ?>"
-    <?php echo (sfConfig::get('site_url') != 'parlamento,openpolis.it' ? 'googlebot: noarchive,nosnippet' : '') . "\n" ?>
+    <?php echo (sfConfig::get('site_url') != 'parlamento.openpolis.it' ? 'googlebot: noarchive,nosnippet' : '') . "\n" ?>
     description:  "Il progetto Openpolis per il monitoring del Parlamento"
     keywords:     "Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento"
     language:     it
