@@ -165,6 +165,10 @@ class argomentoComponents extends sfComponents
        order by ta.id;
     */
     $connection = Propel::getConnection();
+    $rami=array('C','S');
+     $atti = array(); 
+    foreach ($rami as $ramo) {
+    
     $query = "SELECT %s AS tipo, %s AS tipo_id, count(%s) AS cnt " .
              "FROM %s, %s, %s, %s " . 
              "WHERE %s='%s' and %s=%s and %s='%s' and %s=%s and %s=%s and %s='%s' " . 
@@ -179,7 +183,7 @@ class argomentoComponents extends sfComponents
                              TaggingPeer::TAGGABLE_MODEL, 'OppAtto',
                              TaggingPeer::TAGGABLE_ID, OppAttoPeer::ID,
                              OppAttoPeer::TIPO_ATTO_ID, OppTipoAttoPeer::ID,
-                             OppAttoPeer::RAMO, $this->ramo,
+                             OppAttoPeer::RAMO, $ramo,
                              OppTipoAttoPeer::ID, 
                              OppTipoAttoPeer::ID); 
     
@@ -187,13 +191,17 @@ class argomentoComponents extends sfComponents
     
     $statement = $connection->prepareStatement($query);
     $rs = $statement->executeQuery();
-    $atti = array();
+   
     while ($rs->next())
     {
       $tipo = $rs->getString('tipo');
       $tipo_id = $rs->getString('tipo_id');
       $cnt = $rs->getInt('cnt');
-      $atti[$tipo] = array('id' => $tipo_id, 'n' => $cnt);
+      if ($ramo=='C') 
+          $atti[$tipo] = array('id' => $tipo_id, 'nc' => $cnt);
+      else
+          $atti[$tipo]['ns']=$cnt;    
+          
       if (in_array($tipo_id, array('1', '12', '15', '16', '17')))
         $atti[$tipo]['routing'] = 'leggi';
       else
@@ -219,7 +227,10 @@ class argomentoComponents extends sfComponents
         $atti[$tipo]['type_filter'] = $tipo_id;
     }
     
-    $this->atti_taggati = $atti;
+   
+  }
+  
+   $this->atti_taggati = $atti;
   }
 
 }

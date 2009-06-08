@@ -9,8 +9,7 @@
 
   <div id="content" class="tabbed float-container">
    <div id="main">
-   <div style="padding:5px;">
-   Qui va una descrizone della pagina
+   <div style="padding:5px;"> 
    
    </div>
    

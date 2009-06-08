@@ -3,7 +3,6 @@ jQuery.noConflict();
 (function($) {
 
 $(document).ready(function(){
-													 
 		
 	// range di date
 	if($.datepicker) {
@@ -145,8 +144,19 @@ $(document).ready(function(){
 
 
 	   }
-	   setTimeout(initComboBox, 100);
+	   setTimeout(initComboBox, 50);
 	}
+
+	// caricamento pigro
+	function lazyLoad() {
+		$(".lazyload img").each(function(){
+            	var self = this;
+            	$(self).attr("src", $(self).attr("highsrc"));
+		});
+	}
+
+	//setTimeout(lazyLoad, 100);
+	
 			
 	$('#identity').pngFix();
 	$('.coo-mind').pngFix();	
