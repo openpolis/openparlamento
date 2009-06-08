@@ -466,11 +466,11 @@ class OppAtto extends BaseOppAtto
 
     $document->propel_id = $id;
     $document->tipo_atto_id = $this->getTipoAttoId();
-    $document->tipo_atto_s = $this->getTipoAtto();
-    $document->titolo = strip_tags($this->getTitoloCompleto());
+    $document->tipo_atto_s = strtolower($this->getTipoAtto());
+    $document->titolo = strtolower(strip_tags($this->getTitoloCompleto()));
     if ($this->getHasDescrizioneWiki() && $this->getDescrizioneWiki() != sfConfig::get('app_nahoWikiPlugin_default_description'))
     {
-      $document->descrizioneWiki = strip_tags($this->getDescrizioneWiki());
+      $document->descrizioneWiki = strtolower(strip_tags($this->getDescrizioneWiki()));
       $document->hasDescrizioneWiki = true;      
     } else {
       $document->hasDescrizioneWiki = false;            

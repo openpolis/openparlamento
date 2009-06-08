@@ -9,14 +9,15 @@
  */ 
 class OppPoliticoPeer extends BaseOppPoliticoPeer
 {
+  
   public static function getPictureUrl($id)
 	{
-	  return "parlamentari/picture/" . $id . '.jpeg';
+	  return sfConfig::get('sf_pol_images_host', "http://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/picture/" . $id . '.jpeg';
 	}
 
 	public static function getThumbUrl($id)
 	{
-	  return "parlamentari/thumb/" . $id . '.jpeg';
+	  return sfConfig::get('sf_pol_images_host', "http://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/thumb/" . $id . '.jpeg';
 	}
   
 	

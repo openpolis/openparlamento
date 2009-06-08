@@ -1,5 +1,5 @@
 <?php echo link_to(highlight_keywords($result->titolo, $query, sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')), add_highlight_qs($result->getInternalUri(), $query)) ?>
-<br /></td>
+<br/></td>
    <td><div class="results-meter">
             <div class="results-meter-value"><?php echo $result->getScore() ?>%</div>
 

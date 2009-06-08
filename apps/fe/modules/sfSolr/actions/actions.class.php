@@ -280,29 +280,33 @@ class sfSolrActions extends BasesfSolrActions
    	}                                                                                                       
                                                                                                             
    	// definizione dei boost (spostare in config??)                                                         
-   	$nominativo_boost = 3.0;                                                                                  
-   	$triple_value_boost = 2.5;                                                                                       
-   	$titolo_boost = 2.0;                                                                                       
+   	$nominativo_boost = 10.0;                                                                                  
+   	$triple_value_boost = 6.0;                                                                                       
+   	$titolo_boost = 6.0;                                                                                       
    	$testo_boost = 1.5;                                                                                
-   	$descrizioneWiki_boost = 1.0;                                                                                 
+   	$descrizioneWiki_boost = 1.0;
+   	
+   	$quoted_boost = 5.0;
+   	$qfirst_boost = 2.0;
+   	                                                                               
                                                                                                             
    	// compone la query ponderata                                                                           
     $composed_query  = "+(";                                                                                
     if ($quoted)                                                                                            
     {                                                                                                       
-      $composed_query .= " nominativo: ($quoted)^" . $nominativo_boost . " ";                       
-      $composed_query .= " triple_value: ($quoted)^" . $triple_value_boost . " ";                                   
-      $composed_query .= " titolo: ($quoted)^" . $titolo_boost . " ";                                             
-      $composed_query .= " testo: ($quoted)^" . $testo_boost . " ";                        
-      $composed_query .= " descrizioneWiki: ($quoted)^" . $descrizioneWiki_boost . " ";                          
+      $composed_query .= " nominativo: ($quoted)^" . $nominativo_boost * $quoted_boost . " ";                       
+      $composed_query .= " triple_value: ($quoted)^" . $triple_value_boost  * $quoted_boost . " ";                                   
+      $composed_query .= " titolo: ($quoted)^" . $titolo_boost * $quoted_boost  . " ";                                             
+      $composed_query .= " testo: ($quoted)^" . $testo_boost * $quoted_boost . " ";                        
+      $composed_query .= " descrizioneWiki: ($quoted)^" . $descrizioneWiki_boost * $quoted_boost . " ";                          
     }                                                                                                       
     if ($q_first)                                                                                           
     {                                                                                                       
-      $composed_query .= " nominativo: ($q_first*)^" . $nominativo_boost . " ";                     
-      $composed_query .= " triple_value: ($q_first*)^" . $triple_value_boost . " ";                                 
-      $composed_query .= " titolo: ($q_first*)^" . $titolo_boost . " ";                                           
-      $composed_query .= " testo: ($q_first*)^" . $testo_boost . " ";                      
-      $composed_query .= " descrizioneWiki: ($q_first*)^" . $descrizioneWiki_boost . " ";                        
+      $composed_query .= " nominativo: ($q_first*)^" . $nominativo_boost * $qfirst_boost . " ";                     
+      $composed_query .= " triple_value: ($q_first*)^" . $triple_value_boost * $qfirst_boost . " ";                                 
+      $composed_query .= " titolo: ($q_first*)^" . $titolo_boost * $qfirst_boost . " ";                                           
+      $composed_query .= " testo: ($q_first*)^" . $testo_boost * $qfirst_boost . " ";                      
+      $composed_query .= " descrizioneWiki: ($q_first*)^" . $descrizioneWiki_boost * $qfirst_boost . " ";
     }                                                                                                       
                                                                                                             
     $composed_query .= " nominativo:(" . $query . ")^" . $nominativo_boost;                   

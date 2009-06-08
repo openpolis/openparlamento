@@ -240,11 +240,11 @@ class OppVotazione extends BaseOppVotazione
     $document->sfl_type = 'model';
 
     $document->propel_id = $id;
-    $document->titolo = strip_tags($this->getTitolo());
+    $document->titolo = strtolower(strip_tags($this->getTitolo()));
     $document->hasDescrizioneWiki = $this->getHasDescrizioneWiki();
     if ($this->getHasDescrizioneWiki() && $this->getDescrizioneWiki() != sfConfig::get('app_nahoWikiPlugin_default_description'))
     {
-      $document->descrizioneWiki = strip_tags($this->getDescrizioneWiki());
+      $document->descrizioneWiki = strtolower(strip_tags($this->getDescrizioneWiki()));
       $document->hasDescrizioneWiki = true;      
     } else {
       $document->hasDescrizioneWiki = false;            

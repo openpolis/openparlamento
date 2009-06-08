@@ -291,7 +291,7 @@ class OppPolitico extends BaseOppPolitico
     $document->sfl_type = 'model';
 
     $document->propel_id = $id;
-    $document->nominativo = $this->getNome() . " " . $this->getCognome();            
+    $document->nominativo = strtolower($this->getNome()) . " " . strtolower($this->getCognome());            
 
     // ritorna il documento da aggiungere
     return $document;
