@@ -1,4 +1,4 @@
-<?php echo use_helper('PagerNavigation', 'DeppNews'); ?>
+<?php echo use_helper('PagerNavigation', 'DeppNews', 'Date'); ?>
 <?php setlocale(LC_TIME,"it_IT") ?>
 
 
@@ -11,9 +11,10 @@
              <?php $primo_item=1 ?>
            <td style="width: 80px;">
            <div class="news-time">
-	    <strong class="day"><?php echo date("d", $date_ts); ?></strong>
-            <strong class="month"><?php echo strftime("%b", $date_ts); ?></strong>
-            <strong class="year"><?php echo date("Y", $date_ts); ?></strong>
+             <?php $df = new sfDateFormat('it_IT'); ?>
+             <strong class="day"><?php echo $df->format($date_ts, 'dd'); ?></strong>
+             <strong class="month"><?php echo $df->format($date_ts, 'MMM'); ?></strong>
+             <strong class="year"><?php echo $df->format($date_ts, 'yyyy'); ?></strong>
           </div> 
           </td> 
           <?php else: ?>
