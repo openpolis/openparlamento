@@ -1,6 +1,7 @@
 prod:
   .settings:
-    no_script_name:           on
+    no_script_name:   on
+    cache:            on
 #    error_reporting:        4095
 #    web_debug:            on
 
@@ -8,7 +9,6 @@ staging:
   .settings:
     web_debug:      on
     cache:          on
-
 
 dev:
   .settings:
