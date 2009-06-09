@@ -553,14 +553,20 @@ class monitoringActions extends sfActions
   protected function _addTagToMyMonitoredTags($tag, $opp_user)
   {
     // check if the user can add a new tag to the monitored pool
-    $remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
-    if ($remaining_tags <= 0)
-      return -1;
+    if (!$this->getUser()->hasCredential('adhoc'))
+    {
+      $remaining_tags = $opp_user->getNMaxMonitoredTags() - $opp_user->countMonitoredObjects('Tag');
+      if ($remaining_tags <= 0)
+        return -1;      
+    }
 
     // add the tag to the monitorable pool
     $tag->addMonitoringUser($this->getUser()->getId());
 
-    return $remaining_tags -1;
+    if ($this->getUser()->hasCredential('adhoc'))
+      return 0;
+    else
+      $remaining_tags -1;
   }
   
 

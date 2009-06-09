@@ -6,7 +6,11 @@
   <div id="main">
 
     <?php if ($opp_user->getNMonitoredTags()>0): ?>
-    	<h5 class="subsection">gli argomenti che stai monitorando (ancora <span id="my_remaining_tags"><?php echo $remaining_tags ?></span> a disposizione)</h5>
+    	<h5 class="subsection">gli argomenti che stai monitorando 
+    	  <?php if (!$sf_user->hasCredential('adhoc')): ?>    	   
+        	(ancora <span id="my_remaining_tags"><?php echo $remaining_tags ?></span> a disposizione)
+    	  <?php endif ?>
+    	</h5>
     <?php else: ?>
       Non stai monitorando nessun argomento
     <?php endif ?>
