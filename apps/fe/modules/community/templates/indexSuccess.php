@@ -11,10 +11,8 @@
  
  <div class="W73_100" style="font-size:14px;">
      
-     Testo di presentazione della pagina con spiegazione delle cose i cantiere e link a un post del blog per i commenti 
-     Testo di presentazione della pagina con spiegazione delle cose i cantiere e link a un post del blog per i commenti 
-     Testo di presentazione della pagina con spiegazione delle cose i cantiere e link a un post del blog per i commenti 
-     Testo di presentazione della pagina con spiegazione delle cose i cantiere e link a un post del blog per i commenti 
+     <div class="intro-box"><p>Sono in cantiere strumenti che permetteranno agli utenti di openpolis di interagire tra di loro, formare gruppi di pressione per determinati atti, scrivere collettivamente ai politici, comunicare con utenti di altri social network e tanto altro.<br />
+     Per suggerimenti commenta il post del blog con la descrizione dei lavori in corso</p></div>
      
   </div>
   <p>&nbsp;</p>
