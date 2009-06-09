@@ -42,13 +42,13 @@ hr.bluebox, hr.redbox { height: 3px; margin: 18px 0 25px 0;}
 hr.bluebox { background-color: #56a2c6; }
 hr.redbox { background-color: #b72b14; }
 
-.position-green, .position-blue, .position-red, .position-violet, .position-orange { color: #fff; float: left; width: 30px; height: 30px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; text-align: center; line-height: 30px; margin-top: 15px; margin-right: 6px; }
+.position-green, .position-blue, .position-red, .position-violet, .position-orange, .position-light-orange { color: #fff; float: left; width: 30px; height: 30px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; text-align: center; line-height: 30px; margin-top: 15px; margin-right: 6px; }
 .position-green{ background-color: #428842; }
 .position-blue{ background-color: #1581bc; }
 .position-red{ background-color: #da3f21; }
 .position-violet{ background-color: #aa3eaa; }
 .position-orange { background-color: #dc7108; }
-
+.position-light-orange { background-color: #edab28; }
 
 /*
  * COLORS
@@ -476,6 +476,54 @@ p.wiki-form-submit { margin-left: 20px;}
 .politician-more-info p { margin-bottom: 1em; }
 .politician-more-info label { font-size: 14px; }
 .politician-more-info strong { color: #333; }
+
+/*
+ * INTRO BOX
+ *----------------------------------------------*/
+.intro-box { color: #000; }
+.intro-box h2 { margin-bottom: 0.75em; }
+.intro-box p { font-size: 17px; }
+em.open { color: #ff7c00; }
+em.parlamento { color: #00787c; }
+
+/*
+ * OFFERINGS
+ *----------------------------------------------*/
+
+.launch-evidence-box { font-size: 16px; font-weight: bold; color: #fff; padding: 10px 6px; height: 460px; margin: 50px 0 5px 0; position: relative; }
+.launch-evidence-box .promo-banner { position: absolute; right: -27px; top: -33px;  }
+.launch-evidence-box p { z-index: 10; position: relative;  clear: left; margin-bottom: 1em; }
+.launch-evidence-box em { background-color: #fff; font-size: 18px; font-weight: bold; color: #ff5408; }
+.launch-evidence-box .position-light-orange { margin: 0 10px 20px 0; }
+.launch-evidence-box li { clear: left; }
+
+.green-box {  background-color: #64c656; }
+
+.emerald-box { background-color: #49bfa3; }
+
+.launch-evidence-btn { width: auto; background-color: #f39200; color: #fff; text-align: center; padding: 10px; margin: 0 55px; }
+.launch-evidence-btn-mini { width: auto; background-color: #f39200; color: #fff; text-align: center; padding: 10px; }
+.launch-evidence-btn a, .launch-evidence-btn-mini a { color: #fff; display: block; } 
+.grey-box { background-color: #cecece; color: #666; padding: 4px 10px;  margin-right: 1px; }
+.grey-box-contrast { background-color: #e5e5e5; color: #333; padding: 8px;  margin-right: 1px;}
+.align-left { text-align: left; }
+
+
+.compare-table { margin-top: 55px; width: 90%; font-weight: bold; font-size: 14px; color: #000; }
+.compare-table td { padding: 2px; }
+.compare-table p { margin: 4px 0; }
+.compare-table .pad0 { padding: 0 }
+.compare-table .user-type { margin: 4px 10px; }
+.bg-flatgreen-light { background-color: #9ef293; border-right: 2px solid #74ec64; }
+.bg-flatgreen-light:last-child { border-right: none; }
+.bg-flatgreen-dark { background-color: #74ec64; }
+.bg-green-light { background: #8cc983 url(../images/bg-green-light.png) repeat-x top left; border-right: 2px solid #5ab24d;}
+.bg-green-light:last-child { border-right: none; }
+.bg-green-dark { background: #5ab24d url(../images/bg-green-dark.png) repeat-x top left; }
+.bg-cyan-light { background: #7bc5b3 url(../images/bg-cyan-light.png) repeat-x top left; border-right: 2px solid #42ac92; }
+.bg-cyan-light:last-child { border-right: none; }
+.bg-cyan-dark { background: #42ac92 url(../images/bg-cyan-dark.png) repeat-x top left; }
+
 
 /*
  * HELP BOX
@@ -949,7 +997,6 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .portrait-91x126 { background: transparent url(../images/bg-ico-portrait-big.png) no-repeat center center; padding: 10px 10px; margin-right: 10px; }
 
 
-
 /*
  * ROUNDED CORNERS
  *----------------------------------------------*/
@@ -959,6 +1006,10 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .round-5 { -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; }
 .round-5-top { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; }
 .round-5-bottom { -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; border-bottom-left-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-right-radius: 5px; }
+.round-5-left { -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-bottomleft: 5px; -webkit-border-bottom-left-radius: 5px; border-bottom-left-radius: 5px; }
+.round-5-right { -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-right-radius: 5px; }
+.round-5-no-tl { -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; -moz-border-radius-topleft: 0px; -webkit-border-top-left-radius: 0px; border-top-left-radius: 0px; }
+
 
 /*
  * COLUMN TABLE
