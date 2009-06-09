@@ -18,6 +18,10 @@ test:
   storage:
     class: sfSessionTestStorage
 
+all:
+  view_cache:
+    class: sfMemcacheCache
+  
 #all:
 #  controller:
 #    class: sfFrontWebController

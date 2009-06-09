@@ -1,3 +1,3 @@
-a:9:{s:4:"name";s:7:"symfony";s:7:"channel";s:24:"pear.symfony-project.com";s:4:"date";s:10:"2009-04-02";s:4:"time";s:8:"16:05:14";s:7:"version";a:2:{s:7:"release";s:7:"1.0.18
-";s:3:"api";s:5:"1.0.0";}s:9:"stability";a:2:{s:7:"release";s:6:"stable";s:3:"api";s:6:"stable";}s:10:"xsdversion";s:3:"2.0";s:13:"_lastmodified";i:1238688314;s:3:"old";a:2:{s:7:"version";s:7:"1.0.18
+a:9:{s:4:"name";s:7:"symfony";s:7:"channel";s:24:"pear.symfony-project.com";s:4:"date";s:10:"2009-06-09";s:4:"time";s:8:"23:08:10";s:7:"version";a:2:{s:7:"release";s:7:"1.0.18
+";s:3:"api";s:5:"1.0.0";}s:9:"stability";a:2:{s:7:"release";s:6:"stable";s:3:"api";s:6:"stable";}s:10:"xsdversion";s:3:"2.0";s:13:"_lastmodified";i:1244588890;s:3:"old";a:2:{s:7:"version";s:7:"1.0.18
 ";s:13:"release_state";s:6:"stable";}}

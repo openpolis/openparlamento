@@ -1,0 +1,12 @@
+lall:
+  servers:
+    default:
+      host: localhost
+      port: 11211
+      timeout: 1
+      weight: 1
+      retry_interval: 1
+      status: 1 
+  buckets:
+    default:
+      servers: default

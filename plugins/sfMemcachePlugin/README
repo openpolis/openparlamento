@@ -1,0 +1,35 @@
+Maintainer: Myke Hines <myke@webhines.com>
+Version 0.2beta
+
+sfMemcacheCachePlugin
+
+What: 
+  This plugin integrates nicely into your existing caching methodology and allows you to use a memcache server for your function and view template caching.  
+  This plugin allows multiple "buckets" so that if you want to have different groups this can be done. It also allows for multiple servers per bucket, this addes redundancy in case one of your memcached servers crashes.
+  The best part of this plugin, is that if ALL of your memcached servers die, then the plugin will just use the stanard filesystem caching that is the symfony default... so you can't loose.
+
+How to install:
+
+How to use:
+  To flush ALL of your memcache buckets you can execute:
+    symfony clear-memcache #app#
+  
+  View Template Caching
+    To make symfony use memcache for this type of caching all you need to do is:
+      #1) Create your memcache.yml file that describes where your servers are (see example in the config/ directory of this plugin)
+      #2) Add the following line to your factories.yml file.
+	    view_cache:
+    	      class: sfMemcacheCache
+
+      #3) Clear the symfony cache (symfony cc) and your ready to go.
+
+  Function caching
+    Unfortunately symfony's sfFunctionCache is extending sfFileCache and it can't be changed.  So in order to use function caching you must use the provided sfMemcacheFunctionCache.
+    #1) Get a new instance of the function cache
+      $fc = new sfMemcacheFunctionCache;
+      
+    #2) Set your bucket if you would like to use one other then the default 'default' one.
+      $fc->setBucket ('my_special_bucket');
+
+    #3) Now use it just like sfFunctionCache.
+      $items = $fc->call ('ItemsPeer::doSelect', $criteria);

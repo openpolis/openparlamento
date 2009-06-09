@@ -1,0 +1,2 @@
+config/memcache.yml:
+  class: sfMemcacheConfigHandler
