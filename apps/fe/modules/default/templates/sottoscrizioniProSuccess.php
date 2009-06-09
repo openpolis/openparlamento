@@ -1,5 +1,125 @@
-<div id="content" class="float-container" style="margin-top: 5px">
-  <div id="main" style="padding: 50px 0">
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="current">
+    <h2>
+      i servizi di <em class="open">open</em><em class="parlamento">parlamento</em> 
+    </h2>
+  </li>
+</ul>
+
+<div id="content" class="tabbed float-container"> 
+
+  <div id="main">
+            <div class="W100_100">
+                <div class="intro-box">
+                    <h2>Why <em class="open">open</em><em class="parlamento">parlamento</em> is right for you?</h2>
+                    <p> Del de altere libere europee, sed tote contos greco-latin es. Es web toto post independente. Al pan sine human instruite, pote ascoltar auxiliary da uso. Lateres occidental uso in, o gode libro via, uso o vista promotores. Nos de extrahite questiones immediatemente. </p>
+                </div>
+            </div>
+            <div class="W48_100 float-right">
+                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
+                    <p>Sei un'impresa? Un ente? Un organo di informazione?<br />
+                        Un'istituzione?<br />
+                        openparlamento ti offre servizi personalizzati di monitoraggio e infomazione parlamentare senza limiti.<br />
+                        Tutte le informazioni che ti occorrono, selezionate tempestivamente, nella tua pagina personale e nella tua e-mail</p>
+                    <ul>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            servizi mirati</li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            estrapolazione di dati</li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            integrazione dei nostri dati con il tuoi sistemi informativi</li>
+                    </ul>
+                    <p>tutto quello che ti puo' servire per essere aggiornato prima che le cose che interessano il tuo lavoro accadano.
+                        Contattaci, troveremo insieme la soluzione migliore per le tue esigenze! </p>
+                </div>
+                <h1 class="launch-evidence-btn round-5"><a href="#">Contattaci!</a></h1>
+            </div>
+            <div class="W48_100 float-left">
+                <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
+                    <p>In occasione del lancio di openparlamento, in<br />
+                        <em class="round-3">offerta gratuita fino al 15 settembre 2009</em><br />
+                        potrai:</p>
+                    <ul>
+                        <li>
+                            <h3 class="position-light-orange">a</h3>
+                            monitorare fino 5 argomenti</li>
+                        <li>
+                            <h3 class="position-light-orange">b</h3>
+                            monitorare fino a 20 atti e parlamentari</li>
+                        <li>
+                            <h3 class="position-light-orange">c</h3>
+                            tutte le news che ti interessano nella tua pagina personale</li>
+                        <li>
+                            <h3 class="position-light-orange">d</h3>
+                            aggiornamenti giornalieri nella tua e-mail</li>
+                        <li>
+                            <h3 class="position-light-orange">e</h3>
+                            accedere alla tua pagina personale per configurare i monitoraggi</li>
+                    </ul>
+                </div>
+                <h1 class="launch-evidence-btn round-5"><a href="#">Aderisci!</a></h1>
+            </div>
+            <div class="clear-both"></div>
+            <div class="W100_100">
+                <table class="compare-table">
+                    <tr>
+                        <td colspan="2" rowspan="2">&nbsp;</td>
+                        <td colspan="4" class="pad0"><h4 class="grey-box-contrast round-5-top">servizi disponibili</h4></td>
+                        <td rowspan="2" class="pad0"><h4 class="grey-box-contrast round-5-top">modalit&agrave;<br />
+                                di accesso</h4></td>
+                    </tr>
+                    <tr>
+                        <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio atti e parlamentari</h6></td>
+                        <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio argomenti</h6></td>
+                        <td class="pad0"><h6 class="grey-box round-5-top">altri servizi personalizzati</h6></td>
+                        <td class="pad0"><h6 class="grey-box round-5-top">account multipli</h6></td>
+                    </tr>
+                    <tr>
+                        <td class="grey-box-contrast round-5-left" rowspan="3"><img src="/images/txt-tipologie-utente.png" width="18" height="134" alt="tipologie utente" /></td>
+                        <td class="align-left bg-flatgreen-dark round-5-left"><img src="/images/ico-citizen.png" alt="CITIZEN" class="user-type" /></td>
+                        <td class="bg-flatgreen-light">MAX 3</td>
+                        <td class="bg-flatgreen-light">--</td>
+                        <td class="bg-flatgreen-light">--</td>
+                        <td class="bg-flatgreen-light">--</td>
+                        <td class="bg-flatgreen-light round-5-right"><p><br />
+                                <br />
+                                GRATUITA</p>
+                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">registrati</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td class="align-left bg-green-dark round-5-left"><img src="/images/ico-premium.png" alt="PREMIUM" class="user-type" /></td>
+                        <td class="bg-green-light">MAX 10</td>
+                        <td class="bg-green-light">MAX 3</td>
+                        <td class="bg-green-light">--</td>
+                        <td class="bg-green-light">--</td>
+                        <td class="bg-green-light round-5-right"><p>in promozione<br />
+                                GRATUITA fino al<br />
+                                15 Ottobre<br />
+                            </p>
+                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">aderisci</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td class="align-left bg-cyan-dark round-5-left"><img src="/images/ico-adhoc.png" alt="AD HOC" class="user-type" /></td>
+                        <td class="bg-cyan-light round-5-bottom">SENZA LIMITI</td>
+                        <td class="bg-cyan-light round-5-bottom">SENZA LIMITI</td>
+                        <td class="bg-cyan-light round-5-bottom">SVILUPPATI AD HOC</td>
+                        <td class="bg-cyan-light round-5-bottom">S&Iacute;</td>
+                        <td  class="bg-cyan-light round-5-no-tl"><p>condizioni<br />
+                                da concordare<br />
+                                direttamente<br />
+                            </p>
+                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">contattaci</a></h5></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+<!--
+
     <h2>Vuoi monitorare di pi&ugrave;?</h2>
     
     <?php if (!$sf_user->hasCredential('premium')): ?>
@@ -31,7 +151,7 @@
       Voglio tornare 
       <?php echo link_to('alla pagina che stavo visitando', $sf_user->getAttribute('page_before_buy', '@homepage')) ?>.
     </div>
-    
+   --> 
   </div>
 </div>
 
