@@ -45,7 +45,33 @@ class defaultActions extends sfActions
     {
         $this->redirect_to = $this->getUser()->getAttribute('page_before_buy', '@homepage');
 
-        // TODO: DB Storage for form data
+        $user = OppUserPeer::retrieveByPK($this->getUser()->getAttribute('subscriber_id', 0, 'subscriber'));
+
+        // DB Storage for form data
+        // with some server-validation
+        $premium_form = new OppPremiumDemo();
+
+        $premium_form->setEta($this->getRequestParameter('eta'));
+        
+        $attivitas = $this->getRequestParameter('attivita');
+        $att = $attivitas[0];
+        $premium_form->setAttivita($att);
+        if ($this->getRequestParameter('attivita_aut_desc') != '' && $att == 8)
+          $premium_form->setAttivitaAutDesc(strip_tags($this->getRequestParameter('attivita_aut_desc')));
+        if ($this->getRequestParameter('attivita_dip_desc') != '' && $att > 8 && $att < 12)
+          $premium_form->setAttivitaDipDesc(strip_tags($this->getRequestParameter('attivita_dip_desc')));
+        if ($this->getRequestParameter('attivita_amm_desc') != '' && $att > 11 && $att < 17 )
+          $premium_form->setAttivitaAmmDesc(strip_tags($this->getRequestParameter('attivita_amm_desc')));
+        
+        $perches = $this->getRequestParameter('perche');
+        $perche = $perches[0];
+        $premium_form->setPerche($perche);
+        if ($this->getRequestParameter('perche_altro_desc') != '' && $perche == 4)
+          $premium_form->setPercheAltroDesc($this->getRequestParameter('perche_altro_desc'));
+          
+        $premium_form->setOppUser($user);
+        $premium_form->save();
+        
         
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getToken();
@@ -68,7 +94,6 @@ class defaultActions extends sfActions
         } else {
           
           // modify monitoring limits
-          $user = OppUserPeer::retrieveByPK($this->getUser()->getAttribute('subscriber_id', 0, 'subscriber'));
           $user->setNMaxMonitoredItems(sfConfig::get('app_premium_max_items', 10));
           $user->setNMaxMonitoredTags(sfConfig::get('app_premium_max_tags', 5));
           $user->save();

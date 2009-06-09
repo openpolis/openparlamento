@@ -1117,3 +1117,6 @@ li.top_term li a:hover { background-color: #ededed;}
 
 .sfWebDebugLogs td { text-align: left; }
 form.subscribe-form input { border: 1px solid gray;}
+form.subscribe-form ul.main>li { margin-top: 0.5em;  }
+
+.form_error { color: darkred;}

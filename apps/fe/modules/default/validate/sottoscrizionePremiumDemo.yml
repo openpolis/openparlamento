@@ -1,0 +1,46 @@
+fields:
+  eta:
+    required:         true
+      msg:            "Specifica la fascia di et&agrave;"
+    sfNumberValidator:
+      min:            1
+      min_error:      "Seleziona una delle fascie di et&agrave;"
+      max:            5
+      max_error:      "Seleziona una delle fascie di et&agrave;"
+      
+  attivita:
+    required:         true
+      msg:            "Specifica l'attivit&agrave; principale"
+
+  attivita_aut_desc:
+    sfStringValidator:
+      max:           250
+      max_error:     "Si possono usare al massimo 250 caratteri."
+
+  attivita_dip_desc:
+    sfStringValidator:
+      max:           250
+      max_error:     "Si possono usare al massimo 250 caratteri."
+      
+  attivita_amm_desc:
+    sfStringValidator:
+      max:           250
+      max_error:     "Si possono usare al massimo 250 caratteri."
+
+  perche:
+    required:         true
+      msg:            "Specifica una o pi&ugrave; voci"
+      
+  perche_altro_desc:
+    sfStringValidator:
+      max:           250
+      max_error:     "Si possono usare al massimo 250 caratteri."
+      
+fillin:
+  enabled: true 
+  param: 
+    name: 'premium-form'
+    content_type: html
+    converters:
+      strip_tags:     [attivita_aut_desc, attivita_dip_desc, attivita_amm_desc, perche_altro_desc]
+    

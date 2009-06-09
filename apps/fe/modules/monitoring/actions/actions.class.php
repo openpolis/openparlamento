@@ -561,7 +561,10 @@ class monitoringActions extends sfActions
     }
 
     // add the tag to the monitorable pool
-    $tag->addMonitoringUser($this->getUser()->getId());
+    if ($tag instanceof Tag)
+      $tag->addMonitoringUser($this->getUser()->getId());
+    else
+      return 0;
 
     if ($this->getUser()->hasCredential('adhoc'))
       return 0;

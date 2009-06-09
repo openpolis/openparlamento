@@ -33,9 +33,7 @@
 
     <h5 class="subsection">Aggiungi un argomento</h5>
 
-    <?php if ($sf_user->hasCredential('adhoc') || $opp_user->getNMaxMonitoredTags() - $opp_user->getNMonitoredTags() > 0): ?>
-      <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array('name' => 'search_tag')); ?>
-    <?php endif ?>
+    <?php echo include_partial('deppTagging/addToMonitoredWithAutocompleter', array('name' => 'search_tag')); ?>
 
     <div id="top_terms_drill_down" class="W73_100 float-left">
       <ul class="topics-list">

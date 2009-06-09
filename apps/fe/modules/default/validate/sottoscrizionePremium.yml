@@ -1,7 +1,0 @@
-fields:
-  tipo_attivita:
-    required:         true
-      msg:            "Il tipo di attivit&agrave; &egrave; obbligatorio."
-    sfStringValidator:
-      max:           150
-      max_error:     "Si possono usare al massimo 150 caratteri."

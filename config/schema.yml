@@ -326,7 +326,21 @@ propel:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
     gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(40) }
-    
+
+        
+  opp_premium_demo:
+    id:
+    eta:                 { type: integer, required: true }
+    attivita:            { type: integer, required: true }
+    attivita_aut_desc:   { type: varchar(255) }
+    attivita_dip_desc:   { type: varchar(255) }
+    attivita_amm_desc:   { type: varchar(255) }
+    perche:              { type: integer, required: true }
+    perche_altro_desc:   { type: varchar(255) }
+    created_at:
+    user_id:             { type: integer, required: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
+
+  
   sf_test_object:
     _attributes:       { phpName: sfTestObject }
     id:

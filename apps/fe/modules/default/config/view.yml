@@ -1,6 +1,7 @@
 sottoscrizionePremiumDemoSuccess:
   metas:
     title:        "Adesione al servizio Premium - OpenParlamento"
+  javascripts:    ["http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"]
 
 getLoggedUserSuccess:
   has_layout:     off

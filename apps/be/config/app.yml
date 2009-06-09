@@ -1,5 +1,3 @@
-<?php require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'variables_selector.php'); ?>
-
 # default values
 all:
   sfSimpleBlog:
