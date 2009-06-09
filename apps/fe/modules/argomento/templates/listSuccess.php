@@ -10,9 +10,11 @@
 
 <div id="content" class="tabbed float-container">
   <div id="main">
-  <div style="font-size:14px;">In questa pagina trovi i <strong><?php echo count($tag_count) ?></strong> argomenti presenti su openparlamento.<br />
-  Per trovarne uno puoi cercarlo per parola chiave o navigare le <?php echo count($teseo_tts_with_counts) ?> categorie in cui sono stati raggruppati.<br />
-  Selezionane uno: troverai tutto quello che succede in parlamento sull'argomento e i politici che se ne occupano.</div>
+  <div class="intro-box">
+  <p>In questa pagina trovi i <strong><?php echo count($tag_count) ?></strong> argomenti presenti su openparlamento.<br />
+  Per trovarne uno puoi cercarlo per <em class="open">parola chiave</em> o navigare le <em class="open"><?php echo count($teseo_tts_with_counts) ?> categorie</em> in cui sono stati raggruppati.<br /><br />
+  Selezionane uno: troverai tutto quello che succede in parlamento sull'argomento e i politici che se ne occupano.</p>
+  </div>
 
     <?php echo include_partial('deppTagging/searchWithAutocompleter', array('name' => 'search_tag','tag_count'=>$tag_count)); ?>
 
