@@ -4,6 +4,12 @@ prod:
 #    error_reporting:        4095
 #    web_debug:            on
 
+staging:
+  .settings:
+    web_debug:      on
+    cache:          on
+
+
 dev:
   .settings:
     # E_ALL | E_STRICT = 4095

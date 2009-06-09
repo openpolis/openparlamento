@@ -1,0 +1,15 @@
+disegnoList:
+  enabled: on
+
+decretoList:
+  enabled: on
+  
+attoNonLegislativoList:
+  enabled: on
+  
+decretoLegislativoList:
+  enabled: on
+  
+all:
+  with_layout: false
+  lifetime: 3600
