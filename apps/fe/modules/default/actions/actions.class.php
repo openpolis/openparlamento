@@ -92,7 +92,6 @@ class defaultActions extends sfActions
           $this->error = (string)$xml->error;
           return sfView::ERROR;
         } else {
-          
           // modify monitoring limits
           $user->setNMaxMonitoredItems(sfConfig::get('app_premium_max_items', 10));
           $user->setNMaxMonitoredTags(sfConfig::get('app_premium_max_tags', 5));
