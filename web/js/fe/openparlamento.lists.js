@@ -109,8 +109,7 @@ $(document).ready(function(){
 			}
 		}
 	);
-	if($.browser.mozilla || $.browser.msie) {
-
+	if(typeof jQuery.fn.combobox == 'function' && ($.browser.mozilla || $.browser.msie)) {
 
 	    function initComboBox() {
 		$('#disegni-decreti-filter select').combobox(
@@ -157,10 +156,9 @@ $(document).ready(function(){
 
 	//setTimeout(lazyLoad, 100);
 	
-			
-	$('#identity').pngFix();
-	$('.coo-mind').pngFix();	
-
+	if(typeof jQuery.fn.ifixpng == 'function') {
+		$('#identity img, .coo-mind, .launch-evidence-box img, .compare-table img').ifixpng();	
+	}
 })
 
 
