@@ -1,5 +1,0 @@
-listSuccess:
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.morelazyload.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
-
-default:
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]

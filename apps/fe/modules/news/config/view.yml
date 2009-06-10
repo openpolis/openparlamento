@@ -1,2 +1,2 @@
 default:
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
+  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.combobox.min.js, fe/jquery.ifixpng2.js, fe/openparlamento.lists.js]

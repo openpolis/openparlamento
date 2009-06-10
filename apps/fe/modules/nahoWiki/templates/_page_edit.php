@@ -4,7 +4,7 @@
 <?php if (!$canView): ?>
   <p class="wiki-warning"><?php echo __('Per modificare la descrizione e\' necessario registrarsi') ?></p>
 <?php else: ?>
-
+<p>Questo &egrave; un sistema wiki. Puoi scrivere e salvare (tasto "pubblica la modifica" in basso) la tua descrizione o modificare il testo eventualmente scritto da altri utenti.<br /> Tutte le modifiche vengono registrate automaticamente e possono essere verificate facendo click sul tab "Cronologia delle modifiche". </p>
   <?php if (!$revision->isLatest()): ?>
     <p class="wiki-warning">
       <?php echo __('You are currently editing an old revision of this page. If you save these changes, all changed made since this revision will be lost !!') ?> 
@@ -52,6 +52,7 @@
     </div>
     
     <div class="W50_100 float-left">
+    
 
       <?php echo form_tag('nahoWiki/edit?' . $uriParams, 'name=edit_page id=edit_page') ?>
   		  <div class="evidence-box">

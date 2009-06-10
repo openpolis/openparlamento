@@ -11,58 +11,10 @@
   <div id="main">
             <div class="W100_100">
                 <div class="intro-box">
-                    <h2>Why <em class="open">open</em><em class="parlamento">parlamento</em> is right for you?</h2>
-                    <p> Del de altere libere europee, sed tote contos greco-latin es. Es web toto post independente. Al pan sine human instruite, pote ascoltar auxiliary da uso. Lateres occidental uso in, o gode libro via, uso o vista promotores. Nos de extrahite questiones immediatemente. </p>
+                    <h2>Qual &egrave; il <em class="open">tuo</em><em class="parlamento">parlamento</em>?</h2>
+                    <p><em class="open">open</em><em class="parlamento">parlamento</em> consegna nella tua e-mail e nelle pagine web a te dedicate le informazioni che ti interessano nei modi e nelle forme che preferisci. Servizi di informazione e monitoraggio sulle attivit&agrave; parlamentari per <strong>cittadini, professionisti</strong> e qualunque tipo di <strong>organizzazione</strong>.</p>
                 </div>
             </div>
-            <div class="W48_100 float-right">
-                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
-                    <p>Sei un'impresa? Un ente? Un organo di informazione?<br />
-                        Un'istituzione?<br />
-                        openparlamento ti offre servizi personalizzati di monitoraggio e infomazione parlamentare senza limiti.<br />
-                        Tutte le informazioni che ti occorrono, selezionate tempestivamente, nella tua pagina personale e nella tua e-mail</p>
-                    <ul>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            servizi mirati</li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            estrapolazione di dati</li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            integrazione dei nostri dati con il tuoi sistemi informativi</li>
-                    </ul>
-                    <p>tutto quello che ti puo' servire per essere aggiornato prima che le cose che interessano il tuo lavoro accadano.
-                        Contattaci, troveremo insieme la soluzione migliore per le tue esigenze! </p>
-                </div>
-                <h1 class="launch-evidence-btn round-5"><a href="#">Contattaci!</a></h1>
-            </div>
-            <div class="W48_100 float-left">
-                <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
-                    <p>In occasione del lancio di openparlamento, in<br />
-                        <em class="round-3">offerta gratuita fino al 15 settembre 2009</em><br />
-                        potrai:</p>
-                    <ul>
-                        <li>
-                            <h3 class="position-light-orange">a</h3>
-                            monitorare fino 5 argomenti</li>
-                        <li>
-                            <h3 class="position-light-orange">b</h3>
-                            monitorare fino a 20 atti e parlamentari</li>
-                        <li>
-                            <h3 class="position-light-orange">c</h3>
-                            tutte le news che ti interessano nella tua pagina personale</li>
-                        <li>
-                            <h3 class="position-light-orange">d</h3>
-                            aggiornamenti giornalieri nella tua e-mail</li>
-                        <li>
-                            <h3 class="position-light-orange">e</h3>
-                            accedere alla tua pagina personale per configurare i monitoraggi</li>
-                    </ul>
-                </div>
-                <h1 class="launch-evidence-btn round-5"><a href="#">Aderisci!</a></h1>
-            </div>
-            <div class="clear-both"></div>
             <div class="W100_100">
                 <table class="compare-table">
                     <tr>
@@ -80,7 +32,7 @@
                     <tr>
                         <td class="grey-box-contrast round-5-left" rowspan="3"><img src="/images/txt-tipologie-utente.png" width="18" height="134" alt="tipologie utente" /></td>
                         <td class="align-left bg-flatgreen-dark round-5-left"><img src="/images/ico-citizen.png" alt="CITIZEN" class="user-type" /></td>
-                        <td class="bg-flatgreen-light">MAX 3</td>
+                        <td class="bg-flatgreen-light">MAX 5</td>
                         <td class="bg-flatgreen-light">--</td>
                         <td class="bg-flatgreen-light">--</td>
                         <td class="bg-flatgreen-light">--</td>
@@ -115,6 +67,47 @@
                     </tr>
                 </table>
             </div>
+            <div class="W48_100 float-right">
+                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
+                    <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
+                        <br />
+                        openparlamento pu&ograve; fornirti tutti i dati e le informazioni di cui hai bisogno in piena flessibilit&agrave;:</p>
+                    <ul>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            configurazione del monitoraggio di argomenti, atti e parlamentari senza limiti e secondo richieste specifiche </li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            servizi personalizzati di estrazione dati</li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            integrazione con altri sistemi informativi (internet, intranet)</li>
+                    </ul>
+                    <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
+                </div>
+                <h1 class="launch-evidence-btn round-5"><a href="#">Contattaci!</a></h1>
+            </div>
+            <div class="W48_100 float-left">
+                <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
+                    <p>In occasione del lancio di openparlamento<br />
+                        <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
+                   </p>
+                    <ul>
+                        <li>
+                            <h3 class="position-light-orange">a</h3> 
+                            fino a 3 argomenti da monitorare</li>
+                        <li>
+                            <h3 class="position-light-orange">b</h3>
+                            fino a 10 parlamentari o atti da monitorare</li>
+                        <li>
+                            <h3 class="position-light-orange">c</h3>
+                            tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
+                    </ul>
+                </div>
+                <h1 class="launch-evidence-btn round-5"><a href="#">Aderisci!</a></h1>
+            </div>
+            <div class="clear-both"></div>
+            
         </div>
 
 

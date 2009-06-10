@@ -1,13 +1,9 @@
 sottoscrizionePremiumDemoSuccess:
   metas:
     title:        "Adesione al servizio Premium - OpenParlamento"
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
-  
-classificheSuccess:
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/openparlamento.lists.js]  
 
 graficoDistanzeSuccess:
-  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/openparlamento.lists.js, http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js]  
+  javascripts:    [http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js]  
 
 getLoggedUserSuccess:
   has_layout:     off

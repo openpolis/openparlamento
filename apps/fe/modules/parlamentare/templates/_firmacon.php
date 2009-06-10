@@ -5,13 +5,14 @@
 		  <?php foreach ($nearest as $i => $politico): ?>
 		    <li>
 		      <?php echo $i ?>.
-		      <?php echo link_to($politico['nomecognome'] . ($politico['samegroup']?"":" (".$politico['gruppo'].")"), 
+		      <?php echo link_to($politico['nomecognome'] . " (".$politico['gruppo'].")", 
 		                        '@parlamentare?id='.$politico['id'], 
 		                          array( 'class' => 'folk1' . ($politico['samegroup']?' green':' violet'), 
 		                                 'title' => number_format($politico['similarita'], 2))) ?>
 		    </li>
 		    <?php if ($i == 10): ?>
-		      <li>...</li>
+		    <li>...</li>
+		      <li>di altri gruppi:</li>
 		    <?php endif ?>
 		  <?php endforeach ?>
 		</ul>					

@@ -12,7 +12,7 @@ default:
 
   stylesheets:    [screen, combobox_openpolis]
 
-  javascripts:    []
+  javascripts:    [http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.combobox.min.js, fe/jquery.ifixpng2.min.js, fe/openparlamento.lists.js]
 
   has_layout:     on
   layout:         layout

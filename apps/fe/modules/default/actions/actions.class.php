@@ -75,7 +75,7 @@ class defaultActions extends sfActions
         
         // richiesta di upgrade della sottoscrizione utente
         $token = $this->getUser()->getToken();
-        $opaccesso_key = sfConfig::get('api_opaccessokey', '--XXX(-:-)XXX--');
+        $opaccesso_key = sfConfig::get('api_opaccesso_key', '--XXX(-:-)XXX--');
         $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
 
         // finezza: se sono in dev, rimane in dev

@@ -42,5 +42,9 @@ class staticActions extends sfActions
   {
   $this->getResponse()->setTitle('rss/xml | '.sfConfig::get('app_main_title')); 
   }
+  public function executeInizia()
+  {
+  $this->getResponse()->setTitle('cosa posso fare? | '.sfConfig::get('app_main_title')); 
+  }
   
 }

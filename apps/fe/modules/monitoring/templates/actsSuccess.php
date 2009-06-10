@@ -6,12 +6,12 @@
   <div id="main">
 
     <div class="W100_100 float-left">
-  		<p class="tools-container"><a class="ico-help" href="#">eventuale testo micro-help</a></p>
+  		<p class="tools-container"><a class="ico-help" href="#">Come posso monitorare un atto</a></p>
   		<div style="display: none;" class="help-box float-container">
   			<div class="inner float-container">
 
-  				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-  				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  				<a class="ico-close" href="#">chiudi</a><h5>Come posso monitorare un atto? ?</h5>
+  				<p>Nella pagina di ogni atto (disegno di legge, decreto, mozione, interrogazione, etc.) in alto a destra trovi il bottone che ti permette di avviare il monitoraggio, contrassegnata dalla icona della lente di ingrandimento. Una volta scelto di seguire un atto riceverai tutte le notizie e informazioni relative - ogni volta che ce ne saranno - sia nelle tue pagine personali del "monitoraggio" ("le mie notizie" - "i miei atti") che nella tua casella e-mail attraverso la "newsletter" . Per smettere di monitorare l'atto &egrave; sufficiente andare nella pagina dell'atto dove in alto a destra si trova il bottone "smetti di monitorare". La stessa funzione &egrave; disponibile anche nella pagina "i miei atti" dove per ciascun atto elencato &egrave; disponibile il bottone "smetti di monitorare" (icona della crocetta rossa accanto la lente di ingrandimento).</p>
   			</div>
   		</div>
 

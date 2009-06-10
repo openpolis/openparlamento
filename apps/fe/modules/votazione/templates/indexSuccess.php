@@ -60,15 +60,15 @@
    <div class="W73_100 float-left"> 
   
       <p class="synopsis">
-        <?php echo $votazione->getTitolo() ?>            
+        <?php echo $votazione->getTitolo() ?> 
       </p>
       <ul class="presentation float-container"> 
         <?php if($votazione->getUrl()): ?>
           <li><?php echo link_to("link alla fonte", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
         <?php endif; ?>		  
-      </ul>
+      </ul> 
       
-      <?php if ($voto_atti): ?>
+      <?php if ($voto_atti): ?> 
           <?php if (count($voto_atti)>1): ?>
               <h5 class="subsection">la votazione si riferisce agli atti:</h5>
            <?php else : ?>   
@@ -80,20 +80,20 @@
 	 
       <!-- DESCRIZIONE -->
       <div class="wiki-box-container">
-    	<h5 class="description">descrivi questa votazione:</h5>
-    	<p class="micro-tip">qui sotto potete inserire, utilizzando il <a href="#" class="ico-help action">micro-wiki</a> le vostre descrizioni relative a questa votazione</p>
-    	<div class="help-box float-container" style="display: none;">
-    		<div class="inner float-container">
-    			<a href="#" class="ico-close action">chiudi</a><h5>come si usa il micro-wiki ?</h5>
-
-    			<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per.</p>
-    		</div>
-    	</div>
+    	<h5 class="description">descrivi insieme agli altri utenti questa votazione:</h5>
+    	<p style="padding:5px;">qui sotto puoi inserire o modificare la descrizione per questa votazione.
+    	<?php if ($sf_user->isAuthenticated()) : ?>
+    	   <?php echo 'Clicca su "modifica"' ?>
+    	<?php else : ?>
+    	   Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
+    	<?php endif ?>     
+    	</p>
+    	
 	
 	
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
-      <?php include_partial('deppCommenting/commentsNumber', array('content' => $votazione)) ?>
+      
       </div>
       
    

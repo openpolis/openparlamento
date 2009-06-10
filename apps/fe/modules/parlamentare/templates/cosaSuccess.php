@@ -9,7 +9,7 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
    <div class="W25_100 float-right">
-			<p class="last-update">data di ultimo aggiornamento: <strong></strong></p>
+			
 
 			<div id="monitor-n-vote">
       	<h6>monitora questo politico</h6>
@@ -18,7 +18,7 @@
   			<div class="inner float-container">
 
   				<a class="ico-close" href="#">chiudi</a><h5>che significa monitorare ?</h5>
-  				<p>Gli atti scartati sono quegli associati a un determinato argomento che stai monitorando, che hai scelto di non seguire.<br />
+  				<p>Registrandoti e entrando nel sito puoi attivare il monitoraggio per atti, parlamentari e argomenti. Da quel momento nella tua pagina personale e nella tua email riceverai tutti gli aggiornamenti riferiti agli elementi che stai monitorando.<br />
   				</p>
   			</div>
   		</div>

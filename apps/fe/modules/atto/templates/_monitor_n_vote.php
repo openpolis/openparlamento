@@ -1,12 +1,17 @@
 <?php use_helper('deppVotingYesNo', 'deppLaunching') ?>
 
-<p class="last-update">
-  data di ultimo aggiornamento: <strong><?php echo $atto->getDataAgg('d-m-Y') ?></strong>
-</p>
-
 <div id="monitor-n-vote">
 
-  <h6>monitoraggio di questo atto</h6>
+  <h6>monitora questo atto</h6>
+  <p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
+  		<div style="display: none;" class="help-box float-container">
+  			<div class="inner float-container">
+
+  				<a class="ico-close" href="#">chiudi</a><h5>che significa monitorare ?</h5>
+  				<p>Registrandoti e entrando nel sito puoi attivare il monitoraggio per atti, parlamentari e argomenti. Da quel momento nella tua pagina personale e nella tua email riceverai tutti gli aggiornamenti riferiti agli elementi che stai monitorando.<br />
+  				</p>
+  			</div>
+  		</div>
   <!-- component per la gestione del monitoring di questo atto -->
   <?php echo include_component('monitoring', 'manageItem', 
                                array('item' => $atto, 'item_type' => 'atto')); ?>

@@ -9,10 +9,19 @@
 <div class="tabbed float-container" id="content">
 	<div id="main">
          <div class="W25_100 float-right">
-	   <p class="last-update">data di ultimo aggiornamento: <strong>25-11-2008</strong></p>
+	  
 
-	 <div id="monitor-n-vote">
+	 <div id="monitor-n-vote"> 
       	<h6>monitora questo argomento</h6>
+      	<p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
+  		<div style="display: none;" class="help-box float-container">
+  			<div class="inner float-container">
+
+  				<a class="ico-close" href="#">chiudi</a><h5>che significa monitorare ?</h5>
+  				<p>Registrandoti e entrando nel sito puoi attivare il monitoraggio per atti, parlamentari e argomenti. Da quel momento nella tua pagina personale e nella tua email riceverai tutti gli aggiornamenti riferiti agli elementi che stai monitorando.<br />
+  				</p>
+  			</div>
+  		</div>
 
         <!-- partial per la gestione del monitoring di questo argomento -->
         <?php echo include_component('monitoring', 'manageItem', 

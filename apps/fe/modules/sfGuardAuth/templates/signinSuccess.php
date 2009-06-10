@@ -3,13 +3,15 @@
 <ul id="content-tabs" class="float-container tools-container">
   <li class="current">
     <h2>
-      Entra in openparlamento
+      Entra in <em class="open">open</em><em class="parlamento">parlamento</em>
     </h2>
   </li>
 </ul>
 
 <div id="content" class="tabbed float-container">
-  <div id="main" style="padding: 50px 0">
+  <div id="main" style="padding: 10px 0">
+  <p style="font-size:14px; padding:10px;">Per usare le funzioni avanzate (monitoraggio, descrizione e voto di un atto, etc.) &egrave; necessario prima accede al sito (login).<br />
+  <strong>Se sei gi&agrave; un utente di openpolis, puoi usare gli stessi paremetri di accesso (e-mail e password)</strong></p>
  
     <div id="sf_guard_auth_form">
       <?php echo form_tag('@sf_guard_signin') ?>
@@ -50,6 +52,7 @@
     </div>
     
     <div class="registrati">
+    
     <?php echo link_to('<h2>Non hai una password? Registrati!</h2><br/><strong>Tutti possono registrarsi</strong>, serve meno di un minuto.<br/>', 
                             "http://".sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it').
                             (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').

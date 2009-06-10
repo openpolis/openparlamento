@@ -1,8 +1,7 @@
 all:
-  javascripts:    [jquery.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js]
   metas:
     title:        argomenti - OpenParlamento
   
 listSuccess:  
-  javascripts:    [jquery.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
+  javascripts:    [fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
   stylesheets:    [monitoring, jquery.autocomplete.css]

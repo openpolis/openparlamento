@@ -4,7 +4,7 @@ commentiSuccess:
 
 
 indexSuccess:
-  javascripts:    [-*, http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js, fe/jquery.combobox.min.js, fe/jquery.pngFix.js, fe/openparlamento.lists.js, fe/jquery.autocomplete.min.js]
+  javascripts:    [fe/jquery.autocomplete.min.js]
   stylesheets:    [-*, screen, monitoring, jquery.autocomplete.css]
 
 documentoSuccess:
@@ -14,10 +14,6 @@ documentoSuccess:
 
 all:
   javascripts:    
-    - http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js
-    - fe/jquery.combobox.min.js
-    - fe/jquery.pngFix.js
-    - fe/openparlamento.lists.js
     - fe/jquery.bgiframe.min.js
     - fe/jquery.ajaxQueue.js
     - fe/jquery.autocomplete.min.js

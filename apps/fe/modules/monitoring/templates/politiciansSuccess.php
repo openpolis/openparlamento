@@ -5,23 +5,18 @@
 <div id="content" class="tabbed-orange float-container">
   <div id="main">
 
-		<p class="tools-container"><a class="ico-help" href="#">eventuale testo micro-help</a></p>
+		<p class="tools-container"><a class="ico-help" href="#">come posso monitorare un parlamentare</a></p>
 		<div style="display: none;" class="help-box float-container">
 			<div class="inner float-container">
 
-				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+				<a class="ico-close" href="#">chiudi</a><h5>come posso monitorare un parlamentare ?</h5>
+				<p>Nella pagina di ogni deputato e senatore in alto a destra trovi il bottone che ti permette di avviare il monitoraggio, contrassegnata dalla icona della lente di ingrandimento. Una volta scelto di seguire un parlamentare riceverai tutte le notizie e informazioni relative - ogni volta che ce ne saranno - sia nelle tue pagine personali del "monitoraggio" ("le mie notizie" - "i tuoi parlamentari") che nella tua casella email attraverso la "newsletter". Per smettere di monitorare l'atto o il parlamentare &egrave; sufficiente andare nella pagina dell'atto o parlamentare dove in alto a destra si trova il bottone "smetti di monitorare". La stessa funzione &egrave; disponibile anche nella pagina "i miei parlamentari" dove per ciascun deputato e senatore elencato &egrave; disponibile il bottone "smetti di monitorare" (icona della crocetta rossa accanto la lente di ingrandimento)</p>
 			</div>
 		</div>
 
     <?php if (count($monitored_politicians)): ?>
     	<h5 class="subsection">i politici che stai monitorando</h5>
-    <?php else: ?>
-      Non stai monitorando nessun politico      
-    <?php endif ?>
-  
-
-    <table class="list-table column-table">
+    	<table class="list-table column-table">
   		<thead>
   			<tr>
   				<th class="evident" scope="col"><br/>parlamentare:</th>
@@ -30,7 +25,7 @@
 				</tr>
   		</thead>
   		<tbody>
-  	  <?php foreach ($monitored_politicians as $politician): ?>  		  
+  	  <?php foreach ($monitored_politicians as $politician): ?>  	  
   			<tr id="pol_<?php echo $politician->getId();?>">
   				<th scope="row"><p class="politician-id">
   				  <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politician->getId()), 
@@ -63,6 +58,12 @@
       <?php endforeach ?>
   		</tbody>
   	</table>
+    <?php else: ?>
+      <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per monitorarne uno vai nella pagina di un parlamentare e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
+    <?php endif ?>
+  
+
+    
     
   </div>
 </div>
