@@ -200,16 +200,9 @@ class monitoringActions extends sfActions
 
     $news = NewsPeer::doSelect($c);
     
+    
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
-
-    $mail_html_body = "<ul>"; $mail_text_body = '';
-    foreach ($news as $n)
-    {
-      $mail_html_body .= "\n\t<li>" . $n->getDate('d/m/Y') . " - " . news_text($n, true) . "</li>";
-      $mail_text_body .= "\n" . $n->getDate('d/m/Y') . " - " . html_entity_decode(strip_tags(news_text($n)), ENT_COMPAT, 'UTF-8');
-    }
-    $mail_html_body .= "\n</ul>";
     
     // class initialization
     $mail = new sfMail();
@@ -225,13 +218,28 @@ class monitoringActions extends sfActions
     $mail->addAddress($user->getEmail());
 
     $mail->setSubject('openparlamento: newsletter del ' . date('d/m/Y') );
-    $mail->addEmbeddedImage(sfConfig::get('sf_web_dir').'/images/logo_op_mail_footer.png', 
-                            'CID1', 'Open2Public', 'base64', 'image/png');
                             
+    // raggruppa le news per data
+    $grouped_news = array();
+    foreach ($news as $n)
+    {
+      $date = strtotime($n->getDate());
+      if (!is_string($date) && !is_int($date))
+        $date = 0;
+
+      if (!array_key_exists($date, $grouped_news))
+      {
+        $grouped_news[$date] = array();        
+      }
+      $grouped_news[$date] []= $n;
+    }
+    krsort($grouped_news);
+
+
+
     $this->date = date('d/m/Y');
     $this->user = $user;
-    $this->mail_html_body = $mail_html_body;
-    $this->mail_text_body = $mail_text_body;
+    $this->grouped_news = $grouped_news;
     $this->mail = $mail;    
     
 

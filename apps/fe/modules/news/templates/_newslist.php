@@ -1,5 +1,4 @@
 <?php echo use_helper('PagerNavigation', 'DeppNews', 'Date'); ?>
-<?php setlocale(LC_TIME,"it_IT") ?>
 
 
 <table class="table-news">
