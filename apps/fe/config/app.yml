@@ -5,8 +5,8 @@ all:
     default_image: { mime_type: image/jpeg, filename: Untitled.jpeg }
 
   premium:
-    max_items: 15
-    max_tags: 5
+    max_items: 10
+    max_tags: 3
   
   # json api
   api:
@@ -127,12 +127,12 @@ all:
                                         # off: never send emails
 
   atto:
-    pagination_limit:  30
+    pagination_limit:  15
 
   news_dropdown_limit: 7
   
   pagination:
-    limit:     60
+    limit:     15
     num_links: 9
 
   voto:
