@@ -37,8 +37,11 @@ collocarsi nello spazio centrale, equidistante dagli estremi.
   </div>
 </div>
 <div id="distanceGraph">
-
-
+<div class="intro-box">
+<br/>
+<h5 class="subsection">
+OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necessario <a href="http://get.adobe.com/flashplayer/">installare il Flash player </a>versione 9 o superiore</h5>
+</div>
 </div>
 </div>
 </div>
