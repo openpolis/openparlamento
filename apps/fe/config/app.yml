@@ -157,4 +157,13 @@ all:
   mail_per_redazione:
     site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openis.it')?>"
   
+  subscription:
+    civicus_limit_reached_tags:       "se vuoi monitorare gli argomenti aderisci all'offerta premium"
+    civicus_limit_reached_attos:      "se vuoi monitorare altri atti aderisci all'offerta premium"
+    civicus_limit_reached_politicos:  "se vuoi monitorare altri politici aderisci all'offerta premium"
+    premium_limit_reached_tags:       "se vuoi monitorare altri argomenti contattaci"
+    premium_limit_reached_attos:      "se vuoi monitorare altri atti contattaci"
+    premium_limit_reached_politicos:  "se vuoi monitorare altri politici contattaci"
+    civicus_promoted:                 "sei diventato un utente Premium! da ora puoi monitorare fino a 10 tra politici e atti e fino a 3 argomenti"
+    
     

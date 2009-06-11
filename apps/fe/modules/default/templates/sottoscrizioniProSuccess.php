@@ -10,10 +10,17 @@
 
   <div id="main">
             <div class="W100_100">
-                <div class="intro-box">
-                    <h2>Qual &egrave; il <em class="open">tuo</em><em class="parlamento">parlamento</em>?</h2>
-                    <p><em class="open">open</em><em class="parlamento">parlamento</em> consegna nella tua e-mail e nelle pagine web a te dedicate le informazioni che ti interessano nei modi e nelle forme che preferisci. Servizi di informazione e monitoraggio sulle attivit&agrave; parlamentari per <strong>cittadini, professionisti</strong> e qualunque tipo di <strong>organizzazione</strong>.</p>
+              
+              <?php if ($sf_flash->has('subscription_limit_reached')): ?>
+                <div class="flash-messages">
+                  <?php echo $sf_flash->get('subscription_limit_reached') ?>
                 </div>
+              <?php endif; ?>
+              
+              <div class="intro-box">
+                  <h2>Qual &egrave; il <em class="open">tuo</em><em class="parlamento">parlamento</em>?</h2>
+                  <p><em class="open">open</em><em class="parlamento">parlamento</em> consegna nella tua e-mail e nelle pagine web a te dedicate le informazioni che ti interessano nei modi e nelle forme che preferisci. Servizi di informazione e monitoraggio sulle attivit&agrave; parlamentari per <strong>cittadini, professionisti</strong> e qualunque tipo di <strong>organizzazione</strong>.</p>
+              </div>
             </div>
             <div class="W100_100">
                 <table class="compare-table">
@@ -39,7 +46,12 @@
                         <td class="bg-flatgreen-light round-5-right"><p><br />
                                 <br />
                                 GRATUITA</p>
-                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">registrati</a></h5></td>
+                                <?php if (!$sf_user->hasCredential('subscriber')): ?>
+                                  <h5 class="launch-evidence-btn-mini round-5">
+                                    <?php echo link_to('registrati!', '@sf_guard_signin') ?>
+                                  </h5>
+                                <?php endif ?>
+                        </td>
                     </tr>
                     <tr>
                         <td class="align-left bg-green-dark round-5-left"><img src="/images/ico-premium.png" alt="PREMIUM" class="user-type" /></td>
@@ -50,8 +62,18 @@
                         <td class="bg-green-light round-5-right"><p>in promozione<br />
                                 GRATUITA fino al<br />
                                 15 Ottobre<br />
+                                <?php if (!$sf_user->isAuthenticated()): ?>
+                                  per utenti <?php echo link_to('registrati', '@sf_guard_signin') ?>
+                                <?php endif ?>
                             </p>
-                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">aderisci</a></h5></td>
+                            
+                            <?php if ($sf_user->hasCredential('subscriber') && !$sf_user->hasCredential('premium')): ?>                            
+                              <h5 class="launch-evidence-btn-mini round-5">
+                                <?php echo link_to('aderisci!', '@sottoscrizione_premium_demo') ?>
+                              </h5>
+                            <?php endif ?>
+                      </td>
+                          
                     </tr>
                     <tr>
                         <td class="align-left bg-cyan-dark round-5-left"><img src="/images/ico-adhoc.png" alt="AD HOC" class="user-type" /></td>
@@ -63,11 +85,15 @@
                                 da concordare<br />
                                 direttamente<br />
                             </p>
-                            <h5 class="launch-evidence-btn-mini round-5"><a href="#">contattaci</a></h5></td>
+                            <h5 class="launch-evidence-btn-mini round-5">
+                              <?php echo link_to('contattaci!', '@contatti') ?>
+                            </h5>
+                        </td>
                     </tr>
                 </table>
             </div>
-            <div class="W48_100 float-right">
+            
+            <div class="W48_100 <?php echo !$sf_user->hasCredential('premium')?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
                 <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
                     <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
                         <br />
@@ -85,27 +111,34 @@
                     </ul>
                     <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
                 </div>
-                <h1 class="launch-evidence-btn round-5"><a href="#">Contattaci!</a></h1>
+                <h1 class="launch-evidence-btn round-5">
+                  <?php echo link_to('Contattaci!', '@contatti') ?>
+                </h1>
             </div>
-            <div class="W48_100 float-left">
-                <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
-                    <p>In occasione del lancio di openparlamento<br />
-                        <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
-                   </p>
-                    <ul>
-                        <li>
-                            <h3 class="position-light-orange">a</h3> 
-                            fino a 3 argomenti da monitorare</li>
-                        <li>
-                            <h3 class="position-light-orange">b</h3>
-                            fino a 10 parlamentari o atti da monitorare</li>
-                        <li>
-                            <h3 class="position-light-orange">c</h3>
-                            tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
-                    </ul>
-                </div>
-                <h1 class="launch-evidence-btn round-5"><a href="#">Aderisci!</a></h1>
-            </div>
+            
+            <?php if (!$sf_user->hasCredential('premium')): ?>              
+              <div class="W48_100 float-left">
+                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
+                      <p>In occasione del lancio di openparlamento<br />
+                          <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
+                     </p>
+                      <ul>
+                          <li>
+                              <h3 class="position-light-orange">a</h3> 
+                              fino a 3 argomenti da monitorare</li>
+                          <li>
+                              <h3 class="position-light-orange">b</h3>
+                              fino a 10 parlamentari o atti da monitorare</li>
+                          <li>
+                              <h3 class="position-light-orange">c</h3>
+                              tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
+                      </ul>
+                  </div>
+                  <h1 class="launch-evidence-btn round-5">
+                    <?php echo link_to('Aderisci!', '@sottoscrizione_premium_demo') ?>
+                  </h1>
+              </div>
+            <?php endif ?>
             <div class="clear-both"></div>
             
         </div>

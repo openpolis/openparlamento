@@ -47,6 +47,12 @@
       <div class="clear-both"/></div>
 
 
+      <?php if ($sf_flash->has('subscription_promotion')): ?>
+        <div class="flash-messages">
+          <?php echo $sf_flash->get('subscription_promotion') ?>
+        </div>
+      <?php endif; ?>
+
 			<h5 class="subsection-alt">Atti presentati sull'argomento</h5>
       <?php include_component('argomento', 'attiTaggati', 
                               array('triple_value' => $triple_value)) ?>

@@ -5,6 +5,13 @@
 <div id="content" class="tabbed-orange float-container">
   <div id="main">
 
+    <?php if ($sf_flash->has('subscription_promotion')): ?>
+      <div class="flash-messages">
+        <?php echo $sf_flash->get('subscription_promotion') ?>
+      </div>
+    <?php endif; ?>
+
+
     <?php if ($opp_user->getNMonitoredTags()>0): ?>
     	<h5 class="subsection">gli argomenti che stai monitorando 
     	  <?php if (!$sf_user->hasCredential('adhoc')): ?>    	   

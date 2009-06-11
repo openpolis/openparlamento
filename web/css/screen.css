@@ -1171,3 +1171,5 @@ form.subscribe-form input { border: 1px solid gray;}
 form.subscribe-form ul.main>li { margin-top: 0.5em;  }
 
 .form_error { color: darkred;}
+
+.flash-messages { background-color: #ffff66; border: 1px solid darkgray; font-size: 1.2em; padding: 1em; margin: 1em; font-weight: bold; text-align: center;}

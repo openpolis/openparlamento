@@ -21,6 +21,14 @@
     </div>
     
     <div class="W73_100 float-left">
+      
+      <?php if ($sf_flash->has('subscription_promotion')): ?>
+        <div class="flash-messages">
+          <?php echo $sf_flash->get('subscription_promotion') ?>
+        </div>
+      <?php endif; ?>
+      
+      
      <?php if($atto->getTipoAttoId()!=13 ): ?>
      
       <h5 class="grey-888">

@@ -499,6 +499,10 @@ class monitoringActions extends sfActions
     if ($this->_addTagToMyMonitoredTags($tag, $opp_user) == -1)
     {
         $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+        
+        // costruisce il messaggio flash
+        $this->_build_flash_message('Tag');
+        
         $this->redirect('@sottoscrizioni_pro');
     }
 
@@ -632,9 +636,6 @@ class monitoringActions extends sfActions
     
     $user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     
-    
-    
-    
     // check limitations (for non-adhoc subscribers)
     if (!$this->getUser()->hasCredential('adhoc'))
     {
@@ -649,6 +650,11 @@ class monitoringActions extends sfActions
 
       if ($this->remaining_items <= 0){
         $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+
+        // costruzione del messaggio flash
+        $this->_build_flash_message($this->item_model);
+        
+        // redirect
         $this->redirect('@sottoscrizioni_pro');
       }      
     }
@@ -680,6 +686,30 @@ class monitoringActions extends sfActions
   }
 
 
+  protected function _build_flash_message($item_model)
+  {
+    if ($this->getUser()->hasCredential('premium'))
+      $user_type = 'premium';
+    else
+      $user_type = 'civicus';
+    
+    switch ($item_model)
+    {
+      case 'Tag':
+        $objs_type = 'tags';
+        break;
+      case 'OppAtto':
+        $objs_type = 'attos';
+        break;
+      case 'OppPolitico':
+        $objs_type = 'politicos';
+        break;
+    }
+
+    $this->setFlash('subscription_limit_reached', 
+                    sfConfig::get('app_subscription_'.$user_type.'_limit_reached_'.$objs_type));  
+  }
+  
   public function executeAjaxRemoveItemFromMyMonitoredItems()
   {
     $isAjax = $this->getRequest()->isXmlHttpRequest();

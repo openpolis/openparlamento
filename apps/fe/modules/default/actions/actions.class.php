@@ -96,6 +96,14 @@ class defaultActions extends sfActions
           $user->setNMaxMonitoredItems(sfConfig::get('app_premium_max_items', 10));
           $user->setNMaxMonitoredTags(sfConfig::get('app_premium_max_tags', 5));
           $user->save();
+          
+          // add credential to the user
+          $this->getUser()->addCredential('premium');
+          
+          // set the flash message for the promotion
+          $this->setFlash('subscription_promotion', 
+                          sfConfig::get('app_subscription_civicus_promoted'));
+          
 
         }
 

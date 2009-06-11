@@ -14,6 +14,7 @@
 			<div id="monitor-n-vote">
       	<h6>monitora questo politico</h6>
       	<p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
+
   		<div style="display: none;" class="help-box float-container">
   			<div class="inner float-container">
 
@@ -42,6 +43,11 @@
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>
     	                                     
     	                                     
+    <?php if ($sf_flash->has('subscription_promotion')): ?>
+      <div class="flash-messages">
+        <?php echo $sf_flash->get('subscription_promotion') ?>
+      </div>
+    <?php endif; ?>
     	                                     	
     <div class="W100_100 float-left">
     <div class="W25_100 float-right" style="width:37%">

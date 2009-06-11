@@ -1,3 +1,7 @@
+contatti:
+  url: /contatti
+  param: { module: static, action: contatti }
+
 sottoscrizioni_pro:
   url: /sottoscrizioni_pro
   param: { module: default, action: sottoscrizioniPro }

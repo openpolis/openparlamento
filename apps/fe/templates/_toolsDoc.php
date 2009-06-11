@@ -4,7 +4,16 @@
     <div id="logged-in">
       <div class="inner">    	
         <?php echo link_to('[Esci]', 'logout', array('class' => 'logout')); ?>
-		<span class="username"><em>Ciao</em>&nbsp;<?php echo $sf_user->getFirstname() ?></span>
+
+		    <span class="username"><?php echo $sf_user->getFirstname() ?>&nbsp;
+		      <?php if ($sf_user->hasCredential('premium')): ?>
+		        <em>(premium)</em>
+		      <?php endif ?>
+		      <?php if ($sf_user->hasCredential('adhoc')): ?>
+		        <em>(adhoc)</em>
+		      <?php endif ?>
+		    </span>
+
         <div class="userdata">
           <?php echo link_to('<strong>il tuo monitoraggio</strong>', 'monitoring') ?>     	
           <span> | </span>
