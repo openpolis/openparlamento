@@ -1,0 +1,28 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppPremiumDemo
+    theme:            default
+    
+    fields:
+      user_id:         {name: "Utente"}
+      eta:             {name: "Et&agrave;"}
+      attivita:        {name: "Attivit&agrave;"}
+      perche:          {name: "Perch&egrave; lo usi?"}
+      created_at:      {name: "Data adesione"}
+      
+    list:
+      title:           "Dati lasciati da adesioni a Premium"
+      display:         [=_user, _eta, _attivita, _perche, created_at]
+      filters:         [eta, attivita, perche, created_at]
+      actions:
+        _create:      none
+      max_per_page:   50  
+      
+    edit:
+      title:          "Dati lasciati da un utente %%_user%%"
+      display:        [_eta, _attivita_details, _perche_details, created_at]
+      actions:
+        _list:   -
+        _delete: -
+      

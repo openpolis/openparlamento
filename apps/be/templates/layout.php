@@ -23,6 +23,7 @@
       'atto' => 'Titoli aggiuntivi Atti',
       'votazione' => 'Titoli aggiuntivi Votazioni',
       'nuoviatti' => 'Nuovi atti',
+      'premiumdemo' => 'Utenti premium',
       'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
     $menu_sep = '|';

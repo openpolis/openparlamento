@@ -1,0 +1,1 @@
+<?php echo OppPremiumDemoPeer::getPercheAsString($opp_premium_demo->getPerche()) ?>

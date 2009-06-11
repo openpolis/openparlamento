@@ -51,7 +51,7 @@ function run_opp_sync_polimages($task, $args)
 
   $c = new Criteria();
   $politicians = OppPoliticoPeer::doSelect($c);
-
+  
   foreach ($politicians as $pol)
   {
     opp_sync_politician_image($pol);
@@ -89,9 +89,15 @@ function opp_sync_politician_image($pol)
 
   // invoke the remote getPolImage function to grab the images from op_openpolis
   $remote_img_url = sfConfig::get('app_remote_politicians_images_service_url') .'/' . 
-                    sfConfig::get('app_remote_api_key') . '/' . 
+                    sfConfig::get('app_remote_openpolis_api_key') . '/' . 
                     $pol->getId();
-                    
+
+  /*
+  echo pakeColor::colorize(sprintf('Url:  %s...', $remote_img_url), 
+                          array('fg' => 'red', 'bold' => true));
+  */
+
+
   $file = fopen ($remote_img_url, "r");
   if (!$file) {
       $err =  "unable to open remote file.";
@@ -121,7 +127,7 @@ function opp_sync_politician_image($pol)
   $thumb->loadString($remote_img_str);
   $thumb->resize(40, null);
   $thumb->saveAs($images_root . 'thumb/' . $pol->getId() . '.jpeg', 'image/jpeg');
-
+  
   $execution_time = microtime(true) - $start_time;
   
   

@@ -1,3 +1,8 @@
+<?php 
+# need this to include this to use the api.yml config file
+require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml')); 
+?>
+
 # default values
 all:
   sfImageTransformPlugin:
@@ -7,6 +12,11 @@ all:
   premium:
     max_items: 10
     max_tags: 3
+
+  # remote locations
+  remote: 	 	 
+    openpolis_api_key:                 "<?php echo sfConfig::get('api_openpolis_key', '--XXX(-:-)XXX--'); ?>"
+    politicians_images_service_url:    "http://<?php echo sfConfig::get('sf_remote_openpolis_host') ?>/getPolImage"
   
   # json api
   api:
