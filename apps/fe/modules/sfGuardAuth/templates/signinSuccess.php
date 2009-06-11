@@ -9,27 +9,32 @@
 </ul>
 
 <div id="content" class="tabbed float-container">
-  <div id="main" style="padding: 10px 0">
-  <p style="font-size:14px; padding:10px;">Per usare le funzioni avanzate (monitoraggio, descrizione e voto di un atto, etc.) &egrave; necessario prima accede al sito (login).<br />
-  <strong>Se sei gi&agrave; un utente di openpolis, puoi usare gli stessi paremetri di accesso (e-mail e password)</strong></p>
+  <div id="main">
+  <div class="intro-box">
+  <p>Per usare le funzioni avanzate (monitoraggio, descrizione e voto di un atto, etc.) &egrave; necessario prima accedere al sito.<br />
+  <strong>Se sei gi&agrave; un <em class="open">utente di openpolis</em>, puoi usare gli stessi paremetri di accesso (e-mail e password)</strong><br/><br/></p>
+  </div>
  
     <div id="sf_guard_auth_form">
       <?php echo form_tag('@sf_guard_signin') ?>
 
         <fieldset>
-
+	  <div class="form-row-short">
+            <?php echo form_error('username') ?>
+	  </div>
           <div class="form-row" id="sf_guard_auth_username">
             <?php
-            echo form_error('username'),
-            label_for('username', __('e-mail:')),
+            echo label_for('username', __('e-mail:')),
             input_tag('username', $sf_data->get('sf_params')->get('username'));
             ?>
           </div>
 
+	  <div class="form-row-short">
+            <?php echo form_error('password') ?> 
+	  </div>
           <div class="form-row" id="sf_guard_auth_password">
             <?php
-            echo form_error('password'), 
-              label_for('password', __('password:')),
+            echo label_for('password', __('password:')),
               input_password_tag('password');
             ?>
           </div>
