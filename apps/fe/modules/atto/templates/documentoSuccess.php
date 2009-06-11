@@ -5,6 +5,9 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
     <div class="W100_100 float-left">
+  <p class="tools-container float-left float-container"><a class="ico-help" href="#">come posso commentare questo documento</a></p>
+  <div class="clear-both"></div>
+      <p><?php echo image_tag('/images/emend-help.png') ?></p>
       <?php if($documento->getUrlTesto()): ?>
         <div><b><?php echo link_to('fonte', $documento->getUrlTesto()) ?></b>
          <?php if($documento->getUrlPdf()): ?>
@@ -17,16 +20,9 @@
 
      
          <br />
-      Atto a cui si riferisce: <?php echo link_to(Text::denominazioneAtto($documento->getOppAtto(), 'list'), 'atto/index?id='.$documento->getOppAtto()->getId()) ?>
+      <h5 class="subsection">Atto a cui si riferisce:<br /> <?php echo link_to(Text::denominazioneAtto($documento->getOppAtto(), 'list'), 'atto/index?id='.$documento->getOppAtto()->getId()) ?></h5>
       <br /><br />
 
-      <?php if($documenti_correlati): ?>
-        Altri documenti riferiti allo stesso atto<br />
-        <?php foreach($documenti_correlati as $documento_correlato): ?>
-          <?php echo link_to($documento_correlato->getTitolo(), 'atto/documento?id='.$documento_correlato->getId() ) ?><br />
-        <?php endforeach; ?>
-      <br /><br />
-      <?php endif; ?>
 
       <?php if($documento->getTesto()): ?>
         <?php if($documento->getOppAtto()->getTipoAttoId()>1 && $documento->getOppAtto()->getTipoAttoId()<12 ): ?>

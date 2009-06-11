@@ -50,12 +50,13 @@
     <?php endif; ?>
     	                                     	
     <div class="W100_100 float-left">
-    <div class="W25_100 float-right" style="width:37%">
-    <!--
-  		  <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-openpolis.png', 
-  		                                                    array('alt' => 'openpolis')), 
-  		                     'http://www.openpolis.it/politico/'.$parlamentare->getId(),
-  		                     array('class' => 'jump-to-openpolis')) ?>
+    <div class="W25_100 float-right" style="width:37%"> 
+          
+  		    
+  		  <?php echo link_to('la sua pagina su ' . image_tag('/images/op_logo_small.png', 
+  		                                                    array('alt' => 'vai al sito openpolis')), 
+  		                                                    'http://www.openpolis.it/politico/'.$parlamentare->getId(),
+  		                                                    array('class' => 'jump-to-camera')) ?>                 
   		   
   		  <?php if ($carica) : ?>                   
                    <?php if ($ramo=='camera') : ?> 
@@ -72,7 +73,7 @@
   		                                                    array('class' => 'jump-to-camera')) ?>   
                    <?php endif ?>
                   <?php endif ?>   
-                  -->
+                 
       </div>
       <div class="W73_100 float-left" style="width:60%">
   			<div class="float-container">
