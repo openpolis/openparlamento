@@ -6,7 +6,7 @@
 
 <div class="teaser-box W33_100 float-right">
 <h6>Dov'&egrave l'on. Rossi?</h6>
-preview del grafico delle distanze
+preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?> 
 </div>	
 	
       <div class="teaser-box W66_100 float-left">

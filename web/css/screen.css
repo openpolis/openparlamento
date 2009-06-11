@@ -930,7 +930,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 -moz-border-radius-bottomright: 5px; -webkit-border-bottom-right-radius: 5px; border-bottom-right-radius: 5px; }
 
 #navigation li { float: left;  }
-#navigation a, #navigation .current { color: #f58300; font-size: 18px; padding: 0 6px; margin-right: 15px; 
+#navigation a, #navigation .current { color: #f58300; font-size: 17px; padding: 0 6px; margin-right: 15px; 
 -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; font-weight: bold; }
 #navigation a:hover, #navigation .current { color: #fff; background-color: #f58300; text-decoration: none; }
 #wrapper-800 #navigation { padding-left: 15px; }

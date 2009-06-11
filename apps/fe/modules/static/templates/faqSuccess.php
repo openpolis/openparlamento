@@ -28,7 +28,8 @@
     <a href="faq#8">»&nbsp;Da dove prendete i dati?</a><br />  
     <a href="faq#9">»&nbsp;Come sono ricavate le presenze dei parlamentari?</a><br />  
     <a href="faq#10">»&nbsp;Cos'&egrave; l'indice di attivit&agrave; di un parlamentare?</a><br />  
-    <a href="faq#11">»&nbsp;Chi sono i parlamentari ribelli?</a><br /> 
+    <a href="faq#11">»&nbsp;Chi sono i parlamentari ribelli?</a><br />
+    <a href="faq#11a">»&nbsp;Come vengono calcolate le posizioni dei parlamentari all'interno del grafico delle distanze?</a><br /> 
     <a href="faq#12">»&nbsp;Che sono i titoli degli atti nelle parentesi quadre?</a><br /> 
     <a href="faq#13">»&nbsp;Perch&eacute; a volte il testo del disegno di legge non c'&egrave;?</a><br /> <br />
     
@@ -87,7 +88,7 @@
      
      <h5 class="subsection">Domande sui contenuti</h5>
      
-     <div style="padding-top:8px; line-height:1,5em;">
+     <div style="padding-top:8px; line-height:1,5em;"> 
      <a name="8"></a><p><strong>Da dove prendete i dati?</strong></p>
      I dati sono di fonte ufficiale e vengono ricavati dai siti di Camera e Senato. 
      </div>
@@ -102,6 +103,10 @@
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="11"></a><p><strong>Chi sono i parlamentari ribelli? </strong></p>
      Un parlamentare &egrave; considerato ribelle quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo. 
+     </div>
+     <div style="padding-top:8px; line-height:1,5em;">
+     <a name="11a"></a><p><strong>Come vengono calcolate le posizioni dei parlamentari all'interno del grafico delle distanze?</strong></p>
+     Per il calcolo delle distanze tra Deputati e Senatori e quindi per la loro collocazione all'interno dello spazio utilizziamo la tecnica del <?php echo link_to('Multidimensional Scaling','http://en.wikipedia.org/wiki/Multidimensional_scaling') ?>.
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="12"></a><p><strong>Che sono i titoli degli atti nelle parentesi quadre?</strong></p>

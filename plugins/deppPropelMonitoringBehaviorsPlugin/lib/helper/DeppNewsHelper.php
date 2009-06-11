@@ -466,7 +466,7 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
     // spostamento in commissione
     else if ($generator_model == 'OppAttoHasSede'){
        if ($img==1)
-           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';  
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-next-iter.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';  
       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       $news_string .= "<strong>&egrave; all'esame</strong> in ";
@@ -506,7 +506,7 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
     // status conclusivo
     else if ($generator_model == 'OppAttoHasIter') {
        if ($img==1)
-           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-approvato.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';  
+           $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-next-iter.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';  
       $news_string .= "<td><p>";
       $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
       $news_string .= "Lo status &egrave; ora ";
@@ -661,7 +661,7 @@ function community_news_text($news)
     
     case 'sfComment':
       return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato %s</p><p> %s</p>", 
-                     image_tag('/images/ico-type-approvato.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
+                     image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),strtolower($news->getUsername()), $item_type, $link);
       break;
       
     case 'Monitoring':

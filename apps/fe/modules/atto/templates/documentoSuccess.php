@@ -6,15 +6,17 @@
   <div id="main">
     <div class="W100_100 float-left">
       <?php if($documento->getUrlTesto()): ?>
-        <div><b><?php echo link_to('fonte', $documento->getUrlTesto()) ?></b></div>
-        <br />
+        <div><b><?php echo link_to('fonte', $documento->getUrlTesto()) ?></b>
+         <?php if($documento->getUrlPdf()): ?>
+           &nbsp;|&nbsp;
+            <b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf()) ?></b>
+            <?php endif; ?>
+        </div>
+        
       <?php endif; ?>
 
-      <?php if($documento->getUrlPdf()): ?>
-        <div><b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf()) ?></b></div>
-        <br />
-      <?php endif; ?>
-
+     
+         <br />
       Atto a cui si riferisce: <?php echo link_to(Text::denominazioneAtto($documento->getOppAtto(), 'list'), 'atto/index?id='.$documento->getOppAtto()->getId()) ?>
       <br /><br />
 
