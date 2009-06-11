@@ -886,8 +886,12 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .sign-on { padding-left: 5px; }
 .sign-in { padding-right: 15px;  }
 
-#main #sf_guard_auth_form, #main #left-box { float: left; width: 48%; padding: 10px 1% 50px; background: transparent url(../images/bg-login-form.png) no-repeat top left; }
-#main #sf_guard_auth_form { padding: 15px 0; margin: 0 0 0 50px; }
+#main #sf_guard_auth_form, #main #left-box { float: left; width: 450px; padding: 10px 1% 50px; background: transparent url(../images/bg-login-form.png) no-repeat top left; }
+#main #sf_guard_auth_form { padding: 0; margin: 20px 0 20px 50px; }
+#main #sf_guard_auth_form fieldset { height: 150px; } 
+#main #sf_guard_auth_form .form_error { margin-left: 85px; }
+#main #sf_guard_auth_form .form-row { height: 25px; margin: 0 0 10px 0; }
+#main #sf_guard_auth_form .form-row-short { height: 18px; padding: 8px 0 0 0; }
 #main .registrati, #main #right-box { float: left; width: 45%; padding: 10px 1% 0 10px; }
 #main #sf_guard_auth_form #sf_guard_auth_username,
 #main #sf_guard_auth_form #sf_guard_auth_password { font-weight: bold; color: #ee4604; margin-left: 0; } 
