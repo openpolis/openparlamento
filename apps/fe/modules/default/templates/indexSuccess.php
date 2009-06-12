@@ -34,7 +34,7 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
         <!-- Box news dal parlamento -->
         <div class="section-box">
           <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
-      		<h3>le ultime dal parlamento</h3>
+      		<h3>ultime dal parlamento</h3>
     		</div>
         <?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
 		  
@@ -42,7 +42,7 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
 	   
 	      <!-- Box attivita' utenti -->
         <div class="section-box">   
-		      <h3 class="section-box-no-rss">le ultime dalla comunit&agrave;</h3>
+		      <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
 		      <ul>
     		  <?php foreach ($latest_activities as $activity): ?>
     		    <?php $news_text = community_news_text($activity); ?>
@@ -67,14 +67,14 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
           <div class="section-box"  style="padding-bottom:20px;">
              <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
              <h3>in evidenza dal blog</h3>
-             <div class="news-disegni-decreti float-container" >
-		<ul>
+             
+		<ul id="blog-posts-full">
 		<?php foreach($post_pager->getResults() as $post): ?> 
 		     <?php include_partial('post',array('post' => $post)); ?>
 		<?php endforeach; ?>
 		</ul>
-		<a href="/blog" class="see-all tools-container">vai al blog di OpenParlamento</a>
-	      </div>	
+		<p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
+	      	
 	   <?php endif; ?>   
 	  </div>
 	  
@@ -82,7 +82,7 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
 	  <?php if (count($lanci)>0) : ?>
           <div class="section-box">
 	      
-			<h3 class="section-box-no-rss">in evidenza dal parlamento</h3>				
+			<h3 class="section-box-no-rss">atti in evidenza</h3>				
 				<ul id="law-n-acts-proposals">
 				 <?php foreach ($lanci as $lancio) : ?>  
 				     <?php include_partial('lanci',array('lancio' => $lancio)); ?> 

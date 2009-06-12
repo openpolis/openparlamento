@@ -5,7 +5,15 @@
 <div id="content" class="tabbed float-container">
   <div id="main">
     <div class="W25_100 float-right">
+     <p align=right>
 	       <a href="#decaduti">guarda le variazioni nella legislatura</a> 
+	       <p align=right style="padding-top:20px;"><?php if ($sf_params->get('ramo')=='camera') : ?>
+	             <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_C') ?>
+	           <?php else : ?>
+	              <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_S') ?>
+	           <?php endif ?>
+	       </p>    
+      </p>	       
     </div>
     <div class="W73_100 float-left">	
       <?php include_partial('wiki') ?>       

@@ -1,5 +1,5 @@
 <div class="section-box"> 
-            <h3 class="section-box-no-rss">i <?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
+            <h3 class="section-box-no-rss"><?php echo $nome_carica ?> <span style="color:<?php echo $color ?>;"><?php echo $string ?></span></h3> 
 </div>
  
 <table class="disegni-decreti column-table v-align-middle"> 

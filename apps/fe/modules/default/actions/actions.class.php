@@ -187,12 +187,12 @@ class defaultActions extends sfActions
                                                         'monitoring_filter'));
    
     // ultime attivita' della community                                                    
-    $this->latest_activities = CommunityNewsPeer::getLatestActivities(5);
+    $this->latest_activities = CommunityNewsPeer::getLatestActivities(4);
     
     // ultime news dal parlamento
     $c = NewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
-    $itemsperpage = 7;
+    $itemsperpage = 4;
     $pager = new deppNewsPager('News', $itemsperpage);
     $pager->setCriteria($c);
     $pager->setPage($this->getRequestParameter('page', 1));

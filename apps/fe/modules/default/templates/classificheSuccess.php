@@ -25,7 +25,7 @@
    </div>
    
    <div class="W48_100 float-right">
-   <h1 class="redbox">i senatori</h1>
+   <h1 class="redbox">senatori</h1>
     <?php echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'1','limit'=>'3')); ?>
     <hr class="redbox" />
     <?php echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'2','limit'=>'3')); ?>
@@ -40,7 +40,7 @@
    </div>
    
     <div class="W48_100 float-left">
-    <h1 class="bluebox">i deputati</h1>
+    <h1 class="bluebox">deputati</h1>
     <?php echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'1','limit'=>'3')); ?>
      <hr class="bluebox" />
     <?php echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'2','limit'=>'3')); ?>

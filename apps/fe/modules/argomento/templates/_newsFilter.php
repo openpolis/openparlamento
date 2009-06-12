@@ -1,6 +1,6 @@
 <?php echo form_tag('#', array("id"=>"disegni-decreti-filter")) ?>
   <fieldset class="labels">
-    <label for="filter_main_all">principali:</label>
+    <label for="filter_main_all">notizie:</label>
   </fieldset>
   <p>filtra per</p>
   <fieldset>

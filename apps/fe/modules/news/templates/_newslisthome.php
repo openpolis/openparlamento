@@ -6,7 +6,7 @@
       
     <?php foreach ($news as $i => $n): ?>
       <tr>
-        <?php if ($i==0): ?>
+        <?php //if ($i==0): ?>
           <?php if ($date_ts > 0): ?>
             <td style="width: 80px;">
               <div class="news-time">    
@@ -25,9 +25,9 @@
                 </div>
             </td>      
           <?php endif ?>
-        <?php else: ?>
-          <td>&nbsp;</td>
-        <?php endif; ?>
+        <?php // else: ?>
+          <!--<td>&nbsp;</td> -->
+        <?php //endif; ?>
         <?php  echo news_text($n,$context) ?> 
       </tr>  
     <?php endforeach ?>
