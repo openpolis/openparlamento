@@ -9,7 +9,8 @@
 preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?> 
 </div>	
 	
-      <div id="introOP" class="teaser-box W66_100 float-left">
+      <div id="introOP-box" class="teaser-box W66_100 float-left">
+	<div id="introOP"> 
 	 <h4>
 	 Ogni giorno in parlamento si propongono, discutono e votano<br />
 	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
@@ -18,6 +19,7 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
          <strong>Intervieni</strong>, <strong>organizzati</strong> e<br />
 	 <strong>monitora</strong>. Ti riguarda, <strong>ci riguarda</strong>. 
 	 </h3>
+	</div>
       </div>
       <div class="clear-both"></div>
      </div>
@@ -34,7 +36,7 @@ var attributes = {};
 swfobject.embedSWF("/swf/intro-openparlamento.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
 };
 
-$(document).ready(function(){ embedIntro(); });
+jQuery(document).ready(function(){ embedIntro(); });
 
 </script>
      
