@@ -93,7 +93,7 @@
                 </table>
             </div>
             
-            <div class="W48_100 <?php echo !$sf_user->hasCredential('premium')?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
+            <div class="W48_100 <?php echo (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc'))?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
                 <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
                     <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
                         <br />
@@ -116,7 +116,7 @@
                 </h1>
             </div>
             
-            <?php if (!$sf_user->hasCredential('premium')): ?>              
+            <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
               <div class="W48_100 float-left">
                   <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
                       <p>In occasione del lancio di openparlamento<br />
