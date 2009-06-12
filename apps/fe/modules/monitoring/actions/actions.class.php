@@ -164,46 +164,14 @@ class monitoringActions extends sfActions
   
   public function executeSendNewsletter()
   {
-    $user_id = $this->getRequestParameter('user_id');
-    
+    $user_id = $this->getRequestParameter('user_id');    
     $user = OppUserPeer::retrieveByPK($user_id);
-    
-    $monitored_objects = $user->getMonitoredObjects();
-
-    // criterio di selezione delle news dagli oggetti monitorati    
-    $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
-
-    // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
-    $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($user->getId());
-    if (array_key_exists('OppAtto', $blocked_items_ids) && count($blocked_items_ids['OppAtto']))
-    {
-      $blocked_news_ids = array();
-      $bc = new Criteria();
-      $bc->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
-      $bc->add(NewsPeer::RELATED_MONITORABLE_ID, $blocked_items_ids['OppAtto'], Criteria::IN);
-      $bc->clearSelectColumns(); 
-      $bc->addSelectColumn(NewsPeer::ID);
-      $rs = NewsPeer::doSelectRS($bc);
-      while ($rs->next()) {
-        array_push($blocked_news_ids, $rs->getInt(1));
-      }
-      $c->add(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
-    }
-    
-    // le news di gruppo non sono considerate, perché ridondanti (#247)
-    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
-    
-    // add a filter on the date (today's news) or a test date
-    if (SF_ENVIRONMENT == 'task-test') $c->add(NewsPeer::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
-    else
-      $c->add(NewsPeer::CREATED_AT, date('Y-m-d').'%', Criteria::LIKE);
-
-    $news = NewsPeer::doSelect($c);
-    
+    $news = NewsPeer::fetchTodayNewsForUser($user);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
     
+
     // class initialization
     $mail = new sfMail();
     $mail->setCharset('utf-8');      
@@ -242,7 +210,6 @@ class monitoringActions extends sfActions
     $this->grouped_news = $grouped_news;
     $this->mail = $mail;    
     
-
   }
   
   public function executeFavouriteActs()

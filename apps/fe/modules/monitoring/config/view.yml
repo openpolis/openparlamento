@@ -1,6 +1,12 @@
 all:
   stylesheets:    [monitoring]
 
+sendNewsletterSuccess:
+  javascripts:    [-*]
+  
+sendNewsletterSuccess.altbody:
+  javascripts:    [-*]
+  
 tagsSuccess:  
   javascripts:    [fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
   stylesheets:    [monitoring, jquery.autocomplete.css]

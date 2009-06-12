@@ -92,7 +92,7 @@ function opp_sync_politician_image($pol)
                     sfConfig::get('app_remote_openpolis_api_key') . '/' . 
                     $pol->getId();
 
-  /*
+  /* debug
   echo pakeColor::colorize(sprintf('Url:  %s...', $remote_img_url), 
                           array('fg' => 'red', 'bold' => true));
   */

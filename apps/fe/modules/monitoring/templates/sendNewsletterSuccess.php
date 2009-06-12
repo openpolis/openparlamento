@@ -1,4 +1,4 @@
-<?php echo use_helper('PagerNavigation', 'DeppNews', 'Date'); ?>
+<?php echo use_helper('DeppNews', 'Date'); ?>
 
 <?php 
   $df = new sfDateFormat('it_IT'); 
