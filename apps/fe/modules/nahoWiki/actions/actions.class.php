@@ -86,10 +86,6 @@ class nahoWikiActions extends BasenahoWikiActions
     $this->forward403Unless($this->canView); 
     
    
-    // embed javascripts for advanced javascripts
-    $response = sfContext::getInstance()->getResponse();
-    $response->addJavascript('jquery.js');
-    
     // Generate the username (this is done by the Revision model)
     $tmp_revision = new nahoWikiRevision;
     $tmp_revision->initUserName();

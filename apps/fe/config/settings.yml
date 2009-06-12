@@ -31,13 +31,24 @@ test:
 all:
     prototype_web_dir:      ''         # Prototype library for Javascript helpers is loaded from web/js/prototype.js
     .settings:
+      available:            on
+      
       i18n:                 on         
       enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppBookmarking, deppTagging, deppCommenting, deppLaunching, nahoWiki, sfEmendAPI, sfSimpleBlog, sfSolr]
+
     .actions:                               
       login_module:           sfGuardAuth   
       login_action:           signin        
+    
       secure_module:          sfGuardAuth   
-      secure_action:          secure        
+      secure_action:          secure      
+      
+      error_404_module:       static
+      error_404_action:       404
+
+      unavailable_module:     static
+      unavailable_action:     unavailable
+      
     
 #all:
 #  .actions:

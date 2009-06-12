@@ -1,4 +1,4 @@
-lall:
+all:
   servers:
     default:
       host: localhost

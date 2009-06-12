@@ -178,7 +178,7 @@ class monitoringActions extends sfActions
     $mail->setContentType('text/html');
 
     // definition of the required parameters
-    $mail->setSender(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
+    $mail->setSender(sfConfig::get('app_newsletter_from_address', 'info@openpolis.it'), 
                      sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
     $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
                    sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));

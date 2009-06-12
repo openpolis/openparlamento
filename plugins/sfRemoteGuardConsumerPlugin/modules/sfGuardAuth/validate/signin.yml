@@ -4,12 +4,12 @@ methods:
 names:
   username:
     required:         true
-    required_msg:     Your username is required
+    required_msg:     "Inserisci l'indirizzo e-mail"
     validators:       [userValidator]
 
   password:
     required:         true
-    required_msg:     Your password is required
+    required_msg:     "Inserisci una password"
 
 userValidator:
     class:            sfRemoteGuardLoginValidator
