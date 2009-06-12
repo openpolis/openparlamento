@@ -8,93 +8,80 @@
 
 <div id="content" class="tabbed float-container">
 
-  <div id="main"> 
-  <p style="font-size:14px;">vhjdevjvdjvjevjfvjfrvjfvjrfv fdygfdgf cvshf csdfd </p>
-   <div class="W100_100">
-   <h3 class="subsection">informati</h3>
-   <h4>Decreti, disegni di legge e atti non legislativi</h4>
-   <div class="float-right" style="width:30%;">
-   <?php echo image_tag( '/images/screenshot/atti.png',array('width'=>'250px')) ?>
-   </div>
-   <div class="W100_100">
-   <div class="float-left" style="width:65%;">
-   
-   Su <em class="open">open</em><em class="parlamento">parlamento</em> puoi  liberamente consultare tutti gli atti discussi e prodotti dalla Camera dei Deputati e dal Senato della Repubblica.<br>
-   Attraverso l'utilizzo di opzioni di ricerca e di filtri viene agevolata la navigazione negli atti legislativi (disegni di legge, decreti legge, decreti legislativi ) e in quelli non legislativi (mozioni,interrogazioni, interpellanze, ordini del giorno, ... ).
-   
+ <div id="main"> 
+  <div class="W33_100 float-left">
+  <div style="padding:7px;">
+  <h1><em class="parlamento">informati</em></h1>
+    <br />
+  Su openparlamento puoi liberamente consultare <em class="open" style="font-size:16px;"><strong>tutti gli atti</strong></em> discussi e prodotti dalla Camera e dal Senato.<br />
+  Attraverso l'utilizzo di opzioni di ricerca e di filtri viene agevolata la navigazione degli atti legislativi (disegni di legge, decreti legge, decreti legislativi ) e di quelli non legislativi (mozioni,interrogazioni, interpellanze, ordini del giorno ... ).<br />
+  <br />
+  <?php echo image_tag('/images/screenshot/ddl1.png') ?>
+  <br /><br />
+  Per ogni atto &egrave; disponibile il testo, lo stato di avanzamento dell'iter legislativo, informazioni sui firmatari, sui relatori e votazioni.<br />
+  <br />
+  <?php echo image_tag('/images/screenshot/iter.png') ?>
+  <br /><br />
+  <em class="open" style="font-size:16px;"><strong>Tutti i parlamentari</strong></em> hanno una propria scheda riepilogativa delle attivit&agrave; svolte.<br />
+  Oltre ai dati relativi alla elezione, sono disponibili tutte le informazioni su presenze, assenze, missioni, atti presentati, voti e interventi.<br />
+  Inoltre sono disponibili gli argomenti di cui il parlamentare si occupa, il suo indice di attivit&agrave; ed i parlamentari pi&ugrave; vicini, che votano e firmano gli stessi atti.<br />
+   <br />
+  <?php echo image_tag('/images/screenshot/politico.png') ?>
+  <br /><br />
+  Sono a tua disposizione tutte le informazioni su <em class="open" style="font-size:16px;"><strong>ogni votazione</strong></em> avvenuta alla Camera e al Senato.<br />
+  L'esito della votazione, la posizione dei gruppi e il voto di ogni parlamentare.<br />
+  Inoltre puoi controllare i "parlamentari ribelli", quelli votano in modo difforme dalla posizione del gruppo di appartenenza.<br />
+  <br />
+
+  </div> 
   </div>
-  <div class="float-right" style="width:65%;">
-    Per ogni atto è disponibile il testo, lo stato di avanzamento dell'iter legislativo, informazioni sui firmatari, sui relatori e votazioni.
+   
+  <div class="W33_100 float-left"> 
+  <div style="padding:7px;">
+  <h1><em class="parlamento">monitora</em></h1>
+ <br />
+  Attraverso lo strumento del monitoraggio, puoi seguire costantemente <em class="open" style="font-size:16px;"><strong>l'attivit&agrave; del singolo parlamentare</strong></em>, ricevere avvisi ogni qual volta compie un'azione (presenta un atto, effettua una votazione, interviene, etc).<br />
+  <br />
+  <?php echo image_tag('/images/screenshot/monitoraggio.png') ?>
+  <br /><br />
+  Puoi inoltre seguire le vicende di <em class="open" style="font-size:16px;"><strong>qualsiasi atto</strong></em> durante tutto il suo iter parlamentare e ricevere avvisi ad ogni passaggio o evento di rilievo: nuove firme, votazioni, interventi, passaggi di iter, etc.<br />
+  Tutti gli atti presenti su openparlamento vengono elaborati e classificati dalla nostra redazione ed associati ad uno o pi&ugrave; argomenti.
+  In questo modo, seguendo un <em class="open" style="font-size:16px;"><strong>argomento</strong></em> si monitoreranno tutti gli atti ad esso associati.<br />
+  <br /><br />
+  Ogni giorno riceverai aggiornamenti personalizzati su tutto quello che ti interessa nelle <em class="open" style="font-size:16px;"><strong>tue pagine personali</strong></em> di openparlamento e nella <em class="open" style="font-size:16px;"><strong>tua e-mail</strong></em>.<br />
+   <br />
+  <?php echo image_tag('/images/screenshot/mie_notizie.png') ?>
+  <br /><br />
   </div>
-   <div class="float-left" style="width:30%;">
-   <?php echo image_tag( '/images/screenshot/iter.png',array('width'=>'250px')) ?>  
-   </div>
-   
-   </div>
-   <div class="W100_100">
-   
-    <h4>Parlamentari</h4>
-    <p>
-    Ogni parlamentare ( deputato o senatore ) ha una propria scheda riepilogativa della sua attivit&agrave;. <br />
-    Oltre i dati sulla sua elezione sono disponibili tutte le informazioni sulle presenze (presenze, assenze, missioni) e sulla sua azione parlamentare (atti presentati,  firmati o co-firmati, tutti voti e gli interventi).
-    </p>
-    <p>
-   <?php echo image_tag( '/images/screenshot/pol_presenze.png') ?>   
-    </p>
-    <p>
-    Inoltre puoi consultare gli argomenti di cui il parlamentare si occupa maggiormente, i parlamentati con cui pi&ugrave; spesso firma gli atti, e il suo indice di attivit&agrave;.
-    </p>
-    <p>
-    <?php echo image_tag( '/images/screenshot/votapiuspesso.png') ?>   
-    </p>
-    
   </div>
   
-  <div class="W100_100">
-   
-   <h4>Votazioni</h4>
-   <p>
-   Sono a tua disposizione tutte le informazioni su ogni votazione elettronica d'aula avvenuta alla Camera dei Deputati o al Senato della Repubblica.<br />
-   L'esito della votazione, la posizione dei gruppi parlamentati e il voto di ogni parlamentare.
-   Inoltre puoi visualizzare i "parlamentari ribelli" che votano in modo difforme dalla posizione del gruppo parlamentare di appartenenza.
-   </p>
-   <p>
-    <?php echo image_tag( '/images/screenshot/votazione.png') ?>   
-     <?php echo image_tag( '/images/screenshot/presenti_votazioni.png') ?>   
-   </p>
-   
-   </div>
-   </div>
-    <div class="W100_100"> 
-    <h3 class="subsection">monitora</h3>
-     <h4>Parlamentari</h4>
-     <p>
-     Attraverso lo strumento del monitoraggio, puoi seguire l'attività del singolo parlamentare nel tempo, e ricevere avvisi ogni qual volta compie un'azione ( presenta un atto, effettua una votazione, interviene, etc).
-     </p>
-     <p>
-     <?php echo image_tag( '/images/screenshot/monitoraggio.png') ?> 
-     </p>
-    <h4>Atti</h4>
-     <p>
-     Attraverso lo strumento del monitoraggio, puoi seguire le vicende di un atto durante tutto il suo iter parlamentare e ricevere avvisi  ad ogni passaggio o evento di rilievo: nuove firme, voti, interventi, risposte alle interrogazioni, etc.
-     </p>
-     <h4>Argomenti</h4>
-     <p>
-     Tutti gli atti presenti su <em class="open">open</em><em class="parlamento">parlamento</em>  vengono elaborati e classificati dalla nostra redazione e quindi associati ad uno o più argomenti.
-     In questo modo, seguendo un argomento si monitoreranno tutti gli atti (legislativi e non legislativi )  associati a quell'argomento .
-     </p>
-     <p>
-     <?php echo image_tag( '/images/screenshot/arg_cerca.png') ?> 
-     </p>
-     
-   </div>
-   
-    <div class="W100_100">
-     <h3 class="subsection">intervieni </h3>
-   </div>  
+  <div class="W33_100 float-left">
+  <div style="padding:7px;">
+  <h1><em class="parlamento">intervieni</em></h1>
+  <br />
+  Puoi <em class="open" style="font-size:16px;"><strong>votare</strong></em> qualsiasi atto presentato e discusso alla Camera e al Senato.<br />
+  Con un semplice click puoi dichiararti "favorevole" o "contrario" rispetto ad un atto.<br />
+   <br />
+  <?php echo image_tag('/images/screenshot/vota.png') ?>
+  <br /><br />
+  Contribuisci a <em class="open" style="font-size:16px;"><strong>descrivere ogni atto o votazione</strong></em> in modo da favorirne la conoscenza da parte di tutti.
+  Viene utilizzato un sistema wiki che permette di scrivere testi e di modificare quelli scritti da altri utenti.<br />
+  <br />
+  <?php echo image_tag('/images/screenshot/wiki.png') ?>
+  <br /><br />
+  Puoi <em class="open" style="font-size:16px;"><strong>commentare ogni atto</strong></em> presente su openparlamento.
+  Utilizza questo strumento per condividere con gli altri utenti i tuoi giudizi, le tue valutazione e le tue riflessioni sugli atti che reputi importanti e interessanti o anche che hanno solo attirato la tua attenzione.
+  <br />
+  Aggiungi direttamente <em class="open" style="font-size:16px;"><strong>le tue note sui testi degli atti</strong></em> presentati alla Camera e al Senato.
+  Infatti, con strumenti semplici ed intuitivi, puoi visionare il contenuto di un documento e selezionarne una parte a cui abbinare un testo scritto da te, che pu&ograve; essere un commento o anche una sorta di emendamento del testo ufficiale.<br />
+   <br />
+  <?php echo image_tag('/images/screenshot/emend-help.png') ?>
+  <br />
   
   
-  
+  </div>
+  </div> 
+ 
   
   
   

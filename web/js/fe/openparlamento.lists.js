@@ -156,7 +156,7 @@ $(document).ready(function(){
 
 	//setTimeout(lazyLoad, 100);
 	
-	if(typeof jQuery.fn.ifixpng == 'function') {
+	if(jQuery && jQuery.browser.msie && jQuery.browser.version < 7 && typeof jQuery.fn.ifixpng == 'function') {
 		$('#identity img, .coo-mind, .launch-evidence-box img, .compare-table img').ifixpng();	
 	}
 })

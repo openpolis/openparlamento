@@ -25,7 +25,7 @@
 
 <ul>
   <li class="footer-title">aiuto</li>
-  <li><a lang="it" href="">»&nbsp;per cominciare</a></li>  
+  <li><?php echo link_to('»&nbsp;cosa puoi fare','/static/inizia',array('lang'=>'it')) ?></li>  
   <li><?php echo link_to('»&nbsp;faq','/static/faq',array('lang'=>'it')) ?></li>
 
 </ul>
