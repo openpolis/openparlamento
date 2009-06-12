@@ -47,7 +47,7 @@ class staticActions extends sfActions
     $this->getResponse()->setTitle('cosa posso fare? | '.sfConfig::get('app_main_title')); 
   }
   
-  public function execute40()
+  public function execute404()
   {
     $this->getResponse()->setTitle('pagina non trovata | '.sfConfig::get('app_main_title')); 
   }
