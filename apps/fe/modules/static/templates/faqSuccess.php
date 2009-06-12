@@ -13,7 +13,7 @@
     <div style="font-size:14px; padding:5px; line-height:1,5em;">
       In questa pagine trovi le risposte alle domande pi&ugrave; frequenti.<br /><br /> 
       
-    <b>Domande di carattere generale</b><br /><br />
+    <em class="open"><strong>Domande di carattere generale</strong></em><br /><br />
 
     <a href="faq#1">»&nbsp;Cos'&egrave; openparlamento?</a><br /> 
     <a href="faq#2">»&nbsp;Che cos'&egrave; il monitoraggio di openparlamento?</a><br />  
@@ -23,7 +23,7 @@
     <a href="faq#6">»&nbsp;Che tipo di software avete utilizzato?</a><br />  
     <a href="faq#7">»&nbsp;Come posso contattarvi?</a><br /><br /> 
     
-    <b>Domande sui contenuti</b><br /><br />
+    <em class="open"><strong>Domande sui contenuti</strong></em><br /><br />
 
     <a href="faq#8">»&nbsp;Da dove prendete i dati?</a><br />  
     <a href="faq#9">»&nbsp;Come sono ricavate le presenze dei parlamentari?</a><br />  
@@ -33,13 +33,13 @@
     <a href="faq#12">»&nbsp;Che sono i titoli degli atti nelle parentesi quadre?</a><br /> 
     <a href="faq#13">»&nbsp;Perch&eacute; a volte il testo del disegno di legge non c'&egrave;?</a><br /> <br />
     
-    <b>Domande sui contributi degli utenti</b><br /><br />
+    <em class="open"><strong>Domande sui contributi degli utenti</strong></em><br /><br />
 
     <a href="faq#14">»&nbsp;Come posso descrivere un atto o una votazione?</a><br />  
     <a href="faq#15">»&nbsp;Che differenza c'&egrave; tra commenti all'atto e note al testo?</a><br /> 
     <a href="faq#16">»&nbsp;Perch&eacute; dovrei darvi i miei soldi?</a><br /><br /> 
     
-    <b>Domande sul monitoraggio e sulla pagina personale</b><br /><br />
+    <em class="open"><strong>Domande sul monitoraggio e sulla pagina personale</strong></em><br /><br />
     
     <a href="faq#17">»&nbsp;Come funziona il monitoraggio?</a><br /> 
     <a href="faq#18">»&nbsp;Come posso monitorare un parlamentare?</a><br /> 

@@ -16,11 +16,12 @@
   </div>
     <div class="W73_100 float-left">
 <div style="font-size:14px; padding:5px; line-height:1,5em;"> 
-<p>openparlamento &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
-<p>La sostenibilit&agrave; del progetto openpolis - con tutte le sue articolazioni - viene perseguita attraverso le <?php echo link_to('donazioni','http://www.openpolis.it/index.php/contribuisci#op1') ?> e la vendita di alcuni servizi commerciali. Questi ultimi sono gestiti da una societ&agrave; apposita la <?php echo link_to('depp srl','http://www.depp.it') ?>. </p>
+<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
 <p>&nbsp;</p>
-<p>openparlamento &egrave; stato realizzato in collaborazione tra la <?php echo link_to('depp srl','http://www.depp.it') ?> e la <?php echo link_to('smaug srl','http://www.memefarmers.net') ?>.</p>
-Ci hanno lavorato Vittorio Alvino, Gianluca Canale, Guglielmo Celata, Alessandro Curci, Ettore Di Cesare, Renato Minei, Salvatore Santalucia e Vincenzo Smaldore.
+<p>La sostenibilit&agrave; del progetto - con tutte le sue articolazioni - viene perseguita attraverso le <?php echo link_to('donazioni','http://www.openpolis.it/index.php/contribuisci#op1') ?> e la vendita di alcuni servizi commerciali. Questi ultimi sono gestiti da una societ&agrave; apposita la <?php echo link_to('depp srl','http://www.depp.it') ?>. </p>
+<p>&nbsp;</p>
+<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; stato realizzato in collaborazione tra la <?php echo link_to('depp srl','http://www.depp.it') ?> e la <?php echo link_to('smaug/memefarmers','http://www.memefarmers.net') ?>.</p>
+Alla sua realizzazione hanno lavorato: Vittorio Alvino, Gianluca Canale, Guglielmo Celata, Alessandro Curci, Ettore Di Cesare, Renato Minei, Salvatore Santalucia e Vincenzo Smaldore.
 <p>&nbsp;</p>
 </div>
 
