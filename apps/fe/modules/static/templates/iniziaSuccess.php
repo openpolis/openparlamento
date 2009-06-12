@@ -13,7 +13,7 @@
   <div style="padding:7px;">
   <h1><em class="parlamento">informati</em></h1>
     <br />
-  Su openparlamento puoi liberamente consultare <em class="open" style="font-size:16px;"><strong>tutti gli atti</strong></em> discussi e prodotti dalla Camera e dal Senato.<br />
+  Su openparlamento puoi liberamente consultare <em class="open" style="font-size:16px;"><strong><?php echo link_to('tutti gli atti','@attiDisegni') ?></strong></em> discussi e prodotti dalla Camera e dal Senato.<br />
   Attraverso l'utilizzo di opzioni di ricerca e di filtri viene agevolata la navigazione degli atti legislativi (disegni di legge, decreti legge, decreti legislativi ) e di quelli non legislativi (mozioni,interrogazioni, interpellanze, ordini del giorno ... ).<br />
   <br />
   <?php echo image_tag('/images/screenshot/ddl1.png') ?>
@@ -22,13 +22,13 @@
   <br />
   <?php echo image_tag('/images/screenshot/iter.png') ?>
   <br /><br />
-  <em class="open" style="font-size:16px;"><strong>Tutti i parlamentari</strong></em> hanno una propria scheda riepilogativa delle attivit&agrave; svolte.<br />
+  <em class="open" style="font-size:16px;"><strong><?php echo link_to('Tutti i parlamentari','/parlamentari/camera/nome/asc') ?></strong></em> hanno una propria scheda riepilogativa delle attivit&agrave; svolte.<br />
   Oltre ai dati relativi alla elezione, sono disponibili tutte le informazioni su presenze, assenze, missioni, atti presentati, voti e interventi.<br />
   Inoltre sono disponibili gli argomenti di cui il parlamentare si occupa, il suo indice di attivit&agrave; ed i parlamentari pi&ugrave; vicini, che votano e firmano gli stessi atti.<br />
    <br />
   <?php echo image_tag('/images/screenshot/politico.png') ?>
   <br /><br />
-  Sono a tua disposizione tutte le informazioni su <em class="open" style="font-size:16px;"><strong>ogni votazione</strong></em> avvenuta alla Camera e al Senato.<br />
+  Sono a tua disposizione tutte le informazioni su <em class="open" style="font-size:16px;"><strong><?php echo link_to('ogni votazione','/votazioni/data/desc') ?></strong></em> avvenuta alla Camera e al Senato.<br />
   L'esito della votazione, la posizione dei gruppi e il voto di ogni parlamentare.<br />
   Inoltre puoi controllare i "parlamentari ribelli", quelli votano in modo difforme dalla posizione del gruppo di appartenenza.<br />
   <br />
@@ -46,7 +46,7 @@
   <br /><br />
   Puoi inoltre seguire le vicende di <em class="open" style="font-size:16px;"><strong>qualsiasi atto</strong></em> durante tutto il suo iter parlamentare e ricevere avvisi ad ogni passaggio o evento di rilievo: nuove firme, votazioni, interventi, passaggi di iter, etc.<br />
   Tutti gli atti presenti su openparlamento vengono elaborati e classificati dalla nostra redazione ed associati ad uno o pi&ugrave; argomenti.
-  In questo modo, seguendo un <em class="open" style="font-size:16px;"><strong>argomento</strong></em> si monitoreranno tutti gli atti ad esso associati.<br />
+  In questo modo, seguendo un <em class="open" style="font-size:16px;"><strong><?php echo link_to('argomento','@argomenti') ?></strong></em> si monitoreranno tutti gli atti ad esso associati.<br />
   <br /><br />
   Ogni giorno riceverai aggiornamenti personalizzati su tutto quello che ti interessa nelle <em class="open" style="font-size:16px;"><strong>tue pagine personali</strong></em> di openparlamento e nella <em class="open" style="font-size:16px;"><strong>tua e-mail</strong></em>.<br />
    <br />
