@@ -67,7 +67,7 @@
                                 <?php endif ?>
                             </p>
                             
-                            <?php if ($sf_user->hasCredential('subscriber') && !$sf_user->hasCredential('premium')): ?>                            
+                            <?php if ($sf_user->hasCredential('subscriber') && !$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>
                               <h5 class="launch-evidence-btn-mini round-5">
                                 <?php echo link_to('aderisci!', '@sottoscrizione_premium_demo') ?>
                               </h5>
