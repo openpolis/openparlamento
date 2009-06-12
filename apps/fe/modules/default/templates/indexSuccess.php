@@ -21,16 +21,22 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
       </div>
       <div class="clear-both"></div>
      </div>
-                <script type="text/javascript">
-                        var flashvars = {};
-                        var params = {};
-                        params.play = "true";
-                        params.scale = "noscale";
-                        params.wmode = "gpu";
-                        params.devicefont = "true";
-                        var attributes = {};
-                        swfobject.embedSWF("/swf/intro-openparlamento.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
-                </script>
+
+<script type="text/javascript">
+function embedIntro() {
+var flashvars = {};
+var params = {};
+params.play = "true";
+params.scale = "noscale";
+params.wmode = "gpu";
+params.devicefont = "true";
+var attributes = {};
+swfobject.embedSWF("/swf/intro-openparlamento.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+};
+
+$(document).ready(function(){ embedIntro(); });
+
+</script>
      
      <div id="main">
        
