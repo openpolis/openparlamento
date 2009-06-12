@@ -9,7 +9,7 @@
 preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?> 
 </div>	
 	
-      <div class="teaser-box W66_100 float-left">
+      <div id="introOP" class="teaser-box W66_100 float-left">
 	 <h4>
 	 Ogni giorno in parlamento si propongono, discutono e votano<br />
 	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
@@ -21,6 +21,16 @@ preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?>
       </div>
       <div class="clear-both"></div>
      </div>
+                <script type="text/javascript">
+                        var flashvars = {};
+                        var params = {};
+                        params.play = "true";
+                        params.scale = "noscale";
+                        params.wmode = "gpu";
+                        params.devicefont = "true";
+                        var attributes = {};
+                        swfobject.embedSWF("/swf/intro-openparlamento.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+                </script>
      
      <div id="main">
        

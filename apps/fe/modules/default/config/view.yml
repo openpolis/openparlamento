@@ -1,3 +1,6 @@
+indexSuccess:
+  javascripts: [<?php echo sfConfig::get('sf_js_google_load')=='true'?'http://ajax.googleapis.com/ajax/libs/swfobject/2.1/swfobject.js':'fe/swfobject.js'?>]
+
 sottoscrizionePremiumDemoSuccess:
   metas:
     title:        "Adesione al servizio Premium - OpenParlamento"

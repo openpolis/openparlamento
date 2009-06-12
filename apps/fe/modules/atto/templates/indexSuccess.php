@@ -31,7 +31,7 @@
       
      <?php if($atto->getTipoAttoId()!=13 ): ?>
      
-      <h5 class="grey-888">
+      <span style="color:#888888;font-size:16px;font-weight:bolder">
         <?php if($atto->getTipoAttoId()!=14 ): ?>
           <?php if($atto->getRamo()): ?>
             <?php if($atto->getRamo()=='C'): ?>
@@ -42,6 +42,10 @@
             <?php endif; ?>
           <?php endif; ?>          
             <?php echo $atto->getOppTipoAtto()->getDescrizione() ?>
+       </span>
+       <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
+       <span style="color:#888888;font-size:16px;font-weight:bolder">
+            
             <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
             <?php if (count($f_signers)>0) : ?>
                <?php $c = new Criteria() ?>
@@ -64,17 +68,17 @@
             <?php endif; ?>
           <?php endif; ?>  
         <?php endif; ?>
-      </h5>
+      </span>
       
-      <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
+    
      <?php endif; ?>
 	  
 	   
 	  
 	  <!-- SINOSSI -->
 	  <p class="synopsis">
-        <?php echo Text::denominazioneAtto($atto, 'index') ?>            
-      </p>
+            <?php echo Text::denominazioneAtto($atto, 'index') ?>    
+          </p>
       
       <ul class="presentation float-container">
         <li><h6>presentato il: <em><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></em></h6></li>

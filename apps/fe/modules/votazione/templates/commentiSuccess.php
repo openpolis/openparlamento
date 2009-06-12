@@ -7,6 +7,7 @@
   <a name="top"></a>
   <div id="main">
     <div class="W73_100 float-left">
+    <p style="font-size:16px;">In questa pagina puoi lasciare commenti relativi alla votazione.</p>
       <div id="comments-block">
         <a name="comments"></a>
         <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>

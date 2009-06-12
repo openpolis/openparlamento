@@ -66,7 +66,7 @@
 }
 ?>
 
-<p class="tools-container"><?php echo link_to($titolo_wiki, '#', array( 'class'=>'ico-help')) ?></p>
+<span class="tools-container"><?php echo link_to(' ', '#', array( 'class'=>'ico-help')) ?></span>
 <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">

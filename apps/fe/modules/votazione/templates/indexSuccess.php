@@ -127,23 +127,7 @@
         </div>   
        <div class="W56_100 float-left">
       <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
-      <?php include_partial('votanti', array('votanti' => $votanti)) ?>  
-       
-      <!-- blocco dei commenti -->
-      <a name="comment"></a>
-      <div id="comments-block">
-        <a name="comments"></a>
-        <?php include_partial('deppCommenting/commentsList', array('content' => $votazione)) ?>
-    
-        <hr/>
-    
-        <?php include_component('deppCommenting', 'addComment', 
-                                array('content' => $votazione,
-                                      'read_only' => sfConfig::get('app_comments_enabled', false),
-                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
-    
-        <hr/>
-      </div>      
+      <?php include_partial('votanti', array('votanti' => $votanti)) ?>
       
       
    </div>
