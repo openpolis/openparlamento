@@ -555,12 +555,14 @@ em.parlamento { color: #00787c; }
  * TEASER BOX
  *----------------------------------------------*/
 
-.teaser-box { border: 1px solid #999; min-height:200px; height: auto !important; height: 200px; padding: 12px 0;
+.teaser-box { border: 1px solid #999; height: 225px; padding: 0;
 -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
 }
 .teaser-box em { color: #023558; font-style: normal; }
 .teaser-box strong { color: #ee7f00; }
 .teaser-box h3, .teaser-box h4 { margin: 0 12px 1em 12px; }
+
+#introOP-box { background: transparent url(../images/bg-intro-openparlamento.png) no-repeat 0 0; }
 
 /*
  * SECTION BOX
