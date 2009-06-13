@@ -4,12 +4,11 @@
    
 <div id="teasers">
 
-<div class="teaser-box W33_100 float-right">
-<h6>Dov'&egrave l'on. Rossi?</h6>
-preview del <?php echo link_to('grafico delle distanze','/grafico_distanze') ?> 
+<div class="W33_100 float-right">
+<?php echo link_to(image_tag('/images/banner_grafico_310x225.png',array('alt' => 'consulta il grafico interattivo delle posizioni dei diversi parlamentari')),'/grafico_distanze') ?> 
 </div>	
 	
-      <div id="introOP-box" class="teaser-box W66_100 float-left">
+      <div id="introOP-box" class="W66_100 float-left">
 	<div id="introOP"> 
 	 <h4>
 	 Ogni giorno in parlamento si propongono, discutono e votano<br />
