@@ -21,7 +21,7 @@ test:
 all:
   view_cache:
     class: sfMemcacheCache
-  
+
 #all:
 #  controller:
 #    class: sfFrontWebController

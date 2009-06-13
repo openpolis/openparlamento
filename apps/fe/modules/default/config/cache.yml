@@ -1,9 +1,11 @@
 index:
   enabled: on
-
+  lifetime: 60
+    
 classifiche:
   enabled: on
+  lifetime: 120
   
 all:
   with_layout: false
-  lifetime: 3600
+

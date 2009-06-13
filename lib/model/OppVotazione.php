@@ -223,6 +223,39 @@ class OppVotazione extends BaseOppVotazione
   {
     return true;
   }
+
+
+  /**
+   * override per svuotare la cache
+   *
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function save($con = null)
+  {
+    
+    $this->clearCacheOnUpdate();
+    
+    return parent::save();
+
+  }
+
+  /**
+   * clear some cached stuff before the object is modified
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function clearCacheOnUpdate()
+  {
+    $cacheManager = sfContext::getInstance()->getViewCacheManager();
+    if ($cacheManager)
+    {
+      $cacheManager->remove('votazione/index?id='.$this->getId());
+    }
+    
+  }
  
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare

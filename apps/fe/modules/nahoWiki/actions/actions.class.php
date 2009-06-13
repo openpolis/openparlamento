@@ -108,6 +108,22 @@ class nahoWikiActions extends BasenahoWikiActions
       if (!$this->getRequestParameter('request-preview')) {
         $this->page->save();
         
+        // save the object the wiki page relates to (so that it can trigger actions)
+        $page_name = $this->page->getName();
+        list($rel_obj_type, $rel_obj_id) = split("_", $page_name);
+        switch ($rel_obj_type)
+        {
+          case 'atto':
+            $rel_obj_model = 'OppAtto';
+            break;
+          case 'votazione': 
+            $rel_obj_model = 'OppVotazione';
+            break;
+        }
+        $rel_obj = call_user_func($rel_obj_model.'Peer::retrieveByPK', $rel_obj_id);
+        $rel_obj->save();
+        
+        
         // $this->redirect('nahoWiki/view?page=' . $this->page->getName());
         $referer = $this->getUser()->getAttribute('referer', 'nahoWiki/view?page=' . $this->page->getName());
         $this->getUser()->getAttributeHolder()->remove('referer');

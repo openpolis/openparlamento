@@ -274,6 +274,41 @@ class OppPolitico extends BaseOppPolitico
   {
     return $this->__toString();
   }
+ 
+ 
+  /**
+   * override per modificare la priorità dei comunicati di governo
+   *
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function save($con = null)
+  {
+    
+    $this->clearCacheOnUpdate();
+    
+    return parent::save();
+
+  }
+
+  /**
+   * clear some cached stuff before the object is modified
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function clearCacheOnUpdate()
+  {
+    $cacheManager = sfContext::getInstance()->getViewCacheManager();
+    if ($cacheManager)
+    {
+      $cacheManager->remove('parlamentare/cosa?id='.$this->getId());
+      $cacheManager->remove('parlamentare/list');
+    }
+    
+  }
+ 
   
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare

@@ -161,8 +161,8 @@ all:
     "convertito":  "63"
   
   newsletter:
-    from_address:   "no-reply@openpolis.it"
-    sender_address: "info@openpolis.it"
+    from_address:   "noreply@openpolis.it"
+    sender_address: "noreply@openpolis.it"
     from_tag:       "openparlamento"
     
   mail_per_redazione:

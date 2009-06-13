@@ -1,3 +1,6 @@
+index:
+  enabled: on
+
 disegnoList:
   enabled: on
 

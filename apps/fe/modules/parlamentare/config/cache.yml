@@ -1,6 +1,19 @@
-list:
+cosa:
   enabled: on
-  
+
+atti:
+  enabled: on
+  lifetime: 600
+
+voti:
+  enabled: on
+
+interventi:
+  enabled: on
+
+index:
+  enabled: on
+
 all:
   with_layout: false
-  lifetime: 3600
+  lifetime: 7200

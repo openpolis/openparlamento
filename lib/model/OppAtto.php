@@ -445,10 +445,51 @@ class OppAtto extends BaseOppAtto
     {
       $this->priority_override = 3;
     }
+    
+    $this->clearCacheOnUpdate();
+    
     return parent::save();
 
   }
 
+  /**
+   * clear some cached stuff before the object is modified
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function clearCacheOnUpdate()
+  {
+    $cacheManager = sfContext::getInstance()->getViewCacheManager();
+    if ($cacheManager)
+    {
+      switch ($this->getTipoAtto())
+      {
+        case 'disegni':
+          $list = 'disegnoList';
+          break;
+        
+        case 'decreti':
+          $list = 'decretoList';
+          break;
+          
+        case 'decrleg':
+          $list = 'decretoLegislativoList';
+          break;
+          
+        case 'nonleg':
+          $list = 'attoNonLegislativoList';
+          break;
+      }
+      
+      $cacheManager->remove('atto/index?id='.$this->getId());
+      $cacheManager->remove('atto/'.$list);
+      $cacheManager->remove('default/index');
+    }
+    
+  }
+  
+  
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare
    *
@@ -505,7 +546,8 @@ sfPropelBehavior::add(
               'voting_field'    => 'VotoMedio',
               'voting_fields'   => array(1 => 'UtFav', -1 => 'UtContr'),
               'neutral_position'=> false,
-              'anonymous_voting'=> false )));
+              'anonymous_voting'=> false,
+              'clear_cache_after_update' => true )));
 
 sfPropelBehavior::add(
   'OppAtto', 

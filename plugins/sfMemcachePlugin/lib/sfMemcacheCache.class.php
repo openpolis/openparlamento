@@ -143,9 +143,14 @@ class sfMemcacheCache extends sfFileCache
       $std->data = $data;
       $std->lastModified = time();
 
+      $internalUri = sfRouting::getInstance()->getCurrentInternalUri();
+      $lifeTime = $this->getLifeTime();
+      sfLogger::getInstance()->info("xxx: $internalUri - $lifeTime");
+      
+
       if (!isset(self::$mem[$this->bucket]))
         throw new Exception ('This bucket was not setup correctly');
-      if (!self::$mem[$this->bucket]->set ($path.$file, $std))
+      if (!self::$mem[$this->bucket]->set ($path.$file, $std, false, $lifeTime))
         throw new Exception ('Could not save in memcache');
         
     } catch (Exception $e)  {      

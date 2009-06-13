@@ -194,6 +194,7 @@ class deppPropelActAsVotableBehavior
       $v->delete();    
     self::setVotingToObject($object, 0);
     self::setVotingDetailsToObject($object, null);
+
     return $ret;
   }
 
@@ -218,6 +219,7 @@ class deppPropelActAsVotableBehavior
     $v->delete();
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
     self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
+
     return $ret;
   }
 
@@ -549,7 +551,6 @@ class deppPropelActAsVotableBehavior
     $ret = $voting_object->save();
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
     self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
-
     return $ret;
   }
   
@@ -572,9 +573,7 @@ class deppPropelActAsVotableBehavior
         'Unable to delete votable object related votings records');
     }
   }
-  
-  
-  
+
 
   /* Contributed by Guglielmo Celata */
 
