@@ -21,7 +21,7 @@
 
     <?php foreach ($news as $i => $n): ?>
       <tr>     
-        <?php if( $i = 0 ): ?>
+        <?php if( $i == 0 ): ?>
           <?php if ($date_ts > 0): ?>
             <td style="width: 80px;">
                 <div style="width: 39px; height: 53px; background-color: #4e8480; background-image: url(http://<?php echo $sf_site_url?>/images/bg-news-time.png); background-repeat: no-repeat; background-position: top left; color: #fff; text-align: center;">

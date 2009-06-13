@@ -10,7 +10,7 @@ Le ultime notizie
 
 <?php foreach ($grouped_news as $date_ts => $news): ?>
   <?php foreach ($news as $i => $n): ?>
-    <?php if( $i = 0 ): ?>
+    <?php if( $i == 0 ): ?>
       <?php if ($date_ts > 0): ?>
         <?php $date_string = $df->format($date_ts, 'dd') ." ". $df->format($date_ts, 'MMM') ." ". $df->format($date_ts, 'yyyy'); ?>
 <?php echo $date_string ?>

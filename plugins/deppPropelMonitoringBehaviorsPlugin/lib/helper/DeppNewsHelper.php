@@ -83,7 +83,7 @@ function news_text_for_mail($news, $context=1, $img=1)
   $text = str_replace('./symfony', $sf_site_url, $text); # per il test e per sicurezza
   $text = str_replace('img src=', 
                       'img style="border:none; display: block; border: none; background: transparent url(http://'.$sf_site_url.'/images/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;" src=', $text);
-  $text = str_replace('a href=', 'a style="color: #333; text-decoration: none;" href=', $text);
+  $text = str_replace('a href=', 'a style="color: #339;" href=', $text);
   return $text;
 }
 
