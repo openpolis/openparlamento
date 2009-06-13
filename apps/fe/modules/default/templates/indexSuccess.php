@@ -15,8 +15,8 @@
 	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
 	 </h4>			
 	 <h3>
-         <strong>Intervieni</strong>, <strong>organizzati</strong> e<br />
-	 <strong>monitora</strong>. Ti riguarda, <strong>ci riguarda</strong>. 
+         <strong>Informati, Monitora, Intervieni</strong><br />
+	 <strong>Ti</strong> riguarda, <strong>ci</strong> riguarda. 
 	 </h3>
 	</div>
       </div>
@@ -32,7 +32,7 @@ params.scale = "noscale";
 params.wmode = "gpu";
 params.devicefont = "true";
 var attributes = {};
-swfobject.embedSWF("/swf/intro-openparlamento.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+swfobject.embedSWF("/swf/intro-openparlamento-ti-ci.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
 };
 
 jQuery(document).ready(function(){ embedIntro(); });
