@@ -173,12 +173,31 @@ function run_opp_test_newsletter($task, $args)
 function opp_test_single_newsletter($user)
 {
   $start_time = microtime(true);
+  
+  $df = new sfDateFormat('it_IT');
 
   echo pakeColor::colorize(sprintf('Today\'s news for user %s... ', $user), 
                            array('fg' => 'red', 'bold' => true));
 
 
   $news = NewsPeer::fetchTodayNewsForUser($user);
+
+  // raggruppa le news per data
+  $grouped_news = array();
+  foreach ($news as $n)
+  {
+    $date = strtotime($n->getDate());
+    if (!is_string($date) && !is_int($date))
+      $date = 0;
+
+    if (!array_key_exists($date, $grouped_news))
+    {
+      $grouped_news[$date] = array();        
+    }
+    $grouped_news[$date] []= $n;
+  }
+  krsort($grouped_news);
+  
   echo pakeColor::colorize(sprintf("(%d)\n", count($news)), array('fg' => 'cyan'));
   if (count($news) > 0)
   {
@@ -186,10 +205,19 @@ function opp_test_single_newsletter($user)
                                      array('fg' => 'cyan', 'bold' => true));
     
   }
-  foreach ($news as $i => $n) {
-    echo pakeColor::colorize(sprintf("\t%03d | %09d | %20s | %09d | %20s | %10s\n", 
-                                     $i, $n->getId(), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
-                                     $n->getGeneratorModel(), $n->getDate('Y-m-d')));
+  foreach ($grouped_news as $date_ts => $news)
+  {
+    echo pakeColor::colorize(sprintf("%2d/%3s/%4d\n", 
+                             $df->format($date_ts, 'dd'), 
+                             $df->format($date_ts, 'MMM'), 
+                             $df->format($date_ts, 'yyyy')),
+                             array('fg' => 'cyan', 'bold' => true));
+    
+    foreach ($news as $i => $n) {
+      echo pakeColor::colorize(sprintf("\t%03d | %09d | %20s | %09d | %20s | %10s\n", 
+                                       $i, $n->getId(), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
+                                       $n->getGeneratorModel(), $n->getDate('Y-m-d')));
+    }
   }
   echo "\n";
   

@@ -161,8 +161,9 @@ all:
     "convertito":  "63"
   
   newsletter:
-    from_address: "noreply@openpolis.it"
-    from_tag:     "openparlamento"
+    from_address:   "no-reply@openpolis.it"
+    sender_address: "info@openpolis.it"
+    from_tag:       "openparlamento"
     
   mail_per_redazione:
     site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openis.it')?>"
