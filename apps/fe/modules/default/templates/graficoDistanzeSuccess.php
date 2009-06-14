@@ -45,9 +45,12 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 </div>
 </div>
 </div>
-<?php $swfname = $tipo == "votes_16_S" ? "/swf/DistanceGraph_S" : "/swf/DistanceGraph_C" ?>
+<?php $swfname = $tipo == "votes_16_S" ? "/swf/DistanceGraph" : "/swf/DistanceGraph" ?>
 		<script type="text/javascript">
 			var flashvars = {};
+			flashvars.xmlfilepath = "/posizioni/opp_<?php echo($tipo) ?>.xml";
+			flashvars.imgfilepath = "http://op_openparlamento_images.s3.amazonaws.com/parlamentari/thumb/";
+			flashvars.linkfilepath = "/parlamentare/";
 			var params = {};
 			params.play = "true";
 			params.scale = "noscale";
