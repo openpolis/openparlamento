@@ -36,7 +36,6 @@ class zWebBrowser extends sfWebBrowser
       $doc = new DOMDocument();
       
       $resp_str = $this->getResponseText();
-      $resp_ar = explode("\n", $resp_str);
 
       // suppress error output
       libxml_use_internal_errors(true);
@@ -46,7 +45,7 @@ class zWebBrowser extends sfWebBrowser
       // send errors to logger
       $errors = libxml_get_errors();
       foreach ($errors as $error) {
-          sfLogger::getInstance()->warning('{zWebBrowser::getResponseXML} ' . $this->displayXMLError($error, $resp_ar));
+          sfLogger::getInstance()->warning('{zWebBrowser::getResponseXML} ' . $this->displayXMLError($error));
       }
       libxml_clear_errors();
 
@@ -55,9 +54,9 @@ class zWebBrowser extends sfWebBrowser
     return $this->responseXml;
   }
   
-  protected function displayXmlError($error, $xml_ar)
+  protected function displayXmlError($error)
   {
-      $return  = $xml_ar[$error->line - 1] . "\n";
+      $return  = "error at line: " . $error->line . "\n";
       $return .= str_repeat('-', $error->column) . "^\n";
 
       switch ($error->level) {
