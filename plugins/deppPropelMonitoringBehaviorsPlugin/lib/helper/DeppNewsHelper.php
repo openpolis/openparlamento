@@ -17,7 +17,7 @@
 
 function news($news,$context=1)
 { 
-  return "<tr style='border-top:1px solid #DFE0E0;'><td>".news_date($news->getDate('d/m/Y'))."</td></tr>" . news_text($news,$context,0);
+  return "<tr style='border-top:1px solid #DFE0E0;'><td>".news_date($news->getDate('d/m/Y'))."</td></tr><tr>" . news_text($news,$context,0) . "</tr>";
 }
 
 function news_date($newsdate)

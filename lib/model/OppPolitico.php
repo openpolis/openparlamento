@@ -305,6 +305,7 @@ class OppPolitico extends BaseOppPolitico
     {
       $cacheManager->remove('parlamentare/cosa?id='.$this->getId());
       $cacheManager->remove('parlamentare/list');
+      $cacheManager->remove('community/index');
     }
     
   }

@@ -18,19 +18,20 @@
               <th scope="row">
                 <p class="content-meta">			 
                   <?php if($ddl->getDataPres()): ?>
-	                <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
+	                  <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?></span>
                   <?php endif; ?>
-	            </p>
-			    <p><?php echo link_to('<em>DL.'.$ddl->getNumfase().'</em> '.$ddl->getTitolo(), 'atto/index?id='.$ddl->getId()) ?></p>
+	              </p>
+			          <p><?php echo link_to('<em>DL.'.$ddl->getNumfase().'</em> '.$ddl->getTitolo(), 'atto/index?id='.$ddl->getId()) ?></p>
               </th>
               <td><?php include_partial('statoDecreto', array('ddl' => $ddl)) ?></td>
-              <td><?php include_component('atto', 'ddlConversione', array('ddl' => $ddl)) ?></td>  
-  	        <td>
+              <td><?php include_component('atto', 'ddlConversione', array('ddl' => $ddl)) ?></td>
+                
+  	          <td>
                  <div class="user-stats-column">
                  <span class="green thumb-up"><?php echo $ddl->getUtFav() ?></span><span class="red thumb-down"><?php echo $ddl->getUtContr() ?></span>
-                 <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '#') ?></p>
+                 <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '@commenti_atto?id='.$ddl->getId()) ?></p>
                  </div>
-               </td>
+              </td>
             </tr>
           <?php endforeach; ?>
           <tr>

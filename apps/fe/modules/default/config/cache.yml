@@ -5,6 +5,10 @@ index:
 classifiche:
   enabled: on
   lifetime: 120
+
+sottoscrizioniPro:
+  enabled: on
+  lifetime: 0
   
 all:
   with_layout: false

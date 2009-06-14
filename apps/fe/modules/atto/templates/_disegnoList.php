@@ -29,7 +29,7 @@
             </span>
           </p>
           <p>
-            <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), 'atto/index?id='.$atto->getId()) ?>
+            <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), '@singolo_atto?id='.$atto->getId()) ?>
           </p>
         </th>
         <td>
@@ -46,7 +46,7 @@
         <td>
           <div class="user-stats-column">
             <span class="green thumb-up"><?php echo $atto->getUtFav() ?></span><span class="red thumb-down"><?php echo $atto->getUtContr() ?></span>
-            <p><?php echo link_to($atto->getNbCommenti().' <strong>commenti</strong>', '#') ?></p>
+            <p><?php echo link_to($atto->getNbCommenti().' <strong>commenti</strong>', '@commenti_atto?id='.$atto->getId()) ?></p>
           </div>
         </td>	
       </tr>

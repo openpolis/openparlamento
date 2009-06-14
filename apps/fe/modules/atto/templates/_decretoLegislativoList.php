@@ -27,7 +27,7 @@
         <td>
           <div class="user-stats-column">
             <span class="green thumb-up"><?php echo $ddl->getUtFav() ?></span><span class="red thumb-down"><?php echo $ddl->getUtContr() ?></span>
-            <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '#') ?></p>
+            <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '@commenti_atto?id='.$ddl->getId()) ?></p>
           </div>
         </td>	
       </tr>

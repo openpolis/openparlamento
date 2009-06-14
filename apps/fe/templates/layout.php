@@ -3,7 +3,7 @@
 
 <head>
 <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
-  <meta name="verify-v1" content="NkhveoVfinSZhsdVK8a+kN89DuYfXmo4BDwljNkry2M=" >
+  <meta name="verify-v1" content="NkhveoVfinSZhsdVK8a+kN89DuYfXmo4BDwljNkry2M=" />
 <?php endif ?>
 <?php include_http_metas() ?>
 <?php include_metas() ?>

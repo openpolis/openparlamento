@@ -19,6 +19,10 @@ dev:
     no_script_name:         off
     etag:                   off
 
+task:
+  .settings:
+    error_reporting:       341
+
 test:
   .settings:
     # E_ALL | E_STRICT & ~E_NOTICE = 2047

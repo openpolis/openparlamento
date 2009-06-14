@@ -484,6 +484,7 @@ class OppAtto extends BaseOppAtto
       
       $cacheManager->remove('atto/index?id='.$this->getId());
       $cacheManager->remove('atto/'.$list);
+      $cacheManager->remove('community/index');
       $cacheManager->remove('default/index');
     }
     

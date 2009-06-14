@@ -4,8 +4,8 @@
   <div id="main" style="padding: 2.5em 1em">
     <h3>Diventa un sottoscrittore <strong>Premium</strong>, ora!</h3>
     
-    <p>Sottoscrivendo l'offerta Premium, potrai monitorare fino a <b>quindici token</b> e 
-    <b>cinque argomenti</b> <i>gratuitamente</i> fino al 15 ottobre.
+    <p>Sottoscrivendo l'offerta Premium, potrai monitorare fino a <b>dieci token</b> e 
+    <b>tre argomenti</b> <i>gratuitamente</i> fino al 15 ottobre.
     </p>
     
     <p style="margin-top:2em;">Lasciaci qualche dato per poter profilare che tipo di utenti abbiamo e 
