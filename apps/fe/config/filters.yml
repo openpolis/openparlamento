@@ -15,6 +15,13 @@ rememberFilter:
 ssoFilter:
   class: sfRemoteGuardSsoFilter  
 
+conditionalCache:
+  class: conditionalCacheForAuthUsersFilter
+  param:
+    pages:
+      - { module: atto, action: index }
+      - { module: parlamentare, action: cosa }
+
 cache:     ~
 common:    ~
 flash:     ~

@@ -1,6 +1,3 @@
-cosa:
-  enabled: on
-
 atti:
   enabled: on
   lifetime: 600
@@ -12,6 +9,9 @@ interventi:
   enabled: on
 
 index:
+  enabled: on
+
+list:
   enabled: on
 
 all:
