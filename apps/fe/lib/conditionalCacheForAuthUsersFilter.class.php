@@ -8,7 +8,11 @@ class conditionalCacheForAuthUsersFilter extends sfFilter
     {
       foreach ($this->getParameter('pages') as $page)
       {
-        $context->getViewCacheManager()->addCache($page['module'], $page['action'], array('lifeTime' => 86400));
+        if ($context->getViewCacheManager())
+        {
+          $context->getViewCacheManager()->addCache($page['module'], $page['action'], 
+                                                    array('lifeTime' => array_key_exists('lifetime', $page)?$page['lifetime']:86400));          
+        }
       }
     }
  
