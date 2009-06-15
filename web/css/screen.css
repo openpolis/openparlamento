@@ -500,7 +500,7 @@ em.parlamento { color: #00787c; }
  * OFFERINGS
  *----------------------------------------------*/
 
-.launch-evidence-box { font-size: 16px; font-weight: bold; color: #fff; padding: 10px 6px; height: 460px; margin: 50px 0 5px 0; position: relative; }
+.launch-evidence-box { font-size: 16px; font-weight: bold; color: #fff; padding: 10px 6px; height: 390px; margin: 50px 0 5px 0; position: relative; }
 .launch-evidence-box .promo-banner { position: absolute; right: -27px; top: -33px;  }
 .launch-evidence-box p { z-index: 10; position: relative;  clear: left; margin-bottom: 1em; }
 .launch-evidence-box em { background-color: #fff; font-size: 18px; font-weight: bold; color: #ff5408; }
