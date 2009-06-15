@@ -5,7 +5,9 @@
 <div id="teasers">
 
 <div class="W33_100 float-right">
-<?php echo link_to(image_tag('/images/banner_grafico_310x225.png',array('alt' => 'consulta il grafico interattivo delle posizioni dei diversi parlamentari')),'/grafico_distanze') ?> 
+    <?php echo link_to(image_tag(sfConfig::get('sf_resources_host') . '/images/banner_grafico_310x225.png', 
+                                 array('alt' => 'consulta il grafico interattivo delle posizioni dei diversi parlamentari'),
+                                 sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze') ?> 
 </div>	
 	
       <div id="introOP-box" class="W66_100 float-left">
@@ -32,7 +34,10 @@ params.scale = "noscale";
 params.wmode = "gpu";
 params.devicefont = "true";
 var attributes = {};
-swfobject.embedSWF("/swf/intro-openparlamento-ti-ci.swf", "introOP", "643", "225", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/intro-openparlamento-ti-ci.swf", 
+                   "introOP", "643", "225", "9.0.0", 
+                   "<?php echo sfConfig::get('sf_resources_host'); ?>/swf/expressInstall.swf", 
+                   flashvars, params, attributes);
 };
 
 jQuery(document).ready(function(){ embedIntro(); });
@@ -61,6 +66,7 @@ jQuery(document).ready(function(){ embedIntro(); });
         <div class="section-box">   
 		      <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
 		      <ul>
+
     		  <?php foreach ($latest_activities as $activity): ?>
     		    <?php $news_text = community_news_text($activity); ?>
     		    <?php if ($news_text != ''): ?>

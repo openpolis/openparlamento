@@ -45,10 +45,9 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 </div>
 </div>
 </div>
-<?php $swfname = $tipo == "votes_16_S" ? "/swf/DistanceGraph" : "/swf/DistanceGraph" ?>
 		<script type="text/javascript">
 			var flashvars = {};
-			flashvars.xmlfilepath = "/posizioni/opp_<?php echo($tipo) ?>.xml";
+			flashvars.xmlfilepath = "<?php echo sfConfig::get('sf_resources_host'); ?>/posizioni/opp_<?php echo($tipo) ?>.xml";
 			flashvars.imgfilepath = "http://op_openparlamento_images.s3.amazonaws.com/parlamentari/thumb/";
 			flashvars.linkfilepath = "/parlamentare/";
 			var params = {};
@@ -57,7 +56,7 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 			params.wmode = "gpu";
 			params.devicefont = "true";
 			var attributes = {};
-			swfobject.embedSWF("<?php echo($swfname) ?>.swf", "distanceGraph", "870", "540", "9.0.0", "/swf/expressInstall.swf", flashvars, params, attributes);
+			swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/DistanceGraph.swf", "distanceGraph", "870", "540", "9.0.0", "<?php echo sfConfig::get('sf_resources_host'); ?>/swf/expressInstall.swf", flashvars, params, attributes);
 		</script>
 
 <?php slot('breadcrumbs') ?>
