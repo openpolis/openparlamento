@@ -5,7 +5,7 @@
     <h3>Adesione al servizio Premium</h3>
     
     <p>Grazie per aver aderito a openparlamento premium in promozione gratuita fino al 15 ottobre.</p>    
-    <p style="margin-top:2em;">Stiamo sperimentando per la prima volta in Italia un servizio di <b>monitoraggio
+    <p style="margin-top:2em;">Stiamo sperimentando, per la prima volta in Italia, un servizio di <b>monitoraggio
       parlamentare distribuito</b> attraverso la rete. 
     </p>
     <p>
@@ -17,17 +17,17 @@
     </p>
     
     <?php echo form_tag('@sottoscrizione_premium_demo', 
-                        array('name' => 'premium-form',
+                        array('name' => 'premium-form', 'id' => 'premium-form',
                               'class' => 'subscribe-form', 
-                              'style' => 'background-color: #EAF3FA; margin: 1em; margin-right: 50%')) ?>
+                              'style' => 'margin: 1em; margin-right: 50%')) ?>
 
       <fieldset>
 
         <!-- età -->
-        <div class="form-row" id="tipo_attivita" style="padding:1em;">
+        <div class="form-row" id="eta" style="padding:1em;">
+          <?php echo  form_error('eta') ?>
           <h4>Quanti anni hai?</h4>
-          <?php echo  form_error('eta'),
-                      select_tag('eta', 
+          <?php echo  select_tag('eta', 
                                  options_for_select(array(0 => '-- Scegli --', 
                                                           1 => 'meno di 18', 
                                                           2 => 'da 18 a 35',
@@ -38,7 +38,7 @@
         </div>
 
         <!-- attività -->
-        <div class="form-row" id="" style="padding:1em;">
+        <div class="form-row" id="attivita" style="padding:1em;">
           <?php echo form_error('attivita'), 
                      form_error('attivita_aut_desc'), form_error('attivita_dip_desc'), form_error('attivita_amm_desc'); ?>
 
@@ -47,62 +47,63 @@
             <li>
               <?php echo radiobutton_tag('attivita[]', 1, false ), '&nbsp;', label_for('attivita_1_1', 'studentessa/e'); ?>
             </li>
-            <li>lavoratrice/tore autonomo</li>
-            <ul style="padding-left: 1em">
-              <li><?php echo radiobutton_tag('attivita[]', 2, false ), '&nbsp;',
-                             label_for('attivita_2_2', 'avvocatessa/o (e simili)'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 3, false ), '&nbsp;',
-                             label_for('attivita_3_3', 'commercialista (e simili)'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 4, false ), '&nbsp;',
-                             label_for('attivita_4_4', 'giornalista (e simili)'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 5, false ), '&nbsp;',
-                             label_for('attivita_5_5', 'consulente'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 6, false ), '&nbsp;',
-                             label_for('attivita_6_6', 'commerciante'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 7, false ), '&nbsp;',
-                             label_for('attivita_7_7', 'imprenditrice/tore'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 8, false ), '&nbsp;',
-                             label_for('attivita_8_8', 'altro (descrivi, se vuoi)'), '<br/>',
-                             input_tag('attivita_aut_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
-            </ul>
-            <li>dipendente/funzionaria/o</li>
-            <ul style="padding-left: 1em">
-              <li><?php echo radiobutton_tag('attivita[]', 9, false ), '&nbsp;',
-                             label_for('attivita_9_9', 'pubblico'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 10, false ), '&nbsp;',
-                             label_for('attivita_10_10', 'privato'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 11, false ), '&nbsp;',
-                             label_for('attivita_11_11', 'no-profit'); ?></li>
-              <li><?php echo label_for('attivita_dip_desc', 'descrivi, se vuoi, il settore di attivit&agrave;, il nome di organizzazione o ufficio'), '<br/>',
-                             input_tag('attivita_dip_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
-            </ul>
-            <li>politico/amministratrice/tore</li>
-            <ul style="padding-left: 1em">
-              <li><?php echo radiobutton_tag('attivita[]', 12, false ), '&nbsp;',
-                             label_for('attivita_12_12', 'europeo'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 13, false ), '&nbsp;',
-                             label_for('attivita_13_13', 'nazionale'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 14, false ), '&nbsp;',
-                             label_for('attivita_14_14', 'regionale'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 15, false ), '&nbsp;',
-                             label_for('attivita_15_15', 'provinciale'); ?></li>
-              <li><?php echo radiobutton_tag('attivita[]', 16, false ), '&nbsp;',
-                             label_for('attivita_16_16', 'comunale'); ?></li>
-              <li><?php echo label_for('attivita_amm_desc', 'descrivi, se vuoi'), '<br/>',
-                             input_tag('attivita_amm_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
-            </ul>
+
+            <br/>
+            <li style="font-weight: bold">lavoratrice/tore autonomo</li>
+            <li><?php echo radiobutton_tag('attivita[]', 2, false ), '&nbsp;',
+                           label_for('attivita_2_2', 'avvocatessa/o (e simili)'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 3, false ), '&nbsp;',
+                           label_for('attivita_3_3', 'commercialista (e simili)'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 4, false ), '&nbsp;',
+                           label_for('attivita_4_4', 'giornalista (e simili)'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 5, false ), '&nbsp;',
+                           label_for('attivita_5_5', 'consulente'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 6, false ), '&nbsp;',
+                           label_for('attivita_6_6', 'commerciante'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 7, false ), '&nbsp;',
+                           label_for('attivita_7_7', 'imprenditrice/tore'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 8, false ), '&nbsp;',
+                           label_for('attivita_8_8', 'altro (descrivi, se vuoi)'), '<br/>',
+                           input_tag('attivita_aut_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
+
+            <br/>
+            <li style="font-weight: bold">dipendente/funzionaria/o</li>
+            <li><?php echo radiobutton_tag('attivita[]', 9, false ), '&nbsp;',
+                           label_for('attivita_9_9', 'pubblico'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 10, false ), '&nbsp;',
+                           label_for('attivita_10_10', 'privato'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 11, false ), '&nbsp;',
+                           label_for('attivita_11_11', 'no-profit'); ?></li>
+            <li><?php echo label_for('attivita_dip_desc', 'descrivi, se vuoi, il settore di attivit&agrave;, il nome dell\' ufficio'), '<br/>',
+                           input_tag('attivita_dip_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
+
+
+            <br/>
+            <li style="font-weight: bold">politico/amministratrice/tore</li>
+            <li><?php echo radiobutton_tag('attivita[]', 12, false ), '&nbsp;',
+                           label_for('attivita_12_12', 'europeo'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 13, false ), '&nbsp;',
+                           label_for('attivita_13_13', 'nazionale'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 14, false ), '&nbsp;',
+                           label_for('attivita_14_14', 'regionale'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 15, false ), '&nbsp;',
+                           label_for('attivita_15_15', 'provinciale'); ?></li>
+            <li><?php echo radiobutton_tag('attivita[]', 16, false ), '&nbsp;',
+                           label_for('attivita_16_16', 'comunale'); ?></li>
+            <li><?php echo label_for('attivita_amm_desc', 'descrivi, se vuoi'), '<br/>',
+                           input_tag('attivita_amm_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
                              
           </ul>
           
         </div>
 
         <!-- perché ti interessa? -->
-        <div class="form-row" id="" style="padding:1em;">
+        <div class="form-row" id="perche" style="padding:1em;">
           <?php echo form_error('perche'), form_error('perche_altro_desc'); ?>
 
           <h4>Perch&eacute; sei interessato a OpenParlamento?</h4>
           
-          <ul style="padding-left: 1em">
+          <ul  class="main">
             <li><?php echo radiobutton_tag('perche[]', 1, false ), '&nbsp;',
                            label_for('perche_1_1', 'lavoro'); ?></li>
             <li><?php echo radiobutton_tag('perche[]', 2, false ), '&nbsp;',
@@ -116,7 +117,7 @@
         </div>
         
       </fieldset>
-      <?php echo submit_tag("Sottoscrivo", array('style' => 'margin:1em;')) ?>
+      <?php echo submit_image_tag("/images/btn-aderisco.png",array("alt"=>"Aderisco", 'style' => 'margin: 1em; margin-left: 13em')) ?>
 
     </form>
     
