@@ -21,6 +21,7 @@ conditionalCache:
     pages:
       - { module: atto, action: index }
       - { module: parlamentare, action: cosa }
+      - { module: default, action: sottoscrizioniPro }
 
 cache:     ~
 common:    ~
