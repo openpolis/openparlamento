@@ -31,6 +31,7 @@ var flashvars = {};
 var params = {};
 params.play = "true";
 params.scale = "noscale";
+params.allowScriptAccess = "always"; 
 params.wmode = "gpu";
 params.devicefont = "true";
 var attributes = {};
