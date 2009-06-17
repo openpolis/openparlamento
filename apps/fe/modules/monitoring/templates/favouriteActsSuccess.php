@@ -8,8 +8,8 @@
   		<div style="display: none;" class="help-box float-container">
   			<div class="inner float-container">
 
-  				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-  				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+  				<a class="ico-close" href="#">chiudi</a><h5>cosa sono gli atti preferiti ?</h5>
+  				<p>Gli atti prefereti sono quelli che tu hai segnalato come importanti</p>
   			</div>
   		</div>
     

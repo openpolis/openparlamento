@@ -14,12 +14,12 @@
 	                               array('current' => 'voti', 
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>
 	                                     	
-   		<p class="tools-container"><a class="ico-help" href="#">eventuale testo micro-help</a></p>
+   		<p class="tools-container"><a class="ico-help" href="#">cosa sono</a></p>
    		<div style="display: none;" class="help-box float-container">
    			<div class="inner float-container">
 
-   				<a class="ico-close" href="#">chiudi</a><h5>eventuale testo micro-help ?</h5>
-   				<p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e como medical national per. (fonte: <a href="#">Wikipedia</a>)</p>
+   				<a class="ico-close" href="#">chiudi</a><h5>cosa sono ?</h5>
+   				<p>In questa pagina trovi tutti i voti del parlamentare relativi alle votazioni elettroniche d'aula in cui &grave; stato presente</p>
    			</div>
    		</div>
 

@@ -7,7 +7,7 @@
 		</li>
     <li class="<?php echo($current=='leggi' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php echo link_to('Leggi in discussione', $current=='leggi'?'#':'@argomento_leggi?triple_value='.$triple_value) ?>
+	      <?php echo link_to('Disegni di legge', $current=='leggi'?'#':'@argomento_leggi?triple_value='.$triple_value) ?>
 		  </h5>
 		</li>
     <li class="<?php echo($current=='nonleg' ? 'current' : '' ) ?>">

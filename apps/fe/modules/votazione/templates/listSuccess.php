@@ -7,7 +7,7 @@
     <div class="W25_100 float-right">
       <?php include_partial('votazioneRightColumn', array('query' => $query)) ?>  
        <p align=center>
-      <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_C') ?>
+      <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'http://op_openparlamento_distancegraph.s3.amazonaws.com/posizioni/grafico_distanze_deputati.html') ?>
       </p>
     </div>
     <div class="W73_100 float-left">
