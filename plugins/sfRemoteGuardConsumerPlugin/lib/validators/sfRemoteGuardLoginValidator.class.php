@@ -60,10 +60,13 @@ class sfRemoteGuardLoginValidator extends sfValidator
      {
   	   $this->getContext()->getUser()->signIn($xml->user, $remember);
        return true;       
-     }
-
-     $error = $this->getParameter('login_error');
+     } elseif (count($xml->error) > 0) {
+       $error = $this->getParameter('login_error');
+       return false;
+     } 
+     $error = $this->getParameter('connection_error');
      return false;
+
   }
 }
 ?>
