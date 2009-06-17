@@ -10,7 +10,7 @@ default:
     keywords:     "Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento"
     language:     it
 
-  stylesheets:    [screen, combobox_openpolis]
+  stylesheets:    [screen.min.css, combobox_openpolis]
 
   javascripts:    [<?php echo  sfConfig::get('sf_js_google_load')=='true'?'http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js':'fe/jquery.js'?>, fe/jquery.combobox.min.js, fe/jquery.ifixpng2.min.js, fe/openparlamento.lists.js]
 
