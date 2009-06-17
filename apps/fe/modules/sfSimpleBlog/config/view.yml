@@ -1,5 +1,5 @@
 all:
-  stylesheets:    [screen, /sfSimpleBlogPlugin/css/blog.css]
+  stylesheets:    [/sfSimpleBlogPlugin/css/blog.css]
   
 
 showSuccess:
