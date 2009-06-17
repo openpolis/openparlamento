@@ -10,8 +10,8 @@
   <?php if ($total_votings): ?>
 
     <div id="vote-yes-results">
-      <div class="vote-bar" style="width: <?php echo $voting_details[1]['percent']?>;">
-        <?php echo $voting_details[1]['percent']?>%
+      <div class="vote-bar" style="width:<?php echo round($voting_details[1]['percent']) ?>%;">
+        <?php echo round($voting_details[1]['percent']) ?>%
       </div>
     </div>
     <div class="vote-yes-more-results">
@@ -26,8 +26,8 @@
     </div>
 
     <div id="vote-no-results">
-      <div class="vote-bar" style="width: <?php echo $voting_details[-1]['percent']?>;">
-        <?php echo $voting_details[-1]['percent']?>%
+      <div class="vote-bar" style="width: <?php echo round($voting_details[-1]['percent']) ?>%;">
+        <?php echo round($voting_details[-1]['percent']) ?>%
       </div>
     </div>
     <?php if ($voting_details[-1]['count']): ?>
