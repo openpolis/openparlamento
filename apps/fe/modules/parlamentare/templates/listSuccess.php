@@ -8,9 +8,9 @@
      <p align=right>
 	       <a href="#decaduti">guarda le variazioni nella legislatura</a> 
 	       <p align=right style="padding-top:20px;"><?php if ($sf_params->get('ramo')=='camera') : ?>
-	             <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'http://op_openparlamento_distancegraph.s3.amazonaws.com/posizioni/grafico_distanze_deputati.html') ?>
+	             <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_C') ?>
 	           <?php else : ?>
-	              <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'http://op_openparlamento_distancegraph.s3.amazonaws.com/posizioni/grafico_distanze_senatori.html') ?>
+	              <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_S') ?>
 	           <?php endif ?>
 	       </p>    
       </p>	       

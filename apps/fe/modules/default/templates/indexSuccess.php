@@ -8,7 +8,7 @@
     <?php echo link_to(image_tag(sfConfig::get('sf_resources_host') . '/images/banner_grafico_310x225.png', 
                                  array('alt' => 'consulta il grafico interattivo delle posizioni dei diversi parlamentari'),
                                  //sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze')  
-                                 sfConfig::get('sf_resources_host') != ''?true:false),'http://op_openparlamento_distancegraph.s3.amazonaws.com/posizioni/grafico_distanze_deputati.html') ?> 
+                                 sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze/votes_16_C') ?> 
 </div>	
 	
       <div id="introOP-box" class="W66_100 float-left">
