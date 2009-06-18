@@ -1,5 +1,5 @@
-index:
-  enabled: on
+#index:
+#  enabled: on
 
 list:
   enabled: on
