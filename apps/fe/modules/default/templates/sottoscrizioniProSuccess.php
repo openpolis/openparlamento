@@ -19,58 +19,11 @@
               
               <div class="intro-box">
                   <h2>Qual &egrave; il <em class="open">tuo</em><em class="parlamento">parlamento</em>?</h2>
-                  <p>Tutti i contenuti di <em class="open">open</em><em class="parlamento">parlamento</em> sono <strong>liberamente consultabili</strong> senza la necessit&agrave; di alcuna registrazione.</p>
+                  <p style="font-size:20px";>Tutti i contenuti di <em class="open">open</em><em class="parlamento">parlamento</em> sono <strong>liberamente consultabili</strong> senza la necessit&agrave; di alcuna registrazione.</p>
                   <p>Se sei un utente registrato, <em class="open">open</em><em class="parlamento">parlamento</em> consegna nella tua e-mail e nelle pagine web a te dedicate le informazioni che ti interessano nei modi e nelle forme che preferisci.<br /> Servizi di informazione e monitoraggio sulle attivit&agrave; parlamentari per <strong>cittadini, professionisti</strong> e qualunque tipo di <strong>organizzazione</strong>.</p>
               </div>
             </div>
             
-            <div class="W48_100 <?php echo (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc'))?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
-                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
-                    <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
-                        <br />
-                        openparlamento pu&ograve; fornirti tutti i dati e le informazioni di cui hai bisogno in piena flessibilit&agrave;:</p>
-                    <ul>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            configurazione del monitoraggio di argomenti, atti e parlamentari senza limiti e secondo richieste specifiche </li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            servizi personalizzati di estrazione dati</li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            integrazione con altri sistemi informativi (internet, intranet)</li>
-                    </ul>
-                    <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
-                </div>
-                <h1 class="launch-evidence-btn round-5">
-                  <?php echo link_to('Contattaci!', '@contatti') ?>
-                </h1>
-            </div>
-            
-            <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
-              <div class="W48_100 float-left">
-                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
-                      <p>In occasione del lancio di openparlamento<br />
-                          <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
-                     </p>
-                      <ul>
-                          <li>
-                              <h3 class="position-light-orange">a</h3> 
-                              fino a 3 argomenti da monitorare</li>
-                          <li>
-                              <h3 class="position-light-orange">b</h3>
-                              fino a 10 parlamentari o atti da monitorare</li>
-                          <li>
-                              <h3 class="position-light-orange">c</h3>
-                              tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
-                      </ul>
-                  </div>
-                  <h1 class="launch-evidence-btn round-5">
-                    <?php echo link_to('Aderisci!', '@sottoscrizione_premium_demo') ?>
-                  </h1>
-              </div>
-            <?php endif ?>
-            <div class="clear-both"></div>
          <div class="W100_100">
                 <table class="compare-table">
                     <tr>
@@ -141,10 +94,61 @@
                     </tr>
                 </table>
             </div>   
+
+            <div class="W48_100 <?php echo (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc'))?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
+                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
+                    <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
+                        <br />
+                        openparlamento pu&ograve; fornirti tutti i dati e le informazioni di cui hai bisogno in piena flessibilit&agrave;:</p>
+                    <ul>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            configurazione del monitoraggio di argomenti, atti e parlamentari senza limiti e secondo richieste specifiche </li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            servizi personalizzati di estrazione dati</li>
+                        <li>
+                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
+                            integrazione con altri sistemi informativi (internet, intranet)</li>
+                    </ul>
+                    <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
+                </div>
+                <h1 class="launch-evidence-btn round-5">
+                  <?php echo link_to('Contattaci!', '@contatti') ?>
+                </h1>
+            </div>
+            
+            <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
+              <div class="W48_100 float-left">
+                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
+                      <p>In occasione del lancio di openparlamento<br />
+                          <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
+                     </p>
+                      <ul>
+                          <li>
+                              <h3 class="position-light-orange">a</h3> 
+                              fino a 3 argomenti da monitorare</li>
+                          <li>
+                              <h3 class="position-light-orange">b</h3>
+                              fino a 10 parlamentari o atti da monitorare</li>
+                          <li>
+                              <h3 class="position-light-orange">c</h3>
+                              tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
+                      </ul>
+                  </div>
+                  <h1 class="launch-evidence-btn round-5">
+                    <?php echo link_to('Aderisci!', '@sottoscrizione_premium_demo') ?>
+                  </h1>
+              </div>
+            <?php endif ?>
+ 
        </div>
 
+       <div class="clear-both"> </div>
+       <br/><br/>
          
      </div>
+
 </div>
 
 <?php slot('breadcrumbs') ?>
