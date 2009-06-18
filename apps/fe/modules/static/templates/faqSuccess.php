@@ -98,7 +98,7 @@
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="10"></a><p><strong>Cos'&egrave; l'indice di attivit&agrave; di un parlamentare?</strong></p>
-     E' un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro. Per dettagli e commenti vai nella <?php echo link_to('pagina del blog','/blog/2009/03/31/l-indice-di-attivita-parlamentare') ?>
+     E' un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro. Per dettagli e commenti vai nel <a href="/blog/2009/06/16/l-indice-di-attivita-parlamentare">post del Blog</a>.
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="11"></a><p><strong>Chi sono i parlamentari ribelli? </strong></p>

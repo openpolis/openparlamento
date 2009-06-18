@@ -1,3 +1,6 @@
+show:
+  enabled: on
+  
 index:
   enabled: on
 

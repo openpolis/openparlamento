@@ -5,4 +5,8 @@ test:
   deliver: off
   
 all:
-  deliver: sendmail
+  <?php if (sfConfig::get('sf_site_url') == 'parlamento.openpolis.it'): ?>
+    mailer: sendmail
+  <?php else: ?>
+    deliver: off
+  <?php endif; ?> 

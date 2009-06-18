@@ -14,7 +14,7 @@
     <div class="inner float-container"> 
       <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>	   	  
       <h5>cos'&egrave; l'indice di attivit&agrave; ?</h5>
-      <p>&Egrave; un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro.<br /> Per dettagli e commenti <a href="/blog/2009/03/31/l-indice-di-attivita-parlamentare">vai qui</a></p>
+      <p>&Egrave; un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro.<br /> Per dettagli e commenti <a href="/blog/2009/06/16/l-indice-di-attivita-parlamentare">vai qui</a></p>
     </div>
   </div>
 		
