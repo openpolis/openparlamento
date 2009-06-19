@@ -45,13 +45,13 @@
           <h4>Qual &egrave; la tua attivit&agrave; principale?</h4>
           <ul class="main">
             <li>
-              <?php echo radiobutton_tag('attivita[]', 1, false ), '&nbsp;', label_for('attivita_1_1', 'studentessa/e'); ?>
+              <?php echo radiobutton_tag('attivita[]', 1, false ), '&nbsp;', label_for('attivita_1_1', 'studente'); ?>
             </li>
 
             <br/>
-            <li style="font-weight: bold">lavoratrice/tore autonomo</li>
+            <li style="font-weight: bold">lavoratore autonomo</li>
             <li><?php echo radiobutton_tag('attivita[]', 2, false ), '&nbsp;',
-                           label_for('attivita_2_2', 'avvocatessa/o (e simili)'); ?></li>
+                           label_for('attivita_2_2', 'avvocato (e simili)'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 3, false ), '&nbsp;',
                            label_for('attivita_3_3', 'commercialista (e simili)'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 4, false ), '&nbsp;',
@@ -61,13 +61,13 @@
             <li><?php echo radiobutton_tag('attivita[]', 6, false ), '&nbsp;',
                            label_for('attivita_6_6', 'commerciante'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 7, false ), '&nbsp;',
-                           label_for('attivita_7_7', 'imprenditrice/tore'); ?></li>
+                           label_for('attivita_7_7', 'imprenditore'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 8, false ), '&nbsp;',
                            label_for('attivita_8_8', 'altro (descrivi, se vuoi)'), '<br/>',
                            input_tag('attivita_aut_desc', '', 'maxlength=250 size=65 disabled=true') ?></li>
 
             <br/>
-            <li style="font-weight: bold">dipendente/funzionaria/o</li>
+            <li style="font-weight: bold">dipendente/funzionario</li>
             <li><?php echo radiobutton_tag('attivita[]', 9, false ), '&nbsp;',
                            label_for('attivita_9_9', 'pubblico'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 10, false ), '&nbsp;',
@@ -79,7 +79,7 @@
 
 
             <br/>
-            <li style="font-weight: bold">politico/amministratrice/tore</li>
+            <li style="font-weight: bold">politico/amministratore</li>
             <li><?php echo radiobutton_tag('attivita[]', 12, false ), '&nbsp;',
                            label_for('attivita_12_12', 'europeo'); ?></li>
             <li><?php echo radiobutton_tag('attivita[]', 13, false ), '&nbsp;',

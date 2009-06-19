@@ -50,24 +50,7 @@ class argomentoActions extends sfActions
     $this->session = $this->getUser();
 
     // fetch di tutte le notizie legate ad atti taggati con il tag corrente
-    $c = new Criteria();
-    $c->add(TaggingPeer::TAG_ID, $this->argomento->getId());
-    $c->addJoin(TaggingPeer::TAGGABLE_ID, NewsPeer::RELATED_MONITORABLE_ID);
-
-    // filtro per rimuovere le notizie di tagging non riferite al tag in visualizzazione
-    $cf = clone $c;
-    $cf->add(NewsPeer::GENERATOR_MODEL, 'Tagging');
-    $cf->add(NewsPeer::TAG_ID, $this->argomento->getId(), Criteria::NOT_EQUAL);
-    $cf->clearSelectColumns();
-    $cf->addSelectColumn(NewsPeer::ID);
-    $rs = NewsPeer::doSelectRS($cf);
-    $to_zap_ids = array();
-    while ($rs->next())
-    {
-      $to_zap_ids []= $rs->getInt(1);
-    }
-    
-    $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);    
+    $c = NewsPeer::getNewsForTagCriteria($this->argomento->getId());
     
     $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
