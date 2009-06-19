@@ -49,20 +49,36 @@ function run_opp_sync_polimages($task, $args)
     $loaded = true;
   }
 
+  if (count($args) > 1)
+  {
+    throw new Exception('Uso: opp-sync-polimages [$POL_ID].');
+  }
 
+  echo pakeColor::colorize('FEtching politicians... ', array('fg' => 'cyan', 'bold' => true));
   $start_time = microtime(true);
 
-  $c = new Criteria();
-  $politicians = OppPoliticoPeer::doSelect($c);
-  
+  if (count($args) == 1)
+  {
+    $pol_id    = $args[0];
+    $pol = OppPoliticoPeer::retrieveByPK($pol_id);
+    if (!$pol instanceof OppPolitico)
+      throw new Exception('Politico sconosciuto: ' . $pol_id. '.');    
+    $politicians = array($pol);
+  } else {
+
+    $c = new Criteria();
+    $politicians = OppPoliticoPeer::doSelect($c);
+
+  }
+
   foreach ($politicians as $pol)
   {
     opp_sync_politician_image($pol);
   }
-  
+
   $total_time = microtime(true) - $start_time;
 
-  echo pakeColor::colorize('All done! ', array('fg' => 'red', 'bold' => true));
+  echo pakeColor::colorize('All done! ', array('fg' => 'green', 'bold' => true));
 
   echo 'Processed ';
   echo pakeColor::colorize(count($politicians), array('fg' => 'cyan'));
