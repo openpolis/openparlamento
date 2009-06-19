@@ -51,6 +51,7 @@ class argomentoActions extends sfActions
 
     // fetch di tutte le notizie legate ad atti taggati con il tag corrente
     $c = NewsPeer::getNewsForTagCriteria($this->argomento->getId());
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
     
     $filters = array();
     if ($this->getRequest()->getMethod() == sfRequest::POST) 
