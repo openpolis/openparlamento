@@ -6332,7 +6332,10 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		    data: c,
 		    success: function(msg){
 		      //console.log("Data Saved: ",msg);
-		    }
+		    },
+            error: function(msg){
+              //console.log("error: ",msg);
+            }
 		});
 	},
 	getComments: function(container) {
@@ -6485,6 +6488,11 @@ eMend.backstore.sfEmendPluginLog.prototype = {
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
+//=================================================
+//#ifdef CONSOLE_COMPAT
+//=================================================
+
+
 if (!window.console || !window.console.firebug) {
 
     if (window.opera && !window.console) {
@@ -6505,6 +6513,12 @@ if (!window.console || !window.console.firebug) {
          }
      }
 }
+
+//=================================================
+//#endif
+//CONSOLE_COMPAT
+//=================================================
+
 
 (function($) {
 eMend.init = function($) {
