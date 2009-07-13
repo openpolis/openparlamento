@@ -16,7 +16,7 @@
 <p>In openparlamento sono disponibili numerosi <?php echo link_to('Rss','http://it.wikipedia.org/wiki/Really_simple_syndication') ?>, alcuni di carattere generale altri pi&ugrave; specifici.</p>
 <br />
 <p><em class="open" style="padding:5px; font-size:16px;"><strong>Rss generali</strong></em></p>
-<p><?php echo link_to('»&nbsp;notizie principali dal Parlamento '.image_tag('/images/ico-rss.png'),'/feed/') ?></p>
+<p><?php echo link_to('»&nbsp;notizie principali dal Parlamento '.image_tag('/images/ico-rss.png'),'@feed') ?></p>
 <p><?php echo link_to('»&nbsp;ultime notizie sui disegni di legge '.image_tag('/images/ico-rss.png'),'/feed/disegni') ?></p>
 <p><?php echo link_to('»&nbsp;ultime notizie sui decreti legge '.image_tag('/images/ico-rss.png'),'/feed/decreti') ?></p>
 <p><?php echo link_to('»&nbsp;ultime notizie sugli atti non legislativi '.image_tag('/images/ico-rss.png'),'/feed/attiNonLegislativi') ?></p>
