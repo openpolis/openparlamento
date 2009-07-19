@@ -35,6 +35,6 @@ generator:
         associated_tts_list: 
           name:        "Top Term associati"
         tag_tt:          
-          name:        "Modifica associatzioni"
+          name:        "Modifica associazioni"
           type:        admin_double_list
           params:      size=15 through_class=OppTagHasTt
