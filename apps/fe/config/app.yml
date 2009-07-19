@@ -101,7 +101,7 @@ all:
 
     blogroll:
       - { title: "Openpolis", url: 'http://www.openpolis.it' }
-      - { title: "Google", url: 'http://www.google.com' }
+      - { title: "Voisietequi", url: 'http://www.voisietequi.it' }
 
     comment_automoderation: captcha  # triggers the automoderation of comments. Possible values are:
                                      # on: comments are not published until a moderator accepts them
