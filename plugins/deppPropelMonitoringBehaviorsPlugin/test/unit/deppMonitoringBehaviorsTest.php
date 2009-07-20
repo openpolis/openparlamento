@@ -29,11 +29,20 @@ if (!$app)
 require_once($sf_root_dir.'/test/bootstrap/functional.php');
 require_once($sf_symfony_lib_dir.'/vendor/lime/lime.php');
 
+
 if (!defined('TEST_MONITORABLE') or !class_exists(TEST_MONITORABLE))
 {
   // Don't run tests
   return;
 }
+
+// start tests
+$t = new lime_test(16, new lime_output_color());
+
+$t->diag('deppMonitoringBehaviorsPlugin API unit test');
+
+$t->diag('Tests beginning');
+
 
 // initialize database manager
 try
@@ -48,22 +57,13 @@ catch (PropelException $e)
   return 0;
 }
 
+
 $method_getter = TEST_METHOD_GETTER;
 $method_setter = TEST_METHOD_SETTER;
 
 $user_id = TEST_USER_ID;
 $other_user_id = TEST_OTHER_USER_ID;
 $monitorer_callable = array(TEST_MONITORER.'Peer', 'retrieveByPK');
-
-
-
-// start tests
-$t = new lime_test(16, new lime_output_color());
-
-$t->diag('deppMonitoringBehaviorsPlugin API unit test');
-
-$t->diag('Tests beginning');
-
 
 // clean the database
 $monitorable_callable = array(TEST_MONITORABLE.'Peer', 'doSelect');

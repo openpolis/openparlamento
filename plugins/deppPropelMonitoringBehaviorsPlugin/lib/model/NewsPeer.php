@@ -396,7 +396,11 @@ class NewsPeer extends BaseNewsPeer
 
   public static function getUserMonitoredItemsNewsCriteria($user, $monitored_objects)
   {    
+    sfLogger::getInstance()->info('{NewsPeer} n of objects directly monitored by the user: ' . count($monitored_objects));
+    
     // costruzione dell'array associativo tipo_oggetto => array_di_id
+    // di oggetti monitorati dall'utente (solo atti e politici)
+    // per i tag, vengono considerti tutti gli oggetti (atti) taggati con l'atto monitorato
     $monitored_hash = array('OppAtto' => array(), 'OppPolitico' => array());
     
     $monitored_tags_ids = array();
@@ -413,6 +417,9 @@ class NewsPeer extends BaseNewsPeer
         }
       }
     }
+    
+    sfLogger::getInstance()->info('{NewsPeer} n of acts monitored by the user: ' . count($monitored_hash['OppAtto']));
+    sfLogger::getInstance()->info('{NewsPeer} n of politicians monitored by the user: ' . count($monitored_hash['OppPolitico']));
     
     // costruzione della query paginata
     $c = new Criteria();
@@ -447,6 +454,8 @@ class NewsPeer extends BaseNewsPeer
     }
     unset($cf);
 
+    sfLogger::getInstance()->info('{NewsPeer} n of news to zap: ' . count($to_zap_ids));    
+    
     $c->add(NewsPeer::ID, $to_zap_ids, Criteria::NOT_IN);
     
     return $c;
