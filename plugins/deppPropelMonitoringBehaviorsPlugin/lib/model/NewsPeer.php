@@ -484,7 +484,8 @@ class NewsPeer extends BaseNewsPeer
       while ($rs->next()) {
         array_push($blocked_news_ids, $rs->getInt(1));
       }
-      $c->add(self::ID, $blocked_news_ids, Criteria::NOT_IN);
+      $c0 = $c->getNewCriterion(self::ID, $blocked_news_ids, Criteria::NOT_IN);
+      $c->addAnd($c0);
     }
     
     // le news di gruppo non sono considerate, perché ridondanti (#247)
