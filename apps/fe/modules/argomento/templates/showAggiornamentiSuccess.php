@@ -61,7 +61,7 @@
      		
         <?php include_partial('newsFilter',
                               array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
-        <?php include_partial('news/newslist', array('pager' => $pager, 'triple_value' => $triple_value, 'context' => 1)); ?> 
+        <?php include_partial('news/newslist', array('pager' => $pager, 'triple_value' => $triple_value, 'context' => 3)); ?> 
         <div style="text-align:right;"><?php echo link_to("<strong>vedi tutta la cronologia</strong>", '@news_tag?id='.$argomento->getId()) ?></div>
       
 	  </div>

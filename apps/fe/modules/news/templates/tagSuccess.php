@@ -53,7 +53,7 @@
          
           <?php foreach ($news as $n): ?>
            <?php if($primo_item==0) echo "<tr><td>&nbsp;</td>" ?>
-            <?php echo news_text($n,1) ?>
+            <?php echo news_text($n, 3) ?>
             <?php $primo_item=0 ?>
         </tr>  
           <?php endforeach ?>          

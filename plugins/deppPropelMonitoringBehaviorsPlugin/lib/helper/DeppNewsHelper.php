@@ -167,13 +167,67 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
     return $news_string;
   }
   
+  
   $pks = array_values(unserialize($news->getGeneratorPrimaryKeys()));
   $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);
+
+
+  // eccezione per firma, quando in pagina argomenti (context==3)
+  // corregge bug #307
+  if ($context == 3 && $generator_model == 'OppCaricaHasAtto')
+  {
+    $atto = $generator->getOppAtto();
+    $carica = $generator->getOppCarica();
+    $tipo = $atto->getOppTipoAtto(); 
+    $tipo_firma = $generator->getTipo();
+    switch ($tipo_firma) 
+    {
+      case "P":
+        $tipo_firma='presenta';
+        break;
+      case "C":
+        $tipo_firma='firma';
+        break;
+      case "R":
+        $tipo_firma='&egrave; relatore';
+        break;
+    }
+    
+    $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+                         'atto/index?id=' . $atto->getId(),
+                         array('title' => $atto->getTitolo()));
+
+    $politico = $carica->getOppPolitico();
+    $politico_link = link_to_in_mail($politico, 
+                        '@parlamentare?id=' . $politico->getId(),
+                        array('title' => 'Vai alla scheda del politico'));
+      
+    if ($img==1)
+      $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';                      
+
+    $news_string .= '<td><p>';
+
+    $news_string .= $politico_link;
+    $news_string .= " <strong>".$tipo_firma."</strong> ";
+
+    if ($tipo_firma=='&egrave; relatore')
+      $news_string .= "dell'atto ";
+    else
+      $news_string .= "l'atto ";
+
+          
+    $news_string .= $tipo->getDescrizione() . "</p>";
+    $news_string .= '<p>'.$atto_link.'</p></td>';
+
+    return $news_string;
+    
+  }
 
   if ($generator) 
   {
 
   $related_monitorable_model = $news->getRelatedMonitorableModel();
+
   if ($related_monitorable_model == 'OppPolitico')
   {
     // fetch del politico
@@ -293,6 +347,7 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
           $news_string .= '<td><p><strong>'.ucfirst($tipo_firma)."</strong> ";
       else
           $news_string .= '<td><p>'.$politico_link ." <strong>".$tipo_firma."</strong> ";
+          
       if ($context!=0)
       {    
          $news_string .= $tipo->getDescrizione() . "</p>";
