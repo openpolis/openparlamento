@@ -1,4 +1,8 @@
 propel:  
+  opp_alert:
+    id:
+    user_id:          { type: integer, required: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
+    term:             { type: varchar(128), required: true }
 
   opp_appoggio:
     id:
@@ -170,6 +174,15 @@ propel:
     nome:               { type: varchar(30) }
     cognome:            { type: varchar(30) }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
+    
+  opp_resoconto:
+    id:
+    sede_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    data:             { type: date }
+    url_fonte:        { type: varchar(255) }
+    comunicato:       { type: longvarchar }
+    sommario:         { type: longvarchar }
+    stenografico:     { type: longvarchar }
     
   opp_sede:
     id:
