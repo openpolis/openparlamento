@@ -572,7 +572,7 @@ class monitoringActions extends sfActions
     $this->my_tags = TagPeer::getPopulars($c, array('limit' => 10 ));
     
     // a tag was removed, clear the cache for the news, acts and tags page
-    $cacheManager = $this->getContext()->getViewCacheManager();
+    $cacheManager = $this->getContext()->getViewCacheManager(); 
     if (!is_null($cacheManager))
     {
       $cacheManager->remove('monitoring/news?user_token='.$this->getUser()->getToken()); 

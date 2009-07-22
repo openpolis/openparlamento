@@ -12,13 +12,13 @@
 # è stato aggiunto un identificativo utente nella url (user_token)
 #
 news: 
-  enabled:    on 
+  enabled:    on
 acts:
-  enabled:    on
+  enabled:    off
 politicians:
-  enabled:    on
+  enabled:    off
 tags:
-  enabled:    on
+  enabled:    off
   
 all: 
   with_layout: false     # Default value 
