@@ -17,17 +17,17 @@ if ($enabled_module)
 
   // preprend our routes
   $r->prependRoute('eMend_getComments',
-    '/emend.getComments/:url',
+    '/emend_getComments/:url',
     array('module' => 'sfEmendAPI', 
           'action' => 'getComments'));
   
   $r->prependRoute('emend_addComment',
-    '/emend.addComment/:url',
+    '/emend_addComment/:url',
     array('module' => 'sfEmendAPI', 
           'action' => 'addComment'));  
 
   $r->prependRoute('emend_addLog',
-    '/emend.addLog/*',
+    '/emend_addLog/*',
     array('module' => 'sfEmendAPI', 
           'action' => 'addLog'));  
 }
