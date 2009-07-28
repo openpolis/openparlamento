@@ -2520,7 +2520,7 @@ eMend.backstore.sfEmendPlugin.prototype = {
 		c.selection = $.toJSON(s);
 		//console.log(c);
 		$.ajax({
-		    url: '/fe_dev.php/emend.addComment/'+this.resourceID,
+		    url: '/emend_addComment/'+this.resourceID,
 		    data: c,
 		    success: function(msg){
 		      //console.log("Data Saved: ",msg);
@@ -2533,7 +2533,7 @@ eMend.backstore.sfEmendPlugin.prototype = {
 	getComments: function(container) {
 		var ds = this.opts.dataset;
 		$.ajax({
-		    url: '/fe_dev.php/emend.getComments/'+this.resourceID,
+		    url: '/emend_getComments/'+this.resourceID,
 		    success: function(data, textStatus){
 		      //console.log("Data loaded: ",textStatus, data);
 		      var obj = $.evalJSON(data);
