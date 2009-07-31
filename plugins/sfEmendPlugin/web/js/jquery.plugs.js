@@ -43,6 +43,34 @@ $.escapeReturns = function(text){
     return text;
 }
 
+var escapeable = /["\\\x00-\x1f\x7f-\x9f]/g;
+var meta = {    // table of character substitutions
+        '\b': '\\b',
+        '\t': '\\t',
+        '\n': '\\n',
+        '\f': '\\f',
+        '\r': '\\r',
+        '"' : '\\"',
+        '\\': '\\\\'
+    }
+    
+$.escapeString = function(string)
+{
+    if (escapeable.test(string))
+    {
+        return string.replace(escapeable, function (a) 
+        {
+            var c = meta[a];
+            if (typeof c === 'string') {
+                return c;
+            }
+            c = a.charCodeAt();
+            return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+        })
+    }
+    return string;
+}
+
 })(jQuery);(function($) {
     $.fixOperaRangeSelectionBug = function ()
     {

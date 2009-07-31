@@ -2512,12 +2512,14 @@ eMend.backstore.sfEmendPlugin.defaults = {};
 eMend.backstore.sfEmendPlugin.prototype = {
 	addComment: function() {
 		var s = this.opts.dataset.getLastSelection()
-		  , c = this.opts.dataset.getLastComment().data;
+		  , c = $.extend(true, {}, this.opts.dataset.getLastComment().data);
             //console.log('sfEmendPlugin.addcomment',s,c);
 
         //console.log(c);        
 
 		c.selection = $.toJSON(s);
+		c.body = $.escapeString(c.body);
+		c.title = $.escapeString(c.title);
 		//console.log(c);
 		$.ajax({
 		    url: '/emend_addComment/'+this.resourceID,
