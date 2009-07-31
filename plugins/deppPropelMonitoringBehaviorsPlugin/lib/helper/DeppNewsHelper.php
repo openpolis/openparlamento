@@ -713,7 +713,7 @@ function community_news_text($news)
                               array('title' => $item->getTitolo()));
 
       if ($news->getType() == 'C')
-        return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p>%s</p><p>relativo %s</p>", 
+        return sprintf("<div class='ico-type float-left'>%s</div><p>%s ha commentato il documento</p><p><strong>%s</strong></p><p>relativo %s</p>", 
                        image_tag('/images/ico-type-commento.png', array('alt' => 'commento')),
                        strtolower($news->getUsername()), $link, $atto_link);      
       break;
