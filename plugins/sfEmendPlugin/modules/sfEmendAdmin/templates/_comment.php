@@ -10,6 +10,8 @@
     '%2%'  => format_date($comment->getCreatedAt('U'))
     )) ?>
   </i>
+  <br/>
+  link al <a href="http://<?php echo sfConfig::get('sf_site_url') ?>/<?php echo join('/', split('_', $comment->getUrl())) ?>">documento</a>
   <br />
   <?php echo __('Selection string: ' . $comment->getSelection()) ?>
 </div>
