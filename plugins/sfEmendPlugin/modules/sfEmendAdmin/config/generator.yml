@@ -14,4 +14,11 @@ generator:
       actions: [ ]
       object_actions: 
         togglePublish: { name: publish/unpublish, action: togglePublish, icon: '/sfEmendPlugin/images/comment.png' }
+        _edit:   ~
         _delete: ~
+
+    edit:
+      title: Editing Emend Comment
+      fields: 
+        body: 
+          params: size=77x5
