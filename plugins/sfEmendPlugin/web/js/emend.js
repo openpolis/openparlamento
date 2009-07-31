@@ -2634,7 +2634,7 @@ eMend.backstore.sfEmendPluginLog.prototype = {
         }
 
 		$.ajax({
-		    url: '/fe_dev.php/emend.addLog/'+this.resourceID,
+		    url: '/emend_addLog/'+this.resourceID,
 		    data: log,
 		    success: function(msg){
 		      //console.log("Data Saved: ",msg);
