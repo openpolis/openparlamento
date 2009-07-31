@@ -159,7 +159,7 @@ commenti_atto:
   param: { module: atto, action: commenti }
 
 documento:
-  url: /documento/:id
+  url: /atto/documento/id/:id
   param: { module: atto, action: documento }
 
 argomenti:
