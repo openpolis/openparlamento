@@ -129,6 +129,7 @@ news_comunita:
   url: /news_comunita
   param: { module: news, action: comunita }  
 
+
 attiSearch:
   url: /attiSearch/:type/*
   param: { module: sfSolr, action: attiSearch }
@@ -157,10 +158,9 @@ commenti_atto:
   url: /commenti_atto/:id
   param: { module: atto, action: commenti }
 
-
 documento:
   url: /documento/:id
-  parma: { module: atto, action: documento}
+  param: { module: atto, action: documento }
 
 argomenti:
   url:   /argomenti    
