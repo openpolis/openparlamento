@@ -1,3 +1,5 @@
+<?php echo use_helper('deppCommenting') ?>
+
 <?php $comment = $sf_comment ?>
 <?php use_helper('Date') ?>
 <div<?php if(!$comment->getIsPublic()): ?> class="moderated"<?php endif; ?>>
@@ -10,4 +12,6 @@
     '%2%'  => format_date($comment->getCreatedAt('U'))
     )) ?>
   </i>
+  <br/>
+  oggetto collegato: <?php echo link_to_commentable_item($comment) ?>
 </div>

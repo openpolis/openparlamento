@@ -16,6 +16,7 @@
     $menu_items = array(
       'tag'=>'Tag',
       'teseott'=>'Categorie Teseo',
+      'deppCommentingAdmin' => 'Commenti',
       'sfSimpleBlogPostAdmin' => 'Post del Blog',
       'sfSimpleBlogCommentAdmin' => 'Commenti del Blog',
       'sfEmendAdmin' => 'Commenti eMend',

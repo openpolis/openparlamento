@@ -6,7 +6,7 @@ generator:
 
     list:
       title: Comments list
-      filters: [created_at, is_public]
+      filters: [text, created_at, commentable_model, is_public]
       sort:             [created_at, desc]
       layout: stacked
       params: %%_comment%%
