@@ -177,12 +177,16 @@ propel:
     
   opp_resoconto:
     id:
+    num_seduta:       { type: integer }
     sede_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
-    url_fonte:        { type: varchar(255) }
+    legislatura:      { type: integer, required: true }
+    nota:             { type: longvarchar }
     comunicato:       { type: longvarchar }
     sommario:         { type: longvarchar }
     stenografico:     { type: longvarchar }
+    url_sommario:     { type: varchar(255) }
+    url_stenografico: { type: varchar(255) }
     
   opp_sede:
     id:
