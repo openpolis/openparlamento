@@ -66,7 +66,7 @@
         </td>  
      <?php elseif ($cosa==2) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=assenza&type=desc' :'@parlamentari?ramo=senato&sort=assemze&type=desc') ?> 
+            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=assenze&type=desc' :'@parlamentari?ramo=senato&sort=assenze&type=desc') ?> 
         </td> 
      <?php elseif ($cosa==3) : ?> 
         <td>
