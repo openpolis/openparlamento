@@ -8,7 +8,7 @@ indexSuccess:
   stylesheets:    [-*, screen.min.css, monitoring, jquery.autocomplete.css]
 
 documentoSuccess:
-  javascripts:    [/sfEmendPlugin/emend.boot.js]
+  javascripts:    [-*, /sfEmendPlugin/emend.boot.js]
   stylesheets:    [-*, screen.min.css, testo_atto]
   layout:         layoutDoc
 
