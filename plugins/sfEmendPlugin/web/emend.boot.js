@@ -7,11 +7,11 @@ var eMend = {
     backend_debug: "sfEmendPluginLog",
     scroll_refresh_delay: true,                            // delay comments visual link refresh to save CPU cycles
     jquery_noconflict: true,                               // enable/disable jQuery no conflict mode
-    jquery_googleapis: false,                              // enable/disable loading jQuery from googleapis
-    jquery_min_version: '1.2.6',                           // minimum version of jQuery
+    jquery_googleapis: true,                              // enable/disable loading jQuery from googleapis
+    jquery_min_version: '1.3.2',                           // minimum version of jQuery
     login_needed_to_post: true,                            // checks if user is logged-in and eventually redirects
     login_page: "/login",                                  // login page 
-    debug: true                                            // enable/disable uncompressed scripts inclusion for debug
+    debug: false                                            // enable/disable uncompressed scripts inclusion for debug
   }
 };	
 
@@ -25,7 +25,8 @@ function eMendBoot() {
 			
 	if(typeof jQuery != 'undefined' && jQuery.fn && jQuery.fn.jquery) {
 		v = jQuery.fn.jquery.split('.');
-		jq_required = !(v.length = 3 && Number(v[0]) >= 1 && Number(v[1]) >= 2 && Number(v[2]) >= 6);
+                w = eMend.config.jquery_min_version.split('.');
+		jq_required = !(v.length = 3 && Number(v[0]) >= Number(w[0]) && Number(v[1]) >= Number(w[1]) && Number(v[2]) >= Number(w[2]));
 	}
 
     // include jQuery library if needed

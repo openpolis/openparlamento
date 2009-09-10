@@ -3726,72 +3726,102 @@ hs=function(w,t,c){return w.each(function(){var s=this._jqm;$(t).each(function()
 	/** Reference the Defaults Object for compatibility with older versions of jGrowl **/
 	$.jGrowl.defaults = $.fn.jGrowl.prototype.defaults;
 
-})(jQuery);/* aqCookie v1.0 - Simpler way to get and sets cookies.
-   Copyright (C) 2008 Paul Pham <http://aquaron.com/~jquery/aqCookie>
+})(jQuery);/**
+ * Cookie plugin
+ *
+ * Copyright (c) 2006 Klaus Hartl (stilbuero.de)
+ * Dual licensed under the MIT and GPL licenses:
+ * http://www.opensource.org/licenses/mit-license.php
+ * http://www.gnu.org/licenses/gpl.html
+ *
+ */
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+/**
+ * Create a cookie with the given name and value and other optional parameters.
+ *
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Set the value of a cookie.
+ * @example $.cookie('the_cookie', 'the_value', { expires: 7, path: '/', domain: 'jquery.com', secure: true });
+ * @desc Create a cookie with all available options.
+ * @example $.cookie('the_cookie', 'the_value');
+ * @desc Create a session cookie.
+ * @example $.cookie('the_cookie', null);
+ * @desc Delete a cookie by passing null as value. Keep in mind that you have to use the same path and domain
+ *       used when the cookie was set.
+ *
+ * @param String name The name of the cookie.
+ * @param String value The value of the cookie.
+ * @param Object options An object literal containing key/value pairs to provide optional cookie attributes.
+ * @option Number|Date expires Either an integer specifying the expiration date from now on in days or a Date object.
+ *                             If a negative value is specified (e.g. a date in the past), the cookie will be deleted.
+ *                             If set to null or omitted, the cookie will be a session cookie and will not be retained
+ *                             when the the browser exits.
+ * @option String path The value of the path atribute of the cookie (default: path of page that created the cookie).
+ * @option String domain The value of the domain attribute of the cookie (default: domain of page that created the cookie).
+ * @option Boolean secure If true, the secure attribute of the cookie will be set and the cookie transmission will
+ *                        require a secure protocol (like HTTPS).
+ * @type undefined
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
 
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-(function($){
-$.aqCookie = {
-   domain: '',
-   secToExpire: 3153600000,
-
-   get: function(carr) {
-      if (typeof carr == 'string')
-         carr = [carr];
-
-      var hash = [];
-      var ca = document.cookie.split(';');
-      for(var i=0;i < ca.length;i++) {
-         var c = ca[i];
-         while (c.charAt(0)==' ') c = c.substring(1,c.length);
-
-         for(var j=0;j<carr.length;j++) {
-            var n = carr[j]+'=';
-            if (c.indexOf(n) == 0) 
-               hash[carr[j]] = c.substring(n.length,c.length);
-         }
-      }
-      return hash;
-   },
-
-   set: function(k,v) {
-      if (v) {
-         var exp = new Date();
-         exp.setTime(exp.getTime() + $.aqCookie.secToExpire);
-         document.cookie = k + "=" + v + "; path=/; domain="+$.aqCookie.domain+"; expires="+ exp.toGMTString() + '";';
-      } else
-         document.cookie = k + "=; path=/; domain="+$.aqCookie.domain+"; expires=Thu, 01-Jan-1970 00:00:01 GMT;";
-   },
-
-   all: function(filter) {
-      var hash = [];
-      var ca = document.cookie.split(';');
-      var re = new RegExp(filter);
-      for(var i=0;i < ca.length;i++) {
-         var c = ca[i];
-         while (c.charAt(0)==' ') c = c.substring(1,c.length);
-         if (!c.match(re))
-            continue;
-         hash.push(c.substring(0,c.indexOf('=')));
-      }
-      return hash;
-   },
-
-   del: function(k) { $.aqCookie.set(k) }
-};
-})(jQuery);/*
+/**
+ * Get the value of a cookie with the given name.
+ *
+ * @example $.cookie('the_cookie');
+ * @desc Get the value of a cookie.
+ *
+ * @param String name The name of the cookie.
+ * @return The value of the cookie.
+ * @type String
+ *
+ * @name $.cookie
+ * @cat Plugins/Cookie
+ * @author Klaus Hartl/klaus.hartl@stilbuero.de
+ */
+jQuery.cookie = function(name, value, options) {
+    if (typeof value != 'undefined') { // name and value given, set cookie
+        options = options || {};
+        if (value === null) {
+            value = '';
+            options.expires = -1;
+        }
+        var expires = '';
+        if (options.expires && (typeof options.expires == 'number' || options.expires.toUTCString)) {
+            var date;
+            if (typeof options.expires == 'number') {
+                date = new Date();
+                date.setTime(date.getTime() + (options.expires * 24 * 60 * 60 * 1000));
+            } else {
+                date = options.expires;
+            }
+            expires = '; expires=' + date.toUTCString(); // use expires attribute, max-age is not supported by IE
+        }
+        // CAUTION: Needed to parenthesize options.path and options.domain
+        // in the following expressions, otherwise they evaluate to undefined
+        // in the packed version for some reason...
+        var path = options.path ? '; path=' + (options.path) : '';
+        var domain = options.domain ? '; domain=' + (options.domain) : '';
+        var secure = options.secure ? '; secure' : '';
+        document.cookie = [name, '=', encodeURIComponent(value), expires, path, domain, secure].join('');
+    } else { // only name given, get cookie
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+};/*
  * jQuery simpleXpath plugin
  *
  * returns an object with the current text selection coordinates
@@ -3958,7 +3988,7 @@ commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
-commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/pressC.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/chat.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/password.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
+commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" id="emendHideHOLcheck"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/pressC.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/chat.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/password.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
 
 sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
 }
@@ -4520,9 +4550,19 @@ eMend.dataset.prototype = {
         switch(xpathmethod) {
           case 0:
             cSel = XcS.base == '__noId__' ? document.body : document.getElementById(XcS.base);	
-            cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);	            
+            cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);
+	    try {
             cS = document.evaluate(XcS.xpath,cSel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-            cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;            
+            cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	    } catch (err) {
+	      if(eMend.log) {
+		err = {};
+		err.funct = 'markNodeMap';
+		err.msg = "invalid XPATH expression: "+XcS.xpath+" "+XcE.xpath;
+			    eMend.log.add('error',err);
+	      }
+	      continue;
+	    }
           break;
         
           case 1:
@@ -5186,9 +5226,9 @@ eMend.commentTrigger = function (options) {
         hideHOL = true;
     } else if(document.location.href.indexOf('emendEnableHOL') != -1) {
         hideHOL = false;
-        $.aqCookie.del('hideHOL');
+        //$.aqCookie.del('hideHOL');
     } else {
-        hideHOL = $.aqCookie.get('hideHOL') == true ? true : false;
+        hideHOL = $.cookie('hideHOL') == 'true' ? true : false;
     }
     
     this.opts.hideHOL = hideHOL;
@@ -5274,13 +5314,15 @@ eMend.commentTrigger.prototype = {
     $.jGrowl.defaults.position = pos;
     
     if (!this.opts.hideHOL) this.timeOut = window.setTimeout(function(){
-      $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
+      $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos, open: function() {
       
-      $('.emendHideHOL').click( function(){
+      $('#emendHideHOLcheck').click( function(){
 	  _self.opts.hideHOL = true;
-	  $.aqCookie.set('hideHOL','true');
+	  $.cookie('hideHOL','true',{ path: '/', expires: 365 });
 	}
       );
+      }
+       });
     }, 500);
     
     this.status = n;

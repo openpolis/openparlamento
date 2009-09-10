@@ -122,7 +122,7 @@ commentForm: '<form id="noteForm" class="Emend" onsubmit="return false; void(0);
 
 commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" alt="_(readless)" class="closegroup"><img src="_(baseURI)/more_big.png" title="_(readmore)" class="opengroup" /></div></span>',
 
-commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" class="emendHideHOL"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/pressC.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/chat.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/password.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
+commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" id="emendHideHOLcheck"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/pressC.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/chat.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/password.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
 
 sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
 }
@@ -684,9 +684,19 @@ eMend.dataset.prototype = {
         switch(xpathmethod) {
           case 0:
             cSel = XcS.base == '__noId__' ? document.body : document.getElementById(XcS.base);	
-            cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);	            
+            cEel = XcE.base == '__noId__' ? document.body : document.getElementById(XcE.base);
+	    try {
             cS = document.evaluate(XcS.xpath,cSel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
-            cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;            
+            cE = document.evaluate(XcE.xpath,cEel,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue;
+	    } catch (err) {
+	      if(eMend.log) {
+		err = {};
+		err.funct = 'markNodeMap';
+		err.msg = "invalid XPATH expression: "+XcS.xpath+" "+XcE.xpath;
+			    eMend.log.add('error',err);
+	      }
+	      continue;
+	    }
           break;
         
           case 1:
@@ -1350,9 +1360,9 @@ eMend.commentTrigger = function (options) {
         hideHOL = true;
     } else if(document.location.href.indexOf('emendEnableHOL') != -1) {
         hideHOL = false;
-        $.aqCookie.del('hideHOL');
+        //$.aqCookie.del('hideHOL');
     } else {
-        hideHOL = $.aqCookie.get('hideHOL') == true ? true : false;
+        hideHOL = $.cookie('hideHOL') == 'true' ? true : false;
     }
     
     this.opts.hideHOL = hideHOL;
@@ -1438,13 +1448,15 @@ eMend.commentTrigger.prototype = {
     $.jGrowl.defaults.position = pos;
     
     if (!this.opts.hideHOL) this.timeOut = window.setTimeout(function(){
-      $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos });
+      $.jGrowl(v.innerHTML, {theme: 'eMend-jGrowl', life: 6000, position: pos, open: function() {
       
-      $('.emendHideHOL').click( function(){
+      $('#emendHideHOLcheck').click( function(){
 	  _self.opts.hideHOL = true;
-	  $.aqCookie.set('hideHOL','true');
+	  $.cookie('hideHOL','true',{ path: '/', expires: 365 });
 	}
       );
+      }
+       });
     }, 500);
     
     this.status = n;
