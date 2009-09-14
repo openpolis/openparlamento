@@ -111,6 +111,7 @@
                             <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
                             integrazione con altri sistemi informativi (internet, intranet)</li>
                     </ul>
+                    <p><em class="round-3">&nbsp;<?php echo link_to("Scarica la presentazione dell'offerta (pdf - 915 kb)",'http://op_openparlamento_marketing.s3.amazonaws.com/openparlamento_set_2009.pdf') ?>&nbsp;</em></p>
                     <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
                 </div>
                 <h1 class="launch-evidence-btn round-5">
