@@ -56,12 +56,13 @@ jQuery(document).ready(function(){
    * Funzione che assegna observer per eventi dei tag associati
    */
   refresh_tags_show_observers = function(){
-    var tags = $$('div#tag_show div');
-    tags.each( function(el) {
+    var removers = $$('div#tag_show div .remover');
+    
+    removers.each( function(el) {
 
       // identifica remover e tag
-      remover = el.select('span[class="remover"]')[0];
-
+      remover = el;
+            
       // click sulla X per rimuovere il tag dai miei tag
       if (remover)
         remover.observe('click', function(event) {
@@ -71,9 +72,10 @@ jQuery(document).ready(function(){
     });
     
   };
- 
+
   // assegnazione degli observers ai tag associati
   refresh_tags_show_observers();
+
   
   // gestione della rimozione di un tag dai tag associati
   // TODO: verificare problemi con onCreate e onComplete per l'indicatore
