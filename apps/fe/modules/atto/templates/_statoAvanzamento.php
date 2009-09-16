@@ -13,11 +13,10 @@
 <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">
-      
     </div>
-    <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>
+    <?php echo link_to('<span style="font-size:12px; font-weight:normal; color:black;">chiudi</span>', '#', array( 'class'=>'ico-close')) ?>
     <h5>cos'&egrave; l'iter ?</h5>
-    <p>L'Iter &egrave; l'insieme dei passi successivi (status) previsti perch&egrave; un <b>disegno di legge</b> arrivi alla sua approvazione finale o conclusione. Un disegno di legge per diventare legge deve essere approvato da entrambi i rami (Camera e Senato) del Parlamento.</p>
+    <p style="font-size:12px; font-weight:normal; color:black;">L'Iter &egrave; l'insieme dei passi successivi (status) previsti perch&egrave; un <b>disegno di legge</b> arrivi alla sua approvazione finale o conclusione. Un disegno di legge per diventare legge deve essere approvato da entrambi i rami (Camera e Senato) del Parlamento.</p>
   </div>
 </div>
 <br />
