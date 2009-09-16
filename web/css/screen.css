@@ -144,7 +144,7 @@ thead th { font-size: 12px; vertical-align: top; }
 /*
  * WIKI-BOX
  *----------------------------------------------*/
-.wiki-box-container { background-color: #bfc8c4; border: 1px solid #929292; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; margin-bottom: 44px; }
+.wiki-box-container { background-color: #bfc8c4; border: 1px solid #929292; -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px; margin-bottom: 3px; }
 .wiki-box-container .description { background: none; color: #fff; margin-top: 0; }
 .wiki-box-container .wiki-box { margin-bottom:0; border-top: 1px solid #929292;
 -moz-border-radius-topleft: 0; -webkit-border-top-left-radius: 0; border-top-left-radius: 0;
@@ -157,7 +157,7 @@ thead th { font-size: 12px; vertical-align: top; }
 
  
 .wiki-box { background-color: #f1f3fe; border: 1px solid #ebeaf2; 
-            -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;  margin-bottom: 3px; }
+            -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;  margin-bottom: 44px; }
 .wiki-box-content { padding: 14px 10px; max-height: 200px; overflow: auto; }
 .wiki-box p { margin-bottom: 1em; }
 .wiki-box-edit  { display: block; float: right; height: 20px; background-color:#fff; position: relative; margin-right: 20px; border: 1px solid #e3e4ea; padding: 3px 26px 0 26px; margin-bottom: -1px; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
