@@ -1,18 +1,15 @@
 <?php use_helper('AttoIter'); ?>
-
+<?php if ($atto->getTipoAttoId()==1 or $atto->getTipoAttoId()==12) : ?>
 <h5 class="subsection">
 <?php if ($atto->getTipoAttoId()==1): ?>
-   <?php echo "Iter parlamentare della legge" ?>
+   <?php echo "iter parlamentare della legge:" ?>
 <?php endif; ?>
 <?php if ($atto->getTipoAttoId()==12): ?>
-   <?php echo "Iter parlamentare di conversione in legge" ?>
-<?php endif; ?> 
-<?php if ($atto->getTipoAttoId()!=1 && $atto->getTipoAttoId()!=12): ?>
-   <?php echo " Iter parlamentare dell'atto" ?>
-<?php endif; ?>           
-</h5>
+   <?php echo "iter parlamentare di conversione in legge:" ?>
+<?php endif; ?>       
 
-<p class="tools-container"><?php echo link_to("cos'&egrave; l'iter", '#', array( 'class'=>'ico-help')) ?></p>
+<span class="tools-container"><?php echo link_to("&nbsp;", '#', array( 'class'=>'ico-help')) ?></span>
+
 <div class="help-box float-container" style="display: none;">
   <div class="inner float-container">
     <div class="go-wikipedia">
@@ -20,11 +17,12 @@
     </div>
     <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>
     <h5>cos'&egrave; l'iter ?</h5>
-    <p>L'Iter &egrave; l'insieme dei passi successivi (status) previsti perch&egrave; un <b>disegno di legge</b> arrivi alla sua approvazione finale o conclusione. Un disegno di legge per diventare legge deve essere approvato da entrambi i rami (Camera e Senato) del Parlamento.<br />
-    Per un <b>atto non legislativo</b> l'iter &egrave; l'insieme di passi necessari per la sua conclusione. </p>
+    <p>L'Iter &egrave; l'insieme dei passi successivi (status) previsti perch&egrave; un <b>disegno di legge</b> arrivi alla sua approvazione finale o conclusione. Un disegno di legge per diventare legge deve essere approvato da entrambi i rami (Camera e Senato) del Parlamento.</p>
   </div>
 </div>
 <br />
+</h5>
+
 
 	<!-- Relazioni -->
 	
@@ -33,7 +31,7 @@
 	                            array('atto'=>$atto)) ?>
 	<?php endif; ?> 
 
-<?php if ($atto->getTipoAttoId()==1 or $atto->getTipoAttoId()==12) : ?>
+
 <ul class="iter float-container">
 
  

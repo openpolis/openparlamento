@@ -80,7 +80,7 @@
             <?php echo Text::denominazioneAtto($atto, 'index') ?>    
           </p>
       
-      <ul class="presentation float-container">
+      <ul class="presentation float-container" style="margin-bottom:10px;">
         <li><h6>presentato il: <em><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></em></h6></li>
         
         <?php if($tipo_iniziativa != ''): ?>
@@ -90,6 +90,30 @@
           <li><?php echo link_to("link alla fonte", $link, array('class' => 'external', 'target' => '_blank')) ?></li>
         <?php endif; ?>		  
       </ul>
+       <!-- tutto l'iter -->
+       <?php if($status): ?>
+       	    <ul class="presentation float-container" style="margin-bottom:10px;">
+               <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
+               <?php if(count($iter_completo)!=0): ?>
+	          <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
+	       <?php endif; ?>
+	    </ul>
+	    
+	    
+	    <!-- Iter grafico per ddl e dl -->
+	    <?php include_partial('statoAvanzamento', 
+	                      array('rappresentazioni_pred' => $rappresentazioni_pred, 
+						  'atto' => $atto,
+						  'rappresentazioni_this' => $rappresentazioni_this,
+						  'rappresentazioni_succ' => $rappresentazioni_succ,
+						  'leggi_this'            => $leggi_this,
+						  'leggi_succ'            => $leggi_succ,
+						  'lettura_parlamentare_precedente' => $lettura_parlamentare_precedente,
+						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva,
+						  'lettura_parlamentare_ultima' => $lettura_parlamentare_ultima,
+						  'legge'                       => $legge           )) ?>
+	<?php endif; ?>						  
+	    
 	  
 	    
 	  
@@ -114,34 +138,7 @@
     	
       <!-- partial per la descrizione wiki -->	
       <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId() )) ?>
-      </div>
- 
-      <?php if($status): ?>
-      <!-- rappresentazione grafica dell'iter -->
-	  <?php include_partial('statoAvanzamento', 
-	                      array('rappresentazioni_pred' => $rappresentazioni_pred, 
-						  'atto' => $atto,
-						  'rappresentazioni_this' => $rappresentazioni_this,
-						  'rappresentazioni_succ' => $rappresentazioni_succ,
-						  'leggi_this'            => $leggi_this,
-						  'leggi_succ'            => $leggi_succ,
-						  'lettura_parlamentare_precedente' => $lettura_parlamentare_precedente,
-						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva,
-						  'lettura_parlamentare_ultima' => $lettura_parlamentare_ultima,
-						  'legge'                       => $legge           )) ?>
-						  
- 	   <!-- tutto l'iter -->
-	   <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
-	
-	   <?php if(count($iter_completo)!=0): ?>
-	     <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
-	   <?php endif; ?>
-	
-	<?php endif; ?>
-	
-                           
-	                            
-	
+      </div>	
 	
 	<!-- Firmatari -->
 	    <?php include_component('atto', 'firmatari', 

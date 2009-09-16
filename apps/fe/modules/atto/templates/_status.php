@@ -1,7 +1,8 @@
 <?php if($status): ?>
-  <h5 class="subsection-spec">ultimo status:</h5>
+  <li><h6>
+  ultimo status: 
   <?php foreach($status as $data => $status_iter): ?>
-  <p class="iter-last-event indent">
+  <em>
     <?php if($data!='' || $data!=null) : ?>
       <span class="date"><?php echo format_date($data, 'dd/MM/yyyy') ?></span>
    <?php endif; ?> 
@@ -11,6 +12,7 @@
         <?php $iter = OppIterPeer::doSelectOne($c) ?>
         <?php echo ($atto->getRamo()=='C'?'Camera':'Senato').": ".$iter->getFase() ?>   
              
-    </p>
+    </em>
   <?php endforeach; ?>
+  </h6></li>
 <?php endif; ?>  
