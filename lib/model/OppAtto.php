@@ -125,7 +125,7 @@ class OppAtto extends BaseOppAtto
 	$count=0;
 	while ($rs->next())
 	{
-	  if ($rs->getInt(2)==28 || $rs->getInt(2)==16 || $rs->getInt(2)==63 )
+	  if ($rs->getInt(2)==28 || $rs->getInt(2)==16 || $rs->getInt(2)==63 || $rs->getInt(2)==20 )
 	  {
         
 	    if($rs->get(1)!='0000-00-00')
