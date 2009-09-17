@@ -286,7 +286,7 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
           if ($img==1)
               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';               
         
-        $news_string .= "<td><p>".$politico_link . "<strong>interviene</strong> in ";
+        $news_string .= "<td><p>".$politico_link . "<strong>interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
 
@@ -303,14 +303,13 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
          $news_string .= $generator->getOppSede()->getTipologia()." - ";
 
         $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));       
-        $news_string .= $politico_link . " ha effettuato <strong>un intervento</strong> sull'atto </p></td>";
+        $news_string .= $politico_link . " ha effettuato <strong>un intervento</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." sull'atto </p></td>";
       }  
       if ($context==2) 
       {  
          if ($img==1)
             $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';                                
-        $news_string .= "<td><p><strong>Interviene</strong> in ";
-        if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
+        $news_string .= "<td><p><strong>Interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
          $news_string .= $generator->getOppSede()->getTipologia()." ";
         
         $news_string .= strtoupper($generator->getOppSede()->getDenominazione())." su "; 
@@ -467,12 +466,12 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
       
-      $news_string .= "<td><p>".$politico_link . " <strong>interviene </strong>in ";
+      $news_string .= "<td><p>".$politico_link . " <strong>interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
       if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
       $news_string .= strtoupper($generator->getOppSede()->getDenominazione()); 
       
-      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera su' : 'al Senato su';
+      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera su' : ' al Senato su';
      
                            
       
