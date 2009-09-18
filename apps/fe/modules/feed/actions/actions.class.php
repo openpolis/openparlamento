@@ -17,13 +17,14 @@ class feedActions extends sfActions
     $id = $this->getRequestParameter('id');
     $atto = OppAttoPeer::retrieveByPk($id);
     $this->forward404Unless($atto instanceof OppAtto);
+    
+    $c = NewsPeer::getNewsForItemCriteria('OppAtto', $id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     $feed = $this->_make_feed_from_pager(
       'Ultime per ' . Text::denominazioneAttoShort($atto), 
       '@singolo_atto?id='.$id, 
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getNewsForItemCriteria('OppAtto', $id)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -34,13 +35,14 @@ class feedActions extends sfActions
     $id = $this->getRequestParameter('id');
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
+    
+    $c =  NewsPeer::getNewsForItemCriteria('OppPolitico', $id);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     $feed = $this->_make_feed_from_pager(
       'Ultime per ' . $politico, 
       '@parlamentare?id='.$id, 
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getNewsForItemCriteria('OppPolitico', $id)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -48,12 +50,13 @@ class feedActions extends sfActions
   
   public function executeLastGeneric()
   {
+    $c = NewsPeer::getHomeNewsCriteria();
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+    
     $feed = $this->_make_feed_from_pager(
       'Ultime dal Parlamento', 
       '@news_home', 
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getHomeNewsCriteria()
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -61,12 +64,13 @@ class feedActions extends sfActions
 
   public function executeLastDisegni()
   {
+    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DDL_TIPO_IDS);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+    
     $feed = $this->_make_feed_from_pager(
       'Ultime dal Parlamento, relative ai Disegni di Legge',
       '@news_attiDisegni',
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DDL_TIPO_IDS)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -74,12 +78,13 @@ class feedActions extends sfActions
 
   public function executeLastDecreti()
   {
+    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_TIPO_IDS);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+     
     $feed = $this->_make_feed_from_pager(
       'Ultime dal Parlamento, relative ai Decreti Legge', 
       '@news_attiDecreti',
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_TIPO_IDS)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -87,12 +92,13 @@ class feedActions extends sfActions
 
   public function executeLastDecretiLegislativi()
   {
+    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+    
     $feed = $this->_make_feed_from_pager(
       'Ultime dal Parlamento, relative ai Decreti Legislativi', 
       '@news_attiDecretiLegislativi',
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -100,12 +106,13 @@ class feedActions extends sfActions
   
   public function executeLastAttiNonLegislativi()
   {
+    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+    $c->addDescendingOrderByColumn(NewsPeer::DATE);
+    
     $feed = $this->_make_feed_from_pager(
       'Ultime dal Parlamento, relative agli atti non legislativi', 
       '@news_attiNonLegislativi',
-      $this->_get_newspager_from_criteria(
-        NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS)
-      )
+      $this->_get_newspager_from_criteria($c)
     );
     $this->_send_output($feed);
     return sfView::NONE;    
@@ -125,7 +132,7 @@ class feedActions extends sfActions
       return null;
     $pager = new deppNewsPager('News', sfConfig::get('app_pagination_limit'));
     $pager->setCriteria($c);
-    $pager->setPage($this->getRequestParameter('page', 1));
+    $pager->setPage($this->getRequestParameter('page',1));
     $pager->init();    
     return $pager;
   }
