@@ -332,7 +332,7 @@ p.wiki-form-submit { margin-left: 20px;}
 .presentation li { float: left;  margin-right: 30px; color: #888; }
 .presentation li em { color: #333; }
 
-.tags { font-size: 15px; padding-left: 30px; background: transparent url(../images/bg-ico-tags.png) no-repeat center left; margin-bottom: .8em; }
+.tags { font-size: 15px; padding-left: 30px; background: transparent url(../images/bg-ico-tags.png) no-repeat top left; margin-bottom: .8em; }
 .tags em { font-size: 16px; color: #4e8480; font-weight: bold; }
 .tags-add { margin-bottom: 1em; }
 
