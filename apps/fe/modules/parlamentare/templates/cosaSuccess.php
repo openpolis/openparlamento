@@ -84,6 +84,7 @@
           
   				<div class="politician-more-info">
   				    <?php if ($carica) : ?>	
+  				    	<p><label><?php echo $carica->getLegislatura()."&#186; legislatura: " ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?></label></p>
   					<p><label>gruppo:</label>  
   					
 					     <?php echo link_to($acronimo_gruppo_corrente,  
