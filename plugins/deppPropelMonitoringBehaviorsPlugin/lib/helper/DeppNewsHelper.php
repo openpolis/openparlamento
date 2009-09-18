@@ -286,7 +286,24 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
           if ($img==1)
               $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';               
         
-        $news_string .= "<td><p>".$politico_link . "<strong>interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
+        $news_string .= "<td><p>".$politico_link. "<strong>interviene</strong>";
+        if ($generator->getUrl()!=NULL) {
+        	if (substr_count($generator->getUrl(),'@')>0) {
+        		$int_urls=explode("@",$generator->getUrl()); 
+        		$intervento_link= " [vai ai testi";
+        		foreach ($int_urls as $cnt => $int_url) {
+        			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
+        		}
+        		$intervento_link= rtrim($intervento_link,",");
+        		$intervento_link .= "]";
+        	}
+        	else
+        		$intervento_link=" [".link_to('vai al testo',$generator->getUrl())."]"; 
+        }
+        else
+        	$intervento_link="";
+        	
+        $news_string .= $intervento_link." in ";
         if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
 
@@ -303,14 +320,49 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
          $news_string .= $generator->getOppSede()->getTipologia()." - ";
 
         $news_string .= ucfirst(strtolower($generator->getOppSede()->getDenominazione()));       
-        $news_string .= $politico_link . " ha effettuato <strong>un intervento</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." sull'atto </p></td>";
+        $news_string .= $politico_link . " <strong>&egrave; intervenuto</strong>";
+        if ($generator->getUrl()!=NULL) {
+        	if (substr_count($generator->getUrl(),'@')>0) {
+        		$int_urls=explode("@",$generator->getUrl()); 
+        		$intervento_link= " [vai ai testi";
+        		foreach ($int_urls as $cnt => $int_url) {
+        			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
+        		}
+        		$intervento_link= rtrim($intervento_link,",");
+        		$intervento_link .= "]";
+        	}
+        	else
+        		$intervento_link=" [".link_to('vai al testo',$generator->getUrl())."]"; 
+        }
+        else
+        	$intervento_link="";
+        	
+        $news_string .= $intervento_link." sull'atto </p></td>";
+        
       }  
       if ($context==2) 
       {  
          if ($img==1)
             $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-intervento.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';                                
-        $news_string .= "<td><p><strong>Interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
-         $news_string .= $generator->getOppSede()->getTipologia()." ";
+        $news_string .= "<td><p><strong>Interviene</strong>";
+         if ($generator->getUrl()!=NULL) {
+        	if (substr_count($generator->getUrl(),'@')>0) {
+        		$int_urls=explode("@",$generator->getUrl()); 
+         		$intervento_link= " [vai ai testi";
+        		foreach ($int_urls as $cnt => $int_url) {
+        			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
+        		}
+        		$intervento_link= rtrim($intervento_link,",");
+        		$intervento_link .= "]";
+        	}
+        	else
+        		$intervento_link=" [".link_to('vai al testo',$generator->getUrl())."]"; 
+        }
+        else
+        	$intervento_link="";
+        	
+        $news_string .= $intervento_link." in ";
+        $news_string .= $generator->getOppSede()->getTipologia()." ";
         
         $news_string .= strtoupper($generator->getOppSede()->getDenominazione())." su "; 
         $news_string .= $tipo->getDescrizione() . "</p>";
@@ -466,7 +518,25 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
                            '@parlamentare?id=' . $politico->getId(),
                            array('title' => 'Vai alla scheda del politico'));
       
-      $news_string .= "<td><p>".$politico_link . " <strong>interviene</strong>".($generator->getUrl()!=NULL ? ' ['.link_to('vai al testo',$generator->getUrl()).']' :'')." in ";
+      $news_string .= "<td><p>".$politico_link . " <strong>interviene</strong>";
+       if ($generator->getUrl()!=NULL) {
+        	if (substr_count($generator->getUrl(),'@')>0) {
+        		$int_urls=explode("@",$generator->getUrl()); 
+        		$intervento_link= " [vai ai testi";
+        		foreach ($int_urls as $cnt => $int_url) {
+        			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
+        		}
+        		$intervento_link= rtrim($intervento_link,",");
+        		$intervento_link .= "]";
+        	}
+        	else
+        		$intervento_link=" [".link_to('vai al testo',$generator->getUrl())."]"; 
+        }
+        else
+        	$intervento_link="";
+        	
+        $news_string .= $intervento_link." in ";
+        
       if ($generator->getOppSede()->getId()!=35 && $generator->getOppSede()->getId()!=36)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
       $news_string .= strtoupper($generator->getOppSede()->getDenominazione()); 
