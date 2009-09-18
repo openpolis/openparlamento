@@ -92,7 +92,7 @@
       </ul>
        <!-- tutto l'iter -->
        <?php if($status): ?>
-       	    <ul class="presentation float-container" style="margin-bottom:10px;">
+       	    <ul class="presentation float-container" style="margin-bottom:1px;">
                <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
                <?php if(count($iter_completo)!=0): ?>
 	          <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
