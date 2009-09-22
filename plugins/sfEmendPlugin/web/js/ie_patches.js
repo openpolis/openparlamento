@@ -1,4 +1,4 @@
-// (C) 2008 henrik.lindqvist@llamalab.com
+/*! (C) 2008 henrik.lindqvist@llamalab.com */
 
 (function(ap){if(!ap.every){ap.every=function(fn,thisp){for(var i=0,l=this.length;--l>=0;i++)
 if(i in this&&!fn.call(thisp,this[i],i,this))return false;return true;};}
@@ -15,7 +15,8 @@ if(!ap.map){ap.map=function(fn,thisp){var l=this.length;var r=new Array(l);for(v
 if(i in this)r[i]=fn.call(thisp,this[i],i,this);return r;};}
 if(!ap.some){ap.some=function(fn,thisp){for(var i=0,l=this.length;--l>=0;i++)
 if(i in this&&fn.call(thisp,this[i],i,this))
-return true;return false;};}})(Array.prototype);// Copyright 2006 Google Inc.
+return true;return false;};}})(Array.prototype);/*!
+// Copyright 2006 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,6 +29,7 @@ return true;return false;};}})(Array.prototype);// Copyright 2006 Google Inc.
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+*/
 
 
 // Known Issues:
@@ -939,7 +941,7 @@ if (!document.createElement('canvas').getContext) {
 })();
 
 } // if
-/*
+/*!
   XPath.js, an JavaScript implementation of XML Path Language (XPath) Version 1.0
   Copyright (C) 2008 Henrik Lindqvist <henrik.lindqvist@llamalab.com>
   

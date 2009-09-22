@@ -253,6 +253,8 @@ br.clear { clear: both; }
 .deletenote { background-image: url(images/comment_delete.png); }
 .editnote { background-image: url(images/comment_edit.png); }
 .sidebar-X-header div.linktoggle { width:15px; height:15px; text-decoration: none; float: right; margin-right: 5px; }
+#emend-modules { float: right; margin-right: 4px;}
+#emend-modules-content { clear: both; }
 .closesidebar { width:15px; height:15px; text-decoration: none; float: right;}
 .closesidebar:hover { display: block; width:15px; height:15px;}
 .extendsidebar { margin-right: 10px; }

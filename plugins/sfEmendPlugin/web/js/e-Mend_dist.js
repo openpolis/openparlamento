@@ -1,4 +1,4 @@
-// (C) 2008 henrik.lindqvist@llamalab.com
+/*! (C) 2008 henrik.lindqvist@llamalab.com */
 
 (function(ap){if(!ap.every){ap.every=function(fn,thisp){for(var i=0,l=this.length;--l>=0;i++)
 if(i in this&&!fn.call(thisp,this[i],i,this))return false;return true;};}
@@ -15,7 +15,8 @@ if(!ap.map){ap.map=function(fn,thisp){var l=this.length;var r=new Array(l);for(v
 if(i in this)r[i]=fn.call(thisp,this[i],i,this);return r;};}
 if(!ap.some){ap.some=function(fn,thisp){for(var i=0,l=this.length;--l>=0;i++)
 if(i in this&&fn.call(thisp,this[i],i,this))
-return true;return false;};}})(Array.prototype);// Copyright 2006 Google Inc.
+return true;return false;};}})(Array.prototype);/*!
+// Copyright 2006 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,6 +29,7 @@ return true;return false;};}})(Array.prototype);// Copyright 2006 Google Inc.
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+*/
 
 
 // Known Issues:
@@ -939,7 +941,7 @@ if (!document.createElement('canvas').getContext) {
 })();
 
 } // if
-/*
+/*!
   XPath.js, an JavaScript implementation of XML Path Language (XPath) Version 1.0
   Copyright (C) 2008 Henrik Lindqvist <henrik.lindqvist@llamalab.com>
   
@@ -2050,6 +2052,164 @@ Date.prototype.setISO8601 = function (string) {
     time = (Number(date) + (offset * 60 * 1000));
     this.setTime(Number(time));
 };
+/*!
+ * jQuery JSON Plugin
+ * version: 1.0 (2008-04-17)
+ *
+ * This document is licensed as free software under the terms of the
+ * MIT License: http://www.opensource.org/licenses/mit-license.php
+ *
+ * Brantley Harris technically wrote this plugin, but it is based somewhat
+ * on the JSON.org website's http://www.json.org/json2.js, which proclaims:
+ * "NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.", a sentiment that
+ * I uphold.  I really just cleaned it up.
+ *
+ * It is also based heavily on MochiKit's serializeJSON, which is 
+ * copywrited 2005 by Bob Ippolito.
+ */
+ 
+(function($) {   
+    function toIntegersAtLease(n) 
+    // Format integers to have at least two digits.
+    {    
+        return n < 10 ? '0' + n : n;
+    }
+
+    Date.prototype.toJSON = function(date)
+    // Yes, it polutes the Date namespace, but we'll allow it here, as
+    // it's damned usefull.
+    {
+        return this.getUTCFullYear()   + '-' +
+             toIntegersAtLease(this.getUTCMonth()) + '-' +
+             toIntegersAtLease(this.getUTCDate());
+    };
+
+    var escapeable = /["\\\x00-\x1f\x7f-\x9f]/g;
+    var meta = {    // table of character substitutions
+            '\b': '\\b',
+            '\t': '\\t',
+            '\n': '\\n',
+            '\f': '\\f',
+            '\r': '\\r',
+            '"' : '\\"',
+            '\\': '\\\\'
+        }
+        
+    $.quoteString = function(string)
+    // Places quotes around a string, inteligently.
+    // If the string contains no control characters, no quote characters, and no
+    // backslash characters, then we can safely slap some quotes around it.
+    // Otherwise we must also replace the offending characters with safe escape
+    // sequences.
+    {
+        if (escapeable.test(string))
+        {
+            return '"' + string.replace(escapeable, function (a) 
+            {
+                var c = meta[a];
+                if (typeof c === 'string') {
+                    return c;
+                }
+                c = a.charCodeAt();
+                return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
+            }) + '"'
+        }
+        return '"' + string + '"';
+    }
+    
+    $.toJSON = function(o, compact)
+    {
+        var type = typeof(o);
+        
+        if (type == "undefined")
+            return "undefined";
+        else if (type == "number" || type == "boolean")
+            return o + "";
+        else if (o === null)
+            return "null";
+        
+        // Is it a string?
+        if (type == "string") 
+        {
+            return $.quoteString(o);
+        }
+        
+        // Does it have a .toJSON function?
+        if (type == "object" && typeof o.toJSON == "function") 
+            return o.toJSON(compact);
+        
+        // Is it an array?
+        if (type != "function" && typeof(o.length) == "number") 
+        {
+            var ret = [];
+            for (var i = 0; i < o.length; i++) {
+                ret.push( $.toJSON(o[i], compact) );
+            }
+            if (compact)
+                return "[" + ret.join(",") + "]";
+            else
+                return "[" + ret.join(", ") + "]";
+        }
+        
+        // If it's a function, we have to warn somebody!
+        if (type == "function") {
+            throw new TypeError("Unable to convert object of type 'function' to json.");
+        }
+        
+        // It's probably an object, then.
+        ret = [];
+        for (var k in o) {
+            var name;
+            var type = typeof(k);
+            
+            if (type == "number")
+                name = '"' + k + '"';
+            else if (type == "string")
+                name = $.quoteString(k);
+            else
+                continue;  //skip non-string or number keys
+            
+            val = $.toJSON(o[k], compact);
+            if (typeof(val) != "string") {
+                // skip non-serializable values
+                continue;
+            }
+            
+            if (compact)
+                ret.push(name + ":" + val);
+            else
+                ret.push(name + ": " + val);
+        }
+        return "{" + ret.join(", ") + "}";
+    }
+    
+    $.compactJSON = function(o)
+    {
+        return $.toJSON(o, true);
+    }
+    
+    $.evalJSON = function(src)
+    // Evals JSON that we know to be safe.
+    {
+        return eval("(" + src + ")");
+    }
+    
+    $.secureEvalJSON = function(src)
+    // Evals JSON in a way that is *more* secure.
+    {
+        var filtered = src;
+        filtered = filtered.replace(/\\["\\\/bfnrtu]/g, '@');
+        filtered = filtered.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
+        filtered = filtered.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+        
+        if (/^[\],:{}\s]*$/.test(filtered))
+            return eval("(" + src + ")");
+        else
+            throw new SyntaxError("Error parsing JSON, source is not valid.");
+    }
+})(jQuery);
+/*! jQuery getScroll plugin using tips from http://www.quirksmode.org  */
+
 jQuery.getScroll = function (e){ 
     if (e) { 
         t = e.scrollTop; 
@@ -3864,6 +4024,25 @@ jQuery.cookie = function(name, value, options) {
     return $(context+selector).textNodes(true)[textNodeN];
   }
 })(jQuery);
+/*! 
+    e-Mend - a web comment system.
+    Copyright (C) 2006-2008 MemeFarmers, Collective.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+*/
+
 eMend.dictionary = {
   comment: {
     "delete_note_H": "Elimina questo commento",
@@ -3990,7 +4169,7 @@ commentGroup: '<span><div class="nodetoggle"><img src="_(baseURI)/less_big.png" 
 
 commentTrigger: '<ul class="lavalamp"><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(select_text)</span></h2></div><label><input type="checkbox" id="emendHideHOLcheck"/>_(disable_HOL)</label></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/pressC.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(activate_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/chat.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(write_comment)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/selectText.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(outside_boudaries)</span></h2></div></li><li><div class="HOLbg" style="background-image: url(_(baseURI)/orange-gradient.png);"><img src="_(baseURI)/password.png"/><h2 class="helpOnLine"><span class="pulse" unselectable="on">_(login_needed)</span></h2></div></li></ul>',
 
-sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
+sidebar: '<div class="sidebar-Y-header"><img src="_(baseURI)/ico-arrow-left.png" class="opensidebar" /><p class="version">0.3<br/>&beta;4</p><img src="_(baseURI)/emend-vertical.png" alt="e-mend"/></div><div class="sidebar-wrapper"><div class="sidebar-X-header"><!--<div class="extendsidebar"></div>--><img src="_(baseURI)/ico-arrow-right.png" class="closesidebar" /><div id="emend-modules"></div><img src="_(baseURI)/emend-horizontal.png" class="logo" alt="e-mend"/><sup class="version">0.3&beta;4</sup><div id="emend-modules-content"></div></div><div id="sidebar-body"></div><div id="memefarmers"><a href="http://memefarmers.net"><img src="_(baseURI)/memefarmers.png" /></a></div></div>'
 }
 
 })(jQuery);/* 
@@ -6125,163 +6304,7 @@ eMend.prefetch = function (options) {
     delete eMendBaseURI;
 }
 
-})(jQuery);/*
- * jQuery JSON Plugin
- * version: 1.0 (2008-04-17)
- *
- * This document is licensed as free software under the terms of the
- * MIT License: http://www.opensource.org/licenses/mit-license.php
- *
- * Brantley Harris technically wrote this plugin, but it is based somewhat
- * on the JSON.org website's http://www.json.org/json2.js, which proclaims:
- * "NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.", a sentiment that
- * I uphold.  I really just cleaned it up.
- *
- * It is also based heavily on MochiKit's serializeJSON, which is 
- * copywrited 2005 by Bob Ippolito.
- */
- 
-(function($) {   
-    function toIntegersAtLease(n) 
-    // Format integers to have at least two digits.
-    {    
-        return n < 10 ? '0' + n : n;
-    }
-
-    Date.prototype.toJSON = function(date)
-    // Yes, it polutes the Date namespace, but we'll allow it here, as
-    // it's damned usefull.
-    {
-        return this.getUTCFullYear()   + '-' +
-             toIntegersAtLease(this.getUTCMonth()) + '-' +
-             toIntegersAtLease(this.getUTCDate());
-    };
-
-    var escapeable = /["\\\x00-\x1f\x7f-\x9f]/g;
-    var meta = {    // table of character substitutions
-            '\b': '\\b',
-            '\t': '\\t',
-            '\n': '\\n',
-            '\f': '\\f',
-            '\r': '\\r',
-            '"' : '\\"',
-            '\\': '\\\\'
-        }
-        
-    $.quoteString = function(string)
-    // Places quotes around a string, inteligently.
-    // If the string contains no control characters, no quote characters, and no
-    // backslash characters, then we can safely slap some quotes around it.
-    // Otherwise we must also replace the offending characters with safe escape
-    // sequences.
-    {
-        if (escapeable.test(string))
-        {
-            return '"' + string.replace(escapeable, function (a) 
-            {
-                var c = meta[a];
-                if (typeof c === 'string') {
-                    return c;
-                }
-                c = a.charCodeAt();
-                return '\\u00' + Math.floor(c / 16).toString(16) + (c % 16).toString(16);
-            }) + '"'
-        }
-        return '"' + string + '"';
-    }
-    
-    $.toJSON = function(o, compact)
-    {
-        var type = typeof(o);
-        
-        if (type == "undefined")
-            return "undefined";
-        else if (type == "number" || type == "boolean")
-            return o + "";
-        else if (o === null)
-            return "null";
-        
-        // Is it a string?
-        if (type == "string") 
-        {
-            return $.quoteString(o);
-        }
-        
-        // Does it have a .toJSON function?
-        if (type == "object" && typeof o.toJSON == "function") 
-            return o.toJSON(compact);
-        
-        // Is it an array?
-        if (type != "function" && typeof(o.length) == "number") 
-        {
-            var ret = [];
-            for (var i = 0; i < o.length; i++) {
-                ret.push( $.toJSON(o[i], compact) );
-            }
-            if (compact)
-                return "[" + ret.join(",") + "]";
-            else
-                return "[" + ret.join(", ") + "]";
-        }
-        
-        // If it's a function, we have to warn somebody!
-        if (type == "function") {
-            throw new TypeError("Unable to convert object of type 'function' to json.");
-        }
-        
-        // It's probably an object, then.
-        ret = [];
-        for (var k in o) {
-            var name;
-            var type = typeof(k);
-            
-            if (type == "number")
-                name = '"' + k + '"';
-            else if (type == "string")
-                name = $.quoteString(k);
-            else
-                continue;  //skip non-string or number keys
-            
-            val = $.toJSON(o[k], compact);
-            if (typeof(val) != "string") {
-                // skip non-serializable values
-                continue;
-            }
-            
-            if (compact)
-                ret.push(name + ":" + val);
-            else
-                ret.push(name + ": " + val);
-        }
-        return "{" + ret.join(", ") + "}";
-    }
-    
-    $.compactJSON = function(o)
-    {
-        return $.toJSON(o, true);
-    }
-    
-    $.evalJSON = function(src)
-    // Evals JSON that we know to be safe.
-    {
-        return eval("(" + src + ")");
-    }
-    
-    $.secureEvalJSON = function(src)
-    // Evals JSON in a way that is *more* secure.
-    {
-        var filtered = src;
-        filtered = filtered.replace(/\\["\\\/bfnrtu]/g, '@');
-        filtered = filtered.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
-        filtered = filtered.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
-        
-        if (/^[\],:{}\s]*$/.test(filtered))
-            return eval("(" + src + ")");
-        else
-            throw new SyntaxError("Error parsing JSON, source is not valid.");
-    }
-})(jQuery);
-/* 
+})(jQuery);/* 
     e-Mend - a web comment system.
     Copyright (C) 2006-2008 MemeFarmers, Collective.
 
@@ -6566,24 +6589,23 @@ eMend.backstore.sfEmendPluginLog.prototype = {
 
 
 if (!window.console || !window.console.firebug) {
-
-    if (window.opera && !window.console) {
-      window.console = {};
-      function fn() { opera.postError(arguments); };
-      ['log', 'debug', 'info', 'warn', 'error', 'assert', 'dir', 'dirxml', 'group', 'groupEnd',
-       'time', 'timeEnd', 'count', 'trace', 'profile', 'profileEnd'].forEach(function(name) {
-        window.console[name] = fn;
-      });
-    } else {
-         var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
-                      "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
-                     ];  
-         window.console = {};  
-         // no more javascript errors in non-firefox browsers  
-         for (i in names) {  
-             window.console[names[i]] = function() {};  
-         }
-     }
+  if (window.opera && !window.console) {
+    window.console = {};
+    function fn() { opera.postError(arguments); };
+    ['log', 'debug', 'info', 'warn', 'error', 'assert', 'dir', 'dirxml', 'group', 'groupEnd',
+     'time', 'timeEnd', 'count', 'trace', 'profile', 'profileEnd'].forEach(function(name) {
+      window.console[name] = fn;
+    });
+  } else {
+       var names = ["dir", "dirxml", "group", "groupEnd", "trace", "profile", "profileEnd",
+		    "log", "debug", "info", "warn", "error", "time", "timeEnd", "assert", "count"
+		   ];  
+       window.console = {};  
+       // no more javascript errors in non-firefox browsers  
+       for (i in names) {  
+	   window.console[names[i]] = function() {};  
+       }
+   }
 }
 
 //=================================================
@@ -6594,110 +6616,111 @@ if (!window.console || !window.console.firebug) {
 
 (function($) {
 eMend.init = function($) {
-//eMend.init = function() {
-	if(eMend.status == 'running') return;
+  
+  if(eMend.status == 'running') return;
+  var cfg = eMend.config;
     
-    // backend
-    if(eMend.config.backend_debug) {
-        switch(eMend.config.backend_debug) {
-            case "sfEmendPluginLog":
-                eMend.log = eMend.backstore.sfEmendPluginLog();
-            break;
-        }
-    };
+  // backend
+  if(cfg.backend_debug) {
+    switch(cfg.backend_debug) {
+      case "sfEmendPluginLog":
+	  eMend.log = eMend.backstore.sfEmendPluginLog();
+      break;
+    }
+  };
     
     
-    // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
-    $('pre').addClass('keep-whitespace');
-	document.body.normalize();
-    $.fixOperaRangeSelectionBug();
-    var t = $(eMend.config.comment_target).get(0) || document.body;
-   
-    var html = t.innerHTML;
-    html = html.replace(/[\t\n\r\f]/gm, " ");  
-    html = html.replace(/>\s+</gm, "><");  
-    html = html.replace(/\s{2,}/gm, " ");      
-    t.innerHTML = html;
+  // cleanup document to possibly eliminate crossbrowser DOM inconsistencies
+  $('pre').addClass('keep-whitespace');
+  document.body.normalize();
+  $.fixOperaRangeSelectionBug();
+  var t = $(cfg.comment_target).get(0) || document.body;
+ 
+  var html = t.innerHTML;
+  html = html.replace(/[\t\n\r\f]/gm, " ");  
+  html = html.replace(/>\s+</gm, "><");  
+  html = html.replace(/\s{2,}/gm, " ");      
+  t.innerHTML = html;
 
-    $(eMend.config.comment_target).cleanWhitespace(true);
-    $('a').each(function(){
-        this.nodeValue = $.trim(this.nodeValue);
-    });     
+  $(cfg.comment_target).cleanWhitespace(true);
+  $('a').each(function(){
+      this.nodeValue = $.trim(this.nodeValue);
+  });     
     
-    document.body.normalize();
+  document.body.normalize();
     
-    // creates and attaches DATA and VISUAL containers
-	var DO = $('#eMend-DATA-Overlay').remove()[0] || $.create('div',{id:'eMend-DATA-Overlay', className:'hidden write-protect'})[0];
-	var VO = $('#eMend-VISUAL-Overlay').remove()[0] || $.create('div',{id:'eMend-VISUAL-Overlay', className:'write-protect'})[0];
-	
-	if($.browser.msie || $.browser.safari ) {
-		$(document.body).append(DO).append(VO);
-	} else {
-		$(document.body.parentNode).append(DO).append(VO);
-	}
-	
-    // instances and binds modules
-	var pf = eMend.prefetch({datastore: DO});
-	var SB = eMend.sidebar({target: VO});
-	var SBc = SB.getContainer();
-	
-	var ds = eMend.dataset({target: document.body, datastore: DO})
-	  , ps = eMend.positions()
-      , usr = eMend.users({dataset: ds})
-	  , rn = eMend.renderNotes({dataset: ds, target: SBc, positions: ps})
-	  , nb = eMend.navbar({target: SBc.parentNode, positions: ps})
-	  , cf = eMend.commentForm({dataset: ds, target: VO})
-	  , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB, users: usr})
-	  , ln = eMend.linker({target: VO, positions: ps});
+  // creates and attaches DATA and VISUAL containers
+  var DO = $('#eMend-DATA-Overlay').remove()[0] || $.create('div',{id:'eMend-DATA-Overlay', className:'hidden write-protect'})[0];
+  var VO = $('#eMend-VISUAL-Overlay').remove()[0] || $.create('div',{id:'eMend-VISUAL-Overlay', className:'write-protect'})[0];
+  
+  if($.browser.msie || $.browser.safari ) {
+    $(document.body).append(DO).append(VO);
+  } else {
+    $(document.body.parentNode).append(DO).append(VO);
+  }
+  
+  // instances and binds modules
+  var pf = eMend.prefetch({datastore: DO});
+  var SB = eMend.sidebar({target: VO});
+  var SBc = SB.getContainer();
+  
+  var ds = eMend.dataset({target: document.body, datastore: DO})
+    , ps = eMend.positions()
+    , usr = eMend.users({dataset: ds})
+    , rn = eMend.renderNotes({dataset: ds, target: SBc, positions: ps})
+    , nb = eMend.navbar({target: SBc.parentNode, positions: ps})
+    , cf = eMend.commentForm({dataset: ds, target: VO})
+    , ct = eMend.commentTrigger({target:VO, form: cf, sidebar: SB, users: usr})
+    , ln = eMend.linker({target: VO, positions: ps});
       
-    // backend
-    if(eMend.config.backend) {
-        switch(eMend.config.backend) {
-            case "sfEmendPlugin":
-                var sfbk = eMend.backstore.sfEmendPlugin({dataset: ds});
-                $(document).bind('emend.addComment',function(){ sfbk.addComment(); });
-            break;
-        }
-    };
+  // backend
+  if(cfg.backend) {
+    switch(cfg.backend) {
+      case "sfEmendPlugin":
+	var sfbk = eMend.backstore.sfEmendPlugin({dataset: ds});
+	$(document).bind('emend.addComment',function(){ sfbk.addComment(); });
+      break;
+    }
+  };
     	  
-	var emend_lastScrollTimer = -1;
-	var emend_lastScrollPosition = $.getScroll().t;
+  var emend_lastScrollTimer = -1;
+  var emend_lastScrollPosition = $.getScroll().t;
 	
 // EVENTS HANDLERS
     
-    // if sidebar is open refresh links
-	var F_refLinks = function(event, data){ if(SB.isOpen()) ln.refreshLinks(); }
-    // if sidebar is open refresh view
-	  , F_viewChange = function(event, data){ if(SB.isOpen()) rn.refreshView(); }
-    // hide links
-	  , F_hideLinks = function(event, data){ ln.hideLinks(); }
-    //clear links
-	  , F_clearLinks = function(event, data){ ln.clearLinks(); }
-    // refresh navbar
-	  , F_refnavbar = function(event, data){ nb.refresh(); }
-    // invalidate position cache when highlights are updated
-	  , F_updHL = function(event, data){ ps.invalidate('highlights','references'); }
-    // refresh highlights and sidebar notes 
-	  , F_refRender = function(event, data){ eMend.highlight(ds); rn.renderNotes(); }
-    // open sidebar
-	  , F_openSB = function(event, data){ SB.open(); }
-    // sends an event 450ms after scroll is over
-	  , F_afterscroll = function(event, data){
-            window.clearTimeout(emend_lastScrollTimer);
-            emend_lastScrollTimer = window.setTimeout(function(){
-                $(document).trigger('emend.afterscroll');
-            },450);
-	    }
-	;
+  // if sidebar is open refresh links
+    var F_refLinks = function(event, data){ if(SB.isOpen()) ln.refreshLinks(); }
+  // if sidebar is open refresh view
+      , F_viewChange = function(event, data){ if(SB.isOpen()) rn.refreshView(); }
+  // hide links
+      , F_hideLinks = function(event, data){ ln.hideLinks(); }
+  //clear links
+      , F_clearLinks = function(event, data){ ln.clearLinks(); }
+  // refresh navbar
+      , F_refnavbar = function(event, data){ nb.refresh(); }
+  // invalidate position cache when highlights are updated
+      , F_updHL = function(event, data){ ps.invalidate('highlights','references'); }
+  // refresh highlights and sidebar notes 
+      , F_refRender = function(event, data){ eMend.highlight(ds); rn.renderNotes(); }
+  // open sidebar
+      , F_openSB = function(event, data){ SB.open(); }
+  // sends an event 450ms after scroll is over
+      , F_afterscroll = function(event, data){
+	window.clearTimeout(emend_lastScrollTimer);
+	emend_lastScrollTimer = window.setTimeout(function(){
+	    $(document).trigger('emend.afterscroll');
+	},450);
+      }
+    ;
     
     delayedRefresh = function() {
-        var scroll_Y = $.getScroll().t;
-        // filter spurious scroll events for Webkit based browsers
-        if(emend_lastScrollPosition != scroll_Y ) {
-            F_hideLinks();
-            F_afterscroll();
-            emend_lastScrollPosition = scroll_Y;
-        }
+      var scroll_Y = $.getScroll().t;
+      // filter spurious scroll events for Webkit based browsers
+      if(emend_lastScrollPosition != scroll_Y ) {
+	  F_hideLinks();
+	  F_afterscroll();
+	  emend_lastScrollPosition = scroll_Y;
+      }
     };
 
 //=================================================	
@@ -6767,47 +6790,67 @@ eMend.init = function($) {
 // OPTIONAL BINDINGS
 //=================================================
 	
-//
-// scroll_refresh_delay: [true/false]
-//
+  //
+  // scroll_refresh_delay: [true/false]
+  //
+    
+    if(cfg.scroll_refresh_delay) {
+	// hide links and repaint view after a certain delay after the last scroll event
+	$(window).scroll(delayedRefresh);
+    } else {
+	// immediately repaint after each scroll event
+	$(window).scroll(F_refLinks);
+	$(window).scroll(F_afterscroll);        
+    }
+    
+  //
+  // backend: [sfEmendPlugin(/Wordpress/MediaWiki)]
+  //
+    
+    if(cfg.backend) {
+	$(document).bind('emend.loggedIn', function(event, data) { usr.login(event,data); ct.show(0); });
+	$(document).bind('emend.loggedOut', function(event, data) { usr.logout(); ct.show(4); });
+    }
+    
+  //  
+  // backstore_tiddly: [true/false]
+  //
+    
+    if(cfg.backstore_tiddly) {
+	// instances tiddly module
+	var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
+	// ping it when a comment is added
+	$(document).bind('emend.addComment',function(){ bk.addComment(); });
+    };
+    
+//=================================================	
+// OPTIONAL MODULES
+//=================================================
 
-if(eMend.config.scroll_refresh_delay) {
-    // hide links and repaint view after a certain delay after the last scroll event
-    $(window).scroll(delayedRefresh);
-} else {
-    // immediately repaint after each scroll event
-    $(window).scroll(F_refLinks);
-    $(window).scroll(F_afterscroll);        
-}
+    if(cfg.modules) {
+      var c = $('#emend-modules'), i, n;
+      for(i=0; i < cfg.modules.length; i++) {
+	n = cfg.modules[i];
+	$('<img>')
+	.attr(
+	    {
+	      id: 'emend-plugin-' + n,
+	      src: cfg.baseURI + 'modules/' + n + '/' + n + '.png'
+	    })
+	.appendTo(c);
+	eMend.loadJS(cfg.baseURI + 'modules/' + n + '/' + n + '.load.js',true);
+      }
+    }
 
-//
-// backend: [sfEmendPlugin(/Wordpress/MediaWiki)]
-//
-
-if(eMend.config.backend) {
-    $(document).bind('emend.loggedIn', function(event, data) { usr.login(event,data); ct.show(0); });
-    $(document).bind('emend.loggedOut', function(event, data) { usr.logout(); ct.show(4); });
-}
-
-//  
-// backstore_tiddly: [true/false]
-//
-
-if(eMend.config.backstore_tiddly) {
-    // instances tiddly module
-    var bk = eMend.backstore.tiddly({dataset: ds, datastore: DO});
-    // ping it when a comment is added
-    $(document).bind('emend.addComment',function(){ bk.addComment(); });
+    
+//=================================================    
+// INIT done
+//=================================================    
+  eMend.status = 'running';    
 };
-
-    eMend.status = 'running';    
-};
-
-
 
 if(typeof eMendInit != 'undefined' && eMendInit == true) eMend.init(jQuery);
 $(document).ready(function(){ eMend.init(jQuery) });
-//jQuery(document).ready(function(){ eMend.init(jQuery) });
 
 })(jQuery);
 if(eMend.config.jquery_noconflict) {
