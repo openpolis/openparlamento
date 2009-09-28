@@ -119,6 +119,7 @@ propel:
     file_pdf:         { type: blob }
     url_testo:        { type: varchar(1024) }
     url_pdf:          { type: varchar(1024) }
+    dossier:          { type: tinyint, required: true, default: 0 }
     created_at:
     
   opp_gruppo:
