@@ -75,8 +75,10 @@ class attoComponents extends sfComponents
   
   public function executeDocumenti()
   {
-    $this->documenti = $this->atto->getOppDocumentos();
-	$this->documenti_count = $this->atto->countOppDocumentos();
+    $c = new Criteria();
+    $c -> add(OppDocumentoPeer::DOSSIER,0);
+    $this->documenti = $this->atto->getOppDocumentos($c);
+	$this->documenti_count = $this->atto->countOppDocumentos($c);
 	
 	$this->limit = 5;
 	$this->limit_count = 0;
