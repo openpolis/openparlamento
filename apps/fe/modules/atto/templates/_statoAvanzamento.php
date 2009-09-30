@@ -1,11 +1,11 @@
 <?php use_helper('AttoIter'); ?>
 <?php if ($atto->getTipoAttoId()==1 or $atto->getTipoAttoId()==12) : ?>
-<h5 class="subsection">
+<h6 style="color:#888888; margin-bottom: 12px;">
 <?php if ($atto->getTipoAttoId()==1): ?>
-   <?php echo "iter parlamentare della legge:" ?>
+   <?php echo "iter parlamentare del disegno di legge:" ?> 
 <?php endif; ?>
 <?php if ($atto->getTipoAttoId()==12): ?>
-   <?php echo "iter parlamentare di conversione in legge:" ?>
+   <?php echo "iter parlamentare di conversione del decreto legge:" ?>
 <?php endif; ?>       
 
 <span class="tools-container"><?php echo link_to("&nbsp;", '#', array( 'class'=>'ico-help')) ?></span>
@@ -20,7 +20,7 @@
   </div>
 </div>
 <br />
-</h5>
+</h6>
 
 
 	<!-- Relazioni -->
@@ -39,7 +39,7 @@
 
 
 
-<?php if ($rappresentazioni_pred) : ?>
+<?php if ($rappresentazioni_pred and $rappresentazioni_pred[0][2]!="conclusione anomala per stralcio") : ?>
    
     <?php if($rappresentazioni_pred[0][7]!='12') : ?>
        <li class="step-yes"><span class="date"><?php echo format_date($rappresentazioni_pred[0][6], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($rappresentazioni_pred[0][3].'.'.$rappresentazioni_pred[0][4],'atto/index?id='.$rappresentazioni_pred[0][5]) ?></strong>
@@ -91,8 +91,10 @@
    
   
 <!--  CONTROLLO SE HA SUCC CHIUSI  -->
-  
-<?php if($rappresentazioni_succ) : ?>
+
+
+
+<?php if($rappresentazioni_succ and substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')==0) : ?>
 
       <?php foreach($rappresentazioni_succ as $rappresentazione_succ): ?>
           <?php if(substr_count($rappresentazione_succ[2],'ritirato')==0 and substr_count($rappresentazione_succ[2],'respinto')==0 and substr_count($rappresentazione_succ[2],'decreto legge decaduto')==0 and substr_count($rappresentazione_succ[2],'conclusione anomala per stralcio')==0 and  $rappresentazione_succ[2]!=='approvato definitivamente. Legge') : ?>
@@ -141,7 +143,7 @@
 
       <!--  NON HA SUCC CHIUSI. CONTROLLO SE HA SUCC ATTIVI -->
     
-      <?php if($lettura_parlamentare_successiva) : ?>
+      <?php if($lettura_parlamentare_successiva and substr_count($rappresentazione_this[2],'conclusione anomala per stralcio')==0) : ?>
         <li class="step-now"><span class="date"></span> <strong><?php echo link_to($lettura_parlamentare_successiva->getRamo().'.'.$lettura_parlamentare_successiva->getNumfase(), 'atto/index?id='.$lettura_parlamentare_successiva->getId()) ?></strong>
         <p>da approvare <?php echo ($lettura_parlamentare_successiva->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
         <?php if ($atto->getTipoAttoId()==12) : ?>
@@ -157,6 +159,7 @@
         <?php endif; ?> 
          
         <?php if(!$leggi_this ) : ?>
+        
                <?php if(!$rappresentazioni_pred ) : ?>
                     <?php if($rappresentazioni_this) : ?> 
                         <?php foreach($rappresentazioni_this as $rappresentazione_this): ?>
@@ -173,6 +176,7 @@
                      <?php endif; ?>  
                
                <?php else: ?>
+               
                   <?php if($rappresentazioni_pred[0][7]=='12') : ?>
                      
                       <?php if($rappresentazioni_this) : ?> 
@@ -191,7 +195,12 @@
                           <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
                       <?php endif; ?>
                   <?php else: ?>    
-                      <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
+                      <?php if ($rappresentazioni_pred[0][2]!="conclusione anomala per stralcio") : ?>
+                             <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
+                      <?php else: ?>
+                             <li><span class="date">&nbsp;</span><p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+                             <li><span class="date">&nbsp;</span><p>diventa legge</p></li> 
+                      <?php endif; ?>       
                   <?php endif; ?>
               <?php endif; ?>                
                              

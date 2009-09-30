@@ -1,4 +1,4 @@
-<li><p class="indent">guarda tutta la cronistoria dell'atto ...	 [ <a href="#" class="btn-open action">apri</a> <a href="#" class="btn-close action" style="display:none;">chiudi</a> ]</p>
+<li><p class="indent" style="margin-bottom: 0px;">guarda tutta la cronistoria dell'atto ...	 [ <a href="#" class="btn-open action">apri</a> <a href="#" class="btn-close action" style="display:none;">chiudi</a> ]</p>
 <div class="more-results float-container" style="display: none;">
    <ul class="square-bullet">
    <?php foreach($iter_completo as $iter => $data): ?>
