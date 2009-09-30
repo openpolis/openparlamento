@@ -270,24 +270,44 @@ class OppAttoPeer extends BaseOppAttoPeer
     public static function getRelazioni($id)
   {
     $relazioni = array(); 
-	
+	 // testo unificato o assorbito
 	$c = new Criteria();
 	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
-	$rss = OppRelazioneAttoPeer::doSelect($c);
-	if (count($rss)!=0) {
-	     $c1= new Criteria();
-	     $c1->add(OppTipoRelazionePeer::ID,$rss[0]->getTipoRelazioneId());
-	     $descrizione_relazione= OppTipoRelazionePeer::doSelectOne($c1);
-	}     
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,array(1,2,4),Criteria::IN);
+	$unificati = OppRelazioneAttoPeer::doSelect($c);     
 	
-	foreach ($rss as $rs)
+	foreach ($unificati as $unificato)
     	{
-    	    $c = new Criteria();
-	    $c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
-	    $rss = OppRelazioneAttoPeer::doSelect($c);	
-	    array_push($relazioni,array($rs->getAttoToId(),$descrizione_relazione->getDenominazione(),$rs->getDescrizione()));  
+	    array_push($relazioni,array($unificato->getAttoToId(),$unificato->getOppTipoRelazione()->getDenominazione(),$unificato->getDescrizione(),0));  
 	}
-    
+	
+	// stralcio FROM
+        $c = new Criteria();
+	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,3);
+	$from_stralci = OppRelazioneAttoPeer::doSelect($c);
+	
+	foreach ($from_stralci as $from_stralcio)
+    	{
+	    array_push($relazioni,array($from_stralcio->getAttoToId(),$from_stralcio->getOppTipoRelazione()->getDenominazione(),$from_stralcio->getDescrizione(),1));  
+	}
+	
+	// stralcio TO
+        $c = new Criteria();
+	$c->add(OppRelazioneAttoPeer::ATTO_TO_ID,$id);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,3);
+	$to_stralci = OppRelazioneAttoPeer::doSelect($c);
+	
+	foreach ($to_stralci as $to_stralcio)
+    	{
+    	     $c = new Criteria();
+             $c -> add(OppAttoPeer::ID,$to_stralcio->getAttoFromId());
+             $rs = OppAttoPeer::doSelectOne($c);
+             $sigla=$rs->getRamo().".".$rs->getNumfase();
+	    array_push($relazioni,array($to_stralcio->getAttoFromId(),$to_stralcio->getOppTipoRelazione()->getDenominazione(),$sigla,2));  
+	}
+	
+	
 	return $relazioni;
   }
   
