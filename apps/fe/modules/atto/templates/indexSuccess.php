@@ -80,7 +80,7 @@
             <?php echo Text::denominazioneAtto($atto, 'index') ?>    
           </p>
       
-      <ul class="presentation float-container" style="margin-bottom:10px;">
+      <ul class="presentation float-container" style="margin-bottom:12px;">
         <li><h6>presentato il: <em><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></em></h6></li>
         
         <?php if($tipo_iniziativa != ''): ?>
@@ -92,7 +92,7 @@
       </ul>
        <!-- tutto l'iter -->
        <?php if($status): ?>
-       	    <ul class="presentation float-container" style="margin-bottom:10px;">
+       	    <ul class="presentation float-container" style="margin-bottom:12px;">
                <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
                <?php if(count($iter_completo)!=0): ?>
 	          <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
