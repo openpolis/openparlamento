@@ -799,7 +799,7 @@ function community_news_text($news)
           if ($news->getTotal()>0)
           {
             if ($news->getTotal()>1)
-               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto agli  %d che stanno monitorando %s</p><p> %s", 
+               return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto agli altri %d che stanno monitorando %s</p><p> %s", 
                               image_tag('/images/ico-type-monitoring.png', array('alt' => 'monitor')),$news->getTotal(), $item_type, $link); 
             else
                return sprintf("<div class='ico-type float-left'>%s</div><p>un utente si è aggiunto a un altro che sta monitorando %s</p><p> %s", 
