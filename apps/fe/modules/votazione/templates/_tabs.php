@@ -1,8 +1,20 @@
+<?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+<ul id="content-tabs" class="float-container tools-container">
+  <li class="<?php echo($current == 'voti_chiave' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Voti-chiave', 'votazione/keyvotes') ?></h2>   
+  </li>
+  <li class="<?php echo($current == 'voti_tutti' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Tutte le votazioni', 'votazione/list') ?></h2>   
+  </li>
+</ul>
+
+<?php else :?>
 <ul id="content-tabs" class="float-container tools-container">
   <li class="current">
     <h2><?php echo link_to('Votazioni', 'votazione/list') ?></h2>   
   </li>
 </ul>
+<?php endif ?>
 
 <!--
 <h1>legislatura: 

@@ -298,7 +298,7 @@ class votazioneActions extends sfActions
     }
     
     $this->processListSort();
-
+ 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
@@ -315,6 +315,25 @@ class votazioneActions extends sfActions
     $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
 	  $this->pager->init();
 		
+  }
+  
+  public function executeKeyvotes()
+  {
+  $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle('I voti chiave di Camera e Senato - '.sfConfig::get('app_main_title'));
+    
+    
+     $c = new Criteria();
+     $c->addJoin(OppVotazionePeer::ID,sfLaunchingPeer::OBJECT_ID);
+     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
+     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     $this->votazioni=OppVotazionePeer::doSelect($c);
+     
+  
   }
   
   

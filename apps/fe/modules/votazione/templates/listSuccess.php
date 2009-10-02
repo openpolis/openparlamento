@@ -1,6 +1,6 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs') ?>
+<?php include_partial('tabs', array('current' => 'voti_tutti')) ?>
 
 <div id="content" class="tabbed float-container">
   <div id="main">
@@ -33,5 +33,5 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  votazioni
+  tutte le votazioni
 <?php end_slot() ?>
