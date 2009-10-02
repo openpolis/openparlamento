@@ -144,6 +144,36 @@ class parlamentareComponents extends sfComponents
     
   }
   
+  
+  public function executeKeyvote()
+  {
+   // atti e voti in evidenza
+   
+     $this->limit = 5;
+     $this->limit_count = 0;
+     
+     $this->lanci=array();
+     $c = new Criteria();
+     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
+     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     $evidences=sfLaunchingPeer::doSelect($c);
+     foreach ($evidences as $evidence) {
+        $c1= new Criteria();
+        $c1->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
+        $c1->addJoin(OppCaricaPeer::ID,OppVotazioneHasCaricaPeer::CARICA_ID);
+        $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,$this->carica->getId());
+        $c1->add(OppSedutaPeer::RAMO,($this->ramo=='Senato' ? 'S' : 'C'));
+     	$c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$evidence->getObjectId());
+     	$result=OppVotazioneHasCaricaPeer::doSelectOne($c1);
+     	if ($result)
+     	  $this->lanci[]=array($result->getOppVotazione(),$evidence->getObjectModel(),$result->getVoto()); 
+     }
+     
+
+  
+  }
+  
      public function executeVotiComparati()
   {
     
