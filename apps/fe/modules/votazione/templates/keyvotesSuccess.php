@@ -13,7 +13,7 @@
     <div class="W73_100 float-left">
       <?php include_partial('wikiKeyVotes') ?>  
       <p>&nbsp;</p>  
-      <?php include_partial('keyvotes', array('votazioni' => $votazioni)) ?> 
+      <?php include_component('votazione','keyvotes', array('limit' => '0')) ?> 
     </div>
     <div class="clear-both"></div>
   </div>

@@ -167,11 +167,21 @@ class votazioneComponents extends sfComponents
      $gchartRibelli="http://chart.apis.google.com/chart?chs=350x130&chd=t:".$valore."&cht=p&chl=".$label."&chdlp=bv"; 
      $this->gchartRibelli=$gchartRibelli;
    
-   
-   
-   
-   
    }
+   
+    public function executeKeyvotes()
+  { 
+     $c = new Criteria();
+     $c->addJoin(OppVotazionePeer::ID,sfLaunchingPeer::OBJECT_ID);
+     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
+     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     if ($this->limit!=0)
+        $c->setLimit($this->limit);
+     $this->votazioni=OppVotazionePeer::doSelect($c);
+     
+  
+  }
    
         
 }
