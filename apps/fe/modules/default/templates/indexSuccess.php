@@ -103,6 +103,11 @@ jQuery(document).ready(function(){ embedIntro(); });
 	   <?php endif; ?>   
 	  </div>
 	  
+	   <!-- box keyvotes -->
+	   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+	     <?php include_component('votazione','keyvotes', array('limit' => '3', 'pagina' => 'homepage')) ?> 
+	  <?php endif; ?>
+	  
 	   <!-- box in evidenza dal parlamento -->
 	  <?php if (count($lanci)>0) : ?>
           <div class="section-box">
@@ -114,8 +119,10 @@ jQuery(document).ready(function(){ embedIntro(); });
 				  <?php endforeach; ?>	
 					
 				</ul>
-			</div>	
-			<?php endif; ?>	
+	  </div>	
+	  <?php endif; ?>
+	  
+	  	
 	</div>
 	  
       </div>
