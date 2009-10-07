@@ -149,7 +149,7 @@ class parlamentareComponents extends sfComponents
   {
    // atti e voti in evidenza
    
-     $this->limit = 5;
+     $this->limit = 2;
      $this->limit_count = 0;
      
      $this->lanci=array();

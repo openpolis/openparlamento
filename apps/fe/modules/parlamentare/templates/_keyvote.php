@@ -1,10 +1,10 @@
 <?php if (count($lanci)>0) : ?>
-<h5 class="subsection-alt">I suoi voti-chiave</h5>
-<p class="tools-container"><a class="ico-help" href="#">cosa sono i voti-chiave</a></p>
+<h5 class="subsection-alt">Nei voti chiave:</h5>
+<p class="tools-container"><a class="ico-help" href="#">cosa sono i voti chiave</a></p>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti-chiave ?</h5>
-  					<p>Sono i voti maggiormente significativi nella legislatura e riguardano quei provvedimenti di cui si ....</p>
+  					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti chiave ?</h5>
+  					<p>Sono le votazioni pi&ugrave; importanti della legislatura sia per la rilevanza della materia trattata, sia per il valore politico del voto.</p>
   				</div>
   			</div>
   	<br />	
