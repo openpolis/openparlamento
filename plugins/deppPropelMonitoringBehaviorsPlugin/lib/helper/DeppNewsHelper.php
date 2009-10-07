@@ -541,17 +541,10 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
          $news_string .= $generator->getOppSede()->getTipologia()." ";
       $news_string .= strtoupper($generator->getOppSede()->getDenominazione()); 
       
-      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera su' : ' al Senato su';
-     
-                           
-      
-      if ($context!=0)
-      {
+      $news_string .= ($news->getRamoVotazione()=='C')?' alla Camera su' : ' al Senato su'; 
         $news_string .= " ".$tipo->getDescrizione() . "</p>";
         $news_string .= '<p>'.$atto_link.'</p></td>';
-      }
-      else 
-        $news_string .= "ll'atto</p></td>";
+
       
     }
 
@@ -560,10 +553,10 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
      $tipo_firma=$generator->getTipo();
       switch ($tipo_firma) {
         case "P":
-        $tipo_firma='presentat';
+        $tipo_firma='presentato';
         break;
         case "C":
-        $tipo_firma='firmat';
+        $tipo_firma='firmato';
         break;
         case "R":
         $tipo_firma='&egrave; relatore';
@@ -579,10 +572,9 @@ function news_text($news,$context=1,$img=1, $in_mail=false)
             $news_string .= '<td class="icon-id" style="width: 60px;">'.image_tag('/images/ico-type-ordinanza.png',array('size' => '44x42', 'absolute' => $in_mail)).'</td>';  
         $news_string .= "<td><p>";
         $news_string .= $politico_link;
-        $news_string .= " <strong>ha ".$tipo_firma. ($gender=='m'?'o':'a') . "</strong> l'atto</p></td>";
-         
-     //   $news_string .= $tipo->getDescrizione() . "</p>";
-     //   $news_string .= '<p>'.$atto_link.'</p></td>';
+        $news_string .= " <strong>ha ".$tipo_firma. "</strong>";
+        $news_string .= $tipo->getDescrizione() . "</p>";
+        $news_string .= '<p>'.$atto_link.'</p></td>';
         
       }        
     }
