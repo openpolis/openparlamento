@@ -43,7 +43,16 @@
 <?php if ($pagina=='homepage') : ?>
   <?php if (count($votazioni)>0) : ?>
     <div class="section-box">
-      <h3 class="section-box-no-rss">voti chiave</h3>				
+      <h3 class="section-box-no-rss">voti chiave <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>	
+      
+  			<div style="display: none;" class="help-box float-container">
+  				<div class="inner float-container" style="font-size:12px;">		
+  					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti chiave ?</h5>
+  					<p>Sono le votazioni pi&ugrave; importanti della legislatura sia per la rilevanza della materia trattata, sia per il valore politico del voto.</p>
+  				</div>
+  			</div>
+  </h3>			
+  					
 	<ul id="law-n-acts-proposals">
 	  <?php foreach ($votazioni as $votazione): ?>
 	    <li class="float-container">

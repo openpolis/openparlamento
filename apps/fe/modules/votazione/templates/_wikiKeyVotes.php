@@ -4,9 +4,6 @@
     
     <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>	   	  
     <h5>cosa sono i voti chiave ?</h5>
-    <p>In pan philologos questiones interlingua. Sitos pardona flexione pro de, sitos africa e uno, 
-    maximo parolas instituto non un. Libera technic appellate ha pro, il americas technologia web, 
-    qui sine vices su. Tu sed inviar quales, tu sia internet registrate, e 
-    como medical national per</p>
+    <p>Sono le votazioni pi&ugrave; importanti della legislatura sia per la rilevanza della materia trattata, sia per il valore politico del voto.</p>
   </div>
 </div>
