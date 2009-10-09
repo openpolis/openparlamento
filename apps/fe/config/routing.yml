@@ -195,6 +195,10 @@ votazioniSearch:
   url: /votazioniSearch/*
   param: { module: sfSolr, action: votazioniSearch }
 
+voti chiave:
+  url:   /votazioni/keyvotes
+  param: { module: votazione, action: keyvotes }
+  
 votazioni:
   url:   /votazioni/:sort/:type/*
   param: { module: votazione, action: list, sort: data, type: desc, display: false }
