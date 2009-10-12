@@ -4,7 +4,7 @@
   <div id="main" style="padding: 2.5em 1em">
     <h3>Adesione al servizio Premium</h3>
     
-    <p>Grazie per aver aderito a openparlamento premium in promozione gratuita fino al 15 ottobre.</p>    
+    <p>Grazie per aver aderito a openparlamento premium in promozione gratuita fino al 30 novembre 2009.</p>    
     <p style="margin-top:2em;">Stiamo sperimentando, per la prima volta in Italia, un servizio di <b>monitoraggio
       parlamentare distribuito</b> attraverso la rete. 
     </p>
