@@ -5,6 +5,20 @@
   $sf_site_url = sfConfig::get('sf_site_url', 'openparlamento');
 ?>
 
+
+IMPORTANTE!
+===========
+
+Il rinnovo del sito della Camera dei Deputati comporterà, da lun. 12 ottobre, la sospensione
+per qualche tempo di parte dei nostri servizi. Ce ne scusiamo e vi promettiamo che avrete al più
+presto un monitoraggio sempre migliore e competo. (per saperne di più)
+http://parlamento.openpolis.it/blog/2009/10/08/la-camera-rinnova-il-sito-e-openparlamento-per-un-p-andra-a-scartamento-ridotto
+
+buona partecipazione!
+openpolis/openparlamento
+
+
+
 Le ultime notizie
 =================
 

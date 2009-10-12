@@ -13,9 +13,21 @@
     </tr>
 </table>
 
+<h2>IMPORTANTE!</h2>
+<p>
+Il rinnovo del sito della Camera dei Deputati comporterà, da lun. 12 ottobre, la sospensione
+per qualche tempo di parte dei nostri servizi. Ce ne scusiamo e vi promettiamo che avrete al più
+presto un monitoraggio sempre migliore e competo.<br/>
+<a href="http://parlamento.openpolis.it/blog/2009/10/08/la-camera-rinnova-il-sito-e-openparlamento-per-un-p-andra-a-scartamento-ridotto">click qui</a> per saperne di pi&ugrave;<br/>
+<br/>
+buona partecipazione!<br/>
+openpolis/openparlamento<br/>
+</p>
+
 <h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">Le ultime notizie</h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
+  
   <?php foreach ($grouped_news as $date_ts => $news): ?>
     <tr><td colspan="3">&nbsp;</td></tr>
 
