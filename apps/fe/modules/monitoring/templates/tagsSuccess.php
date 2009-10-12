@@ -10,6 +10,10 @@
         <?php echo $sf_flash->get('subscription_promotion') ?>
       </div>
     <?php endif; ?>
+    <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>    
+    <div style="width:40%; font-size:14px; line-height:1.2em; border:1px solid #EE7F00; padding:5px;" >Approfitta subito della <strong>promozione gratuita valida fino al 30 novembre 2009</strong>: diventa un utente premium di openparlamento.<br /> <strong><?php echo link_to('Scopri il servizio premium e aderisci gratuitamente!','http://parlamento.openpolis.it/sottoscrizioni_pro') ?> </strong>
+      </div>
+      <?php endif; ?>
 
 
     <?php if ($opp_user->getNMonitoredTags()>0): ?>
