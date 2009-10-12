@@ -45,7 +45,7 @@
           <h4>Qual &egrave; la tua attivit&agrave; principale?</h4>
           <ul class="main">
             <li>
-              <?php echo radiobutton_tag('attivita[]', 1, false ), '&nbsp;', label_for('attivita_1_1', 'studente'); ?>
+              <?php echo radiobutton_tag('attivita[]', 1, false,'width:0px' ), '&nbsp;', label_for('attivita_1_1', 'studente'); ?>
             </li>
 
             <br/>
