@@ -63,7 +63,7 @@
                         <td class="bg-green-light">--</td>
                         <td class="bg-green-light round-5-right"><p>in promozione<br />
                                 GRATUITA fino al<br />
-                                15 Ottobre<br />
+                                30 novembre!<br />
                                 <?php if (!$sf_user->isAuthenticated()): ?>
                                   per utenti <?php echo link_to('registrati', '@sf_guard_signin') ?>
                                 <?php endif ?>
@@ -121,9 +121,9 @@
             
             <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
               <div class="W48_100 float-left">
-                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" /> <img src="/images/15-ott-promo.png" alt="gratis fino al 15 ottobre" class="promo-banner"/>
+                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" />
                       <p>In occasione del lancio di openparlamento<br />
-                          <em class="round-3"> in prova gratuita fino al 15 ottobre 2009 avrai: </em>
+                          <em class="round-3"> in prova gratuita fino al 30 novembre 2009 avrai: </em>
                      </p>
                       <ul>
                           <li>
