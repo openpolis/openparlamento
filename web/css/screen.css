@@ -1185,7 +1185,7 @@ li.top_term li a:hover { background-color: #ededed;}
 .sfWebDebugLogs td { text-align: left; }
 form.subscribe-form ul.main>li { margin-top: 0.5em;  }
 
-form#premium-form { font-size: 16px; }
+form#premium-form { font-size: 14px; }
 form#premium-form div.form-row input, form#premium-form select { border: 1px solid gray; height: 20px; padding: 3px; }
 form#premium-form h4 { margin-top: 0.5em; margin-bottom: 0.3em;} 
 
@@ -1200,14 +1200,14 @@ form#premium-form div#attivita {
   margin-top: 0.5em; 
   height: 700px;
 }
-form#premium-form div#attivita input { width: 450px; margin-bottom: 0.1em; }
+form#premium-form div#attivita input {margin-bottom: 0.1em; }
 
 form#premium-form div#perche { 
   background:transparent url(../images/bg-premium-form-perche.png) no-repeat scroll left top; 
   margin-top: 1.5em; 
   height: 170px;
 }
-form#premium-form div#perche input { width: 450px; margin-bottom: 0.2em; }
+form#premium-form div#perche input { margin-bottom: 0.2em; }
 
 
 
