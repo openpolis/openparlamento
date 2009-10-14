@@ -739,7 +739,7 @@ class parlamentareActions extends sfActions
         $this->ramo=$this->getRequestParameter('ramo');
         if ($this->getRequestParameter('id1')!=0 && $this->getRequestParameter('id2')!=0)
          {
-           $this->getResponse()->setTitle('parlamentari a confronto - '.sfConfig::get('app_main_title'));
+           
 	  $this->session = $this->getUser();
           $this->query = $this->getRequestParameter('query', '');
           
@@ -758,7 +758,7 @@ class parlamentareActions extends sfActions
           $carica2=$politico->getCaricaDepSenCorrente();
          
           
-          $c1= new Criteria();
+    $c1= new Criteria();
 	  $c1->add(OppVotazioneHasCaricaPeer::VOTO,array('Favorevole','Contrario','Astenuto'),Criteria::IN);
 	  $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,array($carica1->getId(),$carica2->getId()),Criteria::IN);
 	  $results=OppVotazioneHasCaricaPeer::doSelect($c1);
@@ -796,13 +796,14 @@ class parlamentareActions extends sfActions
 	  
  	  $this->compara_ok='1';
  	  
- 	  
+$this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a confronto:'.$carica1->getOppPolitico()->getCognome().' vs '.$carica2->getOppPolitico()->getCognome().' - '.sfConfig::get('app_main_title')); 	  
  	  
  	}
  	else 
  	{
  	  $this->compara_ok='0';
  	  $this->parlamentare1=null;
+ 	  $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a confronto - '.sfConfig::get('app_main_title')); 	 
  	}  
  	
       } 

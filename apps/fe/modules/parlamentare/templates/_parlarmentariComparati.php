@@ -6,6 +6,8 @@
    			                             'alt' => $parlamentare1->getOppPolitico()->getNome() . ' ' . $parlamentare1->getOppPolitico()->getCognome(),
    			                             'width' => '91', 'height' => '126')) ?>
          <div class="politician-more-info">
+	   <p><label><?php echo $parlamentare1->getLegislatura()."&#186; legislatura: " ?></label>in carica dal
+		<?php echo $parlamentare1->getDataInizio('d/m/Y') ?></p>
        <p><label>voti ribelli:</label>    			                             	
           <?php echo round($parlamentare1->getRibelle()*100/$parlamentare1->getPresenze(),1).'% ('.$parlamentare1->getRibelle().' volte su '.$parlamentare1->getPresenze().' votazioni )' ?>
        </p>
@@ -40,6 +42,8 @@
    			                             'alt' => $parlamentare2->getOppPolitico()->getNome() . ' ' . $parlamentare2->getOppPolitico()->getCognome(),
    			                             'width' => '91', 'height' => '126')) ?>
          <div class="politician-more-info">
+			<p><label><?php echo $parlamentare2->getLegislatura()."&#186; legislatura: " ?></label>in carica dal
+				<?php echo $parlamentare2->getDataInizio('d/m/Y') ?></p>
        <p><label>voti ribelli:</label>    			                             	
           <?php echo round($parlamentare2->getRibelle()*100/$parlamentare2->getPresenze(),1).'% ('.$parlamentare2->getRibelle().' volte su '.$parlamentare2->getPresenze().' votazioni )' ?>
        </p>

@@ -145,11 +145,11 @@ class parlamentareComponents extends sfComponents
   }
   
   
-  public function executeKeyvote()
+  public function executeKeyvote($limite=2)
   {
    // atti e voti in evidenza
    
-     $this->limit = 2;
+     $this->limit = $limite;
      $this->limit_count = 0;
      
      $this->lanci=array();
@@ -173,6 +173,34 @@ class parlamentareComponents extends sfComponents
 
   
   }
+  
+  public function executeKeyvoteComparati()
+  {
+     
+     $this->lanci=array();
+     $c = new Criteria();
+     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
+     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     $evidences=sfLaunchingPeer::doSelect($c);
+     foreach ($evidences as $evidence) {
+        $c1= new Criteria();
+        $c1->addJoin(OppCaricaPeer::ID,OppVotazioneHasCaricaPeer::CARICA_ID);
+        $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,array($this->parlamentare1->getId(),$this->parlamentare2->getId()), Criteria::IN);
+     	  $c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$evidence->getObjectId());
+     	  $results=OppVotazioneHasCaricaPeer::doSelect($c1);
+     	  if (count($results)==2)
+     	    $this->lanci[]=array($results[1]->getOppVotazione(),$evidence->getObjectModel(),$results[0]->getVoto(),$results[1]->getVoto());  
+     }
+     
+
+  
+  }
+  
+   public function executeAllvoteComparati()
+{
+      
+}
   
      public function executeVotiComparati()
   {

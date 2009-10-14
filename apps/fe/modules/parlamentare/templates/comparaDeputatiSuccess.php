@@ -11,11 +11,14 @@
 <div id="content" class="tabbed float-container">
 <a name="top"></a>
   <div id="main">
-  <?php if ($parlamentare1!=null) : ?>
+	<div style="padding-bottom:20px;">
+		<p style="padding-bottom:5px; font-size:14px">Confronta i <?php echo ($ramo=='1' ? 'deputati:' : 'senatori:') ?></p> 
+      <?php if ($parlamentare1!=null) : ?>
      <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>$parlamentare1->getOppPolitico()->getId(),'select2' =>$parlamentare2->getOppPolitico()->getId() )) ?> 
   <?php else : ?>
      <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>'null','select2' =>'null' )) ?>    
   <?php endif ?>
+    </div>
   
 <?php if ($compara_ok==1) : ?>
 <?php include_partial('parlarmentariComparati', 
@@ -26,19 +29,32 @@
                             'name' => 'search_tag')) ?>
 <br />
 
-<?php include_component('parlamentare', 'votiComparati', 
+<?php  include_component('parlamentare', 'votiComparati', 
                         array('parlamentare1' => $parlamentare1, 
                               'parlamentare2' => $parlamentare2,
                               'compare' =>  $compare,
-                              'numero_voti' => $numero_voti,
-                              'compare_voti' => $compare_voti,
-                              'arr1' => $arr1,
-                              'arr2' => $arr2,
-                              'pager' => $pager))?>
+                              'numero_voti' => $numero_voti))  ?>
                               
-<?php else : ?>   
-<?php //include_component('parlamentare', 'tendinaParlamentari') ?>                           
-<?php endif; ?>                              
+
+<?php include_component('parlamentare', 'keyvoteComparati', 
+                        array('parlamentare1' => $parlamentare1, 
+                              'parlamentare2' => $parlamentare2,
+                              ))  ?>
+                              
+<?php  /* include_component('parlamentare', 'allvoteComparati', 
+                         array('parlamentare1' => $parlamentare1, 
+                               'parlamentare2' => $parlamentare2,
+                               'compare' =>  $compare,
+                               'numero_voti' => $numero_voti,
+                               'compare_voti' => $compare_voti,
+                               'arr1' => $arr1,
+                               'arr2' => $arr2,
+                               'pager' => $pager)) */ ?>                           
+
+                                
+                
+<?php endif; ?>       
+                       
                               
 </div>                 
 </div>      
