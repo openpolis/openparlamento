@@ -154,17 +154,19 @@ class parlamentareComponents extends sfComponents
      
      $this->lanci=array();
      $c = new Criteria();
+     $c->addJoin(OppVotazionePeer::ID,sfLaunchingPeer::OBJECT_ID);
+     $c->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
+     $c->add(OppSedutaPeer::RAMO,($this->ramo=='Senato' ? 'S' : 'C'));
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
      $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
-     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     //$c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
      $evidences=sfLaunchingPeer::doSelect($c);
      foreach ($evidences as $evidence) {
         $c1= new Criteria();
-        $c1->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
         $c1->addJoin(OppCaricaPeer::ID,OppVotazioneHasCaricaPeer::CARICA_ID);
         $c1->add(OppVotazioneHasCaricaPeer::CARICA_ID,$this->carica->getId());
-        $c1->add(OppSedutaPeer::RAMO,($this->ramo=='Senato' ? 'S' : 'C'));
-     	$c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$evidence->getObjectId());
+     	  $c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$evidence->getObjectId());
      	$result=OppVotazioneHasCaricaPeer::doSelectOne($c1);
      	if ($result)
      	  $this->lanci[]=array($result->getOppVotazione(),$evidence->getObjectModel(),$result->getVoto()); 
