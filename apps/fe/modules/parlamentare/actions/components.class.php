@@ -145,7 +145,7 @@ class parlamentareComponents extends sfComponents
   }
   
   
-  public function executeKeyvote($limite=2)
+  public function executeKeyvote($limite=5)
   {
    // atti e voti in evidenza
    
