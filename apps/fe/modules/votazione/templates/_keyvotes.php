@@ -57,7 +57,7 @@
 	  <?php foreach ($votazioni as $votazione): ?>
 	    <li class="float-container">
 	    <p style="color: #BEBEBE;font-size:11px;font-weight:bold;">
-	     <?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?> - <?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?>, seduta n. <?php echo ($votazione->getOppSeduta()->getNumero() ) ?>
+	     <?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?> - <span style="color:black;"><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></span>, seduta n. <?php echo ($votazione->getOppSeduta()->getNumero() ) ?>
 	    </p>			
 	     <div class="user-votes">
 	     <?php if($votazione->getEsito()=='APPROVATA'): ?>
