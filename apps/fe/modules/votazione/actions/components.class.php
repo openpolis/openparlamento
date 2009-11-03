@@ -177,7 +177,7 @@ class votazioneComponents extends sfComponents
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
      $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
      //$c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
-     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
      if ($this->limit!=0)
         $c->setLimit($this->limit);
      $this->votazioni=OppVotazionePeer::doSelect($c);
