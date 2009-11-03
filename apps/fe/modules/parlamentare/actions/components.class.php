@@ -156,7 +156,7 @@ class parlamentareComponents extends sfComponents
      $c = new Criteria();
      $c->addJoin(OppVotazionePeer::ID,sfLaunchingPeer::OBJECT_ID);
      $c->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
-     $c->add(OppSedutaPeer::RAMO,($this->ramo=='Senato' ? 'S' : 'C'));
+     $c->add(OppSedutaPeer::RAMO,($this->ramo=='senato' ? 'S' : 'C'));
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
      $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
      //$c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
