@@ -49,9 +49,12 @@ jQuery(document).ready(function(){ embedIntro(); });
      <div id="main">
        
        <div class="W45_100 float-right">
+       
 
         <!-- Box rotazione parlamentari -->    
         <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+        <!-- box keyvotes -->
+     	   <?php include_component('votazione','keyvotes', array('limit' => '3', 'pagina' => 'homepage')) ?>
 
         <div class="clear-both"></div>
 
@@ -102,11 +105,6 @@ jQuery(document).ready(function(){ embedIntro(); });
 	      	
 	   <?php endif; ?>   
 	  </div>
-	  
-	   <!-- box keyvotes -->
-	   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
-	     <?php include_component('votazione','keyvotes', array('limit' => '3', 'pagina' => 'homepage')) ?> 
-	  <?php endif; ?>
 	  
 	   <!-- box in evidenza dal parlamento -->
 	  <?php if (count($lanci)>0) : ?>

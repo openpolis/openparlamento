@@ -194,8 +194,8 @@ teseo:
 votazioniSearch:
   url: /votazioniSearch/*
   param: { module: sfSolr, action: votazioniSearch }
-
-voti chiave:
+  
+votichiave:
   url:   /votazioni/keyvotes
   param: { module: votazione, action: keyvotes }
   

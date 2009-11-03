@@ -207,10 +207,8 @@
   				</p>
   			</div>
   			
-  			<!-- BOX PER I VOTI CHIAVE IN PROGRESS (VISIBILE SOLO X ADMIN) -->
-  			<?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+  			<!-- BOX PER I VOTI CHIAVE -->
   			   <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>
-  			<?php endif; ?>
   			<!-- FINE VOTI CHIAVE -->
 		 
   			<h5 class="subsection-alt">Voti ribelli su <?php echo $nvoti_validi ?> votazioni nominali</h5>
