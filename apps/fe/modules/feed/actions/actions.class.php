@@ -142,23 +142,36 @@ class feedActions extends sfActions
     setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
-    $feed = sfFeedPeer::newInstance('rss201');
+    
+    $feed = new sfRss2ExtendedFeed();
     $feed->initialize(array(
       'title'       => $title,
       'link'        => $link,
+	    'siteUrl'     => $link,
+	    'language'    => 'it',
+	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
       'authorEmail' => 'info@openparlamento.it',
-      'authorName'  => 'Openparlamento'
+      'authorName'  => 'Openparlamento',
+	    'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+	    'ttl'         => 1440,
+	    'sy_updatePeriod' => 'daily',
+	    'sy_updateFrequency' => '1',
+	    'sy_updateBase' => '2000-01-01T12:00+00:00'
+	    
     ));
 
     foreach ($pager->getGroupedResults() as $date_ts => $news)
     {
-      $item = new sfFeedItem( array(
+      $item = new sfRss2ExtendedItem();
+      $item->initialize( array(
         'title' => 'Notizie del ' . strftime("%d %B", $date_ts),
         'link'  => $link,
+        'permalink' => $link,
         'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
         'description' => news_list($news),
-        
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',        
       ));
       $feed->addItem($item);
     }
