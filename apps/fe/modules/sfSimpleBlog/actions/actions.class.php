@@ -167,8 +167,7 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
   
   public function executePostsFeed()
   {
-    sfLoader::loadHelpers(array('I18N'));
-    setlocale(LC_TIME, 'it_IT');
+    sfLoader::loadHelpers(array('I18N', 'Tag', 'Url'));
 
     $posts = sfSimpleBlogPostPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
       
@@ -200,7 +199,7 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
         'authorEmail' => 'info@openparlamento.it',
         'authorName'  => 'Openparlamento',
         'pubDate' => $post->getPublishedAt('U'),
-        'permalink' => $post->getStrippedTitle() . "-" . $post->getPublishedAt('Ymd'),
+        'permalink' => url_for('@blog_article?stripped_title=' . $post->getStrippedTitle(), true),
         'description' => $post->getContent(),
       ));
       $feed->addItem($item);
@@ -215,7 +214,7 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
 
   public function executeCommentsFeed()
   {
-    sfLoader::loadHelpers(array('I18N'));
+    sfLoader::loadHelpers(array('I18N', 'Tag', 'Url'));
     $comments = sfSimpleBlogCommentPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
 
     $feed = new sfRss2ExtendedFeed();
@@ -246,7 +245,7 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
         'authorEmail' => 'info@openparlamento.it',
         'authorName'  => 'Openparlamento',
         'pubDate' => $comment->getCreatedAt('U'),
-        'permalink' => $post->getStrippedTitle() . "-" . $post->getPublishedAt('Ymd') . "-" . $comment->getId(),
+        'permalink' => url_for('@blog_article?stripped_title=' . $post->getStrippedTitle(), true) . "#" . $comment->getId(),
         'description' => $comment->getContent(),
       ));
       $feed->addItem($item);
