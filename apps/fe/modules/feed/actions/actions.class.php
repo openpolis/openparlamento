@@ -142,12 +142,12 @@ class feedActions extends sfActions
     setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
-    
     $feed = new sfRss2ExtendedFeed();
     $feed->initialize(array(
       'title'       => $title,
       'link'        => url_for($link, true),
 	    'siteUrl'     => url_for($link, true),
+	    'feedUrl'     => $this->getRequest()->getURI(),
 	    'language'    => 'it',
 	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
       'authorEmail' => 'info@openparlamento.it',
@@ -167,7 +167,7 @@ class feedActions extends sfActions
         'title' => 'Notizie del ' . strftime("%d %B", $date_ts),
         'link'  => url_for($link, true),
         'permalink' => url_for($link, true),
-        'pubDate' => date("r", $date_ts),
+        'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
         'description' => news_list($news),
         'authorEmail' => 'info@openparlamento.it',

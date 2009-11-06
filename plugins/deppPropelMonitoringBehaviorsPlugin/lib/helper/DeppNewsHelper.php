@@ -39,7 +39,7 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
     $site_url = $html_options['site_url'];
   }
 
-  $url = url_for($internal_uri);
+  $url = url_for($internal_uri, true);
   $url_in_mail = preg_replace('/.*\/symfony\/(.*)/i',  'http://'.$site_url.'/$1', $url);
   return "<a href=\"$url_in_mail\">$name</a>";
 }
@@ -52,16 +52,21 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
  * @return string html
  * @author Guglielmo Celata
  */
-function news_list($news)
+function news_list($news, $for_mail_or_rss = false)
 {
   $news_list = '';
   
   foreach ($news as $n)
   {
-    $news_list .= content_tag('li', news_text($n));
+    if ($for_mail_or_rss)
+      $news_list .= content_tag('li', news_text_for_mail($n));
+    else
+      $news_list .= content_tag('li', news_text($n));
+    
   }
   
-  return content_tag('ul', $news_list, array('class' => 'square-bullet')); 
+    return content_tag('ul', $news_list, array('class' => 'square-bullet')); 
+  
 }
 
 
