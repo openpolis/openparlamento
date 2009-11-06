@@ -168,37 +168,96 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
   public function executePostsFeed()
   {
     sfLoader::loadHelpers(array('I18N'));
+    setlocale(LC_TIME, 'it_IT');
+
     $posts = sfSimpleBlogPostPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
       
-    $this->feed = sfFeedPeer::createFromObjects(
-      $posts,
-      array(
-        'format'      => $this->getRequestParameter('format', 'atom1'),
-        'title'       => __('Posts from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
-        'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
-        'authorName'  => sfConfig::get('app_sfSimpleBlog_author', ''),
-        'methods'     => array('authorEmail' => '', 'authorName'  => 'getAuthor')
-      )
-    );
-    $this->setTemplate('feed');
+    
+    $feed = new sfRss2ExtendedFeed();
+    $feed->initialize(array(
+      'title'       => __('Posts from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
+      'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
+      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+	    'feedUrl'     => $this->getRequest()->getURI(),
+	    'language'    => 'it',
+	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
+      'authorEmail' => 'info@openparlamento.it',
+      'authorName'  => 'Openparlamento',
+	    'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+	    'ttl'         => 1440,	    
+      'sy_updatePeriod' => 'daily',
+      'sy_updateFrequency' => '4',
+      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
+    ));
+
+    foreach ($posts as $post)
+    {
+      $item = new sfRss2ExtendedItem();
+      $item->initialize( array(
+        'title'       => $post->getTitle(),
+        'link' => sfSimpleBlogTools::generatePostUri($post, null),
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',
+        'pubDate' => $post->getPublishedAt('U'),
+        'permalink' => $post->getStrippedTitle() . "-" . $post->getPublishedAt('Ymd'),
+        'description' => $post->getContent(),
+      ));
+      $feed->addItem($item);
+    }
+
+    $this->setLayout(false);    
+    $this->response->setContentType('text/xml');
+    $this->response->setContent($feed->asXml());
+
+    return sfView::NONE;
   }
 
   public function executeCommentsFeed()
   {
     sfLoader::loadHelpers(array('I18N'));
     $comments = sfSimpleBlogCommentPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
-      
-    $this->feed = sfFeedPeer::createFromObjects(
-      $comments,
-      array(
-        'format'      => $this->getRequestParameter('format', 'atom1'),
-        'title'       => __('Comments from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
-        'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
-        'authorName'  => sfConfig::get('app_sfSimpleBlog_author', ''),
-        'methods'     => array('title' => 'getPostTitle', 'authorEmail' => '')
-      )
-    );
-    $this->setTemplate('feed');
+
+    $feed = new sfRss2ExtendedFeed();
+    $feed->initialize(array(
+      'title'       => __('Comments from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
+      'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
+      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+	    'feedUrl'     => $this->getRequest()->getURI(),
+	    'language'    => 'it',
+	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
+      'authorEmail' => 'info@openparlamento.it',
+      'authorName'  => 'Openparlamento',
+	    'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+	    'ttl'         => 1440,	    
+      'sy_updatePeriod' => 'daily',
+      'sy_updateFrequency' => '4',
+      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
+    ));
+
+    foreach ($comments as $comment)
+    {
+      $post = $comment->getsfSimpleBlogPost();
+      $item = new sfRss2ExtendedItem();
+      $item->initialize( array(
+        'title'       => "Commento sul post: " . $post->getTitle(),
+        'link' => sfSimpleBlogTools::generatePostUri($post, null),
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',
+        'pubDate' => $comment->getCreatedAt('U'),
+        'permalink' => $post->getStrippedTitle() . "-" . $post->getPublishedAt('Ymd') . "-" . $comment->getId(),
+        'description' => $comment->getContent(),
+      ));
+      $feed->addItem($item);
+    }
+
+    $this->setLayout(false);    
+    $this->response->setContentType('text/xml');
+    $this->response->setContent($feed->asXml());
+
+    return sfView::NONE;
+
   }
 
   public function executeCommentsForPostFeed()
