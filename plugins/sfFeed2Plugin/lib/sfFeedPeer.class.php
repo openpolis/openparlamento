@@ -53,6 +53,33 @@ class sfFeedPeer
       $e->printStackTrace();
     }
   }
+  
+  
+  public static function newItemInstance($format = '')
+  {
+    try
+    {
+      $class = 'sf'.ucfirst($format).'Item';
+
+      // the class exists
+      $object = new $class();
+
+      if (!($object instanceof sfFeedItem))
+      {
+          // the class name is of the wrong type
+          $error = 'Class "%s" is not of the type sfItem';
+          $error = sprintf($error, $class);
+
+          throw new sfFactoryException($error);
+      }
+
+      return $object;
+    }
+    catch (sfException $e)
+    {
+      $e->printStackTrace();
+    }
+  }
 
   /**
    * Retrieve a new sfFeed implementation instance, populated from a web feed.
@@ -187,7 +214,8 @@ class sfFeedPeer
     $items = array();
     foreach($objects as $object)
     {
-      $item = new sfFeedItem();
+      $item = self::newItemInstance(isset($options['format']) ? $options['format'] : null);
+      
   
       // For each item property, check if an object method is provided, 
       // and if not, guess it. Here is what it does for the link property

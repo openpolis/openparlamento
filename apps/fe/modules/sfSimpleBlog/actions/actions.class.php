@@ -165,5 +165,61 @@ class sfSimpleBlogActions extends BasesfSimpleBlogActions
     $this->mail = $mail;  
   }
   
+  public function executePostsFeed()
+  {
+    sfLoader::loadHelpers(array('I18N'));
+    $posts = sfSimpleBlogPostPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
+      
+    $this->feed = sfFeedPeer::createFromObjects(
+      $posts,
+      array(
+        'format'      => $this->getRequestParameter('format', 'rss2Extended'),
+        'title'       => __('Posts from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
+        'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
+        'authorName'  => sfConfig::get('app_sfSimpleBlog_author', ''),
+        'methods'     => array('authorEmail' => '', 'authorName'  => 'getAuthor')
+      )
+    );
+    $this->setTemplate('feed');
+  }
+
+  public function executeCommentsFeed()
+  {
+    sfLoader::loadHelpers(array('I18N'));
+    $comments = sfSimpleBlogCommentPeer::getRecent($this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
+      
+    $this->feed = sfFeedPeer::createFromObjects(
+      $comments,
+      array(
+        'format'      => $this->getRequestParameter('format', 'rss2Extended'),
+        'title'       => __('Comments from %1%', array('%1%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
+        'link'        => $this->getController()->genUrl('sfSimpleBlog/index'),
+        'authorName'  => sfConfig::get('app_sfSimpleBlog_author', ''),
+        'methods'     => array('title' => 'getPostTitle', 'authorEmail' => '')
+      )
+    );
+    $this->setTemplate('feed');
+  }
+
+  public function executeCommentsForPostFeed()
+  {
+    sfLoader::loadHelpers(array('I18N'));
+    $post = sfSimpleBlogPostPeer::retrieveByStrippedTitleAndDate($this->getRequestParameter('stripped_title'), $this->getDateFromRequest());
+    $this->forward404Unless($post);
+    $comments = sfSimpleBlogCommentPeer::getForPost($post, $this->getRequestParameter('nb', sfConfig::get('app_sfSimpleBlog_feed_count', 5)));
+    
+    $this->feed = sfFeedPeer::createFromObjects(
+      $comments,
+      array(
+        'format'      => $this->getRequestParameter('format', 'atom1'),
+        'title'       => __('Comments on post "%1%" from %2%', array('%1%' => $post->getTitle(), '%2%' => sfConfig::get('app_sfSimpleBlog_title', ''))),
+        'link'        => $this->getController()->genUrl('sfSimpleBlog/show?stripped_title='.$post->getStrippedTitle()),
+        'authorName'  => sfConfig::get('app_sfSimpleBlog_author', ''),
+        'methods'     => array('title' => 'getPostTitle', 'authorEmail' => '')
+      )
+    );
+    $this->setTemplate('feed');
+  }
+  
   
 }
