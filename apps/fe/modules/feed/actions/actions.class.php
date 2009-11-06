@@ -146,8 +146,8 @@ class feedActions extends sfActions
     $feed = new sfRss2ExtendedFeed();
     $feed->initialize(array(
       'title'       => $title,
-      'link'        => $link,
-	    'siteUrl'     => $link,
+      'link'        => url_for($link),
+	    'siteUrl'     => url_for($link),
 	    'language'    => 'it',
 	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
       'authorEmail' => 'info@openparlamento.it',
@@ -165,8 +165,8 @@ class feedActions extends sfActions
       $item = new sfRss2ExtendedItem();
       $item->initialize( array(
         'title' => 'Notizie del ' . strftime("%d %B", $date_ts),
-        'link'  => $link,
-        'permalink' => $link,
+        'link'  => url_for($link),
+        'permalink' => url_for($link),
         'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
         'description' => news_list($news),
