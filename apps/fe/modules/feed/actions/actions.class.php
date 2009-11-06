@@ -139,34 +139,33 @@ class feedActions extends sfActions
 
   protected function _make_feed_from_pager($title, $link, $pager)
   {
-    setlocale(LC_TIME, 'it_IT');
+    // setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
     $feed = new sfRss2ExtendedFeed();
     $feed->initialize(array(
       'title'       => $title,
       'link'        => url_for($link, true),
-	    'siteUrl'     => url_for($link, true),
-	    'feedUrl'     => $this->getRequest()->getURI(),
-	    'language'    => 'it',
-	    'copyright'   => "Licenza Creative Commons 'Attribuzione-Non commerciale-Non opere derivate 2.5 Generico'",
+      'feedUrl'     => $this->getRequest()->getURI(),
+      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+      'language'    => 'it',
       'authorEmail' => 'info@openparlamento.it',
       'authorName'  => 'Openparlamento',
-	    'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
-	    'ttl'         => 1440,
-	    'sy_updatePeriod' => 'daily',
-	    'sy_updateFrequency' => '1',
-	    'sy_updateBase' => '2000-01-01T12:00+00:00'
-	    
+      'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+      'ttl'         => 1440,
+      'sy_updatePeriod' => 'daily',
+      'sy_updateFrequency' => '1',
+      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
     ));
 
     foreach ($pager->getGroupedResults() as $date_ts => $news)
     {
       $item = new sfRss2ExtendedItem();
       $item->initialize( array(
-        'title' => 'Notizie del ' . strftime("%d %B", $date_ts),
+        'title' => 'Notizie del ' . strftime("%d/%m/%Y", $date_ts),
         'link'  => url_for($link, true),
-        'permalink' => url_for($link, true),
+        'permalink' => url_for($link, true) . '#' . strftime('%Y%m%d%H', $date_ts),
         'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
         'description' => news_list($news),
