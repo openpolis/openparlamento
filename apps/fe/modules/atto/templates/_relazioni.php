@@ -30,7 +30,7 @@
     <?php if ($relazione[3]==2) : ?>
         <?php if ($count2==0) : ?>
           <?php echo "<strong>"; ?>
-          <?php echo "derivato dallo stralcio del ddl "; ?>
+          <?php echo "Derivato dallo stralcio del ddl "; ?>
           <?php $count2=1; ?>
           <?php echo "</strong>"; ?>
         <?php endif; ?>

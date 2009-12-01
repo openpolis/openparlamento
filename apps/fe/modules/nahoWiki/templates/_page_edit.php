@@ -4,6 +4,8 @@
 <?php if (!$canView): ?>
   <p class="wiki-warning"><?php echo __('Per modificare la descrizione e\' necessario registrarsi') ?></p>
 <?php else: ?>
+<p style="font-size:16px;">In questa pagina puoi <strong>descrivere</strong> l'atto per meglio farlo comprendere agli altri utenti.<br />
+Se invece vuoi lasciare un tuo commento, vai nella apposita pagina dei commenti all'atto.</p>
 <p>Questo &egrave; un sistema wiki. Puoi scrivere e salvare (tasto "pubblica la modifica" in basso) la tua descrizione o modificare il testo eventualmente scritto da altri utenti.<br /> Tutte le modifiche vengono registrate automaticamente e possono essere verificate facendo click sul tab "Cronologia delle modifiche". </p>
   <?php if (!$revision->isLatest()): ?>
     <p class="wiki-warning">

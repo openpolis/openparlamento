@@ -18,9 +18,11 @@ test:
   storage:
     class: sfSessionTestStorage
 
-#all:
-#  view_cache:
-#    class: sfMemcacheCache
+<?php if(sfConfig::get('sf_is_memcache_active', false)): ?>
+all:
+  view_cache:
+    class: sfMemcacheCache
+<?php endif; ?>
 
 #all:
 #  controller:
