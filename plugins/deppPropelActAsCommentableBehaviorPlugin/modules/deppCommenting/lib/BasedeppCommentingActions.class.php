@@ -86,7 +86,7 @@ class BasedeppCommentingActions extends sfActions
     $this->automoderation = $this->getUser()->getAttribute('automoderation', '', 'comment');
     $this->read_only = $this->getUser()->getAttribute('read_only', '', 'comment');
     $this->original_url = $this->getUser()->getAttribute('original_url', '', 'comment');
-    $this->getUser()->getParameterHolder()->removeNamespace('comment');
+    $retval = $this->getUser()->getParameterHolder()->removeNamespace('comment');
 
     // ritorno (AJAX) o redirect (non-Ajax)
     if($this->getRequest()->isXmlHttpRequest())
