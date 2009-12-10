@@ -32,8 +32,8 @@ class OppResoconto extends BaseOppResoconto
 
     $document->num_seduta_i = $this->getNumSeduta();
 
-    if ($this->getDataSeduta())
-      $document->data_seduta_dt = $this->getDataSeduta('%Y-%m-%dT%H:%M:%SZ');
+    if ($this->getData())
+      $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
 
     $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
 
