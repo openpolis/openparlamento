@@ -517,6 +517,14 @@ class OppAtto extends BaseOppAtto
     } else {
       $document->hasDescrizioneWiki = false;            
     }
+    
+    if ($this->getDataPres())
+      $document->data_pres_dt = $this->getDataPres('%Y-%m-%dT%H:%M:%SZ');
+
+    if ($this->getDataAgg())
+      $document->data_agg_dt = $this->getDataAgg('%Y-%m-%dT%H:%M:%SZ');
+    
+    $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
 
     // ritorna il documento da aggiungere
     return $document;

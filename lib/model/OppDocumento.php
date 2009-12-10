@@ -49,6 +49,10 @@ class OppDocumento extends BaseOppDocumento
     $document->titolo = strip_tags($this->getTitoloCompleto());
     $document->testo = strip_tags($this->getTesto());
 
+    if ($this->getData())
+      $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
+    $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
+
     // ritorna il documento da aggiungere
     return $document;
   }
