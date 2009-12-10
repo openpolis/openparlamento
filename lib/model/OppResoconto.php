@@ -30,7 +30,8 @@ class OppResoconto extends BaseOppResoconto
     else
       $document->testo = strip_tags($this->getSommario());    
 
-    $document->num_seduta_i = $this->getNumSeduta();
+    if ($this->getNumSeduta())
+      $document->num_seduta_i = $this->getNumSeduta();
 
     if ($this->getData())
       $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
