@@ -494,8 +494,29 @@ class NewsPeer extends BaseNewsPeer
     // add a filter on the date (today's news) or a test date
     if (SF_ENVIRONMENT == 'task-test') $c->add(self::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
     else
-      $c->add(self::CREATED_AT, date('Y-m-d').'%', Criteria::LIKE);
+      $c->add(self::CREATED_AT, date('Y-m-d'), Criteria::GREATER_THAN);
 
+    // rimuove notizie relative ad atti più vecchi di 15 giorni
+    
+    # the date in Y-m-d format, fifteen days ago 	 	 
+    $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago')); 	 	 
+	 	 
+    # check date, if present 	 	 
+    $crit0 = $c->getNewCriterion(NewsPeer::DATE, null, Criteria::ISNOTNULL); 	 	 
+    $crit1 = $c->getNewCriterion(NewsPeer::DATE, $fifteen_days_ago, Criteria::GREATER_THAN); 	 	 
+    $crit0->addAnd($crit1); 	 	 
+	 
+    # check data_presentazione_atto, if present 	 	 
+    $crit2 = $c->getNewCriterion(NewsPeer::DATA_PRESENTAZIONE_ATTO, null, Criteria::ISNOTNULL); 	 	 
+    $crit3 = $c->getNewCriterion(NewsPeer::DATA_PRESENTAZIONE_ATTO, $fifteen_days_ago, Criteria::GREATER_THAN); 	 	 
+    $crit2->addAnd($crit3); 	 	 
+	 
+    # perform OR 	 	 
+    $crit0->addOr($crit2); 	 	 
+	 
+    # add orred criterion to main criteria 	 	 
+    $c->add($crit0); 	 	 
+   
     return self::doSelect($c);
   }
 
