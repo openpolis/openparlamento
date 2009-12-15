@@ -159,7 +159,7 @@ abstract class BasesfSolrActions extends sfActions
   /**
   * Wrapper function for getting the results.
   */
-  protected function getResults($querystring)
+  protected function getResults($query)
   {
     return new sfSolrPager( $this->getSolrInstance()->search($query) );
   }

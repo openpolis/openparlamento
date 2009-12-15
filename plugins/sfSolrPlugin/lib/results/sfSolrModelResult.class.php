@@ -53,7 +53,7 @@ class sfSolrModelResult extends sfSolrResult
 
     if (!isset($model['route']))
     {
-      throw new sfSolrIndexerException(sprintf('A route for model "%s" was not defined in the search.yml file.  Did you define one for this application?', $this->getInternalModel()));
+      throw new sfSolrException(sprintf('A route for model "%s" was not defined in the search.yml file.  Did you define one for this application?', $this->getInternalModel()));
     }
 
     return preg_replace_callback('/%(\w+)%/', array($this, 'internalUriCallback'), $model['route']);
