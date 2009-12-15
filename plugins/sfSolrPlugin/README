@@ -1,5 +1,5 @@
 = Introduction =
-sfSolrPlugin allows a symfony project to integrate the Solr search engine.
+sfSolrPlugin allows a symfony project to integrate the Solr search framework.
 The plugin has been developed in a Propel ORM environment, for symfony 1.0.
 It should be rather neutral, but I do not think it supports the symfo
 
