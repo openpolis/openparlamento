@@ -40,7 +40,7 @@ if ($argv[1])
       $votazioneGruppo->setVotazioneId($votazione->getId());
       $votazioneGruppo->setGruppoId($gr->getId());
       $votazioneGruppo->setVoto($voto_gruppo);
-      //$votazioneGruppo->save();
+      $votazioneGruppo->save();
 	  
 	  
 	  print $gr->getNome().": ".$voto_gruppo."\n";	  
