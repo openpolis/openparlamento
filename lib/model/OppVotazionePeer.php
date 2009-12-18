@@ -59,7 +59,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     }
     
     
-	
+	  print_r($voti);
     if((count($voti)>1 && $voti[0]['numero'] != $voti[1]['numero']) || count($voti)==1) 
       $voto = $voti[0]['voto'];    
    
