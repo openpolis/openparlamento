@@ -9,7 +9,7 @@ Prende in input
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
 define('SF_APP',         'fe');
 define('SF_ENVIRONMENT', 'dev');
-define('SF_DEBUG',       false);
+define('SF_DEBUG',       true);
  
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
@@ -18,7 +18,7 @@ $c= new Criteria();
 $c-> addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
 $c-> addJoin(OppVotazioneHasGruppoPeer::VOTAZIONE_ID,OppVotazionePeer::ID);
 $c-> add(OppSedutaPeer::LEGISLATURA,$argv[1]);
-$c-> add(OppVotazioneHasGruppoPeer::VOTO,'nv');
+//$c-> add(OppVotazioneHasGruppoPeer::VOTO,'nv');
 $c-> add(OppVotazionePeer::ID,30601);
 //$c-> addGroupByColumn(OppVotazionePeer::ID);
 $votazioni = OppVotazionePeer::doSelect($c);
