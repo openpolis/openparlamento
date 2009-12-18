@@ -2,7 +2,8 @@
 
 /*
 Lo script controlla se ci sono errori nella tabella opp_votazione_has_gruppo, ovvero prende tutti i valori voto=nv e li verifica.
-Prende in input il numero della legislatura
+Prende in input 
+- il numero della legislatura
 */
  
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
@@ -18,7 +19,8 @@ $c-> addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
 $c-> addJoin(OppVotazioneHasGruppoPeer::VOTAZIONE_ID,OppVotazionePeer::ID);
 $c-> add(OppSedutaPeer::LEGISLATURA,$argv[1]);
 $c-> add(OppVotazioneHasGruppoPeer::VOTO,'nv');
-$c-> addGroupByColumn(OppVotazionePeer::ID);
+$c-> add(OppVotazionePeer::ID,30601);
+//$c-> addGroupByColumn(OppVotazionePeer::ID);
 $votazioni = OppVotazionePeer::doSelect($c);
 
 foreach($votazioni as $votazione)
