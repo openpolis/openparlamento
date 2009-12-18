@@ -15,6 +15,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	$c->clearSelectColumns();
 	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
 	$c->addAsColumn('CONT', 'COUNT(*)');
+	$c->addSelectColumn(OppVotazioneHasCaricaPeer::CARICA_ID);
 	
 	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
 	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID, Criteria::INNER_JOIN);	
@@ -58,7 +59,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
       $i++;
     }
     
-    
+    echo $rs->getInt(3)."\n";
 	  print_r($voti);
     if((count($voti)>1 && $voti[0]['numero'] != $voti[1]['numero']) || count($voti)==1) 
       $voto = $voti[0]['voto'];    
