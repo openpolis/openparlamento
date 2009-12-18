@@ -11,7 +11,13 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 {
   public static function doSelectVotoGruppo($votazione_id, $gruppo)
   {
-    $c = new Criteria();
+    
+  $c= new Criteria();
+  $c->add(OppVotazionePeer::ID,$votazione_id);
+  $votazione=OppVotazionePeer::doSelectOne($c);
+  $data_votazione=$votazione->getOppSeduta()->getData();
+    
+  $c = new Criteria();
 	$c->clearSelectColumns();
 	$c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
 	$c->addAsColumn('CONT', 'COUNT(*)');
@@ -19,7 +25,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	
 	$c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
 	$c->addJoin(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, OppVotazionePeer::ID, Criteria::INNER_JOIN);	
-	$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);	
+	//$c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID, Criteria::INNER_JOIN);	
 	$c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
 	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
 		
@@ -36,8 +42,8 @@ class OppVotazionePeer extends BaseOppVotazionePeer
 	$c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $votazione_id, Criteria::EQUAL);
 	$c->add(OppGruppoPeer::NOME, $gruppo, Criteria::EQUAL);
 	
-	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, OppSedutaPeer::DATA, Criteria::LESS_EQUAL);
-	$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, OppSedutaPeer::DATA, Criteria::GREATER_EQUAL);
+	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
+	$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
 	$cton5 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
     $cton4->addOr($cton5);
     $c->add($cton4);
