@@ -1,26 +1,27 @@
 <?php
 
 /*
-Lo script controlla se ci sono errori nella tabella opp_votazione_has_gruppo, ovvero prende tutti i valori voto=nv e li verifica.
+verifica tutti i voti dei gruppi nelle votazioni
 Prende in input 
 - il numero della legislatura
+- il ramo (1 camera, 2 senato)
 */
  
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
 define('SF_APP',         'fe');
 define('SF_ENVIRONMENT', 'dev');
-define('SF_DEBUG',       true);
+define('SF_DEBUG',       false);
  
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
 $c= new Criteria();
 $c-> addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
-$c-> addJoin(OppVotazioneHasGruppoPeer::VOTAZIONE_ID,OppVotazionePeer::ID);
 $c-> add(OppSedutaPeer::LEGISLATURA,$argv[1]);
-//$c-> add(OppVotazioneHasGruppoPeer::VOTO,'nv');
-$c-> add(OppVotazionePeer::ID,30601);
-//$c-> addGroupByColumn(OppVotazionePeer::ID);
+if ($argv[2]==1)
+  $c-> add(OppSedutaPeer::RAMO,'C');
+else
+  $c-> add(OppSedutaPeer::RAMO,'S');
 $votazioni = OppVotazionePeer::doSelect($c);
 
 foreach($votazioni as $votazione)
