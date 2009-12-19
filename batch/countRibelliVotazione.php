@@ -18,8 +18,11 @@ if ($argv[1])
   $c->add(OppVotazionePeer::ID, $argv[1], Criteria::EQUAL);
   $votazione = OppVotazionePeer::doSelectOne($c);
   
-  $count = $votazione->getRibelliCount();	
-  
+  //$count = $votazione->getRibelliCount();	
+  $c = new Criteria();
+  $c-> add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$votazione->getId());
+  $c-> add(OppVotazioneHasCaricaPeer::RIBELLE,1);
+  $count= OppVotazioneHasCaricaPeer::doCount($c);
   $votazione->setRibelli($count);
   $votazione->save();	
 	
