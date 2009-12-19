@@ -72,7 +72,12 @@
   		                                                    $url,
   		                                                    array('class' => 'jump-to-camera')) ?>   
                    <?php endif ?>
-                  <?php endif ?>   
+        <?php endif ?> 
+        
+        <!-- Indice di rappresentanza per singolo utente -->
+         <?php //if ($carica && $sf_user->isAuthenticated()) : ?> 
+            <?php //echo include_component('monitoring', 'userVspol', array('user' => $sf_user, 'politico' => $parlamentare, 'leg' => '16')); ?>
+         <?php //endif ?>       
                  
       </div>
       <div class="W73_100 float-left" style="width:60%">
@@ -84,7 +89,7 @@
           
   				<div class="politician-more-info">
   				    <?php if ($carica) : ?>	
-  				    	<p><label><?php echo $carica->getLegislatura()."&#186; legislatura: " ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?></label></p>
+  				    	<p><label><?php echo ($carica->getTipoCaricaId()!=5 ? $carica->getLegislatura()."&#186; legislatura: " :"") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?></label></p>
   					<p><label>gruppo:</label>  
   					
 					     <?php echo link_to($acronimo_gruppo_corrente,  
@@ -245,6 +250,8 @@
     				</div>   				  
   				<?php endif ?>
   				<p class="float-right">
+  				  <?php echo link_to('vai alla lista dei voti ribelli', 
+  				                     '@parlamentare_voti?id='.$parlamentare->getId().'&filter_vote_rebel=1') ?> | 
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
   				                      '&sort=ribelle&type=desc') ?>
