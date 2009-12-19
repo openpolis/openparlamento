@@ -1,5 +1,5 @@
 <?php if (count($lanci)>0) : ?>
-<h5 class="subsection-alt">Nei voti chiave:</h5>
+<h5 class="subsection-alt">Nei voti chiave: <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?></span></h5>
 <p class="tools-container"><a class="ico-help" href="#">cosa sono i voti chiave</a></p>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
