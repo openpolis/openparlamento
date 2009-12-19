@@ -47,17 +47,25 @@ foreach ($cariche as $k => $votazione_carica) {
   $gruppi_carica_votazione = $carica->getOppCaricaHasGruppos($c);
   $gruppo_votazione = $gruppi_carica_votazione[0];
   $voto = $votazione_carica->getVoto();
-  $voto_gruppo = $votazione->getVotoGruppo($gruppo_votazione->getGruppoId());
-  if ( ($voto_gruppo == 'Favorevole' || $voto_gruppo == 'Astenuto' || $voto_gruppo == 'Contrario' ) && 
-       ($voto == 'Favorevole' || $voto == 'Astenuto' || $voto == 'Contrario') && 
-       $voto_gruppo != $voto )
-  {  
-    $votazione_carica->setRibelle(1);
-    $votazione_carica->save();
-  }
+  if ($gruppo_votazione->getGruppoId()!=13) //escludo il gruppo misto
+  {
+    $voto_gruppo = $votazione->getVotoGruppo($gruppo_votazione->getGruppoId());
+    if ( ($voto_gruppo == 'Favorevole' || $voto_gruppo == 'Astenuto' || $voto_gruppo == 'Contrario' ) && 
+         ($voto == 'Favorevole' || $voto == 'Astenuto' || $voto == 'Contrario') && 
+         $voto_gruppo != $voto )
+    {  
+      $votazione_carica->setRibelle(1);
+      $votazione_carica->save();
+    }
  
-  if ($k % 10 == 0) print ".";
-  if ($k >0 && $k % 1000 == 0) print "$k/$nvotazioni\n";
+    if ($k % 10 == 0) print ".";
+    if ($k >0 && $k % 1000 == 0) print "$k/$nvotazioni\n";
+  }
+  else
+  {
+    $votazione_carica->setRibelle(0);
+    $votazione_carica->save();
+  }  
 }
 echo "\n";
 
