@@ -16,16 +16,14 @@ print("start script.\n");
   $votazioni = OppVotazionePeer::doSelect($c);
   
   foreach ($votazioni as $votazione) {
-     $count = $votazione->getRibelliCount();
-     
-     $votazione->setRibelli($count);
-     $ok=$votazione->save();
-     
-     if ($ok==1) echo "si - ";
-     else echo "no \n";
-     
-   }   	
 	
+   $c = new Criteria();
+   $c-> add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$votazione->getId());
+   $c-> add(OppVotazioneHasCaricaPeer::RIBELLE,1);
+   $count= OppVotazioneHasCaricaPeer::doCount($c);
+   $votazione->setRibelli($count);
+   $votazione->save();
+ }
 
 
 ?>
