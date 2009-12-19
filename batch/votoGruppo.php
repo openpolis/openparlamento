@@ -34,13 +34,27 @@ if ($argv[1])
 	  $gr = OppGruppoPeer::retrieveByPk($gruppo->getGruppoId());
 	  	  
 	  $voto_gruppo = OppVotazionePeer::doSelectVotoGruppo($votazione->getId(), $gr->getNome());	
-	  
-	  
-	  $votazioneGruppo = new OppVotazioneHasGruppo;
-      $votazioneGruppo->setVotazioneId($votazione->getId());
-      $votazioneGruppo->setGruppoId($gr->getId());
-      $votazioneGruppo->setVoto($voto_gruppo);
-      $votazioneGruppo->save();
+	 
+	  $c= new Criteria();
+	  $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID,$votazione->getId());
+	  $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID,$gr->getId());
+	  $result=OppVotazioneHasGruppoPeer::doSelectOne($c);
+	  if ($result)
+	  {
+	    $result->setVoto($voto_gruppo);
+	    $result->save();
+	    print $gr->getNome().": ".$voto_gruppo."\n";	  
+	  } 
+	  else 
+	  {
+	    $insert = new OppVotazioneHasGruppo;
+	    $insert->setVotazioneId($votazione->getId());
+	    $insert->setGruppoId($gr->getId());
+	    $insert->setVoto($voto_gruppo);
+	    $insert->save();
+	    print "++++++++++++++++ ".$gr->getNome().": ".$voto_gruppo."\n";
+	    
+	  }
 	  
 	  
 	  print $gr->getNome().": ".$voto_gruppo."\n";	  
