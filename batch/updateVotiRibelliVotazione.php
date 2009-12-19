@@ -21,19 +21,27 @@ if ( $argc != 2 )
   exit;
 }
 
-$votazione_id = $argv[1];
+echo $votazione_id = $argv[1];
+echo "\n";
 $votazione = OppVotazionePeer::retrieveByPK($votazione_id);
 
 $data_votazione = $votazione->getOppSeduta()->getData();
 $c = new Criteria();
+/*
 $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
 $cton = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
 $cton->addOr($c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL));
 $c->add($cton);
+*/
+$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
+$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
+$cton5 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+  $cton4->addOr($cton5);
+  $c->add($cton4);
 
 $cariche = $votazione->getOppVotazioneHasCaricas();
 $ncariche = count($cariche);
-// print "- $ncariche cariche: \n";
+print "- $ncariche cariche: \n";
 foreach ($cariche as $k => $votazione_carica) {
   $carica = $votazione_carica->getOppCarica();
   $gruppi_carica_votazione = $carica->getOppCaricaHasGruppos($c);
