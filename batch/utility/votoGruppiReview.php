@@ -4,7 +4,7 @@
 verifica tutti i voti dei gruppi nelle votazioni
 Prende in input 
 - il numero della legislatura
-- il ramo (1 camera, 2 senato)
+- il ramo (1 camera, 2 senato) - facoltativo
 */
  
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
@@ -20,8 +20,9 @@ $c-> addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
 $c-> add(OppSedutaPeer::LEGISLATURA,$argv[1]);
 if ($argv[2]==1)
   $c-> add(OppSedutaPeer::RAMO,'C');
-else
+if ($argv[2]==2)
   $c-> add(OppSedutaPeer::RAMO,'S');
+//$c->setLimit(1000);  
 $votazioni = OppVotazionePeer::doSelect($c);
 
 foreach($votazioni as $votazione)
@@ -48,6 +49,16 @@ foreach($votazioni as $votazione)
 	    $result->save();
 	    print $gr->getNome().": ".$voto_gruppo."\n";	  
 	  } 
+	  else 
+	  {
+	    $insert = new OppVotazioneHasGruppo;
+	    $insert->setVotazioneId($votazione->getId());
+	    $insert->setGruppoId($gr->getId());
+	    $insert->setVoto($voto_gruppo);
+	    $insert->save();
+	    print "++++++++++++++++ ".$gr->getNome().": ".$voto_gruppo."\n";
+	    
+	  }
 	}	
   
 }
