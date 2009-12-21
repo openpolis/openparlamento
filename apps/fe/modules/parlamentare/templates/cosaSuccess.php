@@ -216,7 +216,7 @@
   			   <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>
   			<!-- FINE VOTI CHIAVE -->
 		 
-  			<h5 class="subsection-alt">Voti ribelli su <?php echo $nvoti_validi ?> votazioni nominali</h5>
+  			<h5 class="subsection-alt">Voti ribelli: <?php echo number_format($ribelli, 0) ?> su <?php echo $nvoti_validi ?> votazioni nominali</h5>
 			
   			<p class="tools-container"><a class="ico-help" href="#">quando un parlamentare &egrave; ribelle</a></p>
   			<div style="display: none;" class="help-box float-container">
@@ -229,7 +229,7 @@
   			<div class="meter-bar float-container"> 
   			  <div class="meter-bar-container">
   				<label>voti ribelli:</label>
-  				<div class="meter-label"><strong class="violet"><?php echo number_format($ribelli_perc, 2) ?>%&nbsp</strong>(<?php echo number_format($ribelli, 0) ?>)</div>   
+  				<div class="meter-label"><strong class="violet"><?php echo number_format($ribelli_perc, 2) ?>%&nbsp</strong>(<?php echo link_to(number_format($ribelli, 0),'@parlamentare_voti?id='.$parlamentare->getId().'&filter_vote_rebel=1') ?>)</div>   
   				<div class="violet-meter-bar">
   					<div style="left: <?php echo number_format($ribelli_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($ribelli_media_perc, 2) ?>%</label>&nbsp;</div>									
   					<div style="width: <?php echo number_format($ribelli_perc, 2) ?>%;" class="meter-value">&nbsp;</div>
