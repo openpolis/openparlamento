@@ -16,8 +16,7 @@ class myUser extends sfRemoteGuardSecurityUser
 	{
 	  return $this->getAttribute('subscriber_id', '', 'subscriber');
 	}
-	
-	
+
 	private function old_signin($user)
   {
     $this->setAttribute('subscriber_id', $user->getId(), 'subscriber');

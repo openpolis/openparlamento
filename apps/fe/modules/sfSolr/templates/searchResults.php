@@ -16,10 +16,16 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
     <div class="W100_100 float-left">
-          <p style="margin: 10px 0; text-align: right; padding: 5px">Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
-         <?php echo $num ?> per <strong><?php echo $query ?></strong> (<?php echo $qTime ?>ms)</p> 
-    <table class="search-results-table">
-    <?php $num_item=0 ?>
+      <?php echo include_partial('sfSolr/addAlert', array('query' => $query)); ?>
+      
+      <p style="margin: 10px 0; text-align: right; padding: 5px">
+        Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
+        <?php echo $num ?> per <strong><?php echo $query ?></strong> 
+        (<?php echo $qTime ?>ms)
+      </p> 
+
+      <table class="search-results-table">
+      <?php $num_item=0 ?>
       
         <?php foreach ($pager->getResults() as $result): ?>
           <?php $num_item=$num_item+1 ?>
@@ -30,11 +36,11 @@
             <?php elseif ($result->getInternalPartial()=='atto/searchResultDoc') : ?>
               <td><div class="ico-type"><?php echo image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )) ?></div></td> 
             <?php elseif ($result->getInternalPartial()=='atto/searchResult') : ?>
-            <?php if (OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==1 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==12 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==15 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==16 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==17) : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )) ?></div></td>
-            <?php else : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )) ?></div></td>
-            <?php endif ?>    
+              <?php if (OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==1 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==12 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==15 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==16 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==17) : ?>
+                <td><div class="ico-type"><?php echo image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )) ?></div></td>
+              <?php else : ?>
+                <td><div class="ico-type"><?php echo image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )) ?></div></td>
+              <?php endif ?>    
             <?php elseif ($result->getInternalPartial()=='votazione/searchResult') : ?>
               <td><div class="ico-type"><?php echo image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )) ?></div></td>
             <?php elseif ($result->getInternalPartial()=='argomento/searchResult') : ?>

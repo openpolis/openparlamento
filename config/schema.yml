@@ -1,9 +1,15 @@
 propel:  
-  opp_alert:
-    id:
-    user_id:          { type: integer, required: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
-    term:             { type: varchar(128), required: true }
 
+  opp_alert_term:
+    id:
+    term:             { type: varchar(128), required: true, index: unique }
+    n_alerts:         { type: integer, required: true, default: 0 }
+
+  opp_alert_user:
+    user_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
+    term_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_alert_term, foreignReference: id, onDelete: CASCADE }
+    created_at:       ~
+  
   opp_appoggio:
     id:
     carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
@@ -180,7 +186,7 @@ propel:
     id:
     created_at:
     num_seduta:       { type: integer }
-    sede_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
     legislatura:      { type: integer, required: true }
     nota:             { type: longvarchar }
@@ -300,6 +306,8 @@ propel:
     comments:                { type: integer, default: 0 }
     discussions:             { type: integer, default: 0 }
     last_contribution:       { type: timestamp }
+    last_alerted_at:         { type: timestamp }
+    n_alerts:                { type: integer, default: 0 }
     n_monitored_tests:       { type: integer, default: 0 }
     n_monitored_tags:        { type: integer, default: 0 }
     n_monitored_attos:       { type: integer, default: 0 }
@@ -307,6 +315,7 @@ propel:
     n_monitored_objects:     { type: integer, default: 0 }
     n_max_monitored_tags:    { type: integer, default: 0 }
     n_max_monitored_items:   { type: integer, default: 5 }
+    n_max_monitored_alerts:  { type: integer, default: 1 }
 
   opp_votazione:
     id:

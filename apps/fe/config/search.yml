@@ -6,15 +6,25 @@ SolrIndex:
     Tag:
       route: argomento/showAggiornamenti?triple_value=%triple_value%
       partial: argomento/searchResult
+      alertPartial: argomento/alert
     OppAtto:
       route: atto/index?id=%propel_id%
       partial: atto/searchResult
+      alertPartial: atto/alert
     OppDocumento:
       route: atto/documento?id=%propel_id%
       partial: atto/searchResultDoc
+      alertPartial: atto/alertDoc
     OppVotazione:
       route: votazione/index?id=%propel_id%
       partial: votazione/searchResult
+      alertPartial: votazione/alert
     OppPolitico:
       route: parlamentare/cosa?id=%propel_id%
       partial: parlamentare/searchResult
+      alertPartial: parlamentare/alert
+    OppResoconto:
+      route:   -
+      partial: resoconto/searchResult
+      alertPartial: resoconto/alert
+      

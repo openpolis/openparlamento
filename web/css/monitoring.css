@@ -60,3 +60,8 @@ ul#my_tags li span.remover {
 #tag_add { float:right; margin-right: 200px;}
 #tag_add .ac_input { border: 1px solid gray; width: 250px; height: 1.25em; font-size: 1.2em;}
 
+/*
+ * LISTA ALERT
+ * ---------------------------------------------*/
+ul#my_alerts { margin-top: 1em; }
+ul#my_alerts li { font-size: 1.5em; margin-left: 20px; display: block; margin-bottom: 1.5em;}

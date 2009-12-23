@@ -81,6 +81,10 @@ monitoring_tags:
   url: /monitoring_tags/:user_token
   param: { module: monitoring, action: tags }
 
+monitoring_alerts:
+  url: /monitoring_alerts/:user_token
+  param: { module: monitoring, action: alerts }  
+
 addTagToMyMonitoredTags:
   url: /addTagToMyMonitoredTags/:name
   param: { module: monitoring, action: addTagToMyMonitoredTags }

@@ -95,6 +95,7 @@ class defaultActions extends sfActions
           // modify monitoring limits
           $user->setNMaxMonitoredItems(sfConfig::get('app_premium_max_items', 10));
           $user->setNMaxMonitoredTags(sfConfig::get('app_premium_max_tags', 5));
+          $user->setNMaxMonitoredAlerts(sfConfig::get('app_premium_max_alerts', 3));
           $user->save();
           
           // add credential to the user

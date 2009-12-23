@@ -33,6 +33,8 @@ class monitoringActions extends sfActions
   {
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
+    $this->redirectUnless($this->user instanceof OppUser, '/');
+ 
     $this->session = $this->getUser();
     
     $this->getResponse()->setTitle('le mie notizie - ' . sfConfig::get('app_main_title'));
@@ -251,6 +253,8 @@ class monitoringActions extends sfActions
   {
     $this->user_id = $this->getUser()->getId();
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
+    $this->redirectUnless($this->user instanceof OppUser, '/');
+
     $this->session = $this->getUser();
     
     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - i miei atti');
@@ -361,6 +365,8 @@ class monitoringActions extends sfActions
 
     // fetch current user profile
     $this->user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->redirectUnless($this->user instanceof OppUser, '/');
+
     $this->my_last_login = $this->getUser()->getAttribute('last_login', null, 'subscriber');
     $this->monitored_politicians = $this->user->getMonitoredObjects('OppPolitico');
   }
@@ -375,6 +381,7 @@ class monitoringActions extends sfActions
 
     // fetch current user profile
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->redirectUnless($this->user instanceof OppUser, '/');
  
     // fetch teseo top_terms and add monitoring info
     $teseo_tts_with_counts = OppTeseottPeer::getAllWithCount();
@@ -392,6 +399,99 @@ class monitoringActions extends sfActions
                             $this->opp_user->countMonitoredObjects('Tag');
     
   }
+  
+  public function executeAddAlert()
+  {
+    // fetch current user profile
+    $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->forward404Unless($opp_user instanceof OppUser);
+
+    // read term from request parameters
+    $term = $this->getRequestParameter('term');
+    $this->forward404Unless($term);
+
+
+    // check limitations (for non-adhoc subscribers)
+    if (!$this->getUser()->hasCredential('adhoc'))
+    {
+      $monitored = $opp_user->getNAlerts();
+      $this->remaining_items = $opp_user->getNMaxMonitoredAlerts() - $monitored;          
+
+      if ($this->remaining_items <= 0){
+        $this->getUser()->setAttribute('page_before_buy', $this->getRequest()->getReferer());
+
+        // costruzione del messaggio flash
+        $this->_build_flash_message('OppAlertUser');
+        
+        // redirect
+        $this->redirect('@sottoscrizioni_pro');
+      }      
+    }
+
+    $res = OppAlertUserPeer::addAlert($term, $opp_user);
+    if ($res == false)
+      $this->setFlash('warning', "stai gi&agrave; monitorando l'espressione <i>$term</i>");
+    else
+      $this->setFlash('notice', "da questo momento, stai monitorando l'espressione <i>$term</i>");
+    
+    // redirect to the referrer page
+    $this->redirect($this->getRequest()->getReferer());      
+  }
+
+  public function executeDelAlert()
+  {
+    // fetch current user profile
+    $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->forward404Unless($opp_user instanceof OppUser);
+
+    // read term from request parameters
+    $term = $this->getRequestParameter('term');
+    $this->forward404Unless($term);
+
+    $res = OppAlertUserPeer::delAlert($term, $opp_user);
+    $this->forward404Unless($res);
+      
+    $this->redirect('@monitoring_alerts?user_token='.$this->getUser()->getToken());
+    
+  }
+   
+  public function executeAlerts()
+  {
+    // fetch my alerts
+    $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->redirectUnless($opp_user instanceof OppUser, '/');
+    $this->alerts = OppAlertUserPeer::fetchUserAlerts($opp_user);
+  }
+
+  public function executeSendAlerts()
+  {
+    $user_id = $this->getRequestParameter('user_id');    
+    $this->user = OppUserPeer::retrieveByPK($user_id);
+    $this->sf_site_url = sfConfig::get('sf_site_url', 'openparlamento');
+    $this->user_token = $this->getUser()->getToken();
+    $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50));
+    
+    $n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
+    
+    // do not send email if no news
+    if ($n_alerts == 0) return sfView::NONE;
+    
+    // mail class initialization
+    $mail = new sfMail();
+    $mail->setCharset('utf-8');      
+    $mail->setContentType('text/html');
+
+    // definition of the required parameters for the mail
+    $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
+                     sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+    $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
+                   sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+    $mail->addAddress($this->user->getEmail());
+    $mail->setSubject('[openparlamento.it] i tuoi alert di oggi');
+
+    $this->mail = $mail;
+  }
+  
 
   public function executeAjaxTagsForTopTerm()
   {
@@ -672,6 +772,10 @@ class monitoringActions extends sfActions
       case 'OppPolitico':
         $objs_type = 'politicos';
         break;
+      case 'OppAlertUser':
+        $objs_type = 'alerts';
+        break;
+      
     }
 
     $this->setFlash('subscription_limit_reached', 

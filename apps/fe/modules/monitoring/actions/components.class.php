@@ -14,6 +14,8 @@ class monitoringComponents extends sfComponents
                                   'acts' => 'I miei atti',
                                   'politicians' => 'I miei parlamentari',
                                   'tags' => 'I miei argomenti');
+    if ($this->getUser()->hasCredential('amministratore'))
+      $this->sub_menu_items['alerts'] = 'I miei avvisi';
   }
   
   

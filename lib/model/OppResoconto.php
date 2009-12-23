@@ -26,9 +26,11 @@ class OppResoconto extends BaseOppResoconto
 
     $document->propel_id = $id;
     if (trim($this->getStenografico()) != '')
-      $document->testo = strip_tags($this->getStenografico());
-    else
-      $document->testo = strip_tags($this->getSommario());    
+    {
+      $document->testo = strip_tags(str_replace("'", "\'", $this->getStenografico()));
+    } else {
+      $document->testo = strip_tags(str_replace("'", "\'", $this->getSommario()));      
+    }
 
     if ($this->getNumSeduta())
       $document->num_seduta_i = $this->getNumSeduta();
@@ -40,6 +42,21 @@ class OppResoconto extends BaseOppResoconto
 
     // ritorna il documento da aggiungere
     return $document;
+  }
+  
+  
+  public function getURL()
+  {
+    if ($this->getStenografico())
+    {
+      $url = $this->getUrlStenografico();
+    } else {
+      $url = $this->getUrlSommario();
+    }
+    if (!strpos($url, "http://")) {
+      $url = sfConfig::get('url_sito_camera', 'http://nuovo.camera.it/') . $url;
+    }
+    return $url;
   }
   
 }

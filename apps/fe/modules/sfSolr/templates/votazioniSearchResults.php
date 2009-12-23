@@ -16,6 +16,8 @@
 
     <div class="W73_100 float-left">
 
+      <?php echo include_partial('sfSolr/addAlert', array('query' => $query)); ?>
+
       <p style="margin: 10px 0; text-align: right; padding: 5px">Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
          <?php echo $num ?> per <strong><?php echo $query ?></strong> <?php echo $title ?> (<?php echo $qTime ?>ms)</p>
 

@@ -46,8 +46,8 @@ class OppDocumento extends BaseOppDocumento
     $document->sfl_type = 'model';
 
     $document->propel_id = $id;
-    $document->titolo = strip_tags($this->getTitoloCompleto());
-    $document->testo = strip_tags($this->getTesto());
+    $document->titolo = strip_tags(str_replace("'", "\'", $this->getTitoloCompleto()));
+    $document->testo = strip_tags(str_replace("'", "\'", $this->getTesto()));
 
     if ($this->getData())
       $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
