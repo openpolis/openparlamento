@@ -30,7 +30,9 @@ foreach ($results as $result)
     $c->add(OppAppoggioPeer::TIPOLOGIA,2);
     $c->add(OppAppoggioPeer::LEGISLATURA,$argv[1]);
     $aka=OppAppoggioPeer::doSelectOne($c);
-    $url="http://www.senato.it/ricerche/sDDLa/risultati.ricerca?searchID=null&parms.output=&parms.statoDiv=0%2C0%2C0%2C1%2C0%2C0%2C0&parms.statoIcone=0%2C0%2C0%2C1%2C0%2C0%2C0&parms.sel=&parms.des=&parms.selmode=&parms.legislatura=".$argv[1]."&parms.ramo=+&parms.numeroFase=&parms.specification=&parms.testoScheda=&parms.natura=+&parms.lettura=+&parms.presentatoDal=&parms.presentatoAl=&parms.numeroDecretoLegge=&parms.decretoLeggeDel=&parms.numeroGazzettaDecreto=&parms.gazzettaDecretoDel=&parms.numeroLegge=&parms.leggeDel=&parms.numeroGazzettaLegge=&parms.gazzettaLeggeDel=&parms.statoDal=&parms.statoAl=&parms.tuttiTermini=T&parms.teseo=&parms.livelloTeseo=+&parms.naturaParlamentare=on&parms.deputatoIniziativa=".$aka->getAka()."&parms.iniziativa=&parms.tipoFirmatari=+&parms.assegnazione=&parms.ultimaAssegnazione=on&parms.assegnatoDal=&parms.assegnatoAl=&parms.pareri=&parms.criterioPareriAssegnazione=OR&parms.trattazione=&parms.trattatoDal=&parms.trattatoAl=&parms.fattoProprio=&parms.relatori=&parms.options.resultsPerPage=10&parms.ordinamento=DESC&parms.ordinaPerData=true&button-cerca=Cerca";
+    if ($aka)
+      $url="http://www.senato.it/ricerche/sDDLa/risultati.ricerca?searchID=null&parms.output=&parms.statoDiv=0%2C0%2C0%2C1%2C0%2C0%2C0&parms.statoIcone=0%2C0%2C0%2C1%2C0%2C0%2C0&parms.sel=&parms.des=&parms.selmode=&parms.legislatura=".$argv[1]."&parms.ramo=+&parms.numeroFase=&parms.specification=&parms.testoScheda=&parms.natura=+&parms.lettura=+&parms.presentatoDal=&parms.presentatoAl=&parms.numeroDecretoLegge=&parms.decretoLeggeDel=&parms.numeroGazzettaDecreto=&parms.gazzettaDecretoDel=&parms.numeroLegge=&parms.leggeDel=&parms.numeroGazzettaLegge=&parms.gazzettaLeggeDel=&parms.statoDal=&parms.statoAl=&parms.tuttiTermini=T&parms.teseo=&parms.livelloTeseo=+&parms.naturaParlamentare=on&parms.deputatoIniziativa=".$aka->getAka()."&parms.iniziativa=&parms.tipoFirmatari=+&parms.assegnazione=&parms.ultimaAssegnazione=on&parms.assegnatoDal=&parms.assegnatoAl=&parms.pareri=&parms.criterioPareriAssegnazione=OR&parms.trattazione=&parms.trattatoDal=&parms.trattatoAl=&parms.fattoProprio=&parms.relatori=&parms.options.resultsPerPage=10&parms.ordinamento=DESC&parms.ordinaPerData=true&button-cerca=Cerca";
+    else echo "??? non trovo AKA per ".$result->getId()."\n";
   }
   else
   {
@@ -75,7 +77,8 @@ foreach ($results as $result)
   $c->add(OppCaricaHasAttoPeer::TIPO,'R',Criteria::NOT_EQUAL);
   $count=OppCaricaHasAttoPeer::doCount($c);
   echo " - ".$count."\n";
-  if ($numero!=$count) echo "!!!! ERRORE in ".$result->getId()." nel DB n.".$count." nel sito ".$numero."\n";
+  if ($numero<$count) echo "!!!! ERRORE in ".$result->getId()." nel DB n.".$count." nel sito ".$numero."\n";
+  if ($numero>$count) echo "!!!! ERRORE MANCANO FIRME in ".$result->getId()." nel DB n.".$count." nel sito ".$numero."\n";
   
   
 }
