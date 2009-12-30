@@ -61,7 +61,6 @@ foreach ($results as $result)
       }
     } 
 
-    echo $result->getParliamentId()." ";
     $errore=$html->find('p.messaggioErrore');
     $numero=-1;
 
