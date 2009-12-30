@@ -15,13 +15,17 @@ $leg=16;
 $c = new Criteria();
 $crit0 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 1);
 $crit1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 4);
-$crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
 
 $crit0->addOr($crit1);
-$crit0->addOr($crit2);
+$crit2 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $leg);
+
+$crit0->addAnd($crit2);
+$crit3 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+
+$crit0->addOr($crit3);
+
 $c->add($crit0);
-//$c->add(OppCaricaPeer::ID, 332445, Criteria::EQUAL);
-$c->add(OppCaricaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
+$cariche = OppCaricaPeer::doSelect($c);
 $cariche = OppCaricaPeer::doSelect($c);
 
 foreach($cariche as $carica)
@@ -58,10 +62,10 @@ foreach($cariche as $carica)
             $voti_carica = OppVotazioneHasCaricaPeer::doSelect($c);
             foreach($voti_carica as $voto_carica)
             {
-              if(($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario') && $voto_gruppo->getVoto()!='nv')
+              if($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario' || $voto_carica->getVoto()=='Voto segreto')
                 {
                 
-                  if ($voto_carica->getVoto()!==$voto_gruppo->getVoto())
+                  if ($voto_carica->getVoto()!==$voto_gruppo->getVoto() && $voto_gruppo->getVoto()!='nv' && $voto_carica->getVoto()!='Voto segreto')
                     {
                       $cont=$cont+1;
                     }
