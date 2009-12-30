@@ -128,6 +128,51 @@ propel:
     dossier:          { type: tinyint, required: true, default: 0 }
     created_at:
     
+    
+  opp_emendamento:
+    id:               ~
+    titolo:           { type: varchar(255), required: true }
+    numfase:          { type: varchar(255) }
+    data_pres:        { type: date }
+    articolo:         { type: varchar(255) }
+    created_at:       ~
+    url_fonte:        { type: varchar(255), required: true }
+    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    tipologia:        { type: varchar(255) }
+
+  opp_em_iter:
+    id:               ~
+    fase:             { type: varchar(255) }
+    concluso:         { type: boolean }
+    
+  opp_emendamento_has_iter:
+    emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
+    em_iter_id:       { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_em_iter, foreignReference: id, onDelete: CASCADE }
+    data:             { type: date }
+    created_at:       ~
+    nota:             { type: varchar(255) }
+
+  opp_atto_has_emendamento:
+    emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
+    atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    created_at:       ~
+
+  opp_carica_has_emendamento:
+    emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
+    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    tipo:             { type: varchar(255), primaryKey: true, index: true }
+    data:             { type: date }
+    created_at:       ~
+
+  opp_em_testo:
+    id:               ~
+    emendamento_id:   { type: integer, required: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
+    data:             { type: date }
+    testo:            { type: clob }
+    created_at:       ~
+
+
+
   opp_gruppo:
     id:
     nome:             { type: varchar(255) }
@@ -350,6 +395,11 @@ propel:
     carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(40) }
     ribelle:          { type: tinyint, required: true, default: 0 }
+
+  opp_votazione_has_emendamento:
+    votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
+    emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
+    created_at:       ~
 
   opp_votazione_has_gruppo:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }

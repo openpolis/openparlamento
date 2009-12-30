@@ -21,6 +21,9 @@ pake_task('opp-sync-polimages', 'project_exists');
 pake_desc("create a list of URLs to pre-fetch, in order to populate the cache");
 pake_task('opp-urls-to-cache', 'project_exists');
 
+pake_desc('load data from fixtures directory (using myPropelData class)');
+pake_task('opp-load-fixtures', 'project_exists');
+
 /**
 * Fetch politicians' images from op_openpolis via remote getPolImage API call and store resized versions in the local db
 */
@@ -260,4 +263,82 @@ function getInnerLinksForPage($page)
   
   return $links;
   
+}
+
+
+/**
+ * Loads yml data from fixtures directory and inserts into database.
+ *
+ * @example symfony opp-load-fixtures frontend
+ * @example symfony opp-load-fixtures frontend dev fixtures append
+ *
+ * @todo replace delete argument with flag -d
+ *
+ * @param object $task
+ * @param array $args
+ */
+function run_opp_load_fixtures($task, $args)
+{
+  if (!count($args))
+  {
+    throw new Exception('You must provide the app.');
+  }
+
+  $app = $args[0];
+
+  if (!is_dir(sfConfig::get('sf_app_dir').DIRECTORY_SEPARATOR.$app))
+  {
+    throw new Exception('The app "'.$app.'" does not exist.');
+  }
+
+  if (count($args) > 1 && $args[count($args) - 1] == 'append')
+  {
+    array_pop($args);
+    $delete = false;
+  }
+  else
+  {
+    $delete = true;
+  }
+
+  $env = empty($args[1]) ? 'dev' : $args[1];
+
+  // define constants
+  define('SF_ROOT_DIR',    sfConfig::get('sf_root_dir'));
+  define('SF_APP',         $app);
+  define('SF_ENVIRONMENT', $env);
+  define('SF_DEBUG',       true);
+
+  // get configuration
+  require_once SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
+
+  if (count($args) == 1)
+  {
+    if (!$pluginDirs = glob(sfConfig::get('sf_root_dir').'/plugins/*/data'))
+    {
+      $pluginDirs = array();
+    }
+    $fixtures_dirs = pakeFinder::type('dir')->ignore_version_control()->name('fixtures')->in(array_merge($pluginDirs, array(sfConfig::get('sf_data_dir'))));
+  }
+  else
+  {
+    $fixtures_dirs = array_slice($args, 1);
+  }
+
+  $databaseManager = new sfDatabaseManager();
+  $databaseManager->initialize();
+
+  $data = new myPropelData();
+  $data->setDeleteCurrentData($delete);
+
+  foreach ($fixtures_dirs as $fixtures_dir)
+  {
+    if (!is_readable($fixtures_dir))
+    {
+      continue;
+    }
+
+    pake_echo_action('propel', sprintf('load data from "%s"', $fixtures_dir));
+    $data->loadData($fixtures_dir);
+  }
 }

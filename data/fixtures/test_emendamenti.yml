@@ -1,0 +1,112 @@
+OppEmIter:
+  presented:
+    fase:     'presentato'
+    concluso: 0
+  not_admittable:
+    fase:     'non ammissibile'
+    concluso: 0
+  admittable:
+    fase:     'ammissibile'
+    concluso: 0
+  approved:
+    fase:     'approvato'
+    concluso: 1
+  rejected:
+    fase:     'respinto'
+    concluso: 1
+  boh:
+    fase:     'boh'
+    concluso: 0
+    
+OppEmendamento:
+  first:
+    titolo:     1.1
+    articolo:   1
+    sede_id:    35
+  second:
+    titolo:     1.27
+    articolo:   1
+    sede_id:    35
+  third:
+    titolo:     2.26
+    articolo:   2
+    sede_id:    35
+  fourth:
+    titolo:     2.55
+    articolo:   2
+    sede_id:    35
+    
+OppEmTesto:
+  first_text:
+    emendamento_id: first
+    testo:      "Sopprimere gli articoli 1, 2 e 3."
+  second_text:
+    emendamento_id: second
+    testo:      "Al comma 1, capoverso *3-ter*, sostituire le parole: *in ogni caso* con le seguenti: *per ogni successivo grado di giudizio nel caso*. Conseguentemente all'articolo 2, comma 1, capoverso *Art. 346-bis*, nel comma 1, lettera d), sostituire le parole: *senza che sia stata pronunciata sentenza irrevocabile* con le seguenti: *per ogni ulteriore grado di giudizio*."    
+  third_text:
+    emendamento_id: third
+    testo:      "Al comma 1, capoverso *Art. 346-bis*, sostituire le parole da: *Il giudice* a *quando:* con le seguenti: *Il giudice, nei processi relativi a reati puniti con la pena dell'arresto ovvero a reati per i quali la pena edittale determinata ai sensi dell'articolo 157 del codice penale è inferiore nel massimo a 10 anni di reclusione, da sole o congiuntamente a pene pecuniarie, dichiara non doversi procedere per estinzione del processo quando:*."
+  fourth_text:
+    emendamento_id: fourth
+    testo:     "Al comma 1, capoverso *Art. 346-bis*, nel comma 2, sostituire la lettera b) con la seguente: *b) nell'udienza preliminare e nella fase del giudizio, durante il tempo in cui l'udienza o il dibattimento è sospeso o rinviato per impedimento dell'imputato o del suo difensore, ovvero su richiesta dell'imputato o del suo difensore, ovvero a causa dell'assenza, dell'allontanamento o della mancata partecipazione del difensore che renda privo di assistenza l'imputato, ovvero per effetto della dichiarazione di ricusazione del giudice o della richiesta di rimessione del processo;*."
+
+OppAttoHasEmendamento:
+  first:
+    emendamento_id: first
+    atto_id:        20209
+  second:
+    emendamento_id: second
+    atto_id:        20209
+  third:
+    emendamento_id: third
+    atto_id:        20209
+  fourth:
+    emendamento_id: fourth
+    atto_id:        20209
+  
+OppEmendamentoHasIter:
+  first:
+    emendamento_id: first
+    em_iter_id:     presented
+  second:
+    emendamento_id: second
+    em_iter_id:     approved
+  third:
+    emendamento_id: third
+    em_iter_id:     boh
+    nota:           "La prima parte, da 'Qui' a 'Qua' è respinta; il resto è inguardabile"
+  fourth:
+    emendamento_id: fourth
+    em_iter_id:     rejected
+    
+OppCaricaHasEmendamento:
+  first_A:
+    emendamento_id: first
+    carica_id:      333009
+    tipo:           P
+  first_B:
+    emendamento_id: first
+    carica_id:      332105
+    tipo:           C
+  first_C:
+    emendamento_id: first
+    carica_id:      332971
+    tipo:           C
+  first_D:
+    emendamento_id: first
+    carica_id:      332977
+    tipo:           C
+    
+OppVotazioneHasEmendamento:
+  first:
+    emendamento_id: first
+    votazione_id:   25270
+  second:
+    emendamento_id: second
+    votazione_id:   25271
+  third:
+    emendamento_id: third
+    votazione_id:   25272
+  fourth:
+    emendamento_id: fourth
+    votazione_id:   25273
