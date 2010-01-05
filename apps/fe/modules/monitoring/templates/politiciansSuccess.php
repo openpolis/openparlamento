@@ -6,7 +6,7 @@
   <div id="main">
     
     <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>    
-    <div style="width:40%; font-size:14px; line-height:1.2em; border:1px solid #EE7F00; padding:5px;" >Approfitta subito della <strong>promozione gratuita valida fino al 30 novembre 2009</strong>: diventa un utente premium di openparlamento.<br /> <strong><?php echo link_to('Scopri il servizio premium e aderisci gratuitamente!','http://parlamento.openpolis.it/sottoscrizioni_pro') ?> </strong>
+    <div style="width:40%; font-size:14px; line-height:1.2em; border:1px solid #EE7F00; padding:5px;" ><strong>Promuovi la trasparenza e la partecipazione!</strong><br /><?php echo link_to('Prenota la tua tessera 2010 all\'associazione openpolis','@tesseramento') ?>
       </div>
       <?php endif; ?>
 
@@ -67,7 +67,7 @@
       <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per monitorarne uno vai nella pagina di un parlamentare e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
     <?php endif ?>
   
-
+   <!-- <?php //echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10)); ?> -->
     
     
   </div>
