@@ -1,3 +1,7 @@
+tesseramento:
+  url: /tesseramento
+  param: { module: static, action: tesseramento }
+  
 contatti:
   url: /contatti
   param: { module: static, action: contatti }
