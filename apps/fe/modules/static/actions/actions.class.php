@@ -47,6 +47,11 @@ class staticActions extends sfActions
     $this->getResponse()->setTitle('cosa posso fare? | '.sfConfig::get('app_main_title')); 
   }
   
+  public function executeTesseramento()
+  {
+    $this->getResponse()->setTitle('diventa socio di openpolis | '.sfConfig::get('app_main_title')); 
+  }
+  
   public function execute404()
   {
     $this->getResponse()->setTitle('pagina non trovata | '.sfConfig::get('app_main_title')); 

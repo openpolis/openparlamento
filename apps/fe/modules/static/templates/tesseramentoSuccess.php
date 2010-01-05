@@ -1,7 +1,7 @@
 <ul id="content-tabs" class="float-container tools-container"> 
   <li class="current">
     <h2>
-      Chi siamo
+      Diventa socio di openpolis
     </h2>
   </li>
 </ul>
@@ -18,14 +18,16 @@
 <div style="font-size:14px; padding:5px; line-height:1,5em;"> 
 <p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
 <p>&nbsp;</p>
-<p>La sostenibilit&agrave; del progetto - con tutte le sue articolazioni - viene perseguita attraverso il contributo dei soci.<br />
-<strong>Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?></strong></p>
+<p>Abbiamo avviato la campagna di adesione all'associazione openpolis.<br />
+Chiediamo innanzitutto a voi utenti e visitatori dei nostri siti di diventare soci per contribuire a tenere in vita e a far crescere un'esperienza che è riconosciuta come unica in Italia e all'estero.</p>
 <p>&nbsp;</p>
-La vendita di alcuni servizi commerciali sono gestiti da una societ&agrave; apposita, la <?php echo link_to('depp srl','http://www.depp.it') ?>. 
+Ai soci ordinari chiediamo un contributo annuale di minimo 50 euro, a quelli sostenitori di 500 euro.<br />
+Va da s&eacute; che ogni centesimo in entrata e in uscita verr&agrave; rendicontato con scrupolo. Per ogni attivit&agrave; ci sar&agrave; la massima trasparenza e possibilit&agrave; di partecipare direttamente.
 <p>&nbsp;</p>
-<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; stato realizzato in collaborazione tra la <?php echo link_to('depp srl','http://www.depp.it') ?> e la <?php echo link_to('smaug/memefarmers','http://www.memefarmers.net') ?>.</p>
-<p>Alla sua realizzazione hanno lavorato: Vittorio Alvino, Gianluca Canale, Guglielmo Celata, Alessandro Curci, Ettore Di Cesare, Renato Minei, Salvatore Santalucia e Vincenzo Smaldore.</p>
+<p>Ai soci, oltre ai consueti diritti di partecipazione alla vita dell'associazione, verrà dato come forma di riconoscimento, l'accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?> di <em class="open">open</em><em class="parlamento">parlamento</em>.</p>
+<p><strong>Contribuisci a sostenere openpolis/openparlamento, prenota la tessera di socio 2010!</strong></p>
 <p>&nbsp;</p>
+<p>Lascia i tuoi dati e verrai contattata/o, scrivi a info@openpolis.it</p>
 </div>
 
     </div>
@@ -35,5 +37,5 @@ La vendita di alcuni servizi commerciali sono gestiti da una societ&agrave; appo
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  chi siamo
+  diventa socio di openpolis
 <?php end_slot() ?>
