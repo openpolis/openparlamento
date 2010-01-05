@@ -20,7 +20,7 @@
        <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
         <th scope="row">
           <p class="content-meta">
-            <span class="date"><?php echo $intervento->getCreatedAt('d-m-Y') ?></span>
+            <span class="date"><?php echo ($intervento->getData() ? $intervento->getData('d-m-Y') : '') ?></span>
           </p>
         </th>
         <td>
