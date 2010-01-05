@@ -12,7 +12,7 @@
 		        <em>(adhoc)</em>
 		      <?php endif ?>
 		      <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>
-		        <em>(<?php echo link_to('attiva premium gratis!','/sottoscrizioni_pro',array('style' => 'display:inline; font-weight:normal')) ?>)</em>
+		        <!-- <em> (<?php //echo link_to('attiva premium gratis!','/sottoscrizioni_pro',array('style' => 'display:inline; font-weight:normal')) ?>)</em> -->
 		      <?php endif ?>  
 		    </span>
         <div class="userdata">
