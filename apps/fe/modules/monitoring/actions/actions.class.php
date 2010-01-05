@@ -381,7 +381,7 @@ class monitoringActions extends sfActions
 
     // fetch current user profile
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-    $this->redirectUnless($this->user instanceof OppUser, '/');
+    $this->redirectUnless($this->opp_user instanceof OppUser, '/');
  
     // fetch teseo top_terms and add monitoring info
     $teseo_tts_with_counts = OppTeseottPeer::getAllWithCount();
