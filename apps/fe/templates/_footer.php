@@ -11,7 +11,7 @@
 
 <ul>
   <li class="footer-title">servizi</li>
-    <li><span style="font-size:14px;"><strong><?php echo link_to('»&nbsp;premium/ad hoc','/sottoscrizioni_pro',array('lang'=>'it')) ?></strong></span></li>
+    <li><span style="font-size:14px;"><strong><?php echo link_to('»&nbsp;premium','/sottoscrizioni_pro',array('lang'=>'it')) ?></strong></span></li>
   <li><?php echo link_to('»&nbsp;rss/xml','/static/rssxml',array('lang'=>'it')) ?></li>
 </ul>
 
