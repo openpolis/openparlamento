@@ -28,23 +28,24 @@
                 <table class="compare-table">
                     <tr>
                         <td colspan="2" rowspan="2">&nbsp;</td>
-                        <td colspan="4" class="pad0"><h4 class="grey-box-contrast round-5-top">servizi disponibili</h4></td>
+                        <td colspan="2" class="pad0"><h4 class="grey-box-contrast round-5-top">servizi no-profit disponibili</h4></td>
                         <td rowspan="2" class="pad0"><h4 class="grey-box-contrast round-5-top">modalit&agrave;<br />
                                 di accesso</h4></td>
                     </tr>
                     <tr>
                         <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio atti e parlamentari</h6></td>
                         <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio argomenti</h6></td>
-                        <td class="pad0"><h6 class="grey-box round-5-top">altri servizi personalizzati</h6></td>
-                        <td class="pad0"><h6 class="grey-box round-5-top">account multipli</h6></td>
+                        
+                        <!-- <td class="pad0"><h6 class="grey-box round-5-top">altri servizi personalizzati</h6></td> -->
+                        <!-- <td class="pad0"><h6 class="grey-box round-5-top">account multipli</h6></td> -->
+                        
                     </tr>
                     <tr>
                         <td class="grey-box-contrast round-5-left" rowspan="3"><img src="/images/txt-tipologie-utente.png" width="18" height="134" alt="tipologie utente" /></td>
                         <td class="align-left bg-flatgreen-dark round-5-left"><img src="/images/ico-citizen.png" alt="CITIZEN" class="user-type" /></td>
                         <td class="bg-flatgreen-light">MAX 5</td>
                         <td class="bg-flatgreen-light">--</td>
-                        <td class="bg-flatgreen-light">--</td>
-                        <td class="bg-flatgreen-light">--</td>
+                        
                         <td class="bg-flatgreen-light round-5-right"><p><br />
                                 <br />
                                 GRATUITA</p>
@@ -59,24 +60,21 @@
                         <td class="align-left bg-green-dark round-5-left"><img src="/images/ico-premium.png" alt="PREMIUM" class="user-type" /></td>
                         <td class="bg-green-light">MAX 10</td>
                         <td class="bg-green-light">MAX 3</td>
-                        <td class="bg-green-light">--</td>
-                        <td class="bg-green-light">--</td>
-                        <td class="bg-green-light round-5-right"><p>in promozione<br />
-                                GRATUITA fino al<br />
-                                30 novembre!<br />
-                                <?php if (!$sf_user->isAuthenticated()): ?>
-                                  per utenti <?php echo link_to('registrati', '@sf_guard_signin') ?>
-                                <?php endif ?>
+                        
+                        <td class="bg-green-light round-5-right"><p>riservata ai soci<br />
+                                dell'associazione<br />
+                                openpolis<br />
                             </p>
                             
-                            <?php if ($sf_user->hasCredential('subscriber') && !$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>
+                            <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>
                               <h5 class="launch-evidence-btn-mini round-5">
-                                <?php echo link_to('aderisci!', '@sottoscrizione_premium_demo') ?>
+                                <?php echo link_to('Prenota la tua <br />tessera per il 2010!', '@tesseramento') ?>
                               </h5>
                             <?php endif ?>
                       </td>
                           
                     </tr>
+                    <!--
                     <tr>
                         <td class="align-left bg-cyan-dark round-5-left"><img src="/images/ico-adhoc.png" alt="AD HOC" class="user-type" /></td>
                         <td class="bg-cyan-light round-5-bottom">SENZA LIMITI</td>
@@ -92,9 +90,11 @@
                             </h5>
                         </td>
                     </tr>
+                    -->
                 </table>
             </div>   
-
+            
+            <!--
             <div class="W48_100 <?php echo (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc'))?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
                 <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
                     <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
@@ -118,12 +118,12 @@
                   <?php echo link_to('Contattaci!', '@contatti') ?>
                 </h1>
             </div>
-            
+            -->
             <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
-              <div class="W48_100 float-left">
-                  <div class="launch-evidence-box green-box round-5"> <img src="/images/op-premium.png" alt="Openparlamento Premium" />
-                      <p>In occasione del lancio di openparlamento<br />
-                          <em class="round-3"> in prova gratuita fino al 30 novembre 2009 avrai: </em>
+              <div class="W100_100 float-left" style="width:90%;">
+                  <div class="launch-evidence-box green-box round-5" style="height:320px;"> <img src="/images/op-premium.png" alt="Openparlamento Premium" />
+                      <p>
+                          <em class="round-3">gli iscritti all'associazione openpolis hanno:</em>
                      </p>
                       <ul>
                           <li>
@@ -135,11 +135,20 @@
                           <li>
                               <h3 class="position-light-orange">c</h3>
                               tutte le notizie aggiornate sul monitoraggio nelle tue pagine personali e direttamente nella tua e-mail</li>
+                          <li>
+                              <h3 class="position-light-orange">d</h3>
+                              la consapevolezza di promuovere la trasparenza e la partecipazione!</li>    
                       </ul>
                   </div>
                   <h1 class="launch-evidence-btn round-5">
-                    <?php echo link_to('Aderisci!', '@sottoscrizione_premium_demo') ?>
+                    <?php echo link_to('Prenota la tua <br />tessera per il 2010!', '@tesseramento') ?>
                   </h1>
+              </div>
+              
+              <div class="W100_100 float-left" style="width:90%; padding:30px">
+              <p style="font-size:18px";>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
+                  openparlamento pu&ograve; fornirti tutti i dati, le analisi e le informazioni di cui hai bisogno in piena flessibilit&agrave;.<br />
+                  Per maggiori informazioni contatta <a href="http://www.depp.it">depp srl</a>, societ&agrave; incaricata della commercializzazione dei servizi.</p>
               </div>
             <?php endif ?>
  
