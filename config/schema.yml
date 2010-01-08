@@ -89,6 +89,7 @@ propel:
     carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     tipo:             { type: varchar(255), primaryKey: true, index: true }
     data:             { type: date }
+    delete_at:        { type: date }
     url:              { type: longvarchar }
     created_at:
 
@@ -139,6 +140,8 @@ propel:
     url_fonte:        { type: varchar(255), required: true }
     sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     tipologia:        { type: varchar(255) }
+    nota:             { type: varchar(255) }
+    legislatura:      { type: integer, required: true }
 
   opp_em_iter:
     id:               ~
@@ -177,6 +180,16 @@ propel:
     id:
     nome:             { type: varchar(255) }
     acronimo:         { type: varchar(80) }
+    
+  opp_esito_seduta:
+    id:
+    atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    data:             { type: date }
+    url:              { type: longvarchar, required: true }
+    esito:            { type: clob }
+    tipologia:        { type: varchar(255) }
+    created_at:
 
   opp_intervento:
     id:
