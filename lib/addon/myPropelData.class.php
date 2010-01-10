@@ -100,16 +100,17 @@ class myPropelData extends sfPropelData
           {
             if ($column->isForeignKey() && !is_null($value))
             {
-              try {
-                $relatedTable = $this->maps[$class]->getDatabaseMap()->getTable($column->getRelatedTableName());                
-                if (!isset($this->object_references[$relatedTable->getPhpName().'_'.$value]))
-                {
-                  throw new sfException(sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getPhpName()));
-                }
+              if (!is_int($value))
+              {
+                try {
+                  $relatedTable = $this->maps[$class]->getDatabaseMap()->getTable($column->getRelatedTableName());   
+                  if (!isset($this->object_references[$relatedTable->getPhpName().'_'.$value]))
+                  {
+                    throw new sfException(sprintf('The object "%s" from class "%s" is not defined in your data file.', $value, $relatedTable->getPhpName()));
+                  }
 
-                $value = $this->object_references[$relatedTable->getPhpName().'_'.$value];
-              } catch (PropelException $e) {
-                if (!is_int($value)) {
+                  $value = $this->object_references[$relatedTable->getPhpName().'_'.$value];
+                } catch (PropelException $e) {
                   throw new sfException(sprintf('The value %s for column %s is not an integer', $value, $name));
                 }
               }

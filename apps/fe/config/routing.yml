@@ -194,6 +194,17 @@ argomenti_per_categoria:
   url: /argomenti_per_categoria/*
   param: { module: argomento, action: ajaxTagsForTopTerm }
 
+emendamenti_atto:
+  url: /emendamenti_atto/:id/*
+  param: { module: emendamento, action: index }
+
+singolo_emendamento:
+  url: /emendamento/:id
+  param: { module: emendamento, action: show }
+
+commenti_emendamento:
+  url: /commenti_emendamento/:id
+  param: { module: emendamento, action: commenti }
   
 teseo:
   url:   /teseo/:id

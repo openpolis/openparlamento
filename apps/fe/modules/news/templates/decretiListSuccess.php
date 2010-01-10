@@ -20,7 +20,7 @@
                           array('selected_main_all' => array_key_exists('main_all', $filters)?$filters['main_all']:'main')) ?>
       <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
-      <?php echo include_partial('news/newslist',array('pager' => $pager,'context' => 1)); ?>
+      <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
       <?php echo pager_navigation($pager, 'news/decretiList') ?>
     </div>  

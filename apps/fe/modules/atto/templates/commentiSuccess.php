@@ -1,6 +1,8 @@
 <?php use_helper('Date', 'I18N') ?>
 
-<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'commenti', 'nb_comments' => $atto->getNbPublicComments())) ?>
+<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'commenti', 
+                                         'nb_comments' => $atto->getNbPublicComments(),
+                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
 
 <div id="content" class="tabbed float-container">
   <a name="top"></a>

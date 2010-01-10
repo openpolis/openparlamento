@@ -1,15 +1,15 @@
 commentiSuccess:
   javascripts:    [-*, prototype]
-  stylesheets:    [-*, screen.min.css]
+  stylesheets:    [-*, screen.css]
 
 
 indexSuccess:
   javascripts:    [fe/jquery.autocomplete.min.js]
-  stylesheets:    [-*, screen.min.css, monitoring, jquery.autocomplete.css]
+  stylesheets:    [-*, screen.css, monitoring, jquery.autocomplete.css]
 
 documentoSuccess:
   javascripts:    [-*, /sfEmendPlugin/emend.boot.js]
-  stylesheets:    [-*, screen.min.css, testo_atto]
+  stylesheets:    [-*, screen.css, testo_atto]
   layout:         layoutDoc
 
 all:

@@ -49,7 +49,7 @@
 <?php if (@$compare): ?>
   <p class="wiki-form-submit"><?php echo submit_tag(__('vedi i cambiamenti tra le versioni selezionate')) ?>
   |
-  <?php echo link_to(__('torna all\'atto'), $sf_user->getAttribute('referer', '@homepage')) ?>
+  <?php echo link_to(__('annulla'), $sf_user->getAttribute('referer', '@homepage')) ?>
   </p> 
 <?php endif ?>
 </form>

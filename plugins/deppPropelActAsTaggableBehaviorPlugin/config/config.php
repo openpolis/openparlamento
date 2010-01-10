@@ -23,4 +23,5 @@ sfPropelBehavior::registerMethods('deppPropelActAsTaggableBehavior', array (
   array ('deppPropelActAsTaggableBehavior', 'removeTag'),
   array ('deppPropelActAsTaggableBehavior', 'replaceTag'),
   array ('deppPropelActAsTaggableBehavior', 'setTags'),
+  array ('deppPropelActAsTaggableBehavior', 'getTagsAsObjects'),
 ));

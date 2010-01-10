@@ -9,4 +9,8 @@
  */ 
 class OppSede extends BaseOppSede
 {
+  public function __toString()
+  {
+    return $this->getRamo() . " " . $this->getDenominazione();
+  }
 }

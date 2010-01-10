@@ -9,15 +9,7 @@
  */ 
 class Tagging extends BaseTagging
 {
-  public function getTaggedAtto()
-  {
-    $item_model = $this->getTaggableModel();
-    if ($item_model != 'OppAtto') return null;
-    $item_id = $this->getTaggableId();
-    
-    $item = call_user_func($item_model.'Peer::retrieveByPK', $item_id);
-    return $item;
-  }
+  public $priority_override = 0;
   
   public function getNewsDate()
   {
@@ -26,9 +18,11 @@ class Tagging extends BaseTagging
   
 }
 
+/**
+ * tagging an object, generates news related to the tag (that is monitored)
+ **/
 sfPropelBehavior::add(
   'Tagging',
   array('deppPropelActAsNewsGeneratorBehavior' =>
-        array('monitorable_models' => array( 'OppAtto' => 'getTaggedAtto'),
-              'priority'           => '1',
-        )));
+        array('monitorable_models' => array( 'Tag' => 'getTag'),
+              'priority'           => '3')));

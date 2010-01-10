@@ -405,6 +405,40 @@ class OppAtto extends BaseOppAtto
 
     return "false";
   }
+  
+  /**
+   * get the available articoli for all the emendamenti of the atto
+   *
+   * @return array of String
+   * @author Guglielmo Celata
+   */
+  public function getAvailableEmendamentiArticles()
+  {
+    return OppEmendamentoPeer::getAvailableArticles($this);
+  }
+  
+  /**
+   * get the available distinct sedi for all the emendamenti of the atto
+   *
+   * @return hash of type {id => site}
+   * @author Guglielmo Celata
+   */
+  public function getAvailableEmendamentiSites()
+  {
+    return OppEmendamentoPeer::getAvailableSites($this);
+  }
+
+
+  /**
+   * get the available distinct presentatori for all the emendamenti of the atto
+   *
+   * @return hash of type {id => presenter}
+   * @author Guglielmo Celata
+   */
+  public function getAvailableEmendamentiPresenters()
+  {
+    return OppEmendamentoPeer::getAvailablePresenters($this);
+  }
 
   /**
    * delete all news related to this object before deleting the object

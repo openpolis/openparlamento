@@ -135,8 +135,8 @@
                                  array('title' => 'Parlamentare',
                                 
                                        'all_news_url' => '@news_parlamentare?id='.$parlamentare->getId(), 
-                                       'news'   => NewsPeer::getNewsForItem('OppPolitico', $parlamentare->getId(), 3),
-                                        'context' => 2,
+                                       'news'   => oppNewsPeer::getNewsForItem('OppPolitico', $parlamentare->getId(), 3),
+                                       'context' => 2,
                                        'rss_link' => '@feed_politico?id='.$parlamentare->getId())); ?> 
                                        
                                        

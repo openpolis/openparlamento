@@ -21,7 +21,7 @@ class Text
 	* @param  integer numero di caratteri da prendere  
 	*/ 
 
-  	public static function shorten( &$str_to_shorten, $chars_to_keep, $cut_words=false, $str_to_append='...' )
+  public static function shorten( $str_to_shorten, $chars_to_keep, $cut_words=false, $str_to_append='...' )
 	{
 		if ( strlen( $str_to_shorten ) > $chars_to_keep )
 		{

@@ -1,6 +1,8 @@
 <?php use_helper('Date', 'I18N') ?>
 
-<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'atto', 'nb_comments' => $atto->getNbPublicComments())) ?>
+<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'atto', 
+                                         'nb_comments' => $atto->getNbPublicComments(),
+                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
 
 <div id="content" class="tabbed float-container">
   <a name="top"></a>
@@ -13,7 +15,7 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Atto', 
                                        'all_news_url' => '@news_atto?id='.$atto->getId(), 
-                                       'news'   => NewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
+                                       'news'   => oppNewsPeer::getNewsForItem('OppAtto', $atto->getId(), 10),
                                        'context' => 0,
                                        'rss_link' => '@feed_atto?id='.$atto->getId()));  
       ?>
@@ -180,24 +182,6 @@
 
 <?php slot('breadcrumbs') ?>
     <?php echo link_to("home", "@homepage") ?> /
-    <?php if ($atto->getTipoAttoId()==1): ?>
-	<?php echo link_to("disegni di legge", "atto/disegnoList") ?>
-    <?php endif; ?> 
-    	
-    <?php if ($atto->getTipoAttoId()==12): ?>
-	<?php echo link_to("decreti legge", "atto/decretoList") ?>
-    <?php endif; ?> 
-    
-    <?php if ($atto->getTipoAttoId()==15 || $atto->getTipoAttoId()==16 || $atto->getTipoAttoId()==17): ?>
-	<?php echo link_to("decreti legislativi", "atto/decretoLegislativoList") ?>
-    <?php endif; ?> 
-    
-    <?php if (($atto->getTipoAttoId()<12 && $atto->getTipoAttoId()!=1) || $atto->getTipoAttoId()==14): ?>
-	<?php echo link_to("atti non legislativi", "atto/attoNonLegislativoList") ?>
-    <?php endif; ?> 
-
-    /
+    <?php include_partial('atto/breadcrumbsAtti', array('atto' => $atto)) ?> /
     <?php echo Text::denominazioneAttoShort($atto) ?>
-
-     
 <?php end_slot() ?>

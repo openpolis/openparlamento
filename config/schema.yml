@@ -131,15 +131,20 @@ propel:
     
     
   opp_emendamento:
-    id:               ~
-    titolo:           { type: varchar(255), required: true }
-    numfase:          { type: varchar(255) }
-    data_pres:        { type: date }
-    articolo:         { type: varchar(255) }
-    created_at:       ~
-    url_fonte:        { type: varchar(255), required: true }
-    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
-    tipologia:        { type: varchar(255) }
+    id:                ~
+    titolo:            { type: varchar(255), required: true }
+    titolo_aggiuntivo: { type: longvarchar }
+    numfase:           { type: varchar(255) }
+    data_pres:         { type: date }
+    articolo:          { type: varchar(255) }
+    created_at:        ~
+    url_fonte:         { type: varchar(255), required: true }
+    sede_id:           { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
+    tipologia:         { type: varchar(255) }
+    nb_commenti:       { type: integer, required: true, default: 0 }
+    ut_fav:            { type: integer, required: true, default: 0 }
+    ut_contr:          { type: integer, required: true, default: 0 }
+    
     nota:             { type: varchar(255) }
     legislatura:      { type: integer, required: true }
 
@@ -159,6 +164,7 @@ propel:
     emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
     atto_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
     created_at:       ~
+    portante:         { type: boolean, default: true }
 
   opp_carica_has_emendamento:
     emendamento_id:   { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
@@ -187,7 +193,7 @@ propel:
     sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
     url:              { type: longvarchar, required: true }
-    esito:            { type: clob }
+    esito:            { type: longvarchar }
     tipologia:        { type: varchar(255) }
     created_at:
 

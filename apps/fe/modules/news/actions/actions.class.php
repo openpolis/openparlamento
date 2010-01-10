@@ -23,11 +23,11 @@ class newsActions extends sfActions
   {
     $this->session = $this->getUser();
     
-    $this->n_news = NewsPeer::countHomeNews();
+    $this->n_news = oppNewsPeer::countHomeNews();
     
     $this->getResponse()->setTitle('tutte le notizie dal Parlamento - '.sfConfig::get('app_main_title'));
 
-    $c = NewsPeer::getHomeNewsCriteria();
+    $c = oppNewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     if ($this->hasRequestParameter('itemsperpage'))
@@ -45,25 +45,25 @@ class newsActions extends sfActions
 
   public function executeDisegniList()
   {
-    $this->_getAttiList(NewsPeer::ATTI_DDL_TIPO_IDS);
+    $this->_getAttiList(oppNewsPeer::ATTI_DDL_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui disegni di legge - '.sfConfig::get('app_main_title'));
   }
 
   public function executeDecretiList()
   {
-    $this->_getAttiList(NewsPeer::ATTI_DECRETI_TIPO_IDS);
+    $this->_getAttiList(oppNewsPeer::ATTI_DECRETI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui decreti legge - '.sfConfig::get('app_main_title'));
   }
 
   public function executeDecretiLegislativiList()
   {
-    $this->_getAttiList(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
+    $this->_getAttiList(oppNewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui decreti legislativi - '.sfConfig::get('app_main_title'));
   }
 
   public function executeAttiNonLegislativiList()
   {
-    $this->_getAttiList(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+    $this->_getAttiList(oppNewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sugli atti non legislativi - '.sfConfig::get('app_main_title'));
   }
   
@@ -90,7 +90,7 @@ class newsActions extends sfActions
     else
       $max_priority = 2;
 
-    $c = NewsPeer::getAttiListNewsCriteria($tipo_atto_ids, null, $max_priority);
+    $c = oppNewsPeer::getAttiListNewsCriteria($tipo_atto_ids, null, $max_priority);
 
 
     if ($this->hasRequestParameter('itemsperpage'))
@@ -110,7 +110,7 @@ class newsActions extends sfActions
 
     $this->politician_id = $this->getRequestParameter('id');
     $this->politician = OppPoliticoPeer::retrieveByPK($this->politician_id);
-    $this->n_news = NewsPeer::countNewsForItem('OppPolitico', $this->politician_id);
+    $this->n_news = oppNewsPeer::countNewsForItem('OppPolitico', $this->politician_id);
     
     $this->getResponse()->setTitle('tutte le notizie sul parlamentare '.$this->politician->getNome().' '.$this->politician->getCognome().' - '.sfConfig::get('app_main_title'));
     
@@ -120,7 +120,7 @@ class newsActions extends sfActions
     $c->add(OppCaricaPeer::POLITICO_ID, $this->politician_id);
     $this->carica= OppCaricaPeer::doSelectOne($c);
 
-    $c = NewsPeer::getNewsForItemCriteria('OppPolitico', $this->politician_id);
+    $c = oppNewsPeer::getNewsForItemCriteria('OppPolitico', $this->politician_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     if ($this->hasRequestParameter('itemsperpage'))
@@ -140,11 +140,11 @@ class newsActions extends sfActions
 
     $this->act_id = $this->getRequestParameter('id');
     $this->act = OppAttoPeer::retrieveByPK($this->act_id);
-    $this->n_news = NewsPeer::countNewsForItem('OppAtto', $this->act_id);
+    $this->n_news = oppNewsPeer::countNewsForItem('OppAtto', $this->act_id);
     
     $this->getResponse()->setTitle('tutte le notizie su '.$this->act->getOppTipoAtto()->getDescrizione().' '.Text::denominazioneAttoShort($this->act).' - '.sfConfig::get('app_main_title'));
 
-    $c = NewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
+    $c = oppNewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     if ($this->hasRequestParameter('itemsperpage'))
@@ -168,8 +168,7 @@ class newsActions extends sfActions
     
     $this->getResponse()->setTitle('tutte le notizie sull\'argomento '.$this->tag->getTripleValue().' - '.sfConfig::get('app_main_title'));
 
-    $this->n_news = NewsPeer::countNewsForTag($this->tag_id);
-    $c = NewsPeer::getNewsForTagCriteria($this->tag_id);
+    $c = oppNewsPeer::getNewsForTagCriteria($this->tag_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     if ($this->hasRequestParameter('itemsperpage'))

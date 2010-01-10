@@ -720,5 +720,6 @@ class TagPeer extends BaseTagPeer
 
     return $tag;
   }
+  
 
 }

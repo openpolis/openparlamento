@@ -65,7 +65,7 @@ Se invece vuoi lasciare un tuo commento, vai nella apposita pagina dei commenti 
           <?php if ($canEdit): ?>
             <?php echo submit_tag(__('pubblica la modifica'), 'class=commit') ?> |
     			<?php endif ?>	
-    			<?php echo link_to(__('annulla e torna all\'atto'), $sf_user->getAttribute('referer', '@homepage')) ?>
+    			<?php echo link_to(__('annulla'), $sf_user->getAttribute('referer', '@homepage')) ?>
   		  </p>     
       </form>
 

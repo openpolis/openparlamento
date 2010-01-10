@@ -100,7 +100,7 @@ class monitoringActions extends sfActions
       $monitored_objects = $this->user->getMonitoredObjects();
 
     // criterio di selezione delle news dagli oggetti monitorati    
-    $c = NewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
+    $c = oppNewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
     
     // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
     $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($this->user_id);

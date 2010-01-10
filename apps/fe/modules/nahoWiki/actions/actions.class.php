@@ -56,12 +56,22 @@ class nahoWikiActions extends BasenahoWikiActions
     switch ($tipo)
     {
       case 'atto':
-        $this->item_name = Text::denominazioneAttoShort(OppAttoPeer::retrieveByPK($id));
+        $this->item = OppAttoPeer::retrieveByPK($id);
+        $this->item_name = Text::denominazioneAttoShort($this->item);
         break;
         
       case 'votazione':
-        $this->item_name = OppVotazionePeer::retrieveByPK($id)->getTitolo();
+        $this->item = OppVotazionePeer::retrieveByPK($id);
+        $this->item_name = $this->item->getTitolo();
         break;
+        
+      case 'emendamento':
+        $this->item = OppEmendamentoPeer::retrieveByPK($id);
+        $attoPortante = $this->item->getAttoPortante();
+        $this->item_name = "Emendamento " . $this->item->getTitolo() . 
+                           " relativo a " . Text::denominazioneAttoShort($attoPortante) . " - " . $attoPortante->getTitolo();
+        break;
+      
     }
     $this->item_type = $tipo;
     
@@ -99,12 +109,14 @@ class nahoWikiActions extends BasenahoWikiActions
         $this->revision->archiveContent();
         $this->initNewRevision();
       }
+
       $this->revision->setContent($this->getRequestParameter('content'));
       $this->revision->setComment($this->getRequestParameter('comment'));
       if (!$this->getRequestParameter('request-preview')) {
         $this->revision->save();
       }
       $this->page->setLatestRevision($this->revision->getRevision());
+
       if (!$this->getRequestParameter('request-preview')) {
         $this->page->save();
         
@@ -118,6 +130,9 @@ class nahoWikiActions extends BasenahoWikiActions
             break;
           case 'votazione': 
             $rel_obj_model = 'OppVotazione';
+            break;
+          case 'emendamento':
+            $rel_obj_model = 'OppEmendamento';
             break;
         }
         $rel_obj = call_user_func($rel_obj_model.'Peer::retrieveByPK', $rel_obj_id);

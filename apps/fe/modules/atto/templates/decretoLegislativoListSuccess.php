@@ -19,7 +19,7 @@
       <?php echo include_partial('news/newsbox', 
                                  array('title' => 'Decreti legislativi', 
                                        'all_news_url' => '@news_attiDecretiLegislativi',
-                                       'news'   => NewsPeer::getAttiListNews(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS, 10),
+                                       'news'   => oppNewsPeer::getAttiListNews(oppNewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS, 10),
                                        'context' => 1,
                                        'rss_link' => '@feed_decretiLegislativi')); ?>
 	  </div>

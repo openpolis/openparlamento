@@ -16,4 +16,5 @@
 <?php echo include_partial('breadcrumbs_slot', 
                            array('item_type' => $item_type, 
                                  'item_name' => $item_name, 
+                                 'item'      => $item,
                                  'link_back' => $sf_user->getAttribute('referer', '@homepage'))); ?>

@@ -112,35 +112,34 @@ $(document).ready(function(){
 	if(typeof jQuery.fn.combobox == 'function' && ($.browser.mozilla || $.browser.msie)) {
 
 	    function initComboBox() {
-		$('#disegni-decreti-filter select').combobox(
-			{
-				comboboxContainerClass: "comboboxContainer",
-				comboboxValueContentContainerClass: "comboboxValueContainer",
-				comboboxValueContentClass: "comboboxValueContent",
-				comboboxDropDownClass: "comboboxDropDownContainer",
-				comboboxDropDownButtonClass: "comboboxDropDownButton",
-				comboboxDropDownItemClass: "comboboxItem",
-				comboboxDropDownItemHoverClass: "comboboxItemHover",
-				comboboxDropDownGroupItemHeaderClass: "comboboxGroupItemHeader",
-				comboboxDropDownGroupItemContainerClass: "comboboxGroupItemContainer"
-			},
-			{
-				width: 130
-			},
-			function() { $('#disegni-decreti-filter-apply').show(); }
-		);
-		$('.comboboxValueContainer').css({width: '130px',height: '23px'});
-		$('.comboboxValueContent').css({top: '5.5px'});
+    		$('#disegni-decreti-filter select').combobox(
+    			{
+    				comboboxContainerClass: "comboboxContainer",
+    				comboboxValueContentContainerClass: "comboboxValueContainer",
+    				comboboxValueContentClass: "comboboxValueContent",
+    				comboboxDropDownClass: "comboboxDropDownContainer",
+    				comboboxDropDownButtonClass: "comboboxDropDownButton",
+    				comboboxDropDownItemClass: "comboboxItem",
+    				comboboxDropDownItemHoverClass: "comboboxItemHover",
+    				comboboxDropDownGroupItemHeaderClass: "comboboxGroupItemHeader",
+    				comboboxDropDownGroupItemContainerClass: "comboboxGroupItemContainer"
+    			},
+    			{
+    				width: 130
+    			},
+    			function() { $('#disegni-decreti-filter-apply').show(); }
+    		);
+    		$('.comboboxValueContainer').css({width: '130px',height: '23px'});
+    		$('.comboboxValueContent').css({top: '5.5px'});
 
-		// evidenzia combobox se filtro attivo
-		$('#disegni-decreti-filter option:first-child').each(
-			function(i) {
-		 		if(!this.selected){
-				$(this.parentNode.parentNode).find('.comboboxValueContent').css({color:'#00aa00','fontWeight':'bold'});
-				}
-			}
-		);
-
+    		// evidenzia combobox se filtro attivo
+    		$('#disegni-decreti-filter option:first-child').each(
+    			function(i) {
+    		 		if(!this.selected){
+    				$(this.parentNode.parentNode).find('.comboboxValueContent').css({color:'#00aa00','fontWeight':'bold'});
+    				}
+    			}
+    		);
 
 	   }
 	   setTimeout(initComboBox, 50);

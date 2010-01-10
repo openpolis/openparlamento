@@ -1,0 +1,39 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppEmendamento
+    theme:            default
+
+    fields:
+      titolo:            { name: 'Titolo originale' }
+      titolo_aggiuntivo: { name: 'Titolo aggiuntivo' }
+      atto_filter:       { name: 'ID Atto' }
+      created_at:        { name: 'Data', params: "date_format='dd/MM/yy'"}
+      
+    list:
+      title:           "Elenco degli emendamenti"
+      layout:          stacked
+      display:         [_data, _atto, titolo_completo, titolo_aggiuntivo]
+      params:          |
+         Creato il %%_data%%, relativo a: %%_atti%% <br/>
+         <strong>%%=titolo_completo%%</strong><br/>
+         Titolo aggiuntivo: <strong>%%titolo_aggiuntivo%%</strong>
+      filters:         [titolo, _atto_filter]
+      object_actions:
+        _edit:         -
+        _delete:       none
+      actions:
+        _create:      none
+      
+      
+    edit: 
+      title:           "Modifica titolo aggiuntivo emendamento %%titolo%%"
+      display:        
+        "Emendamento": [titolo, titolo_aggiuntivo]
+      fields: 
+        titolo:            { name: "Titolo originale", params: "disabled=true size=60x5" }
+        titolo_aggiuntivo: { name: 'Titolo aggiuntivo', params: "size=60x5" }
+      actions:
+        _list:          -
+        _save:          -
+        _delete:        none

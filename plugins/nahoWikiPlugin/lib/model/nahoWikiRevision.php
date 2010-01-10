@@ -24,6 +24,9 @@ class nahoWikiRevision extends PluginnahoWikiRevision
       case 'votazione':
         return 'OppVotazione';
         break;
+      case 'emendamento':
+        return 'OppEmendamento';
+        break;
     }
   }
   

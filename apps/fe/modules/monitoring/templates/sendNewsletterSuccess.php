@@ -1,7 +1,6 @@
 <?php echo use_helper('DeppNews', 'Date'); ?>
 
 <?php 
-  $df = new sfDateFormat('it_IT'); 
   $sf_site_url = sfConfig::get('sf_site_url', 'openparlamento');
 ?>
 
@@ -21,31 +20,49 @@
   <?php foreach ($grouped_news as $date_ts => $news): ?>
     <tr><td colspan="3">&nbsp;</td></tr>
 
-    <?php foreach ($news as $i => $n): ?>
-      <tr>     
-        <?php if( $i == 0 ): ?>
-          <?php if ($date_ts > 0): ?>
-            <td style="width: 80px;">
-                <div style="width: 39px; height: 53px; background-color: #4e8480; background-image: url(http://<?php echo $sf_site_url?>/images/bg-news-time.png); background-repeat: no-repeat; background-position: top left; color: #fff; text-align: center;">
-                  <strong style="display: block; font-size:16px; padding-top: 6px;"><?php echo $df->format($date_ts, 'dd'); ?></strong>
-                  <strong style="display: block; font-size:10px;"><?php echo $df->format($date_ts, 'MMM'); ?></strong>
-                  <strong style="display: block;"><?php echo $df->format($date_ts, 'yyyy'); ?></strong>
-                </div>
-            </td>    
-          <?php else: ?>
-            <td style="width: 80px;">
-                <div class="news-time">
-                  <strong style="display: block; font-size:16px; padding-top: 6px;">NO</strong>
-                  <strong style="display: block; font-size:10px;">data</strong>
-                  <strong style="display: block;"> </strong>
-                </div>
-            </td>      
-          <?php endif ?>
+    <?php foreach ($news as $cnt => $n): ?> 
+      <?php
+      
+      // fetch del modello e dell'oggetto che ha generato la notizia
+      $generator_model = $n->getGeneratorModel();
+      if ($n->getGeneratorPrimaryKeys())
+      {
+        $pks = array_values(unserialize($n->getGeneratorPrimaryKeys()));
+        $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);          
+      } else {
+        $pks = array();
+        $generator = null;
+      }
+      
+      ?>
+      <tr>
+        <!-- datebox cell / empty -->
+        <?php if ($cnt == 0): ?>
+          <td style="width: 80px;">
+            <?php include_partial('news/dateboxmail', array('date_ts' => $date_ts, 
+                                                            'date_format' => new sfDateFormat('it_IT'))) ?>
+          </td> 
         <?php else: ?>
           <td>&nbsp;</td>
         <?php endif; ?>
-        <?php echo news_text_for_mail($n,1,1) ?> 
-      </tr>  
+        
+        <!-- news icon -->
+        <?php 
+          $icon_src = image_tag(news_icon_name($generator_model, $generator), 
+                                array('size' => '44x42', 
+                                      'absolute' => true)) 
+        ?>
+        <td class="icon-id" style="width: 60px;">
+          <img style="border:none; display: block; border: none; background: transparent url(http://<?php echo $sf_site_url?>/images/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;" src="<?php echo $icon_src?>" />
+        </td>
+        
+        <!-- news text -->
+        <td>
+          <?php echo news_text($n, $generator_model, $pks, $generator, 
+                               array('in_mail' => true)) ?>
+        </td>
+        
+      </tr>
     <?php endforeach ?>
       
   <?php endforeach; ?>

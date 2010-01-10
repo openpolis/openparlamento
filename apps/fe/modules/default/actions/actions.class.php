@@ -191,7 +191,7 @@ class defaultActions extends sfActions
     $this->latest_activities = CommunityNewsPeer::getLatestActivities(4);
     
     // ultime news dal parlamento
-    $c = NewsPeer::getHomeNewsCriteria();
+    $c = oppNewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     $itemsperpage = 4;
     $pager = new deppNewsPager('News', $itemsperpage);

@@ -13,6 +13,7 @@ class attoActions extends sfActions
 
   public function preExecute()
   {
+    // must reset all filters , except acts_filters
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('votes_filter', 'sf_admin/opp_votazione/sort',
                                                         'pol_camera_filter', 'pol_senato_filter', 'sf_admin/opp_carica/sort',

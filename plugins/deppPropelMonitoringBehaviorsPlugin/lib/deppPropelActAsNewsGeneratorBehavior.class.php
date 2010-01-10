@@ -139,7 +139,7 @@ class deppPropelActAsNewsGeneratorBehavior
   /**
    * retrieve all monitorable objects related to this generating object
    *
-   * @return array of
+   * @return array of objects
    * @author Guglielmo Celata
    **/
   public function getRelatedMonitorableObjects(BaseObject $object)
@@ -150,23 +150,48 @@ class deppPropelActAsNewsGeneratorBehavior
     $monitorable_objects = array();
     foreach ($monitorable_models as $model => $callable)
     {
+      printf("%s => %s\n", $model, $callable);
+      // self exception: the object itself is added to the monitorable ones
       if ($callable == 'self')
-        $monitorable_objects[$model] = $object;
+        $monitorable_objects []= $object;
       elseif (is_array($callable))
       {
-        // the related object is retrieved through a chain of methods
+        // if callable is an array,
+        // the related object(s) is/are retrieved through a chain of methods
         $res = $object;
         foreach ($callable as $method)
         {
           $res = $res->$method();
+          printf("  %s = (%d)\n", $method, count($res));
         }
-        $monitorable_objects[$model] = $res;
+        
+        // multiple results
+        if (is_array($res) && count($res) > 0)
+          foreach ($res as  $res_obj)
+            $monitorable_objects []= $res_obj;
+        
+        // single result
+        if(is_object($res))
+          $monitorable_objects []= $res;
       }
       else
-        $monitorable_objects[$model] = $object->$callable();
+      {
+        // if callable is a string (not an array)
+        $res = $object->$callable();
+        
+        // multiple results
+        if (is_array($res) && count($res) > 0)
+          foreach ($res as  $res_obj)
+            $monitorable_objects []= $res_obj;
+        
+        // single result
+        if(is_object($res))
+          $monitorable_objects [] = $res();        
+      }
     }
     return $monitorable_objects;
   }    
+  
   
 
   /**
