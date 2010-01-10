@@ -28,8 +28,8 @@ body
 
 
 ul#main_menu {margin-bottom: 10px; float: left;}
-ul#main_menu li {display:inline; padding: 3px;}
-ul#main_menu li.selected {color: #254B71; background-color: #B5BEC7; border: 1px solid #ECECE4;}
+ul#main_menu li, ul#sub_menu li {display:inline; padding: 3px;}
+ul#main_menu li.selected, ul#sub_menu li.selected {color: #254B71; background-color: #B5BEC7; border: 1px solid #ECECE4;}
 
 #logout {float:right;}
 #logout .nick {font-weight: bold; color: grey;}
