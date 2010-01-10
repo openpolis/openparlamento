@@ -781,12 +781,12 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= $tipo->getDescrizione() . " ";
           $news_string .= $atto_link . " ";
           $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
-          if ($news->getRamoVotazione()=='C') $news_string .= ' alla Camera ';
+          if ($atto->getRamo()=='C') $news_string .= ' alla Camera ';
           else
           {
-            if ($news->getRamoVotazione()=='S') $news_string .= ' al Senato ';
+            if ($atto->getRamo()=='S') $news_string .= ' al Senato ';
           }
-          $news_string .= "il " . $news->getDataPresentazioneAtto('d/m/Y') . " ";
+          $news_string .= "il " . $atto->getDataPres('d/m/Y') . " ";
           $news_string .= "&egrave; stat".($gender=='m'?'o':'a'). " <b>aggiunt".($gender=='m'?'o':'a'). " al monitoraggio dell'argomento ";
           if ($context != CONTEXT_TAG)
             $news_string .= $generator->getTag()->getTripleValue();
