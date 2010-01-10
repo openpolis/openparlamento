@@ -741,6 +741,25 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
                         content_tag('b', ucfirst(strtolower($generator->getOppEmIter()->getFase())));
       }
       
+      else if ($generator_model == 'OppEsitoSeduta')
+      {
+        $sede = $generator->getOppSede();
+        $news_string .= "<p>";
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+        $news_string .= "Esito seduta";
+        $news_string .= " in " . $sede->getDenominazione();
+        if ($context != CONTEXT_ATTO)
+        {
+          $news_string .= " riferita ".($gender=='m'?'al ':'alla ');
+          $news_string .= $atto_link . ": ";
+        } 
+        $news_string .= "<a href=" .$generator->getUrl() . ">";
+        $news_string .= $generator->getEsito();
+        $news_string .= "</a>";
+        $news_string .= "</p>";
+        
+      }
+      
       else $news_string .= $generator_model;
     
     }
