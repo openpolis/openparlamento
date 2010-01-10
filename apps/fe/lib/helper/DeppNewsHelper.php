@@ -832,7 +832,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
  * @return string
  * @author Guglielmo Celata
  */
-function news_icon_name($generator_model, BaseObject $generator)
+function news_icon_name($generator_model, $generator)
 {
   $icon_types = array('OppIntervento'       => 'intervento',
                       'OppVotazioneHasAtto' => 'votazione',
