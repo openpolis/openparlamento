@@ -753,6 +753,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= " riferita ".($gender=='m'?'al ':'alla ');
           $news_string .= $atto_link . ": ";
         } 
+        $news_string .= "<br/>";
         $news_string .= "<a href=" .$generator->getUrl() . ">";
         $news_string .= $generator->getEsito();
         $news_string .= "</a>";
@@ -866,6 +867,7 @@ function news_icon_name($generator_model, $generator)
                       'OppCaricaHasEmendamento' => 'ordinanza',
                       'OppAttoHasEmendamento' => 'attonoleg',
                       'OppEmendamentoHasIter' => 'next-iter',
+                      'OppEsitoSeduta'      => 'next-iter',
                       );
 
   // attos are specials
