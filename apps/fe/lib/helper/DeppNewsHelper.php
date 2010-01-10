@@ -105,7 +105,7 @@ function news_list($news, $for_mail_or_rss = false)
  * @return string (html)
  * @author Guglielmo Celata
  */
-function news_text(News $news, $generator_model, $pks, BaseObject $generator, $options = array())
+function news_text(News $news, $generator_model, $pks, $generator, $options = array())
 {
   sfLoader::loadHelpers('Asset');
   
@@ -124,7 +124,7 @@ function news_text(News $news, $generator_model, $pks, BaseObject $generator, $o
   $news_string = "";
   
   // notizie di gruppo (votazioni o interventi)
-  if (is_null($news->getGeneratorPrimaryKeys()))
+  if (count($pks) == 0)
   {
 
     if ($generator_model == 'OppVotazioneHasAtto')

@@ -12,7 +12,7 @@
         if ($n->getGeneratorPrimaryKeys())
         {
           $pks = array_values(unserialize($n->getGeneratorPrimaryKeys()));
-          $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);          
+          $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);   
         } else {
           $pks = array();
           $generator = null;
