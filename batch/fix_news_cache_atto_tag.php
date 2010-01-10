@@ -43,7 +43,7 @@ foreach ($news as $i => $n) {
   $nn->setRelatedMonitorableId($n->getTagId());
   $nn->setCreatedAt($n->getCreatedAt());
   $nn->setDate($n->getDate());
-  $nn->setPriority(3);
+  $nn->setPriority(1);
   $nn->setTagId($n->getTagId());
   $nn->save();
   

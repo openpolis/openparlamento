@@ -25,4 +25,4 @@ sfPropelBehavior::add(
   'Tagging',
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'Tag' => 'getTag'),
-              'priority'           => '3')));
+              'priority'           => '1')));
