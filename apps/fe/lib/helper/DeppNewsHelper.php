@@ -745,16 +745,17 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       {
         $sede = $generator->getOppSede();
         $news_string .= "<p>";
-        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
-        $news_string .= "Esito seduta";
-        $news_string .= " in " . $sede->getDenominazione();
         if ($context != CONTEXT_ATTO)
         {
-          $news_string .= " riferita ".($gender=='m'?'al ':'alla ');
-          $news_string .= $atto_link . ": ";
-        } 
+          $news_string .= $atto_link;
+          $news_string .= " seduta ";
+        } else
+          $news_string .= "Seduta ";
+        
+        $news_string .= "in " . $sede->getDenominazione();
+        $news_string .= ($news->getRamoVotazione()=='C')?' della Camera' : ' del Senato';
         $news_string .= "<br/>";
-        $news_string .= "<a href=" .$generator->getUrl() . ">";
+        $news_string .= "<a class='external' target='_blank' href=" .$generator->getUrl() . ">";
         $news_string .= $generator->getEsito();
         $news_string .= "</a>";
         $news_string .= "</p>";
