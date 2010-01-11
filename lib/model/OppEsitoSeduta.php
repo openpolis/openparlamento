@@ -10,36 +10,33 @@
 class OppEsitoSeduta extends BaseOppEsitoSeduta
 {
 
-    /**
-     * torna l'oggetto Apache_Solr_Document da indicizzare
-     *
-     * @return Apache_Solr_Document
-     * @author Guglielmo Celata
-     */
-    public function intoSolrDocument()
-    {
-      $document = new Apache_Solr_Document();
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
 
-      $id = $this->getId();
-      $document->id = md5('OppEsitoSeduta' . $id);
-      $document->sfl_model = 'OppEsitoSeduta';
-      $document->sfl_type = 'model';
+    $id = $this->getId();
+    $document->id = md5('OppEsitoSeduta' . $id);
+    $document->sfl_model = 'OppEsitoSeduta';
+    $document->sfl_type = 'model';
 
-      $document->propel_id = $id;
+    $document->propel_id = $id;
 
-      $document->testo = $this->getEsito();
+    $document->testo = $this->getEsito();
 
-      if ($this->getData())
-        $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
+    if ($this->getData())
+      $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
 
-      $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
+    $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
 
-      // ritorna il documento da aggiungere
-      return $document;
-    }
-
+    // ritorna il documento da aggiungere
+    return $document;
   }
-
 
 }
 
