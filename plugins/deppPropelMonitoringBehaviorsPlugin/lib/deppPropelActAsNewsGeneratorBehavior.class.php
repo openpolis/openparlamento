@@ -150,7 +150,6 @@ class deppPropelActAsNewsGeneratorBehavior
     $monitorable_objects = array();
     foreach ($monitorable_models as $model => $callable)
     {
-      printf("%s => %s\n", $model, $callable);
       // self exception: the object itself is added to the monitorable ones
       if ($callable == 'self')
         $monitorable_objects []= $object;
@@ -186,7 +185,7 @@ class deppPropelActAsNewsGeneratorBehavior
         
         // single result
         if(is_object($res))
-          $monitorable_objects [] = $res();        
+          $monitorable_objects [] = $res;
       }
     }
     return $monitorable_objects;

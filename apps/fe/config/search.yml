@@ -27,4 +27,12 @@ SolrIndex:
       route:   -
       partial: resoconto/searchResult
       alertPartial: resoconto/alert
+    OppEmendamento:
+      route: emendamento/show?id=%propel_id%
+      partial: emendamento/searchResult
+      alertPartial: emendamento/alert
+    OppEsitoSeduta:
+      route: -
+      partial: atto/searchResultEsito
+      alertPartial: atto/alertEsito
       

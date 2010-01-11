@@ -63,6 +63,15 @@ class OppEmendamento extends BaseOppEmendamento
     return $t;
   }
   
+  
+  public function getTestoCompleto()
+  {
+    $t = "";
+    foreach ($this->getOppEmTestos() as $cnt => $text)
+      $t .= $text->getTesto();
+    return $t;
+  }
+  
   /**
    * return a shortened version of the original title (to avoid layout problems)
    *
@@ -74,6 +83,36 @@ class OppEmendamento extends BaseOppEmendamento
   {
     $titolo = $this->getTitolo();
     return Text::shorten($titolo, $length);
+  }
+    
+    
+  /**
+   * torna l'oggetto Apache_Solr_Document da indicizzare
+   *
+   * @return Apache_Solr_Document
+   * @author Guglielmo Celata
+   */
+  public function intoSolrDocument()
+  {
+    $document = new Apache_Solr_Document();
+    
+    $id = $this->getId();
+    $document->id = md5('OppEmendamento' . $id);
+    $document->sfl_model = 'OppEmendamento';
+    $document->sfl_type = 'model';
+
+    $document->propel_id = $id;
+    $document->titolo = strtolower(strip_tags($this->getTitoloCompleto()));
+ 
+    $document->testo = $this->getTestoCompleto();
+    
+    if ($this->getDataPres())
+      $document->data_pres_dt = $this->getDataPres('%Y-%m-%dT%H:%M:%SZ');
+
+    $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
+
+    // ritorna il documento da aggiungere
+    return $document;
   }
     
 }
@@ -104,4 +143,4 @@ sfPropelBehavior::add(
               'default_description' => "Inserire qui una descrizione dell'emendamento.",
               'default_user_comment' => 'Creazione iniziale')));
 
-
+sfSolrPropelBehavior::getInitializer()->setupModel('OppEmendamento');

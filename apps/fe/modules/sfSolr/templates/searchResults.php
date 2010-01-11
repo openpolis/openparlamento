@@ -6,7 +6,7 @@
  */
 ?>
 
-<?php use_helper('sfSolr', 'I18N', 'PagerNavigation') ?>
+<?php use_helper('sfSolr', 'OppSolr', 'I18N', 'PagerNavigation') ?>
 
 <ul class="float-container tools-container" id="content-tabs">
   <li class="current"><h2>Risultati della ricerca per <em><?php echo $query ?></em></h2></li>
@@ -30,26 +30,26 @@
         <?php foreach ($pager->getResults() as $result): ?>
           <?php $num_item=$num_item+1 ?>
           <tr>
-         
-            <?php if ($result->getInternalPartial()=='parlamentare/searchResult') : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-politico.png',array('width' => '44','height' => '42' )) ?></div></td> 
-            <?php elseif ($result->getInternalPartial()=='atto/searchResultDoc') : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-document.png',array('width' => '44','height' => '42' )) ?></div></td> 
-            <?php elseif ($result->getInternalPartial()=='atto/searchResult') : ?>
-              <?php if (OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==1 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==12 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==15 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==16 || OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getId()==17) : ?>
-                <td><div class="ico-type"><?php echo image_tag('/images/ico-type-proposta.png',array('width' => '44','height' => '42' )) ?></div></td>
-              <?php else : ?>
-                <td><div class="ico-type"><?php echo image_tag('/images/ico-type-attonoleg.png',array('width' => '44','height' => '42' )) ?></div></td>
-              <?php endif ?>    
-            <?php elseif ($result->getInternalPartial()=='votazione/searchResult') : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-votazione.png',array('width' => '44','height' => '42' )) ?></div></td>
-            <?php elseif ($result->getInternalPartial()=='argomento/searchResult') : ?>
-              <td><div class="ico-type"><?php echo image_tag('/images/ico-type-etichetta.png',array('width' => '44','height' => '42' )) ?></div></td>
-            <?php endif; ?>
+            <td>
+              <div class="ico-type">
+                <?php include_search_result_icon($result) ?>                
+              </div>
+            </td>
           
             <td class="<?php echo (fmod($num_item,2)!=0) ? 'odd' : 'even' ?>">                      
-
-            <?php include_search_result($result, $query, array('num_item'=>$num_item)) ?>
+              <?php include_search_result($result, $query, array('num_item'=>$num_item)) ?>
+            </td>
+            
+            <td>
+              <div class="results-meter">
+                <div class="results-meter-value"><?php echo $result->getScore() ?>%</div>
+                <div class="results-meter-scale">
+                  <div style="width: <?php echo $result->getScore() ?>%;" class="results-meter-bar"> </div>
+                </div>
+             </div>
+            </td>
+            
+            
           
           </tr>
         <?php endforeach ?>
