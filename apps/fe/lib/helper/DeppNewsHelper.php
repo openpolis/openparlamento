@@ -753,6 +753,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= "Seduta ";
         
         $news_string .= "in " . $sede->getDenominazione();
+        if ($generator->getTipologia() != 'Assemblea') {
+          $news_string .= " (".$generator->getTipologia().") ";
+        }
         $news_string .= ($news->getRamoVotazione()=='C')?' della Camera' : ' del Senato';
         $news_string .= "<br/>";
         $news_string .= "<a class='external' target='_blank' href=" .$generator->getUrl() . ">";
