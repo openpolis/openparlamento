@@ -748,7 +748,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         if ($context != CONTEXT_ATTO)
         {
           $news_string .= $atto_link;
-          $news_string .= " seduta ";
+          $news_string .= ", seduta ";
         } else
           $news_string .= "Seduta ";
         
