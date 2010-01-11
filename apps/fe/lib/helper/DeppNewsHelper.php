@@ -966,6 +966,15 @@ function community_news_text($news)
                             array('title' => 'Vai alla pagina della votazione')); 
       break; 
 
+
+    case 'OppEmendamento':
+      // link all'emendamento
+      $item_type = 'l\'emendamento';
+      $link = link_to_in_mail($item->getTitoloCompleto(),
+                              '@singolo_emendamento?id=' . $item->getId(),
+                              array('title' => 'Vai alla pagina dell\'emendamento'));
+      break;
+      
     case 'Tag': 
       // link all'argomento 
       $item_type = 'l\'argomento'; 

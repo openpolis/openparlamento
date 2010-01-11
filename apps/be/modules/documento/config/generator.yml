@@ -1,0 +1,35 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppDocumento
+    theme:            default
+
+    fields:
+      titolo:            { name: 'Titolo originale' }
+      atto_filter:       { name: 'ID Atto' }
+      created_at:        { name: 'Data', params: "date_format='dd/MM/yy'"}
+      
+    list:
+      title:           "Elenco dei documenti"
+      layout:          stacked
+      display:         [_data, titolo, _atto]
+      params:          |
+         Generato il %%_data%%, relativo a: %%_atto%% <br/>
+         <strong>%%=titolo%%</strong><br/>
+      filters:         [titolo, _atto_filter]
+      object_actions:
+        _edit:         ~
+        _delete:       ~
+      actions:
+        _create:       ~
+      
+      
+    edit: 
+      title:           "Modifica documento %%titolo%%"
+      display:        [_atto_id, titolo, data, testo, url_testo]
+      fields: 
+        testo:        { disabled: false, type: textarea_tag, params: size=80x10 }
+      actions:
+        _list:          ~
+        _save:          ~
+        _delete:        ~

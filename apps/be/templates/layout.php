@@ -23,6 +23,7 @@
       'sfEmendLogAdmin' => 'Log eMend',
       'atto' => 'Titoli aggiuntivi',
       'nuoviatti' => 'Nuovi atti',
+      'documento' => 'Documenti allegati',
       'premiumdemo' => 'Utenti premium',
       'sfSupraVariablesAdmin' => 'SupraVariables');
     $nitems = count($menu_items);
