@@ -266,7 +266,7 @@ class deppPropelActAsTaggableBehavior
     $c->addJoin(TaggingPeer::TAG_ID, TagPeer::ID);
     return TagPeer::doSelect($c);    
   }
-
+  
   /**
    * Retrieves from the database tags that have been attached to the object by a user
    * If the user_id parameter is not passed, then retrieve all tags attached by the users (user_id is not null)
