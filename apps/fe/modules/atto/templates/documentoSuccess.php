@@ -9,10 +9,10 @@
   <div class="clear-both"></div>
       <p><?php echo image_tag('/images/emend-help.png') ?></p>
       <?php if($documento->getUrlTesto()): ?>
-        <div><b><?php echo link_to('fonte', $documento->getUrlTesto()) ?></b>
+        <div><b><?php echo link_to('fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
          <?php if($documento->getUrlPdf()): ?>
            &nbsp;|&nbsp;
-            <b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf()) ?></b>
+            <b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf(), array('class' => 'external')) ?></b>
             <?php endif; ?>
         </div>
         
@@ -31,8 +31,12 @@
            <?php echo $documento->getTesto() ?>
         <?php endif; ?>    
       <?php else: ?>
+      <?php if($documento->getUrlPdf()): ?>
+        <b>Documento disponibile solo in formato PDF.<?php echo link_to(' Scarica il documento', $documento->getUrlPdf(), array('class' => 'external')) ?>.</b>
+        <?php else: ?>
         testo non disponibile
-      <?php endif; ?>  
+       <?php endif; ?>    
+     <?php endif; ?>  
 
     </div>
 
