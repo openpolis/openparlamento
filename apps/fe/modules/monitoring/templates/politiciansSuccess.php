@@ -67,7 +67,7 @@
       <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per monitorarne uno vai nella pagina di un parlamentare e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
     <?php endif ?>
   
-   <!-- <?php //echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10)); ?> -->
+   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10)); ?>
     
     
   </div>

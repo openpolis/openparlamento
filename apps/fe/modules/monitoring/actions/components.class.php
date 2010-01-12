@@ -109,6 +109,120 @@ class monitoringComponents extends sfComponents
     $this->user_is_monitoring_act = $this->user->isMonitoring('OppAtto', $this->act_id);
   }
   
+  protected function calcolaIndice($atto,$tipo)
+  {
+    if ($atto==1)
+    {
+      if ($tipo=="P") return "10";
+      if ($tipo=="C") return "3";
+      if ($tipo=="R") return "6";
+    }
+    if ($atto==2)
+    {
+      if ($tipo=="P") return "6";
+      if ($tipo=="C") return "2";
+    }
+    if ($atto>=3 || $atto<=6)
+    {
+      if ($tipo=="P") return "3";
+      if ($tipo=="C") return "1";
+    }
+    if ($atto>=7 || $atto<=9)
+    {
+      if ($tipo=="P") return "5";
+      if ($tipo=="C") return "2";
+    }
+    if ($atto>=10 || $atto<=11)
+    {
+      if ($tipo=="P") return "4";
+      if ($tipo=="C") return "2";
+    }
+  }
+  
+  public function executeUserVspolitician()
+  {
+    $arr=array();
+    $user_id = $this->user->getId();
+    $num=$this->num;
+    $c = new Criteria();
+    $c->add(sfVotingPeer::USER_ID, $user_id);
+    $voting_objects = sfVotingPeer::doSelect($c);
+    foreach ($voting_objects as $voting_object)
+    {
+      $c = new Criteria();
+      $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
+      $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
+      $firme = OppCaricaHasAttoPeer::doSelect($c);
+      foreach ($firme as $firma)
+      {
+        $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
+        
+        if (!array_key_exists($firma->getCaricaId(),$arr)) $arr[$firma->getCaricaId()]=$value*$voting_object->getVoting();
+        else $arr[$firma->getCaricaId()]= $arr[$firma->getCaricaId()] + $value*$voting_object->getVoting();
+        
+      }
+    }
+    $this->vicini=array();
+    $this->lontani=array();
+    arsort($arr);
+    $vicini=array_slice($arr,0,$num,true);
+    foreach($vicini as $key=>$vicino)
+    {
+      if ($vicino>0)
+      {
+        $c= new Criteria();
+        $c->add(OppCaricaPeer::ID,$key);
+        $carica=OppCaricaPeer::doSelectOne($c);
+        $this->vicini[]=array($vicino,$carica);
+      }
+      else break;
+    }
+    $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
+    asort($lontani);
+    foreach ($lontani as $key=>$lontano)
+    {
+      if ($lontano<0)
+      {
+        $c= new Criteria();
+        $c->add(OppCaricaPeer::ID,$key);
+        $carica=OppCaricaPeer::doSelectOne($c);
+        $this->lontani[]=array($lontano,$carica);
+      }
+    }
+  }
+  
+  public function executeUserVspol()
+  {
+    $arr[0]=0;
+    $user_id = $this->user->getId();
+    $politico = $this->politico;
+    $leg = $this->leg;
+    $c= new Criteria();
+    $c->add(OppCaricaPeer::POLITICO_ID,$politico->getId());
+    $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+    $caricas= OppCaricaPeer::doSelect($c);
+    foreach ($caricas as $carica)
+    {
+      $c = new Criteria();
+      $c->add(sfVotingPeer::USER_ID, $user_id);
+      $voting_objects = sfVotingPeer::doSelect($c);
+      foreach ($voting_objects as $voting_object)
+      {
+        $c = new Criteria();
+        $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
+        $c->add(OppCaricaHasAttoPeer::CARICA_ID,$carica->getId());
+        $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
+        $firme = OppCaricaHasAttoPeer::doSelect($c);
+        foreach ($firme as $firma)
+        {
+          $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
+          $arr[0]= $arr[0] + $value*$voting_object->getVoting();
+        }
+      }
+    }  
+    $this->value=$arr[0];
+  }
+  
 }
 
 ?>
