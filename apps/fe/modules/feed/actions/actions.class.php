@@ -18,7 +18,7 @@ class feedActions extends sfActions
     $atto = OppAttoPeer::retrieveByPk($id);
     $this->forward404Unless($atto instanceof OppAtto);
     
-    $c = NewsPeer::getNewsForItemCriteria('OppAtto', $id);
+    $c = oppNewsPeer::getNewsForItemCriteria('OppAtto', $id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     $feed = $this->_make_feed_from_pager(
@@ -36,7 +36,7 @@ class feedActions extends sfActions
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
     
-    $c =  NewsPeer::getNewsForItemCriteria('OppPolitico', $id);
+    $c =  oppNewsPeer::getNewsForItemCriteria('OppPolitico', $id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
     $feed = $this->_make_feed_from_pager(
@@ -50,7 +50,7 @@ class feedActions extends sfActions
   
   public function executeLastGeneric()
   {
-    $c = NewsPeer::getHomeNewsCriteria();
+    $c = oppNewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     
     $feed = $this->_make_feed_from_pager(
@@ -64,7 +64,7 @@ class feedActions extends sfActions
 
   public function executeLastDisegni()
   {
-    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DDL_TIPO_IDS);
+    $c = oppNewsPeer::getAttiListNewsCriteria(oppNewsPeer::ATTI_DDL_TIPO_IDS);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     
     $feed = $this->_make_feed_from_pager(
@@ -78,7 +78,7 @@ class feedActions extends sfActions
 
   public function executeLastDecreti()
   {
-    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_TIPO_IDS);
+    $c = oppNewsPeer::getAttiListNewsCriteria(oppNewsPeer::ATTI_DECRETI_TIPO_IDS);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
      
     $feed = $this->_make_feed_from_pager(
@@ -92,7 +92,7 @@ class feedActions extends sfActions
 
   public function executeLastDecretiLegislativi()
   {
-    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
+    $c = oppNewsPeer::getAttiListNewsCriteria(oppNewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     
     $feed = $this->_make_feed_from_pager(
@@ -106,7 +106,7 @@ class feedActions extends sfActions
   
   public function executeLastAttiNonLegislativi()
   {
-    $c = NewsPeer::getAttiListNewsCriteria(NewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
+    $c = oppNewsPeer::getAttiListNewsCriteria(oppNewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     
     $feed = $this->_make_feed_from_pager(
