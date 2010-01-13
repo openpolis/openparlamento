@@ -51,10 +51,10 @@ class OppIntervento extends BaseOppIntervento
     $cnt = 0;
     
     // controllo e scrittura notizie di rilevanza 1 (in un certo giorno c'è stato un intervento su un certo atto)
-    $has_group_intervention = NewsPeer::hasGroupIntervention($data, $sede_id, $tipo_atto_id, $atto_id);
+    $has_group_intervention = oppNewsPeer::hasGroupIntervention($data, $sede_id, $tipo_atto_id, $atto_id);
     if (!$has_group_intervention)
     {
-      NewsPeer::addGroupIntervention($data, $sede_id, $tipo_atto_id, $atto_id);
+      oppNewsPeer::addGroupIntervention($data, $sede_id, $tipo_atto_id, $atto_id);
       $cnt++;
     }
     return $cnt;
