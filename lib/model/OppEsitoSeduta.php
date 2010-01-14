@@ -9,12 +9,14 @@
  */ 
 class OppEsitoSeduta extends BaseOppEsitoSeduta
 {
-  
+
   public function getURL()
   {
-    if (!strpos($this->url, "http://")) {
+    if (strpos($this->url, "http://") === false) {
       $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $this->url;
-    }
+    } else
+      $url = $this->url;
+    
     return $url;
   }
   

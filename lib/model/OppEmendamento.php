@@ -9,6 +9,17 @@
  */ 
 class OppEmendamento extends BaseOppEmendamento
 {
+  
+  public function getURLFonte()
+  {
+    if (strpos($this->url_fonte, "http://") === false) {
+      $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $this->url_fonte;
+    } else
+      $url = $this->url_fonte;
+    
+    return $url;
+  }
+  
 
   /**
    * retrieve the last record of the emendamento_has_iter table
