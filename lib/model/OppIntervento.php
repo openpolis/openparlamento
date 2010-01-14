@@ -14,7 +14,7 @@ class OppIntervento extends BaseOppIntervento
     if (!strpos($this->url, "http://")) {
       $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $this->url;
     }
-    return $this->url;
+    return $this->url."*";
   }
    
   public $generate_group_news = true;
