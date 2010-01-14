@@ -1,7 +1,7 @@
 <?php echo use_helper('PagerNavigation'); ?>
 
 <div class="W45_100 float-left">
-  <h4 class="subsection">Voti simili: <?php echo $compare.' ('.$perc.'%)' ?></h4>
+  <h4 class="subsection">Voti simili su tutte le votazioni elettroniche: <?php echo $compare.' ('.$perc.'%)' ?></h4>
   <div class="W45_100 float-left">
     <div class="float-container">
       <p style="padding:10px 5px 5px 5px;">

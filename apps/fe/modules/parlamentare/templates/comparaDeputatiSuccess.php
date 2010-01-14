@@ -35,7 +35,6 @@
                               'compare' =>  $compare,
                               'numero_voti' => $numero_voti))  ?>
                               
-
 <?php include_component('parlamentare', 'keyvoteComparati', 
                         array('parlamentare1' => $parlamentare1, 
                               'parlamentare2' => $parlamentare2,

@@ -38,7 +38,8 @@
         </th>
         <td>
           <p> <?php echo link_to('Vai al sito ' . 
-                                 ($intervento->getOppSede()->getRamo() == 'C'?'della Camera':'del Senato') , $intervento->getUrl()) ?> </p>
+                                 ($intervento->getOppSede()->getRamo() == 'C'?'della Camera':'del Senato') ,
+                                 (preg_match("#^http:#",$intervento->getUrl()) ? $intervento->getUrl() : sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$intervento->getUrl()) ) ?> </p>
         </td>	
       </tr>
     <?php endforeach; ?>
