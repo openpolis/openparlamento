@@ -291,7 +291,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           	if (substr_count($generator->getUrl(),'@')>0) {
           		$int_urls=explode("@",$generator->getUrl()); 
           		$intervento_link= " [vai ai testi";
-          		foreach ($int_urls as $cnt => $int_url) {
+          		foreach ($int_urls as $cnt => $int_url) 
+          		{
+          		  if (!preg_match('#^http://#',$int_url)) $int_url=sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$int_url;
           			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
           		}
           		$intervento_link= rtrim($intervento_link,",");
@@ -324,7 +326,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           	if (substr_count($generator->getUrl(),'@')>0) {
           		$int_urls=explode("@",$generator->getUrl()); 
           		$intervento_link= " [vai ai testi";
-          		foreach ($int_urls as $cnt => $int_url) {
+          		foreach ($int_urls as $cnt => $int_url) 
+          		{
+          		  if (!preg_match('#^http://#',$int_url)) $int_url=sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$int_url;
           			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
           		}
           		$intervento_link= rtrim($intervento_link,",");
@@ -347,7 +351,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           	if (substr_count($generator->getUrl(),'@')>0) {
           		$int_urls=explode("@",$generator->getUrl()); 
            		$intervento_link= " [vai ai testi";
-          		foreach ($int_urls as $cnt => $int_url) {
+          		foreach ($int_urls as $cnt => $int_url) 
+          		{
+          		  if (!preg_match('#^http://#',$int_url)) $int_url=sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$int_url;
           			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
           		}
           		$intervento_link= rtrim($intervento_link,",");
@@ -562,7 +568,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         	if (substr_count($generator->getUrl(),'@')>0) {
         		$int_urls=explode("@",$generator->getUrl()); 
         		$intervento_link= " [vai ai testi";
-        		foreach ($int_urls as $cnt => $int_url) {
+        		foreach ($int_urls as $cnt => $int_url) 
+        		{
+        		  if (!preg_match('#^http://#',$int_url)) $int_url=sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$int_url;
         			$intervento_link .= " ".link_to_in_mail(($cnt+1),$int_url).",";
         		}
         		$intervento_link= rtrim($intervento_link,",");
