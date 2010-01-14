@@ -29,18 +29,18 @@ class OppVotazioneHasAtto extends BaseOppVotazioneHasAtto
     $cnt = 0;
     
     // controllo e scrittura notizie di rilevanza 1 (in un certo giorno si è votato un certo tipo di atti)
-    $has_group_votation = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id);
+    $has_group_votation = oppNewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id);
     if (!$has_group_votation)
     {
-      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id);
+      oppNewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id);
       $cnt ++;
     }    
     
     // controllo e scrittura notizie di rilevanza 2 (in un certo giorno si è votato per un atto almeno una volta)
-    $has_group_votation_on_atto = NewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
+    $has_group_votation_on_atto = oppNewsPeer::hasGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
     if (!$has_group_votation_on_atto)
     {
-      NewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
+      oppNewsPeer::addGroupVotation($data, $ramo, $tipo_atto_id, $atto_id);
       $cnt++;
     }
     
