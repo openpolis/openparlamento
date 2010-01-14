@@ -180,7 +180,7 @@ function opp_test_single_newsletter($user)
                            array('fg' => 'red', 'bold' => true));
 
 
-  $news = NewsPeer::fetchTodayNewsForUser($user);
+  $news = oppNewsPeer::fetchTodayNewsForUser($user);
 
   // raggruppa le news per data
   $grouped_news = array();

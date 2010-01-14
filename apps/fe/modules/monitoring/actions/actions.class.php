@@ -169,7 +169,7 @@ class monitoringActions extends sfActions
   {
     $user_id = $this->getRequestParameter('user_id');    
     $user = OppUserPeer::retrieveByPK($user_id);
-    $news = NewsPeer::fetchTodayNewsForUser($user);
+    $news = oppNewsPeer::fetchTodayNewsForUser($user);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
