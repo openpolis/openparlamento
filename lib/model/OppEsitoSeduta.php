@@ -9,6 +9,15 @@
  */ 
 class OppEsitoSeduta extends BaseOppEsitoSeduta
 {
+  
+  public function getURL()
+  {
+    if (!strpos($this->url, "http://")) {
+      $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $this->url;
+    }
+    return $url;
+  }
+  
 
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare

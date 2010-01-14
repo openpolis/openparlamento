@@ -13,6 +13,9 @@ all:
     max_items: 10
     max_tags: 3
 
+  # url sito camera
+  # url_sito_camera: "http://www.camera.it"
+    
   # remote locations
   remote: 	 	 
     openpolis_api_key:                 "<?php echo sfConfig::get('api_openpolis_key', '--XXX(-:-)XXX--'); ?>"
