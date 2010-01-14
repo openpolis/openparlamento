@@ -563,13 +563,13 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         		$int_urls=explode("@",$generator->getUrl()); 
         		$intervento_link= " [vai ai testi";
         		foreach ($int_urls as $cnt => $int_url) {
-        			$intervento_link .= " ".link_to(($cnt+1),$int_url).",";
+        			$intervento_link .= " ".link_to_in_mail(($cnt+1),$int_url).",";
         		}
         		$intervento_link= rtrim($intervento_link,",");
         		$intervento_link .= "]";
         	}
         	else
-        		$intervento_link=" [".link_to('vai al testo',$generator->getUrl())."]"; 
+        		$intervento_link=" [".link_to_in_mail('vai al testo',$generator->getUrl())."]"; 
         }
         else
         	$intervento_link="";
