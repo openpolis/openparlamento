@@ -1,6 +1,6 @@
 <?php if ($ambient=='monitor') : ?>
   <?php if (count($vicini)>0 || count($lontani)>0): ?>  
-<div class="W45_100 float-right">
+<div class="W48_100 float-right">
   <?php if (count($lontani)>0) : ?>
   <h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
     <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
@@ -25,7 +25,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
   <tbody>
   <?php foreach ($lontani as $pos=>$lontano) : ?>
   <tr class="even">
-    <th scope="row">
+    <th scope="row" style="padding-left: 5px;">
     <h3 class="position-red"><?php echo $pos+1 ?></h3>
      <p class="politician-id">
      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
@@ -58,7 +58,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 <?php endif ?>  
 </div>  
 
-<div class="W45_100 float-left">
+<div class="W48_100 float-left">
 <?php if (count($vicini)>0) : ?>
 <h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
   <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
@@ -84,7 +84,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 <tbody>
 <?php foreach ($vicini as $pos=>$vicino) : ?>
 <tr class="even">
-  <th scope="row">
+  <th scope="row" style="padding-left: 5px;">
   <h3 class="position-green"><?php echo $pos+1 ?></h3>
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
