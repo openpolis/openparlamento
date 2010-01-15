@@ -66,8 +66,8 @@
     <?php else: ?>
       	<h5 class="subsection">i parlamentari che stai monitorando</h5>
       <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per avviare un monitoraggio vai nella pagina di un parlamentare (<?php echo link_to('deputati','/parlamentari/camera/nome/asc') ?> e <?php echo link_to('senatori','/parlamentari/senato/nome/asc') ?>) e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
-    <a name="rappresentometro">&nbsp;</a>  
     <?php endif ?>
+    <a name="rappresentometro">&nbsp;</a>  
   
    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor')); ?>
     
