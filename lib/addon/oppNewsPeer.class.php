@@ -467,8 +467,20 @@ class oppNewsPeer extends NewsPeer
     
   }
 
-
   public static function fetchTodayNewsForUser($user)
+  {
+    $c = self::getTodayNewsForUserCriteria($user);
+    return self::doSelect($c);
+  }
+  
+  public static function countTodayNewsForUser($user)
+  {
+    $c = self::getTodayNewsForUserCriteria($user);
+    return self::doCount($c);    
+  }
+
+
+  public static function getTodayNewsForUserCriteria($user)
   {
     $monitored_objects = $user->getMonitoredObjects();
 
@@ -522,7 +534,7 @@ class oppNewsPeer extends NewsPeer
     # add orred criterion to main criteria 	 	 
     $c->add($crit0); 	 	 
    
-    return self::doSelect($c);
+    return $c;
   }
   
   
