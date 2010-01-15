@@ -197,38 +197,6 @@ class monitoringComponents extends sfComponents
     
   }
   
-  public function executeUserVspol()
-  {
-    $arr[0]=0;
-    $user_id = $this->user->getId();
-    $politico = $this->politico;
-    $leg = $this->leg;
-    $c= new Criteria();
-    $c->add(OppCaricaPeer::POLITICO_ID,$politico->getId());
-    $c->add(OppCaricaPeer::LEGISLATURA,$leg);
-    $caricas= OppCaricaPeer::doSelect($c);
-    foreach ($caricas as $carica)
-    {
-      $c = new Criteria();
-      $c->add(sfVotingPeer::USER_ID, $user_id);
-      $voting_objects = sfVotingPeer::doSelect($c);
-      foreach ($voting_objects as $voting_object)
-      {
-        $c = new Criteria();
-        $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
-        $c->add(OppCaricaHasAttoPeer::CARICA_ID,$carica->getId());
-        $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
-        $firme = OppCaricaHasAttoPeer::doSelect($c);
-        foreach ($firme as $firma)
-        {
-          $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
-          $arr[0]= $arr[0] + $value*$voting_object->getVoting();
-        }
-      }
-    }  
-    $this->value=$arr[0];
-  }
-  
 }
 
 ?>
