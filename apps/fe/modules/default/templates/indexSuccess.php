@@ -10,8 +10,12 @@
                                  //sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze')  
                                  sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze/votes_16_C') ?> 
 </div>	
-	
-      <div id="introOP-box" class="W66_100 float-left">
+
+<?php if ($this->getContext()->getModuleName() != 'sfGuardAuth' ||
+  $this->getContext()->getActionName() != 'signin'): ?>
+  <?php if (!$sf_user->isAuthenticated()): ?>
+<div id="introOP-box" class="W66_100 float-left">
+
 	<div id="introOP"> 
 	 <h4>
 	 Ogni giorno in parlamento si propongono, discutono e votano<br />
@@ -45,6 +49,20 @@ swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/intro-
 jQuery(document).ready(function(){ embedIntro(); });
 
 </script>
+<?php else : ?>
+<div class="W66_100 float-left">
+
+<div id="introOP"> 
+
+<?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1, 'ambient' =>'home')); ?>			
+
+</div>
+    </div>
+    <div class="clear-both"></div>
+</div>
+
+<?php endif; ?>  
+<?php endif; ?> 
      
      <div id="main">
        
