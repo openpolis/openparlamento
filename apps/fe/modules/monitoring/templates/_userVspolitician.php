@@ -1,54 +1,203 @@
+<?php if ($ambient=='monitor') : ?>
+  <?php if (count($vicini)>0 || count($lontani)>0): ?>  
 <div class="W45_100 float-right">
   <?php if (count($lontani)>0) : ?>
-  <h5 class="subsection" >i politici che <span style="color: red;">meno</span> ti rappresentano</h5>
-  <table class="list-table column-table">
+  <h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
+    <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
+		<div style="display: none;" class="help-box float-container">
+			<div class="inner float-container">
+
+				<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
+				<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
+Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue.</p>
+			</div>
+		</div>  
+  </h5>
+  
+  <table class="disegni-decreti column-table lazyload">
+    <thead>
+      <tr>
+        <th scope="col">parlamentare:</th>
+        <th scope="col">indice negativo:</th>
+      </tr>
+    </thead>
   <tbody>
   <?php foreach ($lontani as $pos=>$lontano) : ?>
-  <tr><th scope="row">
-  <h3 class="position-red"><?php echo $pos+1 ?></h3>
-  <p class="politician-id">
-  <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
-                       'icona parlamentare') ?>
-  <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId())?>
-  <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
-  <?php foreach($gruppi as $nome => $gruppo): ?>
-  <?php if(!$gruppo['data_fine']): ?>
-   <?php print" (". $nome.")" ?>
-  <?php endif; ?> 
+  <tr class="even">
+    <th scope="row">
+    <h3 class="position-red"><?php echo $pos+1 ?></h3>
+     <p class="politician-id">
+     <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
+                          'icona parlamentare') ?>
+     <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
+     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
+     <?php foreach($gruppi as $nome => $gruppo): ?>
+     <?php if(!$gruppo['data_fine']): ?>
+      <?php print" (". $nome.")" ?>
+     <?php endif; ?> 
+     <?php endforeach; ?>
+    </p> 
+    </th>
+    <td style="text-align:center;">
+    <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px;">
+      			<div class="meter-bar-container" style="margin-bottom:0px; height:0px;">
+
+
+      				<div class="red-meter-bar" style="text-align:left; margin-bottom:0px; height:0px;">
+      				<div class="meter-average" style="height:0px;"><label>valore: <?php echo number_format($lontano[0],1) ?></label> </div>
+      					<span class="meter-value" style="width: <?php echo number_format(abs($lontano[0]),1)?>px; margin-bottom:0px; height:0px; padding:3px"> </span>
+      				</div> 
+      			   </div>
+      			</div>
+    </td>
+  </tr>   
   <?php endforeach; ?>
-  <?php //echo " | ".$lontano[0] ?>
-  </p>
-  </th></tr>
-  <?php endforeach ?>
-  </tbody>
+  </tbody>  
   </table>
-  <?php endif ?>
+<?php endif ?>  
 </div>  
 
 <div class="W45_100 float-left">
 <?php if (count($vicini)>0) : ?>
-<h5 class="subsection" >i politici che <span style="color: green;">pi&ugrave;</span> ti rappresentano</h5>
-<table class="list-table column-table">
+<h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+  <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
+	<div style="display: none;" class="help-box float-container">
+		<div class="inner float-container">
+
+			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
+			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
+Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue.</p>
+		</div>
+	</div>  
+  
+</h5>
+
+<table class="disegni-decreti column-table lazyload">
+  <thead>
+    <tr>
+      <th scope="col">parlamentare:</th>
+      <th scope="col">indice positivo:</th>
+    </tr>
+  </thead>
 <tbody>
 <?php foreach ($vicini as $pos=>$vicino) : ?>
-<tr><th scope="row">
-<h3 class="position-green"><?php echo $pos+1 ?></h3>
-<p class="politician-id">
-<?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
-                     'icona parlamentare') ?>
-<?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
-<?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
-<?php foreach($gruppi as $nome => $gruppo): ?>
-<?php if(!$gruppo['data_fine']): ?>
- <?php print" (". $nome.")" ?>
-<?php endif; ?> 
+<tr class="even">
+  <th scope="row">
+  <h3 class="position-green"><?php echo $pos+1 ?></h3>
+   <p class="politician-id">
+   <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
+                        'icona parlamentare') ?>
+   <?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
+   <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
+   <?php foreach($gruppi as $nome => $gruppo): ?>
+   <?php if(!$gruppo['data_fine']): ?>
+    <?php print" (". $nome.")" ?>
+   <?php endif; ?> 
+   <?php endforeach; ?>
+  </p> 
+  </th>
+  <td style="text-align:center;">
+  <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
+    			<div class="meter-bar-container" style="margin-bottom:0px; height:0px; text-align: center;">
+    				
+    				<div class="green-meter-bar" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
+    				<div class="meter-average" style="height:0px;"><label>valore: <?php echo number_format(abs($vicino[0]),1) ?></label> </div>
+    					<span class="meter-value" style="width: <?php echo number_format(abs($vicino[0]),1) ?>px; margin-bottom:0px; height:0px; text-align: center; padding:3px"> </span>
+    				</div> 
+    			   </div>
+    			</div>
+  </td>
+</tr>   
 <?php endforeach; ?>
-<?php //echo " | ".$vicino[0] ?>
-</p>
-</th></tr>
-<?php endforeach ?>
-</tbody>
+</tbody>  
 </table>
+
 <?php endif ?>
 </div>
+<?php else: ?>
+  <div class="W100_100 float-left">
+    <h5 class="subsection" >i parlamentari che pi&ugrave; ti rappresentano</h5>
+    <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','/attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
+      La tua classifica verr&agrave; immediatamente aggiornata!</p><br />
+  </div>  
+<?php endif ?>
+
+<?php endif; ?> 
+
+<?php if ($ambient=='home') : ?>
+<div style="border:1px solid #DFE7E7;background-color:#F7F7F7; padding:5px;  -moz-border-radius-bottomleft:3px;
+  -moz-border-radius-bottomright:3px;
+  -moz-border-radius-topleft:3px;
+  -moz-border-radius-topright:3px;">
+   <h5><span class="username">Ciao <?php echo $sf_user->getFirstname() ?>,
+    <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==0): ?>
+      visita le tue pagine dedicate al <?php echo link_to('<strong>monitoraggio personalizzato</strong>', 'monitoring') ?>.
+    <?php else: ?>  
+      oggi hai 
+      <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==1): ?>
+        <?php echo link_to(' una nuova notizia','monitoring') ?>.
+      <?php else: ?> 
+          <?php echo link_to(oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId())).' nuove notizie','monitoring') ?>. 
+      <?php endif ?>
+      
+    <?php endif; ?>   
+   
+   </span></h5><br />
+   <h6><p>Chi ha detto che i parlamentari sono tutti uguali?</p>
+   <p><em class="open">open</em><em class="parlamento">parlamento</em> ti fa capire chi ti rappresenta di pi&ugrave; e chi di meno!</p></h6>
+   <br />
+   <?php if (count($vicini)>0 && count($lontani)>0): ?>
+      <table class="disegni-decreti column-table v-align-middle" style="width:85%; background-color:#F7F7F7;"> 
+      <thead style="border-left:0px; border-top:0px;background-color:#F7F7F7;">
+          <tr> 
+            <th scope="col" style="text-align:left; background-color:#F7F7F7;"><h6>ti rappresenta <span style="color: green;">di pi&ugrave;</span>:</h6></th>
+            <th scope="col" style="text-align:left; background-color:#F7F7F7;"><h6>ti rappresenta <span style="color: red;">di meno</span>:</h6></th>  
+          </tr>
+        </thead>
+      <tbody>	
+      <tr class="even" style="background-color:#F7F7F7;">
+      <th scope="row" style="border-bottom:0px">
+     <?php foreach ($vicini as $pos=>$vicino) : ?>
+     <p class="politician-id">
+     <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
+                           'icona parlamentare') ?>
+      <?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
+      <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
+       <?php foreach($gruppi as $nome => $gruppo): ?>
+       <?php if(!$gruppo['data_fine']): ?>
+        <?php print" (". $nome.")" ?>
+       <?php endif; ?>
+       <?php endforeach; ?>
+    </p>
+     <?php endforeach ?>
+    </th>
+    <th scope="row" style="border-bottom:0px;">
+      <?php foreach ($lontani as $pos=>$lontano) : ?>
+      <p class="politician-id">
+      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
+                            'icona parlamentare') ?>
+       <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
+     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
+       <?php foreach($gruppi as $nome => $gruppo): ?>
+       <?php if(!$gruppo['data_fine']): ?>
+        <?php print" (". $nome.")" ?>
+       <?php endif; ?>
+       <?php endforeach; ?>
+     </p>
+      <?php endforeach ?>
+   </th>
+    </tr>
+    </table>
+    <span><?php echo link_to('Vai alla <strong>tua</strong> classifica!','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro") ?></span>
+    <br />
+  <?php else: ?>
+  <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','/attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
+    La tua classifica verr&agrave; immediatamente aggiornata!</p>
+    <br/>    
+  <?php endif ?>
+ 
+ </div>
+<?php endif; ?>   
 

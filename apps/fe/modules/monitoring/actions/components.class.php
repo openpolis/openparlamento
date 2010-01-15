@@ -164,31 +164,37 @@ class monitoringComponents extends sfComponents
     }
     $this->vicini=array();
     $this->lontani=array();
-    arsort($arr);
-    $vicini=array_slice($arr,0,$num,true);
-    foreach($vicini as $key=>$vicino)
-    {
-      if ($vicino>0)
+     if (count($voting_objects)>0) 
+     {
+      arsort($arr);
+      $vicini=array_slice($arr,0,$num,true);
+      $max_valore_abs=max(abs(min($arr)),max($arr));
+      $normalize=100/$max_valore_abs;
+      foreach($vicini as $key=>$vicino)
       {
-        $c= new Criteria();
-        $c->add(OppCaricaPeer::ID,$key);
-        $carica=OppCaricaPeer::doSelectOne($c);
-        $this->vicini[]=array($vicino,$carica);
+        if ($vicino>0)
+        {
+          $c= new Criteria();
+          $c->add(OppCaricaPeer::ID,$key);
+          $carica=OppCaricaPeer::doSelectOne($c);
+          $this->vicini[]=array($vicino*$normalize,$carica);
+        }
+        else break;
       }
-      else break;
-    }
-    $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
-    asort($lontani);
-    foreach ($lontani as $key=>$lontano)
-    {
-      if ($lontano<0)
+      $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
+      asort($lontani);
+      foreach ($lontani as $key=>$lontano)
       {
-        $c= new Criteria();
-        $c->add(OppCaricaPeer::ID,$key);
-        $carica=OppCaricaPeer::doSelectOne($c);
-        $this->lontani[]=array($lontano,$carica);
+        if ($lontano<0)
+        {
+          $c= new Criteria();
+          $c->add(OppCaricaPeer::ID,$key);
+          $carica=OppCaricaPeer::doSelectOne($c);
+          $this->lontani[]=array($lontano*$normalize,$carica);
+        }
       }
     }
+    
   }
   
   public function executeUserVspol()

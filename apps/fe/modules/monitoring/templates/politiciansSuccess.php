@@ -20,7 +20,7 @@
 		</div>
 
     <?php if (count($monitored_politicians)): ?>
-    	<h5 class="subsection">i politici che stai monitorando</h5>
+    	<h5 class="subsection">i parlamentari che stai monitorando</h5>
     	<table class="list-table column-table">
   		<thead>
   			<tr>
@@ -64,10 +64,12 @@
   		</tbody>
   	</table>
     <?php else: ?>
-      <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per monitorarne uno vai nella pagina di un parlamentare e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
+      	<h5 class="subsection">i parlamentari che stai monitorando</h5>
+      <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per avviare un monitoraggio vai nella pagina di un parlamentare (<?php echo link_to('deputati','/parlamentari/camera/nome/asc') ?> e <?php echo link_to('senatori','/parlamentari/senato/nome/asc') ?>) e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
+    <a name="rappresentometro"></a>  
     <?php endif ?>
   
-   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10)); ?>
+   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor')); ?>
     
     
   </div>
