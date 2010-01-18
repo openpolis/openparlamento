@@ -11,7 +11,7 @@
    <div class="W25_100 float-right">
 			
 
-			<div id="monitor-n-vote">
+			<div id="monitor-n-vote" style="margin-bottom:1px;">
       	<h6>monitora questo politico</h6>
       	<p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
 
@@ -73,11 +73,6 @@
   		                                                    array('class' => 'jump-to-camera')) ?>   
                    <?php endif ?>
         <?php endif ?> 
-        
-        <!-- Indice di rappresentanza per singolo utente -->
-         <?php //if ($carica && $sf_user->isAuthenticated()) : ?> 
-            <?php //echo include_component('monitoring', 'userVspol', array('user' => $sf_user, 'politico' => $parlamentare, 'leg' => '16')); ?>
-         <?php //endif ?>       
                  
       </div>
       <div class="W73_100 float-left" style="width:60%">
@@ -130,6 +125,23 @@
 <div class="W35_100 float-right" style="width:45%">
                    
 	<?php if ($carica) : ?>		
+	  
+	   <!-- BOX ATTI POLITICO_UTENTE FAVOREVOLE -->
+         <?php if ($carica && $sf_user->isAuthenticated()) { 
+          
+  echo include_component('monitoring', 'userVspolitician', 
+                   array('user' => $sf_user, 
+                         'num'=> 10, 
+                         'ambient' =>'politico', 
+                         'parlamentare' => $parlamentare,
+                          'legislatura' => 16));
+  /*                        
+  echo include_component('monitoring', 'userVsSinglePolitician', 
+                   array('user' => $sf_user, 
+                         'politico' => $parlamentare, 
+                         'legislatura' => '16'));
+  */                       
+          } ?>
 	 
 	   <?php echo include_partial('news/newsbox',
                                  array('title' => 'Parlamentare',
@@ -162,8 +174,10 @@
   		
   			
 		    <?php if ($carica) : ?>
+		      
 		    
-  			<h5 class="subsection-alt">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
+		    <!-- BOX PRESENZE -->
+  			<h5 class="subsection-alt" style="margin:0">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
   			<p class="float-right">ultima votazione: <strong>
   			<?php if ($ramo=='camera') : ?>
   			   <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>

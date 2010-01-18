@@ -11,58 +11,51 @@
                                  sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze/votes_16_C') ?> 
 </div>	
 
-<?php if ($this->getContext()->getModuleName() != 'sfGuardAuth' ||
-  $this->getContext()->getActionName() != 'signin'): ?>
-  <?php if (!$sf_user->isAuthenticated()): ?>
-<div id="introOP-box" class="W66_100 float-left">
 
-	<div id="introOP"> 
-	 <h4>
-	 Ogni giorno in parlamento si propongono, discutono e votano<br />
-	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
-	 </h4>			
-	 <h3>
-         <strong>Informati, Monitora, Intervieni</strong><br />
-	 <strong>Ti</strong> riguarda, <strong>ci</strong> riguarda. 
-	 </h3>
-	</div>
-      </div>
-      <div class="clear-both"></div>
-     </div>
-
-<script type="text/javascript">
-function embedIntro() {
-var flashvars = {};
-var params = {};
-params.play = "true";
-params.scale = "noscale";
-params.allowScriptAccess = "always"; 
-params.wmode = "gpu";
-params.devicefont = "true";
-var attributes = {};
-swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/intro-openparlamento-ti-ci.swf", 
-                   "introOP", "643", "225", "9.0.0", 
-                   "<?php echo sfConfig::get('sf_resources_host'); ?>/swf/expressInstall.swf", 
-                   flashvars, params, attributes);
-};
-
-jQuery(document).ready(function(){ embedIntro(); });
-
-</script>
-<?php else : ?>
-<div class="W66_100 float-left">
-
-<div id="introOP"> 
-
-<?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1, 'ambient' =>'home')); ?>			
-
-</div>
+<?php if ($sf_user->isAuthenticated()): ?>
+  <div class="W66_100 float-left">
+    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1, 'ambient' =>'home', 'legislatura' => 16)); ?>			
     </div>
-    <div class="clear-both"></div>
+  <div class="clear-both"></div>
+
+<?php else : ?>
+<div id="introOP-box" class="W66_100 float-left">
+  <div id="introOP"> 
+    <h4>
+  	 Ogni giorno in parlamento si propongono, discutono e votano<br />
+  	 <em>leggi</em> che <em>cambiano</em> la <strong>TUA vita</strong>. 
+  	</h4>			
+  	<h3>
+      <strong>Informati, Monitora, Intervieni</strong><br />
+  	 <strong>Ti</strong> riguarda, <strong>ci</strong> riguarda. 
+  	</h3>
+  </div>
 </div>
+<div class="clear-both"></div>
+
+
+  <script type="text/javascript">
+  function embedIntro() {
+  var flashvars = {};
+  var params = {};
+  params.play = "true";
+  params.scale = "noscale";
+  params.allowScriptAccess = "always"; 
+  params.wmode = "gpu";
+  params.devicefont = "true";
+  var attributes = {};
+  swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/intro-openparlamento-ti-ci.swf", 
+                     "introOP", "643", "225", "9.0.0", 
+                     "<?php echo sfConfig::get('sf_resources_host'); ?>/swf/expressInstall.swf", 
+                     flashvars, params, attributes);
+  };
+
+  jQuery(document).ready(function(){ embedIntro(); });
+
+  </script>
 
 <?php endif; ?>  
-<?php endif; ?> 
+</div>
      
      <div id="main">
        

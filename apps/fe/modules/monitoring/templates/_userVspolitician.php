@@ -2,7 +2,7 @@
   <?php if (count($vicini)>0 || count($lontani)>0): ?>  
 <div class="W48_100 float-right">
   <?php if (count($lontani)>0) : ?>
-  <h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
+  <h5 class="subsection" >i dieci parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
     <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 		<div style="display: none;" class="help-box float-container">
 			<div class="inner float-container">
@@ -45,8 +45,8 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 
 
       				<div class="red-meter-bar" style="text-align:left; margin-bottom:0px; height:0px;">
-      				<div class="meter-average" style="height:0px;"><label>valore: <?php echo number_format($lontano[0],1) ?></label> </div>
-      					<span class="meter-value" style="width: <?php echo number_format(abs($lontano[0]),1)?>px; margin-bottom:0px; height:0px; padding:3px"> </span>
+      				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format($lontano[0],1) ?></label> </div>
+      					<span class="meter-value" style="width: <?php echo number_format(abs($lontano[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; padding:3px"> </span>
       				</div> 
       			   </div>
       			</div>
@@ -60,7 +60,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 
 <div class="W48_100 float-left">
 <?php if (count($vicini)>0) : ?>
-<h5 class="subsection" >i parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+<h5 class="subsection" >i dieci parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
   <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 	<div style="display: none;" class="help-box float-container">
 		<div class="inner float-container">
@@ -103,8 +103,8 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
     			<div class="meter-bar-container" style="margin-bottom:0px; height:0px; text-align: center;">
     				
     				<div class="green-meter-bar" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
-    				<div class="meter-average" style="height:0px;"><label>valore: <?php echo number_format(abs($vicino[0]),1) ?></label> </div>
-    					<span class="meter-value" style="width: <?php echo number_format(abs($vicino[0]),1) ?>px; margin-bottom:0px; height:0px; text-align: center; padding:3px"> </span>
+    				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format(abs($vicino[0]),1) ?></label> </div>
+    					<span class="meter-value" style="width: <?php echo number_format(abs($vicino[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; text-align: center; padding:3px"> </span>
     				</div> 
     			   </div>
     			</div>
@@ -127,10 +127,11 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 <?php endif; ?> 
 
 <?php if ($ambient=='home') : ?>
-<div style="border:1px solid #DFE7E7;background-color:#F7F7F7; padding:5px;  -moz-border-radius-bottomleft:3px;
-  -moz-border-radius-bottomright:3px;
-  -moz-border-radius-topleft:3px;
-  -moz-border-radius-topright:3px;">
+<div style="border:1px solid #DFE7E7;background-color:#F7F7F7; padding:5px; 
+  -moz-border-radius-bottomleft:5px;
+  -moz-border-radius-bottomright:5px;
+  -moz-border-radius-topleft:5px;
+  -moz-border-radius-topright:5px;">
    <h5><span class="username">Ciao <?php echo $sf_user->getFirstname() ?>,
     <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==0): ?>
       visita le tue pagine dedicate al <?php echo link_to('<strong>monitoraggio personalizzato</strong>', 'monitoring') ?>.
@@ -190,7 +191,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
    </th>
     </tr>
     </table>
-    <span><?php echo link_to('Vai alla <strong>tua</strong> classifica!','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro") ?></span>
+    <span><?php echo link_to('Vai alla <strong>tua</strong> classifica completa!','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro") ?></span>
     <br />
   <?php else: ?>
   <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','/attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
@@ -199,5 +200,47 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
   <?php endif ?>
  
  </div>
-<?php endif; ?>   
+<?php endif; ?> 
+
+<?php if ($ambient=='politico' && array_key_exists($parlamentare->getId(),$posizione)) : ?>
+  <div class="evidence-box float-container" style="margin-top:0;">
+    	<h5 class="subsection" style="margin-top:0;">Quanto TI rappresenta <?php echo $parlamentare->getNome() ?> <?php echo $parlamentare->getCognome() ?>?
+       <span class="tools-container"><img alt="Ico-new" src="/images/ico-new.png"/></span>
+       <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
+     	<div style="display: none;" class="help-box float-container">
+     		<div class="inner float-container">
+
+     			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
+     			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
+     Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
+     Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue.</p>
+     		</div>
+     	</div>
+       </h5>
+    	<p class="pad10">
+    	  <?php $i=0 ?>
+        <?php foreach ($posizione as $key=>$pos) : ?>
+        <?php $i=$i+1 ?>
+        <?php if ($key==$parlamentare->getId()) 
+        {
+          echo "<strong><span style='font-size:14px;'>Indice di rappresentanza:
+          ".($pos>0 ? '<span style="color:green; font-size:22px;">+' : '<span style="color:red; font-size:22px;">' ).$pos.'</span></span></strong>';
+          echo "<br />";
+          echo "<br />";
+          echo "Nella ". link_to('classifica dei tuoi rappresentanti','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro")." &egrave; <span style='font-size:18px; font-weight:bold;'>".$i."&deg;</span> su ".count($posizione)." parlamentari che hanno presentato o firmato atti che TU hai votato.";
+          echo "<br />";
+          break;
+        }?>
+        <?php endforeach ?>
+        </p>
+        <?php
+        echo include_component('monitoring', 'userVsSinglePolitician', 
+                         array('user' => $sf_user, 
+                               'politico' => $parlamentare, 
+                               'legislatura' => '16'));
+        ?>                       
+    	  
+  </div>  	
+  
+<?php endif; ?>     
 

@@ -144,6 +144,7 @@ class monitoringComponents extends sfComponents
     $arr=array();
     $user_id = $this->user->getId();
     $num=$this->num;
+    $leg=$this->legislatura;
     $c = new Criteria();
     $c->add(sfVotingPeer::USER_ID, $user_id);
     $voting_objects = sfVotingPeer::doSelect($c);
@@ -152,32 +153,38 @@ class monitoringComponents extends sfComponents
       $c = new Criteria();
       $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
       $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
+      $c->add(OppAttoPeer::LEGISLATURA,$leg);
       $firme = OppCaricaHasAttoPeer::doSelect($c);
       foreach ($firme as $firma)
       {
         $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
-        
-        if (!array_key_exists($firma->getCaricaId(),$arr)) $arr[$firma->getCaricaId()]=$value*$voting_object->getVoting();
-        else $arr[$firma->getCaricaId()]= $arr[$firma->getCaricaId()] + $value*$voting_object->getVoting();
-        
+        $carica=OppCaricaPeer::retrieveByPk($firma->getCaricaId());
+        if (!array_key_exists($carica->getPoliticoId(),$arr)) 
+          $arr[$carica->getPoliticoId()]=$value*$voting_object->getVoting();
+        else 
+          $arr[$carica->getPoliticoId()]= $arr[$carica->getPoliticoId()] + $value*$voting_object->getVoting();
       }
     }
     $this->vicini=array();
     $this->lontani=array();
-     if (count($voting_objects)>0) 
-     {
+    if (count($arr)>0) 
+    {
       arsort($arr);
       $vicini=array_slice($arr,0,$num,true);
       $max_valore_abs=max(abs(min($arr)),max($arr));
-      $normalize=100/$max_valore_abs;
+      $this->normalize=100/$max_valore_abs;
+      $this->posizione=$arr;
+      
       foreach($vicini as $key=>$vicino)
       {
         if ($vicino>0)
         {
           $c= new Criteria();
-          $c->add(OppCaricaPeer::ID,$key);
+          $c->add(OppCaricaPeer::POLITICO_ID,$key);
+          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+          $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
-          $this->vicini[]=array($vicino*$normalize,$carica);
+          $this->vicini[]=array($vicino,$carica);
         }
         else break;
       }
@@ -188,13 +195,56 @@ class monitoringComponents extends sfComponents
         if ($lontano<0)
         {
           $c= new Criteria();
-          $c->add(OppCaricaPeer::ID,$key);
+          $c->add(OppCaricaPeer::POLITICO_ID,$key);
+          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+          $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
-          $this->lontani[]=array($lontano*$normalize,$carica);
+          $this->lontani[]=array($lontano,$carica);
         }
       }
     }
     
+  }
+  public function executeUserVsSinglePolitician()
+  {
+    $user_id = $this->user->getId();
+    $pol_id = $this->politico->getId();
+    $leg=$this->legislatura;
+    $arr=array();
+    $come=array();
+    $contro=array();
+    $indice=0;
+    $c= new Criteria();
+    $c->add(OppCaricaPeer::POLITICO_ID,$pol_id);
+    $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+    $cariche=OppCaricaPeer::doSelect($c);
+    foreach ($cariche as $carica)
+    {
+      $arr[]=$carica->getId();
+    }
+    
+    $c = new Criteria();
+    $c->add(sfVotingPeer::USER_ID, $user_id);
+    $voting_objects = sfVotingPeer::doSelect($c);
+    foreach ($voting_objects as $voting_object)
+    {
+      $c = new Criteria();
+      $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
+      $c->add(OppCaricaHasAttoPeer::CARICA_ID,$arr,Criteria::IN);
+      $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
+      $c->add(OppAttoPeer::LEGISLATURA,$leg);
+      $firme = OppCaricaHasAttoPeer::doSelect($c);
+      foreach ($firme as $firma)
+      {
+        $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
+        $indice=$indice+ $value*$voting_object->getVoting();
+        if ($voting_object->getVoting()==1) $come[]=$firma->getAttoId();
+        else $contro[]=$firma->getAttoId();
+      }  
+    }
+    $this->comes=$come;
+    $this->contros=$contro;
+    $this->indice=$indice;
   }
   
 }

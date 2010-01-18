@@ -69,7 +69,7 @@
     <?php endif ?>
     <a name="rappresentometro">&nbsp;</a>  
   
-   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor')); ?>
+   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
     
     
   </div>
