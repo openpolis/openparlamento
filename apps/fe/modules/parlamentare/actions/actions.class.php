@@ -674,6 +674,7 @@ class parlamentareActions extends sfActions
     {
       $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID);
       $c->add(OppCaricaHasGruppoPeer::GRUPPO_ID, $this->filters['group']);
+      $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL,Criteria::ISNULL);
     }
 
     // filtro per circoscrizione
