@@ -1,3 +1,4 @@
+<!-- Pagina monitoraggio utente - i miei parlamentari -->
 <?php if ($ambient=='monitor') : ?>
   <?php if (count($vicini)>0 || count($lontani)>0): ?>  
 <div class="W48_100 float-right">
@@ -126,13 +127,15 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 
 <?php endif; ?> 
 
+<!-- Home page box personalizzato per utente -->
+
 <?php if ($ambient=='home') : ?>
-<div style="border:1px solid #DFE7E7;background-color:#F7F7F7; padding:5px; 
+<div style="border:1px solid #EE7F00;background-color:#F7F7F7; padding:5px; 
   -moz-border-radius-bottomleft:5px;
   -moz-border-radius-bottomright:5px;
   -moz-border-radius-topleft:5px;
   -moz-border-radius-topright:5px;">
-   <h5><span class="username">Ciao <?php echo $sf_user->getFirstname() ?>,
+   <h5><span class="username">Ciao<span style="color:#EE7F00;">  <?php echo $sf_user->getFirstname() ?></span>,
     <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==0): ?>
       visita le tue pagine dedicate al <?php echo link_to('<strong>monitoraggio personalizzato</strong>', 'monitoring') ?>.
     <?php else: ?>  
@@ -153,8 +156,8 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
       <table class="disegni-decreti column-table v-align-middle" style="width:85%; background-color:#F7F7F7;"> 
       <thead style="border-left:0px; border-top:0px;background-color:#F7F7F7;">
           <tr> 
-            <th scope="col" style="text-align:left; background-color:#F7F7F7;"><h6>ti rappresenta <span style="color: green;">di pi&ugrave;</span>:</h6></th>
-            <th scope="col" style="text-align:left; background-color:#F7F7F7;"><h6>ti rappresenta <span style="color: red;">di meno</span>:</h6></th>  
+            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: green;">di pi&ugrave;</span>:</h6></th>
+            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: red;">di meno</span>:</h6></th>  
           </tr>
         </thead>
       <tbody>	
@@ -202,9 +205,11 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
  </div>
 <?php endif; ?> 
 
+<!-- Pagina parlamentare box personalizzato per utente -->
+
 <?php if ($ambient=='politico' && array_key_exists($parlamentare->getId(),$posizione)) : ?>
-  <div class="evidence-box float-container" style="margin-top:0;">
-    	<h5 class="subsection" style="margin-top:0;">Quanto TI rappresenta <?php echo $parlamentare->getNome() ?> <?php echo $parlamentare->getCognome() ?>?
+  <div class="evidence-box float-container" style="margin-top:0; border:1px solid #EE7F00;">
+    	<h5 class="subsection" style="margin-top:0; background-color:#EE7F00; color:#FFFFFF;">Quanto TI rappresenta <?php echo $parlamentare->getNome() ?> <?php echo $parlamentare->getCognome() ?>?
        <span class="tools-container"><img alt="Ico-new" src="/images/ico-new.png"/></span>
        <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
      	<div style="display: none;" class="help-box float-container">
