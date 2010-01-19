@@ -3,7 +3,7 @@
   <?php if (count($vicini)>0 || count($lontani)>0): ?>  
 <div class="W48_100 float-right">
   <?php if (count($lontani)>0) : ?>
-  <h5 class="subsection" >i dieci parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
+  <h5 class="subsection" >i <?php echo (count($lontani)>9 ? 'dieci' :count($lontani)) ?> parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
     <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 		<div style="display: none;" class="help-box float-container">
 			<div class="inner float-container">
@@ -11,7 +11,7 @@
 				<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
 				<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
 Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatori con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
 			</div>
 		</div>  
   </h5>
@@ -61,7 +61,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 
 <div class="W48_100 float-left">
 <?php if (count($vicini)>0) : ?>
-<h5 class="subsection" >i dieci parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+<h5 class="subsection" >i <?php echo (count($vicini)>9 ? 'dieci' :count($vicini)) ?> parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
   <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 	<div style="display: none;" class="help-box float-container">
 		<div class="inner float-container">
@@ -69,7 +69,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
 			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
 Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatori con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
 		</div>
 	</div>  
   
@@ -218,7 +218,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
      			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
      			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
      Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-     Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
+     Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatori con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
      		</div>
      	</div>
        </h5>
