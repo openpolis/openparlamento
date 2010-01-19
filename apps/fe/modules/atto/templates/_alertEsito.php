@@ -1,13 +1,8 @@
 <?php 
   $esito = OppEsitoSedutaPeer::retrieveByPK($result->propel_id);
-  if ($esito instanceof OppEsitoSedutaPeer)
-  {
-    $atto = $esito->getOppAtto();
-    $sede = $esito->getOppSede();    
-  }
 ?>
 
-<?php if ($esito instanceof OppEsitoSedutaPeer): ?>
+<?php if ($esito instanceof OppEsitoSeduta): ?>
   <?php
     $atto = $esito->getOppAtto();
     $sede = $esito->getOppSede();      
