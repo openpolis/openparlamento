@@ -1,6 +1,6 @@
 <?php if (count($comes)>0) : ?>
 <div style="padding:0px 0px 5px 10px">
-Sei <span style="color:green;">d'accordo</span> su <?php echo (count($comes)==1 ? 'un atto firmato' : count($comes).' atti firmati') ?>  da <?php echo $politico->getNome() ?> <?php echo $politico->getCognome() ?>
+Sei <span style="color:green;">d'accordo</span> su <?php echo (count($comes)==1 ? 'un atto firmato e/o di cui &egrave; relatore' : count($comes).' atti firmati e/o di cui &egrave; relatore') ?>  da <?php echo $politico->getNome() ?> <?php echo $politico->getCognome() ?>
 <span class="indent">[ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]
 </span>
 
@@ -34,7 +34,7 @@ Sei <span style="color:green;">d'accordo</span> su <?php echo (count($comes)==1 
 
 <?php if (count($contros)>0) : ?>
 <div style="padding:0px 0px 5px 10px">
-Sei <span style="color:red;">in disaccordo</span> su <?php echo (count($contros)==1 ? 'un atto firmato' : count($contros).' atti firmati') ?> da <?php echo $politico->getNome() ?> <?php echo $politico->getCognome() ?>
+Sei <span style="color:red;">in disaccordo</span> su <?php echo (count($contros)==1 ? 'un atto firmato e/o di cui &egrave; relatore' : count($contros).' atti firmati e/o di cui &egrave; relatore') ?> da <?php echo $politico->getNome() ?> <?php echo $politico->getCognome() ?>
 <span class="indent">[ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]
 </span>
 
