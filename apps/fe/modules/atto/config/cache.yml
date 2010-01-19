@@ -9,6 +9,10 @@ attoNonLegislativoList:
   
 decretoLegislativoList:
   enabled: on
+
+_inevidenza:
+  enabled: on
+  lifetime: 30
   
 all:
   with_layout: false

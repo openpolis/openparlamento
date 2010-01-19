@@ -1,3 +1,5 @@
+_newslistcomm:
+  lifetime: 30
 all: 
   enabled:     on
   with_layout: false     # Default value 

@@ -1,11 +1,18 @@
+# cache per la home page spenta
+# per permettere blocco utente registrato
+# vanno attivate cache dei blocchi interni
 index:
-  enabled: on
+  enabled: off
   lifetime: 60
     
 classifiche:
   enabled: on
   lifetime: 120
 
+_classifiche:
+  enabled: on
+  lifetime: 30
+  
 all:
   with_layout: false
 

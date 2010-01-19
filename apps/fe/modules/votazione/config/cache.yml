@@ -4,6 +4,10 @@
 list:
   enabled: on
 
+_keyvotes:
+  enabled: on
+  lifetime: 360
+  
 all:
   with_layout: false
   lifetime: 7200

@@ -1,6 +1,10 @@
 index:
   enabled: on
-
+  
+_inevidenza:
+  enabled: on
+  lifetime: 30
+  
 all:
   with_layout: false
   lifetime: 3600
