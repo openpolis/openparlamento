@@ -238,8 +238,14 @@ class monitoringComponents extends sfComponents
       {
         $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
         $indice=$indice+ $value*$voting_object->getVoting();
-        if ($voting_object->getVoting()==1) $come[]=$firma->getAttoId();
-        else $contro[]=$firma->getAttoId();
+        if ($voting_object->getVoting()==1) 
+        {
+          if (!in_array($firma->getAttoId(),$come)) $come[]=$firma->getAttoId();
+        }
+        else 
+        {
+         if (!in_array($firma->getAttoId(),$contro)) $contro[]=$firma->getAttoId(); 
+        }
       }  
     }
     $this->comes=$come;

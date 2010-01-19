@@ -13,7 +13,7 @@ Sei <span style="color:green;">d'accordo</span> su <?php echo (count($comes)==1 
     <tr class="even">
     <th scope="row">
     <p class="content-meta">
-    <span class="date"><?php echo $rs->getDataPres()?>, 
+    <span class="date">
     <?php $tipo=OppTipoAttoPeer::retrieveByPk($rs->getTipoAttoId()); ?>  
       <?php echo $tipo->getDescrizione() ?>
       </span>
@@ -47,7 +47,7 @@ Sei <span style="color:red;">in disaccordo</span> su <?php echo (count($contros)
     <tr class="even">
     <th scope="row">
     <p class="content-meta">
-    <span class="date"><?php echo $rs->getDataPres()?>, 
+    <span class="date"> 
     <?php $tipo=OppTipoAttoPeer::retrieveByPk($rs->getTipoAttoId()); ?>  
       <?php echo $tipo->getDescrizione() ?>
       </span>
