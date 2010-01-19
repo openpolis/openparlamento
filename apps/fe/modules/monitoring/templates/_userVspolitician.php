@@ -11,7 +11,7 @@
 				<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
 				<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
 Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti') ?>.</p>
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
 			</div>
 		</div>  
   </h5>
@@ -69,7 +69,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
 			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
 Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti') ?>.</p>
+Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
 		</div>
 	</div>  
   
@@ -218,7 +218,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
      			<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
      			<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
      Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-     Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti') ?>.</p>
+     Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatore con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
      		</div>
      	</div>
        </h5>
