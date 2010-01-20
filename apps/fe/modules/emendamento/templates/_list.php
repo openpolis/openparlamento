@@ -3,7 +3,8 @@
         <thead>
           <tr> 
             <th scope="col">emendamento:</th>
-            <th scope="col">ultimo<br/> aggiornamento:</th>  
+            <th scope="col">status:</th> 
+            <th scope="col">articolo<br />interessato:</th> 
             <th scope="col">voti e commenti<br />degli utenti:</th>
           </tr>
         </thead>
@@ -31,16 +32,23 @@
                   </span>
                 </p>
                 <p>
-                  <?php echo link_to('<em>'.$em->getTitoloCompleto(), '@singolo_emendamento?id='.$em->getId()) ?>
+                  <?php echo link_to($em->getTitoloCompleto(), '@singolo_emendamento?id='.$em->getId()) ?>
                 </p>
               </th>
               <td>
                 <?php $last_status = $em->getLastStatus(); ?>
-                  <?php if ($last_status->getData()): ?>
-                    <p class="date"><?php echo format_date($last_status->getData(), 'dd/MM/yyyy') ?></p>                    
-                  <?php endif ?>
+                           <?php if ($last_status->getData()): ?>
+                              <p class="date"><?php echo format_date($last_status->getData(), 'dd/MM/yyyy') ?></p>                    
+                            <?php endif ?>
                   <p><?php echo $last_status->getOppEmIter()->getFase() ?></p>
               </td>
+              <td>
+                <?php if ($em->getArticolo()) {
+                  echo $em->getArticolo();
+                }
+                else echo "--";
+                ?>
+              </td>  
               <td>
                 <div class="user-stats-column">
                   <span class="green thumb-up"><?php echo $em->getUtFav() ?></span><span class="red thumb-down"><?php echo $em->getUtContr() ?></span>
