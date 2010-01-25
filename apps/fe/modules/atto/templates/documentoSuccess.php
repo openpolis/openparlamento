@@ -9,7 +9,7 @@
   <div class="clear-both"></div>
       <p><?php echo image_tag('/images/emend-help.png') ?></p>
       <?php if($documento->getUrlTesto()): ?>
-        <div><b><?php echo link_to('fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
+        <div><b><?php echo link_to('link alla fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
          <?php if($documento->getUrlPdf()): ?>
            &nbsp;|&nbsp;
             <b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf(), array('class' => 'external')) ?></b>

@@ -560,7 +560,7 @@ class attoActions extends sfActions
       for($i=0; $i<$len; $i++)
         $str = '0'.$str;
       
-	  $this->link = 'http://www.parlamento.it/leggi/deleghe/'.$str.'dl.htm';
+	  $this->link = 'http://www.camera.it/parlam/leggi/deleghe/'.$str.'dl.htm';
     }
     if($this->atto->getTipoAttoId() == '13') $this->link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$this->atto->getParlamentoId();   
     
