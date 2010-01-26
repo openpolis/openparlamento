@@ -8,6 +8,7 @@ generator:
       title:           "Elenco dei nuovi atti"
       display:         [titolo, tipo_atto, _url, data]
       filters:         [data, tipo_atto]
+      max_per_page:    50
       object_actions:
         _delete:       -
       actions:
