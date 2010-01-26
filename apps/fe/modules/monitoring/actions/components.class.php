@@ -148,6 +148,7 @@ class monitoringComponents extends sfComponents
     $c = new Criteria();
     $c->add(sfVotingPeer::USER_ID, $user_id);
     $voting_objects = sfVotingPeer::doSelect($c);
+    $this->voti_utente=count($voting_objects);
     foreach ($voting_objects as $voting_object)
     {
       $c = new Criteria();

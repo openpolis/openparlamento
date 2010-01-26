@@ -74,7 +74,6 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 	</div>  
   
 </h5>
-
 <table class="disegni-decreti column-table lazyload">
   <thead>
     <tr>
@@ -114,7 +113,8 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 <?php endforeach; ?>
 </tbody>  
 </table>
-
+<p>L'indice di rappresentanza &egrave; calcolato considerando <?php echo ($voti_utente==1 ? '<strong>il voto da TE espresso su un solo atto parlamentare</strong>.' : 'i <strong>voti da TE espressi su '.$voti_utente.' atti parlamentari</strong>.')?> Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sarà l'indice di rappresentanza. </p>
+<br/>
 <?php endif ?>
 </div>
 <?php else: ?>
@@ -155,9 +155,8 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
    <?php if (count($vicini)>0 && count($lontani)>0): ?>
       <table class="disegni-decreti column-table v-align-middle" style="width:85%; background-color:#F7F7F7;"> 
       <thead style="border-left:0px; border-top:0px;background-color:#F7F7F7;">
-          <tr> 
-            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: green;">di pi&ugrave;</span>:</h6></th>
-            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: red;">di meno</span>:</h6></th>  
+            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: green;">di pi&ugrave;</span></h6></th>
+            <th scope="col" style="text-align:left; background-color:#F7F7F7; background-image:none;"><h6>ti rappresenta <span style="color: red;">di meno</span></h6></th>  
           </tr>
         </thead>
       <tbody>	
@@ -232,7 +231,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
           ".($pos>0 ? '<span style="color:green; font-size:22px;">+' : '<span style="color:red; font-size:22px;">' ).$pos.'</span></span></strong>';
           echo "<br />";
           echo "<br />";
-          echo "Nella ". link_to('classifica dei tuoi rappresentanti','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro")." &egrave; <span style='font-size:18px; font-weight:bold;'>".$i."&deg;</span> su ".count($posizione)." parlamentari che hanno presentato o firmato atti che TU hai votato.";
+          echo "Nella ". link_to('classifica dei tuoi rappresentanti','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro")." &egrave; <span style='font-size:18px; font-weight:bold;'>".$i."&deg;</span> su ".count($posizione)." parlamentari che hanno presentato o firmato".($voti_utente==1 ? ' il solo atto da te votato.' : ' qualcuno dei '.$voti_utente.' atti parlamentari che hai votato.');
           echo "<br />";
           break;
         }?>
