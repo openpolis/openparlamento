@@ -154,6 +154,7 @@ class monitoringComponents extends sfComponents
       $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
       $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
       $c->add(OppAttoPeer::LEGISLATURA,$leg);
+      $c->add(OppCaricaHasAttoPeer::TIPO,'R',Criteria::NOT_EQUAL);
       $firme = OppCaricaHasAttoPeer::doSelect($c);
       foreach ($firme as $firma)
       {
@@ -233,6 +234,7 @@ class monitoringComponents extends sfComponents
       $c->add(OppCaricaHasAttoPeer::CARICA_ID,$arr,Criteria::IN);
       $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
       $c->add(OppAttoPeer::LEGISLATURA,$leg);
+      $c->add(OppCaricaHasAttoPeer::TIPO,'R',Criteria::NOT_EQUAL);
       $firme = OppCaricaHasAttoPeer::doSelect($c);
       foreach ($firme as $firma)
       {
