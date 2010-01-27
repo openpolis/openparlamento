@@ -15,9 +15,10 @@ jQuery(document).ready(function(){
 
 <?php echo use_helper('Javascript', 'Tags') ?>
 <div id="tag_associati" style="margin: 20px 0">
-
   <div id="tag_show" class="tags">
-    <em>argomenti:</em>
+    <?php if (count($tags)>0) : ?>
+      <em>argomenti:</em>
+    <?php endif ?> 
     <?php foreach ($tags as $tag): ?>
       <div id="<?php echo $tag[0]?>" class="<?php echo get_classes_for_tag($tag[3], $teseo_tags, $user_tags, $my_tags) ?>">
         <?php if ($sf_user->hasCredential('amministratore')): ?>
@@ -27,7 +28,7 @@ jQuery(document).ready(function(){
       </div> &nbsp;
     <?php endforeach ?>
     <?php echo image_tag('indicator.gif', array('id'=>'tag_removal_indicator', 'style' => 'display:none')) ?>
-  </div>
+  </div> 
 
   <?php if ($sf_user->hasCredential('amministratore')): ?>
     <div id="tag_edit">
