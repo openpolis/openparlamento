@@ -734,7 +734,8 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         $emendamento = $generator->getOppEmendamento();
         $atti = $emendamento->getOppAttoHasEmendamentosJoinOppAtto();
         $news_string .= "<p>";
-        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera:  ' : 'Senato: ';
+        $news_string .= $emendamento->getOppSede()->getDenominazione()." - ";
         $news_string .= "L'<b>emendamento</b> ";
         $news_string .= '"'. link_to_in_mail($emendamento->getTitoloCompleto(),
                                             '@singolo_emendamento?id=' . $emendamento->getId()) .'"';
@@ -745,8 +746,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= $atto_link;
         }
         
-        $news_string .= " &egrave; ora " . 
-                        content_tag('b', ucfirst(strtolower($generator->getOppEmIter()->getFase())));
+        $news_string .= " &egrave; stato " . content_tag('b', ($generator->getOppEmIter()->getDescrizione() ? $generator->getOppEmIter()->getDescrizione() :                                                        strtolower($generator->getOppEmIter()->getFase())));
       }
       
       else if ($generator_model == 'OppEsitoSeduta')

@@ -19,7 +19,7 @@ class Text
 	* @param  integer numero di caratteri da prendere  
 	*/ 
 
-  	public static function shorten( &$str_to_shorten, $chars_to_keep, $cut_words=false, $str_to_append='...' )
+  	public static function shorten( $str_to_shorten, $chars_to_keep, $cut_words=false, $str_to_append='...' )
 	{
 		if ( strlen( $str_to_shorten ) > $chars_to_keep )
 		{
@@ -164,7 +164,32 @@ class Text
     }
   }
   
-  
+  public static function denominazioneEmendamento($emendamento, $action='list')
+  {	
+    if(!$emendamento->getTitoloAggiuntivo())
+    {
+      $testoDoc=$emendamento->getOppEmTestos();
+      if (count($testoDoc)>0)
+      {
+        $testoView=trim(strip_tags($testoDoc[0]->getTesto()));
+        
+        // Elimina gli spazi doppi ( doppi spazi )
+        $testoView=str_replace(array("\n","\r","\n\r","\r\n","\t","\t\n"),"",$testoView);
+        while (preg_match('/\s{2}/',$testoView)) {
+          $testoView=preg_replace("/\s{2}/"," ",$testoView);
+        }
+        while (preg_match('/\&nbsp\;/',$testoView)) {
+          $testoView=preg_replace("/\&nbsp\;/"," ",$testoView);
+        }
+        
+        return '<strong>'.$emendamento->getNumfase().'</strong> - '.Text::shorten($testoView, 200);
+      }
+      else
+        return $emendamento->getTitoloCompleto();
+    }        
+    else
+      return '<strong>'.$emendamento->getNumfase().'</strong> - '.$emendamento->getTitoloCompleto();
+  }
     
 }
 
