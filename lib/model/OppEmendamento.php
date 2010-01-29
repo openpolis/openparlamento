@@ -68,9 +68,10 @@ class OppEmendamento extends BaseOppEmendamento
   {
     $t = "";
     if ($this->getTitoloAggiuntivo()) {
-      $t = '[' . $this->getTitoloAggiuntivo() . '] ';
+      $t = ' [' . $this->getTitoloAggiuntivo() . '] ';
     }
-    $t .= $this->getTitolo();
+    else
+      $t = $this->getTitolo();
     return $t;
   }
   
