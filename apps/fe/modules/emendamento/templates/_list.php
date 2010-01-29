@@ -42,7 +42,7 @@
                   </span>
                 </p>
                 <p>
-                  <?php echo link_to($em->getTitoloCompleto(), '@singolo_emendamento?id='.$em->getId()) ?>
+                  <?php echo link_to(Text::denominazioneEmendamento($em, 'list'), '@singolo_emendamento?id='.$em->getId()) ?>
                 </p>
               </th>
               <td>
