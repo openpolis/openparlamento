@@ -169,7 +169,7 @@ all:
     from_tag:       "openparlamento"
     
   mail_per_redazione:
-    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openis.it')?>"
+    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openpolis.it')?>"
   
   subscription:
     civicus_limit_reached_tags:       "se vuoi monitorare gli argomenti aderisci all'offerta premium"
