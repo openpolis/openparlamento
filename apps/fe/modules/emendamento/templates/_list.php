@@ -28,6 +28,16 @@
                      <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
                      <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
                      <?php echo ' da '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
+                   <?php else :?>
+                     <?php if ($em->getNota()) : ?>
+                        <?php if ($em->getNota()=='commissione') echo 'dalla' ?>
+                        <?php if ($em->getNota()=='governo') echo 'dal' ?>
+                        <?php if (preg_match('#^commissioni#',$em->getNota())) echo 'dalle' ?>
+                        <?php if ($em->getNota()=='relatori') echo 'dai' ?>
+                        
+                      <?php echo strtoupper($em->getNota()) ?>
+                      
+                     <?php endif ?>   
                    <?php endif; ?>   
                   </span>
                 </p>
@@ -37,10 +47,22 @@
               </th>
               <td>
                 <?php $last_status = $em->getLastStatus(); ?>
-                           <?php if ($last_status->getData()): ?>
-                              <p class="date"><?php echo format_date($last_status->getData(), 'dd/MM/yyyy') ?></p>                    
-                            <?php endif ?>
-                  <p><?php echo $last_status->getOppEmIter()->getFase() ?></p>
+                  <?php if ($last_status->getData()): ?>
+                    <p class="date"><?php echo format_date($last_status->getData(), 'dd/MM/yyyy') ?></p>                    
+                  <?php endif ?>
+                  <?php
+                  
+                    if ($last_status->getOppEmIter()->getFase()=='Approvato' || $last_status->getOppEmIter()->getFase()=='Accolto')
+                                echo '<p style="color:green;">';
+                    else
+                    {
+                      if ($last_status->getOppEmIter()->getFase()=='Respinto' || $last_status->getOppEmIter()->getFase()=='Ritirato' ||   $last_status->getOppEmIter()->getFase()=='Inammissibile' || $last_status->getOppEmIter()->getFase()=='Precluso')
+                        echo '<p style="color:red;">';
+                      else
+                        echo '<p>';
+                    }  
+                  ?>
+                  <?php echo $last_status->getOppEmIter()->getFase() ?></p>
               </td>
               <td>
                 <?php if ($em->getArticolo()) {

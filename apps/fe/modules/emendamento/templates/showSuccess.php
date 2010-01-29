@@ -8,7 +8,7 @@
   <div id="main">
 
     <div class="W25_100 float-right">
-      <?php echo include_partial('emendamento/vote', array('emendamento' => $emendamento)); ?>
+      <?php echo include_partial('emendamento/vote', array('emendamento' => $emendamento, 'attoPortante' => $attoPortante)); ?>
     </div>
     
     <div class="W73_100 float-left">
@@ -43,17 +43,28 @@
                  <em>
                <?php echo link_to($f_signer->getNome()." ".$f_signer->getCognome(),'/parlamentare/'.$f_signer->getId()) ?>
                </em>
+            <?php else :?>
+              <?php if ($emendamento->getNota()) : ?>
+                 <?php if ($emendamento->getNota()=='commissione') echo 'dalla' ?>
+                 <?php if ($emendamento->getNota()=='governo') echo 'dal' ?>
+                 <?php if (preg_match('#^commissioni#',$emendamento->getNota())) echo 'dalle' ?>
+                 <?php if ($emendamento->getNota()=='relatori') echo 'dai' ?>
+                 <em>
+               <?php echo ucfirst($emendamento->getNota()) ?>.
+               </em>
+              <?php endif ?>        
             <?php endif ?>
             <?php $c_signers= OppEmendamentoPeer::doSelectCoFirmatari($emendamento->getId()); ?>
             <?php if (count($c_signers)>0) : ?>
             <span style="margin-bottom: 0px; font-size:13px; font-weight:normal">e altri <?php echo count($c_signers) ?> cofirmatari ... [ <a class="btn-open action" href="#" style="display: inline;">apri</a> <a style="display: none;" class="btn-close action" href="#">chiudi</a> ]</span>
               <div style="display: none; line-height:1.2em;font-size:13px; font-weight:normal;" class="more-results float-container">
               <?php 
-              foreach ($c_signers as $key => $cf) {
-              $c = new Criteria();
-              $c->add(OppPoliticoPeer::ID, $key, Criteria::EQUAL);
-              $pol = OppPoliticoPeer::doSelectOne($c);
-              echo link_to($pol->getNome()." ".$pol->getCognome(),'/parlamentare/'.$pol->getId()).", ";
+              $i=0;
+              foreach ($c_signers as $key => $cf) 
+              {
+                $i++;
+                $pol = OppPoliticoPeer::retrieveByPk($key);
+                echo link_to($pol->getNome()." ".$pol->getCognome(),'/parlamentare/'.$pol->getId()).($i<count($c_signers) ? ', ' :'.');
                } ?>
                </div>
                
@@ -67,33 +78,14 @@
         <li><?php echo link_to('link alla fonte',$emendamento->getUrlFonte(), array('class' => 'external'))?></li>
         </ul>
         
-       
-            
-         
+        <!-- STATUS --> 
          <?php $last_status = $emendamento->getLastStatus(); ?>
          <?php if ($last_status) : ?>
-           <?php if ($last_status->getOppEmIter()->getFase()!='Presentato') : ?>
-           <ul style="margin-bottom: 12px;" class="presentation float-container">
-             <li><h4>
-                status:
-                <em>
-              <?php echo $last_status->getOppEmIter()->getFase() ?>
-              </em>
-              </h4></li>
-           </ul>
-          <?php endif; ?>
-        <?php endif; ?>
+           <?php include_partial('status', array('last_status' => $last_status, 'relatedAttos'=> $relatedAttos)); ?>
+         <?php endif; ?>
 
       <!-- partial per la visualizzazione e l'edit-in-place dei tags associati all'atto -->
       <?php echo include_component('deppTagging', 'edit', array('content' => $emendamento)); ?>
-
-      <!-- testo dell'emendamento -->
-      <div class="coo-mind float-container">
-        <h4 class="subsection">testo ufficiale dell'emendamento:</h4>
-        <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
-          <p><?php echo $text->getTesto() ?></p>        
-        <?php endforeach ?>
-      </div>
       
       <br/>
 
@@ -114,6 +106,15 @@
 
 
     </div>
+    <div class="W73_100 float-left">
+      <!-- testo dell'emendamento -->
+      <div class="coo-mind float-container">
+        <h4 class="subsection">Il testo dell'emendamento</h4>
+        <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
+          <div style="margin:5px;"><?php echo $text->getTesto() ?></div>        
+        <?php endforeach ?>
+      </div>
+    </div>  
   </div>
 </div>
 <?php slot('breadcrumbs') ?>

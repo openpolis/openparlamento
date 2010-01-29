@@ -7,7 +7,7 @@
 <div id="content" class="tabbed float-container">
   <a name="top"></a>
   <div id="main">
-    <div class="W73_100 float-left">
+    <div class="W100_100 float-left">
       <p style="font-size:16px;">
         Elenco degli emendamenti relativi a 
         <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), '@singolo_atto?id='.$atto->getId()) ?>

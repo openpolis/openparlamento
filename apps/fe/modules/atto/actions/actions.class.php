@@ -937,4 +937,48 @@ class attoActions extends sfActions
   
   }
   
+  
+  public function executeWidget()
+  {
+    function tronca($testo, $caratteri) 
+    { 
+
+        if (strlen($testo) <= $caratteri) return $testo; 
+        $nuovo = wordwrap($testo, $caratteri, "|"); 
+        $nuovotesto=explode("|",$nuovo); 
+        return $nuovotesto[0]."..."; 
+    }
+    
+    $atto=OppAttoPeer::retrieveByPk($this->getRequestParameter('id'));
+    
+    $this->id=$atto->getId();
+    $this->tipo=tronca($atto->getOppTipoAtto()->getDescrizione(),20);
+    $this->ramo=$atto->getRamo();
+    $this->numfase=$atto->getNumfase();
+    $this->datapres=$atto->getDataPres();
+    $this->status=$atto->getStatoFase();
+    $this->status_data=$atto->getStatoLastDate();
+    $this->fav=$atto->getUtFav();
+    $this->contr=$atto->getUtContr();
+    $this->monitor=$atto->getNMonitoringUsers();
+    $this->commenti=$atto->getNbPublicComments();
+    
+    $titolo="";
+    $titolos=explode(" ",Text::denominazioneAtto($atto, 'list'));
+
+    for ($x=1;$x<count($titolos); $x++)
+    {
+      $titolo=$titolo." ".$titolos[$x];
+    }
+    $this->titolo=tronca(trim($titolo),180);
+
+    
+    
+    $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId());
+    if (count($f_signers)>0)
+    {
+      $this->firmatario=OppPoliticoPeer::retrieveByPk(key($f_signers));
+    }
+  }
+  
 }

@@ -9,3 +9,14 @@
   <hr class="dotted" />
   
 </div>
+
+<div class="section-box">     
+  <h6>Vedi anche ...</h6>
+
+  <ul>
+    <li> <?php echo link_to('La lista degli altri emendamenti', '@emendamenti_atto?id='.$attoPortante->getId()) ?></li>
+    <li><?php echo link_to('La scheda del ddl '.$attoPortante->getRamo().".".$attoPortante->getNumfase(),'/singolo_atto/'.$attoPortante->getId())?></li>
+  </ul>
+  
+</div>
+

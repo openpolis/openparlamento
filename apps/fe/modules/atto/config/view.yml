@@ -12,6 +12,11 @@ documentoSuccess:
   stylesheets:    [-*, screen.css, testo_atto]
   layout:         layoutDoc
 
+widgetSuccess:
+  javascripts:    [-*, prototype]
+  stylesheets:    [-*, screen.css]
+  layout:         layoutWidget  
+
 all:
   javascripts:    
     - fe/jquery.bgiframe.min.js
