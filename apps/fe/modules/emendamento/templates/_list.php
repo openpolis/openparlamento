@@ -79,9 +79,10 @@
               </td>	
             </tr>
           <?php endforeach; ?>
+          
           <tr>
             <td align="center" colspan='4'>
-              <?php echo pager_navigation($pager, 'emendamento/list') ?>
+              <?php echo pager_navigation($pager, '@emendamenti_atto?id='.$atto->getId()) ?>
             </td>
           </tr>
 

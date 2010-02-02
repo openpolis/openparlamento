@@ -177,7 +177,7 @@ function opp_test_single_user_alerts($user)
   echo pakeColor::colorize(sprintf("Processo l'utente %s ...", $user), 
                            array('fg' => 'red', 'bold' => true));
 
-  $user_alerts = oppAlertingTools::getUserAlerts($user, 1000);
+  $user_alerts = oppAlertingTools::getUserAlerts($user, 100);
   if (count($user_alerts) > 0) {
     echo pakeColor::colorize(sprintf(" (%d alert)\n", count($user_alerts)), 
                              array('fg' => 'red', 'bold' => true));

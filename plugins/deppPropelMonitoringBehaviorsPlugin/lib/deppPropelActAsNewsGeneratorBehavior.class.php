@@ -298,27 +298,35 @@ class deppPropelActAsNewsGeneratorBehavior
   /**
    * Intercepts the save method
    * and generates a news in the sf_news_cache table.
-   * For VotazioneHasAtto and Intervento, generate group news
+   * 
+   * Depending on object's attributes, modifies the behaviour
+   * 
    *
    * @return void
    * @author Guglielmo Celata
    **/
   public function postSave(BaseObject $object)
   {
-    if ((isset($this->wasNew) && $this->wasNew === true) || (isset($this->succNews) && $this->succNews === true))
+    if ((isset($this->wasNew) && $this->wasNew === true) || 
+        (isset($this->succNews) && $this->succNews === true))
     {
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;
 
       // grouped news generation
-      if (isset($object->generate_group_news) && $object->generate_group_news == true)
+      if (isset($object->generate_group_news) && $object->generate_group_news == true ||
+          isset($object->generate_only_group_news) && $object->generate_only_group_news == true)
         $object->generateUnlessAlreadyHasGroupNews();        
 
       // simple news generation
-      if (isset($object->priority_override) && $object->priority_override > 0)
-        $object->generateNews($object->priority_override);
-      else
-        $object->generateNews();        
+      if (!isset($object->generate_only_group_news) || 
+          isset($object->generate_only_group_news) && $object->generate_only_group_news == false)
+      {
+        if (isset($object->priority_override) && $object->priority_override > 0)
+          $object->generateNews($object->priority_override);
+        else
+          $object->generateNews();                
+      }
         
       unset($this->wasNew);    
       unset($this->succNews);

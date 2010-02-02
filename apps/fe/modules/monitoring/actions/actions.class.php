@@ -471,10 +471,10 @@ class monitoringActions extends sfActions
     $this->user_token = $this->getUser()->getToken();
     $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50));
     
-    $n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
+    $this->n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
     
     // do not send email if no news
-    if ($n_alerts == 0) return sfView::NONE;
+    if ($this->n_alerts == 0) return sfView::NONE;
     
     // mail class initialization
     $mail = new sfMail();
@@ -487,7 +487,7 @@ class monitoringActions extends sfActions
     $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
                    sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
     $mail->addAddress($this->user->getEmail());
-    $mail->setSubject('[openparlamento.it] i tuoi alert di oggi');
+    $mail->setSubject('[openparlamento.it] I tuoi avvisi di oggi');
 
     $this->mail = $mail;
   }

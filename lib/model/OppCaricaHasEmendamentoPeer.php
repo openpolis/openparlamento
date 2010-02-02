@@ -9,4 +9,12 @@
  */ 
 class OppCaricaHasEmendamentoPeer extends BaseOppCaricaHasEmendamentoPeer
 {
+  public static function countSignedByAtDate($carica_id, $date)
+  {
+    $c = new Criteria();
+    $c->add(self::CARICA_ID, $carica_id);
+    $c->add(self::DATA, $date);
+    return self::doCount($c);
+  }
+  
 }

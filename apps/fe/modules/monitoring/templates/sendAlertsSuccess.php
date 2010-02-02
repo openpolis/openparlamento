@@ -7,7 +7,9 @@
 </table>
 
 
-<h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">I tuoi alert di oggi</h2>
+<h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">
+  Oggi hai <?php echo $n_alerts ?> avvisi per le parole che stai monitorando
+</h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
 

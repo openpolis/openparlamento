@@ -10,6 +10,12 @@
 class OppPolitico extends BaseOppPolitico
 {
 
+  public function countSignedEmendamentiAtDate($date = null)
+  {
+    if (is_null($date))
+      $date = date('Y-m-d');
+    return OppCaricaHasEmendamentoPeer::countSignedByAtDate($this->getCaricaDepSenCorrente()->getId(), $date);
+  }
 
   public function getCaricaDepSenCorrente()
   {

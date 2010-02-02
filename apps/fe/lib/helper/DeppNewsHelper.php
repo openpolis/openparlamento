@@ -123,7 +123,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
 
   $news_string = "";
   
-  // notizie di gruppo (votazioni o interventi)
+  // notizie di gruppo (votazioni, interventi o emendamenti)
   if (count($pks) == 0)
   {
 
@@ -174,6 +174,35 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= '<p>'.$atto_link.'</p>';
       }  else $news_string .= ''; 
       
+    }
+
+
+    if ($generator_model == 'OppEmendamento') 
+    {
+      $related_monitorable_model = $news->getRelatedMonitorableModel();
+
+      if ($related_monitorable_model == 'OppAtto')
+      {
+        $atto = OppAttoPeer::retrieveByPK($news->getRelatedMonitorableId());
+        $n_pres = $atto->countPresentedEmendamentiAtDate($news->getDate());
+        if ($n_pres > 1)
+          $news_string .= content_tag('p', "Sono stati presentati <b>$n_pres</b> emendamenti");        
+        else
+          $news_string .= content_tag('p', "&Egrave; stato presentato un emendamento.");
+        
+      }
+      else if ($related_monitorable_model == 'OppPolitico')
+      {
+        // fetch del politico
+        $politico = OppPoliticoPeer::retrieveByPK($news->getRelatedMonitorableId());
+        
+        $n_signs = $politico->countSignedEmendamentiAtDate($news->getDate());
+        if ($n_signs > 1)
+          $news_string .= content_tag('p', "Ha firmato <b>$n_signs</b> emendamenti");        
+        else
+          $news_string .= content_tag('p', "Ha firmato un emendamento");        
+        
+      }       
     }
       
     return $news_string;
@@ -746,7 +775,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $news_string .= $atto_link;
         }
         
-        $news_string .= " &egrave; stato " . content_tag('b', ($generator->getOppEmIter()->getDescrizione() ? $generator->getOppEmIter()->getDescrizione() :                                                        strtolower($generator->getOppEmIter()->getFase())));
+        $news_string .= " &egrave; stato " . content_tag('b', strtolower($generator->getOppEmIter()->getFase()));
       }
       
       else if ($generator_model == 'OppEsitoSeduta')
@@ -880,9 +909,10 @@ function news_icon_name($generator_model, $generator)
                       'OppAttoHasEmendamento' => 'attonoleg',
                       'OppEmendamentoHasIter' => 'next-iter',
                       'OppEsitoSeduta'      => 'next-iter',
+                      'OppEmendamento'      => 'ordinanza',
                       );
 
-  // attos are specials
+  // attos are special
   if ($generator_model == 'OppAtto')
   {
     $tipo_atto_id = $generator->getOppTipoAtto()->getId();
@@ -895,7 +925,7 @@ function news_icon_name($generator_model, $generator)
   } else {
     $type = $icon_types[$generator_model];
   }
-
+  
   
   return "ico-type-$type.png";
 }

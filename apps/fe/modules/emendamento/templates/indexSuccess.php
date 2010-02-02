@@ -21,14 +21,16 @@
                                   'available_sites' => $available_sites,
                                   'selected_site' => array_key_exists('site', $filters)?$filters['site']:0,       
                                   'available_presenters' => $available_presenters,                         
-                                  'selected_presenter' => array_key_exists('presenter', $filters)?$filters['presenter']:0)) ?>
+                                  'selected_presenter' => array_key_exists('presenter', $filters)?$filters['presenter']:0,
+                                  'available_statuses' => $available_statuses,
+                                  'selected_status' => array_key_exists('status', $filters)?$filters['status']:0)) ?>
 
       <?php echo include_partial('default/listNotice', 
                                  array('filters' => $filters, 
                                        'results' => $pager->getNbResults(),
                                        'route' => '@emendamenti_atto?id='.$atto->getId())); ?>
 
-      <?php include_partial('list', array('pager' => $pager)) ?>
+      <?php include_partial('list', array('pager' => $pager, 'atto' => $atto)) ?>
       
     </div>
   </div>

@@ -87,10 +87,24 @@ class emendamentoActions extends sfActions
     // presenter filter
     if (array_key_exists('presenter', $this->filters) && $this->filters['presenter'] != '0')
     {
-      $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
-      $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $this->filters['presenter']);
-      $c->add(OppCaricaHasEmendamentoPeer::TIPO, 'P');
+      if ($this->filters['presenter'] == '999999999')
+      {
+        $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID, Criteria::LEFT_JOIN);
+        $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, null, Criteria::ISNULL);
+        
+      } else {
+        $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
+        $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $this->filters['presenter']);
+        $c->add(OppCaricaHasEmendamentoPeer::TIPO, 'P');        
+      }
       
+    }    
+
+    // status
+    if (array_key_exists('status', $this->filters) && $this->filters['status'] != '0')
+    {
+      $c->addJoin(OppEmendamentoPeer::ID, OppEmendamentoHasIterPeer::EMENDAMENTO_ID);
+      $c->add(OppEmendamentoHasIterPeer::EM_ITER_ID, $this->filters['status']);
     }    
     
   }
@@ -135,6 +149,15 @@ class emendamentoActions extends sfActions
       $ar[$id] = $presenter;
     }
     $this->available_presenters = $ar;
+
+    // extracts distinct statuses for listed emendamenti
+    $statuses = $this->atto->getAvailableEmendamentiStatuses();
+    $ar = array('0' => 'tutti');
+    foreach ($statuses as $id => $status)
+    {
+      $ar[$id] = $status;
+    }
+    $this->available_statuses = $ar;
     
     
     

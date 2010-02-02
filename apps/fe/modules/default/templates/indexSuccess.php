@@ -14,7 +14,9 @@
 
     <?php if ($sf_user->isAuthenticated()): ?>
       <div class="W66_100 float-left">
-        <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1, 'ambient' =>'home', 'legislatura' => 16)); ?>			
+        <?php echo include_component('monitoring', 'userVspolitician',
+                                     array('user' => $sf_user, 'num' => 1, 
+                                           'ambient' => 'home', 'legislatura' => 16)); ?>			
       </div>
   
       <div class="clear-both"></div>

@@ -25,6 +25,9 @@ class OppEmendamentoHasIter extends BaseOppEmendamentoHasIter
  * a change in iter status, generates news related to the OppAtto the emendamento relates to and 
  * to all the Tags the emendamento is tagged with
  **/
+ 
+/* 
+removed (#382)
 sfPropelBehavior::add(
   'OppEmendamentoHasIter',
   array('deppPropelActAsNewsGeneratorBehavior' =>
@@ -32,3 +35,4 @@ sfPropelBehavior::add(
               'date_method'        => 'Data',
               'priority'           => '3',
         )));
+*/

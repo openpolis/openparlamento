@@ -140,6 +140,7 @@ class OppCarica extends BaseOppCarica
     return $oppCaricaHasAttosPKs;
 	}
 
+
 }
 
 sfPropelBehavior::add(

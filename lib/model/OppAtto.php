@@ -439,6 +439,26 @@ class OppAtto extends BaseOppAtto
   {
     return OppEmendamentoPeer::getAvailablePresenters($this);
   }
+  
+  /**
+   * get the available distinct status for all the emendamenti of the atto
+   *
+   * @return hash of type {id => status}
+   * @author Guglielmo Celata
+   */
+  public function getAvailableEmendamentiStatuses()
+  {
+    return OppEmendamentoPeer::getAvailableStatuses($this);
+  }
+  
+  
+  public function countPresentedEmendamentiAtDate($date = null)
+  {
+    if (is_null($date))
+      $date = date('Y-m-d');
+    return OppAttoHasEmendamentoPeer::countPresentedRelatedToAtDate($this->getId(), $date);
+  }
+  
 
   /**
    * delete all news related to this object before deleting the object
