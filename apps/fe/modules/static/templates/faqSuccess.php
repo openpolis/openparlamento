@@ -72,12 +72,11 @@
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="4"></a><p><strong>Chi siete?</strong></p>
      openparlamento &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.
-     <p>La sostenibilit&agrave; del progetto - con tutte le sue articolazioni - viene perseguita attraverso il contributo dei soci.<br />
-     <strong>Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?></strong></p>
+     <p>La sostenibilit&agrave; dei progetti viene perseguita attraverso i <?php echo link_to('contributi','http://www.openpolis.it/contribuisci') ?> di utenti e soci dell'associazione.</p>
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="5"></a><p><strong>E' gratuito?</strong></p>
-     S&igrave;. La consultazione completa di tutti i dati, la registrazione al sito e i servizi di monitoraggio principali sono gratuiti. I soci di openpolis hanno inoltre accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?>.
+     S&igrave;. La consultazione completa di tutti i dati, la registrazione al sito e i servizi di monitoraggio principali sono gratuiti. <?php echo link_to('Contribuisci','http://www.openpolis.it/contribuisci') ?> anche tu a mantenere liberi, gratuiti e indipendenti i nostri progetti. I soci di openpolis hanno inoltre accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?>.
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="6"></a><p><strong>Che tipo di software avete utilizzato?</strong></p>
@@ -131,7 +130,8 @@
      </div>
      <div style="padding-top:8px; line-height:1,5em;">
      <a name="16"></a><p><strong>Perch&eacute; dovrei darvi i miei soldi? </strong></p>
-     Per aiutare a sostenere i costi necessari per mantenere e sviluppare i servizi che vengono messi a disposizione di tutti in maniera gratuita con openparlamento e le altre iniziative di openpolis. Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?>
+     Per aiutare a sostenere i costi necessari per mantenere e sviluppare i servizi che vengono messi a disposizione di tutti in maniera gratuita con openparlamento e le altre iniziative di openpolis.<br/>
+     Per promuovere la trasparenza e partecipare personalmente a mantenere liberi, gratuiti e indipendenti i nostri progetti! Per effettuare una donazione o diventare socio dell'associazione <?php echo link_to('<strong>clicca qui</strong>','http://www.openpolis.it/contribuisci') ?>.
      </div>
      
      <h5 class="subsection">Domande sul monitoraggio e sulla pagina personale</h5>
