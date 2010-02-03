@@ -53,7 +53,7 @@ class OppResoconto extends BaseOppResoconto
     } else {
       $url = $this->getUrlSommario();
     }
-    if (!strpos($url, "http://")) {
+    if (strpos($this->url, "http://") === false) {
       $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $url;
     }
     return $url;
