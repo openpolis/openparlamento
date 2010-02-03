@@ -28,7 +28,7 @@ generator:
       title:           "Modifica documento %%titolo%%"
       display:        [_atto_id, titolo, data, testo, url_testo]
       fields: 
-        testo:        { disabled: false, type: textarea_tag, params: size=80x10 }
+        testo:        { disabled: false, type: textarea_tag, params: rich=true tinymce_options=height:400,width:650 }        
       actions:
         _list:          ~
         _save:          ~
