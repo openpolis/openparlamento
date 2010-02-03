@@ -48,12 +48,13 @@
         
         <!-- news icon -->
         <?php 
-          $icon_src = image_tag(news_icon_name($generator_model, $generator), 
-                                array('size' => '44x42', 
-                                      'absolute' => true)) 
+          $icon_img_tag = image_tag(news_icon_name($generator_model, $generator), 
+                                    array('size' => '44x42', 
+                                          'absolute' => true,
+                                          'style' => "border:none; display: block; border: none; background: transparent url(http://$sf_site_url/images/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;")) 
         ?>
         <td class="icon-id" style="width: 60px;">
-          <img style="border:none; display: block; border: none; background: transparent url(http://<?php echo $sf_site_url?>/images/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;" src="<?php echo $icon_src?>" />
+          <?php echo $icon_img_tag ?>
         </td>
         
         <!-- news text -->
