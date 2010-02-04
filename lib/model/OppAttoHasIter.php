@@ -10,12 +10,17 @@
 class OppAttoHasIter extends BaseOppAttoHasIter
 {
   public $priority_override = 0;
+  public $skip_news_generation = false;
   
   public function save($con = null)
   {
     // override della priorità, nel caso di cambiamento di stato conclusivo, ma non CONCLUSO
     if ($this->getOppIter()->getConcluso() == 1 && $this->getOppIter()->getFase() != 'CONCLUSO')
       $this->priority_override = 1;
+      
+    // skip generazione news per passaggio di stato di audizioni
+    if ($this->getOppAtto()->getTipoAttoId() == 14)
+      $this->skip_news_generation = true;
       
     // cache in opp_atto, solo però se non è già APprovato o REspinto
     $atto = $this->getOppAtto();

@@ -559,25 +559,36 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         
           $news_string .= "</p>";
         
-        } else {
+        } 
+        else 
+        {
 
           // presentazione atto
-          if ($tipo->getId()!=13 ) 
-          {
-            $news_string .= "<p>";
-            $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
-            $news_string .= "<strong>Presentat" .($gender=='m'?'o':'a') . "</strong> ";
-            if ($context!=0)
-            {
-              $news_string .= $tipo->getDescrizione() . "</p>";
-              $news_string .= "<p>".$atto_link."</p>";
-            }  
-            else  $news_string .= "</p>"; 
-          }    
-          else {
-            $news_string .= "<p>Comunicato del governo: "; 
-            $news_string .= $atto_link."</p>";
-         }      
+          switch ($tipo_atto = $tipo->getId()) {
+            case 13:
+              $news_string .= "<p>Comunicato del governo: "; 
+              $news_string .= $atto_link."</p>";
+              break;
+            
+            case 14:
+              $news_string .= "<p>";
+              $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+              $news_string .= "<strong>Svolta</strong> audizione "; 
+              $news_string .= $atto_link."</p>";
+              break;
+              
+            default:
+              $news_string .= "<p>";
+              $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+              $news_string .= "<strong>Presentat" .($gender=='m'?'o':'a') . "</strong> ";
+              if ($context!=0)
+              {
+                $news_string .= $tipo->getDescrizione() . "</p>";
+                $news_string .= "<p>".$atto_link."</p>";
+              }  
+              else  $news_string .= "</p>"; 
+              break;
+          }
 
         
         } 
