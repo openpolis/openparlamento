@@ -93,6 +93,12 @@ thead th { font-size: 12px; vertical-align: top; }
 
 .pad10 { padding: 10px; }
 
+em.open { color: #ff7c00; font-size: 120%; }
+em.parlamento { color: #00787c; font-size: 120%;}
+.message { font-size: 16px; margin-bottom: 20px;}
+.message p { margin-bottom: 0.5em; }
+
+
 /*
  * WIKI
  *----------------------------------------------*/
