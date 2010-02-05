@@ -12,7 +12,7 @@
 <h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">
   Oggi hai 
   <?php echo format_number_choice('[1] 1 avviso |(1,+Inf] %1% avvisi', array('%1%' => $n_total_notifications), $n_total_notifications) ?>
-  per <?php echo format_number_choice('[1] la parola |(1,+Inf] le %1% parole', array('%1%' => $n_alerts), $n_alerts) ?> che stai monitorando
+  per <?php echo format_number_choice('[1] il termine |(1,+Inf] i %1% termini', array('%1%' => $n_alerts), $n_alerts) ?> che stai monitorando
 </h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
@@ -20,8 +20,10 @@
   <?php foreach ($user_alerts as $user_alert): ?>
     <tr>
       <td>
-        <?php echo sprintf("La parola %s è stata trovata %d volte", 
-                           $user_alert['term'], count($user_alert['results'])) ?>
+        <strong>
+        Il termine <i><?php echo $user_alert['term'] ?></i>
+        &egrave; stato trovato <?php echo format_number_choice('[1] una volta |(1,+Inf] %1% volte', array('%1%' => count($user_alert['results'])), count($user_alert['results'])) ?> 
+        </strong>
       </td>
     </tr>
 
