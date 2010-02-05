@@ -32,8 +32,8 @@ class oppAlertingTools
 
     // loop to build static data-structure (self::$user_alerts)
     $user_alerts = array();
-    $alerts = OppAlertUserPeer::fetchUserAlerts($user);
-    foreach ($alerts as $alert)
+    $alert = OppAlertUserPeer::fetchUserAlerts($user);
+    foreach ($alert as $alert)
     {
       $alert_term = $alert->getOppAlertTerm()->getTerm();
       if ($user->getLastAlertedAt())
@@ -54,6 +54,22 @@ class oppAlertingTools
       $user_alerts []= $user_alert;
     } 
     return $user_alerts; 
-  }  
+  } 
+  
+  /**
+   * counts the total number of notifications for the given alerts array
+   *
+   * @param string $user_alerts 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function countTotalAlertsNotifications($user_alerts)
+  {
+    $total = 0;
+    foreach ($user_alerts as $alert) {
+      $total += count($alert['results']);
+    }
+    return $total;
+  } 
  
 }

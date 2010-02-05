@@ -11,8 +11,8 @@
 
 <h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">
   Oggi hai 
-  <?php echo format_number_choice('[1] 1 avviso|(1,+Inf] %1% avvisi', array('%1%' => $n_alerts), $n_alerts) ?>
-  per le parole che stai monitorando
+  <?php echo format_number_choice('[1] 1 avviso |(1,+Inf] %1% avvisi', array('%1%' => $n_total_notifications), $n_total_notifications) ?>
+  per <?php echo format_number_choice('[1] la parola |(1,+Inf] le %1% parole', array('%1%' => $n_alerts), $n_alerts) ?> che stai monitorando
 </h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">

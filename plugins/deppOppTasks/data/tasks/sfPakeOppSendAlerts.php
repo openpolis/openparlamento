@@ -183,13 +183,16 @@ function opp_test_single_user_alerts($user)
   echo pakeColor::colorize(sprintf("Processo l'utente %s ...", $user), 
                            array('fg' => 'red', 'bold' => true));
 
-  $user_alerts = oppAlertingTools::getUserAlerts($user, 100);
+  $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
+  $n_alerts = OppAlertUserPeer::countUserAlerts($user);
+  $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
+  
   if (count($user_alerts) > 0) {
     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
-                            (count($user_alerts) > 3?',...':'') ;
+                            ($n_alerts > 3?',...':'') ;
     
     echo pakeColor::colorize(sprintf("%d %s per %s\n", 
-                                     count($user_alerts), count($user_alerts)==1?'avviso':'avvisi',
+                                     $n_total_notifications, $n_total_notifications==1?'avviso':'avvisi',
                                      $user_alerts_expanded), 
                              array('fg' => 'red', 'bold' => true));
     echo pakeTaskUserAlerts($user_alerts);

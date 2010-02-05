@@ -471,6 +471,7 @@ class monitoringActions extends sfActions
     $this->user_token = $this->getUser()->getToken();
     $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50));
     $this->n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
+    $this->n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($this->user_alerts);
     
     // do not send email if no news
     if ($this->n_alerts == 0) return sfView::NONE;
@@ -491,7 +492,7 @@ class monitoringActions extends sfActions
     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($this->user_alerts, 0, 3))) . 
                             ($this->n_alerts > 3?',...':'') ;
     
-    $mail->setSubject('[openparlamento.it] ' . ($this->n_alerts==1?'un avviso':$this->n_alerts.' avvisi') . '  per ' . $user_alerts_expanded);
+    $mail->setSubject('[openparlamento.it] ' . ($this->n_total_notifications==1?'un avviso':$this->n_totl_notifications.' avvisi') . '  per ' . $user_alerts_expanded);
 
     $this->mail = $mail;
   }
