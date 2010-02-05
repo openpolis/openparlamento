@@ -492,9 +492,18 @@ class monitoringActions extends sfActions
     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($this->user_alerts, 0, 3))) . 
                             ($this->n_alerts > 3?',...':'') ;
     
-    $mail->setSubject('[openparlamento.it] ' . ($this->n_total_notifications==1?'un avviso':$this->n_totl_notifications.' avvisi') . '  per ' . $user_alerts_expanded);
+    $subj = sprintf("%d %s per %s che stai monitorando (%s) ", 
+                    $this->n_total_notifications, $this->n_total_notifications==1?'avviso':'avvisi',
+                    $this->n_alerts==1?'il termine':'i ' .$this->n_alerts.' termini',
+                    $user_alerts_expanded);
+
+    $mail->setSubject($subj);
 
     $this->mail = $mail;
+    
+    // set the last_alerted_at field to now in the opp_user table
+    $this->user->setLastAlertedAt(date('Y-m-d H:i'));
+    $this->user->save();
   }
   
 

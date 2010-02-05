@@ -60,7 +60,7 @@ function run_opp_send_alerts($task, $args)
   
   $total_time = microtime(true) - $start_time;
 
-  echo pakeColor::colorize('All done! ', array('fg' => 'cyan', 'bold' => true));
+  echo pakeColor::colorize('All done! ', array('fg' => 'green', 'bold' => true));
 
   echo 'Processed ';
   echo pakeColor::colorize(count($users), array('fg' => 'cyan'));
@@ -83,27 +83,44 @@ function opp_send_single_alert($user)
   $start_time = microtime(true);
 
   echo pakeColor::colorize(sprintf("Processo l'utente %s...\n", $user), 
-                           array('fg' => 'red', 'bold' => true));
+                           array('bold' => true));
 
 
-   // invoke the action that sends the email
-   sfContext::getInstance()->getRequest()->setParameter('user_id', $user->getId());
-   try {
-     $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendAlerts');
-     // log the email
-     sfContext::getInstance()->getLogger()->debug($raw_email);
-   } catch (Exception $e) {
-     echo pakeColor::colorize(sprintf(" err: %s - ", $e->getMessage()), array('fg' => 'red'));
+   $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
+   $n_alerts = OppAlertUserPeer::countUserAlerts($user);
+   $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
+
+   if ($n_total_notifications > 0) {
+     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
+                             ($n_alerts > 3?',...':'') ;
+
+     echo pakeColor::colorize(sprintf("%d %s per %s (%s) ", 
+                                      $n_total_notifications, $n_total_notifications==1?'avviso':'avvisi',
+                                      $n_alerts==1?'un termine':$n_alerts.' termini',
+                                      $user_alerts_expanded));
+
+     // invoke the action that sends the email
+     sfContext::getInstance()->getRequest()->setParameter('user_id', $user->getId());
+     try {
+       $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendAlerts');
+       // log the email
+       sfContext::getInstance()->getLogger()->debug($raw_email);
+     } catch (Exception $e) {
+       echo pakeColor::colorize(sprintf(" err: %s - ", $e->getMessage()), array('fg' => 'red', 'bold' => true));
+     }
+     
+   } else {
+     echo pakeColor::colorize(sprintf(" (nessun avviso) "));
    }
+
 
   $execution_time = microtime(true) - $start_time;
   if (isset($raw_email) && $raw_email != '') 
-    echo pakeColor::colorize("ok (", array('fg' => 'cyan'));
+    echo pakeColor::colorize("ok ", array('fg' => 'green', 'bold' => true));
   else 
-    echo pakeColor::colorize("no mail (", array('fg' => 'cyan'));
+    echo pakeColor::colorize("no mail ", array('fg' => 'cyan'));
 
-  echo pakeColor::colorize(sprintf("%f", $execution_time), array('fg' => 'cyan'));
-  echo ")\n";
+  echo pakeColor::colorize(sprintf("(%5.3f s)\n\n", $execution_time), array('fg' => 'cyan'));
 }
 
 
@@ -150,7 +167,7 @@ function run_opp_test_alerts($task, $args)
   
   $total_time = microtime(true) - $start_time;
 
-  echo pakeColor::colorize('All done! ', array('fg' => 'red', 'bold' => true));
+  echo pakeColor::colorize('All done! ', array('fg' => 'green', 'bold' => true));
 
   echo 'Processed ';
   echo pakeColor::colorize(count($users), array('fg' => 'cyan'));
@@ -180,26 +197,26 @@ function opp_test_single_user_alerts($user)
   
   $df = new sfDateFormat('it_IT');
 
-  echo pakeColor::colorize(sprintf("Processo l'utente %s ...", $user), 
-                           array('fg' => 'red', 'bold' => true));
+  echo pakeColor::colorize(sprintf("Processo l'utente %s ...\n", $user), 
+                           array('bold' => true));
 
   $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
   $n_alerts = OppAlertUserPeer::countUserAlerts($user);
   $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
   
-  if (count($user_alerts) > 0) {
+  if ($n_total_notifications > 0) {
     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
                             ($n_alerts > 3?',...':'') ;
     
-    echo pakeColor::colorize(sprintf("%d %s per %s\n", 
+    echo pakeColor::colorize(sprintf("%d %s per %s (%s)\n\n", 
                                      $n_total_notifications, $n_total_notifications==1?'avviso':'avvisi',
-                                     $user_alerts_expanded), 
-                             array('fg' => 'red', 'bold' => true));
-    echo pakeTaskUserAlerts($user_alerts);
+                                     $n_alerts==1?'un termine':$n_alerts.' termini',
+                                     $user_alerts_expanded));
+
+    // echo pakeTaskUserAlerts($user_alerts);
     
   } else {
-    echo pakeColor::colorize(sprintf(" (nessun alert)\n"), 
-                             array('fg' => 'red', 'bold' => true));
+    echo pakeColor::colorize(sprintf(" (nessun avviso)\n\n"));
   }
   
   $execution_time = microtime(true) - $start_time;
