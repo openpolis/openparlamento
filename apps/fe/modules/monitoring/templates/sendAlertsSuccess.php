@@ -18,22 +18,25 @@
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
 
   <?php foreach ($user_alerts as $user_alert): ?>
-    <tr>
-      <td>
-        <strong>
-        Il termine <i><?php echo $user_alert['term'] ?></i>
-        &egrave; stato trovato <?php echo format_number_choice('[1] una volta |(1,+Inf] %1% volte', array('%1%' => count($user_alert['results'])), count($user_alert['results'])) ?> 
-        </strong>
-      </td>
-    </tr>
+    <?php if (count($user_alert['results']) > 0): ?>      
 
-    <?php foreach ($user_alert['results'] as $i => $res): ?>
-      <tr>     
-        <td>
-          <?php echo get_partial($res->getInternalAlertPartial(), array('result' => $res, 'term' => $user_alert['term'])) ?>
+      <tr>
+        <td style="font-size: 16px; font-weight: bold">
+          <div style="margin-top:1.5em">
+            Il termine <i><?php echo $user_alert['term'] ?></i>
+            &egrave; stato trovato <?php echo format_number_choice('[1] una volta |(1,+Inf] %1% volte', array('%1%' => count($user_alert['results'])), count($user_alert['results'])) ?>             
+          </div>
         </td>
-      </tr>  
-    <?php endforeach ?>
+      </tr>
+
+      <?php foreach ($user_alert['results'] as $i => $res): ?>
+        <tr>     
+          <td>
+            <?php echo get_partial($res->getInternalAlertPartial(), array('result' => $res, 'term' => $user_alert['term'])) ?>
+          </td>
+        </tr>  
+      <?php endforeach ?>
+    <?php endif ?>
       
   <?php endforeach; ?>
 </table>
