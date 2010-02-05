@@ -15,7 +15,7 @@
   per <?php echo format_number_choice('[1] il termine |(1,+Inf] i %1% termini', array('%1%' => $n_alerts), $n_alerts) ?> che stai monitorando
 </h2>
 
-<table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
+<table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px; padding-left: 12px">
 
   <?php foreach ($user_alerts as $user_alert): ?>
     <?php if (count($user_alert['results']) > 0): ?>      
