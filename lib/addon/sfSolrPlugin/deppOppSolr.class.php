@@ -22,22 +22,33 @@ class deppOppSolr extends sfSolr
    * @param string $querystring     
    * @param int    $offset
    * @param int    $limit                                                                        
-   * @param string $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
-   * @return sfSolrPager                                                                                           
+   * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
+   * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
+   * @return sfSolrPager                                                                                      
+   * @throws sfSolrException     
    * @author Guglielmo Celata                                                                               
    */                                                                                                       
-  public static function getSfResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array())
+  public static function getSfResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
   {
-    $query = strip_tags(trim($querystring));       
+    $query = strip_tags(trim($querystring));   
     
-    // estrae la prima parola e la stringa quoted                                                           
-    $q_first = ""; $quoted = false;                                                                         
+    // opzioni aggiuntive per la ricerca
+    $query_options = array('fl' => '*,score');
+    
+    $q_first = ""; $quoted = false;
    	if (strpos($query, '"') === false)                                                                
    	{                                                                                                       
+      // se utente non ha inserito esplicitamente le virgolette
+      // crea stringhe quoted e q_first 
    	  $words = split(" ", $query);                                                                    
    		$q_first = $words[0];		                                                                              
    	  $quoted = '"' . $query . '"';                                                                   
-   	}                                                                                                       
+   	} else {
+   	  // se utente ha inserito virgolette, entra in quotes_mode
+   	  // con la stringa quoted uguale alla query
+   	  $quotes_mode = true;
+   	  $quoted = $query;
+   	}                                                                                                     
 
    	// definizione dei boost (spostare in config??)                                                         
    	$nominativo_boost = 10.0;                                                                                  
@@ -59,21 +70,26 @@ class deppOppSolr extends sfSolr
       $composed_query .= " titolo: ($quoted)^" . $titolo_boost * $quoted_boost  . " ";                                             
       $composed_query .= " testo: ($quoted)^" . $testo_boost * $quoted_boost . " ";                        
       $composed_query .= " descrizioneWiki: ($quoted)^" . $descrizioneWiki_boost * $quoted_boost . " ";                          
-    }                                                                                                       
-    if ($q_first)                                                                                           
-    {                                                                                                       
-      $composed_query .= " nominativo: ($q_first*)^" . $nominativo_boost * $qfirst_boost . " ";                     
-      $composed_query .= " triple_value: ($q_first*)^" . $triple_value_boost * $qfirst_boost . " ";                                 
-      $composed_query .= " titolo: ($q_first*)^" . $titolo_boost * $qfirst_boost . " ";                                           
-      $composed_query .= " testo: ($q_first*)^" . $testo_boost * $qfirst_boost . " ";                      
-      $composed_query .= " descrizioneWiki: ($q_first*)^" . $descrizioneWiki_boost * $qfirst_boost . " ";
-    }                                                                                                       
+    }  
+    
+    // aggiunge ricerca per termini che iniziano come il primo termine e in OR su tutti i termini
+    if ($quotes_mode == false)
+    {
+      if ($q_first)                                                                                           
+      {                                                                                                       
+        $composed_query .= " nominativo: ($q_first*)^" . $nominativo_boost * $qfirst_boost . " ";                     
+        $composed_query .= " triple_value: ($q_first*)^" . $triple_value_boost * $qfirst_boost . " ";                                 
+        $composed_query .= " titolo: ($q_first*)^" . $titolo_boost * $qfirst_boost . " ";                                           
+        $composed_query .= " testo: ($q_first*)^" . $testo_boost * $qfirst_boost . " ";                      
+        $composed_query .= " descrizioneWiki: ($q_first*)^" . $descrizioneWiki_boost * $qfirst_boost . " ";
+      }                                                                                                       
 
-    $composed_query .= " nominativo:(" . $query . ")^" . $nominativo_boost;                   
-    $composed_query .= " triple_value:(" . $query . ")^" . $triple_value_boost;                               
-    $composed_query .= " titolo:(" . $query . ")^" . $titolo_boost;                                         
-    $composed_query .= " testo:(" . $query . ")^" . $testo_boost;                    
-    $composed_query .= " descrizioneWiki:(" . $query . ")^" . $descrizioneWiki_boost;                      
+      $composed_query .= " nominativo:(" . $query . ")^" . $nominativo_boost;                   
+      $composed_query .= " triple_value:(" . $query . ")^" . $triple_value_boost;                               
+      $composed_query .= " titolo:(" . $query . ")^" . $titolo_boost;                                         
+      $composed_query .= " testo:(" . $query . ")^" . $testo_boost;                    
+      $composed_query .= " descrizioneWiki:(" . $query . ")^" . $descrizioneWiki_boost;                            
+    }                                                                                                     
 
     $composed_query .= ") ";                                                                                
 
@@ -95,12 +111,12 @@ class deppOppSolr extends sfSolr
 
     // returns the pager or trap the exception
     try {                                                                                                                                                                       
-      $results = deppOppSolr::getInstance()->friendlySearch($composed_query, $offset, $limit, array("fl"=>"*,score"));
+      $results = deppOppSolr::getInstance()->friendlySearch($composed_query, $offset, $limit, $query_options);
       return $results;
 
     } catch (Exception $e) {                                                                                
       sfLogger::getInstance()->err('{sfSolrActions::getResults} ' . $e->getMessage());
-      echo $e->getMessage();
+      throw new sfSolrException($e->getMessage());
     }                                                                                                       
 
   }  

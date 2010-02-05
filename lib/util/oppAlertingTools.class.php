@@ -46,7 +46,7 @@ class oppAlertingTools
           'created_at_dt' => "[NOW-9MONTHS/SECOND TO NOW]"
         );
       }
-      $alert_results = deppOppSolr::getSfResults($alert_term, 0, $max_results, $time_constraints);
+      $alert_results = deppOppSolr::getSfResults($alert_term, 0, $max_results, $time_constraints, true);
       $user_alert = array(
         'term' => $alert_term,
         'results' => $alert_results

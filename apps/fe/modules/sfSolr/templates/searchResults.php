@@ -30,17 +30,17 @@
         <?php foreach ($pager->getResults() as $result): ?>
           <?php $num_item=$num_item+1 ?>
           <tr>
-            <td>
+            <td class="ico">
               <div class="ico-type">
                 <?php include_search_result_icon($result) ?>                
               </div>
             </td>
           
-            <td class="<?php echo (fmod($num_item,2)!=0) ? 'odd' : 'even' ?>">                      
+            <td class="text <?php echo (fmod($num_item,2)!=0) ? 'odd' : 'even' ?>">                      
               <?php include_search_result($result, $query, array('num_item'=>$num_item)) ?>
             </td>
             
-            <td>
+            <td class="score">
               <div class="results-meter">
                 <div class="results-meter-value"><?php echo $result->getScore() ?>%</div>
                 <div class="results-meter-scale">

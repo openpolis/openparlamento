@@ -59,7 +59,7 @@ class Tag extends BaseTag
     $document->sfl_type = 'model';
 
     $document->propel_id = $id;
-    $document->triple_value = strtolower($this->getTripleValue());
+    $document->triple_value = $this->getTripleValue();
 
     // ritorna il documento da aggiungere
     return $document;

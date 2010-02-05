@@ -58,6 +58,7 @@ sfPropelBehavior::add(
               'date_method'        => 'Data',
               'priority'           => '3',
         )));
-        
-sfSolrPropelBehavior::getInitializer()->setupModel('OppEsitoSeduta');
+
+// disattivato (#383)        
+// sfSolrPropelBehavior::getInitializer()->setupModel('OppEsitoSeduta');
 

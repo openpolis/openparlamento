@@ -1070,6 +1070,8 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .search-results-table td { text-align: left; border: 3px solid #fff; }
 .search-results-table td.odd{ background-color:#f2f2f2; }
+.search-results-table td.ico { width: 5%; }
+.search-results-table td.text { width: 80%; padding-left: 1em; }
 
 /*
  * RESULTS METER BAR

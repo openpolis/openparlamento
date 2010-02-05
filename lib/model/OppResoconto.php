@@ -33,7 +33,7 @@ class OppResoconto extends BaseOppResoconto
     }
 
     if ($this->getNumSeduta())
-      $document->num_seduta_i = $this->getNumSeduta();
+      $document->num_seduta_ti = $this->getNumSeduta();
 
     if ($this->getData())
       $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
@@ -53,7 +53,7 @@ class OppResoconto extends BaseOppResoconto
     } else {
       $url = $this->getUrlSommario();
     }
-    if (strpos($this->url, "http://") === false) {
+    if (strpos($url, "http://") === false) {
       $url = sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/') . $url;
     }
     return $url;
