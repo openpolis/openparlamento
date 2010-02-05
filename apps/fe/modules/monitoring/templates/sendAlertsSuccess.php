@@ -1,3 +1,5 @@
+<?php use_helper('I18N') ?>
+
 <table width="100%" cellpadding="0" cellspacing="0" style="color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
     <tr>
         <td style="width: 190px;"><img src="http://<?php echo $sf_site_url?>/images/OP_mail.png" alt="Openparlamento" width="190" height="56" /></td>
@@ -8,7 +10,9 @@
 
 
 <h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">
-  Oggi hai <?php echo $n_alerts ?> avvisi per le parole che stai monitorando
+  Oggi hai 
+  <?php echo format_number_choice('[1] 1 avviso|(1,+Inf] %1% avvisi', array('%1%' => $n_alerts), $n_alerts) ?>
+  per le parole che stai monitorando
 </h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
@@ -16,8 +20,8 @@
   <?php foreach ($user_alerts as $user_alert): ?>
     <tr>
       <td>
-        <?php sprintf("La parola %s è stata trovata %d volte", 
-                       $user_alert['term'], count($user_alert['results'])) ?>
+        <?php echo sprintf("La parola %s è stata trovata %d volte", 
+                           $user_alert['term'], count($user_alert['results'])) ?>
       </td>
     </tr>
 
@@ -33,6 +37,6 @@
 </table>
 
 <div>
-per rimuovere gli alert, vai a 
+per rimuovere gli avvisi, vai a 
 <a href="http://<?php echo $sf_site_url ?>/monitoring_alerts/<?php echo $user_token ?>">questa pagina</a>
 </div>

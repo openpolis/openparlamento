@@ -488,12 +488,19 @@ class monitoringActions extends sfActions
     $mail->addAddress($this->user->getEmail());
 
     // alert utente espansi per il subject della mail
-    $user_alerts_expanded = implode(", ", array_slice($this->user_alerts, 0, 3)) . ($this->n_alerts > 3)?',...':'';
-    $mail->setSubject('[openparlamento.it] ' . $this->n_alerts . ' avvisi per ' . $user_alerts_expanded);
+    $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($this->user_alerts, 0, 3))) . 
+                            ($this->n_alerts > 3?',...':'') ;
+    
+    $mail->setSubject('[openparlamento.it] ' . ($this->n_alerts==1?'un avviso':$this->n_alerts.' avvisi') . '  per ' . $user_alerts_expanded);
 
     $this->mail = $mail;
   }
   
+
+  public function extractTerm($value='')
+  {
+    return $value['term'];
+  }
 
   public function executeAjaxTagsForTopTerm()
   {

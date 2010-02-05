@@ -161,6 +161,12 @@ function run_opp_test_alerts($task, $args)
 
 }
 
+// funzione che mappa l'estrazione dei termini dagli user_alerts
+function extractTerm($value='')
+{
+  return $value['term'];
+}
+
 /**
  * fetch today's alert regarding terms monitored by the user
  *
@@ -179,7 +185,12 @@ function opp_test_single_user_alerts($user)
 
   $user_alerts = oppAlertingTools::getUserAlerts($user, 100);
   if (count($user_alerts) > 0) {
-    echo pakeColor::colorize(sprintf(" (%d alert)\n", count($user_alerts)), 
+    $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
+                            (count($user_alerts) > 3?',...':'') ;
+    
+    echo pakeColor::colorize(sprintf("%d %s per %s\n", 
+                                     count($user_alerts), count($user_alerts)==1?'avviso':'avvisi',
+                                     $user_alerts_expanded), 
                              array('fg' => 'red', 'bold' => true));
     echo pakeTaskUserAlerts($user_alerts);
     
