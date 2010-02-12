@@ -52,6 +52,8 @@ class deppOppSolr extends sfSolr
    */                                                                                                       
   public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false )
   {
+    sfLogger::getInstance()->err('{sfSolrActions::getSfDismaxResults} using Dismax');
+    
     $query = strip_tags(trim($querystring));   
     
     // opzioni aggiuntive per la ricerca
@@ -102,6 +104,8 @@ class deppOppSolr extends sfSolr
    */                                                                                                       
   public static function getSfStandardResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
   {
+    sfLogger::getInstance()->err('{sfSolrActions::getSfStandardResults} using Standard');
+    
     $query = strip_tags(trim($querystring));   
     
     // opzioni aggiuntive per la ricerca
