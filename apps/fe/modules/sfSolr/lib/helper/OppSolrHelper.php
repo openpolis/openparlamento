@@ -22,6 +22,7 @@ function include_search_result_icon($result)
                       'Tag'               => 'etichetta',
                       'OppEmendamento'    => 'attonoleg',
                       'OppVotazione'      => 'votazione',
+                      'OppResoconto'        => 'descrizione',
                       );
 
   if ($result->sfl_model == 'OppAtto')

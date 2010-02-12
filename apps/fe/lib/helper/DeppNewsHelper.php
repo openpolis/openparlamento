@@ -919,8 +919,8 @@ function news_icon_name($generator_model, $generator)
                       'OppCaricaHasEmendamento' => 'ordinanza',
                       'OppAttoHasEmendamento' => 'attonoleg',
                       'OppEmendamentoHasIter' => 'next-iter',
-                      'OppEsitoSeduta'      => 'next-iter',
-                      'OppEmendamento'      => 'ordinanza',
+                      'OppEmendamento'      => 'descrizione',
+                      'OppResoconto'        => 'descrizione',
                       );
 
   // attos are special
