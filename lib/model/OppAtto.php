@@ -118,7 +118,7 @@ class OppAtto extends BaseOppAtto
 	$c->addJoin(OppAttoHasIterPeer::ITER_ID, OppIterPeer::ID, Criteria::LEFT_JOIN);
 	$c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
 	//$c->addDescendingOrderByColumn(OppIterPeer::CONCLUSO);
-	//$c->addDescendingOrderByColumn(OppIterPeer::ID);
+	$c->addDescendingOrderByColumn(OppIterPeer::ID);
 	//$c->setLimit(1);
 	$rs = OppAttoHasIterPeer::doSelectRS($c);
 	
