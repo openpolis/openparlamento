@@ -138,7 +138,7 @@ propel:
     data_pres:         { type: date }
     articolo:          { type: varchar(255) }
     created_at:        ~
-    url_fonte:         { type: varchar(255), required: true }
+    url_fonte:         { type: varchar(1024), required: true }
     sede_id:           { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     tipologia:         { type: varchar(255) }
     nb_commenti:       { type: integer, required: true, default: 0 }
@@ -151,6 +151,7 @@ propel:
   opp_em_iter:
     id:               ~
     fase:             { type: varchar(255) }
+    descrizione:      { type: varchar(255) }
     concluso:         { type: boolean }
     
   opp_emendamento_has_iter:

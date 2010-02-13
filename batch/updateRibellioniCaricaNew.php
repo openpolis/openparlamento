@@ -17,6 +17,15 @@ $crit0 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 1);
 $crit1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 4);
 
 $crit0->addOr($crit1);
+<<<<<<< .mine
+$crit2 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, 16);
+
+$crit0->addAnd($crit2);
+$crit3 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+
+$crit0->addOr($crit3);
+
+=======
 $crit2 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $leg);
 
 $crit0->addAnd($crit2);
@@ -24,14 +33,15 @@ $crit3 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
 
 $crit0->addOr($crit3);
 
+>>>>>>> .r576
 $c->add($crit0);
 $cariche = OppCaricaPeer::doSelect($c);
 $cariche = OppCaricaPeer::doSelect($c);
 
 foreach($cariche as $carica)
   {  
-    if ($carica->getTipoCaricaId()==1) $ramo='c';
-    if ($carica->getTipoCaricaId()==4 || $carica->getTipoCaricaId()==5) $ramo='s';
+    if ($carica->getTipoCaricaId()==1) $ramo='C';
+    if ($carica->getTipoCaricaId()==4 || $carica->getTipoCaricaId()==5) $ramo='S';
     
     
     $c = new Criteria();
@@ -47,10 +57,12 @@ foreach($cariche as $carica)
         $c->addJoin(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, OppVotazionePeer::ID);
         $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
         $c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
+        $c->add(OppSedutaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
         $c->add(OppSedutaPeer::DATA, $gruppo->getDataInizio(), Criteria::GREATER_EQUAL);
         if ($gruppo->getDataFine()!='')
             $c->add(OppSedutaPeer::DATA, $gruppo->getDataFine(), Criteria::LESS_EQUAL);
         $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, $gruppo->getGruppoId(), Criteria::EQUAL);
+          
         $voti_gruppo = OppVotazioneHasGruppoPeer::doSelect($c);
         foreach($voti_gruppo as $voto_gruppo)
        
@@ -62,12 +74,17 @@ foreach($cariche as $carica)
             $voti_carica = OppVotazioneHasCaricaPeer::doSelect($c);
             foreach($voti_carica as $voto_carica)
             {
+<<<<<<< .mine
+              if ($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario' || $voto_carica->getVoto()=='Voto segreto')
+=======
               if($voto_carica->getVoto()=='Favorevole' || $voto_carica->getVoto()=='Astenuto' || $voto_carica->getVoto()=='Contrario' || $voto_carica->getVoto()=='Voto segreto')
+>>>>>>> .r576
                 {
                 
                   if ($voto_carica->getVoto()!==$voto_gruppo->getVoto() && $voto_gruppo->getVoto()!='nv' && $voto_carica->getVoto()!='Voto segreto')
                     {
                       $cont=$cont+1;
+                      echo $voto_carica->getVotazioneId()."\n";
                     }
                   $cont_votazioni=$cont_votazioni+1;
                }
@@ -83,9 +100,10 @@ foreach($cariche as $carica)
     $c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica->getId());
     $gruppi = OppCaricaHasGruppoPeer::doSelect($c);
     $ribelle=0;
-    foreach ($gruppi as $gruppo) {
-	$ribelle=$ribelle+$gruppo->getRibelle();	
-     }
+    foreach ($gruppi as $gruppo) 
+    {
+	    $ribelle=$ribelle+$gruppo->getRibelle();	
+    }
      $carica->setRibelle($ribelle);
      $carica->save();  
   }             
