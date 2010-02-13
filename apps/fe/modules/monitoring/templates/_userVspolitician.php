@@ -3,7 +3,11 @@
   <?php if (count($vicini)>0 || count($lontani)>0): ?>  
 <div class="W48_100 float-right">
   <?php if (count($lontani)>0) : ?>
-  <h5 class="subsection" >i <?php echo (count($lontani)>9 ? 'dieci' :count($lontani)) ?> parlamentari che ti rappresentano <span style="color: red;">di meno:</span> 
+     <?php if (!$sf_user->hasCredential('adhoc')) : ?>
+         <h5 class="subsection" >i <?php echo (count($lontani)>9 ? 'dieci' :count($lontani)) ?> parlamentari che ti rappresentano <span style="color: red;">di   meno:</span> 
+      <?php else : ?>     
+        <h5 class="subsection" ><?php echo count($lontani) ?> parlamentari ti rappresentano <span style="color: red;">di   meno:</span>
+      <?php endif ?>    
     <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 		<div style="display: none;" class="help-box float-container">
 			<div class="inner float-container">
@@ -27,10 +31,12 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
   <?php foreach ($lontani as $pos=>$lontano) : ?>
   <tr class="even">
     <th scope="row" style="padding-left: 5px;">
-    <h3 class="position-red"><?php echo $pos+1 ?></h3>
+    <h3 class="position-red" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
      <p class="politician-id">
+      
      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
                           'icona parlamentare') ?>
+                
      <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
      <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
      <?php foreach($gruppi as $nome => $gruppo): ?>
@@ -61,7 +67,11 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 
 <div class="W48_100 float-left">
 <?php if (count($vicini)>0) : ?>
+  <?php if (!$sf_user->hasCredential('adhoc')) : ?>
 <h5 class="subsection" >i <?php echo (count($vicini)>9 ? 'dieci' :count($vicini)) ?> parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+  <?php else : ?>
+  <h5 class="subsection" ><?php echo count($vicini) ?> parlamentari ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+  <?php endif ?>  
   <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
 	<div style="display: none;" class="help-box float-container">
 		<div class="inner float-container">
@@ -85,7 +95,7 @@ Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di f
 <?php foreach ($vicini as $pos=>$vicino) : ?>
 <tr class="even">
   <th scope="row" style="padding-left: 5px;">
-  <h3 class="position-green"><?php echo $pos+1 ?></h3>
+  <h3 class="position-green" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
                         'icona parlamentare') ?>

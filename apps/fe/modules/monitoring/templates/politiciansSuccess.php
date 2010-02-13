@@ -68,8 +68,13 @@
       <p style="font-size:14px; padding:10px;">Non stai monitorando nessun parlamentare.<br /> Per avviare un monitoraggio vai nella pagina di un parlamentare (<?php echo link_to('deputati','/parlamentari/camera/nome/asc') ?> e <?php echo link_to('senatori','/parlamentari/senato/nome/asc') ?>) e clicca su "avvia il monitoraggio" che trovi nella parte destra della pagina.</p>     
     <?php endif ?>
     <a name="rappresentometro">&nbsp;</a>  
-  
-   <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
+    
+  <!--  Mostra dieci parlamentari per gli utenti normali, TUTTI per gli ad hoc -->  
+  <?php if (!$sf_user->hasCredential('adhoc')) : ?>
+    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
+  <?php else : ?>  
+    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1000, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
+  <?php endif ?>  
     
     
   </div>
