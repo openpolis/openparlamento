@@ -59,7 +59,7 @@ Le informazioni contenute verranno sempre aggiornate </p>
 
         <input id="panel_bill_id" name="panel[bill_id]" type="hidden" />
         <input id="panel_path" name="panel[path]" type="hidden" value="/widget_atto" />
-        <input id="panel_hostname" name="panel[hostname]" type="hidden" value="http://op_openparlamento.openpolis.it/" />
+        <input id="panel_hostname" name="panel[hostname]" type="hidden" value="http://parlamento.openpolis.it/" />
 
         </dl>  
         <div id="preview_container">

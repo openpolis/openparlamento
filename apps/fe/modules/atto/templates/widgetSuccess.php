@@ -100,12 +100,12 @@
 	            </div>
 	      		</ul>
 
-			<div id="links" style="font-size:16px; font-weight:bold;">
-            	<a href="/singolo_atto/<?php echo $id ?>" target="_top">vota e partecipa anche tu!</a><br />
+			<div id="links" style="font-size:20px; font-weight:bold;">
+            	<a href="/singolo_atto/<?php echo $id ?>" target="_top">vota anche tu!</a><br />
 
 			</div>
 			<div id="powered">
-	            	<span>community by <a href="/" target="_top"><em class="open">open</em><em class="parlamento">parlamento</em></a></span>
+	            	<span>by <a href="/" target="_top"><em class="open">open</em><em class="parlamento">parlamento</em></a></span>
 
 			</div>
       	</div>
