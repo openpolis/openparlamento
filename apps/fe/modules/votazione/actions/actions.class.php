@@ -328,6 +328,79 @@ class votazioneActions extends sfActions
   
   }
   
+  public function executeMaggioranzaSotto()
+  {
+    $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle('I voti di Camera e Senato in cui la maggioranza di governo &egrave; stata sconfitta - '.sfConfig::get('app_main_title'));
+    
+     // estrae tutte le macrocategorie, per costruire la select
+      $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+      // reset dei filtri se richiesto esplicitamente
+      if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+      {
+        $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_type', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_esito', '0');      
+      }
+
+      $this->processFilters(array('tags_category', 'type', 'ramo', 'esito'));
+
+      // if all filters were reset, then restart
+      if ($this->getRequestParameter('filter_tags_category') == '0' &&
+          $this->getRequestParameter('filter_type') == '0' &&
+          $this->getRequestParameter('filter_ramo') == '0' && 
+          $this->getRequestParameter('filter_esito') == '0')
+      {
+        $this->redirect('/votazioni/maggioranzaSotto');
+      }
+
+      $this->processListSort();
+
+      if ($this->hasRequestParameter('itemsperpage'))
+        $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+      $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+     
+       $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
+        $c = new Criteria();
+    	  $this->addListSortCriteria($c);
+    	  
+    	  $c->addJoin(OppVotazionePeer::ID,OppVotazioneHasGruppoPeer::VOTAZIONE_ID);
+
+         // Prendi il voto del Gruppo della PDL GRUPPO_ID=19;
+         $crit0 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::GRUPPO_ID, 19);
+         $crit1 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Appr.');
+         $crit2 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Contrario');
+
+         $crit1->addAnd($crit2);
+         $crit3 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Resp.');
+         $crit4 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Favorevole');
+
+         $crit3->addAnd($crit4);
+
+         $crit1->addOr($crit3);
+
+         $crit0->addAnd($crit1);
+
+         $c->add($crit0);
+         
+            $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+         	  $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+    	  
+    	  $this->addFiltersCriteria($c);    
+        $this->pager->setCriteria($c);
+        $this->pager->setPage($this->getRequestParameter('page', 1));
+        $this->pager->setPeerMethod('doSelectJoinOppSeduta');
+        $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
+    	  $this->pager->init();
+  
+  }
+  
   
    
 }

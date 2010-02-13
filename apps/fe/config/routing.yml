@@ -163,8 +163,8 @@ singolo_atto:
   param: { module: atto, action: index }
 
 widget_atto:
-    url: /widget_atto/:id
-    param: { module: atto, action: widget }  
+    url: /widget_atto
+    param: { module: atto, action: widget }   
   
 commenti_atto:
   url: /commenti_atto/:id
@@ -221,6 +221,10 @@ votazioniSearch:
 votichiave:
   url:   /votazioni/keyvotes
   param: { module: votazione, action: keyvotes }
+  
+maggioranzaSotto:
+  url:   /votazioni/maggioranzaSotto/:sort/:type/*
+  param: { module: votazione, action: maggioranzaSotto, sort: data, type: desc, display: false }  
   
 votazioni:
   url:   /votazioni/:sort/:type/*

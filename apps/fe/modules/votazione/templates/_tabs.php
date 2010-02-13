@@ -2,6 +2,11 @@
   <li class="<?php echo($current == 'voti_chiave' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Voti chiave', 'votazione/keyvotes') ?></h2>   
   </li>
+  <?php if ($sf_user->hasCredential('amministratore')) : ?>
+  <li class="<?php echo($current == 'maggioranza_sotto' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('Voti con maggioranza battuta', 'votazione/maggioranzaSotto') ?></h2>   
+  </li>
+  <?php endif ?>
   <li class="<?php echo($current == 'voti_tutti' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Tutte le votazioni', 'votazione/list') ?></h2>   
   </li>

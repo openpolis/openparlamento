@@ -13,9 +13,7 @@ documentoSuccess:
   layout:         layoutDoc
 
 widgetSuccess:
-  javascripts:    [-*, prototype]
-  stylesheets:    [-*, screen.css]
-  layout:         layoutWidget  
+  has_layout: false
 
 all:
   javascripts:    

@@ -949,10 +949,18 @@ class attoActions extends sfActions
         return $nuovotesto[0]."..."; 
     }
     
-    $atto=OppAttoPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->bg_color=$this->getRequestParameter('bg_color');
+    $this->text_color=$this->getRequestParameter('textcolor');
+    $this->pos=$this->getRequestParameter('pos');
+   // $this->border_color=retrieveByPk($this->getRequestParameter('border_color'));
+    $atto=OppAttoPeer::retrieveByPk($this->getRequestParameter('bill_id'));
     
     $this->id=$atto->getId();
-    $this->tipo=tronca($atto->getOppTipoAtto()->getDescrizione(),20);
+    $this->tipo=$atto->getOppTipoAtto()->getDescrizione();
+    if (substr_count($this->tipo,'interrogazione')>0) $this->tipo='interrrogazione';
+    if (substr_count($this->tipo,'risoluzione')>0) $this->tipo='risoluzione';
+    if (substr_count($this->tipo,'odg')>0) $this->tipo='ordine del giorno';
+    if (substr_count($this->tipo,'dlgs')>0) $this->tipo='dlgs';
     $this->ramo=$atto->getRamo();
     $this->numfase=$atto->getNumfase();
     $this->datapres=$atto->getDataPres();
@@ -980,5 +988,12 @@ class attoActions extends sfActions
       $this->firmatario=OppPoliticoPeer::retrieveByPk(key($f_signers));
     }
   }
+  
+  public function executeConfWidget()
+  {
+    $this->id=$this->getRequestParameter('id');
+    $this->pos=$this->getRequestParameter('pos');
+    $this->atto=OppAttoPeer::retrieveByPk($this->getRequestParameter('id'));
+  }  
   
 }

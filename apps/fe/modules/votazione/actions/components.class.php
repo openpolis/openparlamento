@@ -183,8 +183,7 @@ class votazioneComponents extends sfComponents
      $this->votazioni=OppVotazionePeer::doSelect($c);
      
   
-  }
-   
+  } 
         
 }
 
