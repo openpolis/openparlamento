@@ -205,7 +205,7 @@ class monitoringComponents extends sfComponents
       {
         if ($lontano<0)
         {
-          echo $key."\n";
+          echo $key."*";
           $c= new Criteria();
           $c->add(OppCaricaPeer::POLITICO_ID,$key);
           $c->add(OppCaricaPeer::LEGISLATURA,$leg);
