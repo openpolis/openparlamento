@@ -200,10 +200,12 @@ class monitoringComponents extends sfComponents
         $lontani=$arr;
         
       asort($lontani);
+      
       foreach ($lontani as $key=>$lontano)
       {
         if ($lontano<0)
         {
+          echo $key."\n";
           $c= new Criteria();
           $c->add(OppCaricaPeer::POLITICO_ID,$key);
           $c->add(OppCaricaPeer::LEGISLATURA,$leg);
