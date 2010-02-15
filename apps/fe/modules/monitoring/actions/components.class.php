@@ -187,7 +187,7 @@ class monitoringComponents extends sfComponents
         {
           $c= new Criteria();
           $c->add(OppCaricaPeer::POLITICO_ID,$key);
-         // $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
           $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
           $this->vicini[]=array($vicino,$carica);
@@ -207,7 +207,7 @@ class monitoringComponents extends sfComponents
         {
           $c= new Criteria();
           $c->add(OppCaricaPeer::POLITICO_ID,$key);
-        //  $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
           $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
           $this->lontani[]=array($lontano,$carica);
