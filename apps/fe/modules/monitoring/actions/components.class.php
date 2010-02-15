@@ -172,7 +172,11 @@ class monitoringComponents extends sfComponents
     if (count($arr)>0) 
     {
       arsort($arr);
-      $vicini=array_slice($arr,0,$num,true);
+      if ($num!=1000)
+        $vicini=array_slice($arr,0,$num,true);
+      else
+        $vicini=$arr;
+        
       $max_valore_abs=max(abs(min($arr)),max($arr));
       $this->normalize=100/$max_valore_abs;
       $this->posizione=$arr;
@@ -190,7 +194,11 @@ class monitoringComponents extends sfComponents
         }
         else break;
       }
-      $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
+      if ($num!=1000)
+        $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
+      else
+        $lontani=$arr;
+        
       asort($lontani);
       foreach ($lontani as $key=>$lontano)
       {
