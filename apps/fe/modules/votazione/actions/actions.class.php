@@ -334,7 +334,7 @@ class votazioneActions extends sfActions
 
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('I voti di Camera e Senato in cui la maggioranza di governo &egrave; stata sconfitta - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('I voti di Camera e Senato in cui la maggioranza di governo e\' stata sconfitta - '.sfConfig::get('app_main_title'));
     
      // estrae tutte le macrocategorie, per costruire la select
       $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        

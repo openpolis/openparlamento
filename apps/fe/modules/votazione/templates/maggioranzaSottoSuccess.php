@@ -14,7 +14,7 @@
       <?php include_partial('wikiMaggioranzaSotto') ?>  	  
       
       
-      <h6 style="padding:10px 0 5px 0;">In questa legislatura la maggioranza di governo &egrave; stata battuta in <?php echo $pager->getNbResults() ?> votazioni elettroniche d'aula di Camera e Senato.</h6>		
+      <h6 style="padding:10px 0 5px 0;">In questa legislatura la maggioranza parlamentare che sostiene il Governo &egrave; stata battuta in <?php echo $pager->getNbResults() ?> votazioni elettroniche d'aula di Camera e Senato.</h6>		
       
       <?php include_partial('filter',
                             array('tags_categories' => $all_tags_categories,
