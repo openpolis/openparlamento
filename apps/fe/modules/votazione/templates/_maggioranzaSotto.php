@@ -5,6 +5,7 @@
     <tr>
       <th scope="col"><br />sigla/titolo:</th>
       <th scope="col">esito in<br />Parlamento:</th>
+      <th scope="col">voto<br />maggioranza:</th>
       <th scope="col">voti di<br />scarto:</th>
       <th scope="col">numero di<br />ribelli:</th>
     </tr>
@@ -32,6 +33,7 @@
           <?php endif; ?>					
 		  <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>
 		</td>
+		<td><span <?php echo ($votazione->getEsito()=='APPROVATA'?'style="color:#B13311;">Contrario':'style="color:#34961D;">Favorevole') ?></span></td>
         <td><p><?php echo $votazione->getMargine() ?></p></td>
         <td><p><?php echo $votazione->getRibelli() ?></p></td>
       </tr>
