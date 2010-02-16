@@ -186,8 +186,16 @@ class monitoringComponents extends sfComponents
         if ($vicino>0)
         {
           $c= new Criteria();
-          $c->add(OppCaricaPeer::POLITICO_ID,$key);
-          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+          $crit0 = $c->getNewCriterion(OppCaricaPeer::POLITICO_ID, $key);
+          $crit1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, 16);
+          $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+
+          $crit1->addOr($crit2);
+
+          $crit0->addAnd($crit1);
+
+          $c->add($crit0);
+          
           $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
           $this->vicini[]=array($vicino,$carica);
@@ -206,9 +214,17 @@ class monitoringComponents extends sfComponents
         if ($lontano<0)
         {
           $c= new Criteria();
-          $c->add(OppCaricaPeer::POLITICO_ID,$key);
-          $c->add(OppCaricaPeer::LEGISLATURA,$leg);
-          $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
+           $crit0 = $c->getNewCriterion(OppCaricaPeer::POLITICO_ID, $key);
+            $crit1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, 16);
+            $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+
+            $crit1->addOr($crit2);
+
+            $crit0->addAnd($crit1);
+
+            $c->add($crit0);
+
+            $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
           $carica=OppCaricaPeer::doSelectOne($c);
           $this->lontani[]=array($lontano,$carica);
         }
