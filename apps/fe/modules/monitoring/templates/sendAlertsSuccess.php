@@ -2,6 +2,11 @@
 
 <style type="text/css" media="screen">
   strong.highlights { font-size: bold; background-color: #dedede;}
+  tr.even { background-color: #ffffff; }
+  tr.odd { background-color: #fafafa; }
+  tr.even:hover { background-color: #fffaea; }
+  tbody tr.odd:hover { background-color: #fffaea; }
+  
 </style>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
@@ -33,8 +38,10 @@
         </td>
       </tr>
 
+      <?php $tr_class = 'even' ?>	
       <?php foreach ($user_alert['results'] as $i => $res): ?>
-        <tr>     
+        <tr class="<?php echo $tr_class; ?>">
+          <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>          
           <td style="height: 30px;">
             <?php echo get_partial($res->getInternalAlertPartial(), array('result' => $res, 'term' => $user_alert['term'])) ?>
           </td>
