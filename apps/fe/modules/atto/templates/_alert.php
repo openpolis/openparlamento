@@ -9,5 +9,5 @@
                      sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')),
   add_highlight_qs($result->getInternalUri(), $term)) ?>
 -
-presentato il <?php echo $atto->getDataPres() ?>
+presentato il <?php echo $atto->getDataPres('d/m/Y') ?>
 
