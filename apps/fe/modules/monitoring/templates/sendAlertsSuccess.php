@@ -1,7 +1,7 @@
 <?php use_helper('I18N', 'sfSolr', 'DeppNews') ?>
 
 <style type="text/css" media="screen">
-  strong.highlights { font-size: bold; background-color: #dedede;}
+  strong.highlight { font-size: bold; background-color: #dedede;}
   tr.even { background-color: #ffffff; }
   tr.odd { background-color: #fafafa; }
   tr.even:hover { background-color: #fffaea; }
