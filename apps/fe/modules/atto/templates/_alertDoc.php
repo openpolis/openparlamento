@@ -3,7 +3,13 @@
   $atto = $documento->getOppAtto();
   $tipo_atto = $atto->getOppTipoAtto();
 ?>
- documento <a href="http://<?php echo sfConfig::get('sf_site_url') ?>/atto/documento/id/<?php echo $documento->getId()?>/"><?php echo $documento->getTitoloCompleto() ?></a>, 
- in <?php echo $tipo_atto->getDescrizione() ?> <?php echo $atto->getShortTitle() ?>, 
- presentato il <?php echo $atto->getDataPres() ?>
+
+
+<?php echo link_to_in_mail(
+  highlight_keywords(
+    sprintf("%s", $documento->getTitoloCompleto()), 
+    $term, 
+    sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')), 
+    add_highlight_qs($result->getInternalUri(), $term)) ?> -
+presentato il <?php echo $atto->getDataPres() ?>
 

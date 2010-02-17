@@ -3,9 +3,13 @@
   $atto = $emendamento->getAttoPortante();
   $tipo_atto = $atto->getOppTipoAtto();
 ?>
- presentato l'emendamento 
- <a href="http://<?php echo sfConfig::get('sf_site_url')?>/emendamento/<?php echo $emendamento->getId()?>">
-   <?php echo $emendamento->getTitoloCompleto() ?>
- </a>,
- in <?php echo $tipo_atto->getDescrizione() ?> <?php echo $atto->getShortTitle() ?>, 
- presentato il <?php echo $atto->getDataPres() ?>
+
+<?php echo link_to_in_mail(
+  highlight_keywords(
+    sprintf("emendamento %s", $emendamento->getTitoloCompleto(), 
+    $term, 
+    sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')), 
+    add_highlight_qs($result->getInternalUri(), $term))) ?> 
+-
+presentato il <?php echo $emendamento->getDataPres() ?>,
+relativo a <?php echo $tipo_atto->getDescrizione() ?> <?php echo $atto->getShortTitle() ?>, 

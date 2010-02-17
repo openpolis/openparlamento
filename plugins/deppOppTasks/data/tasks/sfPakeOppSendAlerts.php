@@ -47,6 +47,9 @@ function run_opp_send_alerts($task, $args)
   }
 
 
+  // create a solr instance to read solr.yml config
+  $solr_instance = deppOppSolr::getInstance();
+  
   $start_time = microtime(true);
 
   $c = new Criteria();
@@ -131,7 +134,6 @@ function run_opp_test_alerts($task, $args)
 {
   static $loaded;
 
-
   // load application context
   if (!$loaded)
   {
@@ -150,8 +152,10 @@ function run_opp_test_alerts($task, $args)
     $loaded = true;
   }
 
-  sfLoader::loadHelpers(array('Partial'));
-  
+  // create a solr instance to read solr.yml config
+  $solr_instance = deppOppSolr::getInstance();
+
+  sfLoader::loadHelpers(array('Partial', 'sfSolr', 'DeppNews'));
 
   $start_time = microtime(true);
   echo pakeColor::colorize("Hi, there!\n", array('fg' => 'green', 'bold' => true));
@@ -213,7 +217,7 @@ function opp_test_single_user_alerts($user)
                                      $n_alerts==1?'un termine':$n_alerts.' termini',
                                      $user_alerts_expanded));
 
-    // echo pakeTaskUserAlerts($user_alerts);
+    echo pakeTaskUserAlerts($user_alerts);
     
   } else {
     echo pakeColor::colorize(sprintf(" (nessun avviso)\n\n"));

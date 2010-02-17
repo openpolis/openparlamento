@@ -10,7 +10,7 @@ all:
   alert_max_results: 100
   
   // numero di mesi precedenti se last_alerted null
-  alert_default_months_back: 3
+  alert_default_months_back: 2
   
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick

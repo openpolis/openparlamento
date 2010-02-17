@@ -1,4 +1,8 @@
-<?php use_helper('I18N') ?>
+<?php use_helper('I18N', 'sfSolr', 'DeppNews') ?>
+
+<style type="text/css" media="screen">
+  strong.highlights { font-size: bold; background-color: #dedede;}
+</style>
 
 <table width="100%" cellpadding="0" cellspacing="0" style="color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
     <tr>

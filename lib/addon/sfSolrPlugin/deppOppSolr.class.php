@@ -31,7 +31,8 @@ class deppOppSolr extends sfSolr
    */
   public static function getSfResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
   {
-    if (sfConfig::get('solr_query_handler', 'standard') == 'dismax') {
+    $query_handler = sfConfig::get('solr_query_handler');
+    if ($query_handler == 'dismax') {
       return self::getSfDismaxResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode);
     } else {
       return self::getSfStandardResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode);      
@@ -52,9 +53,16 @@ class deppOppSolr extends sfSolr
    */                                                                                                       
   public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false )
   {
-    sfLogger::getInstance()->err('{sfSolrActions::getSfDismaxResults} using Dismax');
+    sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfDismaxResults} using Dismax query type for %s", $querystring));
     
     $query = strip_tags(trim($querystring));   
+
+    if ($quotes_mode && 
+        strpos($query, '"') === false || 
+        strrpos($query, '"') != 0 || 
+        strrpos($query, '"') != strlen($query)) {
+      $query = "\"$query\"";
+    }
     
     // opzioni aggiuntive per la ricerca
     $query_options = array('qt' => 'dismax', 'fl' => '*,score');
@@ -70,9 +78,9 @@ class deppOppSolr extends sfSolr
       $filter_query .= " +$field:$constraint ";
     }                                                                                                       
     $query_options['fq'] = $filter_query;
-
     
-    if (sfConfig::get('solr_query_debug', 1))
+
+    if (sfConfig::get('solr_query_debug_level', 1) > 0)
     {
       // add debug query parameter
       $query_options['debugQuery'] = 'true';
@@ -84,7 +92,7 @@ class deppOppSolr extends sfSolr
       return $results;
 
     } catch (Exception $e) {                                                                                
-      sfLogger::getInstance()->err('{sfSolrActions::getResults} ' . $e->getMessage());
+      sfLogger::getInstance()->err('{deppOppSolr::getSfDismaxResults} ' . $e->getMessage());
       throw new sfSolrException($e->getMessage());
     }                                                                                                       
 
@@ -104,7 +112,7 @@ class deppOppSolr extends sfSolr
    */                                                                                                       
   public static function getSfStandardResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
   {
-    sfLogger::getInstance()->err('{sfSolrActions::getSfStandardResults} using Standard');
+    sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfStandardResults} using Standard query type for %s", $querystring));
     
     $query = strip_tags(trim($querystring));   
     
@@ -135,6 +143,7 @@ class deppOppSolr extends sfSolr
 
    	$quoted_boost = 5.0;
    	$qfirst_boost = 2.0;
+
 
 
    	// compone la query ponderata                                                                           
@@ -177,12 +186,10 @@ class deppOppSolr extends sfSolr
     }                                                                                                       
 
     # query debug        
-    if (sfConfig::get('solr_query_debug', 1))
+    if (sfConfig::get('solr_query_debug_level', 1) > 0)
     {
-      sfLogger::getInstance()->info('{sfSolrActions::getResults::query} ' . $query);                                                  
-      sfLogger::getInstance()->info('{sfSolrActions::getResults::composed_query} ' . $composed_query);    
-      sfLogger::getInstance()->info('{sfSolrActions::getResults::offset} ' . $offset);                                                  
-      sfLogger::getInstance()->info('{sfSolrActions::getResults::limit} ' . $limit);                                                                                                      
+      // add debug query parameter
+      $query_options['debugQuery'] = 'true';
     }                                                                                   
 
     // returns the pager or trap the exception
@@ -193,8 +200,8 @@ class deppOppSolr extends sfSolr
     } catch (Exception $e) {                                                                                
       sfLogger::getInstance()->err('{sfSolrActions::getResults} ' . $e->getMessage());
       throw new sfSolrException($e->getMessage());
-    }                                                                                                       
-
+    }     
+    
   }  
  
   /**
@@ -225,7 +232,7 @@ class deppOppSolr extends sfSolr
   {
     $response = $this->search($query, $offset, $limit, $options);
   
-    if (sfConfig::get('solr_query_debug', 1))
+    if (sfConfig::get('solr_query_debug_level', 1) == 1)
     {
       // add debug log
       sfLogger::getInstance()->info(sprintf("{deppOppSolr} raw query: %s",
@@ -234,19 +241,22 @@ class deppOppSolr extends sfSolr
       sfLogger::getInstance()->info(sprintf("{deppOppSolr} parsed query: %s",
                                     $response->debug->parsedquery_toString)); 
 
-      sfLogger::getInstance()->info("{deppOppSolr} score details:"); 
-      
-      foreach ($response->debug->explain as $id => $value) {
-        sfLogger::getInstance()->info(sprintf("{deppOppSolr} id: %s", $id)); 
-        $rows = split("\n", $value);
-        foreach ($rows as $row) {
-          $cnt = 0;
-          while(substr($row, 0, 1) == ' ')
-          {
-            $cnt++;
-            $row = substr($row, 1, strlen($row));
+
+      if (sfConfig::get('solr_query_debug_level', 1) == 2) {
+        sfLogger::getInstance()->info("{deppOppSolr} score details:"); 
+
+        foreach ($response->debug->explain as $id => $value) {
+          sfLogger::getInstance()->info(sprintf("{deppOppSolr} id: %s", $id)); 
+          $rows = split("\n", $value);
+          foreach ($rows as $row) {
+            $cnt = 0;
+            while(substr($row, 0, 1) == ' ')
+            {
+              $cnt++;
+              $row = substr($row, 1, strlen($row));
+            }
+            sfLogger::getInstance()->info("{deppOppSolr} " . str_repeat('-', $cnt) . $row);          
           }
-          sfLogger::getInstance()->info("{deppOppSolr} " . str_repeat('-', $cnt) . $row);          
         }
       }
                                                        
