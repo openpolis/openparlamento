@@ -35,7 +35,7 @@
 
       <?php foreach ($user_alert['results'] as $i => $res): ?>
         <tr>     
-          <td>
+          <td style="height: 22px;">
             <?php echo get_partial($res->getInternalAlertPartial(), array('result' => $res, 'term' => $user_alert['term'])) ?>
           </td>
         </tr>  

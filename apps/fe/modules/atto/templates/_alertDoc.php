@@ -7,7 +7,7 @@
 
 <?php echo link_to_in_mail(
   highlight_keywords(
-    sprintf("%s", $documento->getTitoloCompleto()), 
+    $tipo_atto->getDescrizione()=='comunicato del governo'?sprintf("Comunicato del governo %s", $atto->getTitolo()):sprintf("%s", $documento->getTitoloCompleto()), 
     $term, 
     sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')), 
     add_highlight_qs($result->getInternalUri(), $term)) ?> -
