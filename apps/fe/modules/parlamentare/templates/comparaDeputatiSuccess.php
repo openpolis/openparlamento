@@ -21,6 +21,8 @@
     </div>
   
 <?php if ($compara_ok==1) : ?>
+  
+  <?php if ($parlamentare1!=$parlamentare2) : ?>
 <?php include_partial('parlarmentariComparati', 
                       array('parlamentare1' => $parlamentare1, 
                             'parlamentare2' => $parlamentare2,
@@ -50,7 +52,13 @@
                                'arr2' => $arr2,
                                'pager' => $pager)) */ ?>                           
 
-                                
+
+<?php else : ?>  
+  
+  <p style="background-color:yellow; width:50%; font-size:16px; padding:3px;"><strong>Non puoi confrontare un parlamentare con se stesso!</strong><br/>
+  Seleziona due parlamentari diversi.</p>
+
+<?php endif; ?>                                  
                 
 <?php endif; ?>       
                        
