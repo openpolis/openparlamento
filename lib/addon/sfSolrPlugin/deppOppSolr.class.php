@@ -46,26 +46,33 @@ class deppOppSolr extends sfSolr
    * @param int    $offset
    * @param int    $limit                                                                        
    * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
-   * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
+   * @param boolean $alert_mode  specifies wether terms should be only searched as quoted text (for Alerts)
    * @return sfSolrPager                                                                                      
    * @throws sfSolrException     
    * @author Guglielmo Celata                                                                               
    */                                                                                                       
-  public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false )
+  public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $alert_mode = false )
   {
-    sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfDismaxResults} using Dismax query type for %s", $querystring));
     
     $query = strip_tags(trim($querystring));   
 
-    if ($quotes_mode && 
+    if ($alert_mode && 
         strpos($query, '"') === false || 
         strrpos($query, '"') != 0 || 
         strrpos($query, '"') != strlen($query)) {
       $query = "\"$query\"";
-    }
+    } 
     
     // opzioni aggiuntive per la ricerca
     $query_options = array('qt' => 'dismax', 'fl' => '*,score');
+    
+    // se in modalità alert, trasforma la query type in dismaxAlerts
+    if ($alert_mode)
+      $query_options['qt'] = 'dismaxAlerts';
+
+
+    sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfDismaxResults} using %s query type for %s", 
+                                          $query_options['qt'], $querystring));
 
     // col dismax la composed query è identica alla originale
  	  $composed_query= $query;
