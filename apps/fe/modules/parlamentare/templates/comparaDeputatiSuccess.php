@@ -1,12 +1,6 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<ul id="content-tabs" class="float-container tools-container">
-   <li class="<?php echo($ramo==1 ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Deputati a confronto', '/parlamentare/comparaDeputati?id1=4573&id2=161&ramo=1') ?></h2>   
-  </li><li class="<?php echo($ramo==2 ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Senatori a confronto', '/parlamentare/comparaDeputati?id1=303095&id2=332961&ramo=2') ?></h2>   
-  </li>
-</ul>
+<?php include_partial('tabs',array('ramo'=>$ramo,'compare'=>true)) ?>
 
 <div id="content" class="tabbed float-container">
 <a name="top"></a>
