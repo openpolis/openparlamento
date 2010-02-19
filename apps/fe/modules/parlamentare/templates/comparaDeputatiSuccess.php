@@ -6,7 +6,7 @@
 <a name="top"></a>
   <div id="main">
 	
-	<div style="border: 1px solid #4E8480; background-color: rgb(247, 247, 247); padding: 10px 5px 15px 5px; -moz-border-radius: 5px 5px 5px 5px;">
+	<div style="width:80%; border: 1px solid #4E8480; background-color: rgb(247, 247, 247); padding: 10px 5px 15px 5px; -moz-border-radius: 5px 5px 5px 5px;">
 		<p style="padding-bottom:5px; font-size:18px">Scegli i <?php echo ($ramo=='1' ? 'deputati' : 'senatori') ?> da confrontare:</p> 
       <?php if ($parlamentare1!=null) : ?>
      <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>$parlamentare1->getOppPolitico()->getId(),'select2' =>$parlamentare2->getOppPolitico()->getId() )) ?> 
