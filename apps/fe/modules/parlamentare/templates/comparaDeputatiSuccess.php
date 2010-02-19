@@ -2,17 +2,18 @@
 
 <ul id="content-tabs" class="float-container tools-container">
    <li class="<?php echo($ramo==1 ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Deputati a confronto', '/parlamentare/comparaDeputati?id1=0&id2=0&ramo=1') ?></h2>   
+    <h2><?php echo link_to('Deputati a confronto', '/parlamentare/comparaDeputati?id1=4573&id2=161&ramo=1') ?></h2>   
   </li><li class="<?php echo($ramo==2 ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Senatori a confronto', '/parlamentare/comparaDeputati?id1=0&id2=0&ramo=2') ?></h2>   
+    <h2><?php echo link_to('Senatori a confronto', '/parlamentare/comparaDeputati?id1=303095&id2=332961&ramo=2') ?></h2>   
   </li>
 </ul>
 
 <div id="content" class="tabbed float-container">
 <a name="top"></a>
   <div id="main">
-	<div style="padding-bottom:20px;">
-		<p style="padding-bottom:5px; font-size:14px">Confronta i <?php echo ($ramo=='1' ? 'deputati:' : 'senatori:') ?></p> 
+	
+	<div style="border: 1px solid #4E8480; background-color: rgb(247, 247, 247); padding: 10px 5px 15px 5px; -moz-border-radius: 5px 5px 5px 5px;">
+		<p style="padding-bottom:5px; font-size:18px">Scegli i <?php echo ($ramo=='1' ? 'deputati' : 'senatori') ?> da confrontare:</p> 
       <?php if ($parlamentare1!=null) : ?>
      <?php include_component('parlamentare', 'tendinaParlamentari',array('num_tendine' => '2','ramo' => $ramo, 'select1' =>$parlamentare1->getOppPolitico()->getId(),'select2' =>$parlamentare2->getOppPolitico()->getId() )) ?> 
   <?php else : ?>
