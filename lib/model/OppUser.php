@@ -9,6 +9,26 @@
  */ 
 class OppUser extends BaseOppUser
 {
+
+  public function getToken()
+  {
+    $apikey = sfConfig::get('api_opaccesso_key', 'XXXX');
+    
+    $user_id = $this->getId();
+    // controllo validità utente e password in remoto
+    $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it');
+    $xml = simplexml_load_file("http://$remote_guard_host/index.php/api/getUserToken/apikey/$apikey/user_id/$user_id");
+
+    // l'API di op_guard torna un oggetto error e quindi il corrispettivo oggetto user è vuoto
+    // con simplexml, quando il nodo esiste è un array diverso da zero
+    if (count($xml->user) > 0)
+    {
+ 	    return $xml->user->token;
+    } elseif (count($xml->error) > 0) {
+      throw new Exception($xml->error);
+    } 
+  }
+  
   public function __toString()
   {
     if ($this->getPublicName())

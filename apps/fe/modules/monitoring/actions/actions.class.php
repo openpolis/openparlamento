@@ -468,7 +468,7 @@ class monitoringActions extends sfActions
     $user_id = $this->getRequestParameter('user_id');    
     $this->user = OppUserPeer::retrieveByPK($user_id);
     $this->sf_site_url = sfConfig::get('sf_site_url', 'openparlamento');
-    $this->user_token = $this->getUser()->getToken();
+    $this->user_token = $this->user->getToken();
     $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50));
     $this->n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
     $this->n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($this->user_alerts);

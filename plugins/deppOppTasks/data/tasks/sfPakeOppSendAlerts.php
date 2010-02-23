@@ -201,7 +201,7 @@ function opp_test_single_user_alerts($user)
   
   $df = new sfDateFormat('it_IT');
 
-  echo pakeColor::colorize(sprintf("Processo l'utente %s ...\n", $user), 
+  echo pakeColor::colorize(sprintf("Processo l'utente %s (%s)...\n", $user, $user->getToken()), 
                            array('bold' => true));
 
   $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
