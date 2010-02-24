@@ -43,7 +43,7 @@ class oppAlertingTools
         );
       } else {
         $time_constraints = array(
-          'created_at_dt' => "[NOW-".sfConfig::get('app_alert_default_months_back', 9)."MONTHS/SECOND TO NOW]"
+          'created_at_dt' => "[NOW-".sfConfig::get('app_alert_default_days_back', 9)."DAYS/SECOND TO NOW]"
         );
       }
 

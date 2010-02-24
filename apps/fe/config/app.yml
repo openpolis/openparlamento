@@ -9,8 +9,8 @@ all:
   // massimo numero di niotifiche per un termine
   alert_max_results: 100
   
-  // numero di mesi precedenti se last_alerted null
-  alert_default_months_back: 2
+  // numero di giorni precedenti se last_alerted null
+  alert_default_days_back: 2
   
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick
