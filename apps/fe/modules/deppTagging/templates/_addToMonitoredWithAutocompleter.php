@@ -18,7 +18,7 @@ jQuery.noConflict();
   })(jQuery);
 </script>
 <div id="tag_add">
-  Cerca tag: 
+  Cerca argomento: 
   <?php echo form_tag('monitoring/addTagToMyMonitoredTags', array('id' => 'autocompleter', 'style' => 'display:inline')); ?>
     <input id="tag_search" class="ac_input" />
     <input id="name" name="name" type="hidden"/>
