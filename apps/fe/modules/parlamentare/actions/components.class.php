@@ -179,7 +179,7 @@ class parlamentareComponents extends sfComponents
   public function executeKeyvoteComparati()
   {
      
-     $this->lanci=array();
+     $lanci=array();
      $c = new Criteria();
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
      $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
@@ -192,10 +192,23 @@ class parlamentareComponents extends sfComponents
      	  $c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$evidence->getObjectId());
      	  $results=OppVotazioneHasCaricaPeer::doSelect($c1);
      	  if (count($results)==2)
-     	    $this->lanci[]=array($results[1]->getOppVotazione(),$evidence->getObjectModel(),$results[0]->getVoto(),$results[1]->getVoto());  
+     	  {
+     	    if ($results[0]->getCaricaId()==$this->parlamentare1->getId())
+     	    {
+     	      $left=0;
+     	      $right=1;
+     	    }
+     	    else
+     	    {
+     	       $left=1;
+       	     $right=0;
+     	    }
+     	    $lanci[]=array($results[1]->getOppVotazione(),$evidence->getObjectModel(),$results[$left]->getVoto(),$results[$right]->getVoto());
+     	  }
+     	      
      }
      
-
+     $this->lanci=$lanci;
   
   }
   
@@ -236,6 +249,25 @@ class parlamentareComponents extends sfComponents
         $this->parlamentari = OppCaricaPeer::doSelectRS($c);
         
     }
+    
+    public function executeComparaQuesto()
+      {  
+          if ($this->ramo==1) $this->tipo_carica=1;
+          else $this->tipo_carica=4;
+
+          $c = new Criteria();
+  	$c->clearSelectColumns();
+  	$c->addSelectColumn(OppPoliticoPeer::ID);
+  	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
+  	$c->addSelectColumn(OppPoliticoPeer::NOME);   
+          $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+          $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+          $c->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica, Criteria::EQUAL);
+          $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL); 
+          $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+          $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+
+      }
       
  public function executeChooseParlamentari()
   {

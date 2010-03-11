@@ -135,12 +135,7 @@
                          'ambient' =>'politico', 
                          'parlamentare' => $parlamentare,
                           'legislatura' => 16));
-  /*                        
-  echo include_component('monitoring', 'userVsSinglePolitician', 
-                   array('user' => $sf_user, 
-                         'politico' => $parlamentare, 
-                         'legislatura' => '16'));
-  */                       
+                    
           } ?>
 	 
 	   <?php echo include_partial('news/newsbox',
@@ -155,6 +150,11 @@
             <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
 
            <?php if ($nvoti_validi>0): ?>
+             <?php echo include_component('parlamentare','comparaQuesto', 
+                                        array('parlamentare' => $parlamentare,
+                                              'select2'=>'',
+                                              'ramo' => ($carica->getTipoCaricaId()=='1'?'1':'2'))); ?>                        
+                                              
              <?php echo include_component('parlamentare', 'votacome', 
                                        array('carica' => $carica,
                                              'parlamentare' => $parlamentare,
