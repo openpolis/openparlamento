@@ -34,6 +34,10 @@
 	       <?php if($parlamentari->getInt(10)=='-1'): ?> 
 		<br />cessato il <?php echo format_date($parlamentari->getDate(13, 'Y-m-d'), 'dd/MM/yyyy') ?> 
 	     <?php endif; ?>
+	     
+	     <?php if($parlamentari->getString(14)>'2008-04-29'): ?> 
+	       	<br /><small>in carica dal <?php echo format_date($parlamentari->getString(14), 'dd/MM/yyyy') ?></small>
+	       <?php endif; ?>
           </p>
         </th>
         

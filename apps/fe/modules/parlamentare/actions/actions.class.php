@@ -514,6 +514,8 @@ class parlamentareActions extends sfActions
     $c->addSelectColumn(OppCaricaPeer::MEDIA);
     $c->addSelectColumn(OppCaricaPeer::RIBELLE);
     $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
+    $c->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
+   
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 
     if ($ramo == 'camera')
@@ -563,6 +565,7 @@ class parlamentareActions extends sfActions
     $this->addSortCriteria($c);
     $this->addFiltersCriteria($c);
     $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
+    
 
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
     $this->n_parlamentari = OppCaricaPeer::doCount($c);
@@ -584,6 +587,7 @@ class parlamentareActions extends sfActions
     $c->addSelectColumn(OppCaricaPeer::RIBELLE);
     $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
      $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
+     
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 
     if ($ramo == 'camera')

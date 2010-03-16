@@ -303,7 +303,9 @@
   			</div>
   			<div class="meter-bar float-container">
   				<label class="mb-idx-label">classifica:</label>
-  				<div class="pos-idx"><strong><?php echo $carica->getPosizione()."&deg;" ?></strong> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?></div>
+  				<div class="pos-idx"><strong><?php echo $carica->getPosizione()."&deg;" ?></strong> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
+  				  <?php if($carica->getDataInizio('d/m/Y')>"29/04/2008") echo "(N.B. in carica dal ".$carica->getDataInizio('d/m/Y').")"; ?>
+  				  </div>
   				<p class="float-right">
   				  <?php echo link_to('vai alla classifica', 
   				                     '@parlamentari?ramo=' . $ramo .
