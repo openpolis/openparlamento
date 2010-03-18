@@ -186,9 +186,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         $atto = OppAttoPeer::retrieveByPK($news->getRelatedMonitorableId());
         $n_pres = $atto->countPresentedEmendamentiAtDate($news->getDate());
         if ($n_pres > 1)
-          $news_string .= content_tag('p', "Sono stati presentati <b>$n_pres</b> emendamenti");        
+          $news_string .= content_tag('p', sprintf("Sono stati presentati %s",link_to($n_pres." emendamenti",'/emendamenti_atto/'.$atto->getId())));        
         else
-          $news_string .= content_tag('p', "&Egrave; stato presentato un emendamento.");
+          $news_string .= content_tag('p', sprintf("&Egrave; stato presentato %s",link_to("un emendamento",'/emendamenti_atto/'.$atto->getId())));
         
       }
       else if ($related_monitorable_model == 'OppPolitico')

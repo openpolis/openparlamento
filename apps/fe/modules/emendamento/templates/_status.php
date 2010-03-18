@@ -48,10 +48,17 @@ if ($last_status->getOppEmIter()->getFase()!='Presentato')
     if (preg_match('#^V. testo #',$last_status->getNota()))
     {
       $tmpfase=explode('V. ',$last_status->getNota());
+      if (substr_count($last_status->getOppEmendamento()->getNumfase(),"(")>0)
+      {
+        $numero_fase=explode("(",$last_status->getOppEmendamento()->getNumfase());
+        $numero_fase=trim($numero_fase[0]);
+      }
+      else $numero_fase=$last_status->getOppEmendamento()->getNumfase();
+      
       $c=new Criteria();
       $c->addJoin(OppEmendamentoPeer::ID,OppAttoHasEmendamentoPeer::EMENDAMENTO_ID);
       $c->add(OppEmendamentoPeer::SEDE_ID,$last_status->getOppEmendamento()->getSedeId());
-      $c->add(OppEmendamentoPeer::NUMFASE,$last_status->getOppEmendamento()->getNumfase()." (".$tmpfase[1].")");
+      $c->add(OppEmendamentoPeer::NUMFASE,$numero_fase." (".$tmpfase[1].")");
       $c->add(OppAttoHasEmendamentoPeer::ATTO_ID,$relatedAttos[0]->getOppAtto()->getId());
       $collegato=OppEmendamentoPeer::doSelectOne($c);
       if ($collegato)

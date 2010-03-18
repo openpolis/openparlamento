@@ -193,7 +193,8 @@ class emendamentoActions extends sfActions
     $this->pager = new sfPropelPager('OppAttoHasEmendamento', $itemsperpage);
     $c = new Criteria();
     $c->add(OppAttoHasEmendamentoPeer::ATTO_ID, $this->atto->getId());
-    $c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
+    //$c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
+    $c->addAscendingOrderByColumn(OppEmendamentoPeer::NUMFASE);
     
     // add filters to pager query criteria
     $this->addFiltersCriteria($c);    

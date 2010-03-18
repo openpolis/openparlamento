@@ -91,8 +91,8 @@
 
       <!-- DESCRIZIONE -->
       <div class="wiki-box-container">
-      	<h5 class="description">descrivi insieme agli altri utenti questo emendamento:</h5>
-      	<p style="padding:5px;">qui sotto puoi inserire o modificare la descrizione.
+      	<h5 class="description" style="padding-bottom: 0px;">descrivi insieme agli altri utenti questo emendamento:</h5>
+      	<p style="padding-left:5px;">qui sotto puoi inserire o modificare la descrizione.
         	<?php if ($sf_user->isAuthenticated()) : ?>
         	   <?php echo 'Clicca su "modifica"' ?>
         	<?php else : ?>

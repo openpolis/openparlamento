@@ -136,7 +136,7 @@ propel:
     titolo_aggiuntivo: { type: longvarchar }
     numfase:           { type: varchar(255) }
     data_pres:         { type: date }
-    articolo:          { type: varchar(255) }
+    articolo:          { type: integer }
     created_at:        ~
     url_fonte:         { type: varchar(1024), required: true }
     sede_id:           { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
