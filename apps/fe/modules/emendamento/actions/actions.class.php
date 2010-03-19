@@ -11,7 +11,7 @@
 class emendamentoActions extends sfActions
 {
   
-  private static $filter_names = array('article', 'site', 'presenter');
+  private static $filter_names = array('article', 'site', 'presenter', 'status');
   private static $filter_ns = 'emendaments_filter';
   
   public function preExecute()
@@ -177,7 +177,7 @@ class emendamentoActions extends sfActions
     }
 
     // set filter request variables
-    $this->processFilters(array('article', 'site', 'presenter'));
+    $this->processFilters(array('article', 'site', 'presenter', 'status'));
 
     // if all filters were reset, then restart from scratch
     $all_filters_are_null = true;
