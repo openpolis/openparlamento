@@ -18,8 +18,8 @@ sfPropelBehavior::registerHooks('wikifiableBehavior', array(
 
 // force tagging OppAttos related to an OppEmendamento 
 // with all the tags assigned to the OppEmendamento
-sfMixer::register('BaseTagging:save:post',
-                  array('OppTaggingExtension', 'propagateTagsToRelatedAttos'));
+//sfMixer::register('BaseTagging:save:post',
+                 // array('OppTaggingExtension', 'propagateTagsToRelatedAttos'));
 
 // need to include this to use the api.yml config file
 require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));

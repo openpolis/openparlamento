@@ -94,6 +94,10 @@ class votazioneActions extends sfActions
      $c3 = new Criteria();
      $c3->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->votazione->getId());
      $this->voto_atti=OppVotazioneHasAttoPeer::doSelect($c3);
+     
+     $c4 = new Criteria();
+     $c4->add(OppVotazioneHasEmendamentoPeer::VOTAZIONE_ID, $this->votazione->getId());
+     $this->voto_ems=OppVotazioneHasEmendamentoPeer::doSelect($c4);
   }
 
 

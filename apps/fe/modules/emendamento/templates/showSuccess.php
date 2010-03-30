@@ -8,7 +8,7 @@
   <div id="main">
 
     <div class="W25_100 float-right">
-      <?php echo include_partial('emendamento/vote', array('emendamento' => $emendamento, 'attoPortante' => $attoPortante)); ?>
+      <?php echo include_partial('emendamento/vote', array('emendamento' => $emendamento, 'attoPortante' => $attoPortante, 'subEmendamenti' => $subEmendamenti)); ?>
     </div>
     
     <div class="W73_100 float-left">
@@ -17,6 +17,9 @@
         <?php echo $emendamento->getTipologia() ?>
       <?php endif ?>
       <?php echo "n. ".$emendamento->getNumfase() ?>
+      <?php if(count($em_portante)>0) :?>
+        <?php echo " dell'emendamento ".link_to($em_portante[0]->getNumfase(),'/emendamento/'.$em_portante[0]->getId())?>
+       <?php endif ?>  
       <?php echo (count($relatedAttos)==1 ?' al ddl ' : 'ai ddl ') ?>
       <?php foreach ($relatedAttos as $cnt => $atto_em): ?>
         <?php $atto = $atto_em->getOppAtto() ?>
@@ -81,7 +84,8 @@
         <!-- STATUS --> 
          <?php $last_status = $emendamento->getLastStatus(); ?>
          <?php if ($last_status) : ?>
-           <?php include_partial('status', array('last_status' => $last_status, 'relatedAttos'=> $relatedAttos)); ?>
+           <?php include_partial('status', array('last_status' => $last_status,
+                                 'relatedAttos'=> $relatedAttos)); ?>
          <?php endif; ?>
 
       <!-- partial per la visualizzazione e l'edit-in-place dei tags associati all'atto -->

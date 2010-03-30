@@ -219,6 +219,28 @@ class emendamentoActions extends sfActions
     $this->attoPortante = $this->emendamento->getAttoPortante();
     $this->relatedAttos = $this->emendamento->getOppAttoHasEmendamentosJoinOppAtto();
     
+    //nel caso di sub-emedamento prendi l'emendamento portante
+    if (substr_count($this->emendamento->getTitolo(),"/")==1)
+    {
+      $em_portante=explode("/",$this->emendamento->getNumfase());
+      $c=new Criteria();
+      $c->addJoin(OppAttoHasEmendamentoPeer::EMENDAMENTO_ID,OppEmendamentoPeer::ID);
+      $c->add(OppAttoHasEmendamentoPeer::ATTO_ID,$this->relatedAttos[0]->getAttoId());
+      $c->add(OppEmendamentoPeer::NUMFASE,$em_portante[0]);
+      $c->add(OppEmendamentoPeer::SEDE_ID,$this->emendamento->getSedeId());
+      $this->em_portante=OppEmendamentoPeer::doSelect($c);
+    }
+    else $this->em_portante=array();
+    
+    // Contralla se emendaneto non abbia sb-emendamenti
+    $c=new Criteria();
+    $c->addJoin(OppAttoHasEmendamentoPeer::EMENDAMENTO_ID,OppEmendamentoPeer::ID);
+    $c->add(OppAttoHasEmendamentoPeer::ATTO_ID,$this->relatedAttos[0]->getAttoId());
+    $c->add(OppEmendamentoPeer::NUMFASE,$this->emendamento->getNumfase()."/%",Criteria::LIKE);
+    $c->add(OppEmendamentoPeer::SEDE_ID,$this->emendamento->getSedeId());
+    $this->subEmendamenti=OppEmendamentoPeer::doSelect($c);
+    
+    
     $this->getResponse()->setTitle('Emendamento '.$this->emendamento->getTitolo().' al ddl '.$this->attoPortante->getRamo().'.'.$this->attoPortante->getNumfase().' '.Text::denominazioneAtto($this->attoPortante, 'index').' - '.sfConfig::get('app_main_title'));
   }
   

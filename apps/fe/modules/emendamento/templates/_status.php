@@ -17,6 +17,7 @@ if ($last_status->getOppEmIter()->getFase()!='Presentato')
     }  
       
     echo $last_status->getOppEmIter()->getFase();
+    include_component('emendamento', 'votazioni', array('emendamento' => $last_status->getOppEmendamento()));
     echo '</span>';
   }  
   if ($last_status->getNota()!=NULL )

@@ -70,13 +70,13 @@
         <?php endif; ?>		  
       </ul> 
       
-      <?php if ($voto_atti): ?> 
-          <?php if (count($voto_atti)>1): ?>
+      <?php if ($voto_atti || $voto_ems): ?> 
+          <?php if (count($voto_atti)>1 || $voto_ems>1): ?>
               <h5 class="subsection">la votazione si riferisce agli atti:</h5>
            <?php else : ?>   
               <h5 class="subsection">la votazione si riferisce all'atto:</h5>
            <?php endif; ?>    
-           <?php include_partial('atti', array( 'voto_atti' => $voto_atti)) ?>  
+           <?php include_partial('atti', array( 'voto_atti' => $voto_atti,'voto_ems' => $voto_ems)) ?>  
        <?php endif; ?> 
 	 
 	 

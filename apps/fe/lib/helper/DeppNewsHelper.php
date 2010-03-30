@@ -871,7 +871,22 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $emendamento_link = link_to_in_mail($emendamento->getTitoloCompleto(),
                                               '@singolo_emendamento?id=' . $emendamento->getId());
           $news_string .= "<p>";
-          $news_string .= "l'emendamento " . $emendamento_link . " &egrave; stato <b>aggiunto al monitoraggio dell'argomento ";
+          $relatedAttos = $emendamento->getOppAttoHasEmendamentosJoinOppAtto();
+          $ddl_em="";
+          if (count($relatedAttos)>0)
+          {
+            if (count($relatedAttos)==1)
+              $ddl_em= " relativo al ddl ";
+            else
+              $ddl_em= " relativo ai ddl ";
+            foreach ($relatedAttos as $relatedAtto)
+            {
+              $atto = $relatedAtto->getOppAtto();
+              $ddl_em=$ddl_em." ".link_to($atto->getRamo().'.'.$atto->getNumfase(), '@singolo_atto?id='.$atto->getId(), array('title' => $atto->getTitolo()));
+            }  
+          }
+         
+          $news_string .= "l'emendamento " . $emendamento_link .$ddl_em. " &egrave; stato <b>aggiunto al monitoraggio dell'argomento ";
           if ($context != CONTEXT_TAG)
             $news_string .= $generator->getTag()->getTripleValue();
           $news_string .= "</b></p>";          
