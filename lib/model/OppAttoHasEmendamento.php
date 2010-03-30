@@ -40,10 +40,13 @@ class OppAttoHasEmendamento extends BaseOppAttoHasEmendamento
 /* 
 removed (#379)
 restored (#382)
+commented (temporarily, to allow clean import of emendamenti)
 */
+/*
 sfPropelBehavior::add(
   'OppAttoHasEmendamento',
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'OppAtto' => 'getOppAtto'),
               'date_method'        => array( 'getOppEmendamento', 'getDataPres'),
               'priority'           => '3' )));
+*/

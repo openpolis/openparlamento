@@ -44,7 +44,10 @@ class OppCaricaHasEmendamento extends BaseOppCaricaHasEmendamento
  **/
  
 // #382 only generates grouped news
+/* 
+commented (temporarily, to allow clean import of emendamenti)
 sfPropelBehavior::add(
   'OppCaricaHasEmendamento',
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array())));
+*/
