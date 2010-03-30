@@ -82,6 +82,10 @@ class deppPropelActAsNewsGeneratorBehavior
     $monitorable_objects = $this->getRelatedMonitorableObjects($object);
     foreach($monitorable_objects as $obj)
     {
+      
+      // temporarily skip news generation when tagging emendamento
+      if ($obj instanceOf OppEmendamento) continue;
+      
       $n = new News();
       $n->setGeneratorModel(get_class($object));
       $n->setGeneratorPrimaryKeys(serialize($this->getPrimaryKeysArray($object)));
