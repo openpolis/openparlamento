@@ -85,6 +85,7 @@ class deppPropelActAsNewsGeneratorBehavior
       
       // temporarily skip news generation when tagging emendamento
       if ($obj instanceOf OppEmendamento) continue;
+      if (get_class($object) == 'Tagging' && $object->getTaggableModel() == 'OppEmendamento') continue;
       
       $n = new News();
       $n->setGeneratorModel(get_class($object));
