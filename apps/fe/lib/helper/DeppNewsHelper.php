@@ -886,7 +886,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
             }  
           }
          
-          $news_string .= "l'emendamento " . $emendamento_link .$ddl_em. " &egrave; stato <b>aggiunto al monitoraggio dell'argomento ";
+          $news_string .= "l'emendamento " . $emendamento_link .", presentato il ".$emendamento->getDataPres('d/m/Y').", ".$ddl_em. " &egrave; stato <b>aggiunto al monitoraggio dell'argomento ";
           if ($context != CONTEXT_TAG)
             $news_string .= $generator->getTag()->getTripleValue();
           $news_string .= "</b></p>";          
