@@ -16,19 +16,11 @@
 <br /><br />
 <strong>Le leggi più veloci</strong>
 <br /><br />
-<?php $veloci=array_slice($arr_alls, 0, 20) ?>
+<?php //$veloci=array_slice($arr_alls, 0, 20) ?>
+<?php $veloci=$arr_alls ?>
 <?php foreach ($veloci as $veloce ) : ?>
   <?php echo "- ". link_to($veloce[0]->getRamo().".".$veloce[0]->getNumfase(),"/singolo_atto/".$veloce[0]->getId())." - ".$veloce[0]->getTitolo()." - Giorni: ".intval($veloce[1]) ?>
   <?php echo "<br/>" ?>
 <?php endforeach ?> 
 <br /><br />
-<strong>Le leggi più lente</strong>
-<br /><br />
-<?php $lenti=array_slice($arr_alls, count($arr_alls)-20, 20) ?>
-<?php $lenti=array_reverse($lenti) ?>
-<?php foreach ($lenti as $lenta ) : ?>
-  <?php echo "- ". link_to($lenta[0]->getRamo().".".$lenta[0]->getNumfase(),"/singolo_atto/".$lenta[0]->getId())." - ".$lenta[0]->getTitolo()." - Giorni: ".intval($lenta[1]) ?>
-  <?php echo "<br/>" ?>
-<?php endforeach ?> 
-
 
