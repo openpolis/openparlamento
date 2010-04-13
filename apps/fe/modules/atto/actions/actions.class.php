@@ -994,6 +994,10 @@ class attoActions extends sfActions
     $this->id=$this->getRequestParameter('id');
     $this->pos=$this->getRequestParameter('pos');
     $this->atto=OppAttoPeer::retrieveByPk($this->getRequestParameter('id'));
-  }  
+  }
+  public function executeStatistiche()
+  {
+    
+  }    
   
 }

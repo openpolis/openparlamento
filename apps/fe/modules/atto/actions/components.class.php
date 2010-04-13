@@ -123,6 +123,66 @@ class attoComponents extends sfComponents
   {
     $this->relazioni =  OppAttoPeer::getRelazioni($this->atto->getId());
   }
+  
+  public function executeDdl2legge()
+  {
+    $arrs=array();
+    $arr_alls=array();
+    foreach(array(1,2,4) as $i)
+    {
+      $c=new Criteria();
+      $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppAttoPeer::INIZIATIVA,$i);
+      $atti=OppAttoPeer::doSelect($c); 
+      
+
+      $c=new Criteria();
+      $c->addJoin(OppAttoPeer::ID,OppAttoHasIterPeer::ATTO_ID);
+      $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppAttoPeer::INIZIATIVA,$i);
+      $c->add(OppAttoHasIterPeer::ITER_ID,16);
+      $leggi=OppAttoHasIterPeer::doSelect($c);
+      $tempo_medio=0;
+      foreach ($leggi as $legge)
+      {
+        $ddl=$legge->getOppAtto();
+        while ($ddl->getPred()!=NULL)
+        {
+          $ddl=OppAttoPeer::retrieveByPk($ddl->getPred());
+        }
+        //$this->data_pres=$ddl->getDataPres();
+        //$this->data_appr=$legge->getData();
+        $data_pres=strtotime($ddl->getDataPres());
+        $data_appr=strtotime($legge->getData());
+
+
+        $tempo_medio=$tempo_medio + ($data_appr-$data_pres)/86400;
+        $arr_alls[]=array($ddl,($data_appr-$data_pres)/86400);
+        
+      }
+      if (count($leggi)>0)
+        $tempo_medio=intval($tempo_medio/count($leggi));
+      else
+        $tempo_medio=$tempo_medio;
+        
+      $arrs[]=array(count($atti),count($leggi),$tempo_medio);  
+    }
+    $this->arrs=$arrs;
+    function cmp($a, $b)
+    {
+      if ($a[1] == $b[1]) {
+        return 0;
+      }
+      return ($a[1] < $b[1]) ? -1 : 1;
+    }
+    usort($arr_alls, "cmp");
+    
+    $this->arr_alls=$arr_alls;
+  }
+    
+    
 }
 
 ?>
