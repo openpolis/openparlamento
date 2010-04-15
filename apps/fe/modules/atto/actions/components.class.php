@@ -159,7 +159,7 @@ class attoComponents extends sfComponents
 
 
         $tempo_medio=$tempo_medio + ($data_appr-$data_pres)/86400;
-        $arr_alls[]=array($ddl,($data_appr-$data_pres)/86400);
+        $arr_alls[]=array($legge->getOppAtto(),($data_appr-$data_pres)/86400);
         
       }
       if (count($leggi)>0)
