@@ -9,6 +9,7 @@
  */ 
 class OppTipoAtto extends BaseOppTipoAtto
 {
+  
   /**
    * return D or N, according to the type of act
    * an SDDL type is D (Disegno di Legge)

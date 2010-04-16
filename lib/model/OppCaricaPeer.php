@@ -84,6 +84,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 	  return $risultato;
 	
   }
+
   
   public static function doSelectPresenzePerGruppo($carica_id, $data_inizio, $data_fine)
   {
@@ -114,6 +115,120 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 	  return $totale = OppVotazioneHasCaricaPeer::doCount($c);   
   }
 
+
+  /**
+   * estrae i parlamentari di un ramo, per una legislatura, attivi durante una settimana 
+   * se ramo e settimana non sono specificati, l'estrazione riguarda tutti i rami/periodi
+   * @param string  $ramo ['', 'camera', 'senato']
+   * @param integer $legislatura 
+   * @param string  $settimana ['', 'y-m-d']
+   * @return array di OppCaricaObject (join con OppPolitico)
+   * @author Guglielmo Celata
+   */
+  public static function getParlamentariRamoSettimana($ramo, $settimana, $offset = null, $limit = null)
+  {
+    // calcolo della legislatura
+    if ($settimana != '')
+      $legislatura = OppLegislaturaPeer::getCurrent($settimana);
+    else
+      $legislatura = OppLegislaturaPeer::getCurrent();
+      
+    $c = new Criteria();
+    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
+    $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
+    $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+    
+    if ($ramo == 'camera')
+    {
+      $c->add(OppCaricaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+    }
+    else if ($ramo == 'senato')
+    {
+      // in questo modo considero i senatori a vita
+      $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
+      $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
+      $cton->addOr($cton1);
+      $c->add($cton);
+ 	    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(4, 5), Criteria::IN);
+    } 
+    else if ($ramo == '')
+    {
+
+      /**
+       * criteri composti per estrarre deputati, senatori e senatori a vita
+       * (oppCarica.legislatura = leg OR oppCarica.legislatura IS NULL) AND 
+       * (oppCarica.tipo_carica in (4, 5)  OR (oppCarica.legislatura = leg AND oppCarica.tipo_carica = 1))
+       *
+       **/
+      $crit0 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $legislatura);
+      $crit1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::ISNULL);
+      $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, array(4, 5), Criteria::IN);
+      $crit3 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $legislatura);
+      $crit4 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 1);
+
+      $crit0->addOr($crit1);
+      $crit3->addAnd($crit4);
+      $crit2->addOr($crit3);
+      $crit0->addAnd($crit2);
+
+      $c->add($crit0);
+      
+    }
+    
+    if ($settimana != '') {
+      $cton0 = $c->getNewCriterion(OppCaricaPeer::DATA_INIZIO, strtotime("+1 week", strtotime($settimana)), Criteria::LESS_THAN);
+      $cton1 = $c->getNewCriterion(OppCaricaPeer::DATA_FINE, $settimana, Criteria::GREATER_EQUAL);
+      $cton2 = $c->getNewCriterion(OppCaricaPeer::DATA_FINE, null, Criteria::ISNULL);
+      
+      $cton1->addOr($cton2);
+      $cton0->addAnd($cton1);
+      $c->add($cton0);
+    } else {
+      $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
+    }
+    
+    if ($offset) $c->setOffset($offset);
+    if ($limit) $c->setLimit($limit);
+    return self::doSelect($c);
+  }
+
+
+  public static function getActiveMPs($ramo, $limit = 0)
+  {
+    
+    if (!in_array($ramo, array('C', 'S')))
+      throw new Exception("Ramo must be 'C' or 'S'");
+      
+    $c = new Criteria();
+    if ($ramo == 'C')
+    {
+      $c->add(self::TIPO_CARICA_ID, 1);
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
+      
+    }
+    else
+    {
+      $c->add(self::TIPO_CARICA_ID, array(4, 5), Criteria::IN);
+
+      $cton = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
+      $cton1 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, '5', Criteria::EQUAL);
+      $cton->addOr($cton1);
+      $c->add($cton);
+      
+    }
+
+    $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+    $c->add(self::DATA_FINE, null, Criteria::ISNULL);
+    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+
+    if ($limit > 0)
+      $c->setLimit($limit);
+      
+    return OppCaricaPeer::doSelect($c);
+  }
+
+
   /**
    * return the number of MPs in the given section (C or S)
    *
@@ -123,6 +238,9 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    */
   public static function getNParlamentari($ramo)
   {
+    if (!in_array($ramo, array('C', 'S')))
+      throw new Exception("Ramo must be 'C' or 'S'");
+      
     $c = new Criteria();
     $c->add(self::DATA_FINE, null, Criteria::ISNULL);
     if ($ramo == 'C')

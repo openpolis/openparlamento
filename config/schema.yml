@@ -188,6 +188,13 @@ propel:
     nome:             { type: varchar(255) }
     acronimo:         { type: varchar(80) }
     
+  opp_gruppo_is_maggioranza:
+    id:
+    gruppo_id:        { type: integer, required: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
+    data_inizio:      { type: date, required: true }
+    data_fine:        { type: date }
+    maggioranza:      { type: boolean, reqiured: true }
+    
   opp_esito_seduta:
     id:
     atto_id:          { type: integer, required: true, index: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
@@ -240,6 +247,22 @@ propel:
     votazione_id:     { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_votazione, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(25) }
     strong:           { type: boolean }
+
+  opp_politician_history_cache:
+    legislatura: { type: integer, primaryKey: true }
+    anno:        { type: integer, primaryKey: true }
+    settimana:   { type: integer, primaryKey: true }
+    data:        { type: date }
+    assenze:     { type: integer }
+    presenze:    { type: integer }
+    missioni:    { type: integer }
+    indice:      { type: float, index: true }
+    ribellioni:  { type: integer }
+    votazioni:   { type: integer }
+    chi_tipo:    { type: varchar(1), primaryKey: true }
+    chi_id:      { type: integer, required: false, primaryKey: true }
+    ramo:        { type: varchar(1), primaryKey: true }
+    numero:      { type: integer }
 
   opp_politico:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 

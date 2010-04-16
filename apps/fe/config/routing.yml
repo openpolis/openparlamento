@@ -1,3 +1,7 @@
+api_parlamentari:
+  url: /elenco_parlamentari/:key/:limit
+  param: { module: api, action: elencoParlamentari, limit: 0 }
+  
 tesseramento:
   url: /tesseramento
   param: { module: static, action: tesseramento }

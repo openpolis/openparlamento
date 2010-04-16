@@ -46,6 +46,45 @@ class OppAtto extends BaseOppAtto
   
   
   /**
+   * torna il tipo di atto, per quello che concerne il calcolo dell'indice di attività
+   *
+   * @return string
+   * @author Guglielmo Celata
+   */
+  public function getTipoPerIndice()
+  {
+    return OppTipoAttoPeer::getTipoPerIndice($this->getTipoAttoId());
+  }
+  
+  
+  /**
+   * estrae tutte le firme fino a una certa data
+   *
+   * @param string $data 
+   * @return array di OppCaricaHasAtto
+   * @author Guglielmo Celata
+   */
+  public function getFirme($data)
+  {
+    return OppCaricaHasAttoPeer::getFirme($this->getId(), $data);
+  }
+  
+  
+  /**
+   * estrae tutti gli iter di un atto fino a una certa data
+   *
+   * @param string $data 
+   * @return array di OppIterHasAtto
+   * @author Guglielmo Celata
+   */
+  public function getItinera($data)
+  {
+    return OppAttoHasIterPeer::getItinera($this->getId(), $data);
+  }
+  
+  
+  
+  /**
    * returns an OppIter object, that is the last iter assigned to the object
    * order criterion, by date
    *

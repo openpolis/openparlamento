@@ -9,6 +9,78 @@
  */ 
 class OppCarica extends BaseOppCarica
 {
+  
+  /**
+   * fornisce il gruppo cui la carica appartiene a una certa data
+   * se la data non è passata, fornisce il gruppo corrente
+   *
+   * @param string $date 
+   * @return OppGruppo
+   * @author Guglielmo Celata
+   */
+  public function getGruppo($date = '')
+  {
+    $c = new Criteria();
+    $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
+  	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $this->getId());
+
+  	if ($date == '') {
+      $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
+  	} else {
+  	  $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $date, Criteria::LESS_EQUAL);
+
+  	  $cton0 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
+  	  $cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $date, Criteria::GREATER_THAN);
+  	  $cton0->addOr($cton1);
+  	  $c->add($cton0);
+  	}
+    return OppGruppoPeer::doSelectOne($c);
+  }
+  
+  /**
+   * controlla se il deputato appartiene alla maggioranza o no
+   *
+   * @param string $date 
+   * @return boolean
+   * @author Guglielmo Celata
+   */
+  public function inMaggioranza($date = '', $gruppo = null)
+  {
+    if (is_null($gruppo))
+      $gruppo = $this->getGruppo($date);
+
+    if ($gruppo) {
+      return $gruppo->isMaggioranza($date);
+    } else {
+      return null;
+    }
+  }
+  
+  
+  /**
+   * torna il tipo di relazione tra due cariche in una certa data
+   * i valori sono: me | gruppo | altri | opp
+   * @param string $carica 
+   * @return string
+   * @author Guglielmo Celata
+   */
+  public function getRelazioneCon($carica, $data)
+  {
+    $mio_gruppo = $this->getGruppo($data);
+    $suo_gruppo = $carica->getGruppo($data);
+    
+    if (is_null($mio_gruppo) || is_null($suo_gruppo)) return null;
+
+    // calcolo le maggioranza, passando i gruppi già calcolati (meno query)
+    $mia_maggioranza = $this->inMaggioranza($data, $mio_gruppo);
+    $sua_maggioranza = $carica->inMaggioranza($data, $suo_gruppo);
+    
+    if ($carica->getId() == $this->getId()) return 'me';
+    if ($mio_gruppo->getId() == $suo_gruppo->getId()) return 'gruppo';
+    if ($mia_maggioranza == $sua_maggioranza) return 'altri';
+    return 'opp';
+  }
+  
   /**
    * estrae i politici più vicini per voti o firma
    *
@@ -108,6 +180,7 @@ class OppCarica extends BaseOppCarica
 
   /**
    * torna gli atti firmati dal politico, come array di id
+   * qualsiasi firma
    *
    * @param string $criteria 
    * @param string $con 
@@ -139,7 +212,39 @@ class OppCarica extends BaseOppCarica
     
     return $oppCaricaHasAttosPKs;
 	}
+	
+	/**
+	 * torna gli atti presentati da questa carica (primo firmatario)
+	 * fino a una certa data
+	 * è possibile aggiunger un criterio
+	 *
+	 * @param string $settimana
+	 * @return array of Opp
+	 * @author Guglielmo Celata
+	 */
+	public function getPresentedAttos($data = '')
+	{
+	  // quando l'incarico è appena stato creato, non ci sono ancora atti
+	  if (!$this->isNew())
+	  {
+  	  $c = new Criteria();
+  		$c->addJoin(OppCaricaHasAttoPeer::ATTO_ID, OppAttoPeer::ID);
+  		$c->add(OppCaricaHasAttoPeer::TIPO, 'P');
+  		$c->add(OppCaricaHasAttoPeer::CARICA_ID, $this->getId());
 
+      if ($data != '')
+      {
+        $c->add(OppCaricaHasAttoPeer::DATA, $data, Criteria::LESS_THAN);
+      	$c->add(OppAttoPeer::LEGISLATURA, OppLegislaturaPeer::getCurrent($data));
+      } else {
+      	$c->add(OppAttoPeer::LEGISLATURA, OppLegislaturaPeer::getCurrent());        
+      }
+      
+      $res = OppAttoPeer::doSelect($c);
+  		return $res;
+  	}
+  	return null;	
+	}
 
 }
 

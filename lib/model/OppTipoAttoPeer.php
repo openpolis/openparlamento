@@ -10,6 +10,31 @@
 class OppTipoAttoPeer extends BaseOppTipoAttoPeer
 {
 
+  // mappa i tipo_atto_id in tipologie per il calcolo dell'indice di attività
+  public static $tipi_per_indice = array(
+    1 => 'ddl',
+    2 => 'mozione',
+    3 => 'interpellanza',
+    4 => 'interrogazione', 5 => 'interrogazione', 6 => 'interrogazione',
+    7 => 'risoluzione', 8 => 'risoluzione', 9 => 'risoluzione',
+    10 => 'odg', 11 => 'odg'    
+  );
+  
+  /**
+   * trasforma i tipo_atto_id in tipologie per il calcolo dell'indice di attività
+   *
+   * @param string $tipo_atto_id 
+   * @return integer (se non c'è mapping è 0)
+   * @author Guglielmo Celata
+   */
+  public static function getTipoPerIndice($tipo_atto_id)
+  {
+    if (array_key_exists($tipo_atto_id, self::$tipi_per_indice))
+      return self::$tipi_per_indice[$tipo_atto_id];
+    else
+      return null;
+  }
+  
   public static function doSelectIndirectlyMonitoredByUser($user, $criteria=null)
   {    
    
