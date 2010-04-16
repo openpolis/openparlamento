@@ -263,6 +263,8 @@ propel:
     chi_id:      { type: integer, required: false, primaryKey: true }
     ramo:        { type: varchar(1), primaryKey: true }
     numero:      { type: integer }
+    created_at:
+    updated_at:
 
   opp_politico:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 

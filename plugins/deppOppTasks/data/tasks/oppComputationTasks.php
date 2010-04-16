@@ -89,7 +89,7 @@ function run_opp_calcola_indice($task, $args, $options)
     $indice = calcola_indice_politico($id, $settimana, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppPoliticianHistoryCachePeer::retrieveByPK($legislatura_corrente, null, null, 'P', $id, null);
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByLegislaturaChiTipoChiId($legislatura_corrente, 'P', $id);
     if (!$cache_record) {
       $cache_record = new OppPoliticianHistoryCache();
     }
@@ -97,6 +97,7 @@ function run_opp_calcola_indice($task, $args, $options)
     $cache_record->setChiTipo('P');
     $cache_record->setChiId($id);
     $cache_record->setIndice($indice);
+    $cache_record->setUpdatedAt(time()); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
     unset($cache_record);
 
