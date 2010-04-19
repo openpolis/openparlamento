@@ -24,7 +24,7 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' => 4.0, 'o' => 12.0),
                               'diventato_legge'     => array('m' => 8.0, 'o' => 24.0),
-                              'bonus bi-partisan'   => array('m' => 4.0, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' => 4.0, 'o' =>    0),
                              ),
       'mozione'      => array('presentazione'       => array('m' => 3.0, 'o' =>  3.0),
                               'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
@@ -39,7 +39,7 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' => 3.0, 'o' =>  6.0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus bi-partisan'   => array('m' => 1.5, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' => 1.5, 'o' =>    0),
                              ),
       'risoluzione'  => array('presentazione'       => array('m' => 2.0, 'o' =>  2.0),
                               'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
@@ -54,7 +54,7 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' => 2.0, 'o' =>  4.0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus bi-partisan'   => array('m' => 1.0, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                              ),
      'odg'          =>  array('presentazione'       => array('m' => 3.0, 'o' =>  3.0),
                               'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
@@ -69,7 +69,7 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' => 2.0, 'o' =>  4.0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus bi-partisan'   => array('m' => 1.0, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                              ),
      'interrogazione'=> array('presentazione'       => array('m' => 3.0, 'o' =>  3.0),
                               'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
@@ -84,7 +84,7 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus bi-partisan'   => array('m' =>   0, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
     'interpellanza'  => array('presentazione'       => array('m' => 3.0, 'o' =>  3.0),
                               'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
@@ -99,11 +99,10 @@ class OppIndiceAttivitaPeer
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus bi-partisan'   => array('m' =>   0, 'o' =>    0),
+                              'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
 
-   'emendamenti'    => array('presentazione_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                             'presentazione_hi'    => array('m' => 0.1, 'o' =>  0.1),
+   'emendamenti'    => array('presentazione'       => array('m' => 0.1, 'o' =>  0.1),
                              'cofirme_gruppo_lo'   => array('m' => 0.2, 'o' =>  0.2),
                              'cofirme_gruppo_hi'   => array('m' => 0.4, 'o' =>  0.4),
                              'cofirme_altri_lo'    => array('m' => 0.4, 'o' =>  0.4),
@@ -116,7 +115,7 @@ class OppIndiceAttivitaPeer
                              'approvato'           => array('m' => 2.0, 'o' =>  6.0),
                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                             'bonus bi-partisan'   => array('m' => 1.0, 'o' =>    0),
+                             'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                             ),
   );
  
@@ -195,23 +194,117 @@ class OppIndiceAttivitaPeer
     $d_punteggio = 0.0;
     foreach ($itinera_atto as $iter_atto) {
       $passaggio = OppIterPeer::getIterPerIndice($iter_atto->getIterId());
+      $carica_in_maggioranza_al_passaggio = $carica->inMaggioranza($iter_atto->getData('Y-m-d'));
       if (is_null($passaggio)) continue;
-      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica->inMaggioranza($iter_atto->getData('Y-m-d')));
+      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
+      if ($verbose)
+        printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
+        
+      // --- bonus maggioranza ---
+      if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
+        if ($carica_in_maggioranza_al_passaggio && $atto->votatoDaOpposizione()) {
+          $d_punteggio += self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
+          if ($verbose)
+            printf("    bonus di maggioranza! %7.2f\n", $d_punteggio);          
+        }
+      }
+    }
+    $punteggio += $d_punteggio;
+    if ($verbose)
+      printf("  totale iter   %7.2f\n", $d_punteggio);
+
+    
+    return $punteggio;
+  }
+
+  /**
+   * calcola l'indice accumulato fino alla fine della settimana, per un emendamento, presentato da una carica 
+   *
+   * @param OppCarica $carica
+   * @param OppEmendamento   $emendamento
+   * @param string    $settimana
+   * @param boolean   $verbose
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public static function calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose = false)
+  {
+    // calcolo se appartiene alla maggioranza o all'opposizione
+    $in_maggioranza = $carica->inMaggioranza($settimana);
+    
+    if ($verbose)
+      printf("emendamento: %10s\n", $emendamento->getId());
+
+    $punteggio = 0.0;
+    
+    // --- presentazione ---
+    $d_punteggio = self::getPunteggio('emendamenti', 'presentazione', $in_maggioranza);
+    $punteggio += $d_punteggio;
+    if ($verbose)
+      printf("  presentazione %7.2f\n", $d_punteggio);
+
+
+    // --- consenso ---
+    if ($settimana == '') {
+      $firme_emendamento = $emendamento->getFirme(date('Y-m-d'));
+    } else {
+      $firme_emendamento = $emendamento->getFirme(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
+    }
+    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0);
+    foreach ($firme_emendamento as $firma) {
+      $relazione = $firma->getOppCarica()->getRelazioneCon($carica, $firma->getData('Y-m-d'));
+      if ($relazione == 'me' || is_null($relazione)) continue;
+      $n_firme[$relazione] += 1;
+    }
+    
+    // TODO: aggiungere controllo se carica cambia nel tempo tra maggioranza e opposizione,
+    //       in caso si decida di avere parametri del consenso differenti tra M e O
+    //       ora sono uguali
+    $d_punteggio = 0.0;
+    foreach ($n_firme as $tipo => $value) {
+      if (!$value) continue;
+      
+      if ($value <= self::$soglia_cofirme)
+        $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', "cofirme_${tipo}_lo", $in_maggioranza);
+      else
+        $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', "cofirme_${tipo}_hi", $in_maggioranza);
+
+      if ($verbose)
+        printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
+    }
+    $punteggio += $d_punteggio;
+    if ($verbose)
+      printf("  totale firme  %7.2f\n", $d_punteggio);
+      
+    
+    // --- iter ---
+    if ($settimana == '') {
+      $itinera_emendamento = $emendamento->getItinera(date('Y-m-d'));
+    } else {
+      $itinera_emendamento = $emendamento->getItinera(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
+    }
+    
+    $d_punteggio = 0.0;
+    foreach ($itinera_emendamento as $iter_emendamento) {
+      $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento->getIterId());
+      if (is_null($passaggio)) continue;
+      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_emendamento, $passaggio, $carica->inMaggioranza($iter_emendamento->getData('Y-m-d')));
       if ($verbose)
         printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
     }
     $punteggio += $d_punteggio;
     if ($verbose)
       printf("  totale iter   %7.2f\n", $d_punteggio);
-    
+
     
     return $punteggio;
   }
 
+
   /**
    * ritorna il punteggio per un tipo di atto, di azione e per maggioranza o opposizione
    *
-   * @param string $tipo_atto 
+   * @param string $tipo_atto
    * @param string $tipo_azione 
    * @param string $maggioranza 
    * @return float

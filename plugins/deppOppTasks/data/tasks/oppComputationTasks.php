@@ -121,16 +121,29 @@ function calcola_indice_politico($id, $settimana = '', $verbose = '')
   // fetch dell'oggetto OppCarica
   $carica = OppCaricaPeer::retrieveByPK($id);
   
-  // estrae tutti gli atti firmati come Primo Firmatario, fino alla fine della settimana indagata
+  // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla fine della settimana indagata
   if ($settimana == '') {
     $atti = $carica->getPresentedAttos();
+    $emendamenti = $carica->getPresentedEmendamentos();
   } else {
     $atti = $carica->getPresentedAttos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
+    $emendamenti = $carica->getPresentedEmendamentos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
   }
 
   $punteggio = 0.;
+  
+  // --- componente dell'indice dovuta agli atti ---
+  if ($verbose)
+    printf("\n  numero atti: %d\n", count($atti));
   foreach ($atti as $atto) {
     $punteggio += OppIndiceAttivitaPeer::calcolaIndiceAtto($carica, $atto, $settimana, $verbose);
+  }
+
+  // --- componente dell'indice dovuta agli emendamenti ---
+  if ($verbose)
+    printf("\n  numero emendamenti: %d\n", count($emendamenti));
+  foreach ($emendamenti as $emendamento) {
+    $punteggio += OppIndiceAttivitaPeer::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose);
   }
   
   return $punteggio;

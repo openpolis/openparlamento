@@ -10,6 +10,31 @@
 class OppEmendamento extends BaseOppEmendamento
 {
   
+  /**
+   * estrae tutte le firme fino a una certa data
+   *
+   * @param string $data 
+   * @return array di OppCaricaHasEmendamento
+   * @author Guglielmo Celata
+   */
+  public function getFirme($data)
+  {
+    return OppCaricaHasEmendamentoPeer::getFirme($this->getId(), $data);
+  }
+  
+  /**
+   * estrae tutti gli iter di un emendamento fino a una certa data
+   *
+   * @param string $data 
+   * @return array di OppIterHasEmendamento
+   * @author Guglielmo Celata
+   */
+  public function getItinera($data)
+  {
+    return OppEmendamentoHasIterPeer::getItinera($this->getId(), $data);
+  }
+  
+  
   public function getURLFonte()
   {
     if (strpos($this->url_fonte, "http://") === false) {

@@ -216,7 +216,6 @@ class OppCarica extends BaseOppCarica
 	/**
 	 * torna gli atti presentati da questa carica (primo firmatario)
 	 * fino a una certa data
-	 * è possibile aggiunger un criterio
 	 *
 	 * @param string $settimana
 	 * @return array of Opp
@@ -241,6 +240,38 @@ class OppCarica extends BaseOppCarica
       }
       
       $res = OppAttoPeer::doSelect($c);
+  		return $res;
+  	}
+  	return null;	
+	}
+
+	/**
+	 * torna gli emendamenti presentati da questa carica (primo firmatario)
+	 * fino a una certa data
+	 *
+	 * @param string $settimana
+	 * @return array of Opp
+	 * @author Guglielmo Celata
+	 */
+	public function getPresentedEmendamentos($data = '')
+	{
+	  // quando l'incarico è appena stato creato, non ci sono ancora firme
+	  if (!$this->isNew())
+	  {
+  	  $c = new Criteria();
+  		$c->addJoin(OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID, OppEmendamentoPeer::ID);
+  		$c->add(OppCaricaHasEmendamentoPeer::TIPO, 'P');
+  		$c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $this->getId());
+
+      if ($data != '')
+      {
+        $c->add(OppCaricaHasEmendamentoPeer::DATA, $data, Criteria::LESS_THAN);
+      	$c->add(OppEmendamentoPeer::LEGISLATURA, OppLegislaturaPeer::getCurrent($data));
+      } else {
+      	$c->add(OppEmendamentoPeer::LEGISLATURA, OppLegislaturaPeer::getCurrent());        
+      }
+      
+      $res = OppEmendamentoPeer::doSelect($c);
   		return $res;
   	}
   	return null;	
