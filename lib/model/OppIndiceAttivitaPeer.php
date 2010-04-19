@@ -117,6 +117,7 @@ class OppIndiceAttivitaPeer
                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
                              'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                             ),
+   'intervento'     => 0.5
   );
  
   /**
@@ -213,7 +214,6 @@ class OppIndiceAttivitaPeer
     if ($verbose)
       printf("  totale iter   %7.2f\n", $d_punteggio);
 
-    
     return $punteggio;
   }
 
@@ -298,6 +298,32 @@ class OppIndiceAttivitaPeer
 
     
     return $punteggio;
+  }
+  
+
+  /**
+   * torna la componente dell'indice, che riguarda il parlamentare
+   *
+   * @param string $carica 
+   * @param string $settimana 
+   * @param string $verbose 
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public function calcolaPunteggioInterventi($carica, $settimana, $verbose = false)
+  {
+    // --- interventi ---
+    if ($settimana == '') {
+      $n_interventi = $carica->getNSeduteConInterventi(date('Y-m-d'));
+    } else {
+      $n_interventi = $carica->getNSeduteConInterventi(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
+    }
+    
+    $d_punteggio = $n_interventi * self::$punteggi['intervento'];
+    if ($verbose)
+      printf("  interventi   %7.2f\n", $d_punteggio);
+
+    return $d_punteggio;
   }
 
 

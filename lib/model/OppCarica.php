@@ -277,6 +277,25 @@ class OppCarica extends BaseOppCarica
   	return null;	
 	}
 
+  /**
+   * torna il numero di sedute in cui è intervenuto (almeno una volta), fino a una certa data
+   * una seduta è identificata da sede_id e data
+   *
+   * @param string $carica 
+   * @param string $data 
+   * @return integer
+   * @author Guglielmo Celata
+   */
+  public function getNSeduteConInterventi($data)
+  {
+    $n_int = OppInterventoPeer::getNSeduteConInterventiCarica($this, $data);
+    return $n_int;
+    
+  }
+  
+
+
+
 }
 
 sfPropelBehavior::add(

@@ -146,5 +146,8 @@ function calcola_indice_politico($id, $settimana = '', $verbose = '')
     $punteggio += OppIndiceAttivitaPeer::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose);
   }
   
+  // --- componente dell'indice dovuta agli interventi (in sedute)
+  $punteggio += OppIndiceAttivitaPeer::calcolaPunteggioInterventi($carica, $settimana, $verbose);
+  
   return $punteggio;
 }

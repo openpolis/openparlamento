@@ -100,7 +100,7 @@ class OppAtto extends BaseOppAtto
       return false;
   }
   
-
+  
   /**
    * returns an OppIter object, that is the last iter assigned to the object
    * order criterion, by date
