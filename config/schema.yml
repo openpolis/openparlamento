@@ -178,6 +178,7 @@ propel:
     id:               ~
     emendamento_id:   { type: integer, required: true, index: true, foreignTable: opp_emendamento, foreignReference: id, onDelete: CASCADE }
     data:             { type: date }
+    titolo:           { type: varchar(255) }
     testo:            { type: clob }
     created_at:       ~
 
