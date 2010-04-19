@@ -112,12 +112,12 @@
     </div>
     <div class="W73_100 float-left">
       <!-- testo dell'emendamento -->
+      <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
       <div class="coo-mind float-container">
-        <h4 class="subsection">Il testo dell'emendamento</h4>
-        <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
+        <h4 class="subsection"><?php echo $text->getTitolo()." del ".format_date($text->getData(),'dd/MM/yy') ?></h4>
           <div style="margin:5px;"><?php echo $text->getTesto() ?></div>        
-        <?php endforeach ?>
       </div>
+      <?php endforeach ?>
     </div>  
   </div>
 </div>
