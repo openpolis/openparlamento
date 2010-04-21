@@ -20,6 +20,7 @@ pake_task('opp-calcola-indice', 'project_exists');
 /**
 * Calcola o ri-calcola l'indice di attività.
 * Si può specificare il ramo (camera, senato, tutti) e il periodo (legislatura[tutto], anno, mese, settimana)
+* Se sono passati degli ID (argomenti), sono interpretati come ID di politici e il calcolo è fatto solo per loro
 */
 function run_opp_calcola_indice($task, $args, $options)
 {
@@ -77,8 +78,19 @@ function run_opp_calcola_indice($task, $args, $options)
 
   $msg = sprintf("calcolo indice di attività - settimana: %10s, ramo: %10s\n", $settimana?$settimana:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
-    
-  $parlamentari = OppCaricaPeer::getParlamentariRamoSettimana($ramo, $settimana, $offset, $limit);
+
+
+  if (count($args) > 0)
+  {
+    try {
+      $parlamentari = OppCaricaPeer::fetchFromIDArray($args);            
+    } catch (Exception $e) {
+      throw new Exception("Specificare degli ID validi. \n" . $e);
+    }
+  } else {
+    $parlamentari = OppCaricaPeer::getParlamentariRamoSettimana($ramo, $settimana, $offset, $limit);    
+  }
+
   echo "memory usage: " . memory_get_usage( ) . "\n";
 
   foreach ($parlamentari as $cnt => $parlamentare) {

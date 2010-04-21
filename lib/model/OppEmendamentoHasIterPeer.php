@@ -18,7 +18,7 @@ class OppEmendamentoHasIterPeer extends BaseOppEmendamentoHasIterPeer
     $c->addGroupByColumn(self::EMENDAMENTO_ID);
     $c->addGroupByColumn(self::EM_ITER_ID);    
     
-    return self::doSelectJoinOppIter($c);
+    return self::doSelectJoinOppEmIter($c);
   }
   
 }

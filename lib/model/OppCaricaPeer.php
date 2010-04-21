@@ -117,6 +117,20 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
 
   /**
+   * torna array di OppCarica a partire da un array di ID
+   *
+   * @param array $ids 
+   * @return array of OppCarica
+   * @author Guglielmo Celata
+   */
+  public function fetchFromIDArray($ids)
+  {
+    $c = new Criteria();
+    $c->add(self::POLITICO_ID, $ids, Criteria::IN);
+    return self::doSelect($c);
+  }
+
+  /**
    * estrae i parlamentari di un ramo, per una legislatura, attivi durante una settimana 
    * se ramo e settimana non sono specificati, l'estrazione riguarda tutti i rami/periodi
    * @param string  $ramo ['', 'camera', 'senato']
