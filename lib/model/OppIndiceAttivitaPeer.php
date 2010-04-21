@@ -286,7 +286,7 @@ class OppIndiceAttivitaPeer
     
     $d_punteggio = 0.0;
     foreach ($itinera_emendamento as $iter_emendamento) {
-      $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento->getIterId());
+      $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento->getEmIterId());
       if (is_null($passaggio)) continue;
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_emendamento, $passaggio, $carica->inMaggioranza($iter_emendamento->getData('Y-m-d')));
       if ($verbose)
