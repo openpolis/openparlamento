@@ -25,7 +25,8 @@
       'nuoviatti' => 'Nuovi atti',
       'documento' => 'Documenti allegati',
       'premiumdemo' => 'Utenti premium',
-      'sfSupraVariablesAdmin' => 'SupraVariables');
+      'sfSupraVariablesAdmin' => 'SupraVariables',
+      'storia_politico' => 'Indice attivit&agrave;');
     $nitems = count($menu_items);
     $menu_sep = '|';
     $module_name = $sf_context->getModuleName(); 

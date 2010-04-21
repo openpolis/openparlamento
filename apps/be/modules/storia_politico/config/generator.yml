@@ -3,8 +3,12 @@ generator:
   param:
     model_class:      OppPoliticianHistoryCache
     theme:            default
+    css:              my_generator
+    
+    fields:
+      ramo_filter:   { name: "Ramo" }
 
     list:
       title:          Elenco ...
-      display:        [legislatura, anno, settimana, data, assenze, presenze, missioni, indice, ribellioni, votazioni, _chi, ramo, numero, created_at, updated_at]
-      filters:        [chi_tipo, chi]
+      display:        [data, assenze, presenze, missioni, indice, ribellioni, votazioni, _chi, ramo, created_at, updated_at]
+      filters:        [_ramo_filter]

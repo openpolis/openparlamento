@@ -1,6 +1,8 @@
 #!/bin/sh
 
-# calcolo indice complessivo per i politici di camera e senato
+# calcolo indice complessivo per i politici di governo, camera e senato
+./symfony opp-calcola-indice --ramo=governo
+
 for (( i = 0 ; i < 630 ; i += 50 )) 
 do 
   ./symfony opp-calcola-indice --ramo=camera --offset=$i --limit=50
