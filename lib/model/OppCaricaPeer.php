@@ -117,7 +117,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
 
   /**
-   * torna array di OppCarica a partire da un array di ID
+   * torna array di OppCarica a partire da un array di ID (id di carica e NON politico)
    *
    * @param array $ids 
    * @return array of OppCarica
@@ -126,14 +126,14 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   public function fetchFromIDArray($ids)
   {
     $c = new Criteria();
-    $c->add(self::POLITICO_ID, $ids, Criteria::IN);
+    $c->add(self::ID, $ids, Criteria::IN);
     return self::doSelect($c);
   }
 
   /**
    * estrae i parlamentari di un ramo, per una legislatura, attivi durante una settimana 
    * se ramo e settimana non sono specificati, l'estrazione riguarda tutti i rami/periodi
-   * @param string  $ramo ['', 'camera', 'senato']
+   * @param string  $ramo ['', 'camera', 'senato', 'governo']
    * @param integer $legislatura 
    * @param string  $settimana ['', 'y-m-d']
    * @return array di OppCaricaObject (join con OppPolitico)
@@ -166,6 +166,12 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $c->add($cton);
  	    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(4, 5), Criteria::IN);
     } 
+    else if ($ramo == 'governo')
+    {
+      // considero presidente del consiglio, ministri, vicemoinistri e sottosegretari
+ 	    $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(2, 3, 6, 7), Criteria::IN);
+    } 
+    
     else if ($ramo == '')
     {
 
@@ -190,6 +196,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       
     }
     
+    // in carica al momento del calcolo
     if ($settimana != '') {
       $cton0 = $c->getNewCriterion(OppCaricaPeer::DATA_INIZIO, strtotime("+1 week", strtotime($settimana)), Criteria::LESS_THAN);
       $cton1 = $c->getNewCriterion(OppCaricaPeer::DATA_FINE, $settimana, Criteria::GREATER_EQUAL);

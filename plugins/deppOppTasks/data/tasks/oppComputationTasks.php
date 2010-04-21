@@ -19,7 +19,7 @@ pake_task('opp-calcola-indice', 'project_exists');
 
 /**
 * Calcola o ri-calcola l'indice di attività.
-* Si può specificare il ramo (camera, senato, tutti) e il periodo (legislatura[tutto], anno, mese, settimana)
+* Si può specificare il ramo (camera, senato, governo, tutti) e il periodo (legislatura[tutto], anno, mese, settimana)
 * Se sono passati degli ID (argomenti), sono interpretati come ID di politici e il calcolo è fatto solo per loro
 */
 function run_opp_calcola_indice($task, $args, $options)
@@ -32,7 +32,7 @@ function run_opp_calcola_indice($task, $args, $options)
     define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
     define('SF_APP', 'fe');
     define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', false);
+    define('SF_DEBUG', true);
 
     require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
                   DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
@@ -71,10 +71,13 @@ function run_opp_calcola_indice($task, $args, $options)
     $limit = $options['limit'];
   }
 
-  if ($settimana != '')
+  if ($settimana != '') {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent($settimana);
-  else
+    $data = $settimana;
+  } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d H:i');
+  }
 
   $msg = sprintf("calcolo indice di attività - settimana: %10s, ramo: %10s\n", $settimana?$settimana:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
@@ -97,7 +100,25 @@ function run_opp_calcola_indice($task, $args, $options)
     $politico = $parlamentare->getOppPolitico();
     $id = $parlamentare->getId();
     $tipo_carica_id = $parlamentare->getTipoCaricaId();
-    $ramo = $tipo_carica_id == 1 ? 'C' : 'S';
+    switch ($tipo_carica_id) {
+      case 1:
+        $ramo = 'C';
+        break;
+      case 4:
+      case 5:
+        $ramo = 'S';
+        break;
+      case 2:
+      case 3:
+      case 6:
+      case 7:
+        $ramo = 'G';
+        break;
+      
+      default:
+        # code...
+        break;
+    }
     
     printf("%4d) %40s [%06d] ... ", $cnt, $politico, $id);
     $indice = calcola_indice_politico($id, $settimana, $verbose);
@@ -112,7 +133,8 @@ function run_opp_calcola_indice($task, $args, $options)
     $cache_record->setChiId($id);
     $cache_record->setRamo($ramo);
     $cache_record->setIndice($indice);
-    $cache_record->setUpdatedAt(time()); // forza riscrittura updated_at, per tenere traccia esecuzioni
+    $cache_record->setData($data);
+    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
     unset($cache_record);
 
