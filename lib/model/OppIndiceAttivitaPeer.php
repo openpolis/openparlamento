@@ -102,7 +102,7 @@ class OppIndiceAttivitaPeer
                               'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
 
-   'emendamenti'    => array('presentazione'       => array('m' => 0.1, 'o' =>  0.1),
+   'emendamenti'    => array('presentazione'       => array('m' =>   0, 'o' =>    0),
                              'cofirme_gruppo_lo'   => array('m' => 0.2, 'o' =>  0.2),
                              'cofirme_gruppo_hi'   => array('m' => 0.4, 'o' =>  0.4),
                              'cofirme_altri_lo'    => array('m' => 0.4, 'o' =>  0.4),

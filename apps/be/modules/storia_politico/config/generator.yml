@@ -1,0 +1,10 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      OppPoliticianHistoryCache
+    theme:            default
+
+    list:
+      title:          Elenco ...
+      display:        [legislatura, anno, settimana, data, assenze, presenze, missioni, indice, ribellioni, votazioni, _chi, ramo, numero, created_at, updated_at]
+      filters:        [chi_tipo, chi]

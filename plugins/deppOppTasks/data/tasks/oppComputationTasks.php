@@ -108,6 +108,7 @@ function run_opp_calcola_indice($task, $args, $options)
     $cache_record->setLegislatura($legislatura_corrente);
     $cache_record->setChiTipo('P');
     $cache_record->setChiId($id);
+    $cache_record->setRamo($tipo_carica_id == 1?'C':'S');
     $cache_record->setIndice($indice);
     $cache_record->setUpdatedAt(time()); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
