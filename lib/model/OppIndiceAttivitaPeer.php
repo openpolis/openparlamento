@@ -194,14 +194,14 @@ class OppIndiceAttivitaPeer
       printf("\n  numero emendamenti: %d\n", count($emendamenti));
     $d_punteggio = 0.;
     foreach ($emendamenti as $emendamento) {
-      $d_punteggio += self::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose);
+      $d_punteggio += self::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $emendamenti_node, $verbose);
     }
     $emendamenti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
     
     // --- componente dell'indice dovuta agli interventi (in sedute)
     $interventi_node = $content_node->addChild('interventi', null, self::$opp_ns);
-    $punteggio += $d_punteggio = self::calcolaPunteggioInterventi($carica, $settimana, $verbose);
+    $punteggio += $d_punteggio = self::calcolaPunteggioInterventi($carica, $settimana, $interventi_node, $verbose);
     $interventi_node->addAttribute('totale', $d_punteggio);
 
 
@@ -262,7 +262,8 @@ class OppIndiceAttivitaPeer
       printf("atto: %10s %15s\n", $atto->getId(), $tipo_atto);
 
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
-    $atto_node->addAttribute('id', $atto->getId());
+    $atto_node->addAttribute('id', $atto->getId());    
+    $atto_node->addChild('titolo', $atto->getTitolo(), self::$opp_ns);
 
     $punteggio = 0.0;
     
@@ -281,10 +282,10 @@ class OppIndiceAttivitaPeer
     } else {
       $firme_atto = $atto->getFirme(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
     }
-    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0);
+    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
     foreach ($firme_atto as $firma) {
       $relazione = $firma->getOppCarica()->getRelazioneCon($carica, $firma->getData('Y-m-d'));
-      if ($relazione == 'me' || is_null($relazione)) continue;
+      if (is_null($relazione)) continue;
       $n_firme[$relazione] += 1;
     }
 
@@ -379,8 +380,12 @@ class OppIndiceAttivitaPeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose = false)
+  public static function calcolaIndiceEmendamento($carica, $emendamento, $settimana, $xml_node, $verbose = false)
   {
+    $emendamento_node = $xml_node->addChild('emendamento', null, self::$opp_ns);
+    $emendamento_node->addAttribute('id', $emendamento->getId());    
+    $emendamento_node->addChild('titolo', Text::denominazioneEmendamento($emendamento, 'list'));
+    
     // calcolo se appartiene alla maggioranza o all'opposizione
     $in_maggioranza = $carica->inMaggioranza($settimana);
     
@@ -394,6 +399,8 @@ class OppIndiceAttivitaPeer
     $punteggio += $d_punteggio;
     if ($verbose)
       printf("  presentazione %7.2f\n", $d_punteggio);
+    $presentazione_node = $emendamento_node->addChild('presentazione', null, self::$opp_ns);
+    $presentazione_node->addAttribute('totale', $d_punteggio);
 
 
     // --- consenso ---
@@ -402,16 +409,19 @@ class OppIndiceAttivitaPeer
     } else {
       $firme_emendamento = $emendamento->getFirme(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
     }
-    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0);
+    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'mia' => 0);
     foreach ($firme_emendamento as $firma) {
       $relazione = $firma->getOppCarica()->getRelazioneCon($carica, $firma->getData('Y-m-d'));
-      if ($relazione == 'me' || is_null($relazione)) continue;
+      if (is_null($relazione)) continue;
       $n_firme[$relazione] += 1;
     }
     
     // TODO: aggiungere controllo se carica cambia nel tempo tra maggioranza e opposizione,
     //       in caso si decida di avere parametri del consenso differenti tra M e O
     //       ora sono uguali
+    $consenso_node = $emendamento_node->addChild('consenso', null, self::$opp_ns);
+    $consenso_node->addAttribute('n_firme', count($firme_emendamento));
+
     $d_punteggio = 0.0;
     foreach ($n_firme as $tipo => $value) {
       if (!$value) continue;
@@ -421,10 +431,17 @@ class OppIndiceAttivitaPeer
       else
         $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', "cofirme_${tipo}_hi", $in_maggioranza);
 
+      $firme_node = $consenso_node->addChild('firme_'.$tipo, null, self::$opp_ns);
+      $firme_node->addAttribute('n_firme', $value);
+      $firme_node->addAttribute('totale', $dd_punteggio);
+
       if ($verbose)
         printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
     }
     $punteggio += $d_punteggio;
+
+    $consenso_node->addAttribute('totale', $d_punteggio);
+
     if ($verbose)
       printf("  totale firme  %7.2f\n", $d_punteggio);
       
@@ -436,18 +453,33 @@ class OppIndiceAttivitaPeer
       $itinera_emendamento = $emendamento->getItinera(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
     }
     
+    $iter_node = $emendamento_node->addChild('iter', null, self::$opp_ns);
+
     $d_punteggio = 0.0;
+    $n_passaggi = 0;
     foreach ($itinera_emendamento as $iter_emendamento) {
       $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento->getEmIterId());
       if (is_null($passaggio)) continue;
-      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_emendamento, $passaggio, $carica->inMaggioranza($iter_emendamento->getData('Y-m-d')));
+
+      $n_passaggi++;
+      
+      $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+      $passaggio_node->addAttribute('tipo', $passaggio);
+
+      $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', $passaggio, $carica->inMaggioranza($iter_emendamento->getData('Y-m-d')));
+
+      $passaggio_node->addAttribute('totale', $dd_punteggio);
       if ($verbose)
         printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
     }
+
+
     $punteggio += $d_punteggio;
     if ($verbose)
       printf("  totale iter   %7.2f\n", $d_punteggio);
 
+    
+    $emendamento_node->addAttribute('totale', $punteggio);    
     
     return $punteggio;
   }
@@ -458,11 +490,12 @@ class OppIndiceAttivitaPeer
    *
    * @param string $carica 
    * @param string $settimana 
+   * @param SimpleXMLElement $xml_node
    * @param string $verbose 
    * @return float
    * @author Guglielmo Celata
    */
-  public function calcolaPunteggioInterventi($carica, $settimana, $verbose = false)
+  public function calcolaPunteggioInterventi($carica, $settimana, $xml_node, $verbose = false)
   {
     // --- interventi ---
     if ($settimana == '') {
@@ -470,6 +503,8 @@ class OppIndiceAttivitaPeer
     } else {
       $n_interventi = $carica->getNSeduteConInterventi(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
     }
+    
+    $xml_node->addAttribute('n_sedute_con_intervento', $n_interventi);
     
     $d_punteggio = $n_interventi * self::$punteggi['intervento'];
     if ($verbose)
@@ -490,6 +525,9 @@ class OppIndiceAttivitaPeer
    */
   public function getPunteggio($tipo_atto, $tipo_azione, $maggioranza)
   {
+    if (!array_key_exists($tipo_azione, self::$punteggi[$tipo_atto])) {
+      return 0.0;
+    }
     return self::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
   }
   

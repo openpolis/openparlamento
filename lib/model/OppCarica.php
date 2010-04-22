@@ -68,6 +68,9 @@ class OppCarica extends BaseOppCarica
   {
     $mio_gruppo = $this->getGruppo($data);
     $suo_gruppo = $carica->getGruppo($data);
+    
+    // caso mia firma
+    if ($carica->getId() == $this->getId()) return 'mia';
 
     // eccezione membri del governo
     if (is_null($mio_gruppo))
@@ -85,7 +88,6 @@ class OppCarica extends BaseOppCarica
     $mia_maggioranza = $this->inMaggioranza($data, $mio_gruppo);
     $sua_maggioranza = $carica->inMaggioranza($data, $suo_gruppo);
     
-    if ($carica->getId() == $this->getId()) return 'me';
     if ($mio_gruppo->getId() == $suo_gruppo->getId()) return 'gruppo';
     if ($mia_maggioranza == $sua_maggioranza) return 'altri';
     return 'opp';
