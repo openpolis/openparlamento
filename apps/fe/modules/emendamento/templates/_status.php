@@ -27,22 +27,37 @@ if ($last_status->getOppEmIter()->getFase()!='Presentato')
     if (preg_match('#^Id. em. #',$last_status->getNota()) || preg_match('#^Sost. id. em. #',$last_status->getNota()) || preg_match('#^V. em. #',$last_status->getNota()))
     {
       $tmpfase=explode(' em. ',$last_status->getNota());
-      $tmpfase=trim($tmpfase[1]);
+      $fase_nota=$tmpfase[0].' em. ';
+      if (substr_count($tmpfase[1],",")>0)
+      {
+        $tmpfase=explode(", ",$tmpfase[1]);
+      }
+      else
+        $tmpfase=trim($tmpfase[1]);
+        
       $c=new Criteria();
       $c->addJoin(OppEmendamentoPeer::ID,OppAttoHasEmendamentoPeer::EMENDAMENTO_ID);
       $c->add(OppEmendamentoPeer::SEDE_ID,$last_status->getOppEmendamento()->getSedeId());
-      $c->add(OppEmendamentoPeer::NUMFASE,$tmpfase);
+      $c->add(OppEmendamentoPeer::NUMFASE,$tmpfase,Criteria::IN);
       $c->add(OppAttoHasEmendamentoPeer::ATTO_ID,$relatedAttos[0]->getOppAtto()->getId());
-      $collegato=OppEmendamentoPeer::doSelectOne($c);
-      if ($collegato)
+      $collegati=OppEmendamentoPeer::doSelect($c);
+      if (count($collegati)>0)
       {
-        $c=new Criteria();
-        $c->addJoin(OppEmendamentoHasIterPeer::EM_ITER_ID,OppEmIterPeer::ID);
-        $c->add(OppEmendamentoHasIterPeer::EMENDAMENTO_ID,$collegato->getId());
-        $status_coll=OppEmIterPeer::doSelectOne($c);
-        $link_collegato= link_to($last_status->getNota(),'/emendamento/'.$collegato->getId());
-        if ($status_coll)
-           $link_collegato= $link_collegato." (".$status_coll->getFase().")";
+        $link_collegato=$fase_nota;
+        foreach ($collegati as $num => $collegato)
+        {
+          $c=new Criteria();
+          $c->addJoin(OppEmendamentoHasIterPeer::EM_ITER_ID,OppEmIterPeer::ID);
+          $c->add(OppEmendamentoHasIterPeer::EMENDAMENTO_ID,$collegato->getId());
+          $status_coll=OppEmIterPeer::doSelectOne($c);
+      
+          $link_collegato=$link_collegato.($num>0?", ":""). link_to($collegato->getNumfase(),'/emendamento/'.$collegato->getId());
+          if ($status_coll)
+          {
+            if ($status_coll->getFase()!='Altro' && $status_coll->getFase()!='Presentato')
+              $link_collegato= $link_collegato." (".$status_coll->getFase().")"; 
+          }
+        }  
       }     
     }
     
@@ -74,6 +89,7 @@ if ($last_status->getOppEmIter()->getFase()!='Presentato')
       }
     }
     
+
     if ($last_status->getOppEmIter()->getFase()!='Altro') 
       echo " (".$last_status->getNota().")";
     else
