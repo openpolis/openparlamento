@@ -79,7 +79,7 @@ class OppCarica extends BaseOppCarica
       if (is_null($suo_gruppo)) return 'gov';
       else
       {
-        if ($suo_gruppo->isMaggioranza()) return 'gruppo';
+        if ($suo_gruppo->isMaggioranza($data)) return 'gruppo';
         else return 'opp';
       }
     } 
