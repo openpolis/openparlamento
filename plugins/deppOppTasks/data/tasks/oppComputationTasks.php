@@ -32,7 +32,7 @@ function run_opp_calcola_indice($task, $args, $options)
     define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
     define('SF_APP', 'fe');
     define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', true);
+    define('SF_DEBUG', false);
 
     require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
                   DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
@@ -121,7 +121,7 @@ function run_opp_calcola_indice($task, $args, $options)
     }
     
     printf("%4d) %40s [%06d] ... ", $cnt, $politico, $id);
-    $indice = calcola_indice_politico($id, $settimana, $verbose);
+    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $settimana, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
     $cache_record = OppPoliticianHistoryCachePeer::retrieveByLegislaturaChiTipoChiId($legislatura_corrente, 'P', $id);
@@ -153,38 +153,3 @@ function run_opp_calcola_indice($task, $args, $options)
 }
 
 
-function calcola_indice_politico($id, $settimana = '', $verbose = '')
-{
-  // fetch dell'oggetto OppCarica
-  $carica = OppCaricaPeer::retrieveByPK($id);
-  
-  // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla fine della settimana indagata
-  if ($settimana == '') {
-    $atti = $carica->getPresentedAttos();
-    $emendamenti = $carica->getPresentedEmendamentos();
-  } else {
-    $atti = $carica->getPresentedAttos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
-    $emendamenti = $carica->getPresentedEmendamentos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
-  }
-
-  $punteggio = 0.;
-  
-  // --- componente dell'indice dovuta agli atti ---
-  if ($verbose)
-    printf("\n  numero atti: %d\n", count($atti));
-  foreach ($atti as $atto) {
-    $punteggio += OppIndiceAttivitaPeer::calcolaIndiceAtto($carica, $atto, $settimana, $verbose);
-  }
-
-  // --- componente dell'indice dovuta agli emendamenti ---
-  if ($verbose)
-    printf("\n  numero emendamenti: %d\n", count($emendamenti));
-  foreach ($emendamenti as $emendamento) {
-    $punteggio += OppIndiceAttivitaPeer::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $verbose);
-  }
-  
-  // --- componente dell'indice dovuta agli interventi (in sedute)
-  $punteggio += OppIndiceAttivitaPeer::calcolaPunteggioInterventi($carica, $settimana, $verbose);
-  
-  return $punteggio;
-}

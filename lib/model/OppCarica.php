@@ -68,8 +68,18 @@ class OppCarica extends BaseOppCarica
   {
     $mio_gruppo = $this->getGruppo($data);
     $suo_gruppo = $carica->getGruppo($data);
-    
-    if (is_null($mio_gruppo) || is_null($suo_gruppo)) return null;
+
+    // eccezione membri del governo
+    if (is_null($mio_gruppo))
+    {
+      // cofirme di altri membri del governo non danno punti
+      if (is_null($suo_gruppo)) return 'gov';
+      else
+      {
+        if ($suo_gruppo->isMaggioranza()) return 'gruppo';
+        else return 'opp';
+      }
+    } 
 
     // calcolo le maggioranza, passando i gruppi già calcolati (meno query)
     $mia_maggioranza = $this->inMaggioranza($data, $mio_gruppo);
