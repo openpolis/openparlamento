@@ -114,29 +114,29 @@ class monitoringComponents extends sfComponents
   {
     if ($atto==1)
     {
-      if ($tipo=="P") return "10";
-      if ($tipo=="C") return "3";
-      if ($tipo=="R") return "6";
+      if ($tipo=="P") return "6";
+      if ($tipo=="C") return "2";
+      if ($tipo=="R") return "0";
     }
     if ($atto==2)
     {
-      if ($tipo=="P") return "6";
-      if ($tipo=="C") return "2";
+      if ($tipo=="P") return "3";
+      if ($tipo=="C") return "0.5";
     }
     if ($atto>=3 || $atto<=6)
     {
-      if ($tipo=="P") return "3";
-      if ($tipo=="C") return "1";
+      if ($tipo=="P") return "1";
+      if ($tipo=="C") return "0.5";
     }
     if ($atto>=7 || $atto<=9)
     {
-      if ($tipo=="P") return "5";
-      if ($tipo=="C") return "2";
+      if ($tipo=="P") return "2";
+      if ($tipo=="C") return "0.5";
     }
     if ($atto>=10 || $atto<=11)
     {
-      if ($tipo=="P") return "4";
-      if ($tipo=="C") return "2";
+      if ($tipo=="P") return "2";
+      if ($tipo=="C") return "0.5";
     }
   }
   
