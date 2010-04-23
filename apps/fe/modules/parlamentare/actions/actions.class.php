@@ -604,6 +604,14 @@ class parlamentareActions extends sfActions
   }
 
 
+  public function executeListNuovoIndice()
+  {
+    $ramo = $this->getRequestParameter('ramo');
+
+    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getClassificaParlamentariRS($ramo);
+    
+  }
+  
 	public function executePicture()
 	{
 	  $pol = OppPoliticoPeer::retrieveByPk($this->getRequestParameter('id'));

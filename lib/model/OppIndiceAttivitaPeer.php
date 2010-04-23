@@ -158,7 +158,7 @@ class OppIndiceAttivitaPeer
             ' xmlns:xlink="'.self::$xlink_ns.'" >'.
       '</opp>');
       
-    // self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="dettaglio_politici.xslt"');
+    self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
     // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla fine della settimana indagata

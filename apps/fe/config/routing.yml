@@ -247,6 +247,10 @@ parlamentariSearch:
   url: /parlamentariSearch/*
   param: { module: sfSolr, action: parlamentariSearch }
 
+parlamentari_nuovo_indice:
+  url: /parlamentari_nuovo_indice/:ramo
+  param: { module: parlamentare, action: listNuovoIndice, ramo: camera }
+  
 parlamentari:
 #  url:   /parlamentari/:ramo/*
   url:   /parlamentari/:ramo/:sort/:type/*
