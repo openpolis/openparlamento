@@ -39,7 +39,13 @@
       
      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
                           'icona parlamentare') ?>
-                
+      
+     <?php if ($lontano[1]->getTipoCaricaId()==1) : ?>
+      <?php echo "On. " ?>      
+     <?php endif; ?>  
+      <?php if ($lontano[1]->getTipoCaricaId()==4 || $lontano[1]->getTipoCaricaId()==5 ) : ?>
+       <?php echo "Sen. " ?>      
+      <?php endif; ?>     
      <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
      <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
      <?php foreach($gruppi as $nome => $gruppo): ?>
@@ -91,6 +97,13 @@
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
                         'icona parlamentare') ?>
+   
+  <?php if ($vicino[1]->getTipoCaricaId()==1) : ?>
+   <?php echo "On. " ?>      
+  <?php endif; ?>  
+   <?php if ($vicino[1]->getTipoCaricaId()==4 || $vicino[1]->getTipoCaricaId()==5 ) : ?>
+    <?php echo "Sen. " ?>      
+   <?php endif; ?>
    <?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
    <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
    <?php foreach($gruppi as $nome => $gruppo): ?>
