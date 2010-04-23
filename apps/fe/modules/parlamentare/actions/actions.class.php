@@ -606,9 +606,9 @@ class parlamentareActions extends sfActions
 
   public function executeListNuovoIndice()
   {
-    $ramo = $this->getRequestParameter('ramo');
+    $this->ramo = $this->getRequestParameter('ramo');
 
-    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getClassificaParlamentariRS($ramo);
+    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getClassificaParlamentariRS($this->ramo);
     
   }
   
