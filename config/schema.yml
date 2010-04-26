@@ -267,6 +267,20 @@ propel:
     created_at:
     updated_at:
 
+
+  opp_act_history_cache:
+    legislatura:      { type: integer }
+    anno:             { type: integer }
+    mese:             { type: integer }
+    data:             { type: date, primaryKey: true, required: true }
+    indice:           { type: float, index: true }
+    chi_tipo:         { type: varchar(1), primaryKey: true, default: 'T' }
+    chi_id:           { type: integer, primaryKey: true, default: 0 }
+    tipo_atto_id:     { type: integer, index: true }
+    created_at:
+    updated_at:
+
+
   opp_politico:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 
     nome:               { type: varchar(30) }

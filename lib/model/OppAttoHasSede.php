@@ -9,6 +9,8 @@
  */ 
 class OppAttoHasSede extends BaseOppAttoHasSede
 {
+
+  
 }
 
 sfPropelBehavior::add(

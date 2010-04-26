@@ -5,7 +5,7 @@
  *
  * @package lib.model
  */ 
-class OppIndiceAttivitaPeer
+class OppIndiceAttivitaPeer extends OppIndicePeer
 {
 
   public static $soglia_cofirme = 10;
@@ -27,7 +27,7 @@ class OppIndiceAttivitaPeer
                               'cofirme_gov_lo'      => array('m' => 0.0, 'o' =>  0.0),
                               'cofirme_gov_hi'      => array('m' => 0.0, 'o' =>  0.0),
                               'discusso_in_comm'    => array('m' => 1.0, 'o' =>  3.0),
-                              'discusso_in_ass'     => array('m' => 1.5, 'o' =>  1.5),
+                              'discusso_in_ass'     => array('m' => 1.5, 'o' =>  4.5),
                               'votato'              => array('m' =>   0, 'o' =>    0),
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' => 4.0, 'o' => 12.0),
@@ -129,14 +129,23 @@ class OppIndiceAttivitaPeer
   );
 
  
-  public static function getFileSystem()
+  /**
+   * ritorna il punteggio per un tipo di atto, di azione e per maggioranza o opposizione
+   *
+   * @param string $tipo_atto
+   * @param string $tipo_azione 
+   * @param string $maggioranza 
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public function getPunteggio($tipo_atto, $tipo_azione, $maggioranza)
   {
-    if (self::$filesystem == null)
-      self::$filesystem = new sfFileSystem();
-      
-    return self::$filesystem;
+    if (!array_key_exists($tipo_azione, self::$punteggi[$tipo_atto])) {
+      return 0.0;
+    }
+    return self::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
   }
-  
+
   /**
    * calcola l'indice di attività per un politico
    *
@@ -514,51 +523,5 @@ class OppIndiceAttivitaPeer
   }
 
 
-  /**
-   * ritorna il punteggio per un tipo di atto, di azione e per maggioranza o opposizione
-   *
-   * @param string $tipo_atto
-   * @param string $tipo_azione 
-   * @param string $maggioranza 
-   * @return float
-   * @author Guglielmo Celata
-   */
-  public function getPunteggio($tipo_atto, $tipo_azione, $maggioranza)
-  {
-    if (!array_key_exists($tipo_azione, self::$punteggi[$tipo_atto])) {
-      return 0.0;
-    }
-    return self::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
-  }
-  
-  /**
-   * genera una processing instruction per includere link all'xsl nell'xml
-   *
-   * @param string $xml_node 
-   * @param string $name 
-   * @param string $value 
-   * @return void
-   * @author Guglielmo Celata
-   */
-  protected static function addProcessingInstruction( $xml_node, $name, $value )
-  {
-      // Create a DomElement from this simpleXML object
-      $dom_sxe = dom_import_simplexml($xml_node);
-     
-      // Create a handle to the owner doc of this xml
-      $dom_parent = $dom_sxe->ownerDocument;
-     
-      // Find the topmost element of the domDocument
-      $xpath = new DOMXPath($dom_parent);
-      $first_element = $xpath->evaluate('/*[1]')->item(0);
-     
-      // Add the processing instruction before the topmost element           
-      $pi = $dom_parent->createProcessingInstruction($name, $value);
-      $dom_parent->insertBefore($pi, $first_element);
-  }
-  
-  
-  
-  
   
 }

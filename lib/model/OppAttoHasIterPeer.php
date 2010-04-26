@@ -20,5 +20,23 @@ class OppAttoHasIterPeer extends BaseOppAttoHasIterPeer
     
     return self::doSelectJoinOppIter($c);
   }
+
+  /**
+   * legge gli itinera interessanti di un singolo atto
+   * interessanti sono quelli cui vengono sassegnati dei punti
+   *
+   * @param string $atto_id 
+   * @param string $data 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function getItineraAttoDataRS($atto_id, $data)
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select ai.data, i.id as iter_id from opp_iter i, opp_atto_has_iter ai where ai.atto_id=%d and ai.data < '%s' and ai.iter_id=i.id and i.id in (4, 7, 58, 57, 54, 52, 36, 30, 20, 16);",
+                   $atto_id, $data);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
   
 }

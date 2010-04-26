@@ -85,19 +85,7 @@ class OppAtto extends BaseOppAtto
 
   public function votatoDaOpposizione()
   {
-    $c = new Criteria();
-    $c->addJoin(OppVotazioneHasAttoPeer::VOTAZIONE_ID, OppVotazionePeer::ID);
-    $c->addJoin(OppVotazionePeer::ID, OppVotazioneHasGruppoPeer::VOTAZIONE_ID);
-    $c->addJoin(OppVotazioneHasGruppoPeer::GRUPPO_ID, OppGruppoIsMaggioranzaPeer::GRUPPO_ID);
-    $c->add(OppVotazioneHasAttoPeer::ATTO_ID, $this->getId());
-    $c->add(OppVotazionePeer::FINALE, 1);
-    $c->add(OppGruppoIsMaggioranzaPeer::MAGGIORANZA, 0);
-
-    $n_voti = OppVotazioneHasGruppoPeer::doCount($c);
-    if ($n_voti > 0)
-      return true;
-    else 
-      return false;
+    return isAttoVotatoDaOpposizione($this->getId());
   }
   
   

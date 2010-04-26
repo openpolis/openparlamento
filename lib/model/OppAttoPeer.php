@@ -62,6 +62,73 @@ class OppAttoPeer extends BaseOppAttoPeer
   
 
   /**
+   * torna array di OppAtto a partire da un array di ID 
+   *
+   * @param array $ids 
+   * @return array of OppAtto
+   * @author Guglielmo Celata
+   */
+  public function getRSFromIDArray($ids)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_atto a where a.id in (%s)",
+                   implode(",", $ids));
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+
+  public static function isAttoVotatoDaOpposizione($atto_id, $data)
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+
+    $sql = sprintf("select count(*) as nm from opp_votazione_has_atto va, opp_votazione v, opp_votazione_has_gruppo vg, opp_gruppo_is_maggioranza gm, opp_seduta s  where va.votazione_id=v.id and v.seduta_id=s.id and vg.votazione_id=v.id and vg.gruppo_id=gm.gruppo_id and va.atto_id=%d and v.finale=1 and gm.maggioranza = 0 and s.data < '%s' and gm.data_inizio < '%s' and (gm.data_fine > '%s' or gm.data_fine is null)",
+                   $atto_id, $data, $data, $data);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    
+    $rs->next();
+    $row = $rs->getRow();
+    $n_gruppi_maggioranza = $row['nm'];
+
+    if ($n_gruppi_maggioranza > 0)
+      return true;
+    else 
+      return false;
+  }
+
+  /**
+   * estrae gli atti presentati entro una certa data
+   * @param string   $data ['', 'y-m-d']
+   * @param integer  $offset
+   * @param integer  $limit
+   * @return recordset
+   * @author Guglielmo Celata
+   */
+  public static function getAttiDataRS($data, $offset = null, $limit = null)
+  {
+    // calcolo della legislatura
+    $legislatura = OppLegislaturaPeer::getCurrent($data);
+
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_atto a where legislatura = %d and data_pres < '%s' order by data_pres desc",
+                   $legislatura, $data);
+    if (!is_null($limit)) {
+      if (!is_null($offset))
+        $sql .= " limit $offset, $limit";
+      else
+        $sql .= " limit $limit";
+    }
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+
+
+  /**
    * extracts all acts of the given type, subjected to filters passed along
    *
    * @param string $atto_type_ids       constant to select the type of act
