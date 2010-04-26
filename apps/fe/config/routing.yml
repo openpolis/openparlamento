@@ -271,6 +271,10 @@ parlamentare_voti:
 parlamentare_interventi:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
+  
+parlamentare_emendamenti:
+  url:  /parlamentare_emendamenti/:id/*
+  param: { module: parlamentare, action: emendamenti }  
 
 comparaDeputati:
   url:   /parlamentare/comparaDeputati/:id1/:id2/:ramo/*
