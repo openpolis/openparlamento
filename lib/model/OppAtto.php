@@ -13,6 +13,11 @@ class OppAtto extends BaseOppAtto
   protected $lastIMTagsCriteria = null;
   public $priority_override = 0;
   
+  public function getRamoNumfase()
+  {
+    return $this->getRamo().".".$this->getNumfase();
+  }
+  
   public function countDirectlyMonitoringUsers()
   {
     return $this->countMonitoringUsers(true);
