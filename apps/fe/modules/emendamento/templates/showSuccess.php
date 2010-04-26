@@ -36,7 +36,7 @@
         <?php if ($emendamento->getDataPres()): ?>
         <ul style="margin-bottom: 12px; margin-top: 12px;" class="presentation float-container">
           <li><h6>presentato il <em><?php echo format_date($emendamento->getDataPres(), 'dd/MM/yyyy') ?></em>
-          in <em><?php echo $emendamento->getOppSede()->getDenominazione() ?></em>
+          in <em><?php echo $emendamento->getOppSede()->getDenominazione() ?><?php echo ($emendamento->getOppSede()->getRamo()=='C'?' della Camera':' del Senato') ?></em>
            <?php $f_signers= OppEmendamentoPeer::doSelectPrimiFirmatari($emendamento->getId()); ?>
             <?php if (count($f_signers)>0) : ?>
                <?php $c = new Criteria() ?>
