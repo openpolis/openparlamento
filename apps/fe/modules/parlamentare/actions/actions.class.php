@@ -467,6 +467,140 @@ class parlamentareActions extends sfActions
        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
 	  
   }
+  
+  public function executeEmendamenti()
+  {
+    $this->_getAndCheckParlamentare(); 
+  
+    if ($this->carica) {
+      if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
+      if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
+      $this->ramo = $ramo=='C' ? 'camera' : 'senato';
+      if ($this->ramo=='camera')
+        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
+     else
+        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
+    }
+    else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
+        
+  
+    $this->session = $this->getUser();
+    
+    
+
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_ddls_collegati', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_firma', '0');
+     // $this->getRequest()->getParameterHolder()->set('filter_act_ramo', '0');
+      // $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+    }
+
+    $this->processEmendamentiFilters(array('ddls_collegati','act_firma'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_ddls_collegati') == '0' &&
+        $this->getRequestParameter('filter_act_firma') == '0')
+    {
+      $this->redirect('@parlamentare_emendamenti?id='.$this->getRequestParameter('id'));
+    }
+  
+    //$this->processEmendamentiSort();
+    
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppCaricaHasEmendamento', $itemsperpage);
+
+    // estrazione cariche parlamentare
+    $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
+    
+    // estrae tutti i ddls
+    $c=new Criteria();
+    $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
+    $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
+    $emens=OppEmendamentoPeer::doSelect($c);
+    $this->ddls_collegati=array();
+    foreach($emens as $em)
+    {
+      $ddls=$em->getOppAttoHasEmendamentos();
+      $ddl=$ddls[0]->getOppAtto();
+      if (!in_array( $ddl,$this->ddls_collegati))
+         $this->ddls_collegati[]=$ddl;
+    }
+   
+    
+    $c = new Criteria();
+    $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
+    $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
+	  $this->addEmendamentiFiltersCriteria($c);    
+	  //$this->addAttiSortCriteria($c);
+  
+  	$c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
+  	$this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelectJoinOppEmendamento');
+    $this->pager->init();
+  }
+  
+  protected function processEmendamentiFilters($active_filters)
+  {
+
+    $this->filters = array();
+
+    // legge i filtri dalla request e li scrive nella sessione utente
+    // sia in POST che in GET (per i link a liste filtrate)
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET) 
+    {
+      
+      if ($this->hasRequestParameter('filter_ddls_collegati'))
+        $this->session->setAttribute('ddls_collegati', $this->getRequestParameter('filter_ddls_collegati'), 'acts_filter');
+      
+      if ($this->hasRequestParameter('filter_act_firma'))
+        $this->session->setAttribute('act_firma', $this->getRequestParameter('filter_act_firma'), 'acts_filter');
+
+    }
+    
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    
+    if (in_array('ddls_collegati', $active_filters))
+      $this->filters['ddls_collegati'] = $this->session->getAttribute('ddls_collegati', '0', 'acts_filter');
+   
+    if (in_array('act_firma', $active_filters))
+      $this->filters['act_firma'] = $this->session->getAttribute('act_firma', '0', 'acts_filter');
+  }
+  
+  protected function addEmendamentiFiltersCriteria($c)
+  {
+    // filtro per firma
+    if (array_key_exists('act_firma', $this->filters) && $this->filters['act_firma'] != '0')
+      $c->add(OppCaricaHasEmendamentoPeer::TIPO, $this->filters['act_firma']);
+    
+    // filtro per ddl
+    if (array_key_exists('ddls_collegati', $this->filters) && $this->filters['ddls_collegati'] != '0')
+    {
+      $c->addJoin(OppEmendamentoPeer::ID, OppAttoHasEmendamentoPeer::EMENDAMENTO_ID);
+      $c->addJoin(OppAttoPeer::ID, OppAttoHasEmendamentoPeer::ATTO_ID);
+      $c->add(OppAttoPeer::ID, $this->filters['ddls_collegati']);
+      $c->setDistinct();
+    }  
+      
+    /*
+    // filtro per stato di avanzamento
+    if (array_key_exists('act_stato', $this->filters) && $this->filters['act_stato'] != '0')
+      $c->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
+
+    // filtro per tipo di decreto legislativo
+    if (array_key_exists('act_type', $this->filters) && $this->filters['act_type'] != '0')
+      $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
+      
+     */   
+    
+  }
 
   public function executeList()
   {

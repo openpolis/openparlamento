@@ -40,6 +40,19 @@
           <?php endif ?>
         </tr>
       <?php endforeach; ?>
+      <th scope="row" style="padding-left:3px;"><?php echo 'emendamenti '.image_tag('/images/ico-new.png') ?></th>
+        <?php if ($emen_primo > 0): ?>
+          <td><?php echo link_to($emen_primo,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&filter_act_firma=P') ?></td>
+        <?php else: ?>
+          <td> - </td> 
+        <?php endif ?>
+        <?php if ($emen_co > 0): ?>  
+          <td><?php echo link_to($emen_co,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&filter_act_firma=C') ?></td>
+        <?php else: ?>
+          <td> - </td> 
+        <?php endif ?>  
+        <td> - </td>
+      
     </tbody>
   </table>
 <?php else: ?>  

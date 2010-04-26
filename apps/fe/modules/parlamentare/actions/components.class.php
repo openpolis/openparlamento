@@ -142,6 +142,24 @@ class parlamentareComponents extends sfComponents
     
     $this->atti_presentati = $atti;
     
+    for ($x=0;$x<2;$x++)
+    {
+       $c=new Criteria();
+       $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID,$cariche_ids,Criteria::IN);
+       if ($x==0)
+       {
+         $c->add(OppCaricaHasEmendamentoPeer::TIPO,'P');
+         $this->emen_primo=OppCaricaHasEmendamentoPeer::doCount($c);
+       }
+       else
+       {
+         $c->add(OppCaricaHasEmendamentoPeer::TIPO,'C');
+         $this->emen_co=OppCaricaHasEmendamentoPeer::doCount($c);
+       }
+    }
+   
+    
+    
   }
   
   
