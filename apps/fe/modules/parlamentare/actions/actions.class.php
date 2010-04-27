@@ -487,7 +487,6 @@ class parlamentareActions extends sfActions
     $this->session = $this->getUser();
     
     
-    /*
     // reset dei filtri se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
     {
@@ -505,7 +504,6 @@ class parlamentareActions extends sfActions
     {
       $this->redirect('@parlamentare_emendamenti?id='.$this->getRequestParameter('id'));
     }
-    */
   
     //$this->processEmendamentiSort();
     
@@ -520,7 +518,7 @@ class parlamentareActions extends sfActions
     $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
     
     /*
-    // estrae tutti i ddls
+    // estrae tutti i ddl collegati
     $c=new Criteria();
     $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
     $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
@@ -534,13 +532,14 @@ class parlamentareActions extends sfActions
          $this->ddls_collegati[]=$ddl;
     }
     */
+    $this->ddls_collegati = OppCaricaHasEmendamentoPeer::getDDLCollegatiCariche($cariche_ids);
    
     
     $c = new Criteria();
     $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
     $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
-	  //$this->addEmendamentiFiltersCriteria($c);    
-	  //$this->addAttiSortCriteria($c);
+	  $this->addEmendamentiFiltersCriteria($c);    
+	  $this->addAttiSortCriteria($c);
   
   	$c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
   	$this->pager->setCriteria($c);
