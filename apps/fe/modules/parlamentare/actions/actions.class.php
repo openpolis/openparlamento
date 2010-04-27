@@ -536,7 +536,7 @@ class parlamentareActions extends sfActions
     $c = new Criteria();
     $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
     $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
-	  $this->addEmendamentiFiltersCriteria($c);    
+	  //$this->addEmendamentiFiltersCriteria($c);    
 	  //$this->addAttiSortCriteria($c);
   
   	$c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
@@ -581,6 +581,7 @@ class parlamentareActions extends sfActions
       $c->add(OppCaricaHasEmendamentoPeer::TIPO, $this->filters['act_firma']);
     
     // filtro per ddl
+    
     if (array_key_exists('ddls_collegati', $this->filters) && $this->filters['ddls_collegati'] != '0')
     {
       $c->addJoin(OppEmendamentoPeer::ID, OppAttoHasEmendamentoPeer::EMENDAMENTO_ID);
