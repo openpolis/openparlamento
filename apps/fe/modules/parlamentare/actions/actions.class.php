@@ -519,6 +519,7 @@ class parlamentareActions extends sfActions
     // estrazione cariche parlamentare
     $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
     
+    /*
     // estrae tutti i ddls
     $c=new Criteria();
     $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
@@ -532,6 +533,7 @@ class parlamentareActions extends sfActions
       if (!in_array( $ddl,$this->ddls_collegati))
          $this->ddls_collegati[]=$ddl;
     }
+    */
    
     
     $c = new Criteria();
