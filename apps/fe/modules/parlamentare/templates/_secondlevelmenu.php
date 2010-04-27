@@ -10,13 +10,13 @@
 	      <?php echo link_to('I suoi atti', $current=='atti'?'#':'@parlamentare_atti?id='.$parlamentare_id) ?>
 		  </h5>
 		</li>
-		<!--
-		<li class="<?php //echo($current=='emendamenti' ? 'current' : '' ) ?>">
+		
+		<li class="<?php echo($current=='emendamenti' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php //echo link_to('I suoi emendamenti '.image_tag('/images/ico-new.png'), $current=='emendamenti'?'#':'@parlamentare_emendamenti?id='.$parlamentare_id) ?>
+	      <?php echo link_to('I suoi emendamenti '.image_tag('/images/ico-new.png'), $current=='emendamenti'?'#':'@parlamentare_emendamenti?id='.$parlamentare_id) ?>
 		 </h5>
 		</li>
-		-->
+		
     <li class="<?php echo($current=='voti' ? 'current' : '' ) ?>">
 		  <h5>
 	      <?php echo link_to('I suoi voti', $current=='voti'?'#':'@parlamentare_voti?id='.$parlamentare_id) ?>
