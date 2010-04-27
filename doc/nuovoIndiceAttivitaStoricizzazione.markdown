@@ -98,7 +98,7 @@ Esiste una tabella di cache per gli storici degli argomenti: `opp_tag_history_ca
       mese:        integer 4 (tutto aprile 2010)
       settimana:   integer 15 (la quindicesima settimana dell'anno)
       indice:      float
-      tag_tipo:    varchar(1) Tutti | Tag
+      tag_tipo:    varchar(1) Tutti | Singolo tag
       tag_id:      integer
       numero:      integer
 

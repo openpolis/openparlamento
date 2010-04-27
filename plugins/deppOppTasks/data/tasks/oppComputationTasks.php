@@ -20,6 +20,9 @@ pake_task('opp-calcola-indice', 'project_exists');
 pake_desc("calcola la rilevanza per gli atti");
 pake_task('opp-calcola-rilevanza-atti', 'project_exists');
 
+pake_desc("calcola la rilevanza per gli argomenti");
+pake_task('opp-calcola-rilevanza-tag', 'project_exists');
+
 /**
  * Calcola o ri-calcola l'indice di attività.
  * Si può specificare il ramo (camera, senato, governo, tutti) e il periodo (legislatura[tutto], anno, mese, settimana)
@@ -207,7 +210,7 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
-    $data = date('Y-m-d H:i');
+    $data = date('Y-m-d');
   }
 
   $msg = sprintf("calcolo rilevanza atti - fino a: %10s\n", $data);
@@ -241,7 +244,7 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppActHistoryCachePeer::retrieveByLegislaturaChiTipoChiId($legislatura_corrente, 'A', $atto_id);
+    $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data, 'A', $atto_id);
     if (!$cache_record) {
       $cache_record = new OppActHistoryCache();
     }
@@ -264,6 +267,109 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
   }
 
   $msg = sprintf("%d atti elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+}
+
+
+/**
+ * Calcola o ri-calcola la rilevanza degli argomenti, come somma della rilevanza degli atti taggati
+ * Si può specificare il una data fino alla quale calcolare la rilevanza
+ * Se sono passati degli ID (argomenti), sono interpretati come ID di argomenti e il calcolo è fatto solo per loro
+ */
+function run_opp_calcola_rilevanza_tag($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
+    define('SF_APP', 'fe');
+    define('SF_ENVIRONMENT', 'task');
+    define('SF_DEBUG', false);
+
+    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
+                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
+                  DIRECTORY_SEPARATOR.'config.php');
+
+
+    sfContext::getInstance();
+    sfConfig::set('pake', true);
+    
+    error_reporting(E_ALL);
+
+    $loaded = true;
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $data = '';
+  $verbose = false;
+  $offset = null;
+  $limit = null;
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('verbose', $options)) {
+    $verbose = true;
+  }
+  if (array_key_exists('offset', $options)) {
+    $offset = $options['offset'];
+  }
+  if (array_key_exists('limit', $options)) {
+    $limit = $options['limit'];
+  }
+
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+  } else {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d');
+  }
+
+
+  $msg = sprintf("calcolo rilevanza tag - fino a: %10s\n", $data);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+  if (count($args) > 0)
+  {
+    $tags_ids = $args;
+  } else {
+    $tags_ids = TaggingPeer::getActiveTagsIdsData('OppAtto', $data);    
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  foreach ($tags_ids as $cnt => $tag_id) {
+
+    printf("%4d) %d ... ", $cnt+1, $tag_id);
+    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_tag($tag_id, $data, $verbose);
+
+    // inserimento o aggiornamento del valore in opp_tag_history_cache
+    $cache_record = OppTagHistoryCachePeer::retrieveByDataChiTipoChiId($data, 'S', $tag_id);
+    if (!$cache_record) {
+      $cache_record = new OppTagHistoryCache();
+    }
+    $cache_record->setLegislatura($legislatura_corrente);
+    $cache_record->setChiTipo('S');
+    $cache_record->setChiId($tag_id);
+    $cache_record->setIndice($indice);
+    $cache_record->setData($data);
+    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
+    $cache_record->save();
+    unset($cache_record);
+
+    $msg = sprintf("%7.2f", $indice);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" %10d\n", memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+  }
+
+  $msg = sprintf("%d tag elaborati\n", $cnt+1);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
 

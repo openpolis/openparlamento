@@ -339,5 +339,100 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
     return $punteggio;
   }
+
+
+  /**
+   * calcola l'indice di rilevanza per un tag (e produce l'xml di dettaglio)
+   *
+   * @param integer $tag_id
+   * @param date $data 
+   * @param boolean $verbose 
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public static function calcola_rilevanza_tag($tag_id, $data = '', $verbose = '')
+  {
+    // inizializzazione xml con dettaglio computazione
+    $xml_node = new SimpleXMLElement(
+      '<opp xmlns="'.self::$opp_ns.'" '.
+            ' xmlns:op="'.self::$op_ns.'" '.
+            ' xmlns:xlink="'.self::$xlink_ns.'" >'.
+      '</opp>');
+      
+    // self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/tag.xslt"');
+    $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
+  
+    $punteggio = self::calcolaRilevanzaTag($tag_id, $data, $content_node, $verbose);
+  
+
+    $content_node->addAttribute('totale', $punteggio);
+
+    $xml_storage_path = sfConfig::get('xml-storage-path', 
+                                       SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'xml');
+    $tag_path = $xml_storage_path.DIRECTORY_SEPARATOR.'indici'.DIRECTORY_SEPARATOR.'tag';
+    $file_path = $tag_path.DIRECTORY_SEPARATOR."$tag_id.xml";
+
+    // scrittura xml su file system
+    try
+    {
+      if (!file_exists($file_path))
+      {
+        $created = self::getFilesystem()->mkdirs($tag_path);
+        if (!$created)
+          throw new Exception('Impossibile creare directory ' . $tag_path);
+      }
+      
+      $fp = @fopen($file_path, "w");
+      fputs($fp, $xml_node->asXML());
+      if ($verbose)
+        printf("    scrittura di: %s\n", $file_path);
+    } catch (Exception $e) {
+      printf("Errore durante la scrittura del file: %s.\n%s\n",  $file_path, $e->getMessage());
+    }
+  
+    return $punteggio;
+  }
+
+  /**
+   * calcola l'indice di rilevanza accumulato fino a una certa data, per un tag
+   * come somma degli indici di rilevanza di tutti gli atti taggati con quel tag 
+   *
+   * @param integer $tag_id
+   * @param date $data 
+   * @param SimpleXMLElement    $xml_node   
+   * @param boolean   $verbose
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public static function calcolaRilevanzaTag($tag_id, $data, $xml_node, $verbose = false)
+  {
+    $tag_node = $xml_node->addChild('tag', null, self::$opp_ns);
+    
+    // estrazione array atti taggati a una certa data
+    $atti_ids = TaggingPeer::getTaggableIdsData($tag_id, 'OppAtto', $data);
+    
+    if ($verbose)
+      printf("tag: %10s\n", $tag_id);
+
+    $tag_node->addAttribute('id', $tag_id);    
+    $tag_node->addAttribute('n_atti', count($atti_ids));    
+
+    $punteggio = 0.0;
+    
+    // --- estrazione rilevanza singoli atti ---
+    foreach ($atti_ids as $cnt => $atto_id) {
+      $punteggio += $d_punteggio = OppActHistoryCachePeer::getIndiceForAttoData($atto_id, $data);
+      $atto_node = $tag_node->addChild('atto', null, self::$opp_ns);
+      $atto_node->addAttribute('totale', $d_punteggio);
+      if ($verbose)
+        printf("atto: %10s totale: %7.2f\n", $atto_id, $d_punteggio);
+    }
+    
+    $tag_node->addAttribute('totale', $punteggio);
+
+    return $punteggio;
+  }
+
+ 
   
 }
