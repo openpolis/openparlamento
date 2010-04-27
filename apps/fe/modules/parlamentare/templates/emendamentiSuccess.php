@@ -24,15 +24,14 @@
    		</div>
    		
    		
-   		<?php include_partial('emendamentiFilter',
-                            array('ddls_collegati' => $ddls_collegati,
-                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                                                        
-                                  'selected_ddls_collegati' => array_key_exists('ddls_collegati', $filters)?$filters['ddls_collegati']:0,
-                                  'selected_act_firma' => array_key_exists('act_firma', $filters)?$filters['act_firma']:0)) ?>
+   		<?php //include_partial('emendamentiFilter',
+                            //array('ddls_collegati' => $ddls_collegati,
+                              //    'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                                                        
+                                //  'selected_ddls_collegati' => array_key_exists('ddls_collegati', $filters)?$filters['ddls_collegati']:0,
+                                //  'selected_act_firma' => array_key_exists('act_firma', $filters)?$filters['act_firma']:0)) ?>
  
       
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
-                                                             'route' => '@parlamentare_emendamenti?id='.$parlamentare->getId())); ?>
+      <?php //echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_emendamenti?id='.$parlamentare->getId())); ?>
 
       <?php include_partial('emendamentiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>

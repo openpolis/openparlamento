@@ -487,7 +487,7 @@ class parlamentareActions extends sfActions
     $this->session = $this->getUser();
     
     
-
+    /*
     // reset dei filtri se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
     {
@@ -505,6 +505,7 @@ class parlamentareActions extends sfActions
     {
       $this->redirect('@parlamentare_emendamenti?id='.$this->getRequestParameter('id'));
     }
+    */
   
     //$this->processEmendamentiSort();
     
