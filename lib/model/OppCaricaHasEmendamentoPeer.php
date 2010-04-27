@@ -46,7 +46,7 @@ class OppCaricaHasEmendamentoPeer extends BaseOppCaricaHasEmendamentoPeer
   public static function getDDLCollegatiCariche($cariche_ids)
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select ae.atto_id, count(ae.atto_id) n_emendamenti from opp_carica_has_emendamento ce, opp_emendamento e, opp_atto_has_emendamento ae where ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id in (%s) group by ae.atto_id order by n_emendamenti desc",
+    $sql = sprintf("select ae.atto_id, count(ae.atto_id) n_emendamenti from opp_carica_has_emendamento ce, opp_emendamento e, opp_atto_has_emendamento ae where ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id in (%s) and ae.portante=1 group by ae.atto_id order by n_emendamenti desc",
                    implode(",", $cariche_ids));
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
