@@ -584,8 +584,8 @@ class parlamentareActions extends sfActions
     if (array_key_exists('ddls_collegati', $this->filters) && $this->filters['ddls_collegati'] != '0')
     {
       $c->addJoin(OppEmendamentoPeer::ID, OppAttoHasEmendamentoPeer::EMENDAMENTO_ID);
-      $c->addJoin(OppAttoPeer::ID, OppAttoHasEmendamentoPeer::ATTO_ID);
-      $c->add(OppAttoPeer::ID, $this->filters['ddls_collegati']);
+      //$c->addJoin(OppAttoPeer::ID, OppAttoHasEmendamentoPeer::ATTO_ID);
+      $c->add(OppAttoHasEmendamentoPeer::ATTO_ID, $this->filters['ddls_collegati']);
       $c->setDistinct();
     }  
       
