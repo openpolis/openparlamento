@@ -539,7 +539,7 @@ class parlamentareActions extends sfActions
     $c->addJoin(OppEmendamentoPeer::ID, OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID);
     $c->add(OppCaricaHasEmendamentoPeer::CARICA_ID, $cariche_ids, Criteria::IN);
 	  $this->addEmendamentiFiltersCriteria($c);    
-	  $this->addAttiSortCriteria($c);
+	  //$this->addAttiSortCriteria($c);
   
   	$c->addDescendingOrderByColumn(OppEmendamentoPeer::DATA_PRES);
   	$this->pager->setCriteria($c);
