@@ -33,6 +33,32 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
     return $val;
   }
   
+
+  public static function get_nuovo_fattore_firma($tipo)
+  {
+    switch ($tipo)
+    {
+      case 'P':
+        $val = 5.0;
+        break;
+      
+      case 'R':
+        $val = 3.0;
+        break; 
+        
+      case 'C':
+        $val = 0.5;
+        break;
+        
+      default:
+        $val = 0.;
+        break;
+    }
+    
+    return $val;
+  }
+  
+  
   /**
    * estrae tutte le firme per un determinato atto, prima di una determinata data
    *

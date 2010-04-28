@@ -198,6 +198,11 @@ argomento_nonleg:
   url:   /argomento_nonleg/:triple_value/*
   param: { module: argomento, action: showNonleg }
 
+argomento_sioccupanodi:
+  url:   /argomento_sioccupanodi/:triple_value/:ramo/*
+  param: { module: argomento, action: listSiOccupanoDi }
+
+
 argomenti_per_categoria:
   url: /argomenti_per_categoria/*
   param: { module: argomento, action: ajaxTagsForTopTerm }

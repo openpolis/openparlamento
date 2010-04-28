@@ -9,6 +9,78 @@
  */ 
 class OppCaricaPeer extends BaseOppCaricaPeer
 {
+
+  /**
+   * torna un array associativo di politici che si occupano di una carica, 
+   * ortinati in base al punteggio, con eventuale limit e offset
+   *
+   * @param string $argomento_id 
+   * @param string $ramo (C o S)
+   * @return hash politici[carica_id] = punteggio
+   * @author Guglielmo Celata
+   */
+  public static function getClassificaPoliticiSiOccupanoDiArgomento($argomento_id, $ramo, $data, $limit = null)
+  {
+    
+    // definizione array tipi di cariche
+    if ($ramo == 'C') {
+      $tipi_cariche = array(1);
+    } else {      
+      $tipi_cariche = array(4, 5);
+    }
+
+    // estrazione di tutte le firme relative ad atti taggati con argomento
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and t.tag_id=%d",
+                   $data, implode(", ", $tipi_cariche), $argomento_id);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // costruzione array associativo dei politici
+    $politici = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $carica_id = $row['carica_id'];
+      $atto_id = $row['atto_id'];
+      $tipo = $row['tipo'];
+      $punti_atto = $row['indice'];
+      $politico_id = $row['politico_id'];
+      $nome = $row['nome'];
+      $cognome = $row['cognome'];
+      $acronimo = $row['acronimo'];
+      
+
+      if (!array_key_exists($carica_id, $politici))
+        $politici[$carica_id] = array('politico_id' => $politico_id, 
+                                      'nome' => $nome, 'cognome' => $cognome, 'acronimo' => $acronimo, 
+                                      'punteggio' => 0);
+
+      $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo) * $punti_atto;
+    }
+
+    // ordinamento per rilevanza, prima dello slice
+    usort($politici, array("OppCaricaPeer", "comparisonIndice"));
+
+    // slice dell'array, se specificata l'opzione limit
+    if (!is_null($limit) && count($politici) > $limit)
+    {
+      $politici = array_slice($politici, 0, $limit, true);
+    }
+
+    return $politici;
+  }
+  
+  
+  public static function comparisonIndice($a, $b)
+  {
+    if ($a['punteggio'] == $b['punteggio']) {
+        return 0;
+    }
+    return ($a['punteggio'] < $b['punteggio']) ? 1 : -1;
+  }
+  
   /**
    * return an associative array of all the constituencies
    * a zero option is included at the beginning, if specified

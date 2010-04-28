@@ -86,6 +86,33 @@ class argomentoActions extends sfActions
     
   }
 
+  public function executeListSiOccupanoDi()
+  {
+    $this->argomento_tv = $this->getRequestParameter('triple_value');
+    $this->argomento = TagPeer::retrieveFirstByTripleValue($this->argomento_tv);
+    $ramo = $this->getRequestParameter('ramo');
+    
+    $this->forward404Unless(in_array($ramo, array('C', 'S')));
+    
+    if ($ramo == 'C') {
+      $this->tipo_politici = 'dep';
+    } else {
+      $this->tipo_politici = 'sen';
+    }
+
+    if ($this->hasRequestParameter('limit'))
+      $limit = $this->getRequestParameter('limit');
+
+    // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
+    if ($this->hasRequestParameter('data'))
+      $data = $this->getRequestParameter('data');
+    else
+      $data = OppActHistoryCachePeer::fetchLastData();
+      
+    $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomento($this->argomento->getId(), $ramo, $data); 
+  }
+
+
   public function executeShowLeggi()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
