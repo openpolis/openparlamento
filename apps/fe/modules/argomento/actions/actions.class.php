@@ -90,11 +90,11 @@ class argomentoActions extends sfActions
   {
     $this->argomento_tv = $this->getRequestParameter('triple_value');
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->argomento_tv);
-    $ramo = $this->getRequestParameter('ramo');
+    $this->ramo = $this->getRequestParameter('ramo');
     
-    $this->forward404Unless(in_array($ramo, array('C', 'S')));
+    $this->forward404Unless(in_array($this->ramo, array('C', 'S')));
     
-    if ($ramo == 'C') {
+    if ($this->ramo == 'C') {
       $this->tipo_politici = 'dep';
     } else {
       $this->tipo_politici = 'sen';
@@ -109,7 +109,44 @@ class argomentoActions extends sfActions
     else
       $data = OppActHistoryCachePeer::fetchLastData();
       
-    $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomento($this->argomento->getId(), $ramo, $data); 
+    $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $data); 
+  }
+  
+  public function executeListClassificaActionAid()
+  {
+    $this->ramo = $this->getRequestParameter('ramo');
+    $this->argomentis = array(
+      '5 per mille'                             => 7698,
+      '8 per mille'                             => 7996, 
+      'aiuti sanitari'                          => 5715, 
+      'aiuti umanitari'                         => 6729, 
+      'banca mondiale (bm)'                     => 5837, 
+      'cooperazione allo sviluppo'              => 4653, 
+      'cooperazione economica internazionale'   => 1560, 
+      'diritti umani'                           => 4585, 
+      "missioni militari all'estero"            => 317, 
+      'organizzazioni non governative (ong)'    => 7313, 
+      'spesa militare'                          => 644
+      );
+    
+    $this->forward404Unless(in_array($this->ramo, array('C', 'S')));
+    
+    if ($this->ramo == 'C') {
+      $this->tipo_politici = 'dep';
+    } else {
+      $this->tipo_politici = 'sen';
+    }
+
+    if ($this->hasRequestParameter('limit'))
+      $limit = $this->getRequestParameter('limit');
+
+    // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
+    if ($this->hasRequestParameter('data'))
+      $data = $this->getRequestParameter('data');
+    else
+      $data = OppActHistoryCachePeer::fetchLastData();
+      
+    $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array_values($this->argomentis), $this->ramo, $data); 
   }
 
 

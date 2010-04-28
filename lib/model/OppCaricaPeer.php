@@ -11,15 +11,18 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 {
 
   /**
-   * torna un array associativo di politici che si occupano di una carica, 
-   * ortinati in base al punteggio, con eventuale limit e offset
+   * torna un array associativo di politici che si occupano di certi argomenti, 
+   * ordinati in base al punteggio, con eventuale limit
    *
-   * @param string $argomento_id 
+   * @param array $argomenti_ids 
    * @param string $ramo (C o S)
-   * @return hash politici[carica_id] = punteggio
+   * @return array di hash, con chiave carica_id
+   *          - politico_id,
+   *          - nome, cognome, acronimo,
+   *          - punteggio
    * @author Guglielmo Celata
    */
-  public static function getClassificaPoliticiSiOccupanoDiArgomento($argomento_id, $ramo, $data, $limit = null)
+  public static function getClassificaPoliticiSiOccupanoDiArgomenti($argomenti_ids, $ramo, $data, $limit = null)
   {
     
     // definizione array tipi di cariche
@@ -31,8 +34,8 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
     // estrazione di tutte le firme relative ad atti taggati con argomento
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id=%d",
-                   $data, implode(", ", $tipi_cariche), $argomento_id);
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.atto_id, ca.carica_id",
+                   $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
