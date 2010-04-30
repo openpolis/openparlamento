@@ -56,13 +56,13 @@ function run_opp_calcola_indice($task, $args, $options)
   echo "memory usage: " . memory_get_usage( ) . "\n";
 
 
-  $settimana = '';
+  $data = '';
   $ramo = '';
   $verbose = false;
   $offset = null;
   $limit = null;
-  if (array_key_exists('settimana', $options)) {
-    $settimana = $options['settimana'];
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
   }
   if (array_key_exists('ramo', $options)) {
     $ramo = strtolower($options['ramo']);
@@ -77,60 +77,75 @@ function run_opp_calcola_indice($task, $args, $options)
     $limit = $options['limit'];
   }
 
-  if ($settimana != '') {
-    $legislatura_corrente = OppLegislaturaPeer::getCurrent($settimana);
-    $data = $settimana;
+
+  // definisce la data fino alla quale vanno fatti i calcoli
+  // data_lookup serve per controllare se i record già esistono
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
-    $data = date('Y-m-d H:i');
+    $data = date('Y-m-d');
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
   }
 
-  $msg = sprintf("calcolo indice di attività - settimana: %10s, ramo: %10s\n", $settimana?$settimana:'-', $ramo);
+
+  $msg = sprintf("calcolo indice di attività - settimana: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
 
   if (count($args) > 0)
   {
     try {
-      $parlamentari = OppCaricaPeer::fetchFromIDArray($args);            
+      $parlamentari_rs = OppCaricaPeer::getRSFromIDArray($args);            
     } catch (Exception $e) {
       throw new Exception("Specificare degli ID validi. \n" . $e);
     }
   } else {
-    $parlamentari = OppCaricaPeer::getParlamentariRamoSettimana($ramo, $settimana, $offset, $limit);    
+    $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $data, $offset, $limit);    
   }
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
 
-  foreach ($parlamentari as $cnt => $parlamentare) {
-    $politico = $parlamentare->getOppPolitico();
-    $id = $parlamentare->getId();
-    $tipo_carica_id = $parlamentare->getTipoCaricaId();
+  $cnt = 0;
+  while ($parlamentari_rs->next())
+  {
+    $cnt++;
+    
+    $p = $parlamentari_rs->getRow();
+    $nome = $p['nome'];
+    $cognome = $p['cognome'];
+    $tipo_carica_id = $p['tipo_carica_id'];
+    $id = $p['id'];
     switch ($tipo_carica_id) {
       case 1:
         $ramo = 'C';
+        $prefisso = 'On.';
         break;
       case 4:
       case 5:
         $ramo = 'S';
+        $prefisso = 'Sen.';
         break;
       case 2:
       case 3:
       case 6:
       case 7:
         $ramo = 'G';
+        $prefisso = '';
         break;
       
       default:
-        # code...
         break;
     }
-    
-    printf("%4d) %40s [%06d] ... ", $cnt, $politico, $id);
-    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $settimana, $verbose);
+
+    $politico_stringa = sprintf("%s %s %s", $prefisso, $nome, strtoupper($cognome));
+    printf("%4d) %40s [%06d] ... ", $cnt, $politico_stringa, $id);
+    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppPoliticianHistoryCachePeer::retrieveByLegislaturaChiTipoChiId($legislatura_corrente, 'P', $id);
+    // prendo il valore d
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'P', $id);
     if (!$cache_record) {
       $cache_record = new OppPoliticianHistoryCache();
     }
@@ -152,7 +167,7 @@ function run_opp_calcola_indice($task, $args, $options)
   }
 
   
-  $msg = sprintf("%d parlamentari elaborati\n", count($parlamentari));
+  $msg = sprintf("%d parlamentari elaborati\n", $cnt);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 }
 

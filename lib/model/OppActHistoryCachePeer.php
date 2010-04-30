@@ -10,7 +10,12 @@
 class OppActHistoryCachePeer extends BaseOppActHistoryCachePeer
 {
   
-  
+  /**
+   * prende l'ultimo valore della data dai record A
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
   public static function fetchLastData()
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);

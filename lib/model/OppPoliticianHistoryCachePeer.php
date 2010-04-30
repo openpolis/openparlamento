@@ -10,22 +10,35 @@
 class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 {
   
+  public static function fetchLastData()
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+		
+		$sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='P' order by data desc");
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['data'];    
+  }
+  
   /**
-   * estrazione di tutti i record relativi a un politico o gruppo, per una legislatura
+   * estrazione di tutti i record relativi a un politico o gruppo, per una data
    *
-   * @param string $legislatura 
+   * @param string $data 
    * @param string $chi_tipo 
    * @param string $chi_id 
    * @return array of OppPoliticianHistoryCache
    * @author Guglielmo Celata
    */
-  public static function retrieveByLegislaturaChiTipoChiId($legislatura, $chi_tipo, $chi_id, $con = null)
+  public static function retrieveByDataChiTipoChiId($data, $chi_tipo, $chi_id, $con = null)
   {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 		$criteria = new Criteria();
-		$criteria->add(self::LEGISLATURA, $legislatura);
+		$criteria->add(self::DATA, $data);
 		$criteria->add(self::CHI_TIPO, $chi_tipo);
 		$criteria->add(self::CHI_ID, $chi_id);
 		$v = self::doSelect($criteria, $con);

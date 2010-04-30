@@ -18,6 +18,11 @@ class apiActions extends sfActions
   /**
    * API (protetta da una API key)
    * torna flusso xml di tutti i parlamentari (divisi per ramo)
+   * per ciascun parlamentare, visualizza i dati anagrafici e di carica
+   * nonché informazioni variabili, a seconda del parametro info_type
+   *  - presenze: presenze, assenza, missione
+   *  - attivita: indice di attività parlamentare (nuovo)
+   *  - ribelli:  numero di voti ribelli
    * progetto op_kw
    *
    *  <opkw xmlns="http://www.openpolis.it/2010/opkw"
@@ -36,10 +41,23 @@ class apiActions extends sfActions
    *            <acronimo>NOME GRUPPO</acronimo>
    *          </gruppo>
    *          <data_inizio_carica>2008-04-12</data_inizio_carica> ** solo se successiva a data inizio leg.
+   *          <circoscrizione>Lombardia 1</circoscrizione>
+   *
+   *          ...* informazioni *...
+   *
+   *        </parlamentare>
+   *        ...
+   *      </camera>
+   *      <senato>
+   *        <parlamentare> ... </parlamentare>
+   *      </camera>
+   *    </op:content>
+   *  </opkw>
+   *
+   * Informazioni possono essere:
    *          <presenze>
    *            <numero>3898</numero>
    *            <percentuale>84,59</percentuale>
-   *            <totale>
    *          </presenze>
    *          <assenze>
    *            <numero>710</numero>
@@ -50,16 +68,17 @@ class apiActions extends sfActions
    *            <percentuale>0,00</percentuale>
    *          </missioni>
    *          <mese_precedente>+1</mese_precedente>
-   *          <circoscrizione>Lombardia 1</circoscrizione>
-   *        </parlamentare>
-   *        ...
-   *      </camera>
-   *      <senato>
-   *        <parlamentare> ... </parlamentare>
-   *      </camera>
-   *    </op:content>
-   *  </opkw>
    *
+   *          <indice>
+   *            <numero>389,8</numero>
+   *          </indice>
+   *          <mese_precedente>+-1</mese_precedente>
+   *
+   *          <voti_ribelli>
+   *            <numero>15</numero>
+   *          </indice>
+   *          <mese_precedente>-1</mese_precedente>
+   *       
    * Return error in case something's wrong
    * <opkw xlmns="http://www.openpolis.it/2010/opkw"
    *       xmlns:op="http://www.openpolis.it/2010/op"
@@ -73,6 +92,7 @@ class apiActions extends sfActions
   public function executeElencoParlamentari()
   {
     $key = $this->getRequestParameter('key');
+    $infotype = $this->getRequestParameter('infotype');
     $limit = $this->getRequestParameter('limit');
 
     // to do: add api keys management
@@ -85,7 +105,7 @@ class apiActions extends sfActions
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opkw>');
       
-    $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
+    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
     
 
     if ($is_valid_key)
@@ -98,7 +118,7 @@ class apiActions extends sfActions
                                  $limit < OppCaricaPeer::getNParlamentari('C')? $limit : OppCaricaPeer::getNParlamentari('C'));
       $deputati = OppCaricaPeer::getActiveMps('C', $limit);
       foreach ($deputati as $parlamentare) {
-        $this->addParlamentareNode($camera_node, $parlamentare);
+        $this->addParlamentareNode($camera_node, $parlamentare, $infotype);
       }
 
       $senato_node = $content_node->addChild('senato', null, $this->opkw_ns);
@@ -106,7 +126,7 @@ class apiActions extends sfActions
                                  $limit < OppCaricaPeer::getNParlamentari('S')?$limit : OppCaricaPeer::getNParlamentari('S'));
       $senatori = OppCaricaPeer::getActiveMps('S', $limit);
       foreach ($senatori as $parlamentare) {
-        $this->addParlamentareNode($senato_node, $parlamentare);
+        $this->addParlamentareNode($senato_node, $parlamentare, $infotype);
       }
 
     } 
@@ -121,7 +141,7 @@ class apiActions extends sfActions
   }
 
 
-  protected function addParlamentareNode($node, $parlamentare)
+  protected function addParlamentareNode($node, $parlamentare, $infotype)
   {
     $parlamentare_node = $node->addChild('parlamentare');
 
@@ -143,7 +163,14 @@ class apiActions extends sfActions
     
     if ($data_inizio = $parlamentare->getDataInizio('Y-m-d') > '2008-04-29')
       $parlamentare_node->addChild('data_inizio', $parlamentare->getDataInizio('d/m/Y'));    
-      
+
+    call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($parlamentare_node, $parlamentare));
+    
+  }
+  
+  
+  public function addInfoPresenze($parlamentare_node, $parlamentare)
+  {
     $presenze = $parlamentare->getPresenze();
     $assenze = $parlamentare->getAssenze();
     $missioni = $parlamentare->getMissioni();
@@ -177,8 +204,34 @@ class apiActions extends sfActions
     
     // TODO: aggiungere mese precedente
     $parlamentare_node->addChild('mese_precedente', 0);
-    
   }
+  
+  public function addInfoAttivita($parlamentare_node, $parlamentare)
+  {
+    // viene estratta l'ultima data nella cache (per dati di tipo 'P', singoli politici)
+    $data = OppPoliticianHistoryCachePeer::fetchLastData();
+
+    $indice = sprintf("%7.2d", $parlamentare->getIndiceAttivita($data));
+    $indice_node = $parlamentare_node->addChild('indice');
+    if (!is_null($indice))
+    {
+      $indice_node->addChild('numero', $indice);      
+    }
+
+    // TODO: aggiungere mese precedente
+    $parlamentare_node->addChild('mese_precedente', 0);
+  }
+  
+  public function addInfoRibelli($parlamentare_node, $parlamentare)
+  {
+    $voti_ribelli = sprintf("%d", $parlamentare->getRibelle());
+    $voti_ribelli_node = $parlamentare_node->addChild('voti_ribelli');
+    $voti_ribelli_node->addChild('numero', $voti_ribelli);
+
+    // TODO: aggiungere mese precedente
+    $parlamentare_node->addChild('mese_precedente', 0);
+  }
+  
 
   public function executeGetClassifiche()
   {

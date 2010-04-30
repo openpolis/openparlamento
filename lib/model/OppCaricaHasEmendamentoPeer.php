@@ -15,17 +15,25 @@ class OppCaricaHasEmendamentoPeer extends BaseOppCaricaHasEmendamentoPeer
    *
    * @param string $emendamento_id 
    * @param string $data 
-   * @return array di OppCaricaHasEmendamento
+   * @return array di hash ('carica_id' => ID, 'data' => DATA)
    * @author Guglielmo Celata
    */
   public static function getFirme($emendamento_id, $data)
   {
-    $c = new Criteria();
-    $c->add(self::EMENDAMENTO_ID, $emendamento_id);
-    $c->add(self::DATA, $data, Criteria::LESS_THAN);
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select ce.carica_id, ce.data from opp_carica_has_emendamento ce where ce.emendamento_id=%d and ce.data < '%s';",
+                   $emendamento_id, $data);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     
-    return self::doSelectJoinOppCarica($c);
+    $firme = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $firme []= array('carica_id' => $row['carica_id'], 'data' => $row['data']);
+    }
+		return $firme;		
   }
+
   
   public static function countSignedByAtDate($carica_id, $date)
   {

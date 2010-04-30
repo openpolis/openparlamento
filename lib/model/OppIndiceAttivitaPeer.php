@@ -150,15 +150,14 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    * calcola l'indice di attività per un politico
    *
    * @param integer $id 
-   * @param date $settimana 
+   * @param date $data 
    * @param boolean $verbose 
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcola_indice_politico($id, $settimana = '', $verbose = '')
+  public static function calcola_indice_politico($carica_id, $data = '', $verbose = '')
   {
-    // fetch dell'oggetto OppCarica
-    $carica = OppCaricaPeer::retrieveByPK($id);
+    if ($data == '') throw new Exception("Date can not be null");
     
     // inizializzazion xml con dettaglio computazione
     $xml_node = new SimpleXMLElement(
@@ -170,27 +169,22 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
-    // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla fine della settimana indagata
-    if ($settimana == '') {
-      $atti = $carica->getPresentedAttos();
-      $emendamenti = $carica->getPresentedEmendamentos();
-    } else {
-      $atti = $carica->getPresentedAttos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
-      $emendamenti = $carica->getPresentedEmendamentos(date('Y-m-d', strtotime("+1 week", strtotime($settimana))));
-    }
+    // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla data specificata
+    $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $data);
+    $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $data);
 
     $punteggio = 0.;
   
     // --- componente dell'indice dovuta agli atti ---
     $atti_node = $content_node->addChild('atti', null, self::$opp_ns);
     $atti_node->addAttribute('n_atti', 
-                             count($atti));
+                             count($attis));
     
     if ($verbose)
-      printf("\n  numero atti: %d\n", count($atti));
+      printf("\n  numero atti: %d\n", count($attis));
     $d_punteggio = 0.;
-    foreach ($atti as $atto) {
-      $d_punteggio += self::calcolaIndiceAtto($carica, $atto, $settimana, $atti_node, $verbose);
+    foreach ($attis as $atto) {
+      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
     }
     $atti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
@@ -198,19 +192,20 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // --- componente dell'indice dovuta agli emendamenti ---
     $emendamenti_node = $content_node->addChild('emendamenti', null, self::$opp_ns);
     $emendamenti_node->addAttribute('n_emendamenti', 
-                                    count($emendamenti));
+                                    count($emendamenti_ids));
     if ($verbose)
-      printf("\n  numero emendamenti: %d\n", count($emendamenti));
+      printf("\n  numero emendamenti: %d\n", count($emendamenti_ids));
     $d_punteggio = 0.;
-    foreach ($emendamenti as $emendamento) {
-      $d_punteggio += self::calcolaIndiceEmendamento($carica, $emendamento, $settimana, $emendamenti_node, $verbose);
+    foreach ($emendamenti_ids as $emendamento_id) {
+      
+      $d_punteggio += self::calcolaIndiceEmendamento($carica_id, $emendamento_id, $data, $emendamenti_node, $verbose);
     }
     $emendamenti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
     
     // --- componente dell'indice dovuta agli interventi (in sedute)
     $interventi_node = $content_node->addChild('interventi', null, self::$opp_ns);
-    $punteggio += $d_punteggio = self::calcolaPunteggioInterventi($carica, $settimana, $interventi_node, $verbose);
+    $punteggio += $d_punteggio = self::calcolaPunteggioInterventi($carica_id, $data, $interventi_node, $verbose);
     $interventi_node->addAttribute('totale', $d_punteggio);
 
 
@@ -219,7 +214,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $xml_storage_path = sfConfig::get('xml-storage-path', 
                                        SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'xml');
     $politici_path = $xml_storage_path.DIRECTORY_SEPARATOR.'indici'.DIRECTORY_SEPARATOR.'politici';
-    $file_path = $politici_path.DIRECTORY_SEPARATOR."$id.xml";
+    $file_path = $politici_path.DIRECTORY_SEPARATOR."$carica_id.xml";
 
     // scrittura xml su file system
     try
@@ -247,32 +242,32 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   /**
    * calcola l'indice accumulato fino alla fine della settimana, per un atto, presentato da una carica 
    *
-   * @param OppCarica $carica
-   * @param OppAtto   $atto
-   * @param string    $settimana
+   * @param integer  $carica_id
+   * @param integer  $atto_id
+   * @param integer  $tipo_atto_id
+   * @param string   $data
    * @param SimpleXMLElement    $xml_node   
    * @param boolean   $verbose
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaIndiceAtto($carica, $atto, $settimana, $xml_node, $verbose = false)
+  public static function calcolaIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $xml_node, $verbose = false)
   {
     $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
     
     // calcolo se appartiene alla maggioranza o all'opposizione
-    $in_maggioranza = $carica->inMaggioranza($settimana);
+    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data);
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
-    $tipo_atto = $atto->getTipoPerIndice();
+    $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
     
     if (is_null($tipo_atto)) return 0;
     
     if ($verbose)
-      printf("atto: %10s %15s\n", $atto->getId(), $tipo_atto);
+      printf("atto: %10s %15s\n", $atto_id, $tipo_atto);
 
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
-    $atto_node->addAttribute('id', $atto->getId());    
-    $atto_node->addChild('titolo', $atto->getTitolo(), self::$opp_ns);
+    $atto_node->addAttribute('id', $atto_id);    
 
     $punteggio = 0.0;
     
@@ -286,14 +281,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
     // --- consenso ---
-    if ($settimana == '') {
-      $firme_atto = $atto->getFirme(date('Y-m-d'));
-    } else {
-      $firme_atto = $atto->getFirme(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
-    }
+    $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);      
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
     foreach ($firme_atto as $firma) {
-      $relazione = $firma->getOppCarica()->getRelazioneCon($carica, $firma->getData('Y-m-d'));
+      $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);
       if (is_null($relazione)) continue;
       $n_firme[$relazione] += 1;
     }
@@ -328,18 +319,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
     
     // --- iter ---
-    if ($settimana == '') {
-      $itinera_atto = $atto->getItinera(date('Y-m-d'));
-    } else {
-      $itinera_atto = $atto->getItinera(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
-    }
-    
+    $itinera_atto = OppAttoHasIterPeer::getItinera($atto_id, $data);
     $iter_node = $atto_node->addChild('iter', null, self::$opp_ns);
     
     $d_punteggio = 0.0;
     $n_passaggi = 0;
     foreach ($itinera_atto as $iter_atto) {
-      $passaggio = OppIterPeer::getIterPerIndice($iter_atto->getIterId());
+      $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
       if (is_null($passaggio)) continue;
 
       $n_passaggi++;
@@ -347,7 +333,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
       $passaggio_node->addAttribute('tipo', $passaggio);
 
-      $carica_in_maggioranza_al_passaggio = $carica->inMaggioranza($iter_atto->getData('Y-m-d'));
+      $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
       if (is_null($passaggio)) continue;
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
       if ($verbose)
@@ -355,9 +341,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
       $passaggio_node->addAttribute('totale', $dd_punteggio);
         
-      // --- bonus maggioranza ---
+      // --- bonus maggioranza (TODO: la data?) ---
       if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
-        if ($carica_in_maggioranza_al_passaggio && $atto->votatoDaOpposizione()) {
+        if ($carica_in_maggioranza_al_passaggio && OppAttoPeer::isAttoVotatoDaOpposizione($atto_id, $data)) {
           $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
           $bonus_node = $iter_node->addChild('bonus_maggioranza', null, self::$opp_ns);
           $bonus_node->addAttribute('totale', $dd_punteggio);
@@ -382,24 +368,23 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   /**
    * calcola l'indice accumulato fino alla fine della settimana, per un emendamento, presentato da una carica 
    *
-   * @param OppCarica $carica
-   * @param OppEmendamento   $emendamento
-   * @param string    $settimana
-   * @param boolean   $verbose
+   * @param integer  $carica_id
+   * @param integer  $emendamento_id
+   * @param string   $data
+   * @param boolean  $verbose
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaIndiceEmendamento($carica, $emendamento, $settimana, $xml_node, $verbose = false)
+  public static function calcolaIndiceEmendamento($carica_id, $emendamento_id, $data, $xml_node, $verbose = false)
   {
     $emendamento_node = $xml_node->addChild('emendamento', null, self::$opp_ns);
-    $emendamento_node->addAttribute('id', $emendamento->getId());    
-    $emendamento_node->addChild('titolo', Text::denominazioneEmendamento($emendamento, 'list'));
+    $emendamento_node->addAttribute('id', $emendamento_id);    
     
     // calcolo se appartiene alla maggioranza o all'opposizione
-    $in_maggioranza = $carica->inMaggioranza($settimana);
+    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data);
     
     if ($verbose)
-      printf("emendamento: %10s\n", $emendamento->getId());
+      printf("emendamento: %10s\n", $emendamento_id);
 
     $punteggio = 0.0;
     
@@ -413,14 +398,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
     // --- consenso ---
-    if ($settimana == '') {
-      $firme_emendamento = $emendamento->getFirme(date('Y-m-d'));
-    } else {
-      $firme_emendamento = $emendamento->getFirme(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
-    }
+    $firme_emendamento = OppCaricaHasEmendamentoPeer::getFirme($emendamento_id, $data);      
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'mia' => 0);
     foreach ($firme_emendamento as $firma) {
-      $relazione = $firma->getOppCarica()->getRelazioneCon($carica, $firma->getData('Y-m-d'));
+      $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);
       if (is_null($relazione)) continue;
       $n_firme[$relazione] += 1;
     }
@@ -456,18 +437,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
     
     // --- iter ---
-    if ($settimana == '') {
-      $itinera_emendamento = $emendamento->getItinera(date('Y-m-d'));
-    } else {
-      $itinera_emendamento = $emendamento->getItinera(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
-    }
-    
+    $itinera_emendamento = OppEmendamentoHasIterPeer::getItinera($emendamento_id, $data);
     $iter_node = $emendamento_node->addChild('iter', null, self::$opp_ns);
 
     $d_punteggio = 0.0;
     $n_passaggi = 0;
     foreach ($itinera_emendamento as $iter_emendamento) {
-      $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento->getEmIterId());
+      $passaggio = OppEmIterPeer::getIterPerIndice($iter_emendamento['em_iter_id']);
       if (is_null($passaggio)) continue;
 
       $n_passaggi++;
@@ -475,7 +451,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
       $passaggio_node->addAttribute('tipo', $passaggio);
 
-      $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', $passaggio, $carica->inMaggioranza($iter_emendamento->getData('Y-m-d')));
+      $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', 
+                   $passaggio, OppCaricaPeer::inMaggioranza($carica_id, $iter_emendamento['data']));
 
       $passaggio_node->addAttribute('totale', $dd_punteggio);
       if ($verbose)
@@ -497,21 +474,17 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   /**
    * torna la componente dell'indice, che riguarda il parlamentare
    *
-   * @param string $carica 
-   * @param string $settimana 
+   * @param integer $carica_id 
+   * @param string $data 
    * @param SimpleXMLElement $xml_node
    * @param string $verbose 
    * @return float
    * @author Guglielmo Celata
    */
-  public function calcolaPunteggioInterventi($carica, $settimana, $xml_node, $verbose = false)
+  public function calcolaPunteggioInterventi($carica_id, $data, $xml_node, $verbose = false)
   {
     // --- interventi ---
-    if ($settimana == '') {
-      $n_interventi = $carica->getNSeduteConInterventi(date('Y-m-d'));
-    } else {
-      $n_interventi = $carica->getNSeduteConInterventi(date('Y-m-d', strtotime('+1 week', strtotime($settimana))));      
-    }
+    $n_interventi = OppInterventoPeer::getNSeduteConInterventiCaricaData($carica_id, $data);      
     
     $xml_node->addAttribute('n_sedute_con_intervento', $n_interventi);
     

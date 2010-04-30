@@ -90,7 +90,7 @@ class OppAtto extends BaseOppAtto
 
   public function votatoDaOpposizione()
   {
-    return isAttoVotatoDaOpposizione($this->getId());
+    return OppAttoPeer::isAttoVotatoDaOpposizione($this->getId());
   }
   
   

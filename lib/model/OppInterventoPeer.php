@@ -49,14 +49,16 @@ class OppInterventoPeer extends BaseOppInterventoPeer
    * @return integer
    * @author Guglielmo Celata
    */
-  public static function getNSeduteConInterventiCarica($carica, $data)
+  public static function getNSeduteConInterventiCaricaData($carica_id, $data)
   {
-    $c = new Criteria();
-    $c->add(self::CARICA_ID, $carica->getId());
-    $c->addGroupByColumn(self::SEDE_ID);
-    $c->addGroupByColumn(self::DATA);
-    
-    $res = self::doSelect($c);
-    return count($res);
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select count(*) as n_sedute from (select count(*) as n_interv from opp_intervento i where i.carica_id = %d and i.data < '%s' group by i.sede_id, data) interv  where n_interv > 1;",
+                     $carica_id, $data);      
+      
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['n_sedute'];
   }
 }

@@ -11,6 +11,34 @@ class OppCarica extends BaseOppCarica
 {
   
   /**
+   * legge l'indice di attività dalla cache
+   *
+   * @param string $data 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function getIndiceAttivita($data = null)
+  {
+    if (is_null($data)) {
+      throw new Exception("Missing date parameter");
+    }
+    
+    $c = new Criteria();
+    $c->add(OppPoliticianHistoryCachePeer::CHI_TIPO, 'P');
+    $c->add(OppPoliticianHistoryCachePeer::CHI_ID, $this->getId());
+    $c->add(OppPoliticianHistoryCachePeer::DATA, $data);
+    $c->clearSelectColumns();
+    $c->addSelectColumn(OppPoliticianHistoryCachePeer::INDICE);
+
+    
+    $rs = OppPoliticianHistoryCachePeer::doSelectRS($c);
+    if ($rs->next())
+      return $rs->getFloat(1);
+    else
+      return null;
+  }
+  
+  /**
    * fornisce il gruppo cui la carica appartiene a una certa data
    * se la data non è passata, fornisce il gruppo corrente
    *

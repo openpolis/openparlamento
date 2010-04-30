@@ -64,18 +64,25 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
    *
    * @param string $atto_id 
    * @param string $data 
-   * @return array di OppCaricaHasAtto
+   * @return array di hash ('carica_id' => ID, 'data' => DATA)
    * @author Guglielmo Celata
    */
   public static function getFirme($atto_id, $data)
   {
-    $c = new Criteria();
-    $c->add(self::ATTO_ID, $atto_id);
-    $c->add(self::DATA, $data, Criteria::LESS_THAN);
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select ca.carica_id, ca.data from opp_carica_has_atto ca where ca.atto_id=%d and ca.data < '%s';",
+                   $atto_id, $data);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     
-    return self::doSelectJoinOppCarica($c);
+    $firme = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $firme []= array('carica_id' => $row['carica_id'], 'data' => $row['data']);
+    }
+		return $firme;		
   }
-  
+
 
   /**
    * estrae i due array di schieramenti e gruppi che hanno presentato l'atto

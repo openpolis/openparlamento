@@ -10,15 +10,24 @@
 class OppAttoHasIterPeer extends BaseOppAttoHasIterPeer
 {
 
+  /**
+   * estrae gli *itinera* di un atto, a una certa data
+   *
+   * @param integer $atto_id 
+   * @param string  $data 
+   * @return array di hash ('iter_id' => ID, 'data' => DATE)
+   * @author Guglielmo Celata
+   */
   public static function getItinera($atto_id, $data)
   {
-    $c = new Criteria();
-    $c->add(self::ATTO_ID, $atto_id);
-    $c->add(self::DATA, $data, Criteria::LESS_THAN);
-    $c->addGroupByColumn(self::ATTO_ID);
-    $c->addGroupByColumn(self::ITER_ID);    
+    $rs = self::getItineraAttoDataRS($atto_id, $data);
     
-    return self::doSelectJoinOppIter($c);
+    $itinera = array();
+    while ($rs->next()) {
+      $itinera []= $rs->getRow();
+    }
+    
+    return $itinera;
   }
 
   /**

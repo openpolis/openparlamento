@@ -9,23 +9,24 @@
  */ 
 class OppGruppoIsMaggioranzaPeer extends BaseOppGruppoIsMaggioranzaPeer
 {
-  public static function isGruppoMaggioranza($gruppo_id, $date = '')
+  /**
+   * controlla se il gruppo è di maggioranza o no, alla data
+   *
+   * @param integer $gruppo_id 
+   * @param string $data 
+   * @return boolean
+   * @author Guglielmo Celata
+   */
+  public static function isGruppoMaggioranza($gruppo_id, $data)
   {
-    $c = new Criteria();
-    $c->add(self::GRUPPO_ID, $gruppo_id);
-  	if ($date == '') {
-      $c->add(self::DATA_FINE, NULL, Criteria::ISNULL);
-  	} else {
-  	  $c->add(self::DATA_INIZIO, $date, Criteria::LESS_EQUAL);
-  	  
-  	  $cton0 = $c->getNewCriterion(self::DATA_FINE, null, Criteria::ISNULL);
-  	  $cton1 = $c->getNewCriterion(self::DATA_FINE, $date, Criteria::GREATER_THAN);
-  	  $cton0->addOr($cton1);
-  	  $c->add($cton0);
-  	}
-  	
-  	$res = self::doSelectOne($c);
-  	return $res->getMaggioranza();
-    
+ 		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select * from opp_gruppo_is_maggioranza gm where gm.gruppo_id=%d and data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+                    $gruppo_id, $data, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['maggioranza'];
   }
 }

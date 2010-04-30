@@ -10,6 +10,152 @@
 class OppCaricaPeer extends BaseOppCaricaPeer
 {
 
+
+  public static function getRelazioneCon($mia_carica_id, $sua_carica_id, $data)
+  {
+    $mio_gruppo = self::getGruppo($mia_carica_id, $data);
+    $suo_gruppo = self::getGruppo($sua_carica_id, $data);
+    
+    // caso mia firma
+    if ($sua_carica_id == $mia_carica_id) return 'mia';
+
+    // membri del governo
+    if (is_null($mio_gruppo))
+    {
+      // cofirme di altri membri del governo non danno punti
+      // se cofirma con maggioranza, stesso gruppo, se con minoranza, è opposizione
+      if (is_null($suo_gruppo)) return 'gov';
+      else
+      {
+        if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($suo_gruppo['id'], $data)) return 'gruppo';
+        else return 'opp';
+      }
+    } 
+
+    // calcolo le maggioranze, passando i gruppi già calcolati (meno query)
+    $mia_maggioranza = OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($mio_gruppo['id'], $data);
+    $sua_maggioranza = OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($suo_gruppo['id'], $data);
+    
+    if ($mio_gruppo['id'] == $suo_gruppo['id']) return 'gruppo';
+    if ($mia_maggioranza == $sua_maggioranza) return 'altri';
+    return 'opp';
+    
+  }
+
+  /**
+   * fornisce il gruppo cui la carica appartiene a una certa data
+   * se la data non è passata, fornisce il gruppo corrente
+   *
+   * @param integer $carica_id
+   * @param string  $data
+   * @return array ('id' => ID, 'nome' => Partito Democratico, 'acronimo' => PD)
+   * @author Guglielmo Celata
+   */
+  public function getGruppo($carica_id, $data)
+  {
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select g.id, g.nome from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+                    $carica_id, $data, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    if ($rs->next()) {
+      $row = $rs->getRow();
+      return $row; 		
+    }
+    return null;
+  }
+
+
+  /**
+   * controlla se la carica è di maggioranza o no
+   *
+   * @param integer $carica_id
+   * @param string  $data 
+   * @param integer $gruppo_id
+   * @return boolean
+   * @author Guglielmo Celata
+   */
+  public function inMaggioranza($carica_id, $data, $gruppo_id = null)
+  {
+    if (is_null($gruppo_id))
+    {
+      $gruppo_ar = self::getGruppo($carica_id, $data);
+      $gruppo_id = $gruppo_ar['id'];
+    }
+
+    if ($gruppo_id) {
+      OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($gruppo_id, $data);
+    } else {
+      return null;
+    }
+  }
+  
+
+  /**
+   * estrae e torna tutti gli id degli atti presentati come primo firmatario
+   * da carica_id, entro la data
+   *
+   * @param string $carica_id 
+   * @param string $data 
+   * @return array di hash [id => ID, tipo_id => tipo_id]
+   * @author Guglielmo Celata
+   */
+  public static function getPresentedAttosIdsAndTiposByCaricaData($carica_id, $data)
+  {
+    
+    // estrazione di tutte le firme relative ad atti firmati come P da carica_id
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.tipo='P' and ca.carica_id=%d and ca.data < '%s'",
+                   $carica_id, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // costruzione array degli id
+    $ids = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $ids []= array('id' => $row['id'], 'tipo_atto_id' => $row['tipo_atto_id']);
+    }
+    
+    return $ids;
+    
+  }
+
+  /**
+   * estrae e torna tutti gli id degli emendamenti presentati come primo firmatario
+   * da carica_id, entro la data
+   *
+   * @param string $carica_id 
+   * @param string $data 
+   * @return array di id
+   * @author Guglielmo Celata
+   */
+  public static function getPresentedEmendamentosIdsByCaricaData($carica_id, $data)
+  {
+    
+    // estrazione di tutte le firme relative a emendamenti presentati da P
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select e.id from opp_carica_has_emendamento ce, opp_emendamento e where ce.emendamento_id=e.id and ce.tipo='P' and ce.carica_id=%d and ce.data < '%s'",
+                   $carica_id, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // costruzione array degli id
+    $ids = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $ids []= $row['id'];
+    }
+    
+    return $ids;
+    
+  }
+
   /**
    * torna un array associativo di politici che si occupano di certi argomenti, 
    * ordinati in base al punteggio, con eventuale limit
@@ -198,12 +344,55 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    * @return array of OppCarica
    * @author Guglielmo Celata
    */
-  public function fetchFromIDArray($ids)
+  public function getRSFromIDArray($ids, $con = null)
   {
-    $c = new Criteria();
-    $c->add(self::ID, $ids, Criteria::IN);
-    return self::doSelect($c);
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+
+    $sql = sprintf("select c.id, c.tipo_carica_id, p.nome, p.cognome from opp_carica c, opp_politico p where c.politico_id=p.id and c.id in (%s)",
+                   implode(",", $ids));
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
+
+
+  public static function getParlamentariRamoDataRS($ramo, $data, $offset = null, $limit = null)
+  {
+    // calcolo della legislatura
+    $legislatura = OppLegislaturaPeer::getCurrent($data);
+
+    switch ($ramo) {
+      case 'camera':
+        $tipi_carica_ids = array(1);
+        break;
+
+      case 'senato':
+        $tipi_carica_ids = array(4,5);
+        break;
+
+      case 'governo':
+        $tipi_carica_ids = array(2,3,6,7);
+        break;
+      
+      default:
+        $tipi_carica_ids = array(1,2,3,4,5,6,7);
+        break;
+    }
+
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select c.id, c.politico_id, c.tipo_carica_id, p.nome, p.cognome from opp_carica c, opp_politico p where p.id=c.politico_id and (c.legislatura=%d or legislatura is null) and c.tipo_carica_id in (%s) and c.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null) order by c.tipo_carica_id, p.nome",
+                   $legislatura, implode(',', $tipi_carica_ids), $data, $data);
+    if (!is_null($limit)) {
+      if (!is_null($offset))
+        $sql .= " limit $offset, $limit";
+      else
+        $sql .= " limit $limit";
+    }
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
 
   /**
    * estrae i parlamentari di un ramo, per una legislatura, attivi durante una settimana 

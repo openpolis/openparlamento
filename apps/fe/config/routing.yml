@@ -1,5 +1,5 @@
 api_parlamentari:
-  url: /elenco_parlamentari/:key/:limit
+  url: /elenco_parlamentari/:key/:infotype/:limit
   param: { module: api, action: elencoParlamentari, limit: 0 }
   
 tesseramento:
