@@ -14,8 +14,8 @@
  * @subpackage Task per computare dati (presenze, indice attività)
  * @author     Guglielmo Celata <guglielmo.celata@depp.it>
  */
-pake_desc("calcola l'indice di attività");
-pake_task('opp-calcola-indice', 'project_exists');
+pake_desc("calcola il nuovo indice di attività");
+pake_task('opp-calcola-nuovo-indice', 'project_exists');
 
 pake_desc("calcola la rilevanza per gli atti");
 pake_task('opp-calcola-rilevanza-atti', 'project_exists');
@@ -150,7 +150,7 @@ function run_opp_calcola_indice($task, $args, $options)
       $cache_record = new OppPoliticianHistoryCache();
     }
     $cache_record->setLegislatura($legislatura_corrente);
-    $cache_record->setChiTipo('P');
+    $cache_record->setChiTipo('PN');
     $cache_record->setChiId($id);
     $cache_record->setRamo($ramo);
     $cache_record->setIndice($indice);

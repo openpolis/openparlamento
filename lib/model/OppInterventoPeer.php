@@ -9,6 +9,29 @@
  */ 
 class OppInterventoPeer extends BaseOppInterventoPeer
 {
+
+  /**
+   * calcola il numero di interventi di una carica
+   * prima di una determinata data
+   *
+   * @param integer $carica_id 
+   * @param integer $legislatura 
+   * @param string  $data 
+   * @return integer
+   * @author Guglielmo Celata
+   */
+  public function countInterventiByCaricaData($carica_id, $legislatura, $data)
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select count(*) as n_interventi from opp_intervento i, opp_atto a where i.atto_id = a.id and i.carica_id=%d and a.legislatura = %d and a.data_pres < '%s'",
+                   $carica_id, $legislatura, $data);
+      
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['n_interventi'];
+  }
   
   /**
    * calcola il numero di sedute (stessa sede_id, stessa data), 

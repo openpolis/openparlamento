@@ -9,6 +9,21 @@
  */ 
 class OppGruppoPeer extends BaseOppGruppoPeer
 {
+  
+  public static function getGruppiRamoDataRS($ramo, $data)
+  {
+    // estrazione dei  gruppi appartenenti a un ramo, in una certa data
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select g.id, g.nome, g.acronimo from opp_gruppo g, opp_gruppo_ramo gr where gr.gruppo_id=g.id and gr.ramo='%s' and gr.data_inizio < '%s' and (gr.data_fine >= '%s' or gr.data_fine is null)",
+                   $ramo, $data, $data);
+                   
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    return $rs;
+  }
+
+  
   /**
    * returns the groups in the given ramo (and for the given legislatura) and include the zero value, if given
    *

@@ -10,6 +10,26 @@
 class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 {
 
+
+  public static function getParlamentariGruppoData($gruppo_id, $data, $con = null)
+  {
+    if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$sql = sprintf("select carica_id from opp_carica_has_gruppo where gruppo_id=%d and data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+                    $gruppo_id, $data, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    if ($rs->next()) {
+      $row = $rs->getRow();
+      return $row; 		
+    }
+    return null;
+    
+  }
+
   /**
    * returns the sum of the given field for all the MPs
    * in the given parliament section

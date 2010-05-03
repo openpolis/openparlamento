@@ -127,6 +127,15 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               ),
      'intervento'     => 0.5
   );
+  
+  public static $vecchi_punteggi = array(
+    'ddl'             => array('P' => 10, 'C' => 3, 'R' => 6),
+    'mozione'         => array('P' =>  6, 'C' => 2, 'R' => 0),
+    'interpellanza'   => array('P' =>  3, 'C' => 1, 'R' => 0),
+    'interrogazione'  => array('P' =>  3, 'C' => 1, 'R' => 0),
+    'risoluzione'     => array('P' =>  5, 'C' => 2, 'R' => 0),
+    'odg'             => array('P' =>  4, 'C' => 2, 'R' => 0)
+  );
 
  
   /**
@@ -145,6 +154,58 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     }
     return self::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
   }
+
+  /**
+   * ritorna il punteggio per un tipo di atto, dato un tipo di co-firma
+   *
+   * @param string $tipo_atto
+   * @param string $tipo_firma
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public function getVecchioPunteggio($tipo_firma, $tipo_atto)
+  {
+    return self::$vecchi_punteggi[strtolower($tipo_atto)][strtoupper($tipo_firma)];
+  }
+
+
+  /**
+   * calcola indice attività con vecchio criterio per un politico, fino a una certa data
+   *
+   * @param integer $id 
+   * @param integer $legislatura 
+   * @param date $data 
+   * @param boolean $verbose 
+   * @return float
+   * @author Guglielmo Celata
+   */
+  public static function calcola_vecchio_indice($carica_id, $legislatura, $data = '', $verbose = '')
+  {
+    if ($data == '') throw new Exception("Date can not be null");
+  
+    // componente dovuta alle firme
+    $attis = OppCaricaPeer::getSignedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
+    if ($verbose)
+      printf("\n  numero atti: %d\n", count($attis));
+      
+    $d_punteggio = 0.;
+    foreach ($attis as $atto) {
+      $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($atto['tipo_atto_id']);
+      $d_punteggio += $dd_punteggio = self::getVecchioPunteggio($atto['tipo_firma'], $tipo_atto);
+      if ($verbose)
+        printf("    atto: %7d, tipo: %2d, firma: %1s, punti%7.2f\n", $atto['id'], $atto['tipo_atto_id'], $atto['tipo_firma'], $dd_punteggio);
+    }
+    
+    // componente dovuta agli interventi
+    $n_interventi = OppInterventoPeer::countInterventiByCaricaData($carica_id, $legislatura, $data);
+    $d_punteggio += $n_interventi;
+    if ($verbose)
+      printf("    n_interventi: %d\n", $n_interventi);
+  
+    return $d_punteggio;
+  }
+ 
+
 
   /**
    * calcola l'indice di attività per un politico
@@ -239,6 +300,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
  
  
  
+ public static function calcolaVecchioIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $verbose = false)
+ {
+  # code...
+ }
+ 
   /**
    * calcola l'indice accumulato fino alla fine della settimana, per un atto, presentato da una carica 
    *
@@ -255,8 +321,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   {
     $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
     
-    // calcolo se appartiene alla maggioranza o all'opposizione
-    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data);
+    // calcolo se appartiene alla maggioranza o all'opposizione (al momento della presentazione di un atto)
+    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data_pres);
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);

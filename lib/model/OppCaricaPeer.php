@@ -54,7 +54,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   public function getGruppo($carica_id, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select g.id, g.nome from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+    $sql = sprintf("select g.id, g.nome, g.acronimo from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
                     $carica_id, $data, $data);
 
     $stm = $con->createStatement(); 
@@ -92,22 +92,57 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   }
   
 
+
   /**
    * estrae e torna tutti gli id degli atti presentati come primo firmatario
    * da carica_id, entro la data
    *
    * @param string $carica_id 
+   * @param integer $legislatura 
    * @param string $data 
    * @return array di hash [id => ID, tipo_id => tipo_id]
    * @author Guglielmo Celata
    */
-  public static function getPresentedAttosIdsAndTiposByCaricaData($carica_id, $data)
+  public static function getSignedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data)
+  {
+    
+    // estrazione di tutte le firme relative ad atti firmati da carica_id
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select a.id, ca.tipo, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.carica_id=%d and a.legislatura = %d and ca.data < '%s'",
+                   $carica_id, $legislatura, $data);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // costruzione array degli id
+    $ids = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $ids []= array('id' => $row['id'], 'tipo_atto_id' => $row['tipo_atto_id'], 'tipo_firma' => $row['tipo']);
+    }
+    
+    return $ids;
+    
+  }
+
+  /**
+   * estrae e torna tutti gli id degli atti presentati come primo firmatario
+   * da carica_id, entro la data
+   *
+   * @param string $carica_id 
+   * @param integer $legislatura
+   * @param string $data 
+   * @return array di hash [id => ID, tipo_id => tipo_id]
+   * @author Guglielmo Celata
+   */
+  public static function getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data)
   {
     
     // estrazione di tutte le firme relative ad atti firmati come P da carica_id
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.id, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.tipo='P' and ca.carica_id=%d and ca.data < '%s'",
-                   $carica_id, $data);
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.tipo='P' and ca.carica_id=%d and a.legislatura = %d and ca.data < '%s'",
+                   $carica_id, $legislatura, $data);
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -357,10 +392,8 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   }
 
 
-  public static function getParlamentariRamoDataRS($ramo, $data, $offset = null, $limit = null)
+  public static function getParlamentariRamoDataRS($ramo, $legislatura, $data, $offset = null, $limit = null)
   {
-    // calcolo della legislatura
-    $legislatura = OppLegislaturaPeer::getCurrent($data);
 
     switch ($ramo) {
       case 'camera':
@@ -375,13 +408,17 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $tipi_carica_ids = array(2,3,6,7);
         break;
       
+      case 'parlamento':
+        $tipi_carica_ids = array(1,4,5);
+        break;
+      
       default:
         $tipi_carica_ids = array(1,2,3,4,5,6,7);
         break;
     }
 
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select c.id, c.politico_id, c.tipo_carica_id, p.nome, p.cognome from opp_carica c, opp_politico p where p.id=c.politico_id and (c.legislatura=%d or legislatura is null) and c.tipo_carica_id in (%s) and c.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null) order by c.tipo_carica_id, p.nome",
+    $sql = sprintf("select c.id, c.politico_id, c.tipo_carica_id, p.nome, p.cognome from opp_carica c, opp_politico p where p.id=c.politico_id and (c.legislatura=%d or legislatura is null) and c.tipo_carica_id in (%s) and c.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null) order by c.tipo_carica_id, p.cognome",
                    $legislatura, implode(',', $tipi_carica_ids), $data, $data);
     if (!is_null($limit)) {
       if (!is_null($offset))
