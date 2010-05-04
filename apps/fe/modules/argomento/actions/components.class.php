@@ -146,7 +146,7 @@ class argomentoComponents extends sfComponents
   
   public function executeArgomenticorrelati()
   {
-    $this->related_tags = TagPeer::getRelatedTags($this->tag->getName(), array('limit' => 20));
+    $this->related_tags = TagPeer::getRelatedTags($this->tag->getName(), array('limit' => 20, 'model' => 'OppAtto'));
   }
   
   
