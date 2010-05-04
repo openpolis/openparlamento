@@ -542,10 +542,12 @@ class attoActions extends sfActions
     elseif($this->atto->getTipoAttoId() > '1' && $this->atto->getTipoAttoId() < '12' )
       $this->link = 'http://banchedati.camera.it/sindacatoispettivo_'.$this->atto->getLegislatura().'/showXhtml.Asp?idAtto='.$this->atto->getParlamentoId().'&stile=6&highLight=1';
     elseif($this->atto->getTipoAttoId() == '12' )
-      if (strlen($this->atto->getParlamentoId())==5)
-          $this->link = 'http://www.camera.it/parlam/leggi/decreti/'.$this->atto->getParlamentoId().'d.htm';
-      else
-          $this->link = 'http://www.camera.it/parlam/leggi/decreti/0'.$this->atto->getParlamentoId().'d.htm';   
+    {
+      $anno=explode("-",$this->atto->getDataPres());
+      $numero=explode("/",$this->atto->getNumfase());
+      $this->link="http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:".$anno[0].";".$numero[0];
+    }
+   
     elseif($this->atto->getTipoAttoId() == '14' )
     {
 	  if($this->atto->getRamo()=='C')
