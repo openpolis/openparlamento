@@ -117,16 +117,16 @@ class argomentoActions extends sfActions
     $this->ramo = $this->getRequestParameter('ramo');
     $this->argomentis = array(
       '5 per mille'                             => 7698,
-      '8 per mille'                             => 7996, 
+#      '8 per mille'                             => 7996, 
       'aiuti sanitari'                          => 5715, 
       'aiuti umanitari'                         => 6729, 
       'banca mondiale (bm)'                     => 5837, 
       'cooperazione allo sviluppo'              => 4653, 
-      'cooperazione economica internazionale'   => 1560, 
+#      'cooperazione economica internazionale'   => 1560, 
       'diritti umani'                           => 4585, 
       "missioni militari all'estero"            => 317, 
       'organizzazioni non governative (ong)'    => 7313, 
-      'spesa militare'                          => 644
+#      'spesa militare'                          => 644
       );
     
     $this->forward404Unless(in_array($this->ramo, array('C', 'S')));
