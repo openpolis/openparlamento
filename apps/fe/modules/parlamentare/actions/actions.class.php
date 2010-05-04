@@ -745,7 +745,7 @@ class parlamentareActions extends sfActions
   {
     $this->ramo = $this->getRequestParameter('ramo');
 
-    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getClassificaParlamentariRS($this->ramo);
+    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getClassificaParlamentariNuovoRS($this->ramo);
     
   }
   

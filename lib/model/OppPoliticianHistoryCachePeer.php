@@ -185,7 +185,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
   }
   
   
-  public static function getClassificaParlamentariRS($ramo, $con = null)
+  public static function getClassificaParlamentariNuovoRS($ramo, $con = null)
   {
     $ramo = strtolower(substr($ramo, 0, 1));
     
@@ -194,9 +194,9 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 		}
 
     if ($ramo == 'g') {
-      $sql = "select p.id as p_id, p.nome, p.cognome, c.indice from opp_politician_history_cache c, opp_carica ca, opp_politico p where c.chi_id=ca.id and ca.politico_id=p.id and c.chi_tipo='p' and c.ramo='g' order by c.indice desc";
+      $sql = "select p.id as p_id, p.nome, p.cognome, c.indice from opp_politician_history_cache c, opp_carica ca, opp_politico p where c.chi_id=ca.id and ca.politico_id=p.id and c.chi_tipo='n' and c.ramo='g' order by c.indice desc";
     } else {
-      $sql = "select p.id as p_id, p.nome, p.cognome, g.acronimo, c.indice from opp_politician_history_cache c, opp_carica ca, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where c.chi_id=ca.id and ca.politico_id=p.id and cg.carica_id=ca.id and cg.data_fine is null and cg.gruppo_id = g.id and c.chi_tipo='p' and c.ramo='$ramo' order by c.indice desc";      
+      $sql = "select p.id as p_id, p.nome, p.cognome, g.acronimo, c.indice from opp_politician_history_cache c, opp_carica ca, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where c.chi_id=ca.id and ca.politico_id=p.id and cg.carica_id=ca.id and cg.data_fine is null and cg.gruppo_id = g.id and c.chi_tipo='n' and c.ramo='$ramo' order by c.indice desc";      
     }
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
