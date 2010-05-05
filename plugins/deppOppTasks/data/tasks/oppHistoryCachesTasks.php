@@ -23,6 +23,8 @@ pake_task('opp-build-cache-gruppi', 'project_exists');
 pake_desc("costruisce cache per rami");
 pake_task('opp-build-cache-rami', 'project_exists');
 
+pake_desc("ri-costruisce dati dei delta per gli storici");
+pake_task('opp-rebuild-deltas', 'project_exists');
 
 
 /**
@@ -113,7 +115,7 @@ function run_opp_build_cache_politici($task, $args, $options)
     $ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($id, $legislatura_corrente, $data);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'P', $id);
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'P', $id, $mio_ramo);
     if (!$cache_record) {
       $cache_record = new OppPoliticianHistoryCache();
     }
@@ -253,7 +255,7 @@ function run_opp_build_cache_gruppi($task, $args, $options)
         $dati = OppPoliticianHistoryCachePeer::aggregaDatiGruppoRamoData($id, $ramo, $data);
         
         // inserimento o aggiornamento del valore in opp_politician_history_cache
-        $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'G', $id);
+        $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'G', $id, $ramo);
         if (!$cache_record) {
           $cache_record = new OppPoliticianHistoryCache();
         }
@@ -400,6 +402,209 @@ function run_opp_build_cache_rami($task, $args, $options)
 }
 
 
+function run_opp_rebuild_deltas($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
+  }
+
+  $data = '';
+  $dry_run = false;
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('dry-run', $options)) {
+    $dry_run = true;
+  }
+  
+
+  // definisce la data fino alla quale vanno fatti i calcoli
+  // data_lookup serve per controllare se i record già esistono
+  if ($data != '') {
+    $data_lookup = $data;
+  } else {
+    $data = date('Y-m-d');
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
+  }
+
+  $msg = sprintf("start time: %s\n", date('H:i:s'));
+  echo $msg;
+  
+  $rs = OppPoliticianHistoryCachePeer::getRSByDataRamoChiTipo($data_lookup);
+  $cnt = 0;
+  while ($rs->next()) {
+    $cnt++;
+    $r = $rs->getRow();
+    printf("%6d) %1s %7d ... ", $cnt, $r['chi_tipo'], $r['chi_id']);
+    
+    // calcolo date fine mese scorso e precedente
+    list($data_1, $data_2) = getLast2MonthsDate($data);
+
+    // estrazione record storici a due mesi
+    $r_1 = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_1, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+    $r_2 = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_2, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+
+    // salta record per cui non c'è abbastanza storia
+    if (!$r_1 instanceof OppPoliticianHistoryCache ||
+        !$r_2 instanceof OppPoliticianHistoryCache)
+    {
+      printf(" NA \n");
+      continue;
+    }
+    
+    list($presenze_delta, $assenze_delta, $missioni_delta) = presenzeDelta($data_lookup, $r, $r_1, $r_2);
+    printf("d_presenze: %7.2f,  d_assenze: %7.2f,  d_missioni: %7.2f,  ", 
+           $presenze_delta, $assenze_delta, $missioni_delta);
+    $indice_delta = indiceDelta($data_lookup, $r, $r_1, $r_2, $data_1, $data_2);
+    printf("d_indice: %7.2f,  ", $indice_delta);
+    $ribellioni_delta = ribellioniDelta($data_lookup, $r, $r_1, $r_2, $data_1, $data_2);
+    printf("d_ribellioni: %7.2f", $ribellioni_delta);
+    
+    if (!$dry_run) {
+      $r = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+      $r->setPresenzeDelta($presenze_delta);
+      $r->setAssenzeDelta($assenze_delta);
+      $r->setMissioniDelta($missioni_delta);
+      $r->setIndiceDelta($indice_delta);
+      $r->setRibellioniDelta($ribellioni_delta);
+      $r->save();
+      printf(" OK!\n");
+    } else {
+      printf("\n");
+    }
+  }
+  
+  echo "data: $data_lookup\n";
+  
+  $msg = sprintf("end time: %s\n", date('H:i:s'));
+  echo $msg;
+  
+}
+
+
+function ribellioniDelta($data, $r, $r_1, $r_2)
+{
+  // calcolo indice
+  $ribellioni = (float)($r['ribellioni']);                   // complessive fino a oggi
+  $ribellioni_fine_1 = (float)$r_1->getribellioni();         // complessive fino a fine mese scorso
+  $ribellioni_1 = $ribellioni - $ribellioni_fine_1;          // questo mese
+  $ribellioni_fine_2 = (float)$r_2->getribellioni();         // complessive fino a fine due mesi fa
+  $ribellioni_2 = $ribellioni_fine_1 - $ribellioni_fine_2;   // il mese scorso
+  
+  // calcolo presenze
+  $presenze = (float)($r['presenze']);               // complessive fino a oggi
+  $presenze_fine_1 = (float)$r_1->getPresenze();     // complessive fino a fine mese scorso
+  $presenze_1 = $presenze - $presenze_fine_1;        // questo mese
+  $presenze_fine_2 = (float)$r_2->getPresenze();     // complessive fino a fine due mesi fa
+  $presenze_2 = $presenze_fine_1 - $presenze_fine_2; // il mese scorso
+
+  // calcolo valori normalizzati
+  if ($presenze_1 == 0)
+    $ribellioni_1_norm = 0.;
+  else
+    $ribellioni_1_norm = $ribellioni_1 / $presenze_1;
+    
+  if ($presenze_2 == 0)
+    $ribellioni_2_norm = 0.;
+  else
+    $ribellioni_2_norm = $ribellioni_2 / $presenze_2;
+  
+  // estrazione delta
+  return 100*($ribellioni_1_norm - $ribellioni_2_norm);
+}
+
+function indiceDelta($data, $r, $r_1, $r_2, $data_1, $data_2)
+{
+  // calcolo indice
+  $indice = (float)($r['indice']);              // complessive fino a oggi
+  $indice_fine_1 = (float)$r_1->getIndice();    // complessive fino a fine mese scorso
+  $indice_1 = $indice - $indice_fine_1;         // questo mese
+  $indice_fine_2 = (float)$r_2->getIndice();    // complessive fino a fine due mesi fa
+  $indice_2 = $indice_fine_1 - $indice_fine_2;  // il mese scorso
+  
+  // calcolo numero giorni
+  $giorni = (float)date('d', strtotime($data));
+  $giorni_1 = (float)date('d', strtotime($data_1));
+  $giorni_2 = (float)date('d', strtotime($data_2));
+
+  // calcolo valori normalizzati
+  $indice_1_norm = $indice_1 / $giorni_1;
+  $indice_2_norm = $indice_2 / $giorni_2;
+  
+  // estrazione delta
+  return $indice_1_norm - $indice_2_norm;
+}
+
+
+function presenzeDelta($data, $r, $r_1, $r_2)
+{
+  // calcolo presenze
+  $presenze = (float)($r['presenze']);               // complessive fino a oggi
+  $presenze_fine_1 = (float)$r_1->getPresenze();     // complessive fino a fine mese scorso
+  $presenze_1 = $presenze - $presenze_fine_1;        // questo mese
+  $presenze_fine_2 = (float)$r_2->getPresenze();     // complessive fino a fine due mesi fa
+  $presenze_2 = $presenze_fine_1 - $presenze_fine_2; // il mese scorso
+  
+  // calcolo assenze
+  $assenze = (float)($r['assenze']);
+  $assenze_fine_1 = (float)$r_1->getAssenze();
+  $assenze_1 = $assenze - $assenze_fine_1;
+  $assenze_fine_2 = (float)$r_2->getAssenze();
+  $assenze_2 = $assenze_fine_1 - $assenze_fine_2;
+  
+  // calcolo missione
+  $missioni = (float)($r['missioni']);
+  $missioni_fine_1 = (float)$r_1->getMissioni();
+  $missioni_1 = $missioni - $missioni_fine_1;
+  $missioni_fine_2 = (float)$r_2->getMissioni();
+  $missioni_2 = $missioni_fine_1 - $missioni_fine_2;
+  
+  // calcolo totale votazioni
+  $votazioni = $presenze + $assenze + $missioni;
+  $votazioni_1 = $presenze_1 + $assenze_1 + $missioni_1;
+  $votazioni_2 = $presenze_2 + $assenze_2 + $missioni_2;
+
+  // calcolo valori normalizzati
+  if ($votazioni_1 == 0)
+  {
+    $presenze_1_norm = 0; $assenze_1_norm = 0; $missioni_1_norm = 0;    
+  }
+  else
+  {
+    $presenze_1_norm = $presenze_1 / $votazioni_1;
+    $assenze_1_norm = $assenze_1 / $votazioni_1;
+    $missioni_1_norm = $missioni_1 / $votazioni_1;    
+  }
+  
+  if ($votazioni_2 == 0)
+  {
+    $presenze_2_norm = 0; $assenze_2_norm = 0; $missioni_2_norm = 0;    
+  }
+  else 
+  {
+    $presenze_2_norm = $presenze_2 / $votazioni_2;
+    $assenze_2_norm = $assenze_2 / $votazioni_2;
+    $missioni_2_norm = $missioni_2 / $votazioni_2;
+  }
+  
+  // estrazione delta
+  $presenze_delta = $presenze_1_norm - $presenze_2_norm;
+  $assenze_delta = $assenze_1_norm - $assenze_2_norm;
+  $missioni_delta = $missioni_1_norm - $missioni_2_norm;
+  return array($presenze_delta*100., $assenze_delta*100., $missioni_delta*100.);
+}
+
+function getLast2MonthsDate($data)
+{
+  $end_of_last_month_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($data)))));
+  $end_of_two_months_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($end_of_last_month_date)))));
+  return array($end_of_last_month_date, $end_of_two_months_date);  
+}
 
 function task_loader($value='')
 {

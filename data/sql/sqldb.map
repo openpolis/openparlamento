@@ -11,3 +11,4 @@ plugins.deppPropelActAsCommentableBehaviorPlugin.lib.model.schema.sql=propel
 plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.schema.sql=propel
 plugins.sfPropelActAsRatableBehaviorPlugin.lib.model.schema.sql=propel
 plugins.deppPropelActAsLaunchableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.deppApiKeysManagementPlugin.lib.model.schema.sql=propel

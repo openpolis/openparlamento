@@ -93,11 +93,14 @@ class apiActions extends sfActions
   {
     $key = $this->getRequestParameter('key');
     $infotype = $this->getRequestParameter('infotype');
-    $limit = $this->getRequestParameter('limit');
+    $order_by = $this->getRequestParameter('orderby');
+    $order_type = $this->getRequestParameter('ordertype');
+    
+		$con = Propel::getConnection('propel');
 
-    // to do: add api keys management
-    $is_valid_key = true;
-    // $is_valid_key = OpApiKeysPeer::isValidKey($key);
+    $current_data = OppPoliticianHistoryCachePeer::fetchLastData($con);
+
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
 
     $resp_node = new SimpleXMLElement(
       '<opkw xmlns="'.$this->opkw_ns.'" '.
@@ -113,21 +116,81 @@ class apiActions extends sfActions
   		// start producing xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
 
-      $camera_node = $content_node->addChild('camera', null, $this->opkw_ns);
-      $camera_node->addAttribute('n_rappresentanti', 
-                                 $limit < OppCaricaPeer::getNParlamentari('C')? $limit : OppCaricaPeer::getNParlamentari('C'));
-      $deputati = OppCaricaPeer::getActiveMps('C', $limit);
-      foreach ($deputati as $parlamentare) {
-        $this->addParlamentareNode($camera_node, $parlamentare, $infotype);
+
+      // camera
+      $camera_node = $content_node->addChild('camera', null, $this->opkw_ns);      
+
+      // dato storico aggregato per tutto il ramo
+      $c_ramo_node = $camera_node->addChild('ramo', null, $this->opkw_ns);
+      $rs = OppPoliticianHistoryCachePeer::getKWRamoRS('C', $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $r = $rs->getRow();
+        $this->addRamoNode($c_ramo_node, $r, $infotype);
       }
 
-      $senato_node = $content_node->addChild('senato', null, $this->opkw_ns);
-      $senato_node->addAttribute('n_rappresentanti', 
-                                 $limit < OppCaricaPeer::getNParlamentari('S')?$limit : OppCaricaPeer::getNParlamentari('S'));
-      $senatori = OppCaricaPeer::getActiveMps('S', $limit);
-      foreach ($senatori as $parlamentare) {
-        $this->addParlamentareNode($senato_node, $parlamentare, $infotype);
+      // gruppi
+      $c_gruppi_node = $camera_node->addChild('gruppi', null, $this->opkw_ns);
+      $n_gruppi = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'C', 'G', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWGruppoRSByDataRamo($current_data, 'C', null, null, $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $g = $rs->getRow();
+        $this->addGruppoNode($c_gruppi_node, $g, $infotype, $cnt);
       }
+      $c_gruppi_node->addAttribute('n_gruppi', $n_gruppi);
+      
+      // parlamentari
+      $deputati_node = $camera_node->addChild('parlamentari', null, $this->opkw_ns);
+      $n_deputati = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'C', 'P', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWPoliticoRSByDataRamo($current_data, 'C', $order_by, $order_type, $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $p = $rs->getRow();
+        $this->addParlamentareNode($deputati_node, $p, $infotype, $cnt);
+      }
+      $deputati_node->addAttribute('n_rappresentanti', $n_deputati);
+
+
+      // senato
+      $senato_node = $content_node->addChild('senato', null, $this->opkw_ns);
+      
+      // ramo (storico)
+      $s_ramo_node = $senato_node->addChild('ramo', null, $this->opkw_ns);
+      $rs = OppPoliticianHistoryCachePeer::getKWRamoRS('S', $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $r = $rs->getRow();
+        $this->addRamoNode($s_ramo_node, $r, $infotype);
+      }
+      
+      // gruppi
+      $s_gruppi_node = $senato_node->addChild('gruppi', null, $this->opkw_ns);
+      $n_gruppi = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'S', 'G', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWGruppoRSByDataRamo($current_data, 'S', null, null, $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $g = $rs->getRow();
+        $this->addGruppoNode($s_gruppi_node, $g, $infotype);
+      }
+      $s_gruppi_node->addAttribute('n_gruppi', $n_gruppi);
+      
+      // parlamentari
+      $senatori_node = $senato_node->addChild('parlamentari', null, $this->opkw_ns);
+      $n_senatori = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'S', 'P', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWPoliticoRSByDataRamo($current_data, 'S', $order_by, $order_type, $con);
+      $cnt = 0;
+      while ($rs->next()) {
+        $cnt++;
+        $p = $rs->getRow();
+        $this->addParlamentareNode($senatori_node, $p, $infotype, $cnt);
+      }
+      $senatori_node->addAttribute('n_rappresentanti', $n_senatori);
 
     } 
     else 
@@ -141,39 +204,62 @@ class apiActions extends sfActions
   }
 
 
-  protected function addParlamentareNode($node, $parlamentare, $infotype)
+  protected function addParlamentareNode($node, $p, $infotype, $n)
   {
     $parlamentare_node = $node->addChild('parlamentare');
+    $parlamentare_node->addAttribute('n_prog', $n);
 
     $width = 40; $height = 53;
 
     $image_node = $parlamentare_node->addChild('thumbnail');
     $image_node->addAttribute('xlink:href', 
-                              OppPoliticoPeer::getThumbUrl($parlamentare->getOppPolitico()->getId()), $this->xlink_ns);
+                              OppPoliticoPeer::getThumbUrl($p['politico_id']), $this->xlink_ns);
     $image_node->addAttribute('width', $width);
     $image_node->addAttribute('height', $height);
 
-    $parlamentare_node->addChild('nome', $parlamentare->getOppPolitico()->getNome());
-    $parlamentare_node->addChild('cognome', $parlamentare->getOppPolitico()->getCognome());
-    $parlamentare_node->addChild('circoscrizione', $parlamentare->getCircoscrizione());
+    $parlamentare_node->addChild('nome', $p['nome']);
+    $parlamentare_node->addChild('cognome', $p['cognome']);
+    $parlamentare_node->addChild('circoscrizione', $p['circoscrizione']);
 
     $gruppo_node = $parlamentare_node->addChild('gruppo');
-    $gruppo_node->addChild('nome', $parlamentare->getGruppo()->getNome());        
-    $gruppo_node->addChild('acronimo', $parlamentare->getGruppo()->getAcronimo());    
+    $gruppo_node->addChild('nome', $p['gruppo_nome']);        
+    $gruppo_node->addChild('acronimo', $p['gruppo_acronimo']);    
     
-    if ($data_inizio = $parlamentare->getDataInizio('Y-m-d') > '2008-04-29')
-      $parlamentare_node->addChild('data_inizio', $parlamentare->getDataInizio('d/m/Y'));    
+    if ($data_inizio = $p['data_inizio'] > '2008-04-29')
+      $parlamentare_node->addChild('data_inizio', $p['data_inizio']);    
 
-    call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($parlamentare_node, $parlamentare));
+    call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($parlamentare_node, $p));
+    
+  }
+  
+
+  protected function addGruppoNode($node, $g, $infotype)
+  {
+    $gruppo_node = $node->addChild('gruppo');
+    $gruppo_node->addAttribute('id', $g['gruppo_id']);
+
+    $gruppo_node->addChild('nome', $g['nome']);
+    $gruppo_node->addChild('acronimo', $g['acronimo']);
+
+    call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($gruppo_node, $g));
     
   }
   
   
-  public function addInfoPresenze($parlamentare_node, $parlamentare)
+  protected function addRamoNode($node, $r, $infotype)
   {
-    $presenze = $parlamentare->getPresenze();
-    $assenze = $parlamentare->getAssenze();
-    $missioni = $parlamentare->getMissioni();
+    $dato_node = $node->addChild('dato_storico');
+    $dato_node->addAttribute('data', $r['data']);
+
+    call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($dato_node, $r, false));
+    
+  }
+  
+  public function addInfoPresenze($node, $item, $prec = true)
+  {
+    $presenze = $item['presenze'];
+    $assenze = $item['assenze'];
+    $missioni = $item['missioni'];
     $n_votazioni = $presenze + $assenze + $missioni;
     
     if ($n_votazioni == 0)
@@ -187,49 +273,60 @@ class apiActions extends sfActions
       $missioni_perc = number_format($missioni*100/$n_votazioni,2);          
     }
     
-    $presenze_node = $parlamentare_node->addChild('presenze');
+    $presenze_node = $node->addChild('presenze');
     $presenze_node->addChild('numero', $presenze);
     $presenze_node->addChild('percentuale', $presenze_perc);
     $presenze_node->addChild('totale', $n_votazioni);
+    
+    if ($prec) {
+      $delta = $item['presenze_delta'];
+      $presenze_node->addChild('mese_precedente', $delta>0?1:($delta==0?0:-1));
+    }
 
-    $assenze_node = $parlamentare_node->addChild('assenze');
+    $assenze_node = $node->addChild('assenze');
     $assenze_node->addChild('numero', $assenze);
     $assenze_node->addChild('percentuale', $assenze_perc);
     $assenze_node->addChild('totale', $n_votazioni);
+    if ($prec) {
+      $delta = $item['assenze_delta'];
+      $assenze_node->addChild('mese_precedente', $delta>0?1:($delta==0?0:-1));
+    }
 
-    $missioni_node = $parlamentare_node->addChild('missioni');
+    $missioni_node = $node->addChild('missioni');
     $missioni_node->addChild('numero', $missioni);
     $missioni_node->addChild('percentuale', $missioni_perc);
     $missioni_node->addChild('totale', $n_votazioni);
-    
-    // TODO: aggiungere mese precedente
-    $parlamentare_node->addChild('mese_precedente', 0);
+    if ($prec) {
+      $delta = $item['missioni_delta'];
+      $missioni_node->addChild('mese_precedente', $delta>0?1:($delta==0?0:-1));
+    }
   }
   
-  public function addInfoAttivita($parlamentare_node, $parlamentare)
+  public function addInfoAttivita($node, $item, $prec = true)
   {
-    // viene estratta l'ultima data nella cache (per dati di tipo 'P', singoli politici)
-    $data = OppPoliticianHistoryCachePeer::fetchLastData();
-
-    $indice = sprintf("%7.2d", $parlamentare->getIndiceAttivita($data));
-    $indice_node = $parlamentare_node->addChild('indice');
+    $indice = $item['indice'];
+    $indice_node = $node->addChild('indice');
     if (!is_null($indice))
     {
       $indice_node->addChild('numero', $indice);      
     }
-
-    // TODO: aggiungere mese precedente
-    $parlamentare_node->addChild('mese_precedente', 0);
+    
+    if ($prec) {
+      $delta = $item['indice_delta'];
+      $indice_node->addChild('mese_precedente', $delta>0?1:($delta==0?0:-1));
+    }
   }
   
-  public function addInfoRibelli($parlamentare_node, $parlamentare)
+  public function addInfoRibelli($node, $item, $prec = true)
   {
-    $voti_ribelli = sprintf("%d", $parlamentare->getRibelle());
-    $voti_ribelli_node = $parlamentare_node->addChild('voti_ribelli');
+    $voti_ribelli = $item['ribellioni'];
+    $voti_ribelli_node = $node->addChild('voti_ribelli');
     $voti_ribelli_node->addChild('numero', $voti_ribelli);
 
-    // TODO: aggiungere mese precedente
-    $parlamentare_node->addChild('mese_precedente', 0);
+    if ($prec) {
+      $delta = $item['ribellioni_delta'];
+      $voti_ribelli_node->addChild('mese_precedente', $delta>0?1:($delta==0?0:-1));
+    }
   }
   
 

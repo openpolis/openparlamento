@@ -1,0 +1,14 @@
+propel:
+  depp_api_keys:
+    _attributes:      { phpName: deppApiKeys, package: plugins.deppApiKeysManagementPlugin.lib.model }
+    id:
+    req_name:         { type: varchar, size: 128, required: true, default: '' }
+    req_contact:      { type: varchar, size: 255, required: true, default: '' }
+    req_description:  { type: longvarchar }
+    value:            { type: varchar, size: 64, required: true, unique: true }
+    requested_at:     { type: timestamp }
+    granted_at:       { type: timestamp }
+    revoked_at:       { type: timestamp }
+    refused_at:       { type: timestamp }
+
+  

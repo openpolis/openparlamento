@@ -137,7 +137,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
   }
 
   /**
-   * estrazione di tutti i record relativi a un ramo, per una data
+   * estrazione di un record a partire da ramo e data
    *
    * @param string $data 
    * @param string $chi_tipo 
@@ -162,28 +162,142 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 
   
   /**
-   * estrazione di tutti i record relativi a un politico o gruppo, per una data
+   * estrazione di un record a partire da ramo, tipo, id e data
    *
    * @param string $data 
    * @param string $chi_tipo 
    * @param string $chi_id 
+   * @param string $ramo 
    * @return array of OppPoliticianHistoryCache
    * @author Guglielmo Celata
    */
-  public static function retrieveByDataChiTipoChiId($data, $chi_tipo, $chi_id, $con = null)
+  public static function retrieveByDataChiTipoChiIdRamo($data, $chi_tipo, $chi_id, $ramo, $con = null)
   {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
-		$criteria = new Criteria();
-		$criteria->add(self::DATA, $data);
-		$criteria->add(self::CHI_TIPO, $chi_tipo);
-		$criteria->add(self::CHI_ID, $chi_id);
-		$v = self::doSelect($criteria, $con);
+		$c = new Criteria();
+		$c->add(self::DATA, $data);
+		$c->add(self::CHI_TIPO, $chi_tipo);
+		$c->add(self::CHI_ID, $chi_id);
+		$c->add(self::RAMO, $ramo);
+		$v = self::doSelect($c, $con);
 
 		return !empty($v) ? $v[0] : null;
   }
+
+
+  /**
+   * estrazione di tutti i record per un ramo (per KW), per tutte le date
+   *
+   * @param string $ramo
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getKWRamoRS($ramo, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		  
+		$sql = sprintf("select ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta, ph.data from opp_politician_history_cache ph where ph.chi_tipo='R' and ph.ramo='%s'", 
+		               $ramo);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+  /**
+   * estrazione di tutti i record per gruppi (per KW) a partire dalla e data e dal ramo
+   *
+   * @param string $data 
+   * @param string $ramo
+   * @param string $order_by
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getKWGruppoRSByDataRamo($data, $ramo, $order_by = null, $order_type = 'asc', $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		  
+		$order_clause = '';
+		if (!is_null($order_by))
+		  $order_clause = "order by $order_by $order_type";
+		  
+		$sql = sprintf("select ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta, g.nome, g.acronimo, g.id as gruppo_id from opp_politician_history_cache ph, opp_gruppo g where ph.chi_id=g.id and ph.chi_tipo='G' and ph.ramo='%s' and ph.data='%s' %s", 
+		               $ramo, $data, $order_clause);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+  /**
+   * estrazione di tutti i record per politici (per KW) a partire da tipo e data
+   *
+   * @param string $data 
+   * @param string $chi_tipo 
+   * @param string $order_by
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getKWPoliticoRSByDataRamo($data, $ramo, $order_by = null, $order_type = 'asc', $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		  
+		$order_clause = '';
+		if (!is_null($order_by))
+		  $order_clause = "order by $order_by $order_type";
+		  
+		$sql = sprintf("select ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta, p.nome, p.cognome, p.id as politico_id, c.id as carica_id, c.data_inizio, c.circoscrizione,  g.nome as gruppo_nome, g.acronimo as gruppo_acronimo from opp_politician_history_cache ph, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where ph.chi_id=c.id and c.politico_id=p.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and ph.chi_tipo='P' and ph.ramo='%s' and ph.data='%s' %s", 
+		               $ramo, $data, $order_clause);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+  /**
+   * conta di tutti i record a partire da tipo e data
+   *
+   * @param string $data 
+   * @param string $chi_tipo 
+   * @return integer
+   * @author Guglielmo Celata
+   */
+  public static function countByDataRamoChiTipo($data, $ramo, $chi_tipo, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		$sql = sprintf("select count(*) as num from opp_politician_history_cache ph where ph.chi_tipo='%s' and ph.ramo='%s' and ph.data='%s'", 
+		               $chi_tipo, $ramo, $data);
+    $stm = $con->createStatement();
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['num'];
+  }
   
+
+  /**
+   * estrae tutti i record a partire da data, tipo e ramo (tipo e ramo non obbligatorio)
+   *
+   * @param string $data 
+   * @param string $chi_tipo 
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getRSByDataRamoChiTipo($data, $ramo = null, $chi_tipo = null, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$sql = sprintf("select * from opp_politician_history_cache ph where ph.data='%s' ", 
+		               $data);
+		if (!is_null($ramo)) $sql .= sprintf("and ramo = '%s' ", $ramo);
+		if (!is_null($chi_tipo)) $sql .= sprintf("and chi_tipo = '%s' ", $chi_tipo);
+		
+    $stm = $con->createStatement();
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
   
   public static function getClassificaParlamentariNuovoRS($ramo, $con = null)
   {

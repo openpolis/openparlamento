@@ -1,0 +1,8 @@
+generator:
+  class:              sfPropelAdminGenerator
+  param:
+    model_class:      deppApiKeys
+    theme:            default
+
+    list:
+      title: Elenco delle chiavi

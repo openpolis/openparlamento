@@ -23,7 +23,7 @@ test:
 all:
   .settings:
     i18n:                 on         
-    enabled_modules:      [default, sfGuardAuth, deppCommentingAdmin, sfEmendAdmin, sfEmendLogAdmin, sfSimpleBlogPostAdmin, sfSimpleBlogCommentAdmin, sfSupraVariablesAdmin, sfMediaLibrary, sfThumbnail]
+    enabled_modules:      [default, sfGuardAuth, deppCommentingAdmin, sfEmendAdmin, sfEmendLogAdmin, sfSimpleBlogPostAdmin, sfSimpleBlogCommentAdmin, sfSupraVariablesAdmin, sfMediaLibrary, sfThumbnail, api_keys]
   .actions:                               
     login_module:         sfGuardAuth   
     login_action:         signin        

@@ -295,12 +295,7 @@ class TagPeer extends BaseTagPeer
     }
 
     $tagging_options = $options;
-
-    if (isset($tagging_options['limit']))
-    {
-      unset($tagging_options['limit']);
-    }
-
+    
     $taggings = self::getTaggings($tags, $tagging_options);
     $result = array();
 
