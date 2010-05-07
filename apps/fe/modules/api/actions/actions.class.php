@@ -15,6 +15,387 @@ class apiActions extends sfActions
   var $op_ns = 'http://www.openpolis.it/2010/op';
   var $xlink_ns = 'http://www.w3.org/1999/xlink';
 
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con i dati di una singola votazione
+   * progetto op_kw
+   *
+   *  <opkw xmlns="http://www.openpolis.it/2010/opkw"
+   *         xmlns:op="http://www.openpolis.it/2010/op"
+   *         xmlns:op_location="http://www.openpolis.it/2010/op_location"
+   *         xmlns:op_politician="http://www.openpolis.it/2010/op_politician"
+   *         xmlns:xlink="http://www.w3.org/1999/xlink">
+   *    <op:content> 
+   *      <votazione>
+   *        <riferimenti>
+   *          <atto xlink:href="http://parlamento.openpolis.it/votazione/32288"></atto>
+   *          ...
+   *        </riferimenti>
+   *        <sorgente xlink:href="http://leg16.camera.it/resoconti/resoconto_votazioni.asp?idSeduta=313&resoconto=indice_votazioni" />
+   *        <titolo>1 Titulo</titolo>
+   *        <descrizione_wiki>La descrizione ...</descrizione_wiki>
+   *        <data>28/04/2010</data>
+   *        <ramo>Camera</ramo>
+   *        <num_seduta>313</num_seduta>
+   *        <dettagli_voto>
+   *          <esito>respinto</esito>
+   *          <favorevoli n="225" perc="50.1" />
+   *          <contrari n="224" perc="49.9" />
+   *          <astenuti n="0" perc="0.0" />
+   *          <scarto n="1">
+   *          <presenti n="449" perc="71.3" />
+   *          <assenti n="103" perc="16.3" />
+   *          <in_missione n="76" perc="12.1" />
+   *          <voto_ribelli n_voti="3">
+   *            <parlamentare>
+   *              <nome>Giancarlo</nome>
+   *              <cognome>ABELLI</cognome>
+   *              <acronimo_gruppo>PDL</acronimo_gruppo>
+   *              <voto>Contrario</voto>
+   *              <voto_gruppo>Favorevole</voto_gruppo>
+   *            </parlamentare>
+   *            ...
+   *          </voto_ribelli>
+   *          <voto_gruppi>
+   *            <gruppo>
+   *              <nome>Gruppo misto</nome>
+   *              <favorevoli n="11" />
+   *              <contrari n="1">
+   *              <astenuti n="0">
+   *              <assenti n="13">
+   *              <in_missione n="6">
+   *            </gruppo>
+   *            ...
+   *          </voto_gruppi>
+   *          <voto_parlamentari>
+   *            <parlamentare xlink:href="politico/4573.xml">
+   *              <nome>Giancarlo</nome>
+   *              <cognome>ABELLI</cognome>
+   *              <acronimo_gruppo>PDL</acronimo_gruppo>
+   *              <voto>Contrario</voto>
+   *            </parlamentare>
+   *            ...
+   *          </voto_parlamentari>
+   *        </dettagli_voto>
+   *      </votazione>
+   *    </op:content>
+   *  </opkw>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opkw xlmns="http://www.openpolis.it/2010/opkw"
+   *       xmlns:op="http://www.openpolis.it/2010/op"
+   *       xlmns:op_location="http://www.openpolis.it/2010/op_location"
+   *       xmlns:op_politician="http://www.openpolis.it/2010/op_politician">
+   *   <op:error>Messaggio di errore</op:error>
+   * </opkw>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeVotazione()
+  {
+    $key = $this->getRequestParameter('key');
+    $id = $this->getRequestParameter('id');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLElement(
+      '<opkw xmlns="'.$this->opkw_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opkw>');
+      
+    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
+    
+
+    if ($is_valid_key)
+    {
+      // estrazione informazioni
+      $votazione = OppVotazionePeer::retrieveByPK($id);
+      $seduta = $votazione->getOppSeduta();
+      $data = $seduta->getData('Y-m-d');
+      $titulo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
+      
+      $favorevoli = $votazione->getFavorevoli();
+      $contrari = $votazione->getContrari();
+      $astenuti = $votazione->getAstenuti();
+      $votanti = $favorevoli + $contrari + $astenuti;
+      $favorevoli_perc = sprintf("%4.1f", 100.0 * $favorevoli / $votanti);
+      $contrari_perc = sprintf("%4.1f", 100.0 * $contrari / $votanti);
+      $astenuti_perc = sprintf("%4.1f", 100.0 * $astenuti / $votanti);
+      
+      $voto_gruppi = $votazione->getVotoGruppi($data);
+      $voto_ribelli = $votazione->getVotoRibelli($data);
+      $voto_parlamentari = $votazione->getVotoParlamentari($data);
+
+  		// produzione xml
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      $votazione_node = $content_node->addChild('voti_maggioranza_sotto', null, $this->opkw_ns);      
+      
+      $votazione_node->addChild('data', $seduta->getData('d/m/Y'));
+      $votazione_node->addChild('ramo', $seduta->getRamo());
+      $votazione_node->addChild('n_seduta', $seduta->getNumero());
+      $votazione_node->addChild('titolo', $titulo);
+
+      $dettagli_node = $votazione_node->addChild('dettagli_voto', null, $this->opkw_ns);
+      $dettagli_node->addChild('esito', $votazione->getEsito());
+      
+      
+      $favorevoli_node = $dettagli_node->addChild('favorevoli', null);
+      $favorevoli_node->addAttribute('n', $favorevoli);
+      $favorevoli_node->addAttribute('perc', $favorevoli_perc);
+
+      $contrari_node = $dettagli_node->addChild('contrari', null);
+      $contrari_node->addAttribute('n', $contrari);
+      $contrari_node->addAttribute('perc', $contrari_perc);
+
+      $astenuti_node = $dettagli_node->addChild('astenuti', null);
+      $astenuti_node->addAttribute('n', $astenuti);
+      $astenuti_node->addAttribute('perc', $astenuti_perc);
+
+      $dettagli_node->addChild('presenti', null);
+      $dettagli_node->addChild('votanti', null);
+      
+      // dettaglio voto dei gruppi
+      $gruppi_node = $dettagli_node->addChild('voto_gruppi', null, $this->opkw_ns);
+      foreach ($voto_gruppi as $nome => $detail) {
+        $gruppo_node = $gruppi_node->addChild('gruppo', null, $this->opkw_ns);
+        $gruppo_node->addChild('nome', $nome, $this->opkw_ns);
+        foreach ($detail as $key => $value) {
+          $gruppo_node->addChild(strtolower(str_replace(' ', '_', $key)), $value, $this->opkw_ns);
+        }
+      }
+
+      // dettaglio voto dei ribelli
+      $ribelli_node = $dettagli_node->addChild('voto_ribelli', null, $this->opkw_ns);
+      $ribelli_node->addAttribute('n_voti', $votazione->getRibelli());
+      foreach ($voto_ribelli as $cognome => $ribelle)
+      {
+        $parlamentare_node = $ribelli_node->addChild('parlamentare', null, $this->opkw_ns);
+        $parlamentare_node->addAttribute('xlink:href', sprintf("parlamentari/%d.xml", $ribelle['politico_id']), $this->xlink_ns);
+        
+        $parlamentare_node->addChild('nome', $ribelle['politico_nome'], $this->opkw_ns);
+        $parlamentare_node->addChild('cognome', $ribelle['politico_cognome'], $this->opkw_ns);
+        $parlamentare_node->addChild('acronimo_gruppo', $ribelle['gruppo_acronimo'], $this->opkw_ns);
+        $parlamentare_node->addChild('voto', $ribelle['voto']);
+        $parlamentare_node->addChild('voto_gruppo', $ribelle['voto_gruppo']);
+      }
+      
+      // dettaglio voto dei parlamentari
+      $parlamentari_node = $dettagli_node->addChild('voto_parlamentari', null, $this->opkw_ns);
+      foreach ($voto_parlamentari as $p)
+      {
+        $parlamentare_node = $parlamentari_node->addChild('parlamentare', null, $this->opkw_ns);
+        $parlamentare_node->addAttribute('xlink:href', sprintf("parlamentari/%d.xml", $p['id']), $this->xlink_ns);
+        
+        $parlamentare_node->addChild('nome', $p['nome'], $this->opkw_ns);
+        $parlamentare_node->addChild('nome', $p['cognome'], $this->opkw_ns);
+        $parlamentare_node->addChild('nome_gruppo', $p['nome_gruppo'], $this->opkw_ns);
+        $parlamentare_node->addChild('acronimo_gruppo', $p['acronimo_gruppo'], $this->opkw_ns);
+        $parlamentare_node->addChild('voto', $p['voto']);
+      }
+      
+      
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con i voti in cui la maggioranza è stata battuta
+   * progetto op_kw
+   *
+   *  <opkw xmlns="http://www.openpolis.it/2010/opkw"
+   *         xmlns:op="http://www.openpolis.it/2010/op"
+   *         xmlns:op_location="http://www.openpolis.it/2010/op_location"
+   *         xmlns:op_politician="http://www.openpolis.it/2010/op_politician"
+   *         xmlns:xlink="http://www.w3.org/1999/xlink">
+   *    <op:content> 
+   *      <voti_maggioranza_sotto n_voti="50">
+   *        <voto xlink:href="votazione/32288.xml">
+   *          <titolo>Titolo</titolo>
+   *          <data>28/04/2010</data>
+   *          <ramo>Camera</ramo>
+   *          <num_seduta>313</num_seduta>
+   *          <esito>respinto</esito>
+   *          <voto_maggioranza>contrario</voto_maggioranza>
+   *          <n_ribelli>34</n_ribelli>
+   *        </voto>
+   *        ...
+   *      </voti_maggioranza_sotto>
+   *    </op:content>
+   *  </opkw>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opkw xlmns="http://www.openpolis.it/2010/opkw"
+   *       xmlns:op="http://www.openpolis.it/2010/op"
+   *       xlmns:op_location="http://www.openpolis.it/2010/op_location"
+   *       xmlns:op_politician="http://www.openpolis.it/2010/op_politician">
+   *   <op:error>Messaggio di errore</op:error>
+   * </opkw>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeElencoVotiMaggioranzaSotto()
+  {
+    $key = $this->getRequestParameter('key');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLElement(
+      '<opkw xmlns="'.$this->opkw_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opkw>');
+      
+    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
+    
+
+    if ($is_valid_key)
+    {
+  		// start producing xml
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      
+      $votazioni = OppVotazionePeer::getMaggioranzaSottoVotes();
+
+      // voti chiave
+      $voti_node = $content_node->addChild('voti_maggioranza_sotto', null, $this->opkw_ns);      
+      $voti_node->addAttribute('n_voti', count($votazioni));
+      
+      foreach ($votazioni as $votazione)
+      {
+        $data = $votazione->getOppSeduta()->getData('d/m/Y');
+        $ramo =  $votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato';
+        $n_seduta =  $votazione->getOppSeduta()->getNumero();
+        $href = sprintf("votazioni/%s.xml", $votazione->getId());
+        $titulo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
+        $esito = $votazione->getEsito();
+        $n_ribelli = $votazione->getRibelli();
+
+        $voto_node = $voti_node->addChild('voto', null, $this->opkw_ns);
+        $voto_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $voto_node->addChild('data', $data);
+        $voto_node->addChild('ramo', $ramo);
+        $voto_node->addChild('n_seduta', $n_seduta);
+        $voto_node->addChild('titolo', $titulo);
+        $voto_node->addChild('esito', $esito);
+        $voto_node->addChild('n_ribelli', $n_ribelli);
+      }
+
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con i voti chiave
+   * progetto op_kw
+   *
+   *  <opkw xmlns="http://www.openpolis.it/2010/opkw"
+   *         xmlns:op="http://www.openpolis.it/2010/op"
+   *         xmlns:op_location="http://www.openpolis.it/2010/op_location"
+   *         xmlns:op_politician="http://www.openpolis.it/2010/op_politician"
+   *         xmlns:xlink="http://www.w3.org/1999/xlink">
+   *    <op:content> 
+   *      <voti_chiave n_voti="50">
+   *        <voto xlink:href="votazione/32288.xml">
+   *          <titolo>Titolo</titolo>
+   *          <data>28/04/2010</data>
+   *          <ramo>Camera</ramo>
+   *          <num_seduta>313</num_seduta>
+   *          <esito>respinto</esito>
+   *          <n_ribelli>34</n_ribelli>
+   *        </voto>
+   *        ...
+   *      </voti_chiave>
+   *    </op:content>
+   *  </opkw>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opkw xlmns="http://www.openpolis.it/2010/opkw"
+   *       xmlns:op="http://www.openpolis.it/2010/op"
+   *       xlmns:op_location="http://www.openpolis.it/2010/op_location"
+   *       xmlns:op_politician="http://www.openpolis.it/2010/op_politician">
+   *   <op:error>Messaggio di errore</op:error>
+   * </opkw>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeElencoVotiChiave()
+  {
+    $key = $this->getRequestParameter('key');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLElement(
+      '<opkw xmlns="'.$this->opkw_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opkw>');
+      
+    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
+    
+
+    if ($is_valid_key)
+    {
+  		// start producing xml
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      
+      $votazioni = OppVotazionePeer::getKeyVotes();
+
+      // voti chiave
+      $voti_node = $content_node->addChild('voti_chiave', null, $this->opkw_ns);      
+      $voti_node->addAttribute('n_voti', count($votazioni));
+      
+      foreach ($votazioni as $votazione)
+      {
+        $data = $votazione->getOppSeduta()->getData('d/m/Y');
+        $ramo =  $votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato';
+        $n_seduta =  $votazione->getOppSeduta()->getNumero();
+        $href = sprintf("votazioni/%s.xml", $votazione->getId());
+        $titulo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
+        $esito = $votazione->getEsito();
+        $n_ribelli = $votazione->getRibelli();
+
+        $voto_node = $voti_node->addChild('voto', null, $this->opkw_ns);
+        $voto_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $voto_node->addChild('data', $data);
+        $voto_node->addChild('ramo', $ramo);
+        $voto_node->addChild('n_seduta', $n_seduta);
+        $voto_node->addChild('titolo', $titulo);
+        $voto_node->addChild('esito', $esito);
+        $voto_node->addChild('n_ribelli', $n_ribelli);
+      }
+
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+
   /**
    * API (protetta da una API key)
    * torna flusso xml di tutti i parlamentari (divisi per ramo)

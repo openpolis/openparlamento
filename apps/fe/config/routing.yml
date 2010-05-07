@@ -1,6 +1,18 @@
 api_parlamentari:
   url: /elenco_parlamentari/:key/:infotype/:orderby/:ordertype
   param: { module: api, action: elencoParlamentari }
+
+api_voti_chiave:
+  url: /elenco_voti_chiave/:key
+  param: { module: api, action: elencoVotiChiave }
+
+api_voti_maggioranza_sotto:
+  url: /elenco_voti_maggioranza_sotto/:key
+  param: { module: api, action: elencoVotiMaggioranzaSotto }
+  
+api_votazione:
+  url: /votazione/:key/:id
+  param: { module: api, action: votazione }
   
 tesseramento:
   url: /tesseramento

@@ -146,7 +146,7 @@ class votazioneComponents extends sfComponents
    
    foreach ($ribelli as $cognome => $ribelle) {
      $c1= new Criteria();
-     $c1->add(OppGruppoPeer::NOME,$ribelle['gruppo']);
+     $c1->add(OppGruppoPeer::NOME,$ribelle['gruppo_nome']);
      $obj_gruppo=OppGruppoPeer::doSelectOne($c1);
      $gruppo_acr=$obj_gruppo->getAcronimo();
      
@@ -169,20 +169,9 @@ class votazioneComponents extends sfComponents
    
    }
    
-    public function executeKeyvotes()
+  public function executeKeyvotes()
   { 
-     $c = new Criteria();
-     $c->addJoin(OppVotazionePeer::ID,sfLaunchingPeer::OBJECT_ID);
-     $c->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
-     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
-     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
-     //$c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
-     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
-     if ($this->limit!=0)
-        $c->setLimit($this->limit);
-     $this->votazioni=OppVotazionePeer::doSelect($c);
-     
-  
+    $this->votazioni = OppVotazionePeer::getKeyVotes($this->limit);
   } 
         
 }

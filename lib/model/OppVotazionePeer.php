@@ -9,6 +9,58 @@
  */ 
 class OppVotazionePeer extends BaseOppVotazionePeer
 {
+
+  public static function maggioranzaSottoCriteria()
+  {
+    $c = new Criteria();
+
+    $c->addJoin(OppVotazionePeer::ID,OppVotazioneHasGruppoPeer::VOTAZIONE_ID);
+
+    // Prendi il voto del Gruppo della PDL GRUPPO_ID=19;
+    $crit0 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::GRUPPO_ID, 19);
+    $crit1 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Appr.');
+    $crit2 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Contrario');
+
+    $crit1->addAnd($crit2);
+    $crit3 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Resp.');
+    $crit4 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Favorevole');
+
+    $crit3->addAnd($crit4);
+
+    $crit1->addOr($crit3);
+
+    $crit0->addAnd($crit1);
+
+    $c->add($crit0);
+
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+    $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+    
+    return $c;
+  }
+
+  public static function getMaggioranzaSottoVotes($limit = 0)
+  {
+    $c = self::maggioranzaSottoCriteria();
+    if ($limit != 0)
+       $c->setLimit($limit);
+    return OppVotazionePeer::doSelectJoinOppSeduta($c);        
+  }
+  
+  public static function getKeyVotes($limit = 0)
+  {
+    $c = new Criteria();
+    $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
+    $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+    $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
+    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
+    if ($limit != 0)
+       $c->setLimit($limit);
+    return OppVotazionePeer::doSelect($c);    
+  }
+
+
   public static function doSelectVotoGruppo($votazione_id, $gruppo)
   {
     

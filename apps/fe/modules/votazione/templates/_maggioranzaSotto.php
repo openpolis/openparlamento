@@ -7,7 +7,8 @@
       <th scope="col">esito in<br />Parlamento:</th>
       <th scope="col">voto<br />maggioranza:</th>
       <th scope="col">voti di<br />scarto:</th>
-      <th scope="col">numero di<br />ribelli:</th>
+      <th scope="col">ribelli<br />nella maggioranza:</th>
+      <th scope="col">assenti<br />nella maggioranza:</th>
     </tr>
   </thead>
 
@@ -35,7 +36,8 @@
 		</td>
 		<td><span <?php echo ($votazione->getEsito()=='APPROVATA'?'style="color:#B13311;">Contrario':'style="color:#34961D;">Favorevole') ?></span></td>
         <td><p><?php echo $votazione->getMargine() ?></p></td>
-        <td><p><?php echo $votazione->getRibelli() ?></p></td>
+        <td><p><?php echo $votazione->countRibelliMaggioranza($votazione->getOppSeduta()->getData()) ?></p></td>
+        <td><p><?php echo $votazione->countAssentiMaggioranza($votazione->getOppSeduta()->getData()) ?></p></td>
       </tr>
     <?php endforeach; ?>
   </tbody>

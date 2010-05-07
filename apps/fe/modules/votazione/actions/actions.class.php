@@ -34,70 +34,35 @@ class votazioneActions extends sfActions
    */
   public function executeIndex()
   {
-    
-    $c = new Criteria();
-    $c->add(OppVotazionePeer::ID, $this->getRequestParameter('id'), Criteria::EQUAL );
-    $this->votazione = OppVotazionePeer::doSelectJoinOppSeduta($c);
-    $this->votazione = $this->votazione[0];
+    $votazione_id = $this->getRequestParameter('id');
+
+    $this->votazione = OppVotazionePeer::retrieveByPK($votazione_id);
     $this->forward404Unless($this->votazione);  
 
     $this->ramo = $this->votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ; 
+    $data = $this->votazione->getOppSeduta()->getData('Y-m-d');
 
-    $this->risultati = OppVotazioneHasCaricaPeer::doSelectGroupByGruppo($this->getRequestParameter('id'));
-
-    $this->ribelli = $this->votazione->getRibelliList();
-    
-    
+    $this->risultati = $this->votazione->getVotoGruppi($data);
+    $this->ribelli = $this->votazione->getVotoRibelli($data);
     
     $this->getResponse()->setTitle('Votazione '.$this->ramo.' '. $this->votazione->getTitolo().' - '.sfConfig::get('app_main_title'));
-    
-    
-
-    //$gruppi = sfYaml::load(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps/fe/config/gruppi.yml');
-    //$this->gruppi_votazione = $gruppi['legislatura_'.$this->votazione->getOppSeduta()->getLegislatura()][$this->ramo];	
 
     $this->processSort();
 
-    $c1 = new Criteria();
-    $this->addSortCriteria($c1);
-
-    $c1->clearSelectColumns();
-    $c1->addSelectColumn(OppPoliticoPeer::ID);
-    $c1->addSelectColumn(OppPoliticoPeer::COGNOME);
-    $c1->addSelectColumn(OppPoliticoPeer::NOME);
-    $c1->addSelectColumn(OppGruppoPeer::NOME);
-    $c1->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
-    $c1->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);
-    $c1->addSelectColumn(OppGruppoPeer::ACRONIMO);
-
-    $c1->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
-    $c1->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-	$c1->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::INNER_JOIN);
-	$c1->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::INNER_JOIN);
-	  
-	$c1->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $this->votazione->getId(), Criteria::EQUAL);
-	$c1->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $this->votazione->getOppSeduta()->getData(), Criteria::LESS_EQUAL);
-	  
-	$cton1 = $c1->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $this->votazione->getOppSeduta()->getData(), Criteria::GREATER_EQUAL);
-	$cton2 = $c1->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
-	$cton1->addOr($cton2);
-       $c1->add($cton1);
-	  
-	$c1->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	$this->votanti = OppVotazioneHasCaricaPeer::doSelectRS($c1);
-	$this->votantiComponent = OppVotazioneHasCaricaPeer::doSelectRS($c1);
+  	$this->votanti = OppVotazioneHasCaricaPeer::getRSAllVotanti($votazione_id, $data);
+  	$this->votantiComponent = OppVotazioneHasCaricaPeer::getRSAllVotanti($votazione_id, $data);
 	
-     $c2 = new Criteria();
-     $c2->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $this->votazione->getId());
-     $this->voto_gruppi=OppVotazioneHasGruppoPeer::doSelect($c2);
+    $c = new Criteria();
+    $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $votazione_id);
+    $this->voto_gruppi = OppVotazioneHasGruppoPeer::doSelect($c);
      
-     $c3 = new Criteria();
-     $c3->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $this->votazione->getId());
-     $this->voto_atti=OppVotazioneHasAttoPeer::doSelect($c3);
+    $c = new Criteria();
+    $c->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID, $votazione_id);
+    $this->voto_atti = OppVotazioneHasAttoPeer::doSelect($c);
      
-     $c4 = new Criteria();
-     $c4->add(OppVotazioneHasEmendamentoPeer::VOTAZIONE_ID, $this->votazione->getId());
-     $this->voto_ems=OppVotazioneHasEmendamentoPeer::doSelect($c4);
+    $c = new Criteria();
+    $c->add(OppVotazioneHasEmendamentoPeer::VOTAZIONE_ID, $votazione_id);
+    $this->voto_ems = OppVotazioneHasEmendamentoPeer::doSelect($c);
   }
 
 
@@ -323,7 +288,7 @@ class votazioneActions extends sfActions
   
   public function executeKeyvotes()
   {
-  $this->session = $this->getUser();
+    $this->session = $this->getUser();
 
     $this->query = $this->getRequestParameter('query', '');
     
@@ -370,38 +335,16 @@ class votazioneActions extends sfActions
       $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
      
-       $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
-        $c = new Criteria();
-    	  $this->addListSortCriteria($c);
-    	  
-    	  $c->addJoin(OppVotazionePeer::ID,OppVotazioneHasGruppoPeer::VOTAZIONE_ID);
+      $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
 
-         // Prendi il voto del Gruppo della PDL GRUPPO_ID=19;
-         $crit0 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::GRUPPO_ID, 19);
-         $crit1 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Appr.');
-         $crit2 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Contrario');
-
-         $crit1->addAnd($crit2);
-         $crit3 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Resp.');
-         $crit4 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Favorevole');
-
-         $crit3->addAnd($crit4);
-
-         $crit1->addOr($crit3);
-
-         $crit0->addAnd($crit1);
-
-         $c->add($crit0);
-         
-            $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-         	  $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-    	  
-    	  $this->addFiltersCriteria($c);    
-        $this->pager->setCriteria($c);
-        $this->pager->setPage($this->getRequestParameter('page', 1));
-        $this->pager->setPeerMethod('doSelectJoinOppSeduta');
-        $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
-    	  $this->pager->init();
+      $c = OppVotazionePeer::maggioranzaSottoCriteria();
+      $this->addListSortCriteria($c);
+      $this->addFiltersCriteria($c);    
+      $this->pager->setCriteria($c);
+      $this->pager->setPage($this->getRequestParameter('page', 1));
+      $this->pager->setPeerMethod('doSelectJoinOppSeduta');
+      $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
+      $this->pager->init();
   
   }
   
