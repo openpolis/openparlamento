@@ -10,6 +10,36 @@
 class OppPolitico extends BaseOppPolitico
 {
 
+  public function getVotiChiave()
+  {
+    $carica = $this->getCaricaDepSenCorrente();
+    return OppVotazioneHasCaricaPeer::getVotiChiaveCarica($carica->getId());
+  }
+
+  public function getMetaInfo()
+  {
+    $rs = OppPoliticoPeer::getKWPoliticoMetaRSById($this->getId());
+    $rs->next();
+    return $rs->getRow();
+  }
+
+  public function getDatiStorici()
+  {
+    $rs = OppPoliticianHistoryCachePeer::getKWDatiPoliticoRSById($this->getId());
+    $dati = array();
+    while($rs->next())
+    {
+      $row = $rs->getRow();
+      $tipi_dati = array('presenze', 'assenze', 'missioni', 'indice', 'ribellioni');
+      foreach ($tipi_dati as $tipo) {
+        $dato[$tipo] = $row[$tipo];
+        $dato[$tipo.'_delta'] = $row[$tipo.'_delta'];
+      }
+      $dati [$row['data']]= $dato;
+    }
+    return $dati;
+  }
+
   public function countSignedEmendamentiAtDate($date = null)
   {
     if (is_null($date))

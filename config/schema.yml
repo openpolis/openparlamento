@@ -257,8 +257,9 @@ propel:
     strong:           { type: boolean }
 
   opp_politician_history_cache:
+    id:
     legislatura:      { type: integer }
-    data:             { type: date, primaryKey: true, required: true }
+    data:             { type: date, required: true }
     assenze:          { type: float, index: true }
     assenze_delta:    { type: float }
     presenze:         { type: float, index: true }
@@ -269,33 +270,41 @@ propel:
     indice_delta:     { type: float }
     ribellioni:       { type: float, index: true }
     ribellioni_delta: { type: float }
-    chi_tipo:         { type: varchar(1), primaryKey: true, default: 'T' }
-    chi_id:           { type: integer, primaryKey: true, default: 0 }
-    ramo:             { type: varchar(1), primaryKey: true, default: 'T' }
+    chi_tipo:         { type: varchar(1), required: true, default: 'T' }
+    chi_id:           { type: integer, required: true, default: 0 }
+    ramo:             { type: varchar(1), required: true, default: 'T' }
     gruppo_id:        { type: integer }
     numero:           { type: integer }
     created_at:
     updated_at:
+    _uniques:
+      data_tipo_id_ramo: [data, chi_tipo, chi_id, ramo]  
 
 
   opp_act_history_cache:
+    id:
     legislatura:      { type: integer }
-    data:             { type: date, primaryKey: true, required: true }
+    data:             { type: date, required: true }
     indice:           { type: float, index: true }
-    chi_tipo:         { type: varchar(1), primaryKey: true, default: 'T' }
-    chi_id:           { type: integer, primaryKey: true, default: 0 }
+    chi_tipo:         { type: varchar(1), required: true, default: 'T' }
+    chi_id:           { type: integer, required: true, default: 0 }
     tipo_atto_id:     { type: integer, index: true }
     created_at:
     updated_at:
+    _uniques:
+      data_tipo_id: [data, chi_tipo, chi_id]  
 
   opp_tag_history_cache:
+    id:
     legislatura:      { type: integer }
-    data:             { type: date, primaryKey: true, required: true }
+    data:             { type: date, required: true }
     indice:           { type: float, index: true }
-    chi_tipo:         { type: varchar(1), primaryKey: true, default: 'T' }
-    chi_id:           { type: integer, primaryKey: true, default: 0 }
+    chi_tipo:         { type: varchar(1), required: true, default: 'T' }
+    chi_id:           { type: integer, required: true, default: 0 }
     created_at:
     updated_at:
+    _uniques:
+      data_tipo_id: [data, chi_tipo, chi_id]  
 
 
   opp_politico:

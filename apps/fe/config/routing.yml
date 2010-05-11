@@ -1,3 +1,11 @@
+api_pol_image:
+  url: /get_pol_image/:key/:id
+  param: { module: api, action: getPolImage }
+
+api_parlamentare:
+  url: /singolo_parlamentare/:key/:id
+  param: { module: api, action: parlamentare }
+
 api_parlamentari:
   url: /elenco_parlamentari/:key/:infotype/:orderby/:ordertype
   param: { module: api, action: elencoParlamentari }

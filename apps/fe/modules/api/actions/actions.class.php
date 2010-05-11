@@ -16,6 +16,167 @@ class apiActions extends sfActions
   var $xlink_ns = 'http://www.w3.org/1999/xlink';
 
 
+
+
+  public function executeGetPolImage()
+  {
+    $key = $this->getRequestParameter('key');
+    $id = $this->getRequestParameter('id');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLElement(
+      '<opkw xmlns="'.$this->opkw_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opkw>');
+      
+    if ($is_valid_key)
+    {
+      $picture_url = OppPoliticoPeer::getPictureUrl($id);
+      $thumb_url = OppPoliticoPeer::getThumbUrl($id);
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      $picture_node = $content_node->addChild('picture', $picture_url, $this->opkw_ns);
+      $thumb_node = $content_node->addChild('thumb', $thumb_url, $this->opkw_ns);
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con i dati di una singola votazione
+   * progetto op_kw
+   *
+   *  <opkw xmlns="http://www.openpolis.it/2010/opkw"
+   *         xmlns:op="http://www.openpolis.it/2010/op"
+   *         xmlns:op_location="http://www.openpolis.it/2010/op_location"
+   *         xmlns:op_politician="http://www.openpolis.it/2010/op_politician"
+   *         xmlns:xlink="http://www.w3.org/1999/xlink">
+   *    <op:content> 
+   *        <parlamentare xlink:href="parlamentari/12345.xml">
+   *          <thumbnail xlink:href="parlamentari/thumb/332104.jpeg" width="40" height="53"/>
+   *          <nome>NOME</nome>
+   *          <cognome>COGNOME</cognome>
+   *          <gruppo>
+   *            <nome>NOME GRUPPO</nome>
+   *            <acronimo>NOME GRUPPO</acronimo>
+   *          </gruppo>
+   *          <data_inizio_carica>2008-04-12</data_inizio_carica> ** solo se successiva a data inizio leg.
+   *        </parlamentare>
+   *    </op:content>
+   *  </opkw>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opkw xlmns="http://www.openpolis.it/2010/opkw"
+   *       xmlns:op="http://www.openpolis.it/2010/op"
+   *       xlmns:op_location="http://www.openpolis.it/2010/op_location"
+   *       xmlns:op_politician="http://www.openpolis.it/2010/op_politician">
+   *   <op:error>Messaggio di errore</op:error>
+   * </opkw>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeParlamentare()
+  {
+    $key = $this->getRequestParameter('key');
+    $id = $this->getRequestParameter('id');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLElement(
+      '<opkw xmlns="'.$this->opkw_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opkw>');
+      
+    if ($is_valid_key)
+    {
+      // estrazione informazioni
+      $politico = OppPoliticoPeer::retrieveByPK($id);
+      $p = $politico->getMetaInfo();
+      $dati_storici = $politico->getDatiStorici();
+      $voti_chiave = $politico->getVotiChiave();
+      
+  		// produzione xml
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      $parlamentare_node = $content_node->addChild('parlamentare', null, $this->opkw_ns);
+
+      $width = 40; $height = 53;
+      $image_node = $parlamentare_node->addChild('picture');
+      $image_node->addAttribute('xlink:href',
+                                sprintf("/parlamentari/picture/%d.jpeg", $p['politico_id']), $this->xlink_ns);
+      $image_node->addAttribute('width', $width);
+      $image_node->addAttribute('height', $height);
+
+      $parlamentare_node->addChild('nome', $p['nome']);
+      $parlamentare_node->addChild('cognome', $p['cognome']);
+      $parlamentare_node->addChild('circoscrizione', $p['circoscrizione']);
+
+      $gruppo_node = $parlamentare_node->addChild('gruppo');
+      $gruppo_node->addChild('nome', $p['gruppo_nome']);        
+      $gruppo_node->addChild('acronimo', $p['gruppo_acronimo']);    
+
+      if ($data_inizio = $p['data_inizio'] > '2008-04-29')
+        $parlamentare_node->addChild('data_inizio', date('d/m/Y', strtotime(date($p['data_inizio']))));    
+        
+      // dati storici
+      $dati_node = $parlamentare_node->addChild('dati_storici');
+      foreach ($dati_storici as $data => $dati) {
+        $storico_node = $dati_node->addChild('dato_storico');
+        $storico_node->addAttribute('date', $data);
+        $n_votazioni = $dati['presenze'] + $dati['assenze'] + $dati['missioni'];
+        foreach (array('presenze', 'assenze', 'missioni', 'ribellioni') as $tipo_dato) {
+          $storico_dato_node = $storico_node->addChild($tipo_dato);
+          $storico_dato_node->addChild($tipo_dato, $dati[$tipo_dato]);
+          if ($n_votazioni && in_array($tipo_dato, array('presenze', 'missioni', 'assenze')))
+          {
+            $storico_dato_node->addChild('percentuale', sprintf("%7.1f", 100.0 * $dati[$tipo_dato] / $n_votazioni));
+            $storico_dato_node->addChild('totale', sprintf("%d", $n_votazioni));            
+          }
+          if ($dati['presenze'] > 0 && $tipo_dato == 'ribellioni')
+          {
+            $storico_dato_node->addChild('percentuale', sprintf("%7.1f", 100.0 * $dati[$tipo_dato] / $dati['presenze']));
+            $storico_dato_node->addChild('totale', sprintf("%d", $dati['presenze']));            
+          }
+          
+        }
+      }
+
+      // voti chiave
+      $voti_chiave_node = $parlamentare_node->addChild('voti_chiave', null, $this->opkw_ns);
+      foreach ($voti_chiave as $voto_chiave) {
+        $votazione = $voto_chiave->getOppVotazione();
+        $voto = $voto_chiave->getVoto();
+        $href = sprintf("/votazioni/%d.xml", $votazione->getId());
+        
+        $voto_chiave_node = $voti_chiave_node->addChild('voto_chiave');
+        $voto_chiave_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $titolo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
+    		$titolo_voto_node = $voto_chiave_node->addChild('titolo', $titolo);
+    		$voto_node = $voto_chiave_node->addChild('voto', $voto);
+      }
+      
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+
   /**
    * API (protetta da una API key)
    * torna flusso xml con i dati di una singola votazione
@@ -69,7 +230,7 @@ class apiActions extends sfActions
    *            ...
    *          </voto_gruppi>
    *          <voto_parlamentari>
-   *            <parlamentare xlink:href="politico/4573.xml">
+   *            <parlamentare xlink:href="/parlamentari/4573.xml">
    *              <nome>Giancarlo</nome>
    *              <cognome>ABELLI</cognome>
    *              <acronimo_gruppo>PDL</acronimo_gruppo>
@@ -105,9 +266,6 @@ class apiActions extends sfActions
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opkw>');
       
-    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
-    
-
     if ($is_valid_key)
     {
       // estrazione informazioni
@@ -172,7 +330,7 @@ class apiActions extends sfActions
       foreach ($voto_ribelli as $cognome => $ribelle)
       {
         $parlamentare_node = $ribelli_node->addChild('parlamentare', null, $this->opkw_ns);
-        $parlamentare_node->addAttribute('xlink:href', sprintf("parlamentari/%d.xml", $ribelle['politico_id']), $this->xlink_ns);
+        $parlamentare_node->addAttribute('xlink:href', sprintf("/parlamentari/%d.xml", $ribelle['politico_id']), $this->xlink_ns);
         
         $parlamentare_node->addChild('nome', $ribelle['politico_nome'], $this->opkw_ns);
         $parlamentare_node->addChild('cognome', $ribelle['politico_cognome'], $this->opkw_ns);
@@ -186,7 +344,7 @@ class apiActions extends sfActions
       foreach ($voto_parlamentari as $p)
       {
         $parlamentare_node = $parlamentari_node->addChild('parlamentare', null, $this->opkw_ns);
-        $parlamentare_node->addAttribute('xlink:href', sprintf("parlamentari/%d.xml", $p['id']), $this->xlink_ns);
+        $parlamentare_node->addAttribute('xlink:href', sprintf("/parlamentari/%d.xml", $p['id']), $this->xlink_ns);
         
         $parlamentare_node->addChild('nome', $p['nome'], $this->opkw_ns);
         $parlamentare_node->addChild('nome', $p['cognome'], $this->opkw_ns);
@@ -221,7 +379,7 @@ class apiActions extends sfActions
    *         xmlns:xlink="http://www.w3.org/1999/xlink">
    *    <op:content> 
    *      <voti_maggioranza_sotto n_voti="50">
-   *        <voto xlink:href="votazione/32288.xml">
+   *        <voto xlink:href="/votazioni/32288.xml">
    *          <titolo>Titolo</titolo>
    *          <data>28/04/2010</data>
    *          <ramo>Camera</ramo>
@@ -257,9 +415,6 @@ class apiActions extends sfActions
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opkw>');
       
-    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
-    
-
     if ($is_valid_key)
     {
   		// start producing xml
@@ -276,7 +431,7 @@ class apiActions extends sfActions
         $data = $votazione->getOppSeduta()->getData('d/m/Y');
         $ramo =  $votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato';
         $n_seduta =  $votazione->getOppSeduta()->getNumero();
-        $href = sprintf("votazioni/%s.xml", $votazione->getId());
+        $href = sprintf("/votazioni/%s.xml", $votazione->getId());
         $titulo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
         $esito = $votazione->getEsito();
         $n_ribelli = $votazione->getRibelli();
@@ -314,7 +469,7 @@ class apiActions extends sfActions
    *         xmlns:xlink="http://www.w3.org/1999/xlink">
    *    <op:content> 
    *      <voti_chiave n_voti="50">
-   *        <voto xlink:href="votazione/32288.xml">
+   *        <voto xlink:href="/votazioni/32288.xml">
    *          <titolo>Titolo</titolo>
    *          <data>28/04/2010</data>
    *          <ramo>Camera</ramo>
@@ -349,9 +504,6 @@ class apiActions extends sfActions
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opkw>');
       
-    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
-    
-
     if ($is_valid_key)
     {
   		// start producing xml
@@ -368,7 +520,7 @@ class apiActions extends sfActions
         $data = $votazione->getOppSeduta()->getData('d/m/Y');
         $ramo =  $votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato';
         $n_seduta =  $votazione->getOppSeduta()->getNumero();
-        $href = sprintf("votazioni/%s.xml", $votazione->getId());
+        $href = sprintf("/votazioni/%s.xml", $votazione->getId());
         $titulo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
         $esito = $votazione->getEsito();
         $n_ribelli = $votazione->getRibelli();
@@ -413,8 +565,8 @@ class apiActions extends sfActions
    *         xmlns:xlink="http://www.w3.org/1999/xlink">
    *    <op:content> 
    *      <camera n_rappresentanti="600">
-   *        <parlamentare xlink:href="parlamentari/12345.xml">
-   *          <thumbnail xlink:href="parlamentari/thumb/332104.jpeg" width="40" height="53"/>
+   *        <parlamentare xlink:href="/parlamentari/12345.xml">
+   *          <thumbnail xlink:href="/parlamentari/thumb/332104.jpeg" width="40" height="53"/>
    *          <nome>NOME</nome>
    *          <cognome>COGNOME</cognome>
    *          <gruppo>
@@ -489,9 +641,6 @@ class apiActions extends sfActions
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opkw>');
       
-    // $this->addProcessingInstruction($resp_node, 'xml-stylesheet', 'type="text/xsl" href="parlamentari.xslt"');
-    
-
     if ($is_valid_key)
     {
   		// start producing xml
@@ -526,7 +675,7 @@ class apiActions extends sfActions
       // parlamentari
       $deputati_node = $camera_node->addChild('parlamentari', null, $this->opkw_ns);
       $n_deputati = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'C', 'P', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWPoliticoRSByDataRamo($current_data, 'C', $order_by, $order_type, $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWPoliticiRSByDataRamo($current_data, 'C', $order_by, $order_type, $con);
       $cnt = 0;
       while ($rs->next()) {
         $cnt++;
@@ -564,7 +713,7 @@ class apiActions extends sfActions
       // parlamentari
       $senatori_node = $senato_node->addChild('parlamentari', null, $this->opkw_ns);
       $n_senatori = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'S', 'P', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWPoliticoRSByDataRamo($current_data, 'S', $order_by, $order_type, $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWPoliticiRSByDataRamo($current_data, 'S', $order_by, $order_type, $con);
       $cnt = 0;
       while ($rs->next()) {
         $cnt++;
@@ -589,12 +738,15 @@ class apiActions extends sfActions
   {
     $parlamentare_node = $node->addChild('parlamentare');
     $parlamentare_node->addAttribute('n_prog', $n);
+    $parlamentare_node->addAttribute('id', $p['politico_id']);
+    $parlamentare_node->addAttribute('xlink:href', 
+                                     sprintf("/parlamentari/%d.xml", $p['politico_id']), $this->xlink_ns);
 
     $width = 40; $height = 53;
 
     $image_node = $parlamentare_node->addChild('thumbnail');
     $image_node->addAttribute('xlink:href', 
-                              OppPoliticoPeer::getThumbUrl($p['politico_id']), $this->xlink_ns);
+                              sprintf("/parlamentari/thumb/%d.jpeg", $p['politico_id']), $this->xlink_ns);
     $image_node->addAttribute('width', $width);
     $image_node->addAttribute('height', $height);
 
@@ -607,7 +759,7 @@ class apiActions extends sfActions
     $gruppo_node->addChild('acronimo', $p['gruppo_acronimo']);    
     
     if ($data_inizio = $p['data_inizio'] > '2008-04-29')
-      $parlamentare_node->addChild('data_inizio', $p['data_inizio']);    
+      $parlamentare_node->addChild('data_inizio', date('d/m/Y', strtotime(date($p['data_inizio']))));    
 
     call_user_func_array(array($this, 'addInfo'.ucfirst($infotype)), array($parlamentare_node, $p));
     
@@ -683,7 +835,7 @@ class apiActions extends sfActions
     }
   }
   
-  public function addInfoAttivita($node, $item, $prec = true)
+  public function addInfoIndice($node, $item, $prec = true)
   {
     $indice = $item['indice'];
     $indice_node = $node->addChild('indice');
@@ -698,7 +850,7 @@ class apiActions extends sfActions
     }
   }
   
-  public function addInfoRibelli($node, $item, $prec = true)
+  public function addInfoRibellioni($node, $item, $prec = true)
   {
     $voti_ribelli = $item['ribellioni'];
     $voti_ribelli_node = $node->addChild('voti_ribelli');

@@ -199,7 +199,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		  
-		$sql = sprintf("select ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta, ph.data from opp_politician_history_cache ph where ph.chi_tipo='R' and ph.ramo='%s'", 
+		$sql = sprintf("select ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta, ph.data from opp_politician_history_cache ph where ph.chi_tipo='R' and ph.ramo='%s' order by ph.data desc", 
 		               $ramo);
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -238,7 +238,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
    * @return RecordSet
    * @author Guglielmo Celata
    */
-  public static function getKWPoliticoRSByDataRamo($data, $ramo, $order_by = null, $order_type = 'asc', $con = null)
+  public static function getKWPoliticiRSByDataRamo($data, $ramo, $order_by = null, $order_type = 'asc', $con = null)
   {
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
@@ -252,6 +252,26 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
+
+  /**
+   * estrazione di tutti i record storici di un dato politico
+   *
+   * @param string $politico_id
+   * @param boolean $meta - only return meta information for the politician
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getKWDatiPoliticoRSById($politico_id, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		  
+		$sql = sprintf("select ph.data, ph.presenze, ph.assenze, ph.missioni, ph.indice, ph.ribellioni, ph.presenze_delta, ph.assenze_delta, ph.missioni_delta, ph.indice_delta, ph.ribellioni_delta from opp_politician_history_cache ph, opp_carica c, opp_politico p where ph.chi_id=c.id and c.politico_id=p.id and ph.chi_tipo='P' and p.id=%d order by ph.data desc", 
+		               $politico_id);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
 
   /**
    * conta di tutti i record a partire da tipo e data

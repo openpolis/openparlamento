@@ -11,6 +11,26 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
 {
 
 
+  /**
+   * returns key votes for the carica
+   *
+   * @param integer $carica_id 
+   * @return array of OppVotazioneHasCarica
+   * @author Guglielmo Celata
+   */
+  public static function getVotiChiaveCarica($carica_id)
+  {
+    $c = new Criteria();
+    $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
+    $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+    $c->addJoin(OppVotazionePeer::ID, self::VOTAZIONE_ID);
+    $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
+    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->add(self::CARICA_ID, $carica_id);
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+    return self::doSelect($c);
+  }
+
   public static function countAssentiMaggioranzaVotazione($votazione_id, $data = null)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
