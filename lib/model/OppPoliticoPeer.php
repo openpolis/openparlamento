@@ -33,7 +33,7 @@ class OppPoliticoPeer extends BaseOppPoliticoPeer
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		  
-		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, c.id as carica_id, c.data_inizio, c.circoscrizione,  g.nome as gruppo_nome, g.acronimo as gruppo_acronimo from opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where c.politico_id=p.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and p.id=%d limit 1", 
+		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, c.id as carica_id, c.data_inizio, c.circoscrizione, c.tipo_carica_id, g.nome as gruppo_nome, g.acronimo as gruppo_acronimo from opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where c.politico_id=p.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and p.id=%d limit 1", 
 		               $politico_id);
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

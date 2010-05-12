@@ -109,13 +109,13 @@ class apiActions extends sfActions
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
       $parlamentare_node = $content_node->addChild('parlamentare', null, $this->opkw_ns);
 
-      $width = 40; $height = 53;
-      $image_node = $parlamentare_node->addChild('picture');
-      $image_node->addAttribute('xlink:href',
-                                sprintf("/parlamentari/picture/%d.jpeg", $p['politico_id']), $this->xlink_ns);
-      $image_node->addAttribute('width', $width);
-      $image_node->addAttribute('height', $height);
+      $parlamentare_node->addAttribute('id', $p['politico_id']);
 
+      if ($p['tipo_carica_id'] == 1)
+        $parlamentare_node->addAttribute('prefix', 'On.');
+      if ($p['tipo_carica_id'] == 4 || $p['tipo_carica_id'] == 5)
+        $parlamentare_node->addAttribute('prefix', 'Sen.');
+        
       $parlamentare_node->addChild('nome', $p['nome']);
       $parlamentare_node->addChild('cognome', $p['cognome']);
       $parlamentare_node->addChild('circoscrizione', $p['circoscrizione']);
@@ -155,13 +155,16 @@ class apiActions extends sfActions
       foreach ($voti_chiave as $voto_chiave) {
         $votazione = $voto_chiave->getOppVotazione();
         $voto = $voto_chiave->getVoto();
+        $voto_maggioranza = $votazione->getEsito();
         $href = sprintf("/votazioni/%d.xml", $votazione->getId());
         
         $voto_chiave_node = $voti_chiave_node->addChild('voto_chiave');
         $voto_chiave_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $voto_chiave_node->addAttribute('id', $votazione->getId());
         $titolo = $votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo();
     		$titolo_voto_node = $voto_chiave_node->addChild('titolo', $titolo);
     		$voto_node = $voto_chiave_node->addChild('voto', $voto);
+    		$voto_node = $voto_chiave_node->addChild('voto_maggioranza', ucfirst(strtolower($voto_maggioranza)));
       }
       
     } 
@@ -277,7 +280,9 @@ class apiActions extends sfActions
       $favorevoli = $votazione->getFavorevoli();
       $contrari = $votazione->getContrari();
       $astenuti = $votazione->getAstenuti();
-      $votanti = $favorevoli + $contrari + $astenuti;
+      $votanti = $votazione->getVotanti();
+      $presenti = $votazione->getPresenti();
+      $ribelli = $votazione->getRibelli();
       $favorevoli_perc = sprintf("%4.1f", 100.0 * $favorevoli / $votanti);
       $contrari_perc = sprintf("%4.1f", 100.0 * $contrari / $votanti);
       $astenuti_perc = sprintf("%4.1f", 100.0 * $astenuti / $votanti);
@@ -288,15 +293,17 @@ class apiActions extends sfActions
 
   		// produzione xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
-      $votazione_node = $content_node->addChild('voti_maggioranza_sotto', null, $this->opkw_ns);      
+      $votazione_node = $content_node->addChild('votazione', null, $this->opkw_ns);      
       
-      $votazione_node->addChild('data', $seduta->getData('d/m/Y'));
-      $votazione_node->addChild('ramo', $seduta->getRamo());
-      $votazione_node->addChild('n_seduta', $seduta->getNumero());
-      $votazione_node->addChild('titolo', $titulo);
-
       $dettagli_node = $votazione_node->addChild('dettagli_voto', null, $this->opkw_ns);
-      $dettagli_node->addChild('esito', $votazione->getEsito());
+
+      $dettagli_node->addChild('data', $seduta->getData('d/m/Y'));
+      $dettagli_node->addChild('ramo', $seduta->getRamo() == 'C'?'Camera':'Senato');
+      $dettagli_node->addChild('n_votazione', $votazione->getNumeroVotazione());
+      $dettagli_node->addChild('n_seduta', $seduta->getNumero());
+      $dettagli_node->addChild('titolo', $titulo);
+
+      $dettagli_node->addChild('esito', ucfirst(strtolower($votazione->getEsito())));
       
       
       $favorevoli_node = $dettagli_node->addChild('favorevoli', null);
@@ -311,11 +318,17 @@ class apiActions extends sfActions
       $astenuti_node->addAttribute('n', $astenuti);
       $astenuti_node->addAttribute('perc', $astenuti_perc);
 
-      $dettagli_node->addChild('presenti', null);
-      $dettagli_node->addChild('votanti', null);
+      $presenti_node = $dettagli_node->addChild('presenti', null);
+      $presenti_node->addAttribute('n', $presenti);
+
+      $votanti_node = $dettagli_node->addChild('votanti', null);
+      $votanti_node->addAttribute('n', $votanti);
+
+      $ribelli_node = $dettagli_node->addChild('ribelli', null);
+      $ribelli_node->addAttribute('n', $ribelli);
       
       // dettaglio voto dei gruppi
-      $gruppi_node = $dettagli_node->addChild('voto_gruppi', null, $this->opkw_ns);
+      $gruppi_node = $votazione_node->addChild('voto_gruppi', null, $this->opkw_ns);
       foreach ($voto_gruppi as $nome => $detail) {
         $gruppo_node = $gruppi_node->addChild('gruppo', null, $this->opkw_ns);
         $gruppo_node->addChild('nome', $nome, $this->opkw_ns);
@@ -325,12 +338,13 @@ class apiActions extends sfActions
       }
 
       // dettaglio voto dei ribelli
-      $ribelli_node = $dettagli_node->addChild('voto_ribelli', null, $this->opkw_ns);
+      $ribelli_node = $votazione_node->addChild('voto_ribelli', null, $this->opkw_ns);
       $ribelli_node->addAttribute('n_voti', $votazione->getRibelli());
       foreach ($voto_ribelli as $cognome => $ribelle)
       {
         $parlamentare_node = $ribelli_node->addChild('parlamentare', null, $this->opkw_ns);
         $parlamentare_node->addAttribute('xlink:href', sprintf("/parlamentari/%d.xml", $ribelle['politico_id']), $this->xlink_ns);
+        $parlamentare_node->addAttribute('id', $ribelle['politico_id']);
         
         $parlamentare_node->addChild('nome', $ribelle['politico_nome'], $this->opkw_ns);
         $parlamentare_node->addChild('cognome', $ribelle['politico_cognome'], $this->opkw_ns);
@@ -340,17 +354,19 @@ class apiActions extends sfActions
       }
       
       // dettaglio voto dei parlamentari
-      $parlamentari_node = $dettagli_node->addChild('voto_parlamentari', null, $this->opkw_ns);
+      $parlamentari_node = $votazione_node->addChild('voto_parlamentari', null, $this->opkw_ns);
       foreach ($voto_parlamentari as $p)
       {
         $parlamentare_node = $parlamentari_node->addChild('parlamentare', null, $this->opkw_ns);
         $parlamentare_node->addAttribute('xlink:href', sprintf("/parlamentari/%d.xml", $p['id']), $this->xlink_ns);
+        $parlamentare_node->addAttribute('id', $p['id']);
         
         $parlamentare_node->addChild('nome', $p['nome'], $this->opkw_ns);
-        $parlamentare_node->addChild('nome', $p['cognome'], $this->opkw_ns);
+        $parlamentare_node->addChild('cognome', $p['cognome'], $this->opkw_ns);
         $parlamentare_node->addChild('nome_gruppo', $p['nome_gruppo'], $this->opkw_ns);
         $parlamentare_node->addChild('acronimo_gruppo', $p['acronimo_gruppo'], $this->opkw_ns);
         $parlamentare_node->addChild('voto', $p['voto']);
+        $parlamentare_node->addChild('circoscrizione', $p['circoscrizione'], $this->opkw_ns);
       }
       
       
@@ -422,7 +438,7 @@ class apiActions extends sfActions
       
       $votazioni = OppVotazionePeer::getMaggioranzaSottoVotes();
 
-      // voti chiave
+      // voti con maggioranza sotto
       $voti_node = $content_node->addChild('voti_maggioranza_sotto', null, $this->opkw_ns);      
       $voti_node->addAttribute('n_voti', count($votazioni));
       
@@ -438,11 +454,12 @@ class apiActions extends sfActions
 
         $voto_node = $voti_node->addChild('voto', null, $this->opkw_ns);
         $voto_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $voto_node->addAttribute('id', $votazione->getId());
         $voto_node->addChild('data', $data);
         $voto_node->addChild('ramo', $ramo);
         $voto_node->addChild('n_seduta', $n_seduta);
         $voto_node->addChild('titolo', $titulo);
-        $voto_node->addChild('esito', $esito);
+        $voto_node->addChild('esito', ucfirst(strtolower($esito)));
         $voto_node->addChild('n_ribelli', $n_ribelli);
       }
 
@@ -527,11 +544,12 @@ class apiActions extends sfActions
 
         $voto_node = $voti_node->addChild('voto', null, $this->opkw_ns);
         $voto_node->addAttribute('xlink:href', $href, $this->xlink_ns);
+        $voto_node->addAttribute('id', $votazione->getId());
         $voto_node->addChild('data', $data);
         $voto_node->addChild('ramo', $ramo);
         $voto_node->addChild('n_seduta', $n_seduta);
         $voto_node->addChild('titolo', $titulo);
-        $voto_node->addChild('esito', $esito);
+        $voto_node->addChild('esito', ucfirst(strtolower($esito)));
         $voto_node->addChild('n_ribelli', $n_ribelli);
       }
 
