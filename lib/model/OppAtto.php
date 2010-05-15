@@ -49,6 +49,63 @@ class OppAtto extends BaseOppAtto
     return array_merge($this->getDirectlyMonitoringUsersPKs(), $this->getIndirectlyMonitoringUsersPKs());
   }
   
+  /**
+   * returns an array with all pred and succ
+   * order criterion, by date
+   *
+   * @return OppAtto object
+   * @author Ettore Di Cesare
+   **/
+   public function getAllPred()
+   {
+     $allPred=array();
+     $atto=$this;
+     $pred=$atto->getPred();
+     
+     while ($pred!='' && $pred!=NULL)
+     {
+       
+        $c= new Criteria();
+        $c->add(OppAttoPeer::ID,$atto->getId());
+        $result=OppAttoPeer::doSelectOne($c);
+        
+        if ($result->getPred()!='' && $result->getPred()!=NULL)
+        {
+          $atto=OppAttoPeer::retrieveByPk($result->getPred());
+          $pred=$atto->getId();
+          $allPred[]=$atto;
+        }
+        else
+          $pred='';
+      }
+     return array_reverse($allPred);
+    }
+    
+    public function getAllSucc()
+    { 
+     
+      $allSucc=array();
+      $atto=$this;
+      $succ=$atto->getSucc();
+
+      while ($succ!='' && $succ!=NULL)
+      {
+
+        $c= new Criteria();
+        $c->add(OppAttoPeer::ID,$atto->getId());
+        $result=OppAttoPeer::doSelectOne($c);
+        if ($result->getSucc()!='' && $result->getSucc()!=NULL)
+        {
+          $atto=OppAttoPeer::retrieveByPk($result->getSucc());
+          $succ=$atto->getId();
+          $allSucc[]=$atto;
+        }
+        else
+          $succ='';
+      }
+      return $allSucc;
+    }
+   
   
   /**
    * torna il tipo di atto, per quello che concerne il calcolo dell'indice di attività

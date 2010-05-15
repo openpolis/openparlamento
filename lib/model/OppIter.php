@@ -58,4 +58,32 @@ public function getColor()
   return $color;
   
   }
+  
+  public function getShortName()
+  {
+    switch ($this->getId()) 
+    {
+      case 25:
+        $short_name='appr. in TU';
+        break;
+      case 17:
+        $short_name='stralciato';
+        break; 
+      case 21:
+        $short_name='rest. al Gov.';
+        break; 
+      case 22:
+        $short_name='modificato';
+        break; 
+      case 14:
+        $short_name='DL decatuto';
+        break;
+      case 16:
+        $short_name='Rinv. Pres. Rep.';
+        break;       
+      default:
+        $short_name=$this->getFase();    
+    } 
+    return $short_name;  
+  }
 }
