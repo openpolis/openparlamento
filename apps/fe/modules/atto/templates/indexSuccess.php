@@ -97,23 +97,14 @@
        	    <ul class="presentation float-container" style="margin-bottom:12px;">
                <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
                <?php if(count($iter_completo)!=0): ?>
-	          <?php include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
+	          <?php echo include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
 	       <?php endif; ?>
 	    </ul>
 	    
 	    
 	    <!-- Iter grafico per ddl e dl -->
 	    <?php include_partial('statoAvanzamento', 
-	                      array('rappresentazioni_pred' => $rappresentazioni_pred, 
-						  'atto' => $atto,
-						  'rappresentazioni_this' => $rappresentazioni_this,
-						  'rappresentazioni_succ' => $rappresentazioni_succ,
-						  'leggi_this'            => $leggi_this,
-						  'leggi_succ'            => $leggi_succ,
-						  'lettura_parlamentare_precedente' => $lettura_parlamentare_precedente,
-						  'lettura_parlamentare_successiva' => $lettura_parlamentare_successiva,
-						  'lettura_parlamentare_ultima' => $lettura_parlamentare_ultima,
-						  'legge'                       => $legge           )) ?>
+	                      array('atto' => $atto)) ?>
 	<?php endif; ?>						  
 	    
 	  

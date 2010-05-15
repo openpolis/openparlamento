@@ -668,31 +668,7 @@ class attoActions extends sfActions
     $c->addDescendingOrderByColumn(OppVotazionePeer::FINALE);
     $this->votazioni = OppVotazionePeer::doSelectJoinOppSeduta($c);
 	
-  	$this->interventi = $this->atto->getInterventi();
-	
-    //PER RAPPRESENTAZIONE ITER
-    // Tutti i PRED
-    $quale_atto=$this->getTuttiPred($this->atto->getId());
-    if (count($quale_atto)>0) {
-      $this->rappresentazioni_pred = $this->atto->getIterRappresentazioni($quale_atto);
-      $this->rappresentazioni_pred=array_reverse($this->rappresentazioni_pred);
-    }   
-    else
-      $this->rappresentazioni_pred='';
-    
-    //TUTTI I SUCC
-    $quale_atto=$this->getTuttiSucc($this->atto->getId());
-    if (count($quale_atto)>0) {
-           $this->rappresentazioni_succ = $this->atto->getIterRappresentazioni($quale_atto);   
-    }       
-    else
-      $this->rappresentazioni_succ = '';
-      
-    $this->rappresentazioni_this=$this->atto->getIterRappresentazioni(array($this->atto->getId()));
-    
-    //Controlla se this e' diventato legge
-    
-    $this->leggi_this = $this->atto->getIterLegge(array($this->atto->getId()));          
+  	$this->interventi = $this->atto->getInterventi();       
 
     
     //Controlla se succ e' diventato legge
@@ -831,25 +807,7 @@ class attoActions extends sfActions
     $this->votazioni = OppVotazionePeer::doSelectJoinOppSeduta($c);
 	
   	$this->interventi = $this->ddl->getInterventi();
-	
-     //PER RAPPRESENTAZIONE ITER
-     // Tutti i PRED
-     $quale_atto=$this->getTuttiPred($this->ddl->getId());
-     if (count($quale_atto)>0) {
-        $this->rappresentazioni_pred = $this->ddl->getIterRappresentazioni($quale_atto);
-        $this->rappresentazioni_pred=array_reverse($this->rappresentazioni_pred);
-     }   
-     else
-        $this->rappresentazioni_pred='';
-     
-     //TUTTI I SUCC
-     $quale_atto=$this->getTuttiSucc($this->ddl->getId());
-     if (count($quale_atto)>0)
-        $this->rappresentazioni_succ = $this->ddl->getIterRappresentazioni($quale_atto);
-     else
-        $this->rappresentazioni_succ = '';
-        
-     $this->rappresentazioni_this=$this->ddl->getIterRappresentazioni(array($this->ddl->getId()));   
+   
      
   }
 
