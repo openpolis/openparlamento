@@ -114,7 +114,7 @@
     <?php if (count($atto->getAllPred())>0): ?>
       <?php $status_value= array_values($atto->getStatus()) ?>
       <?php if ($status_value[0]!=16 && $status_value[0]!=13 && $status_value[0]!=12) : ?>
-        <?php if($dl=1) ?>
+        <?php if($dl=1) : ?>
           <li><span class="date">&nbsp;</span>
           <p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
         <?php endif ?>
