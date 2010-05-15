@@ -35,7 +35,11 @@
     
     
   <!-- CTRL se ha Pred -->
-  <?php $dl=0 ?>
+  <?php if ($atto->getTipoAttoId()==12): ?>
+    <?php $dl=1 ?>
+  <?php else : ?>
+    <?php $dl=0 ?>
+  <?php endif ?>    
   <?php if (count($atto->getAllPred())>0): ?>
     <?php foreach ($atto->getAllPred() as $k=>$pred): ?>
       <?php if ($k==0): ?>
@@ -96,6 +100,10 @@
       <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1) : ?>
         <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
         <p><?php echo "da approvare".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
+        <?php if($dl=1) : ?>
+          <li><span class="date">&nbsp;</span>
+          <p>da approvare<?php echo ($succ->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+        <?php endif ?>
         <li><span class="date">&nbsp;</span>
         <p>diventa legge</p></li>
       <?php else: ?>
