@@ -113,7 +113,7 @@
   <?php else: ?>
     <?php if (count($atto->getAllPred())>0): ?>
       <?php $status_value= array_values($atto->getStatus()) ?>
-      <?php if (($status_value[0])!=16) : ?>
+      <?php if (($status_value[0])!=16 && $status_value[0])!=13) : ?>
         <li><span class="date">&nbsp;</span>
         <p>diventa legge</p></li>
       <?php endif ?>  
