@@ -105,7 +105,7 @@
           <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
           <p><?php echo "divenuto legge" ?></p></li>
           <?php else: ?>
-            <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+            <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
             <p><?php echo OppIterPeer::retrieveByPk($status_value[0])->getShortName().($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php endif ?>
       <?php endif ?>
