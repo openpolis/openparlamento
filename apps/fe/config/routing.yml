@@ -7,7 +7,7 @@ api_parlamentare:
   param: { module: api, action: parlamentare }
 
 api_parlamentari:
-  url: /elenco_parlamentari/:key/:infotype/:orderby/:ordertype
+  url: /elenco_parlamentari/:key/:ramo/:infotype/:orderby/:ordertype
   param: { module: api, action: elencoParlamentari }
 
 api_voti_chiave:

@@ -643,6 +643,7 @@ class apiActions extends sfActions
   public function executeElencoParlamentari()
   {
     $key = $this->getRequestParameter('key');
+    $ramo = $this->getRequestParameter('ramo');
     $infotype = $this->getRequestParameter('infotype');
     $order_by = $this->getRequestParameter('orderby');
     $order_type = $this->getRequestParameter('ordertype');
@@ -664,81 +665,43 @@ class apiActions extends sfActions
   		// start producing xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
 
-
-      // camera
-      $camera_node = $content_node->addChild('camera', null, $this->opkw_ns);      
+      // camera o senato
+      $ramo_code = strtoupper(substr($ramo, 0, 1));
+      $ramo_node = $content_node->addChild($ramo, null, $this->opkw_ns);      
 
       // dato storico aggregato per tutto il ramo
-      $c_ramo_node = $camera_node->addChild('ramo', null, $this->opkw_ns);
-      $rs = OppPoliticianHistoryCachePeer::getKWRamoRS('C', $con);
+      $ramo_storico_node = $ramo_node->addChild('ramo', null, $this->opkw_ns);
+      $rs = OppPoliticianHistoryCachePeer::getKWRamoRS($ramo_code, $con);
       $cnt = 0;
       while ($rs->next()) {
         $cnt++;
         $r = $rs->getRow();
-        $this->addRamoNode($c_ramo_node, $r, $infotype);
+        $this->addRamoNode($ramo_storico_node, $r, $infotype);
       }
 
       // gruppi
-      $c_gruppi_node = $camera_node->addChild('gruppi', null, $this->opkw_ns);
-      $n_gruppi = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'C', 'G', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWGruppoRSByDataRamo($current_data, 'C', null, null, $con);
+      $gruppi_node = $ramo_node->addChild('gruppi', null, $this->opkw_ns);
+      $n_gruppi = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, $ramo_code, 'G', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWGruppoRSByDataRamo($current_data, $ramo_code, null, null, $con);
       $cnt = 0;
       while ($rs->next()) {
         $cnt++;
         $g = $rs->getRow();
-        $this->addGruppoNode($c_gruppi_node, $g, $infotype, $cnt);
+        $this->addGruppoNode($gruppi_node, $g, $infotype, $cnt);
       }
-      $c_gruppi_node->addAttribute('n_gruppi', $n_gruppi);
+      $gruppi_node->addAttribute('n_gruppi', $n_gruppi);
       
       // parlamentari
-      $deputati_node = $camera_node->addChild('parlamentari', null, $this->opkw_ns);
-      $n_deputati = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'C', 'P', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWPoliticiRSByDataRamo($current_data, 'C', $order_by, $order_type, $con);
+      $parlamentari_node = $ramo_node->addChild('parlamentari', null, $this->opkw_ns);
+      $n_parlamentari = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, $ramo_code, 'P', $con);
+      $rs = OppPoliticianHistoryCachePeer::getKWPoliticiRSByDataRamo($current_data, $ramo_code, $order_by, $order_type, $con);
       $cnt = 0;
       while ($rs->next()) {
         $cnt++;
         $p = $rs->getRow();
-        $this->addParlamentareNode($deputati_node, $p, $infotype, $cnt);
+        $this->addParlamentareNode($parlamentari_node, $p, $infotype, $cnt);
       }
-      $deputati_node->addAttribute('n_rappresentanti', $n_deputati);
-
-
-      // senato
-      $senato_node = $content_node->addChild('senato', null, $this->opkw_ns);
-      
-      // ramo (storico)
-      $s_ramo_node = $senato_node->addChild('ramo', null, $this->opkw_ns);
-      $rs = OppPoliticianHistoryCachePeer::getKWRamoRS('S', $con);
-      $cnt = 0;
-      while ($rs->next()) {
-        $cnt++;
-        $r = $rs->getRow();
-        $this->addRamoNode($s_ramo_node, $r, $infotype);
-      }
-      
-      // gruppi
-      $s_gruppi_node = $senato_node->addChild('gruppi', null, $this->opkw_ns);
-      $n_gruppi = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'S', 'G', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWGruppoRSByDataRamo($current_data, 'S', null, null, $con);
-      $cnt = 0;
-      while ($rs->next()) {
-        $cnt++;
-        $g = $rs->getRow();
-        $this->addGruppoNode($s_gruppi_node, $g, $infotype);
-      }
-      $s_gruppi_node->addAttribute('n_gruppi', $n_gruppi);
-      
-      // parlamentari
-      $senatori_node = $senato_node->addChild('parlamentari', null, $this->opkw_ns);
-      $n_senatori = OppPoliticianHistoryCachePeer::countByDataRamoChiTipo($current_data, 'S', 'P', $con);
-      $rs = OppPoliticianHistoryCachePeer::getKWPoliticiRSByDataRamo($current_data, 'S', $order_by, $order_type, $con);
-      $cnt = 0;
-      while ($rs->next()) {
-        $cnt++;
-        $p = $rs->getRow();
-        $this->addParlamentareNode($senatori_node, $p, $infotype, $cnt);
-      }
-      $senatori_node->addAttribute('n_rappresentanti', $n_senatori);
+      $parlamentari_node->addAttribute('n_rappresentanti', $n_parlamentari);
 
     } 
     else 
