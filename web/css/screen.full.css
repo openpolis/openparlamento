@@ -93,12 +93,6 @@ thead th { font-size: 12px; vertical-align: top; }
 
 .pad10 { padding: 10px; }
 
-em.open { color: #ff7c00; font-size: 120%; }
-em.parlamento { color: #00787c; font-size: 120%;}
-.message { font-size: 16px; margin-bottom: 20px;}
-.message p { margin-bottom: 0.5em; }
-
-
 /*
  * WIKI
  *----------------------------------------------*/
@@ -367,12 +361,12 @@ p.wiki-form-submit { margin-left: 20px;}
 #wrapper { min-width:1004px; width: auto !important; width: 1004px; margin: 1px auto 10px auto; }
 #wrapper-800 { min-width:750px; width: auto !important; width: 750px; margin: 1px auto 10px auto; }
 #header { margin: 0 12px; }
-#tools { background: #6a9eb9 url(/images/bg-tools.jpg) no-repeat top left; height: 73px; font-size: 11px; color: #fff; padding: 12px 20px 0 45px;
+#tools { background: #6a9eb9 url(/images/bg-tools_new.jpg) top left; height: 86px; font-size: 11px; color: #fff; padding: 0px 20px 0 0px;
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px;
 -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px;
 }
 #identity { float: left; margin-right: 10px; }
-#tools img { vertical-align: middle; margin-right: 33px; }
+#tools img { vertical-align: middle; margin-right: 1px; }
 
 
 #content { background-color: #fff; margin: 22px 12px 0 12px; 
@@ -887,7 +881,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
  * LOGIN
  *----------------------------------------------*/
 
-#login { float: right; font-size: 24px; color: #517486; background: transparent url(/images/bg-login-sx.png) no-repeat top left; height: 59px;  margin-top: 5px; padding-left: 10px; }
+#login { float: right; font-size: 24px; color: #517486; background: transparent url(/images/bg-login-sx.png) no-repeat top left; height: 59px;  margin-top: 10px; padding-left: 10px; }
 #login .inner{ background: transparent url(/images/bg-login-dx.png) no-repeat top right; height: 59px; line-height:59px; width: 210px; }
 #logged-in { float: right; font-size: 16px; color: #517486; background: transparent url(/images/bg-login-sx.png) no-repeat top left; height: 59px;  margin-top: 5px; padding-left: 10px; }
 #logged-in .inner{ background: transparent url(/images/bg-login-dx.png) no-repeat top right; height: 59px;  padding-right: 3px; width: 348px; }
@@ -1070,8 +1064,6 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .search-results-table td { text-align: left; border: 3px solid #fff; }
 .search-results-table td.odd{ background-color:#f2f2f2; }
-.search-results-table td.ico { width: 5%; }
-.search-results-table td.text { width: 80%; padding-left: 1em; }
 
 /*
  * RESULTS METER BAR
