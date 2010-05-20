@@ -44,5 +44,5 @@
   
 
 <div id="identity">
-  <?php echo link_to(image_tag('logo-openparlamento.png', array('alt' => 'openparlamento')), '@homepage') ?>	
+  <?php echo link_to(image_tag('logo-openparlamento_new.png', array('alt' => 'openparlamento')), '@homepage') ?>	
 </div>
