@@ -39,15 +39,15 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
     switch ($tipo)
     {
       case 'P':
-        $val = 5.0;
+        $val = 1.0;
         break;
       
       case 'R':
-        $val = 3.0;
+        $val = 0.3;
         break; 
         
       case 'C':
-        $val = 0.5;
+        $val = 0.05;
         break;
         
       default:
