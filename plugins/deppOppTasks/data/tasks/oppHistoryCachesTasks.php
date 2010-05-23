@@ -443,7 +443,7 @@ function run_opp_rebuild_deltas($task, $args, $options)
     printf("%6d) %1s %7d ... ", $cnt, $r['chi_tipo'], $r['chi_id']);
     
     // calcolo date fine mese scorso e precedente
-    list($data_1, $data_2) = getLast2MonthsDate($data);
+    list($data_1, $data_2) = Util::getLast2MonthsDate($data);
 
     // estrazione record storici a due mesi
     $r_1 = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_1, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
@@ -599,12 +599,6 @@ function presenzeDelta($data, $r, $r_1, $r_2)
   return array($presenze_delta*100., $assenze_delta*100., $missioni_delta*100.);
 }
 
-function getLast2MonthsDate($data)
-{
-  $end_of_last_month_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($data)))));
-  $end_of_two_months_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($end_of_last_month_date)))));
-  return array($end_of_last_month_date, $end_of_two_months_date);  
-}
 
 function task_loader($value='')
 {

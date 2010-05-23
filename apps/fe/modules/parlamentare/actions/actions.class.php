@@ -21,6 +21,20 @@ class parlamentareActions extends sfActions
   }
   
 
+
+  public function executeTabellaDelta()
+  {
+    $this->data = $this->getRequestParameter('data');
+    $this->ramo = $this->getRequestParameter('ramo');
+    $this->dato = $this->getRequestParameter('dato');
+
+    // calcolo date fine mese scorso e precedente
+    list($this->data_1, $this->data_2) = Util::getLast2MonthsDate($this->data);
+
+    $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getDeltaPoliticiRSByDataRamo($this->data_1, $this->data_2, $this->ramo, $this->dato, 'desc');
+  }
+
+
   /**
    * verifica il parametro id e carica gli oggetti OppPolitico e OppCarica (quella attuale)
    *

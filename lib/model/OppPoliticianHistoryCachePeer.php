@@ -188,6 +188,39 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 
 
   /**
+   * estrazione dei valori delta (presenze, ribellioni, indice)
+   * per politici di un certo ramo, a partire da una data, con limite
+   * è estratto il delta tra i dati a fine mese precedente e ancora precedente, rispetto alla data
+   *
+   * @param string $data_1
+   * @param string $data_2
+   * @param string $ramo (C o S)
+   * @param string $ (C o S)
+   * @param string $dato
+   * @param string $order_type
+   * @return RecordSet
+   * @author Guglielmo Celata
+   */
+  public static function getDeltaPoliticiRSByDataRamo($data_1, $data_2, $ramo, $dato, $order_type = 'desc', $limit = null, $con = null)
+  {
+    if ($data_1 <= $data_2 )
+      throw new Exception("data_2 myst be greater than data_1");
+      
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		  
+		$limit_clause = '';
+		if (!is_null($limit))
+		  $limit_clause = "limit $limit";
+		  
+		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, p1.%s-p2.%s delta from opp_politician_history_cache p1, opp_politician_history_cache p2, opp_carica c, opp_politico p where p1.chi_id=p2.chi_id and p1.chi_id=c.id and c.politico_id=p.id and p1.data='%s' and p2.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta %s %s", 
+		               $dato, $dato, $data_1, $data_2, $ramo, $order_type, $limit_clause);
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+
+  /**
    * estrazione di tutti i record per un ramo (per KW), per tutte le date
    *
    * @param string $ramo

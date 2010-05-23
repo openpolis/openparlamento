@@ -306,6 +306,10 @@ parlamentare_emendamenti:
   url:  /parlamentare_emendamenti/:id/*
   param: { module: parlamentare, action: emendamenti }  
 
+parlamentari_tabella_delta:
+  url:   /tabella_delta/:data/:ramo/:dato
+  param: { module: parlamentare, action: tabellaDelta }
+  
 comparaDeputati:
   url:   /parlamentare/comparaDeputati/:id1/:id2/:ramo/*
   param: { module: parlamentare, action: comparaDeputati, id1: 0, id2: 0, ramo: 1, display: false }    

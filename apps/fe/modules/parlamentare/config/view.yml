@@ -1,2 +1,6 @@
+tabellaDeltaSuccess:
+  javascripts:    [-*, "/js/jquery-1.4.2.min.js", "/js/jquery-ui-1.8.1.custom.min.js"]
+  stylesheets:    ["/css/ui-lightness/jquery-ui-1.8.1.custom.css"]
+  
 listSuccess:
   javascripts:    [/js/fe/jquery.morelazyload.js]
