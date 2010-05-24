@@ -307,7 +307,7 @@ parlamentare_emendamenti:
   param: { module: parlamentare, action: emendamenti }  
 
 parlamentari_tabella_delta:
-  url:   /tabella_delta/:data/:ramo/:dato
+  url:   /tabella_delta/:data/:mesi/:ramo/:dato
   param: { module: parlamentare, action: tabellaDelta }
   
 comparaDeputati:

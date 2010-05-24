@@ -29,6 +29,22 @@ class Util
     $end_of_two_months_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($end_of_last_month_date)))));
     return array($end_of_last_month_date, $end_of_two_months_date);  
   }
+
+  /**
+   * torna data di inizio e fine periodo a partire da una data, risalendo da fine mese a n mesi precedenti
+   *
+   * @param string $data 
+   * @param string $mesi 
+   * @return array
+   * @author Guglielmo Celata
+   */
+  public static function getLastNMonthsDates($data, $mesi = 1)
+  {
+    $first_of_month = date('Y-m-d', strtotime(date('Y-m-01', strtotime($data))));
+    $end_of_period = date('Y-m-d', strtotime('-1 day', strtotime($first_of_month)));
+    $start_of_period = date('Y-m-d', strtotime($mesi . ' months ago', strtotime($first_of_month)));
+    return array($start_of_period, $end_of_period);  
+  }
   
     
 }

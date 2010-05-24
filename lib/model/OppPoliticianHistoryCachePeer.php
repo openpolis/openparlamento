@@ -197,24 +197,21 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
    * @param string $ramo (C o S)
    * @param string $ (C o S)
    * @param string $dato
-   * @param string $order_type
    * @return RecordSet
    * @author Guglielmo Celata
    */
-  public static function getDeltaPoliticiRSByDataRamo($data_1, $data_2, $ramo, $dato, $order_type = 'desc', $limit = null, $con = null)
+  public static function getDeltaPoliticiRSByDataRamo($data_1, $data_2, $ramo, $dato, $con = null)
   {
     if ($data_1 <= $data_2 )
-      throw new Exception("data_2 myst be greater than data_1");
+      throw new Exception("data_2 must be greater than data_1");
+
+    $data_2 = date('Y-m-d', strtotime('-1 day', strtotime($data_2)));
       
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		  
-		$limit_clause = '';
-		if (!is_null($limit))
-		  $limit_clause = "limit $limit";
-		  
-		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, p1.%s-p2.%s delta from opp_politician_history_cache p1, opp_politician_history_cache p2, opp_carica c, opp_politico p where p1.chi_id=p2.chi_id and p1.chi_id=c.id and c.politico_id=p.id and p1.data='%s' and p2.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta %s %s", 
-		               $dato, $dato, $data_1, $data_2, $ramo, $order_type, $limit_clause);
+		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.nome as gruppo_nome, g.acronimo as gruppo_acronimo, p1.presenze-p2.presenze as n_presenze, p1.%s-p2.%s delta, p1.%s_delta as trend, p1.presenze+p1.assenze+p1.missioni-p2.presenze-p2.assenze-p2.missioni as n_votazioni from opp_politician_history_cache p1, opp_politician_history_cache p2, opp_carica_has_gruppo cg, opp_gruppo g, opp_carica c, opp_politico p where p1.chi_id=p2.chi_id and p1.chi_id=c.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and c.politico_id=p.id and p1.data='%s' and p2.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta desc, trend desc", 
+		               $dato, $dato, $dato, $data_1, $data_2, $ramo);
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
