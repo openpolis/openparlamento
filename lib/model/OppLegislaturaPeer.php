@@ -52,4 +52,13 @@ class OppLegislaturaPeer
     
   }
   
+  public static function getActive()
+  {
+    foreach (self::$legislature as $cnt => $leg) {
+      if ($leg['data_fine'] == null) {
+        return $cnt;
+      }
+    }
+  }
+  
 }

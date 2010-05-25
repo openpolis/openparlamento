@@ -205,13 +205,19 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     if ($data_1 <= $data_2 )
       throw new Exception("data_2 must be greater than data_1");
 
-    $data_2 = date('Y-m-d', strtotime('-1 day', strtotime($data_2)));
       
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		  
-		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.nome as gruppo_nome, g.acronimo as gruppo_acronimo, p1.presenze-p2.presenze as n_presenze, p1.%s-p2.%s delta, p1.%s_delta as trend, p1.presenze+p1.assenze+p1.missioni-p2.presenze-p2.assenze-p2.missioni as n_votazioni from opp_politician_history_cache p1, opp_politician_history_cache p2, opp_carica_has_gruppo cg, opp_gruppo g, opp_carica c, opp_politico p where p1.chi_id=p2.chi_id and p1.chi_id=c.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and c.politico_id=p.id and p1.data='%s' and p2.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta desc, trend desc", 
-		               $dato, $dato, $dato, $data_1, $data_2, $ramo);
+    if ($data_2 != 0)
+    {
+      $data_2 = date('Y-m-d', strtotime('-1 day', strtotime($data_2)));
+  		$sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.nome as gruppo_nome, g.acronimo as gruppo_acronimo, p1.presenze-p2.presenze as n_presenze, p1.%s-p2.%s delta, p1.%s_delta as trend, p1.presenze+p1.assenze+p1.missioni-p2.presenze-p2.assenze-p2.missioni as n_votazioni from opp_politician_history_cache p1, opp_politician_history_cache p2, opp_carica_has_gruppo cg, opp_gruppo g, opp_carica c, opp_politico p where p1.chi_id=p2.chi_id and p1.chi_id=c.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and c.politico_id=p.id and p1.data='%s' and p2.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta desc, trend desc", 
+  		               $dato, $dato, $dato, $data_1, $data_2, $ramo);      
+    } else {
+      $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.nome as gruppo_nome, g.acronimo as gruppo_acronimo, p1.presenze as n_presenze, p1.%s delta, p1.%s_delta as trend, p1.presenze+p1.assenze+p1.missioni as n_votazioni from opp_politician_history_cache p1, opp_carica_has_gruppo cg, opp_gruppo g, opp_carica c, opp_politico p where p1.chi_id=c.id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id = g.id and c.politico_id=p.id and p1.data='%s' and p1.chi_tipo='P' and p1.ramo='%s' order by delta desc, trend desc", 
+  		               $dato, $dato, $data_1, $ramo);
+    }
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }

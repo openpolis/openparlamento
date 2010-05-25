@@ -33,6 +33,11 @@ class parlamentareActions extends sfActions
     list($this->data_2, $this->data_1) = Util::getLastNMonthsDates($this->data, $this->mesi);
 
     $this->parlamentari_rs = OppPoliticianHistoryCachePeer::getDeltaPoliticiRSByDataRamo($this->data_1, $this->data_2, $this->ramo, $this->dato);
+    
+    if ($this->data_2 == 0) {
+      $leg = OppLegislaturaPeer::getActive();
+      $this->data_2 = OppLegislaturaPeer::$legislature[$leg]['data_inizio'];
+    }
   }
 
 

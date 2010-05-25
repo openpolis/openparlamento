@@ -42,7 +42,10 @@ class Util
   {
     $first_of_month = date('Y-m-d', strtotime(date('Y-m-01', strtotime($data))));
     $end_of_period = date('Y-m-d', strtotime('-1 day', strtotime($first_of_month)));
-    $start_of_period = date('Y-m-d', strtotime($mesi . ' months ago', strtotime($first_of_month)));
+    if ($mesi == 0)
+      $start_of_period = 0;
+    else 
+      $start_of_period = date('Y-m-d', strtotime($mesi . ' months ago', strtotime($first_of_month)));
     return array($start_of_period, $end_of_period);  
   }
   
