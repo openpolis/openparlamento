@@ -100,7 +100,7 @@
       <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1) : ?>
         <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
         <p><?php echo "da approvare".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
-        <?php if($dl=1) : ?>
+        <?php if($dl==1) : ?>
           <li><span class="date">&nbsp;</span>
           <p>da approvare<?php echo ($succ->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
         <?php endif ?>
@@ -122,13 +122,18 @@
     <?php if (count($atto->getAllPred())>0): ?>
       <?php $status_value= array_values($atto->getStatus()) ?>
       <?php if ($status_value[0]!=16 && $status_value[0]!=13 && $status_value[0]!=12) : ?>
-        <?php if($dl=1) : ?>
+        <?php if($dl==1) : ?>
           <li><span class="date">&nbsp;</span>
           <p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
         <?php endif ?>
         <li><span class="date">&nbsp;</span>
         <p>diventa legge</p></li>
-      <?php endif ?>  
+      <?php endif ?>
+    <?php else : ?> 
+      <li><span class="date">&nbsp;</span>
+      <p>da approvare<?php echo ($atto->getRamo()=='C' ? ' al Senato':' alla Camera') ?></p></li>
+      <li><span class="date">&nbsp;</span>
+      <p>diventa legge</p></li>   
     <?php endif ?>  
   <?php endif ?>     
   </ul>
