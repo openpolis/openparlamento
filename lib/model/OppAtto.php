@@ -396,11 +396,11 @@ class OppAtto extends BaseOppAtto
   {
     $sedi = array();
 	
-	$c = new Criteria();
-	$c->add(OppAttoPeer::ID, $this->getId(), Criteria::EQUAL);
-	$c->addJoin(OppAttoPeer::ID, OppAttoHasSedePeer::ATTO_ID);
-	$c->addDescendingOrderByColumn('tipo');
-	return OppAttoHasSedePeer::doSelectJoinOppSede($c);
+  	$c = new Criteria();
+  	$c->add(OppAttoPeer::ID, $this->getId(), Criteria::EQUAL);
+  	$c->addJoin(OppAttoPeer::ID, OppAttoHasSedePeer::ATTO_ID);
+  	$c->addDescendingOrderByColumn('tipo');
+  	return OppAttoHasSedePeer::doSelectJoinOppSede($c);
   }
 
   /* --------- funzioni per indicizzazione sfLucene ---------- */

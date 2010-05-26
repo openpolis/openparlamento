@@ -125,6 +125,77 @@ class OppAttoPeer extends BaseOppAttoPeer
     $stm = $con->createStatement(); 
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
+  
+  /**
+   * estrae gli atti presentati in un intervallo di date (al massimo 200)
+   * @param string   $data_inizio ['y-m-d']
+   * @param string   $data_fine ['y-m-d']
+   * @param integer  $ramo
+   * @param integer  $tipo_atto
+   * @return array di OppAtto
+   * @author Guglielmo Celata
+   */
+  public static function getAttiInDateInterval($data_inizio, $data_fine, $ramo = null, $tipo_atto = null)
+  {
+    if ($data_fine < $data_inizio)
+      throw new Exception('La data_inizio deve essere precedente o uguale alla data_fine');
+      
+    // calcolo della legislatura
+    $legislatura = OppLegislaturaPeer::getCurrent($data_inizio);
+
+    $c = new Criteria();
+    $c->add(self::LEGISLATURA, $legislatura);
+
+    $c1 = $c->getNewCriterion(self::DATA_PRES, $data_inizio, Criteria::GREATER_EQUAL);
+    $c2 = $c->getNewCriterion(self::DATA_PRES, $data_fine, Criteria::LESS_THAN);
+    $c2->addAnd($c1);
+    $c->add($c2);
+
+    if ($ramo)
+      $c->add(self::RAMO, $ramo);
+
+    if ($tipo_atto)
+    {
+      switch (strtoupper($tipo_atto)) {
+        case 'SDDL':
+          $c->add(self::TIPO_ATTO_ID, 1);
+          break;
+        case 'MOZIONE':
+          $c->add(self::TIPO_ATTO_ID, 2);
+          break;
+        case 'INTERPELLANZA':
+          $c->add(self::TIPO_ATTO_ID, 3);
+          break;
+        case 'INTERROGAZIONE':
+          $c->add(self::TIPO_ATTO_ID, array(4, 5, 6), Criteria::IN);
+          break;
+        case 'RISOLUZIONE':
+          $c->add(self::TIPO_ATTO_ID, array(7, 8, 9), Criteria::IN);
+          break;
+        case 'ODG':
+          $c->add(self::TIPO_ATTO_ID, array(10, 11), Criteria::IN);
+          break;
+        case 'DECRETO':
+          $c->add(self::TIPO_ATTO_ID, 12);
+          break;
+        case 'AUDIZIONE':
+          $c->add(self::TIPO_ATTO_ID, 14);
+          break;
+        case 'DLGS':
+          $c->add(self::TIPO_ATTO_ID, array(15, 16, 17), Criteria::IN);
+          break;
+        default:
+          break;
+      }
+    }
+    
+    $c->setLimit(200);
+    $c->addDescendingOrderByColumn(self::DATA_PRES);
+    
+    return self::doSelect($c);
+  }
+  
+  
 
 
 
@@ -270,14 +341,14 @@ class OppAttoPeer extends BaseOppAttoPeer
 	
     $rs = OppAttoPeer::getRecordsetFirmatari($pred, 'P');
 	
-	while ($rs->next())
+	  while ($rs->next())
     {
-	  if($rs->getString(4) != '')
-	    $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
-	  else
-	    $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3); 
-	}
-	return $primi_firmatari;
+	    if($rs->getString(4) != '')
+	      $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3).' ('.$rs->getString(4).')'; 
+	    else
+	      $primi_firmatari[$rs->getInt(1)]=$rs->getDate(5, 'Y-m-d').' * '.$rs->getString(2).' '.$rs->getString(3); 
+	  }
+	  return $primi_firmatari;
 	
   }
   
@@ -378,25 +449,27 @@ class OppAttoPeer extends BaseOppAttoPeer
 	return $relazioni;
   }
   
-  protected static function getRecordsetFirmatari($pred, $tipo)
+  public static function getRecordsetFirmatari($pred, $tipo)
   {
     $c = new Criteria();
-	$c->clearSelectColumns();
-	$c->addSelectColumn(OppPoliticoPeer::ID);
-	$c->addSelectColumn(OppPoliticoPeer::NOME);
-	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
-	$c->addSelectColumn(OppGruppoPeer::NOME);
-	$c->addSelectColumn(OppCaricaHasAttoPeer::DATA);
-	$c->add(OppCaricaHasAttoPeer::ATTO_ID, $pred, Criteria::EQUAL);
-	$c->addJoin(OppCaricaHasAttoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
-	$c->add(OppCaricaHasAttoPeer::TIPO, $tipo, Criteria::EQUAL);
-	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	$rs = OppCaricaHasAttoPeer::doSelectRS($c);
+	  $c->clearSelectColumns();
+	  $c->addSelectColumn(OppPoliticoPeer::ID);
+	  $c->addSelectColumn(OppPoliticoPeer::NOME);
+	  $c->addSelectColumn(OppPoliticoPeer::COGNOME);
+	  $c->addSelectColumn(OppGruppoPeer::NOME);
+	  $c->addSelectColumn(OppCaricaHasAttoPeer::DATA);
+	  $c->addSelectColumn(OppGruppoPeer::ACRONIMO);
+	  $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
+	  $c->add(OppCaricaHasAttoPeer::ATTO_ID, $pred, Criteria::EQUAL);
+	  $c->addJoin(OppCaricaHasAttoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
+	  $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
+	  $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);
+	  $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
+	  $c->add(OppCaricaHasAttoPeer::TIPO, $tipo, Criteria::EQUAL);
+	  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	  $rs = OppCaricaHasAttoPeer::doSelectRS($c);
 	
-	return $rs;
+	  return $rs;
   }
   
   public static function doSelectNews()

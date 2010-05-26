@@ -2,6 +2,14 @@ api_pol_image:
   url: /get_pol_image/:key/:id
   param: { module: api, action: getPolImage }
 
+api_atto:
+  url: /fb_get_atto/:key/:opp_id
+  param: { module: api, action: atto }
+
+api_elenco_atti:
+  url: /fb_get_elenco_atti/:key/:data_inizio/:data_fine/*
+  param: { module: api, action: elencoAtti }
+
 api_parlamentare:
   url: /singolo_parlamentare/:key/:id
   param: { module: api, action: parlamentare }

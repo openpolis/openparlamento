@@ -12,6 +12,7 @@ class apiActions extends sfActions
 {
 
   var $opkw_ns = 'http://www.openpolis.it/2010/opkw';
+  var $opp_ns = 'http://www.openpolis.it/2010/opp';
   var $op_ns = 'http://www.openpolis.it/2010/op';
   var $xlink_ns = 'http://www.w3.org/1999/xlink';
 
@@ -47,6 +48,329 @@ class apiActions extends sfActions
     $this->_send_output($xmlContent);
     return sfView::NONE;
   }
+
+
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con i dati di un singolo atto
+   * progetto op_fb
+   *
+   * <opp xmlns="http://www.openpolis.it/2010/opp"
+   *        xmlns:op="http://www.openpolis.it/2010/op"
+   *        xmlns:xlink="http://www.w3.org/1999/xlink">
+   *   <op:content> 
+   *     <atto opp_id="38631">
+   *       <legislatura>16</legislatura>
+   *       <ramo>S</ramo>
+   *       <numero>1611</numero>
+   *       <titolo><![CDATA[
+   *         [Ddl intercettazioni] Norme in materia di intercettazioni telefoniche, telematiche e ambientali. Modifica della disciplina in materia di astensione del giudice e degli atti di indagine. Integrazione della disciplina sulla responsabilità amministrativa delle persone giuridiche
+   *         ]]>
+   *       </titolo>
+   *       <presentato_il>2009-06-11</presentato_il>
+   *       <tipo_iniziativa>governo</tipo_iniziativa>
+   *       <primi_firmatari>
+   *         <parlamentare opp_id="167">
+   *           <tipo>On</tipo>
+   *           <nome>Angelino</nome>
+   *           <cognome>ALFANO</cognome>
+   *           <gruppo>
+   *             <nome>Popolo delle Libertà</nome>
+   *             <acronimo>PdL</acronimo>
+   *           </gruppo>
+   *           <data_inizio_carica>2008-04-29</data_inizio_carica>
+   *           <circoscrizione>Sicilia 1</circoscrizione>
+   *         </parlamentare>
+   *       </primi_firmatari>
+   *       <cofirmatari>
+   *
+   *       </cofirmatari>
+   *       <relatori>
+   *         <parlamentare opp_id="1518">
+   *           <tipo>Sen</tipo>
+   *           <nome>Roberto</nome>
+   *           <cognome>CENTARO</cognome>
+   *           <gruppo>
+   *             <nome>Popolo delle Libertà</nome>
+   *             <acronimo>PdL</acronimo>
+   *           </gruppo>
+   *           <data_inizio_carica>2008-04-29</data_inizio_carica>
+   *           <circoscrizione>Sicilia</circoscrizione>
+   *         </parlamentare>
+   *       </relatori>
+   *       <commissioni_assegnatarie>
+   *         <commissione tipo_sede="referente">Senato Commissione II Giustizia</commissione>
+   *         <commissione tipo_sede="consultiva">Senato Commissione I Affari Costituzionali</commissione>
+   *         <commissione tipo_sede="consultiva">Senato Commissione III Affari Esteri</commissione>
+   *         <commissione tipo_sede="consultiva">Senato Commissione V Bilancio</commissione>
+   *       </commissioni_assegnatarie>
+   *       <url_fonte_ufficiale xlink:href="http://www.senato.it/leg/16/BGT/Schede/Ddliter/33809.htm"/>
+   *       <testi_atto>
+   *         <url_testo_atto xlink:href="http://www.senato.it/loc/link.asp?tipodoc=DDLPRES&amp;leg=16&amp;id=424336"/>        
+   *       </testi_atto>
+   *     </atto>
+   *   </op:content>
+   * </opp>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opp xlmns="http://www.openpolis.it/2010/opp"
+   *        xmlns:op="http://www.openpolis.it/2010/op"
+   *   <op:error>Messaggio di errore</op:error>
+   * </opp>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeAtto()
+  {
+    $key = $this->getRequestParameter('key');
+    $id = $this->getRequestParameter('opp_id');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLExtended(
+      '<opp xmlns="'.$this->opp_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opp>');
+      
+    if ($is_valid_key)
+    {
+      // estrazione informazioni
+      $atto = OppAttoPeer::retrieveByPK($id);
+      if ($atto) {
+        $titulo = $atto->getTitolo();
+        $data_pres = $atto->getDataPres('Y-m-d');
+        $ramo = $atto->getRamo();
+        $numero = $atto->getNumfase();
+        $legislatura = $atto->getLegislatura();
+
+    		// produzione xml
+        $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+        $atto_node = $content_node->addChild('atto', null, $this->opp_ns);      
+        $atto_node->addAttribute('opp_id', $id);
+
+        $atto_node->addChild('legislatura', $legislatura);
+        $atto_node->addChild('ramo', $ramo);
+        $atto_node->addChild('numero', $numero);
+
+        $titulo_node = $atto_node->addChild('titolo', null);
+        $titulo_node->addCData($titulo);
+
+        $atto_node->addChild('presentato_il', $data_pres);
+
+    	  //tipo di iniziativa
+    	  $tipo_iniziativa = '';
+    	  if($atto->getIniziativa())
+    	  {
+    	    switch($atto->getIniziativa())
+    	    {
+    	      case '1':
+    		      $tipo_iniziativa = 'Parlamentare';
+    		      break;
+    		    case '2':
+              $tipo_iniziativa = 'di Governo';
+    		      break;
+    	      default:
+    		      $tipo_iniziativa = 'Popolare';
+    		      break;
+    	    }
+    	  }
+    	  
+    	  $primi_firmatari_node = $atto_node->addChild('primi_firmatari');
+        $this->addFirmatari('P', $atto, $primi_firmatari_node);
+
+    	  $relatori_node = $atto_node->addChild('relatori');
+        $this->addFirmatari('R', $atto, $relatori_node);
+        
+    	  $co_firmatari_node = $atto_node->addChild('co_firmatari');
+        $this->addFirmatari('C', $atto, $co_firmatari_node);
+
+        $commissioni_node = $atto_node->addChild('commissioni_assegnatarie');
+        $commissioni = $atto->getCommissioni();
+        foreach ($commissioni as $commissione) {
+          $tipo_sede = $commissione->getTipo();
+          if ($tipo_sede != 'Consultiva')
+          {
+            if ($commissione->getOppSede()->getRamo()=='S') $sede_comm="Senato";
+            else $sede_comm = "Camera";
+          }
+
+          $commissione_node = $commissioni_node->addChild('commissione', 
+            $sede_comm . " Commissione " . $commissione->getOppSede()->getDenominazione());
+          
+          $commissione_node->addAttribute('tipo_sede', $tipo_sede);
+        }
+
+        $atto_node->addChild('tipo_iniziativa', $tipo_iniziativa);
+
+        
+      } else {
+        $resp_node->addChild('op:error', 'Nessun atto trovato per questo ID', $this->op_ns);        
+      }
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+  protected function addFirmatari($tipo, $atto, $firmatari_node)
+  {
+    if (!in_array($tipo, array('P', 'R', 'C'))) {
+      throw new Exception('Il parametro tipo può valere P, R o C');
+    }
+    
+	  $rs = OppAttoPeer::getRecordsetFirmatari($atto->getId(), $tipo);
+	  while ($rs->next())
+    {
+      $id = $rs->getInt(1);
+      $nome = $rs->getString(2);
+      $cognome = $rs->getString(3);
+      $gruppo_nome = $rs->getString(4);
+      $gruppo_acronimo = $rs->getString(6);
+      $data_firma = $rs->getDate(5, 'Y-m-d');
+      $tipo_carica_id = $rs->getInt(7);
+      $parlamentare_node = $firmatari_node->addChild('parlamentare');
+      $parlamentare_node->addAttribute('opp_id', $id);
+      if ($tipo_carica_id == 1)
+        $parlamentare_node->addChild('tipo', 'On');
+      if ($tipo_carica_id == 4 || $tipo_carica_id == 5)
+        $parlamentare_node->addChild('tipo', 'Sen');
+      $parlamentare_node->addChild('nome', $nome);
+      $parlamentare_node->addChild('cognome', $cognome);
+      if ($gruppo_nome || $gruppo_acronimo) {
+        $gruppo_node = $parlamentare_node->addChild('gruppo');
+        $gruppo_node->addChild('nome', $gruppo_nome);
+        $gruppo_node->addChild('acronimo', $gruppo_acronimo);
+      }
+      $parlamentare_node->addChild('data_firma', $data_firma);
+	  }
+  }
+
+  /**
+   * API (protetta da una API key)
+   * torna flusso xml con gli atti in un certo intervallo di date
+   * progetto op_fb
+   *
+   *   <opp xmlns="http://www.openpolis.it/2010/opp"
+   *          xmlns:op="http://www.openpolis.it/2010/op"
+   *          xmlns:xlink="http://www.w3.org/1999/xlink">
+   *     <op:content> 
+   *       <atto opp_id="38631">
+   *         <legislatura>16</legislatura>
+   *         <ramo>S</ramo>
+   *         <numero>1611</numero>
+   *         <titolo><![CDATA[
+   *           [Ddl intercettazioni] Norme in materia di intercettazioni telefoniche, telematiche e ambientali. Modifica della disciplina in materia di astensione del giudice e degli atti di indagine. Integrazione della disciplina sulla responsabilità amministrativa delle persone giuridiche
+   *           ]]>
+   *         </titolo>
+   *         <presentato_il>2009-06-11</presentato_il>
+   *       </atto>
+   *       <atto opp_id="51055">
+   *         <legislatura>16</legislatura>
+   *         <ramo>DL</ramo>
+   *         <numero>29/10</numero>
+   *         <titolo><![CDATA[
+   *           [Decreto salva liste] Interpretazione autentica di disposizioni del procedimento elettorale e relativa disciplina di attuazione (G.U. n. 54 del 06/03/2010) 
+   *           ]]>
+   *         </titolo>
+   *         <presentato_il>2010-03-05</presentato_il>
+   *       </atto>
+   *       <atto opp_id="36235">
+   *         <legislatura>16</legislatura>
+   *         <ramo>C</ramo>
+   *         <numero>2350</numero>
+   *         <titolo><![CDATA[
+   *           [Testamento biologico e cure di fine vita] Disposizioni in materia di alleanza terapeutica, di consenso informato e di dichiarazioni anticipate di trattamento 
+   *           ]]>
+   *         </titolo>
+   *         <presentato_il>2009-04-01</presentato_il>
+   *       </atto>
+   *     </op:content>
+   *   </opp>
+   *
+   *       
+   * Return error in case something's wrong
+   * <opp xlmns="http://www.openpolis.it/2010/opp"
+   *       xmlns:op="http://www.openpolis.it/2010/op"
+   *   <op:error>Messaggio di errore</op:error>
+   * </opp>
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  public function executeElencoAtti()
+  {
+    
+    $data_inizio = $this->getRequestParameter('data_inizio');
+    $data_fine = $this->getRequestParameter('data_fine');
+    $ramo = null;
+    if ($this->hasRequestParameter('ramo'))
+      $ramo = $this->getRequestParameter('ramo');
+    $tipo_atto = null;
+    if ($this->hasRequestParameter('tipo_atto'))
+      $tipo_atto = $this->getRequestParameter('tipo_atto');
+    
+    $key = $this->getRequestParameter('key');
+    $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+    $resp_node = new SimpleXMLExtended(
+      '<opp xmlns="'.$this->opp_ns.'" '.
+            ' xmlns:op="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opp>');
+      
+    if ($is_valid_key)
+    {
+  		// start producing xml
+      $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
+      
+      $atti = OppAttoPeer::getAttiInDateInterval($data_inizio, $data_fine, $ramo, $tipo_atto);
+
+      $atti_node = $content_node->addChild('atti', null, $this->opp_ns);      
+      $atti_node->addAttribute('n_atti', count($atti));
+      
+      foreach ($atti as $atto)
+      {
+        $titulo = $atto->getTitolo();
+        $data_pres = $atto->getDataPres('Y-m-d');
+        $ramo = $atto->getRamo();
+        $numero = $atto->getNumfase();
+        $legislatura = $atto->getLegislatura();
+
+
+        $atto_node = $atti_node->addChild('atto', null, $this->opp_ns);
+        $atto_node->addAttribute('opp_id', $atto->getId());
+
+        $atto_node->addChild('legislatura', $legislatura);
+        $atto_node->addChild('ramo', $ramo);
+        $atto_node->addChild('numero', $numero);
+        
+        $tipo_atto = $atto_node->addChild('tipo_atto', $atto->getOppTipoAtto()->getDenominazione());
+        // $tipo_atto->addAttribute('id', $atto->getTipoAttoId());
+
+        $titulo_node = $atto_node->addChild('titolo', null);
+        $titulo_node->addCData($titulo);
+
+        $atto_node->addChild('presentato_il', $data_pres);
+      }
+
+    } 
+    else 
+    {
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+    }
+
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
 
 
 
