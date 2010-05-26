@@ -3,7 +3,7 @@ api_pol_image:
   param: { module: api, action: getPolImage }
 
 api_atto:
-  url: /fb_get_atto/:key/:opp_id
+  url: /fb_get_atto/:key/:opp_id.xml
   param: { module: api, action: atto }
 
 api_elenco_atti:
