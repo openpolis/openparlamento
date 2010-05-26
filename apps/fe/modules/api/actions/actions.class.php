@@ -127,18 +127,38 @@ class apiActions extends sfActions
     $key = $this->getRequestParameter('key');
     $id = $this->getRequestParameter('opp_id');
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
+    
+    $storage_path = sfConfig::get('sf_root_cache_dir');
+    $file_path = sprintf("%s/atti/%s.xml", $storage_path, $id);
 
     $resp_node = new SimpleXMLExtended(
       '<opp xmlns="'.$this->opp_ns.'" '.
             ' xmlns:op="'.$this->op_ns.'" '.
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
       '</opp>');
-      
+
+    $is_error = false;
+    
     if ($is_valid_key)
     {
+
+      // controllo esistenza del file
+      if ($fp = @fopen($file_path, "r"))
+      {
+        // retrieve contenuto XML dalla cache
+        sfContext::getInstance()->getLogger()->info("reading from cache: " . $file_path);
+        $xmlContent = fread($fp, filesize($file_path));
+        fclose($fp);
+
+        // send xml to output
+        $this->_send_output($xmlContent);
+        return sfView::NONE;
+      } 
+
       // estrazione informazioni
       $atto = OppAttoPeer::retrieveByPK($id);
       if ($atto) {
+        
         $titulo = $atto->getTitolo();
         $data_pres = $atto->getDataPres('Y-m-d');
         $ramo = $atto->getRamo();
@@ -176,13 +196,13 @@ class apiActions extends sfActions
     		      break;
     	    }
     	  }
-    	  
+
     	  $primi_firmatari_node = $atto_node->addChild('primi_firmatari');
         $this->addFirmatari('P', $atto, $primi_firmatari_node);
 
     	  $relatori_node = $atto_node->addChild('relatori');
         $this->addFirmatari('R', $atto, $relatori_node);
-        
+
     	  $co_firmatari_node = $atto_node->addChild('co_firmatari');
         $this->addFirmatari('C', $atto, $co_firmatari_node);
 
@@ -198,23 +218,38 @@ class apiActions extends sfActions
 
           $commissione_node = $commissioni_node->addChild('commissione', 
             $sede_comm . " Commissione " . $commissione->getOppSede()->getDenominazione());
-          
+
           $commissione_node->addAttribute('tipo_sede', $tipo_sede);
         }
 
         $atto_node->addChild('tipo_iniziativa', $tipo_iniziativa);
 
         
-      } else {
-        $resp_node->addChild('op:error', 'Nessun atto trovato per questo ID', $this->op_ns);        
+      } 
+      else 
+      {
+        $is_error = true;
+        $resp_node->addChild('op:error', 'Nessun atto trovato per questo ID', $this->op_ns);                
       }
     } 
     else 
     {
-      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);
+      $is_error = true;
+      $resp_node->addChild('op:error', 'Chiave di accesso non valida', $this->op_ns);      
     }
 
-    $xmlContent = $resp_node->asXML();
+    // build xml content out of respNode
+    $xmlContent = $resp_node->asXML(); 
+
+    // write xml cache to file system (for non-error xml's)
+    if (!$is_error) {
+      $fp = @fopen($file_path, "w");
+      sfContext::getInstance()->getLogger()->info("writing to cache: " . $file_path);
+      fwrite($fp, $xmlContent);
+      fclose($fp);
+    }
+    
+    // send xml to output
     $this->_send_output($xmlContent);
     return sfView::NONE;
   }
