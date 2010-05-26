@@ -64,6 +64,7 @@ class apiActions extends sfActions
    *       <legislatura>16</legislatura>
    *       <ramo>S</ramo>
    *       <numero>1611</numero>
+   *       <tipo_atto>SDDL</tipo_atto>
    *       <titolo><![CDATA[
    *         [Ddl intercettazioni] Norme in materia di intercettazioni telefoniche, telematiche e ambientali. Modifica della disciplina in materia di astensione del giudice e degli atti di indagine. Integrazione della disciplina sulla responsabilità amministrativa delle persone giuridiche
    *         ]]>
@@ -174,10 +175,14 @@ class apiActions extends sfActions
         $atto_node->addChild('ramo', $ramo);
         $atto_node->addChild('numero', $numero);
 
+        $tipo_atto = $atto_node->addChild('tipo_atto', $atto->getOppTipoAtto()->getDenominazione());
+        // $tipo_atto->addAttribute('id', $atto->getTipoAttoId());
+
         $titulo_node = $atto_node->addChild('titolo', null);
         $titulo_node->addCData($titulo);
 
         $atto_node->addChild('presentato_il', $data_pres);
+
 
     	  //tipo di iniziativa
     	  $tipo_iniziativa = '';
@@ -311,6 +316,7 @@ class apiActions extends sfActions
    *         <legislatura>16</legislatura>
    *         <ramo>DL</ramo>
    *         <numero>29/10</numero>
+   *         <tipo_atto>SDDL</tipo_atto>
    *         <titolo><![CDATA[
    *           [Decreto salva liste] Interpretazione autentica di disposizioni del procedimento elettorale e relativa disciplina di attuazione (G.U. n. 54 del 06/03/2010) 
    *           ]]>
