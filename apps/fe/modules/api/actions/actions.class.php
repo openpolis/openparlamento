@@ -228,6 +228,83 @@ class apiActions extends sfActions
         }
 
         $atto_node->addChild('tipo_iniziativa', $tipo_iniziativa);
+        
+        
+        // individuazione link fonte
+        if ($atto->getTipoAttoId() == '1')
+          $link = 'http://www.senato.it/leg/' . $atto->getLegislatura() . '/BGT/Schede/Ddliter/' . $atto->getParlamentoId() . '.htm';
+
+        else if ($atto->getTipoAttoId() > '1' && $atto->getTipoAttoId() < '12' )
+          $link = 'http://banchedati.camera.it/sindacatoispettivo_' . $atto->getLegislatura() . '/showXhtml.Asp?idAtto=' . $atto->getParlamentoId() . '&stile=6&highLight=1';
+        else if ($atto->getTipoAttoId() == '12' )
+        {
+          $anno = explode("-",$atto->getDataPres());
+          $numero = explode("/",$atto->getNumfase());
+          $link = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:".$anno[0].";".$numero[0];
+        }
+
+        else if ($atto->getTipoAttoId() == '14' )
+        {
+    	    if ($atto->getRamo()=='C')
+            $link = 'http://www.camera.it/_dati/leg' . $atto->getLegislatura() . '/lavori/stencomm/' . $atto->getNumfase() . '/s010.htm';
+          else
+            $link = 'http://www.senato.it/leg/' . $atto->getLegislatura() . '/BGT/Schede/ProcANL/ProcANLscheda' . $atto->getParlamentoId() . '.htm';
+        }  
+        
+        else if ($atto->getTipoAttoId() > '14' && $atto->getTipoAttoId() < '18' )
+        {
+          $str = $atto->getParlamentoId();
+          $len = 5 - strlen($str);
+          for($i=0; $i<$len; $i++)
+            $str = '0' . $str;
+
+    	    $link = 'http://www.camera.it/parlam/leggi/deleghe/'.$str.'dl.htm';
+        }
+        
+        if ($atto->getTipoAttoId() == '13') 
+          $link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$atto->getParlamentoId();   
+        
+
+        $fonte_node = $atto_node->addChild('fonte');
+        $fonte_node->addAttribute('href', $link);
+        
+
+        // estrazione documenti
+        $c = new Criteria();
+        $c -> add(OppDocumentoPeer::DOSSIER,0);
+        $documenti = $atto->getOppDocumentos($c);
+        
+        $documenti_node = $atto_node->addChild('documenti');
+        
+        foreach ($documenti as $documento) {
+          $documento_node = $documenti_node->addChild('documento');
+          if ($documento->getUrlTesto())
+          {
+            $documento_node->addAttribute('href_txt', $documento->getUrlTesto());
+            
+            if ($documento->getUrlPdf()) {
+              $documento_node->addAttribute('href_pdf', $documento->getUrlPdf());
+            }
+          }
+          
+        }
+        
+        $documenti_node->addAttribute('n', count($documenti));
+        
+        
+        // determina ultimo status
+        $status = $atto->getStatus();
+        $status_str = "";
+        foreach($status as $data => $status_iter)
+        {
+          $iter = OppIterPeer::retrieveByPK($status_iter);
+          if ($data!='' || $data!=null)
+            $status_str .= date('Y-m-d', strtotime($data));
+          $status_str .= " - " . ($atto->getRamo()=='C'?'Camera':'Senato') . ": " . $iter->getFase();
+        }
+        $atto_node->addChild('ultimo_stato', $status_str);
+        
+        
 
         
       } 
