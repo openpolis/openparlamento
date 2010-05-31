@@ -153,7 +153,6 @@ class feedActions extends sfActions
       'authorEmail' => 'info@openparlamento.it',
       'authorName'  => 'Openparlamento',
       'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
-      'ttl'         => 1440,
       'sy_updatePeriod' => 'daily',
       'sy_updateFrequency' => '1',
       'sy_updateBase' => '2000-01-01T12:00+00:00'	    
