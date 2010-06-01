@@ -183,13 +183,15 @@ class attoComponents extends sfComponents
   }
   
   public function executeDdl2argomenti()
-  {
+  { 
+    
     $this->tags=array();
     $c=new Criteria();
     $c->clearSelectColumns();
     $c->addSelectColumn(TaggingPeer::TAG_ID);
     $c->addAsColumn("numtag", "COUNT(".TaggingPeer::TAG_ID.")");
     $c->addJoin(TaggingPeer::TAGGABLE_ID,OppAttoPeer::ID);
+    $c->add(TaggingPeer::TAGGABLE_MODEL,'OppAtto');
     $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
     $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
     
