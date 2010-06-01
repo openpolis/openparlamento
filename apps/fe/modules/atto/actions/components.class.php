@@ -181,6 +181,34 @@ class attoComponents extends sfComponents
     
     $this->arr_alls=$arr_alls;
   }
+  
+  public function executeDdl2argomenti()
+  {
+    $this->tags=array();
+    $c=new Criteria();
+    $c->clearSelectColumns();
+    $c->addSelectColumn(TaggingPeer::TAG_ID);
+    $c->addAsColumn("numtag", "COUNT(".TaggingPeer::TAG_ID.")");
+    $c->addJoin(TaggingPeer::TAGGABLE_ID,OppAttoPeer::ID);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+    $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+    
+    if ($this->approvato==true)
+    {
+      $c->addJoin(OppAttoPeer::ID,OppAttoHasIterPeer::ATTO_ID);
+      $c->add(OppAttoHasIterPeer::ITER_ID,16);  
+    }
+    
+    
+    $c->addGroupByColumn("TAG_ID");
+    $c->addDescendingOrderByColumn("numtag");
+    $rs=TaggingPeer::doSelectRS($c);
+    while($rs->next())
+    {
+      $this->tags[]=array($rs->getInt(1),$rs->getInt(2));
+    }
+    
+  }  
     
     
 }

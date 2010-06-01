@@ -11,7 +11,15 @@
     <div class="W73_100 float-left">
 
 <?php include_component('atto', 'ddl2legge', 
-                          array('leg' => '16') ) ?>                     
+                        array('leg' => '16') ) ?> 
+                        
+<h2>Argomenti dei ddl</h2>                        
+                        
+<?php include_component('atto', 'ddl2argomenti', 
+                        array('leg' => '16', 'approvato' => false) ) ?>  
+<h2>Argomenti dei ddl APPROVATI</h2>                         
+<?php include_component('atto', 'ddl2argomenti', 
+                        array('leg' => '16', 'approvato' => true) ) ?>                                                                    
                                             
                           
     </div>
