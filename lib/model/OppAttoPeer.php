@@ -128,6 +128,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   
   /**
    * estrae gli atti presentati in un intervallo di date (al massimo 200)
+   * estrae solo gli atti al primo step dell'iter (pred=null)
    * @param string   $data_inizio ['y-m-d']
    * @param string   $data_fine ['y-m-d']
    * @param integer  $ramo
@@ -145,6 +146,8 @@ class OppAttoPeer extends BaseOppAttoPeer
 
     $c = new Criteria();
     $c->add(self::LEGISLATURA, $legislatura);
+    
+    $c->add(self::PRED, null, Criteria::ISNULL);
 
     $c1 = $c->getNewCriterion(self::DATA_PRES, $data_inizio, Criteria::GREATER_EQUAL);
     $c2 = $c->getNewCriterion(self::DATA_PRES, $data_fine, Criteria::LESS_THAN);

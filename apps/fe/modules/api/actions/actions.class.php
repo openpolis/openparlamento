@@ -61,16 +61,15 @@ class apiActions extends sfActions
    *        xmlns:xlink="http://www.w3.org/1999/xlink">
    *   <op:content> 
    *     <atto opp_id="38631">
-   *       <legislatura>16</legislatura>
    *       <ramo>S</ramo>
-   *       <numero>1611</numero>
-   *       <tipo_atto>SDDL</tipo_atto>
+   *       <numero>1611-4-B</numero>
+   *       <tipo_atto>12</tipo_atto>
    *       <titolo><![CDATA[
    *         [Ddl intercettazioni] Norme in materia di intercettazioni telefoniche, telematiche e ambientali. Modifica della disciplina in materia di astensione del giudice e degli atti di indagine. Integrazione della disciplina sulla responsabilità amministrativa delle persone giuridiche
    *         ]]>
    *       </titolo>
    *       <presentato_il>2009-06-11</presentato_il>
-   *       <tipo_iniziativa>governo</tipo_iniziativa>
+   *       <tipo_iniziativa>2</tipo_iniziativa>
    *       <primi_firmatari>
    *         <parlamentare opp_id="167">
    *           <tipo>On</tipo>
@@ -163,7 +162,7 @@ class apiActions extends sfActions
         $titulo = $atto->getTitolo();
         $data_pres = $atto->getDataPres('Y-m-d');
         $ramo = $atto->getRamo();
-        $numero = $atto->getNumfase();
+        $numero = str_replace("/", "-", $atto->getNumfase());
         $legislatura = $atto->getLegislatura();
 
     		// produzione xml
@@ -171,7 +170,6 @@ class apiActions extends sfActions
         $atto_node = $content_node->addChild('atto', null, $this->opp_ns);      
         $atto_node->addAttribute('opp_id', $id);
 
-        $atto_node->addChild('legislatura', $legislatura);
         $atto_node->addChild('ramo', $ramo);
         $atto_node->addChild('numero', $numero);
 
@@ -196,8 +194,11 @@ class apiActions extends sfActions
     		    case '2':
               $tipo_iniziativa = 'di Governo';
     		      break;
-    	      default:
+    		    case '4':
     		      $tipo_iniziativa = 'Popolare';
+    		      break;
+    	      default:
+    		      $tipo_iniziativa = '';
     		      break;
     	    }
     	  }
@@ -215,22 +216,19 @@ class apiActions extends sfActions
         $commissioni = $atto->getCommissioni();
         foreach ($commissioni as $commissione) {
           $tipo_sede = $commissione->getTipo();
-          if ($tipo_sede != 'Consultiva')
-          {
-            if ($commissione->getOppSede()->getRamo()=='S') $sede_comm="Senato";
-            else $sede_comm = "Camera";
-          }
 
-          $commissione_node = $commissioni_node->addChild('commissione', 
-            $sede_comm . " Commissione " . $commissione->getOppSede()->getDenominazione());
+          $commissione_node = $commissioni_node->addChild('commissione');
 
-          $commissione_node->addAttribute('tipo_sede', $tipo_sede);
+          $commissione_node->addChild('tipo_sede', $tipo_sede);
+          $commissione_node->addChild('ramo', $commissione->getOppSede()->getRamo());
+          $commissione_node->addChild('nome', $commissione->getOppSede()->getDenominazione());
         }
 
         $atto_node->addChild('tipo_iniziativa', $tipo_iniziativa);
         
         
         // individuazione link fonte
+        /*
         if ($atto->getTipoAttoId() == '1')
           $link = 'http://www.senato.it/leg/' . $atto->getLegislatura() . '/BGT/Schede/Ddliter/' . $atto->getParlamentoId() . '.htm';
 
@@ -267,8 +265,8 @@ class apiActions extends sfActions
 
         $fonte_node = $atto_node->addChild('fonte');
         $fonte_node->addAttribute('href', $link);
+        */
         
-
         // estrazione documenti
         $c = new Criteria();
         $c -> add(OppDocumentoPeer::DOSSIER,0);
@@ -278,9 +276,11 @@ class apiActions extends sfActions
         
         foreach ($documenti as $documento) {
           $documento_node = $documenti_node->addChild('documento');
+          
           if ($documento->getUrlTesto())
           {
-            $documento_node->addAttribute('href_txt', $documento->getUrlTesto());
+            $documento_node->addCData($documento->getTesto());
+            // $documento_node->addAttribute('href_txt', $documento->getUrlTesto());
             
             if ($documento->getUrlPdf()) {
               $documento_node->addAttribute('href_pdf', $documento->getUrlPdf());
@@ -298,11 +298,13 @@ class apiActions extends sfActions
         foreach($status as $data => $status_iter)
         {
           $iter = OppIterPeer::retrieveByPK($status_iter);
-          if ($data!='' || $data!=null)
-            $status_str .= date('Y-m-d', strtotime($data));
-          $status_str .= " - " . ($atto->getRamo()=='C'?'Camera':'Senato') . ": " . $iter->getFase();
+          $status_str = $iter->getFase();
         }
-        $atto_node->addChild('ultimo_stato', $status_str);
+        $atto_node->addChild('status', $status_str);
+        
+        // determina lettura
+        $preds = $atto->getAllPred();
+        $atto_node->addChild('lettura', 1+count($preds));
         
         
 
@@ -354,7 +356,7 @@ class apiActions extends sfActions
       $data_firma = $rs->getDate(5, 'Y-m-d');
       $tipo_carica_id = $rs->getInt(7);
       $parlamentare_node = $firmatari_node->addChild('parlamentare');
-      $parlamentare_node->addAttribute('opp_id', $id);
+      // $parlamentare_node->addAttribute('opp_id', $id);
       if ($tipo_carica_id == 1)
         $parlamentare_node->addChild('tipo', 'On');
       if ($tipo_carica_id == 4 || $tipo_carica_id == 5)
@@ -364,9 +366,9 @@ class apiActions extends sfActions
       if ($gruppo_nome || $gruppo_acronimo) {
         $gruppo_node = $parlamentare_node->addChild('gruppo');
         $gruppo_node->addChild('nome', $gruppo_nome);
-        $gruppo_node->addChild('acronimo', $gruppo_acronimo);
+        // $gruppo_node->addChild('acronimo', $gruppo_acronimo);
       }
-      $parlamentare_node->addChild('data_firma', $data_firma);
+      // $parlamentare_node->addChild('data_firma', $data_firma);
 	  }
   }
 
