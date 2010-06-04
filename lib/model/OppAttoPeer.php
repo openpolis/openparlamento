@@ -147,7 +147,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     $c = new Criteria();
     $c->add(self::LEGISLATURA, $legislatura);
     
-    $c->add(self::PRED, null, Criteria::ISNULL);
+    // $c->add(self::PRED, null, Criteria::ISNULL);
 
     $c1 = $c->getNewCriterion(self::DATA_PRES, $data_inizio, Criteria::GREATER_EQUAL);
     $c2 = $c->getNewCriterion(self::DATA_PRES, $data_fine, Criteria::LESS_THAN);
@@ -157,6 +157,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     if ($ramo)
       $c->add(self::RAMO, $ramo);
 
+    // non sono estratti odg e comunicati gov, a meno che non siano richiesti esplicitamente
     if ($tipo_atto)
     {
       switch (strtoupper($tipo_atto)) {
@@ -190,9 +191,11 @@ class OppAttoPeer extends BaseOppAttoPeer
         default:
           break;
       }
+    } else {
+      $c->add(self::TIPO_ATTO_ID, array(10, 11, 13), Criteria::NOT_IN);      
     }
     
-    $c->setLimit(200);
+    $c->setLimit(500);
     $c->addDescendingOrderByColumn(self::DATA_PRES);
     
     return self::doSelect($c);
