@@ -234,7 +234,9 @@ argomenti_actionaid:
   url:   /argomenti_actionaid/:ramo/*
   param: { module: argomento, action: listClassificaActionAid }
 
-
+argomenti_enel:
+  url:   /argomenti_enel/:ramo/*
+  param: { module: argomento, action: listClassificaEnel }  
 
 argomenti_per_categoria:
   url: /argomenti_per_categoria/*

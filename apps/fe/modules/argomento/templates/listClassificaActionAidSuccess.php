@@ -1,3 +1,5 @@
+
+
 <ul class="float-container tools-container" id="content-tabs">
   <li class="current"><h2>Classifica <?php echo $tipo_politici=='dep'?'deputati':'senatori' ?> per pool di argomenti ActionAid</h2></li>
 </ul>
@@ -15,7 +17,6 @@
     </div>
     
 	  <div class="W73_100 float-left">
-
       <?php if (count($politici) > 0): ?>
         <div class="pad10">
    
