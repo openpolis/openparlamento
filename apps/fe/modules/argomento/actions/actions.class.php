@@ -117,16 +117,16 @@ class argomentoActions extends sfActions
     
     $this->ramo = $this->getRequestParameter('ramo');
     $this->argomentis = array(
-#      '5 per mille'                             => 7698,
-#      '8 per mille'                             => 7996, 
-#      'aiuti sanitari'                          => 5715, 
-      'AGRICOLTURA'                             => 1266, 
-#      'banca mondiale (bm)'                     => 5837, 
-      'cooperazione allo sviluppo'              => 4653, 
-#      'cooperazione economica internazionale'   => 1560, 
-#      'diritti umani'                           => 4585, 
-#      "missioni militari all'estero"            => 317, 
-#      'organizzazioni non governative (ong)'    => 7313, 
+    'ENERGIA ELETTRICA'                             => 826,
+    'ENERGIA EOLICA'                             => 843, 
+    'energia geotermica'                          => 8335, 
+    'energia idroelettrica'                             => 6697, 
+    'ENERGIA NUCLEARE'                     => 845, 
+    'ENERGIA SOLARE'              => 847, 
+    'energie rinnovabili'   => 4732, 
+    "mobilita' sostenibile"                           => 6431, 
+    "veicoli elettrici"            => 16122, 
+    'ente nazionale energia elettrica (enel)'    => 6213, 
 #      'spesa militare'                          => 644
       );
     

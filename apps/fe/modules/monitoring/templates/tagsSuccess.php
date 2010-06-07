@@ -15,7 +15,22 @@
       </div>
       <?php endif; ?>
 
-
+    <div class="float-right" style="width:48%;">
+       <?php if ($opp_user->getNMonitoredTags()>0 && 
+       ($sf_user=="actionaid" || $sf_user=="verde") ): ?>
+        	<h5 class="subsection">Chi si occupa dei miei argomenti</h5>
+        	  <?php if ($sf_user=="actionaid") :?>
+        	   <?php echo link_to("Classifica dei deputati","/argomenti_actionaid/C")?><br/>
+        	   <?php echo link_to("Classifica dei senatori","/argomenti_actionaid/S")?>
+        	  <?php endif ?>  
+        	  <?php if ($sf_user=="verde") :?>
+        	   <?php echo link_to("Classifica dei deputati","/argomenti_enel/C")?><br/>
+        	   <?php echo link_to("Classifica dei senatori","/argomenti_enel/S")?>
+        	  <?php endif ?>
+        <?php endif ?>	
+    </div>  
+      
+    <div style="width:48%;">  
     <?php if ($opp_user->getNMonitoredTags()>0): ?>
     	<h5 class="subsection">gli argomenti che stai monitorando 
     	  <?php if (!$sf_user->hasCredential('adhoc')): ?>    	   
@@ -40,6 +55,7 @@
           </li>
         <?php endforeach ?>
       </ul>
+	  </div>
 	  </div>
 
     <h5 class="subsection">Aggiungi un argomento</h5>
