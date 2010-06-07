@@ -19,7 +19,7 @@
        <?php if ($opp_user->getNMonitoredTags()>0 && 
        ($sf_user=="actionaid" || $sf_user=="verde") ): ?>
         	<h5 class="subsection">Chi si occupa dei miei argomenti</h5>
-        	<div style="padding:5px;">
+        	<div style="padding:5px; font-size:14px;">
         	  <?php if ($sf_user=="actionaid") :?>
         	   <?php echo link_to("Classifica dei deputati","/argomenti_actionaid/C")?><br/><br/>
         	   <?php echo link_to("Classifica dei senatori","/argomenti_actionaid/S")?>
