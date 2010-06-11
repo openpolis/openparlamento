@@ -745,9 +745,7 @@ class apiActions extends sfActions
       $dettagli_node->addChild('ramo', $seduta->getRamo() == 'C'?'Camera':'Senato');
       $dettagli_node->addChild('n_votazione', $votazione->getNumeroVotazione());
       $dettagli_node->addChild('n_seduta', $seduta->getNumero());
-      $dettagli_node->addCData(addChild('titolo', $titulo));
-      //$titulo_node = $dettagli_node->addChild('titolo', null);
-      //$titulo_node->addCData($titulo);
+      $dettagli_node->addChild('titolo', $titulo);
 
       $dettagli_node->addChild('esito', ucfirst(strtolower($votazione->getEsito())));
       
