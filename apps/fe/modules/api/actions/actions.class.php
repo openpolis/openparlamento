@@ -775,7 +775,7 @@ class apiActions extends sfActions
       $gruppi_node = $votazione_node->addChild('voto_gruppi', null, $this->opkw_ns);
       foreach ($voto_gruppi as $nome => $detail) {
         $gruppo_node = $gruppi_node->addChild('gruppo', null, $this->opkw_ns);
-        $gruppo_node->addChild('nome', $nome, $this->opkw_ns);
+        $gruppo_node->addChild('nome', "<![CDATA".[$nome]."]>", $this->opkw_ns);
         foreach ($detail as $key => $value) {
           $gruppo_node->addChild(strtolower(str_replace(' ', '_', $key)), $value, $this->opkw_ns);
         }
