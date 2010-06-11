@@ -745,7 +745,9 @@ class apiActions extends sfActions
       $dettagli_node->addChild('ramo', $seduta->getRamo() == 'C'?'Camera':'Senato');
       $dettagli_node->addChild('n_votazione', $votazione->getNumeroVotazione());
       $dettagli_node->addChild('n_seduta', $seduta->getNumero());
-      $dettagli_node->addChild('titolo', $titulo);
+      //$dettagli_node->addChild('titolo', $titulo);
+      $titulo_node = $dettagli_node->addChild('titolo', null);
+      $titulo_node->addCData($titulo);
 
       $dettagli_node->addChild('esito', ucfirst(strtolower($votazione->getEsito())));
       
@@ -775,7 +777,7 @@ class apiActions extends sfActions
       $gruppi_node = $votazione_node->addChild('voto_gruppi', null, $this->opkw_ns);
       foreach ($voto_gruppi as $nome => $detail) {
         $gruppo_node = $gruppi_node->addChild('gruppo', null, $this->opkw_ns);
-        $gruppo_node->addChild(addCData('nome', $nome , $this->opkw_ns));
+        $gruppo_node->addChild('nome', $nome , $this->opkw_ns);
         foreach ($detail as $key => $value) {
           $gruppo_node->addChild(strtolower(str_replace(' ', '_', $key)), $value, $this->opkw_ns);
         }
