@@ -957,6 +957,8 @@ class apiActions extends sfActions
   public function executeElencoVotiChiave()
   {
     $key = $this->getRequestParameter('key');
+    $home = $this->getRequestParameter('home')=='true'?true:false;
+    
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
 
     $resp_node = new SimpleXMLElement(
@@ -970,7 +972,10 @@ class apiActions extends sfActions
   		// start producing xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
       
-      $votazioni = OppVotazionePeer::getKeyVotes();
+      if ($home)
+        $votazioni = OppVotazionePeer::getLastTwoKeyVotes();
+      else
+        $votazioni = OppVotazionePeer::getKeyVotes();
 
       // voti chiave
       $voti_node = $content_node->addChild('voti_chiave', null, $this->opkw_ns);      
@@ -1007,8 +1012,7 @@ class apiActions extends sfActions
     $this->_send_output($xmlContent);
     return sfView::NONE;
   }
-
-
+  
 
   /**
    * API (protetta da una API key)

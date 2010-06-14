@@ -19,7 +19,7 @@ api_parlamentari:
   param: { module: api, action: elencoParlamentari }
 
 api_voti_chiave:
-  url: /elenco_voti_chiave/:key
+  url: /elenco_voti_chiave/:key/*
   param: { module: api, action: elencoVotiChiave }
 
 api_voti_maggioranza_sotto:

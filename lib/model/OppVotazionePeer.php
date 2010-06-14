@@ -46,6 +46,33 @@ class OppVotazionePeer extends BaseOppVotazionePeer
        $c->setLimit($limit);
     return OppVotazionePeer::doSelectJoinOppSeduta($c);        
   }
+
+
+  /**
+   * estrae gli ultimi due key votes, uno per la camera e uno per il senato
+   *
+   * @return array di OppVotazione
+   * @author Guglielmo Celata
+   */
+  public static function getLastTwoKeyVotes()
+  {
+    $c = new Criteria();
+    $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
+    $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+    $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
+    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
+
+    $votazioni = array();
+    
+    $c->add(OppSedutaPeer::RAMO, 'C');
+    $votazioni[0] = OppVotazionePeer::doSelectOne($c);
+    
+    $c->add(OppSedutaPeer::RAMO, 'S');
+    $votazioni[1] = OppVotazionePeer::doSelectOne($c);
+    
+    return $votazioni;
+  }
   
   public static function getKeyVotes($limit = 0)
   {
