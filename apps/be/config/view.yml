@@ -4,10 +4,10 @@ default:
 
   metas:
     title:        Area riservata Openparlamento
-    robots:       noindex,nofollow
-    googlebot:    noarchive,nosnippet
-    description:  Il progetto Openpolis per il monitoring del Parlamento
-    keywords:     Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento
+    robots:       "noindex,nofollow"
+    googlebot:    "noarchive,nosnippet"
+    description:  "Il progetto Openpolis per il monitoring del Parlamento"
+    keywords:     "Openparlamento, Openpolis, monitoring parlamentare, monitoring parlamento, controllo parlamentare, controllo parlamento"
     language:     it
 
   stylesheets:    [admin]
