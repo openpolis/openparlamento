@@ -35,5 +35,22 @@ class deppApiKeysPeer extends BasedeppApiKeysPeer {
     $res = self::doCount($c);
     return $res==1?true:false;
   }
+  
+  /**
+   * controlla se la chiave per le API è quella interna
+   *
+   * @param string - il valore della chiave
+   * @return boolean
+   * @author Guglielmo Celata
+   **/
+  public static function isValidInternalKey($value)
+  {
+    $c = new Criteria();
+    $c->add(self::VALUE, $value);
+    $c->add(self::REQ_NAME, 'Interna');
+    $res = self::doCount($c);
+    return $res==1?true:false;
+  }
+  
 
 } // deppApiKeysPeer
