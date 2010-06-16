@@ -1000,6 +1000,8 @@ class apiActions extends sfActions
         $voto_node->addChild('titolo', $titulo);
         $voto_node->addChild('esito', ucfirst(strtolower($esito)));
         $voto_node->addChild('n_ribelli', $n_ribelli);
+        if ($home)
+          $voto_node->addChild('link', $href);        
       }
 
     } 
