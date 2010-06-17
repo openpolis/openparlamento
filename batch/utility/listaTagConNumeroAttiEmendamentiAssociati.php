@@ -14,7 +14,7 @@ sfContext::getInstance();
  
  // estraggo tutti i tag di opp con il numero di atti (no emendamenti) associati
 $tagToDdl=TaggingPeer::CountTagForAtti('OppAtto');
-$tagToEm=TaggingPeer::CountTagForAtti('OppEmedamento');
+$tagToEm=TaggingPeer::CountTagForAtti('OppEmendamento');
 
 $tagToAll=array();
 foreach ($tagToDdl as $key => $value) {
