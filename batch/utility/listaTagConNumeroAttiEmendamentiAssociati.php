@@ -33,7 +33,7 @@ foreach ($tagToEm as $key => $value) {
 }
 
 foreach ($tagToAll as $key => $value) {
-  echo $key.",".$value[0].",".$value[1].",".$value[2]."\n";
+  echo $key."\t".$value[0]."\t".$value[1]."\t".$value[2]."\n";
 }
  
 
