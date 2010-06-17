@@ -21,7 +21,7 @@ public function CountTagForAtti($value)
 {
   $con = Propel::getConnection(self::DATABASE_NAME);
 
-  $sql = sprintf("select count(*) as cn, t.id as id, t.triple_value as value from sf_tagging tg,sf_tag t where t.id=tg.taggable_id and taggable_model='".$value."' group by t.id");
+  $sql = sprintf("select count(*) as cn, t.id as id, t.triple_value as value from sf_tagging tg,sf_tag t where t.id=tg.taggable_id and taggable_model='".$value."' and (t.triple_namespace='user' or t.triple_namespace='teseo')  group by t.id");
   $stm = $con->createStatement(); 
   $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
