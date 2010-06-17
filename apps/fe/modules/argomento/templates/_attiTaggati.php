@@ -22,7 +22,7 @@
                                       $values['routing'], $triple_value, 
                                       $values['routing'], $values['type_filter'] )) ?></td>
           <?php else: ?>
-            <td> - </td>                        
+            <td> 0 </td>                        
           <?php endif ?>
           
           <?php if (array_key_exists('ns', $values) && $values['ns'] > 0): ?>
@@ -31,16 +31,16 @@
                                       $values['routing'], $triple_value, 
                                       $values['routing'], $values['type_filter'] )) ?></td>
           <?php else: ?>
-            <td> - </td>
+            <td> 0 </td>
           <?php endif ?>
             
-           <?php if (array_key_exists('ns', $values) && array_key_exists('nc', $values) && ($values['nc']+$values['ns']) > 0): ?>
+           <?php if ((array_key_exists('ns', $values) || array_key_exists('nc', $values)) && ($values['nc']+$values['ns']) > 0): ?>
             <td><?php echo link_to($values['nc']+$values['ns'],
                              sprintf('@argomento_%s?triple_value=%s&filter_act_%s_type=%s',
                                       $values['routing'], $triple_value, 
                                       $values['routing'], $values['type_filter'] )) ?></td>
           <?php else: ?>
-            <td> - </td>                              
+            <td> 0 </td>                              
           <?php endif ?>
           
         </tr>
