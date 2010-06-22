@@ -504,11 +504,11 @@ class oppNewsPeer extends NewsPeer
   public static function getUserMonitoredItemsNewsCriteria($user, $monitored_objects)
   {    
     sfLogger::getInstance()->info('{NewsPeer} n of objects directly monitored by the user: ' . count($monitored_objects));
-    
+
     // costruzione dell'array associativo tipo_oggetto => array_di_id
     // di oggetti monitorati dall'utente (solo atti e politici)
     // per i tag, vengono considerti tutti gli oggetti (atti) taggati con l'atto monitorato
-    $monitored_hash = array('OppAtto' => array(), 'OppPolitico' => array());
+    $monitored_hash = array('OppAtto' => array(), 'OppPolitico' => array(), 'OppEmendamento' => array());
     
     $monitored_tags_ids = array();
     foreach ($monitored_objects as $obj)
