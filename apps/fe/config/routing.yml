@@ -96,6 +96,10 @@ feed_politico:
   url: /feed/politico/:id
   param: { module: feed, action: lastPolitico }
 
+feed_politico_radicali:
+  url: /feed/politico_radicali/:id
+  param: { module: feed, action: lastPoliticoRadicali }
+
 feed_atto:
   url: /feed/atto/:id
   param: { module: feed, action: lastAtto }

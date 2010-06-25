@@ -61,13 +61,49 @@ function link_to_in_mail($name = '', $internal_uri = '', $options = array())
 
 
 /**
+ * torna un titolo e una descrizione per una news
+ * strippando la parte iniziale in bold
+ * da usare solo per i radicali, notizie per il singolo politico
+ *
+ * @param string $news - la singola notizia
+ * @param string $for_mail_or_rss
+ * @return array di 2 stringhe html: (title, description)
+ * @author Guglielmo Celata
+ */
+function news_title_descr($news, $for_mail_or_rss = false, $context = null)
+{
+  // controlli
+  $related_monitorable_model = $news->getRelatedMonitorableModel();
+  if ($related_monitorable_model != 'OppPolitico')
+    return array("", "");
+
+  $generator_model = $news->getGeneratorModel();
+  $pks = array_values(unserialize($news->getGeneratorPrimaryKeys()));
+  $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);          
+
+  $news_text = news_text($news, $generator_model, $pks, $generator, 
+                         array('in_mail' => $for_mail_or_rss,
+                               'context' => is_null($context)?'CONTEXT_LIST':$context));
+
+  // todo: strip initial bold text
+  $paragraphs = array();
+  $pars = preg_split("/<p>/", $news_text, -1, PREG_SPLIT_NO_EMPTY);
+  foreach ($pars as $k => $v)
+  {
+      $paragraphs[$k] = preg_replace("/<\/p>/", '', $v); // get rid of end "p" tags
+  }
+  
+  return array(strip_tags($paragraphs[0]), (count($paragraphs) > 1)?$paragraphs[1]:'nessuna descrizione');
+}
+
+/**
  * torna l'elenco ul/li delle news passate in argomento
  *
  * @param string $news array di oggetti News
  * @return string html
  * @author Guglielmo Celata
  */
-function news_list($news, $for_mail_or_rss = false)
+function news_list($news, $for_mail_or_rss = false, $context = null)
 {
   $news_list = '';
   
@@ -86,7 +122,8 @@ function news_list($news, $for_mail_or_rss = false)
     
     $news_list .= content_tag('li', 
                               news_text($n, $generator_model, $pks, $generator, 
-                                        array('in_mail' => $for_mail_or_rss)));    
+                                        array('in_mail' => $for_mail_or_rss, 
+                                              'context' => is_null($context)?CONTEXT_LIST:$context)));    
   }
   return content_tag('ul', $news_list, array('class' => 'square-bullet'));  
 }
