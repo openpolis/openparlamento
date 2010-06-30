@@ -186,7 +186,7 @@ class feedActions extends sfActions
       $item = new sfRss2ExtendedItem();
       $item->initialize( array(
         'title' => 'Notizie del ' . strftime("%d/%m/%Y", $date_ts),
-        'link'  => url_for($link, true),
+        'link'  => url_for($link, true) . '#' . strftime('%Y%m%d%H', $date_ts),
         'permalink' => url_for($link, true) . '#' . strftime('%Y%m%d%H', $date_ts),
         'pubDate' => date("U", $date_ts),
         'uniqueId' => $date_ts,
