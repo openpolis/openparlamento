@@ -968,6 +968,7 @@ function news_icon_name($generator_model, $generator)
                       'Tagging'             => 'etichetta',
                       'OppDocumento'        => 'document',
                       'OppAttoHasIter'      => 'next-iter',
+                      'OppEsitoSeduta'      => 'votazione',
                       'OppCaricaHasEmendamento' => 'ordinanza',
                       'OppAttoHasEmendamento' => 'attonoleg',
                       'OppEmendamentoHasIter' => 'next-iter',

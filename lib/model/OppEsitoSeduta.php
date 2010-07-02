@@ -56,7 +56,7 @@ sfPropelBehavior::add(
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'OppAtto' => 'getOppAtto'),
               'date_method'        => 'Data',
-              'priority'           => '3',
+              'priority'           => '2',
         )));
 
 // disattivato (#383)        

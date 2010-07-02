@@ -141,7 +141,7 @@ class monitoringActions extends sfActions
       }
 
     if ($filters['main_all'] == 'main')
-      $c->add(NewsPeer::PRIORITY, 1);
+      $c->add(NewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
 
     // passa la variabile filters
     $this->filters = $filters;
@@ -167,9 +167,10 @@ class monitoringActions extends sfActions
   
   public function executeSendNewsletter()
   {
-    $user_id = $this->getRequestParameter('user_id');    
+    $user_id = $this->getRequestParameter('user_id');
+    $today_date = $this->getRequestParameter('date');
     $user = OppUserPeer::retrieveByPK($user_id);
-    $news = oppNewsPeer::fetchTodayNewsForUser($user);
+    $news = oppNewsPeer::fetchTodayNewsForUser($user, $today_date);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
@@ -188,7 +189,7 @@ class monitoringActions extends sfActions
 
     $mail->addAddress($user->getEmail());
 
-    $mail->setSubject('newsletter del ' . date('d/m/Y') );
+    $mail->setSubject('newsletter del ' . date('d/m/Y', strtotime($today_date)));
                             
     // raggruppa le news per data
     $grouped_news = array();
@@ -208,7 +209,7 @@ class monitoringActions extends sfActions
 
 
 
-    $this->date = date('d/m/Y');
+    $this->date = date('d/m/Y', strtotime($today_date));
     $this->user = $user;
     $this->grouped_news = $grouped_news;
     $this->mail = $mail;    

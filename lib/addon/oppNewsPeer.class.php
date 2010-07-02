@@ -569,20 +569,20 @@ class oppNewsPeer extends NewsPeer
     
   }
 
-  public static function fetchTodayNewsForUser($user)
+  public static function fetchTodayNewsForUser($user, $date = null)
   {
-    $c = self::getTodayNewsForUserCriteria($user);
+    $c = self::getTodayNewsForUserCriteria($user, $date);
     return self::doSelect($c);
   }
   
-  public static function countTodayNewsForUser($user)
+  public static function countTodayNewsForUser($user, $date = null)
   {
-    $c = self::getTodayNewsForUserCriteria($user);
+    $c = self::getTodayNewsForUserCriteria($user, $date);
     return self::doCount($c);    
   }
 
 
-  public static function getTodayNewsForUserCriteria($user)
+  public static function getTodayNewsForUserCriteria($user, $date = null)
   {
     $monitored_objects = $user->getMonitoredObjects();
 
@@ -611,15 +611,18 @@ class oppNewsPeer extends NewsPeer
     $c->add(self::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
     
     // add a filter on the date (today's news) or a test date
-    if (SF_ENVIRONMENT == 'task-test') $c->add(self::CREATED_AT, '2009-01-29%', Criteria::LIKE);    
+    // remove news related to actions dated more than 15 days ago (related to the date passed)
+    if (is_null($date)) 
+    {
+      $c->add(self::CREATED_AT, date('Y-m-d'), Criteria::GREATER_THAN);      
+      $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago')); 	 	 
+    }
     else
-      $c->add(self::CREATED_AT, date('Y-m-d'), Criteria::GREATER_THAN);
+    {
+      $c->add(self::CREATED_AT, "$date%", Criteria::LIKE);          
+      $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago', strtotime($date))); 	 	 
+    }
 
-    // rimuove notizie relative ad atti più vecchi di 15 giorni
-    
-    # the date in Y-m-d format, fifteen days ago 	 	 
-    $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago')); 	 	 
-	 	 
     # check date, if present 	 	 
     $crit0 = $c->getNewCriterion(self::DATE, null, Criteria::ISNOTNULL); 	 	 
     $crit1 = $c->getNewCriterion(self::DATE, $fifteen_days_ago, Criteria::GREATER_THAN); 	 	 

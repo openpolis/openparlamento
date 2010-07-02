@@ -39,7 +39,8 @@
         <!-- datebox cell / empty -->
         <?php if ($cnt == 0): ?>
           <td style="width: 80px;">
-            <?php include_partial('news/dateboxmail', array('date_ts' => $date_ts, 
+            <?php include_partial('news/dateboxmail', array('sf_site_url' => $sf_site_url,
+                                                            'date_ts' => $date_ts, 
                                                             'date_format' => new sfDateFormat('it_IT'))) ?>
           </td> 
         <?php else: ?>
@@ -48,13 +49,11 @@
         
         <!-- news icon -->
         <?php 
-          $icon_img_tag = image_tag(news_icon_name($generator_model, $generator), 
-                                    array('size' => '44x42', 
-                                          'absolute' => true,
-                                          'style' => "border:none; display: block; border: none; background: transparent url(http://$sf_site_url/images/bg-ico-type.png) no-repeat top left; height: 50px; padding: 4px 0 0 3px;")) 
+          $icon_img_name = news_icon_name($generator_model, $generator);
         ?>
         <td class="icon-id" style="width: 60px;">
-          <?php echo $icon_img_tag ?>
+          <img src="http://<?php echo $sf_site_url?>/images/<?php echo $icon_img_name ?>"
+               size="44x42" style="border:none; display: block; border: none; background: transparent url(http://<?php echo $sf_site_url ?>/images/bg-ico-type.png)" />
         </td>
         
         <!-- news text -->

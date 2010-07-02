@@ -24,7 +24,7 @@ pake_task('opp-test-newsletter', 'project_exists');
 /**
 * Fetch news and send them via e-mail
 */
-function run_opp_send_newsletter($task, $args)
+function run_opp_send_newsletter($task, $args, $options)
 {
   static $loaded;
 
@@ -34,7 +34,7 @@ function run_opp_send_newsletter($task, $args)
     define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
     define('SF_APP', 'fe');
     define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', false);
+    define('SF_DEBUG', true);
 
     require_once SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
 
@@ -47,16 +47,23 @@ function run_opp_send_newsletter($task, $args)
     $loaded = true;
   }
 
+  $date = null;
+  if (array_key_exists('date', $options))
+    $date = $options['date'];
+
 
   $start_time = microtime(true);
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_NEWSLETTER, 1);
+  if (count($args)) {
+    $c->add(OppUserPeer::ID, $args, Criteria::IN);
+  }
   $users = OppUserPeer::doSelect($c);
 
   foreach ($users as $user)
   {
-    opp_send_single_newsletter($user);
+    opp_send_single_newsletter($user, $date);
   }
   
   $total_time = microtime(true) - $start_time;
@@ -79,7 +86,7 @@ function run_opp_send_newsletter($task, $args)
  * @return void
  * @author Guglielmo Celata
  */
-function opp_send_single_newsletter($user)
+function opp_send_single_newsletter($user, $date = null)
 {
   $start_time = microtime(true);
 
@@ -89,6 +96,8 @@ function opp_send_single_newsletter($user)
 
   // invoke the action that sends the email
   sfContext::getInstance()->getRequest()->setParameter('user_id', $user->getId());
+  sfContext::getInstance()->getRequest()->setParameter('date', $date);
+  
   try {
     $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendNewsletter');
     // log the email
@@ -112,7 +121,7 @@ function opp_send_single_newsletter($user)
 /**
 * Fetch news and show them, for each users
 */
-function run_opp_test_newsletter($task, $args)
+function run_opp_test_newsletter($task, $args, $options)
 {
   static $loaded;
 
@@ -136,18 +145,23 @@ function run_opp_test_newsletter($task, $args)
     $loaded = true;
   }
 
-
-
+  $date = null;
+  if (array_key_exists('date', $options))
+    $date = $options['date'];
+    
   $start_time = microtime(true);
   echo pakeColor::colorize("Hi, there!\n", array('fg' => 'green', 'bold' => true));
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_NEWSLETTER, 1);
+  if (count($args)) {
+    $c->add(OppUserPeer::ID, $args, Criteria::IN);
+  }
   $users = OppUserPeer::doSelect($c);
 
   foreach ($users as $user)
   {
-    opp_test_single_newsletter($user);
+    opp_test_single_newsletter($user, $date);
   }
   
   $total_time = microtime(true) - $start_time;
@@ -170,17 +184,17 @@ function run_opp_test_newsletter($task, $args)
  * @return void
  * @author Guglielmo Celata
  */
-function opp_test_single_newsletter($user)
+function opp_test_single_newsletter($user, $date = null)
 {
   $start_time = microtime(true);
   
   $df = new sfDateFormat('it_IT');
 
-  echo pakeColor::colorize(sprintf('Today\'s news for user %s... ', $user), 
+  echo pakeColor::colorize(sprintf('%s\'s news, for user %s... ', is_null($date)?'Today':$date, $user), 
                            array('fg' => 'red', 'bold' => true));
 
 
-  $news = oppNewsPeer::fetchTodayNewsForUser($user);
+  $news = oppNewsPeer::fetchTodayNewsForUser($user, $date);
 
   // raggruppa le news per data
   $grouped_news = array();
@@ -201,7 +215,7 @@ function opp_test_single_newsletter($user)
   echo pakeColor::colorize(sprintf("(%d)\n", count($news)), array('fg' => 'cyan'));
   if (count($news) > 0)
   {
-    echo pakeColor::colorize(sprintf("\t    |        ID |        RELATED_MODEL |    REL_ID |      GENERATOR_MODEL |     DATE \n"), 
+    echo pakeColor::colorize(sprintf("\t    |        ID |        RELATED_MODEL |    REL_ID |      GENERATOR_MODEL | P |\n"), 
                                      array('fg' => 'cyan', 'bold' => true));
     
   }
@@ -214,10 +228,9 @@ function opp_test_single_newsletter($user)
                              array('fg' => 'cyan', 'bold' => true));
     
     foreach ($news as $i => $n) {
-      echo pakeColor::colorize(sprintf("\t%03d | %09d | %20s | %09d | %20s | %10s\n", 
-                                       $i, $n->getId(), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
-                                       $n->getGeneratorModel(), 
-                                       $i == 0?$n->getDate('Y-m-d'):''));
+      echo pakeColor::colorize(sprintf("\t%3d | %9d | %20s | %9d | %20s | %1d |\n", 
+                                       $i+1, $n->getId(), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
+                                       $n->getGeneratorModel(), $n->getPriority()));
     }
   }
   echo "\n";
