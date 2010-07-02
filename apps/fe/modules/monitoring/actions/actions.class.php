@@ -189,7 +189,12 @@ class monitoringActions extends sfActions
 
     $mail->addAddress($user->getEmail());
 
-    $mail->setSubject('newsletter del ' . date('d/m/Y', strtotime($today_date)));
+    if (is_null($today_date)) {
+      $formatted_today_date = date('d/m/Y', strtotime($today_date));
+    } else {
+      $formatted_today_date = date('d/m/Y');      
+    }
+    $mail->setSubject('newsletter del ' . $formatted_today_date);
                             
     // raggruppa le news per data
     $grouped_news = array();
@@ -209,7 +214,7 @@ class monitoringActions extends sfActions
 
 
 
-    $this->date = date('d/m/Y', strtotime($today_date));
+    $this->date = $formatted_today_date;
     $this->user = $user;
     $this->grouped_news = $grouped_news;
     $this->mail = $mail;    
