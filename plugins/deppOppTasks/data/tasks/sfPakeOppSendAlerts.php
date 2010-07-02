@@ -24,7 +24,7 @@ pake_task('opp-test-alerts', 'project_exists');
 /**
 * Fetch alerts and send them via e-mail
 */
-function run_opp_send_alerts($task, $args)
+function run_opp_send_alerts($task, $args, $options)
 {
   static $loaded;
 
@@ -46,6 +46,9 @@ function run_opp_send_alerts($task, $args)
     $loaded = true;
   }
 
+  $last_alert = null;
+  if (array_key_exists('last-alert', $options))
+    $last_alert = strftime("%Y-%m-%dT%H:%M:%SZ", strtotime($options['last-alert']));
 
   // create a solr instance to read solr.yml config
   $solr_instance = deppOppSolr::getInstance();
@@ -54,11 +57,17 @@ function run_opp_send_alerts($task, $args)
 
   $c = new Criteria();
   $c->add(OppUserPeer::N_ALERTS, 0, Criteria::GREATER_THAN);
+  if (count($args)) {
+    $c->add(OppUserPeer::ID, $args, Criteria::IN);
+  }
   $users = OppUserPeer::doSelect($c);
 
   foreach ($users as $user)
   {
-    opp_send_single_alert($user);
+    if (is_null($last_alert)) 
+      $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
+
+    opp_send_single_user_alerts($user, $last_alert);
   }
   
   $total_time = microtime(true) - $start_time;
@@ -81,15 +90,16 @@ function run_opp_send_alerts($task, $args)
  * @return void
  * @author Guglielmo Celata
  */
-function opp_send_single_alert($user)
+function opp_send_single_user_alerts($user, $last_alert)
 {
   $start_time = microtime(true);
 
   echo pakeColor::colorize(sprintf("Processo l'utente %s...\n", $user), 
                            array('bold' => true));
+  echo pakeColor::colorize(sprintf("Ultimo alert: %s\n", $last_alert));
 
 
-   $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
+   $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50), $last_alert);
    $n_alerts = OppAlertUserPeer::countUserAlerts($user);
    $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
 
@@ -103,7 +113,9 @@ function opp_send_single_alert($user)
                                       $user_alerts_expanded));
 
      // invoke the action that sends the email
+     // all othe parameters used in the building of the email are re-calculated
      sfContext::getInstance()->getRequest()->setParameter('user_id', $user->getId());
+     sfContext::getInstance()->getRequest()->setParameter('last_alert', $last_alert);
      try {
        $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendAlerts');
        // log the email
@@ -130,7 +142,7 @@ function opp_send_single_alert($user)
 /**
 * Fetch news and show them, for each users
 */
-function run_opp_test_alerts($task, $args)
+function run_opp_test_alerts($task, $args, $options)
 {
   static $loaded;
 
@@ -152,6 +164,10 @@ function run_opp_test_alerts($task, $args)
     $loaded = true;
   }
 
+  $last_alert = null;
+  if (array_key_exists('last-alert', $options))
+    $last_alert = $options['last-alert'];
+
   // create a solr instance to read solr.yml config
   $solr_instance = deppOppSolr::getInstance();
 
@@ -162,11 +178,17 @@ function run_opp_test_alerts($task, $args)
 
   $c = new Criteria();
   $c->add(OppUserPeer::N_ALERTS, 0, Criteria::GREATER_THAN);
+  if (count($args)) {
+    $c->add(OppUserPeer::ID, $args, Criteria::IN);
+  }
   $users = OppUserPeer::doSelect($c);
 
   foreach ($users as $user)
   {
-    opp_test_single_user_alerts($user);
+    if (is_null($last_alert)) 
+      $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
+
+    opp_test_single_user_alerts($user, $last_alert);
   }
   
   $total_time = microtime(true) - $start_time;
@@ -195,7 +217,7 @@ function extractTerm($value='')
  * @return void
  * @author Guglielmo Celata
  */
-function opp_test_single_user_alerts($user)
+function opp_test_single_user_alerts($user, $last_alert)
 {
   $start_time = microtime(true);
   
@@ -203,8 +225,9 @@ function opp_test_single_user_alerts($user)
 
   echo pakeColor::colorize(sprintf("Processo l'utente %s (%s)...\n", $user, $user->getToken()), 
                            array('bold' => true));
+  echo pakeColor::colorize(sprintf("Ultimo alert: %s\n", $last_alert));
 
-  $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50));
+  $user_alerts = oppAlertingTools::getUserAlerts($user, sfConfig::get('app_alert_max_results', 50), $last_alert);
   $n_alerts = OppAlertUserPeer::countUserAlerts($user);
   $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
   

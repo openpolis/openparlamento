@@ -21,14 +21,19 @@ class oppAlertingTools
    *
    * @param string $user 
    * @param string $max_results
+   * @param string $force_last_alert - date to test as if it was last alerted on...
    * @return array of hashes ('term' => $term, 'results' => $results)
    * @author Guglielmo Celata
    */
-  public static function getUserAlerts($user, $max_results = 10)
+  public static function getUserAlerts($user, $max_results = 10, $last_alert = null)
   {
     // arguments validation
     if (!$user instanceof OppUser)
       throw new Exception("first argument must be of type user");
+
+    // if last alert is not passed, then fetch it, as not to break compatibility
+    if (is_null($last_alert))
+      $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
 
     // loop to build static data-structure (self::$user_alerts)
     $user_alerts = array();
@@ -36,10 +41,10 @@ class oppAlertingTools
     foreach ($alert as $alert)
     {
       $alert_term = $alert->getOppAlertTerm()->getTerm();
-      if ($user->getLastAlertedAt())
+      if ($last_alert)
       {
         $time_constraints = array(
-          'created_at_dt' => sprintf("[%s TO NOW]", $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ"))
+          'created_at_dt' => sprintf("[%s TO NOW]", $last_alert)
         );
       } else {
         $time_constraints = array(

@@ -170,7 +170,12 @@ class monitoringActions extends sfActions
     $user_id = $this->getRequestParameter('user_id');
     $today_date = $this->getRequestParameter('date');
     $user = OppUserPeer::retrieveByPK($user_id);
-    $news = oppNewsPeer::fetchTodayNewsForUser($user, $today_date);
+    
+    // fetcha le news di oggi (o di una data)
+    // solo di priorità <= 2
+    $news_c = oppNewsPeer::getTodayNewsForUserCriteria($user, $today_date);
+    $c->add(oppNewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
+    $news = oppNewsPeer::doSelect($c);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
@@ -472,10 +477,11 @@ class monitoringActions extends sfActions
   public function executeSendAlerts()
   {
     $user_id = $this->getRequestParameter('user_id');    
+    $last_alert = $this->getRequestParameter('last_alert');    
     $this->user = OppUserPeer::retrieveByPK($user_id);
     $this->sf_site_url = sfConfig::get('sf_site_url', 'openparlamento');
     $this->user_token = $this->user->getToken();
-    $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50));
+    $this->user_alerts = oppAlertingTools::getUserAlerts($this->user, sfConfig::get('app_alert_max_results', 50), $last_alert);
     $this->n_alerts = OppAlertUserPeer::countUserAlerts($this->user);
     $this->n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($this->user_alerts);
     
