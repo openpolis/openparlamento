@@ -166,7 +166,7 @@ function run_opp_test_alerts($task, $args, $options)
 
   $last_alert = null;
   if (array_key_exists('last-alert', $options))
-    $last_alert = $options['last-alert'];
+    $last_alert = strftime("%Y-%m-%dT%H:%M:%SZ", strtotime($options['last-alert']));
 
   // create a solr instance to read solr.yml config
   $solr_instance = deppOppSolr::getInstance();
