@@ -189,7 +189,7 @@ class monitoringActions extends sfActions
 
     $mail->addAddress($user->getEmail());
 
-    if (is_null($today_date)) {
+    if (!is_null($today_date)) {
       $formatted_today_date = date('d/m/Y', strtotime($today_date));
     } else {
       $formatted_today_date = date('d/m/Y');      
