@@ -56,13 +56,17 @@ function run_opp_send_newsletter($task, $args, $options)
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
+  $c->addJoin(MonitoringPeer::USER_ID, OppUserPeer::ID);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
   }
+  $c->addGroupByColumn(OppUserPeer::ID);
   $users = OppUserPeer::doSelect($c);
 
-  foreach ($users as $user)
+  $n_users = count($users);
+  foreach ($users as $cnt => $user)
   {
+    echo "$cnt/$n_users ";
     opp_send_single_newsletter($user, $date);
   }
   
@@ -152,15 +156,21 @@ function run_opp_test_newsletter($task, $args, $options)
   $start_time = microtime(true);
   echo pakeColor::colorize("Hi, there!\n", array('fg' => 'green', 'bold' => true));
 
+  // fetch utenti che monitorano qualcosa e vogliono le news
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
+  $c->addJoin(MonitoringPeer::USER_ID, OppUserPeer::ID);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
   }
+  $c->addGroupByColumn(OppUserPeer::ID);
   $users = OppUserPeer::doSelect($c);
 
-  foreach ($users as $user)
+  $n_users = count($users);
+  echo pakeColor::colorize("$n_users users are monitoring. Here are the news we would send them.\n", array('fg' => 'green'));
+  foreach ($users as $cnt => $user)
   {
+    echo "$cnt/$n_users ";
     opp_test_single_newsletter($user, $date);
   }
   
@@ -190,7 +200,7 @@ function opp_test_single_newsletter($user, $date = null)
   
   $df = new sfDateFormat('it_IT');
 
-  echo pakeColor::colorize(sprintf('%s\'s news, for user %s... ', is_null($date)?'Today':$date, $user), 
+  echo pakeColor::colorize(sprintf('date: %s, name: %s... ', is_null($date)?'Today':$date, $user), 
                            array('fg' => 'red', 'bold' => true));
 
 
