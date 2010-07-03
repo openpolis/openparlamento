@@ -11,7 +11,7 @@
 <?php endif ?>
 
 
-<h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">Le ultime notizie</h2>
+<h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">Le notizie del tuo monitoraggio</h2>
 
 <table style="width: 100%; vertical-align: top; margin-bottom: 20px; color: #626262; font-family: Arial, Helvetica, sans-serif; font-size: 13px;">
   
@@ -65,3 +65,9 @@
       
   <?php endforeach; ?>
 </table>
+
+<?php if ($user->isAdhoc()): ?>
+  <?php include_partial('monitoring/mailFooterPoliticalDesk', array('site_url' => $sf_site_url)) ?>  
+<?php else: ?>
+  <?php include_partial('monitoring/mailFooter', array('site_url' => $sf_site_url)) ?>
+<?php endif ?>

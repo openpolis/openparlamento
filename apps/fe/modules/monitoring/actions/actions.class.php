@@ -189,14 +189,14 @@ class monitoringActions extends sfActions
     // definition of the required parameters
     if ($user->isAdhoc()) {
       $mail->setSender(sfConfig::get('app_newsletter_pd_sender_address', 'noreply@depp.it'), 
-                       sfConfig::get('app_newsletter_pd_from_tag', 'servizio mailing political desk'));
+                       sfConfig::get('app_newsletter_pd_from_tag', 'political desk'));
       $mail->setFrom(sfConfig::get('app_newsletter_pd_from_address', 'no-reply@depp.it'), 
-                     sfConfig::get('app_newsletter_pd_from_tag', 'servizio mailing political desk'));
+                     sfConfig::get('app_newsletter_pd_from_tag', 'political desk'));
     } else {
       $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
-                       sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+                       sfConfig::get('app_newsletter_from_tag', 'openparlamento'));
       $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
-                     sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+                     sfConfig::get('app_newsletter_from_tag', 'openparlamento'));
     }
 
     $mail->addAddress($user->getEmail());
@@ -206,7 +206,7 @@ class monitoringActions extends sfActions
     } else {
       $formatted_today_date = date('d/m/Y');      
     }
-    $mail->setSubject('newsletter del ' . $formatted_today_date);
+    $mail->setSubject('monitoraggio del ' . $formatted_today_date);
                             
     // raggruppa le news per data
     $grouped_news = array();
