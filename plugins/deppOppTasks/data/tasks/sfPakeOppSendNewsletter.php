@@ -55,7 +55,7 @@ function run_opp_send_newsletter($task, $args, $options)
   $start_time = microtime(true);
 
   $c = new Criteria();
-  $c->add(OppUserPeer::WANTS_NEWSLETTER, 1);
+  $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
   }
@@ -153,7 +153,7 @@ function run_opp_test_newsletter($task, $args, $options)
   echo pakeColor::colorize("Hi, there!\n", array('fg' => 'green', 'bold' => true));
 
   $c = new Criteria();
-  $c->add(OppUserPeer::WANTS_NEWSLETTER, 1);
+  $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
   }

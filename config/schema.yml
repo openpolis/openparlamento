@@ -426,12 +426,16 @@ propel:
     last_name:               { type: varchar(100) }
     nickname:                { type: varchar(16) }
     is_active:               { type: boolean, required: true, default: 0 }
+    is_premium:              { type: boolean }
+    is_adhoc:                { type: boolean }
     email:                   { type: varchar(100), required: true, default: '' }
     picture:                 { type: varbinary }
     url_personal_website:    { type: varchar(255) }
     notes:                   { type: longvarchar }
     has_paypal:              { type: integer, default: 0 }
     wants_newsletter:        { type: tinyint, default: 0 } 
+    wants_opp_news:          { type: tinyint, default: 1 }
+    wants_opp_alerts:        { type: tinyint, default: 1 }
     public_name:             { type: tinyint, required: true, default: 1 }
     votes:                   { type: integer, default: 0 }
     comments:                { type: integer, default: 0 }
