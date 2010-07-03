@@ -187,10 +187,17 @@ class monitoringActions extends sfActions
     $mail->setContentType('text/html');
 
     // definition of the required parameters
-    $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
+    if ($user->isAdhoc()) {
+      $mail->setSender(sfConfig::get('app_newsletter_pd_sender_address', 'noreply@depp.it'), 
+                       sfConfig::get('app_newsletter_pd_from_tag', 'servizio mailing political desk'));
+      $mail->setFrom(sfConfig::get('app_newsletter_pd_from_address', 'no-reply@depp.it'), 
+                     sfConfig::get('app_newsletter_pd_from_tag', 'servizio mailing political desk'));
+    } else {
+      $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
+                       sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+      $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
                      sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
-    $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
-                   sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+    }
 
     $mail->addAddress($user->getEmail());
 
