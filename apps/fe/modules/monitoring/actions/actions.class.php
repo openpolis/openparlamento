@@ -174,8 +174,8 @@ class monitoringActions extends sfActions
     // fetcha le news di oggi (o di una data)
     // solo di priorità <= 2
     $news_c = oppNewsPeer::getTodayNewsForUserCriteria($user, $today_date);
-    $c->add(oppNewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
-    $news = oppNewsPeer::doSelect($c);
+    $news_c->add(oppNewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
+    $news = oppNewsPeer::doSelect($news_c);
     
     // do not send email if no news
     if (count($news) == 0) return sfView::NONE;
