@@ -9,7 +9,21 @@
  */ 
 class OppUser extends BaseOppUser
 {
+  public function isAdhoc()
+  {
+    return $this->getIsAdhoc();
+  }
 
+  public function isPremium()
+  {
+    return $this->getIsPremium();
+  }
+  
+  public function isActive()
+  {
+    return $this->getIsActive();
+  }
+  
   public function getToken()
   {
     $apikey = sfConfig::get('api_opaccesso_key', 'XXXX');
