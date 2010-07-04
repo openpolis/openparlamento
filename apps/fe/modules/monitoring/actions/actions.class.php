@@ -500,11 +500,19 @@ class monitoringActions extends sfActions
     $mail->setCharset('utf-8');      
     $mail->setContentType('text/html');
 
-    // definition of the required parameters for the mail
-    $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
-                     sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
-    $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
-                   sfConfig::get('app_newsletter_from_tag', 'openparlamento bot'));
+    // definition of the required parameters
+    if ($user->isAdhoc()) {
+      $mail->setSender(sfConfig::get('app_newsletter_pd_sender_address', 'noreply@depp.it'), 
+                       sfConfig::get('app_newsletter_pd_from_tag', 'political desk'));
+      $mail->setFrom(sfConfig::get('app_newsletter_pd_from_address', 'no-reply@depp.it'), 
+                     sfConfig::get('app_newsletter_pd_from_tag', 'political desk'));
+    } else {
+      $mail->setSender(sfConfig::get('app_newsletter_sender_address', 'info@openpolis.it'), 
+                       sfConfig::get('app_newsletter_from_tag', 'openparlamento'));
+      $mail->setFrom(sfConfig::get('app_newsletter_from_address', 'no-reply@openpolis.it'), 
+                     sfConfig::get('app_newsletter_from_tag', 'openparlamento'));
+    }
+                   
     $mail->addAddress($this->user->getEmail());
 
     // alert utente espansi per il subject della mail
