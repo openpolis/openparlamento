@@ -501,7 +501,7 @@ class monitoringActions extends sfActions
     $mail->setContentType('text/html');
 
     // definition of the required parameters
-    if ($user->isAdhoc()) {
+    if ($this->user->isAdhoc()) {
       $mail->setSender(sfConfig::get('app_newsletter_pd_sender_address', 'noreply@depp.it'), 
                        sfConfig::get('app_newsletter_pd_from_tag', 'political desk'));
       $mail->setFrom(sfConfig::get('app_newsletter_pd_from_address', 'no-reply@depp.it'), 
