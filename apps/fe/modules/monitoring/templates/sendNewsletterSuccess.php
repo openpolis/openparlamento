@@ -37,7 +37,7 @@
         <!-- datebox cell / empty -->
         <?php if ($cnt == 0): ?>
           <td style="width: 80px;">
-            <?php include_partial('news/dateboxmail', array('sf_site_url' => $sf_site_ur  l,
+            <?php include_partial('news/dateboxmail', array('sf_site_url' => $sf_site_url,
                                                             'date_ts' => $date_ts, 
                                                             'date_format' => new sfDateFormat('it_IT'))) ?>
           </td> 
