@@ -37,7 +37,7 @@
         <!-- datebox cell / empty -->
         <?php if ($cnt == 0): ?>
           <td style="width: 80px;">
-            <?php include_partial('news/dateboxmail', array('sf_site_url' => $sf_site_url,
+            <?php include_partial('news/dateboxmail', array('sf_site_url' => $sf_site_ur  l,
                                                             'date_ts' => $date_ts, 
                                                             'date_format' => new sfDateFormat('it_IT'))) ?>
           </td> 
@@ -66,8 +66,4 @@
   <?php endforeach; ?>
 </table>
 
-<?php if ($user->isAdhoc()): ?>
-  <?php include_partial('monitoring/mailFooterPoliticalDesk', array('site_url' => $sf_site_url)) ?>  
-<?php else: ?>
-  <?php include_partial('monitoring/mailFooter', array('site_url' => $sf_site_url)) ?>
-<?php endif ?>
+<?php include_partial('monitoring/mailFooter', array('site_url' => $sf_site_url, 'user' => $user, 'msg_type' => 'news')) ?>  

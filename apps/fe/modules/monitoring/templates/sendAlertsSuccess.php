@@ -9,7 +9,11 @@
   
 </style>
 
-<?php include_partial('monitoring/mailHeader', array('site_url' => $sf_site_url)) ?>
+<?php if ($user->isAdhoc()): ?>
+  <?php include_partial('monitoring/mailHeaderPoliticalDesk', array('site_url' => $sf_site_url)) ?>  
+<?php else: ?>
+  <?php include_partial('monitoring/mailHeader', array('site_url' => $sf_site_url)) ?>
+<?php endif ?>
 
 <h2 style="color: #626262; font-family: Arial, Helvetica, sans-serif; padding-left: 12px; font-size: 20px;">
   Oggi hai 
@@ -45,7 +49,5 @@
   <?php endforeach; ?>
 </table>
 
-<div>
-per rimuovere gli avvisi, vai a 
-<a href="http://<?php echo $sf_site_url ?>/monitoring_alerts/<?php echo $user_token ?>">questa pagina</a>
-</div>
+<?php include_partial('monitoring/mailFooter', array('site_url' => $sf_site_url, 'user' => $user, 'msg_type' => 'alerts')) ?>  
+
