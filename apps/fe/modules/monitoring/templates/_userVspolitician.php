@@ -154,11 +154,11 @@
       visita le tue pagine dedicate al <?php echo link_to('<strong>monitoraggio personalizzato</strong>', 'monitoring') ?>.
     <?php else: ?>  
       oggi hai 
-      <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==1): ?>
-        <?php echo link_to(' una nuova notizia','monitoring') ?>.
-      <?php else: ?> 
-          <?php echo link_to(oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId())).' nuove notizie','monitoring') ?>. 
-      <?php endif ?>
+      <?php //if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==1): ?>
+        <?php //echo link_to(' una nuova notizia','monitoring') ?>.
+      <?php //else: ?> 
+          <?php //echo link_to(oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId())).' nuove notizie','monitoring') ?>. 
+      <?php //endif ?>
       
     <?php endif; ?>   
    
