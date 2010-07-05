@@ -150,7 +150,7 @@
   -moz-border-radius-topleft:5px;
   -moz-border-radius-topright:5px;">
    <h5><span class="username">Ciao<span style="color:#EE7F00;">  <?php echo $sf_user->getFirstname() ?></span>,
-    <?php if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==0): ?>
+    <?php //if (oppNewsPeer::countTodayNewsForUser(OppUserPeer::RetrieveByPk($sf_user->getId()))==0): ?>
       visita le tue pagine dedicate al <?php echo link_to('<strong>monitoraggio personalizzato</strong>', 'monitoring') ?>.
     <?php else: ?>  
       oggi hai 
