@@ -32,7 +32,7 @@
 	  <div class="W100_100 float-left">
 	
 	    <h5 class="grey-888">
-	      <!-- hai raccolto <big><?php echo //$pager->getNbResults() ?></big> notizie: -->
+	      hai raccolto <big><?php echo $pager->getNbResults() ?></big> notizie:
 	      <?php if (deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values(array_diff_key($filters, array('main_all' => ''))))): ?>
           <?php echo link_to('rimuovi i filtri',  
                              '@monitoring_news?user_token=' .$sf_user->getToken(). '&reset_filters=true') ?>
@@ -40,9 +40,9 @@
 	    </h5>
 
 
-      <?php echo include_partial('news/newslist', array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
+      <?php //echo include_partial('news/newslist', array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
-      <?php echo pager_navigation($pager, 'monitoring/news') ?>
+      <?php //echo pager_navigation($pager, 'monitoring/news') ?>
       
     </div>
 
