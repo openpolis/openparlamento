@@ -54,5 +54,5 @@ sfPropelBehavior::add(
         array('monitorable_models' => array( 'OppAtto' => 'getOppAtto',
                                              'OppPolitico' => array('getOppCarica', 'getOppPolitico')),
               'date_method'        => 'Data',
-              'priority'           => '2',
+              'priority'           => '3',
         )));

@@ -14,12 +14,20 @@ class OppAttoHasIter extends BaseOppAttoHasIter
   
   public function save($con = null)
   {
+    
+    // define which iter steps are to be considered low priorities
+    $low_priorities_iter_steps_ids = array(26, 27, 29, 33, 43, 46, 48, 59, 60);
+    
     // override della priorità, nel caso di cambiamento di stato conclusivo, ma non CONCLUSO
     if ($this->getOppIter()->getConcluso() == 1 && $this->getOppIter()->getFase() != 'CONCLUSO')
       $this->priority_override = 1;
+
+    if (in_array($this->getOppIter()->getId(), $low_priorities_iter_steps_ids))
+      $this->priority_override = 3;
       
     // skip generazione news per passaggio di stato di audizioni
-    if ($this->getOppAtto()->getTipoAttoId() == 14)
+    if ($this->getOppAtto()->getTipoAttoId() == 14 || 
+        $this->getOppIter()->getFase() == 'CONCLUSO')
       $this->skip_news_generation = true;
       
     // cache in opp_atto, solo però se non è già APprovato o REspinto
