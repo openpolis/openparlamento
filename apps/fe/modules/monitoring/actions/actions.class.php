@@ -200,6 +200,11 @@ class monitoringActions extends sfActions
     }
 
     $mail->addAddress($user->getEmail());
+    
+    // invia tutte le mail in BCC a un indirizzo di servizio
+    if ($user->isAdhoc()) {
+      $mail->addBcc('servizi@depp.it');
+    }
 
     if (!is_null($today_date)) {
       $formatted_today_date = date('d/m/Y', strtotime($today_date));
@@ -514,6 +519,12 @@ class monitoringActions extends sfActions
     }
                    
     $mail->addAddress($this->user->getEmail());
+
+    // invia tutte le mail in BCC a un indirizzo di servizio
+    if ($user->isAdhoc()) {
+      $mail->addBcc('servizi@depp.it');
+    }
+
 
     // alert utente espansi per il subject della mail
     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($this->user_alerts, 0, 3))) . 
