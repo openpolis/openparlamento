@@ -60,9 +60,7 @@
 	</td>
 	<td scope="row">
 	  <p class="float-right">
-	    <?php if (count($act->getLastNews()) == 0): ?>
-	     Nessuna notizia recente
-	    <?php else: ?>
+	    <?php if (count($act->getLastNews()) > 0): ?>
         <a class="action btn-open-table" href="#">
           (<?php echo format_number_choice( 
             '[0]0|[1]1 nuova|(1,+Inf]%1% nuove', 
