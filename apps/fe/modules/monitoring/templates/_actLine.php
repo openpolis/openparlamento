@@ -61,7 +61,7 @@
 	<td scope="row">
 	  <p class="float-right">
 	    <?php if (count($act->getLastNews()) == 0): ?>
-	     Nessuna notizia
+	     Nessuna notizia recente
 	    <?php else: ?>
         <a class="action btn-open-table" href="#">
           (<?php echo format_number_choice( 
