@@ -60,14 +60,18 @@
 	</td>
 	<td scope="row">
 	  <p class="float-right">
-      <a class="action btn-open-table" href="#">
-        (<?php echo format_number_choice( 
-          '[0]0|[1]1 nuova|(1,+Inf]%1% nuove', 
-          array('%1%' => $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
-          $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
-        ?>) 
-        - <span>ultima</span>: <?php echo $act->getLastNews()->getDate('d/m/Y') ?>
-      </a>
+	    <?php if (count($act->getLastNews()) == 0): ?>
+	     Nessuna notizia
+	    <?php else: ?>
+        <a class="action btn-open-table" href="#">
+          (<?php echo format_number_choice( 
+            '[0]0|[1]1 nuova|(1,+Inf]%1% nuove', 
+            array('%1%' => $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
+            $act->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
+          ?>) 
+          - <span>ultima</span>: <?php echo $act->getLastNews()->getDate('d/m/Y') ?>
+        </a>
+	    <?php endif ?>
 	  </p>
 	</td>
 	<td>
