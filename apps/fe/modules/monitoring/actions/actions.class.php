@@ -582,12 +582,12 @@ class monitoringActions extends sfActions
 
   private function _fetchNewsForItem($item_model, $item_id)
   {
-    $n_news = NewsPeer::countNewsForItem($item_model, $item_id);
+    $n_news = oppNewsPeer::countNewsForItem($item_model, $item_id);
     
-    $c = NewsPeer::getNewsForItemCriteria($item_model, $item_id);
+    $c = oppNewsPeer::getNewsForItemCriteria($item_model, $item_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
     $c->setLimit(sfConfig::get('app_news_dropdown_limit', 10));
-    $news = NewsPeer::doSelect($c);
+    $news = oppNewsPeer::doSelect($c);
 
     $grouped_news = array();
     foreach ($news as $n)
