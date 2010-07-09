@@ -349,7 +349,7 @@ faq:
 # default rules
 homepage:
   url:   /
-  param: { module: default, action: index }
+  param: { module: default, action: blankIndex }
 
 default_symfony:
   url:   /symfony/:action/*

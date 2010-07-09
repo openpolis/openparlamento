@@ -12,6 +12,18 @@ class defaultActions extends sfActions
 {
   
   /**
+    * pagina bianca per sciopero FNSI 9 luglio 2010
+    *
+    * @return void
+    * @author Guglielmo Celata
+    */
+   public function executeBlankIndex()
+   {
+
+   }
+
+
+  /**
    * Executes index action
    *
    */
