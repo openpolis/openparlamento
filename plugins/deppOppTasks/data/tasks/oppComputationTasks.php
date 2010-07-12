@@ -25,10 +25,10 @@ pake_task('opp-calcola-rilevanza-tag', 'project_exists');
 
 /**
  * Calcola o ri-calcola l'indice di attività.
- * Si può specificare il ramo (camera, senato, governo, tutti) e il periodo (legislatura[tutto], anno, mese, settimana)
+ * Si può specificare il ramo (camera, senato, governo, tutti) e la data
  * Se sono passati degli ID (argomenti), sono interpretati come ID di politici e il calcolo è fatto solo per loro
  */
-function run_opp_calcola_indice($task, $args, $options)
+function run_opp_calcola_nuovo_indice($task, $args, $options)
 {
   static $loaded;
 
@@ -90,7 +90,7 @@ function run_opp_calcola_indice($task, $args, $options)
   }
 
 
-  $msg = sprintf("calcolo indice di attività - settimana: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
+  $msg = sprintf("calcolo indice di attività - data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
 
@@ -141,20 +141,22 @@ function run_opp_calcola_indice($task, $args, $options)
 
     $politico_stringa = sprintf("%s %s %s", $prefisso, $nome, strtoupper($cognome));
     printf("%4d) %40s [%06d] ... ", $cnt, $politico_stringa, $id);
-    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $data, $verbose);
+    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    // prendo il valore d
-    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'P', $id);
-    if (!$cache_record) {
+    // uso N come ChiTipo, perché P è preso per il vecchio indice.
+    // una volta fatta la sostituzione, la scrittura qui è ridondante
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'N', $id, $ramo);
+    if ($cache_record === null) {
       $cache_record = new OppPoliticianHistoryCache();
     }
     $cache_record->setLegislatura($legislatura_corrente);
-    $cache_record->setChiTipo('PN');
+    $cache_record->setChiTipo('N');
     $cache_record->setChiId($id);
     $cache_record->setRamo($ramo);
     $cache_record->setIndice($indice);
     $cache_record->setData($data);
+    $cache_record->setNumero(1);
     $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
     unset($cache_record);

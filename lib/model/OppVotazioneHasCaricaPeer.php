@@ -31,6 +31,59 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
     return self::doSelect($c);
   }
 
+  public static function countPresenzeVoti($carica_id, $data, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_votazione_has_carica vc, opp_votazione v, opp_seduta s WHERE s.id=v.seduta_id and vc.votazione_id=v.id and vc.carica_id=%d and s.data < '%s' and vc.voto <> 'Assente'",
+                        $carica_id, $data);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt'];
+  }
+
+  public static function countPresenzeVotiFinali($carica_id, $data, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_votazione_has_carica vc, opp_votazione v, opp_seduta s WHERE s.id=v.seduta_id and vc.votazione_id=v.id and vc.carica_id=%d and s.data < '%s' and v.finale=1 and vc.voto <> 'Assente'",
+                        $carica_id, $data);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt'];
+  }
+
+  /**
+   * calcola il numero di voti in cui la maggioranza è stata battuta, ai quali la carica_id ha preso parte (non assente)
+   *
+   * @param string $carica_id 
+   * @param string $data 
+   * @param string $gruppo_magg_id  - il gruppo che identifica la maggioranza (Occhio)
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function countPresenzeVotiMaggBattuta($carica_id, $data, $gruppo_magg_id, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_votazione_has_carica vc, opp_votazione v, opp_seduta s, opp_votazione_has_gruppo vg WHERE s.id=v.seduta_id and vc.votazione_id=v.id and vg.votazione_id=v.id and vc.carica_id=%d and s.data < '%s' and vg.gruppo_id=%d and (v.esito = 'Appr.' and vg.voto = 'Contrario' or v.esito = 'Resp.' and vg.voto = 'Favorevole') and vc.voto <> 'Assente'",
+                        $carica_id, $data, $gruppo_magg_id);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt'];
+  }
+
+
   public static function countAssentiMaggioranzaVotazione($votazione_id, $data = null)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);

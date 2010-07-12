@@ -110,7 +110,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
 
-     'emendamenti'    => array('presentazione'       => array('m' =>   0, 'o' =>    0),
+     'emendamenti'    => array('presentazione'       => array('m' => 0.05, 'o' => 0.05),
                                'cofirme_gruppo_lo'   => array('m' => 0.2, 'o' =>  0.2),
                                'cofirme_gruppo_hi'   => array('m' => 0.4, 'o' =>  0.4),
                                'cofirme_altri_lo'    => array('m' => 0.4, 'o' =>  0.4),
@@ -125,7 +125,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                                'diventato_legge'     => array('m' =>   0, 'o' =>    0),
                                'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                               ),
-     'intervento'     => 0.5
+     'intervento'                 => 0.5,
+     'presenze_voti'              => 0.001,
+     'presenze_voti_finali'       => 0.01,
+     'presenze_voti_magg_battuta' => 1.0,
+     'emendamenti_soglia'         => 40,
+     'emendamenti_larghezza'      => 0.01
   );
   
   public static $vecchi_punteggi = array(
@@ -216,7 +221,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcola_indice_politico($carica_id, $data = '', $verbose = '')
+  public static function calcola_indice_politico($carica_id, $legislatura, $data = '', $verbose = '')
   {
     if ($data == '') throw new Exception("Date can not be null");
     
@@ -227,12 +232,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
             ' xmlns:xlink="'.self::$xlink_ns.'" >'.
       '</opp>');
       
-    self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
+    // self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
     // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla data specificata
-    $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $data);
-    $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $data);
+    $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
+    $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $legislatura, $data);
 
     $punteggio = 0.;
   
@@ -264,18 +269,40 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $emendamenti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
     
-    // --- componente dell'indice dovuta agli interventi (in sedute)
-    $interventi_node = $content_node->addChild('interventi', null, self::$opp_ns);
-    $punteggio += $d_punteggio = self::calcolaPunteggioInterventi($carica_id, $data, $interventi_node, $verbose);
-    $interventi_node->addAttribute('totale', $d_punteggio);
 
 
+    // --- componente dell'indice dovuta alla partecipazione (interventi + presenze ai voti)
+    
+    $partecipazione_node = $content_node->addChild('partecipazione', null, self::$opp_ns);
+    $interventi_node = $partecipazione_node->addChild('interventi', null, self::$opp_ns);
+    $punteggio += $d_interv_punteggio = self::calcolaPunteggioInterventi($carica_id, $data, $interventi_node, $verbose);
+    $interventi_node->addAttribute('totale', $d_interv_punteggio);
+    
+    $d_pres_punteggio = 0.;
+    $presenze_votazioni_node = $partecipazione_node->addChild('presenze', null, self::$opp_ns);
+    
+    $presenze_voti_node = $presenze_votazioni_node->addChild('voti', null, self::$opp_ns);
+    $d_pres_punteggio += $dd_punteggio = self::calcolaPunteggioPresenzeVoti($carica_id, $data, $presenze_voti_node, $verbose);
+
+    $presenze_finali_node = $presenze_votazioni_node->addChild('voti_finali', null, self::$opp_ns);
+    $d_pres_punteggio += $dd_punteggio = self::calcolaPunteggioPresenzeVotiFinali($carica_id, $data, $presenze_finali_node, $verbose);
+
+    $presenze_battuta_node = $presenze_votazioni_node->addChild('voti_maggioranza_battuta', null, self::$opp_ns);
+    $d_pres_punteggio += $dd_punteggio = self::calcolaPunteggioPresenzeVotiMaggBattuta($carica_id, $data, $presenze_battuta_node, $verbose);
+    
+    $presenze_votazioni_node->addAttribute('totale', $d_pres_punteggio);
+    
+    $d_punteggio = $d_interv_punteggio + $d_pres_punteggio;
+    $partecipazione_node->addAttribute('totale', $d_punteggio);
+
+    $punteggio += $d_punteggio;
     $content_node->addAttribute('totale', $punteggio);
 
     $xml_storage_path = sfConfig::get('xml-storage-path', 
                                        SF_ROOT_DIR.DIRECTORY_SEPARATOR.'web'.DIRECTORY_SEPARATOR.'xml');
     $politici_path = $xml_storage_path.DIRECTORY_SEPARATOR.'indici'.DIRECTORY_SEPARATOR.'politici';
     $file_path = $politici_path.DIRECTORY_SEPARATOR."$carica_id.xml";
+
 
     // scrittura xml su file system
     try
@@ -321,8 +348,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   {
     $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
     
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
     // calcolo se appartiene alla maggioranza o all'opposizione (al momento della presentazione di un atto)
-    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data_pres);
+    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
@@ -426,6 +454,33 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $iter_node->addAttribute('totale', $d_punteggio);
 
 
+    // presentazione n. emendamenti presentati legati all'atto
+    $n_emendamenti = OppAttoHasEmendamentoPeer::countEmendamentiAttoDaCaricaData($carica_id, $atto_id, $data);
+    $larghezza = self::$punteggi['emendamenti_larghezza']; 
+    $soglia = self::$punteggi['emendamenti_soglia']; ;
+    
+    // calcolo valore emendamenti presentati per atto, con soglia discendente
+    // 1 + tanh(0.01*(s-x))
+    // integrale indefinito è x - 100 * log(cosh(0.01*s - 0.01*x)) (Wolfram Alpha)
+    // in questo modo, fino a 40 emendamenti il peso è uniforme, poi scende, fino a 400, quando
+    // gli emendamenti in più non pesano niente
+    if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
+      $d_punteggio = self::getPunteggio('emendamenti', "presentazione", 'm') * $n_emendamenti;
+    else
+    {
+      $d_punteggio =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti + (1./$larghezza) * log(cosh($larghezza * $soglia - $larghezza * $n_emendamenti)));
+    }
+    
+    if ($d_punteggio > 0)
+    {
+      $emendamenti_atto_node = $atto_node->addChild('emendamenti', null, self::$opp_ns);
+      $emendamenti_atto_node->addAttribute('n_emendamenti', $n_emendamenti);
+      $emendamenti_atto_node->addAttribute('totale', $d_punteggio);      
+    }
+    
+
+    $punteggio += $d_punteggio;
+
     $atto_node->addAttribute('totale', $punteggio);
 
     return $punteggio;
@@ -443,9 +498,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    */
   public static function calcolaIndiceEmendamento($carica_id, $emendamento_id, $data, $xml_node, $verbose = false)
   {
-    $emendamento_node = $xml_node->addChild('emendamento', null, self::$opp_ns);
-    $emendamento_node->addAttribute('id', $emendamento_id);    
-    
     // calcolo se appartiene alla maggioranza o all'opposizione
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data);
     
@@ -453,16 +505,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       printf("emendamento: %10s\n", $emendamento_id);
 
     $punteggio = 0.0;
+
+    $emendamento_node = null;
+    $consenso_node = null;
     
-    // --- presentazione ---
-    $d_punteggio = self::getPunteggio('emendamenti', 'presentazione', $in_maggioranza);
-    $punteggio += $d_punteggio;
-    if ($verbose)
-      printf("  presentazione %7.2f\n", $d_punteggio);
-    $presentazione_node = $emendamento_node->addChild('presentazione', null, self::$opp_ns);
-    $presentazione_node->addAttribute('totale', $d_punteggio);
-
-
+    
     // --- consenso ---
     $firme_emendamento = OppCaricaHasEmendamentoPeer::getFirme($emendamento_id, $data);      
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'mia' => 0);
@@ -471,32 +518,44 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       if (is_null($relazione)) continue;
       $n_firme[$relazione] += 1;
     }
-    
-    // TODO: aggiungere controllo se carica cambia nel tempo tra maggioranza e opposizione,
-    //       in caso si decida di avere parametri del consenso differenti tra M e O
-    //       ora sono uguali
-    $consenso_node = $emendamento_node->addChild('consenso', null, self::$opp_ns);
-    $consenso_node->addAttribute('n_firme', count($firme_emendamento));
+
 
     $d_punteggio = 0.0;
     foreach ($n_firme as $tipo => $value) {
       if (!$value) continue;
-      
+
       if ($value <= self::$soglia_cofirme)
         $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', "cofirme_${tipo}_lo", $in_maggioranza);
       else
         $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', "cofirme_${tipo}_hi", $in_maggioranza);
 
-      $firme_node = $consenso_node->addChild('firme_'.$tipo, null, self::$opp_ns);
-      $firme_node->addAttribute('n_firme', $value);
-      $firme_node->addAttribute('totale', $dd_punteggio);
+      if ($dd_punteggio > 0)
+      {
+        if (is_null($emendamento_node))
+        {
+          $emendamento_node = $xml_node->addChild('emendamento', null, self::$opp_ns);
+          $emendamento_node->addAttribute('id', $emendamento_id);            
+        }
+        if (is_null($consenso_node))
+        {
+          $consenso_node = $emendamento_node->addChild('consenso', null, self::$opp_ns);
+          $consenso_node->addAttribute('n_firme', count($firme_emendamento));        
+        }
 
-      if ($verbose)
-        printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
+        $firme_node = $consenso_node->addChild('firme_'.$tipo, null, self::$opp_ns);
+        $firme_node->addAttribute('n_firme', $value);
+        $firme_node->addAttribute('totale', $dd_punteggio);
+
+        if ($verbose)
+          printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
+      }
+
     }
+
     $punteggio += $d_punteggio;
 
-    $consenso_node->addAttribute('totale', $d_punteggio);
+    if (!is_null($consenso_node))
+      $consenso_node->addAttribute('totale', $d_punteggio);
 
     if ($verbose)
       printf("  totale firme  %7.2f\n", $d_punteggio);
@@ -504,7 +563,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     // --- iter ---
     $itinera_emendamento = OppEmendamentoHasIterPeer::getItinera($emendamento_id, $data);
-    $iter_node = $emendamento_node->addChild('iter', null, self::$opp_ns);
 
     $d_punteggio = 0.0;
     $n_passaggi = 0;
@@ -514,13 +572,24 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
       $n_passaggi++;
       
-      $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-      $passaggio_node->addAttribute('tipo', $passaggio);
-
       $d_punteggio += $dd_punteggio = self::getPunteggio('emendamenti', 
                    $passaggio, OppCaricaPeer::inMaggioranza($carica_id, $iter_emendamento['data']));
 
-      $passaggio_node->addAttribute('totale', $dd_punteggio);
+      if ($dd_punteggio > 0)
+      {
+        if (is_null($iter_node))
+        {
+          $iter_node = $emendamento_node->addChild('iter', null, self::$opp_ns);          
+        }
+        
+        if (is_null($passaggio_node))
+        {
+          $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+          $passaggio_node->addAttribute('tipo', $passaggio);
+        }
+        $passaggio_node->addAttribute('totale', $dd_punteggio);
+      }
+
       if ($verbose)
         printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
     }
@@ -531,7 +600,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       printf("  totale iter   %7.2f\n", $d_punteggio);
 
     
-    $emendamento_node->addAttribute('totale', $punteggio);    
+    if (!is_null($emendamento_node))
+      $emendamento_node->addAttribute('totale', $punteggio);    
     
     return $punteggio;
   }
@@ -561,6 +631,55 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     return $d_punteggio;
   }
 
+  public function calcolaPunteggioPresenzeVoti($carica_id, $data, $xml_node, $verbose = false)
+  {
+    // --- calcolo presenza ai voti ---
+    $n_presenze = OppVotazioneHasCaricaPeer::countPresenzeVoti($carica_id, $data);      
+    
+    $xml_node->addAttribute('presenze', $n_presenze);
+    
+    $d_punteggio = $n_presenze * self::$punteggi['presenze_voti'];
+    if ($verbose)
+      printf("  presenze ai voti   %7.2f\n", $d_punteggio);
+
+    $xml_node->addAttribute('totale', $d_punteggio);
+
+    return $d_punteggio;
+  }
+
+  public function calcolaPunteggioPresenzeVotiFinali($carica_id, $data, $xml_node, $verbose = false)
+  {
+    // --- calcolo presenza ai voti finali ---
+    $n_presenze = OppVotazioneHasCaricaPeer::countPresenzeVotiFinali($carica_id, $data);      
+    
+    $xml_node->addAttribute('presenze', $n_presenze);
+    
+    $d_punteggio = $n_presenze * self::$punteggi['presenze_voti_finali'];
+    if ($verbose)
+      printf("  presenze ai voti finali   %7.2f\n", $d_punteggio);
+
+    $xml_node->addAttribute('totale', $d_punteggio);
+
+    return $d_punteggio;
+  }
+  
+  public function calcolaPunteggioPresenzeVotiMaggBattuta($carica_id, $data, $xml_node, $verbose = false)
+  {
+    // --- calcolo presenza ai voti con maggioranza battuta ---
+    // -- il gruppo 19 (PDL) identifica il comportamento della maggioranza in modo univoco
+    // -- al cambio della legislatura questo criterio potrebbe non andar più bene
+    $n_presenze = OppVotazioneHasCaricaPeer::countPresenzeVotiMaggBattuta($carica_id, $data, 19);      
+    
+    $xml_node->addAttribute('presenze', $n_presenze);
+    
+    $d_punteggio = $n_presenze * self::$punteggi['presenze_voti_magg_battuta'];
+    if ($verbose)
+      printf("  presenze ai voti con maggioranza battuta  %7.2f\n", $d_punteggio);
+
+    $xml_node->addAttribute('totale', $d_punteggio);
+
+    return $d_punteggio;
+  }
 
   
 }

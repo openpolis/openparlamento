@@ -138,10 +138,9 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    */
   public static function getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data)
   {
-    
     // estrazione di tutte le firme relative ad atti firmati come P da carica_id
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.id, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.tipo='P' and ca.carica_id=%d and a.legislatura = %d and ca.data < '%s'",
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_carica_has_atto ca, opp_atto a where ca.atto_id=a.id and ca.tipo='P' and ca.carica_id=%d and a.legislatura = %d and ca.data < '%s' and (a.pred is null or a.pred in (select id from opp_atto where tipo_atto_id = 12))",
                    $carica_id, $legislatura, $data);
 
     $stm = $con->createStatement(); 
