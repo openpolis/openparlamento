@@ -163,17 +163,18 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    * da carica_id, entro la data
    *
    * @param string $carica_id 
+   * @param string $legislatura
    * @param string $data 
    * @return array di id
    * @author Guglielmo Celata
    */
-  public static function getPresentedEmendamentosIdsByCaricaData($carica_id, $data)
+  public static function getPresentedEmendamentosIdsByCaricaData($carica_id, $legislatura, $data)
   {
     
     // estrazione di tutte le firme relative a emendamenti presentati da P
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select e.id from opp_carica_has_emendamento ce, opp_emendamento e where ce.emendamento_id=e.id and ce.tipo='P' and ce.carica_id=%d and ce.data < '%s'",
-                   $carica_id, $data);
+    $sql = sprintf("select e.id from opp_carica_has_emendamento ce, opp_emendamento e where ce.emendamento_id=e.id and ce.tipo='P' and ce.carica_id=%d and ce.data < '%s' and c.legislatura=%d",
+                   $carica_id, $data, $legislatura);
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
