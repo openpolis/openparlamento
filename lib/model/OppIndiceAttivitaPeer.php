@@ -464,6 +464,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // integrale indefinito è x - 100 * log(cosh(0.01*s - 0.01*x)) (Wolfram Alpha)
     // in questo modo, fino a 40 emendamenti il peso è uniforme, poi scende, fino a 400, quando
     // gli emendamenti in più non pesano niente
+    // descritto in: http://trac.openpolis.it/openparlamento/wiki/NuovoIndice
+    $d_punteggio = 0;
     if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
       $d_punteggio = self::getPunteggio('emendamenti', "presentazione", 'm') * $n_emendamenti;
     else
