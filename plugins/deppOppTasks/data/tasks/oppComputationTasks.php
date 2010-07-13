@@ -54,7 +54,7 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
   }
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
-
+  $start_time = time();
 
   $data = '';
   $ramo = '';
@@ -100,9 +100,8 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
   }
 
 
-  $msg = sprintf("calcolo indice di attività - data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
+  $msg = sprintf("calcolo indice di attività - data:   %10s, ramo: %10s\n", $data?$data:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
-
 
   if (count($args) > 0)
   {
@@ -112,7 +111,7 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
       throw new Exception("Specificare degli ID validi. \n" . $e);
     }
   } else {
-    $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $data, $offset, $limit);    
+    $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $legislatura_corrente, $data, $offset, $limit);    
   }
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
@@ -174,7 +173,7 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
     $msg = sprintf("%7.2f", $indice);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
 
-    $msg = sprintf(" %10d\n", memory_get_usage( ));
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
     echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
   }
 
