@@ -536,9 +536,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // calcolo se appartiene alla maggioranza o all'opposizione
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $data);
     
-    if ($verbose)
-      printf("emendamento: %10s\n", $emendamento_id);
-
     $punteggio = 0.0;
 
     $emendamento_node = null;
@@ -568,6 +565,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       {
         if (is_null($emendamento_node))
         {
+          if ($verbose)
+            printf("emendamento: %10s\n", $emendamento_id);
+          
           $emendamento_node = $xml_node->addChild('emendamento', null, self::$opp_ns);
           $emendamento_node->addAttribute('id', $emendamento_id);            
         }
@@ -590,10 +590,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $punteggio += $d_punteggio;
 
     if (!is_null($consenso_node))
+    {
       $consenso_node->addAttribute('totale', $d_punteggio);
 
-    if ($verbose)
-      printf("  totale firme  %7.2f\n", $d_punteggio);
+      if ($verbose)
+        printf("  totale firme  %7.2f\n", $d_punteggio);
+    }
       
     
     // --- iter ---
@@ -623,20 +625,22 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
           $passaggio_node->addAttribute('tipo', $passaggio);
         }
         $passaggio_node->addAttribute('totale', $dd_punteggio);
+
+        if ($verbose)
+          printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
       }
 
-      if ($verbose)
-        printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
     }
 
 
     $punteggio += $d_punteggio;
-    if ($verbose)
-      printf("  totale iter   %7.2f\n", $d_punteggio);
-
     
     if (!is_null($emendamento_node))
+    {
       $emendamento_node->addAttribute('totale', $punteggio);    
+      if ($verbose)
+        printf("  totale iter   %7.2f\n", $d_punteggio);      
+    }
     
     return $punteggio;
   }
