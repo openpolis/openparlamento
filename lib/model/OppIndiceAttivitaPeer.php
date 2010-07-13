@@ -309,6 +309,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $em_punteggio += $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $em_atto_id, $data, $em_atto_node, $verbose);
     }
 
+    
+    $emendamenti_node->addAttribute('numero_atti', count($atti_for_emendamenti_ids));
     $emendamenti_node->addAttribute('numero', $n_emendamenti);
     $emendamenti_node->addAttribute('totale', $em_punteggio);
 
