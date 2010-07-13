@@ -10,5 +10,5 @@ generator:
 
     list:
       title:          Elenco ...
-      display:        [data, assenze, presenze, missioni, indice, ribellioni, _chi, ramo, created_at, updated_at]
-      filters:        [_ramo_filter]
+      display:        [data, indice, chi_id, _chi, created_at]
+      filters:        [_ramo_filter, chi_tipo, data]
