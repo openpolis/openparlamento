@@ -527,8 +527,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $emendamenti_atto_node->addAttribute('totale', $d_punteggio);
       
       $em_presentati_node = $emendamenti_atto_node->addChild('presentati', null, self::$opp_ns);
-      $emendamenti_atto_node->addAttribute('numero', $n_emendamenti);
-      $emendamenti_atto_node->addAttribute('totale', $punteggio_em_presentati);
+      $em_presentati_node->addAttribute('numero', $n_emendamenti);
+      $em_presentati_node->addAttribute('totale', $punteggio_em_presentati);
 
       if ($n_emendamenti_votati > 0)
       {
