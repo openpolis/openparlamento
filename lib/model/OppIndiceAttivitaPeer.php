@@ -502,19 +502,21 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         $d_punteggio =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
     }
     
+    $d_punteggio = round($d_punteggio, 2);
+    
     if ($d_punteggio > 0)
     {
       if ($verbose)
         printf("  totale emendamenti   %7.2f\n", $d_punteggio);
       $emendamenti_atto_node = $atto_node->addChild('emendamenti', null, self::$opp_ns);
       $emendamenti_atto_node->addAttribute('n_emendamenti', $n_emendamenti);
-      $emendamenti_atto_node->addAttribute('totale', sprintf("%7.1f", $d_punteggio));      
+      $emendamenti_atto_node->addAttribute('totale', $d_punteggio);
     }
     
 
     $punteggio += $d_punteggio;
 
-    $atto_node->addAttribute('totale', sprintf("%7.1f", $punteggio));
+    $atto_node->addAttribute('totale', $punteggio);
 
     return $punteggio;
   }
