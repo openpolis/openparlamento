@@ -32,6 +32,33 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     return  $row['cnt'];
   }
   
+
+  /**
+   * torna il numero di emendamenti con stato = $fase, presentati da una carica in relazione a un atto, 
+   * il tutto entro una certa data (sia la presentazione che lo stato)
+   *
+   * @param array $fasi
+   * @param integer $carica_id 
+   * @param integer $atto_id 
+   * @param string $date 
+   * @param Connection $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function countEmendamentiFaseAttoCaricaData($iter_ids, $carica_id, $atto_id, $date, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce, opp_emendamento_has_iter ei, opp_em_iter i WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and e.id=ei.emendamento_id and ei.em_iter_id=i.id and i.id in (%s) and ei.data < '%s' and ce.carica_id=%d and ae.atto_id=%d and ce.data < '%s' and ae.portante=1",
+                        join(",", $iter_ids), $date, $carica_id, $atto_id, $date);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt'];
+  }
+  
   
 
   

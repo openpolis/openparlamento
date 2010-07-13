@@ -255,9 +255,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         unset($atto);
       }
     }
-      
-    if (count($emendamenti_ids) == 0)
-      $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $legislatura, $data);
 
     $punteggio = 0.;
   
@@ -290,22 +287,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $relazioni_node->addAttribute('totale', $d_punteggio);
     }
     
-
-    // --- componente dell'indice dovuta agli emendamenti ---
-    $emendamenti_node = $content_node->addChild('emendamenti', null, self::$opp_ns);
-    $emendamenti_node->addAttribute('n_emendamenti', 
-                                    count($emendamenti_ids));
-    if ($verbose)
-      printf("\n  numero emendamenti: %d\n", count($emendamenti_ids));
-    $d_punteggio = 0.;
-    foreach ($emendamenti_ids as $emendamento_id) {
-      
-      $d_punteggio += self::calcolaIndiceEmendamento($carica_id, $emendamento_id, $data, $emendamenti_node, $verbose);
-    }
-    $emendamenti_node->addAttribute('totale', $d_punteggio);
-    $punteggio += $d_punteggio;
-    
-
 
     // --- componente dell'indice dovuta alla partecipazione (interventi + presenze ai voti)
     
@@ -501,25 +482,69 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // gli emendamenti in più non pesano niente
     // descritto in: http://trac.openpolis.it/openparlamento/wiki/NuovoIndice
     $d_punteggio = 0;
+    $punteggio_em_presentati = 0;
     if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
-      $d_punteggio = self::getPunteggio('emendamenti', "presentazione", 'm') * $n_emendamenti;
+      $punteggio_em_presentati = self::getPunteggio('emendamenti', "presentazione", 'm') * $n_emendamenti;
     else
     {
       if ($n_emendamenti > 0)
-        $d_punteggio =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
+        $punteggio_em_presentati =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
     }
     
-    $d_punteggio = round($d_punteggio, 2);
+    if ($punteggio_em_presentati > 0)
+    {
+      $punteggio_em_presentati = round($punteggio_em_presentati, 2);
+
+      if ($verbose)
+        printf("    presentazione %d emendamenti %7.2f\n", $n_emendamenti, $punteggio_em_presentati);
+      
+      $d_punteggio += $punteggio_em_presentati;
+    }
+
+    // calcolo componente dovuta a emendamenti legati all'atto che per lo meno siano stati votati
+    $n_emendamenti_votati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1,2), $carica_id, $atto_id, $data);
+    $n_emendamenti_approvati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1), $carica_id, $atto_id, $data);
+
+    if ($n_emendamenti_votati + $n_emendamenti_approvati > 0)
+    {
+      $d_punteggio += $punteggio_em_votati = $n_emendamenti_votati * self::getPunteggio('emendamenti', 'votato', 'm');
+      $d_punteggio += $punteggio_em_approvati = $n_emendamenti_approvati * self::getPunteggio('emendamenti', 'approvato', 'm');
+
+      if ($verbose)
+      {
+        printf("    votazione %d emendamenti %7.2f\n", $n_emendamenti_votati, $punteggio_em_votati);
+        printf("    approvazione %d emendamenti %7.2f\n", $n_emendamenti_approvati, $punteggio_em_approvati);        
+      }
+      
+    }
     
-    if ($d_punteggio > 0)
+
+    if ($d_punteggio  > 0)
     {
       if ($verbose)
         printf("  totale emendamenti   %7.2f\n", $d_punteggio);
       $emendamenti_atto_node = $atto_node->addChild('emendamenti', null, self::$opp_ns);
-      $emendamenti_atto_node->addAttribute('n_emendamenti', $n_emendamenti);
       $emendamenti_atto_node->addAttribute('totale', $d_punteggio);
+      
+      $em_presentati_node = $emendamenti_atto_node->addChild('presentati', null, self::$opp_ns);
+      $emendamenti_atto_node->addAttribute('numero', $n_emendamenti);
+      $emendamenti_atto_node->addAttribute('totale', $punteggio_em_presentati);
+
+      if ($n_emendamenti_votati > 0)
+      {
+        $em_votati_node = $emendamenti_atto_node->addChild('votati', null, self::$opp_ns);
+        $em_votati_node->addAttribute('numero', $n_emendamenti_votati);
+        $em_votati_node->addAttribute('totale', $punteggio_em_votati);        
+      }
+
+      if ($n_emendamenti_approvati > 0)
+      {
+        $em_approvati_node = $emendamenti_atto_node->addChild('approvati', null, self::$opp_ns);
+        $em_approvati_node->addAttribute('numero', $n_emendamenti_approvati);
+        $em_approvati_node->addAttribute('totale', $punteggio_em_approvati);        
+      }
+      
     }
-    
 
     $punteggio += $d_punteggio;
 
@@ -530,7 +555,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
   /**
    * calcola l'indice accumulato fino alla fine della settimana, per un emendamento, presentato da una carica 
-   *
+   * DEPRECATO: i calcoli sono fatti nell'atto, per aggregazione, solo su presentazione e iter
    * @param integer  $carica_id
    * @param integer  $emendamento_id
    * @param string   $data
