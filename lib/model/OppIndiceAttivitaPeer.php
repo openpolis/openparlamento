@@ -492,13 +492,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         printf("  totale emendamenti   %7.2f\n", $d_punteggio);
       $emendamenti_atto_node = $atto_node->addChild('emendamenti', null, self::$opp_ns);
       $emendamenti_atto_node->addAttribute('n_emendamenti', $n_emendamenti);
-      $emendamenti_atto_node->addAttribute('totale', $d_punteggio);      
+      $emendamenti_atto_node->addAttribute('totale', sprintf("%7.1f", $d_punteggio));      
     }
     
 
     $punteggio += $d_punteggio;
 
-    $atto_node->addAttribute('totale', $punteggio);
+    $atto_node->addAttribute('totale', sprintf("%7.1f", $punteggio));
 
     return $punteggio;
   }
