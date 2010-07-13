@@ -86,7 +86,7 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('N');
   }
 
 
