@@ -32,6 +32,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'approvato'           => array('m' =>  0.0,  'o' =>   0.0),
                               'approvato_camera'    => array('m' => 20.0,  'o' =>  60.0),
                               'diventato_legge'     => array('m' => 50.0,  'o' => 150.0),
+                              'concluso'            => array('m' =>    0,  'o' =>     0),
                               'bonus_bi_partisan'   => array('m' => 20.0,  'o' =>     0),
                              ),
       'mozione'      => array('presentazione'       => array('m' =>  0.06, 'o' =>   0.06),
@@ -47,6 +48,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'approvato'           => array('m' =>  2.0,  'o' =>   6.0),
                               'approvato_camera'    => array('m' =>  0.0,  'o' =>   0.0),
                               'diventato_legge'     => array('m' =>  0.0,  'o' =>   0.0),
+                              'concluso'            => array('m' =>    0,  'o' =>     0),
                               'bonus_bi_partisan'   => array('m' =>  1.0,  'o' =>   0.0),
                              ),
       'risoluzione'  => array('presentazione'       => array('m' =>  0.06, 'o' =>   0.06),
@@ -62,6 +64,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'approvato'           => array('m' =>  2.0,  'o' =>   6.0),
                               'approvato_camera'    => array('m' =>  0.0,  'o' =>   0.0),
                               'diventato_legge'     => array('m' =>  0.0,  'o' =>   0.0),
+                              'concluso'            => array('m' =>    0,  'o' =>     0),
                               'bonus_bi_partisan'   => array('m' =>  1.0,  'o' =>   0.0),
                              ),
       'odg'          => array('presentazione'       => array('m' =>  0.04, 'o' =>   0.04),
@@ -77,6 +80,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'approvato'           => array('m' =>  1.0,  'o' =>   3.0),
                               'approvato_camera'    => array('m' =>  0.0,  'o' =>   0.0),
                               'diventato_legge'     => array('m' =>  0.0,  'o' =>   0.0),
+                              'concluso'            => array('m' =>    0,  'o' =>     0),
                               'bonus_bi_partisan'   => array('m' =>  0.5,  'o' =>   0.0),
                              ),
      'interrogazione'=> array('presentazione'       => array('m' => 0.05, 'o' =>  0.05),
@@ -91,7 +95,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'votato'              => array('m' =>   0, 'o' =>    0),
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' => 1.0, 'o' =>  1.0),
+                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
+                              'concluso'            => array('m' => 1.0, 'o' =>  1.0),
                               'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
     'interpellanza'  => array('presentazione'       => array('m' => 0.05, 'o' =>  0.05),
@@ -107,6 +112,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                               'approvato'           => array('m' =>   0, 'o' =>    0),
                               'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                               'diventato_legge'     => array('m' => 1.0, 'o' =>  1.0),
+                              'concluso'            => array('m' => 1.0, 'o' =>  1.0),
                               'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
 
@@ -123,6 +129,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                                'approvato'           => array('m' => 2.0, 'o' =>  6.0),
                                'approvato_camera'    => array('m' =>   0, 'o' =>    0),
                                'diventato_legge'     => array('m' =>   0, 'o' =>    0),
+                               'concluso'            => array('m' =>    0,  'o' =>     0),
                                'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                               ),
      'intervento'                 => 0.4,
@@ -463,7 +470,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
       $passaggio_node->addAttribute('totale', $dd_punteggio);
         
-      // --- bonus maggioranza (TODO: la data?) ---
+      // --- bonus maggioranza ---
       if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
         if ($carica_in_maggioranza_al_passaggio && OppAttoPeer::isAttoVotatoDaOpposizione($atto_id, $data)) {
           $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
