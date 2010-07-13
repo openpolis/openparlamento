@@ -297,6 +297,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     if (count($n_emendamenti) > 0)
       $emendamenti_node = $content_node->addChild('emendamenti', null, self::$opp_ns);
 
+    $em_punteggio = 0;
     foreach ($atti_for_emendamenti_ids as $em_atto_id) {
 
       $em_atto = OppAttoPeer::retrieveByPK($em_atto_id);
@@ -305,14 +306,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $em_atto_node->addAttribute('id', $em_atto->getId());
       $em_atto_node->addAttribute('tipo_atto', OppTipoAttoPeer::getTipoPerIndice($em_atto->getTipoAttoId()));
       
-      $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $em_atto_id, $data, $em_atto_node, $verbose);
-
-      $emendamenti_node->addAttribute('numero', $n_emendamenti);
-      $emendamenti_node->addAttribute('totale', $d_punteggio);
-
-      $punteggio += $d_punteggio;
+      $em_punteggio += $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $em_atto_id, $data, $em_atto_node, $verbose);
     }
 
+    $emendamenti_node->addAttribute('numero', $n_emendamenti);
+    $emendamenti_node->addAttribute('totale', $em_punteggio);
+
+    $punteggio += $em_punteggio;
     
 
     // --- componente dell'indice dovuta alla partecipazione (interventi + presenze ai voti)
