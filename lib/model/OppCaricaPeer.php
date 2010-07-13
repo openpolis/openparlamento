@@ -32,6 +32,14 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       }
     } 
 
+    // eccezione gruppo misto
+    // torna altri in ogni caso in cui è differente dal mio
+    if ($mio_gruppo['acronimo'] == 'Misto')
+    {
+      if ($mio_gruppo['id'] == $suo_gruppo['id']) return 'gruppo';      
+      else return 'altri';
+    }
+    
     // calcolo le maggioranze, passando i gruppi già calcolati (meno query)
     $mia_maggioranza = OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($mio_gruppo['id'], $data);
     $sua_maggioranza = OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($suo_gruppo['id'], $data);
