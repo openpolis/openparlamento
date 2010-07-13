@@ -77,6 +77,16 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
     $limit = $options['limit'];
   }
 
+  $atti_ids = array();
+  if (array_key_exists('atti', $options)) {
+    $atti_ids = explode(",", $options['atti']);
+  }
+
+  $emendamenti_ids = array();
+  if (array_key_exists('emendamenti', $options)) {
+    $emendamenti_ids = explode(",", $options['emendamenti']);
+  }
+
 
   // definisce la data fino alla quale vanno fatti i calcoli
   // data_lookup serve per controllare se i record già esistono
@@ -141,7 +151,7 @@ function run_opp_calcola_nuovo_indice($task, $args, $options)
 
     $politico_stringa = sprintf("%s %s %s", $prefisso, $nome, strtoupper($cognome));
     printf("%4d) %40s [%06d] ... ", $cnt, $politico_stringa, $id);
-    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose);
+    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose, $atti_ids, $emendamenti_ids);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
     // uso N come ChiTipo, perché P è preso per il vecchio indice.

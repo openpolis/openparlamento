@@ -221,7 +221,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcola_indice_politico($carica_id, $legislatura, $data = '', $verbose = '')
+  public static function calcola_indice_politico($carica_id, $legislatura, $data = '', $verbose = '', $atti_ids = array(), $emendamenti_ids = array())
   {
     if ($data == '') throw new Exception("Date can not be null");
     
@@ -236,8 +236,20 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
     // estrae atti ed emendamenti firmati come Primo Firmatario, fino alla data specificata
-    $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
-    $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $legislatura, $data);
+    if (count($atti_ids) == 0)
+      $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
+    else
+    {
+      $attis = array();
+      foreach ($atti_ids as $atto_id) {
+        $atto  = OppAttoPeer::retrieveByPK($atto_id);
+        $attis []= array('id' => $atto->getId(), 'tipo_atto_id' => $atto->getTipoAttoId());
+        unset($atto);
+      }
+    }
+      
+    if (count($emendamenti_ids) == 0)
+      $emendamenti_ids = OppCaricaPeer::getPresentedEmendamentosIdsByCaricaData($carica_id, $legislatura, $data);
 
     $punteggio = 0.;
   
@@ -375,7 +387,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
     // --- consenso ---
-    $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);      
+    $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);  
+    var_dump($firme_atto);    
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
     foreach ($firme_atto as $firma) {
       $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);

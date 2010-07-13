@@ -54,7 +54,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   public function getGruppo($carica_id, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select g.id, g.nome, g.acronimo from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+    $sql = sprintf("select g.id, g.nome, g.acronimo from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
                     $carica_id, $data, $data);
 
     $stm = $con->createStatement(); 
