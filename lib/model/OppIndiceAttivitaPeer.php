@@ -302,7 +302,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
       $em_atto_node = $emendamenti_node->addChild('atto', null, self::$opp_ns);
       $em_atto_node->addAttribute('id', $em_atto->getId());
-      $em_atto_node->addAttribute('tipo_atto', OppTipoAttoPeer::getTipoPerIndice($em_atto->getOppTipoAttoId()));
+      $em_atto_node->addAttribute('tipo_atto', OppTipoAttoPeer::getTipoPerIndice($em_atto->getTipoAttoId()));
       
       $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $atto_id, $data, $em_atto_node, $verbose);
 
