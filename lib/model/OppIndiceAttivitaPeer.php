@@ -388,7 +388,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     // --- consenso ---
     $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);  
-    var_dump($firme_atto);    
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
     foreach ($firme_atto as $firma) {
       $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);
