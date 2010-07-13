@@ -23,7 +23,7 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     if (is_null($con))
       $con = Propel::getConnection(self::DATABASE_NAME);
     
-    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ae.atto_id=%d and ce.data < '%s'",
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ae.atto_id=%d and ce.data < '%s' and ae.portante=1",
                         $carica_id, $atto_id, $date);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

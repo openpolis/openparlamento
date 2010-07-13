@@ -181,7 +181,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     
     // estrazione di tutte le firme relative a emendamenti presentati da P
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select e.id from opp_carica_has_emendamento ce, opp_emendamento e, opp_carica c where c.id=ce.carica_id and ce.emendamento_id=e.id and ce.tipo='P' and ce.carica_id=%d and ce.data < '%s' and c.legislatura=%d",
+    $sql = sprintf("select e.id from opp_carica_has_emendamento ce, opp_emendamento e, opp_carica c, opp_atto_has_emendamento ae where ae.emendamento_id=e.id and c.id=ce.carica_id and ce.emendamento_id=e.id and ce.tipo='P' and ce.carica_id=%d and ce.data < '%s' and c.legislatura=%d and ae.portante = 1",
                    $carica_id, $data, $legislatura);
 
     $stm = $con->createStatement(); 
