@@ -292,8 +292,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     // componente indice dovuta agli emendamenti
     // i conti sono dettagliati per tutti gli atti cui si riferiscono gli emendamenti (grouped by)
-    $atti_for_emendamenti_ids = OppAttoHasEmendamentoPeer::getAttiIdsForEmendamentiCarica($carica_id, $data);
-    if (count($atti_for_emendamenti_ids) > 0)
+    $atti_for_emendamenti_ids = OppAttoHasEmendamentoPeer::getAttiIdsForEmendamentiCaricaData($carica_id, $data);
+    $n_emendamenti = OppAttoHasEmendamentoPeer::countEmendamentiDaCaricaData($carica_id, $data);
+    if (count($n_emendamenti) > 0)
       $emendamenti_node = $content_node->addChild('emendamenti', null, self::$opp_ns);
 
     foreach ($atti_for_emendamenti_ids as $em_atto_id) {
@@ -305,6 +306,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $em_atto_node->addAttribute('tipo_atto', OppTipoAttoPeer::getTipoPerIndice($em_atto->getTipoAttoId()));
       
       $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $em_atto_id, $data, $em_atto_node, $verbose);
+
+      $emendamenti_node->addAttribute('numero', $n_emendamenti);
+      $emendamenti_node->addAttribute('totale', $d_punteggio);
 
       $punteggio += $d_punteggio;
     }

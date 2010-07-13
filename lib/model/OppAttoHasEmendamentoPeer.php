@@ -41,6 +41,30 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     $row = $rs->getRow();
     return  $row['cnt'];
   }
+
+
+  /**
+   * torna il numero complessivo di emendamenti presentati (P) da una carica, entro una certa data
+   *
+   * @param string $carica_id 
+   * @param string $date 
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function countEmendamentiDaCaricaData($carica_id, $date, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ce.tipo='P' and ce.data < '%s' and ae.portante=1",
+                        $carica_id, $date);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt'];
+  }
   
 
   /**
@@ -53,7 +77,7 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
    * @return array of ids
    * @author Guglielmo Celata
    */
-  public static function getAttiIdsForEmendamentiCarica($carica_id, $date, $con = null)
+  public static function getAttiIdsForEmendamentiCaricaData($carica_id, $date, $con = null)
   {
     if (is_null($con))
       $con = Propel::getConnection(self::DATABASE_NAME);
