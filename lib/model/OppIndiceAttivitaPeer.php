@@ -130,7 +130,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
      'presenze_voti_finali'       => 0.01,
      'presenze_voti_magg_battuta' => 1.0,
      'emendamenti_soglia'         => 40,
-     'emendamenti_larghezza'      => 0.01
+     'emendamenti_larghezza'      => 100.
   );
   
   public static $vecchi_punteggi = array(
@@ -471,7 +471,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     else
     {
       if ($n_emendamenti > 0)
-        $d_punteggio =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti + (1./$larghezza) * log(cosh($larghezza * $soglia - $larghezza * $n_emendamenti)));
+        $d_punteggio =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
     }
     
     if ($d_punteggio > 0)
