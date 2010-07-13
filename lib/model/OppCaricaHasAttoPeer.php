@@ -108,6 +108,28 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
 
 
   /**
+   * controlla se un atto_id è stato presentato (P) da una carica_id
+   *
+   * @param string $carica_id 
+   * @param string $atto_id 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function isPresentedBy($carica_id, $atto_id)
+  {
+    $con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select * from opp_carica_has_atto ca where ca.atto_id=%d and ca.carica_id=%d and ca.tipo='P';",
+                   $carica_id, $atto_id);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    
+    if ($rs->next())
+      return true;
+    else
+      return false;
+  }
+
+  /**
    * estrae i due array di schieramenti e gruppi che hanno presentato l'atto
    * i due array sono ritornati come array di 2 array (da leggere con list())
    *

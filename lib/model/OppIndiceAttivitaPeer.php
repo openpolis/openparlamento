@@ -251,7 +251,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $attis = array();
       foreach ($atti_ids as $atto_id) {
         $atto  = OppAttoPeer::retrieveByPK($atto_id);
-        $attis []= array('id' => $atto->getId(), 'tipo_atto_id' => $atto->getTipoAttoId());
+        $is_presented_by = OppCaricaHasAttoPeer::isPresentedBy($carica_id, $atto_id);
+        if ($is_presented_by)
+          $attis []= array('id' => $atto->getId(), 'tipo_atto_id' => $atto->getTipoAttoId());
         unset($atto);
       }
     }
