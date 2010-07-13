@@ -10,5 +10,5 @@ generator:
 
     list:
       title:          Elenco ...
-      display:        [data, indice, chi_id, _chi, created_at]
+      display:        [data, indice, _chi, created_at]
       filters:        [_ramo_filter, chi_tipo, data]
