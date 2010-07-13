@@ -18,12 +18,22 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     return self::doCount($c);
   }
 
+  /**
+   * torna il numero di emendamenti presentati (P) da una carica, in relazione a un atto, entro una certa data
+   *
+   * @param string $carica_id 
+   * @param string $atto_id 
+   * @param string $date 
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
   public static function countEmendamentiAttoDaCaricaData($carica_id, $atto_id, $date, $con = null)
   {
     if (is_null($con))
       $con = Propel::getConnection(self::DATABASE_NAME);
     
-    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ae.atto_id=%d and ce.data < '%s' and ae.portante=1",
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ae.atto_id=%d and ce.tipo='P' and ce.data < '%s' and ae.portante=1",
                         $carica_id, $atto_id, $date);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -34,7 +44,7 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
   
 
   /**
-   * torna il numero di emendamenti con stato = $fase, presentati da una carica in relazione a un atto, 
+   * torna il numero di emendamenti con stato = $fase, presentati (P) da una carica in relazione a un atto, 
    * il tutto entro una certa data (sia la presentazione che lo stato)
    *
    * @param array $fasi
@@ -50,7 +60,7 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     if (is_null($con))
       $con = Propel::getConnection(self::DATABASE_NAME);
     
-    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce, opp_emendamento_has_iter ei, opp_em_iter i WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and e.id=ei.emendamento_id and ei.em_iter_id=i.id and i.id in (%s) and ei.data < '%s' and ce.carica_id=%d and ae.atto_id=%d and ce.data < '%s' and ae.portante=1",
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce, opp_emendamento_has_iter ei, opp_em_iter i WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and e.id=ei.emendamento_id and ei.em_iter_id=i.id and i.id in (%s) and ei.data < '%s' and ce.carica_id=%d and ae.atto_id=%d and ce.tipo='P' and ce.data < '%s' and ae.portante=1",
                         join(",", $iter_ids), $date, $carica_id, $atto_id, $date);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
