@@ -44,6 +44,38 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
   
 
   /**
+   * torna l'array di id degli opp_atto cui si riferiscono gli emendamenti 
+   * presentati da una carica entro una certa data
+   *
+   * @param string $carica_id 
+   * @param string $data 
+   * @param string $con 
+   * @return array of ids
+   * @author Guglielmo Celata
+   */
+  public static function getAttiIdsForEmendamentiCarica($carica_id, $date, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT ae.atto_id FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ce.carica_id=%d and ce.tipo='P' and ce.data < '%s' and ae.portante=1 group by ae.atto_id",
+                        $carica_id, $date);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    
+    // costruzione array degli id
+    $ids = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $ids []= $row['atto_id'];
+    }
+    
+    return $ids;
+  }
+  
+
+  /**
    * torna il numero di emendamenti con stato = $fase, presentati (P) da una carica in relazione a un atto, 
    * il tutto entro una certa data (sia la presentazione che lo stato)
    *
