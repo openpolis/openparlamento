@@ -33,11 +33,11 @@ class deppFiltersAndSortVariablesManager
       return;
     
     $stored_act_mod = $session->getAttribute($stored_name, 'none');
-    # sfLogger::getInstance()->info("xxx: actual_name:$actual_name:");
-    # sfLogger::getInstance()->info("xxx: stored_act_mod:$stored_act_mod:");
+    sfLogger::getInstance()->info("xxx: actual_name:$actual_name:");
+    sfLogger::getInstance()->info("xxx: stored_act_mod:$stored_act_mod:");
     if ($actual_name != $stored_act_mod)
     {
-      # sfLogger::getInstance()->info('xxx: will reset filters');
+      sfLogger::getInstance()->info('xxx: will reset filters');
       foreach ($namespaces as $ns)
         $session->getAttributeHolder()->removeNamespace($ns);
       $session->setAttribute($stored_name, $actual_name);

@@ -1,3 +1,5 @@
+<?php echo use_helper('I18N'); ?>
+
 <div style="margin-bottom: 15px">
   <?php echo format_number_choice('[0]non c\'&egrave; nessun risultato|[1] c\'&egrave; 1 risultato|(1,+Inf] ci sono %1% risultati', array('%1%' => $results), $results) ?>
   <?php if (deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters))): ?>

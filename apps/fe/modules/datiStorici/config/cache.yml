@@ -1,0 +1,9 @@
+indice:
+  enabled: on
+
+presenze:
+  enabled: on
+  
+all:
+  with_layout: false
+  lifetime: 3600

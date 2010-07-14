@@ -135,6 +135,25 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     $row = $rs->getRow();
     return $row['data'];    
   }
+  
+  public static function extractDates($type = 'P', $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		
+		$sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' order by data desc");
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $dates = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $data = $row['data'];
+      $dates[$data] = $data;
+    }
+    
+    return $dates;
+  }
 
   /**
    * estrazione di un record a partire da ramo e data

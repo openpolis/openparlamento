@@ -1,0 +1,22 @@
+rilevanzaSuccess:
+  metas:
+    title:        "OpenParlamento - dati storici rilevanza atti"
+    description: "dati storici sulla rilevanza degli atti"
+
+presenzeSuccess:
+  metas:
+    title:        "OpenParlamento - dati storici presenze assenze e missioni"
+    description: "dati storici su presenze, assenze e missioni"
+
+indiceSuccess:
+  metas:
+    title:        "OpenParlamento - dati storici indice attivit&agrave;"
+    description: "dati storici su indice attivit&agrave;"
+
+all:
+  metas:
+    title:        "OpenParlamento - dati storici"
+    robots:       "noindex,nofollow"
+    googlebot:    "noarchive,nosnippet"
+    description:  "Alcuni dati storici di Openparlamento"
+  

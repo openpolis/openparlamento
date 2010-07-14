@@ -172,7 +172,7 @@ class attoActions extends sfActions
     $this->processDisegnoListSort();
 
     if ($this->hasRequestParameter('itemsperpage'))
-    $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
 
     $this->pager = new sfPropelPager('OppAtto', $itemsperpage);

@@ -1045,6 +1045,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .column-table tbody tr .evident { background-color: #fef3db; border-right: 1px solid #fff; }
 
+.column-table td.numeric-value, .column-table th.numeric-value { text-align: right; padding-right: 1em; }
 /*
  * SIGNERS TABLE
  *----------------------------------------------*/
