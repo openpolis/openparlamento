@@ -183,8 +183,8 @@ foreach ($tag_old as $k=>$old)
     $r=TaggingPeer::doSelectOne($c);
     if (!$r)
     {
-      //$rs->setTagId($tag_new[$k]);
-      //$rs->save();
+      $rs->setTagId($tag_new[$k]);
+      $rs->save();
       echo "sostituito ".$old." con ".$tag_new[$k]." in ".$rs->getTaggableId()."\n";
     }
   }
