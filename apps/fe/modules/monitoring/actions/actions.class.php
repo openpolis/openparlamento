@@ -521,7 +521,7 @@ class monitoringActions extends sfActions
     $mail->addAddress($this->user->getEmail());
 
     // invia tutte le mail in BCC a un indirizzo di servizio
-    if ($user->isAdhoc()) {
+    if ($this->user->isAdhoc()) {
       $mail->addBcc('servizi@depp.it');
     }
 
