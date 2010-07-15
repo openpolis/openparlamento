@@ -239,10 +239,12 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $data = date('Y-m-d');
   }
 
-  $msg = sprintf("calcolo rilevanza atti - fino a: %10s\n", $data);
+
+  $msg = sprintf("calcolo rilevanza - fino a: %10s\n", $data);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
-
+  $start_time = time();
+  
   if (count($args) > 0)
   {
     try {
@@ -253,6 +255,8 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
   } else {
     $atti_rs = OppAttoPeer::getAttiDataRS($data, $offset, $limit);    
   }
+
+  $n_atti = $atti_rs->getRecordCount();
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
 
@@ -268,7 +272,7 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     
     $cnt++;
     
-    printf("%4d) %s %d ... ", $cnt, OppTipoAttoPeer::$tipi_per_indice[$tipo_atto_id], $atto_id);
+    printf("%5d/%6d) %40s %d ... ", $cnt, $n_atti, OppTipoAttoPeer::$tipi_per_indice[$tipo_atto_id], $atto_id);
     $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
@@ -289,8 +293,9 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $msg = sprintf("%7.2f", $indice);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
 
-    $msg = sprintf(" %10d\n", memory_get_usage( ));
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
     echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+
     
   }
 
