@@ -4,13 +4,6 @@
   <p>ordina per</p>
   <ul>
     <li>
-      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'chi_id'): ?>
-        <?php echo link_to('id parlamentare', 'datiStorici/indice?sort=chi_id&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
-      <?php else: ?>
-        <?php echo link_to('id parlamentare', 'datiStorici/indice?sort=chi_id&type=desc') ?>
-      <?php endif; ?>
-    </li>
-    <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'presenze'): ?>
         <?php echo link_to('presenze', 'datiStorici/presenze?sort=presenze&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
       <?php else: ?>

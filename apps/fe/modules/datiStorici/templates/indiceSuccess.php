@@ -4,7 +4,7 @@
   <a name="top"></a>
   <div id="main">
 
-    <?php include_partial('indiceFilter',
+    <?php include_partial('filters',
                           array('date' => $all_dates,
                                 'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),
                                 'selected_ramo' => array_key_exists('ramo', $filters)?$filters['ramo']:0,

@@ -5,10 +5,8 @@
   <li class="<?php echo ($current == 'presenze' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('presenze, assenze e missioni', 'datiStorici/presenze') ?></h2>
   </li>
-  <?php /*
   <li class="<?php echo ($current == 'rilevanza' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('rilevanza degli atti', 'datiStorici/rilevanza') ?></h2>
   </li>
-  */ ?>
 </ul>
 

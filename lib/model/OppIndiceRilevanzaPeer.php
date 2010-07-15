@@ -8,95 +8,6 @@
 class OppIndiceRilevanzaPeer extends OppIndicePeer
 {
 
-  public static $punteggi = array(
-     'ddl'           => array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' => 1.0, 'o' =>  3.0),
-                              'discusso_in_ass'     => array('m' => 1.5, 'o' =>  4.5),
-                              'discusso_in_seduta_comm'  => array('m' => 0.1, 'o' =>  0.3),
-                              'discusso_in_seduta_ass'   => array('m' => 0.1, 'o' =>  0.3),                              
-                              'votato'              => array('m' =>   0, 'o' =>    0),
-                              'approvato'           => array('m' =>   0, 'o' =>    0),
-                              'approvato_camera'    => array('m' => 4.0, 'o' => 12.0),
-                              'diventato_legge'     => array('m' => 8.0, 'o' => 24.0),
-                              'bonus_bi_partisan'   => array('m' => 4.0, 'o' =>    0),
-                             ),
-      'mozione'      => array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
-                              'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                              'votato'              => array('m' => 1.5, 'o' =>  3.0),
-                              'approvato'           => array('m' => 3.0, 'o' =>  6.0),
-                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus_bi_partisan'   => array('m' => 1.5, 'o' =>    0),
-                             ),
-      'risoluzione'  => array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
-                              'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                              'votato'              => array('m' => 1.0, 'o' =>  2.0),
-                              'approvato'           => array('m' => 2.0, 'o' =>  4.0),
-                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
-                             ),
-      'odg'          => array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
-                              'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                              'votato'              => array('m' => 1.0, 'o' =>  2.0),
-                              'approvato'           => array('m' => 2.0, 'o' =>  4.0),
-                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
-                             ),
-      'interrogazione'=>array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
-                              'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                              'votato'              => array('m' =>   0, 'o' =>    0),
-                              'approvato'           => array('m' =>   0, 'o' =>    0),
-                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
-                             ),
-     'interpellanza'  => array('cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_gruppo_hi'   => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_altri_lo'    => array('m' => 0.5, 'o' =>  0.5),
-                              'cofirme_altri_hi'    => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_lo'      => array('m' => 1.0, 'o' =>  1.0),
-                              'cofirme_opp_hi'      => array('m' => 2.0, 'o' =>  2.0),
-                              'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
-                              'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                              'votato'              => array('m' =>   0, 'o' =>    0),
-                              'approvato'           => array('m' =>   0, 'o' =>    0),
-                              'approvato_camera'    => array('m' =>   0, 'o' =>    0),
-                              'diventato_legge'     => array('m' =>   0, 'o' =>    0),
-                              'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
-                             )
-  );
-
 
   /**
    * ritorna il punteggio per un tipo di atto, di azione e per maggioranza o opposizione
@@ -109,10 +20,10 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
    */
   public function getPunteggio($tipo_atto, $tipo_azione, $maggioranza)
   {
-    if (!array_key_exists($tipo_azione, self::$punteggi[$tipo_atto])) {
+    if (!array_key_exists($tipo_azione, parent::$punteggi[$tipo_atto])) {
       return 0.0;
     }
-    return self::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
+    return parent::$punteggi[$tipo_atto][$tipo_azione][$maggioranza?'m':'o'];
   }
 
  
@@ -135,7 +46,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
             ' xmlns:xlink="'.self::$xlink_ns.'" >'.
       '</opp>');
       
-    self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
+    // self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
     $punteggio = self::calcolaRilevanzaAtto($atto_id, $tipo_atto_id, $data, $content_node, $verbose);
@@ -196,9 +107,6 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
     if (is_null($tipo_atto)) return 0;
     
-    if ($verbose)
-      printf("atto: %10s %15s\n", $atto_id, $tipo_atto);
-
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
     $atto_node->addAttribute('id', $atto_id);    
 

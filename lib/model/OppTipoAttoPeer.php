@@ -17,7 +17,7 @@ class OppTipoAttoPeer extends BaseOppTipoAttoPeer
     3 => 'interpellanza',
     4 => 'interrogazione', 5 => 'interrogazione', 6 => 'interrogazione',
     7 => 'risoluzione', 8 => 'risoluzione', 9 => 'risoluzione',
-    10 => 'odg', 11 => 'odg'    
+    10 => 'odg', 11 => 'odg'   
   );
   
   /**

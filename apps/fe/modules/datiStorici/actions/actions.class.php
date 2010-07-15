@@ -119,6 +119,40 @@ class datiStoriciActions extends sfActions
     deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
                                                   array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
     */
+    // estrae tutte le date per cui esistono dati di tipo P (presenze)
+    $this->all_dates = array_merge(array('0' => 'seleziona una data'), OppPoliticianHistoryCachePeer::extractDates('P'));
+
+    // reset dei filtri, se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_data', '0');
+    }
+
+    $this->processFilters(array('data'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_data') == '0')
+    {
+      $this->redirect('datiStorici/rilevanza');
+    }
+
+    $this->processListSort();
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppActHistoryCache', $itemsperpage);
+
+    $c = new Criteria();
+    $this->addFiltersCriteriaAtti($c);  
+    $this->addListSortCriteriaAtti($c);      
+    $c->addDescendingOrderByColumn(OppActHistoryCachePeer::CHI_ID);
+    $c->add(OppActHistoryCachePeer::CHI_TIPO, 'A');
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelect');
+    $this->pager->init();
   }
   
   /**
@@ -183,6 +217,30 @@ class datiStoriciActions extends sfActions
     if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort'))
     {
       $sort_column = OppPoliticianHistoryCachePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      if ($this->session->getAttribute('type', null, 'sf_admin/opp_storici/sort') == 'asc')
+      {
+        $c->addAscendingOrderByColumn($sort_column);
+      }
+      else
+      {
+        $c->addDescendingOrderByColumn($sort_column);
+      }
+    }
+  }
+
+  protected function addFiltersCriteriaAtti($c)
+  {
+    // filtro per data
+    if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
+      $c->add(OppActHistoryCachePeer::DATA, $this->filters['data']);
+  }
+
+  
+  protected function addListSortCriteriaAtti($c)
+  {
+    if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort'))
+    {
+      $sort_column = OppActHistoryCachePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
       if ($this->session->getAttribute('type', null, 'sf_admin/opp_storici/sort') == 'asc')
       {
         $c->addAscendingOrderByColumn($sort_column);
