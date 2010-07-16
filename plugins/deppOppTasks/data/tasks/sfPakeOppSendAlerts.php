@@ -57,6 +57,7 @@ function run_opp_send_alerts($task, $args, $options)
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_ALERTS, 1);
+  $c->add(OppUserPeer::IS_ACTIVE, 1);
   $c->add(OppUserPeer::N_ALERTS, 0, Criteria::GREATER_THAN);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
@@ -181,6 +182,7 @@ function run_opp_test_alerts($task, $args, $options)
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_ALERTS, 1);
+  $c->add(OppUserPeer::IS_ACTIVE, 1);
   $c->add(OppUserPeer::N_ALERTS, 0, Criteria::GREATER_THAN);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);

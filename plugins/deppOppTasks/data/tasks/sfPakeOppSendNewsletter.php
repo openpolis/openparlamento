@@ -56,6 +56,7 @@ function run_opp_send_newsletter($task, $args, $options)
 
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
+  $c->add(OppUserPeer::IS_ACTIVE, 1);
   $c->addJoin(MonitoringPeer::USER_ID, OppUserPeer::ID);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
@@ -156,9 +157,10 @@ function run_opp_test_newsletter($task, $args, $options)
   $start_time = microtime(true);
   echo pakeColor::colorize("Hi, there!\n", array('fg' => 'green', 'bold' => true));
 
-  // fetch utenti che monitorano qualcosa e vogliono le news
+  // fetch utenti attivi che monitorano qualcosa e vogliono le news
   $c = new Criteria();
   $c->add(OppUserPeer::WANTS_OPP_NEWS, 1);
+  $c->add(OppUserPeer::IS_ACTIVE, 1);
   $c->addJoin(MonitoringPeer::USER_ID, OppUserPeer::ID);
   if (count($args)) {
     $c->add(OppUserPeer::ID, $args, Criteria::IN);
