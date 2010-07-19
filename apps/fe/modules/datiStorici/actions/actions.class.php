@@ -22,6 +22,8 @@ class datiStoriciActions extends sfActions
   public function executeIndice()
   {
     $this->session = $this->getUser();
+    $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
+    
     /*
     deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
                                                   array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
@@ -29,20 +31,20 @@ class datiStoriciActions extends sfActions
 
 
     // estrae tutte le date per cui esistono dati di tipo N (indice)
-    $this->all_dates = array_merge(array('0' => 'seleziona una data'), OppPoliticianHistoryCachePeer::extractDates('N'));
+    $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('N');
 
     // reset dei filtri, se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
     {
       $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
-      $this->getRequest()->getParameterHolder()->set('filter_data', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
     $this->processFilters(array('ramo', 'data'));
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&
-        $this->getRequestParameter('filter_data') == '0')
+        $this->getRequestParameter('filter_data') == $last_date)
     {
       $this->redirect('datiStorici/indice');
     }
@@ -70,25 +72,27 @@ class datiStoriciActions extends sfActions
   public function executePresenze()
   {
     $this->session = $this->getUser();
+    $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
+    
     /*
     deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
                                                   array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
     */
     // estrae tutte le date per cui esistono dati di tipo P (presenze)
-    $this->all_dates = array_merge(array('0' => 'seleziona una data'), OppPoliticianHistoryCachePeer::extractDates('P'));
+    $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('P');
 
     // reset dei filtri, se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
     {
       $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
-      $this->getRequest()->getParameterHolder()->set('filter_data', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
     $this->processFilters(array('ramo', 'data'));
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&
-        $this->getRequestParameter('filter_data') == '0')
+        $this->getRequestParameter('filter_data') == $last_date)
     {
       $this->redirect('datiStorici/presenze');
     }
@@ -115,23 +119,34 @@ class datiStoriciActions extends sfActions
   public function executeRilevanza()
   {
     $this->session = $this->getUser();
+    $last_date = OppActHistoryCachePeer::fetchLastData();
+
     /*
     deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
                                                   array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
     */
     // estrae tutte le date per cui esistono dati di tipo P (presenze)
-    $this->all_dates = array_merge(array('0' => 'seleziona una data'), OppPoliticianHistoryCachePeer::extractDates('P'));
+    $this->all_dates = OppActHistoryCachePeer::extractDates();
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
     // reset dei filtri, se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
     {
-      $this->getRequest()->getParameterHolder()->set('filter_data', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_type', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_act_stato', '0');      
+      $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
-    $this->processFilters(array('data'));
+    $this->processFilters(array('tags_category', 'act_type', 'ramo', 'act_stato', 'data'));
 
     // if all filters were reset, then restart
-    if ($this->getRequestParameter('filter_data') == '0')
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_act_type') == '0' &&
+        $this->getRequestParameter('filter_ramo') == '0' &&
+        $this->getRequestParameter('filter_act_stato') == '0' &&
+        $this->getRequestParameter('filter_data') == $last_date)
     {
       $this->redirect('datiStorici/rilevanza');
     }
@@ -145,6 +160,7 @@ class datiStoriciActions extends sfActions
     $this->pager = new sfPropelPager('OppActHistoryCache', $itemsperpage);
 
     $c = new Criteria();
+    $c->addJoin(OppAttoPeer::ID, OppActHistoryCachePeer::CHI_ID);
     $this->addFiltersCriteriaAtti($c);  
     $this->addListSortCriteriaAtti($c);      
     $c->addDescendingOrderByColumn(OppActHistoryCachePeer::CHI_ID);
@@ -155,6 +171,31 @@ class datiStoriciActions extends sfActions
     $this->pager->init();
   }
   
+
+  public function executeInteressi()
+  {
+    $this->session = $this->getUser();
+    
+    $this->ramo = $this->getRequestParameter('ramo', 'S');
+    
+    $this->tag_name = $this->getRequestParameter('tag_name', '');
+    $this->argomento = TagPeer::retrieveByTagName($this->tag_name);
+    
+    if ($this->hasRequestParameter('limit'))
+      $limit = $this->getRequestParameter('limit');
+
+    // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
+    if ($this->hasRequestParameter('data'))
+      $data = $this->getRequestParameter('data');
+    else
+      $data = OppActHistoryCachePeer::fetchLastData();
+    
+    if ($this->argomento) {
+      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $data); 
+    }
+  }
+
+
   /**
    * check request parameters and set session values for the filters
    * reads filters from session, so that a clean url builds up with user's values
@@ -167,14 +208,34 @@ class datiStoriciActions extends sfActions
   {
     $filters = array();
 
-    // legge i filtri dalla request e li scrive nella sessione utente
+
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if ($this->hasRequestParameter('filter_tags_category'))
+      $this->session->setAttribute('tags_category', $this->getRequestParameter('filter_tags_category'), 'sf_admin/opp_storici/filter');
+
+    if ($this->hasRequestParameter('filter_act_stato'))
+      $this->session->setAttribute('act_stato', $this->getRequestParameter('filter_act_stato'), 'sf_admin/opp_storici/filter');
+
+    if ($this->hasRequestParameter('filter_act_type'))
+      $this->session->setAttribute('act_type', $this->getRequestParameter('filter_act_type'), 'sf_admin/opp_storici/filter');
+
     if ($this->hasRequestParameter('filter_ramo'))
       $this->session->setAttribute('ramo', $this->getRequestParameter('filter_ramo'), 'sf_admin/opp_storici/filter');
 
     if ($this->hasRequestParameter('filter_data'))
       $this->session->setAttribute('data', $this->getRequestParameter('filter_data'), 'sf_admin/opp_storici/filter');
 
+
     // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if (in_array('tags_category', $active_filters))
+      $filters['tags_category'] = $this->session->getAttribute('tags_category', '0', 'sf_admin/opp_storici/filter');
+
+    if (in_array('act_stato', $active_filters))
+      $filters['act_stato'] = $this->session->getAttribute('act_stato', '0', 'sf_admin/opp_storici/filter');    
+
+    if (in_array('act_type', $active_filters))
+      $filters['act_type'] = $this->session->getAttribute('act_type', '0', 'sf_admin/opp_storici/filter');    
+
     if (in_array('ramo', $active_filters))
       $filters['ramo'] = $this->session->getAttribute('ramo', '0', 'sf_admin/opp_storici/filter');
 
@@ -209,6 +270,7 @@ class datiStoriciActions extends sfActions
     // filtro per data
     if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
       $c->add(OppPoliticianHistoryCachePeer::DATA, $this->filters['data']);
+
   }
 
   
@@ -233,6 +295,30 @@ class datiStoriciActions extends sfActions
     // filtro per data
     if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
       $c->add(OppActHistoryCachePeer::DATA, $this->filters['data']);
+
+    // filtro per ramo
+    if (array_key_exists('ramo', $this->filters) && $this->filters['ramo'] != '0')
+      $c->add(OppAttoPeer::RAMO, $this->filters['ramo']);
+      
+    // filtro per stato di avanzamento
+    if (array_key_exists('act_stato', $this->filters) && $this->filters['act_stato'] != '0')
+      $c->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
+
+    // filtro per tipo di decreto legislativo
+    if (array_key_exists('act_type', $this->filters) && $this->filters['act_type'] != '0')
+      $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
+
+    // filtro per categoria
+    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    {
+      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
+      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+      $c->setDistinct();
+    }    
+      
   }
 
   

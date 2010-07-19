@@ -6,7 +6,7 @@
   <p>filtra per</p>
   <fieldset>
     <?php echo select_tag('filter_ramo', 
-                          options_for_select(array('0' => 'tutte',
+                          options_for_select(array('0' => 'tutti',
                                                    'C' => 'camera',
                                                    'S' => 'senato',
                                                    'G' => 'governo'), $selected_ramo)) ?>

@@ -1,3 +1,11 @@
+interessiSuccess:
+  metas:
+    title:        "OpenParlamento - interessi dei parlamentari"
+    description: "dati storici su interessi dei parlamentari"
+  javascripts:    [fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
+  stylesheets:    [monitoring, jquery.autocomplete.css]
+  
+
 rilevanzaSuccess:
   metas:
     title:        "OpenParlamento - dati storici rilevanza atti"

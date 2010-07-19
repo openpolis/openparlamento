@@ -8,5 +8,8 @@
   <li class="<?php echo ($current == 'rilevanza' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('rilevanza degli atti', 'datiStorici/rilevanza') ?></h2>
   </li>
+  <li class="<?php echo ($current == 'interessi' ? 'current' : '' ) ?>">
+    <h2><?php echo link_to('interessi dei parlamentari', 'datiStorici/interessi') ?></h2>
+  </li>
 </ul>
 

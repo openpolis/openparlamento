@@ -30,6 +30,12 @@ api_votazione:
   url: /votazione/:key/:id
   param: { module: api, action: votazione }
   
+
+dati_storici_interessi:
+  url:   /interessi/*
+  param: { module: datiStorici, action: interessi }
+
+  
 tesseramento:
   url: /tesseramento
   param: { module: static, action: tesseramento }

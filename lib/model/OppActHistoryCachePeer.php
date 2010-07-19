@@ -29,6 +29,26 @@ class OppActHistoryCachePeer extends BaseOppActHistoryCachePeer
     return $row['data'];    
   }
   
+  public static function extractDates($type = 'A', $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+		
+		$sql = sprintf("select distinct data from opp_act_history_cache where chi_tipo='$type' order by data desc limit 10");
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $dates = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $data = $row['data'];
+      $dates[$data] = $data;
+    }
+    
+    return $dates;
+  }
+  
+  
   /**
    * estrazione di tutti i record relativi a un atto per una legislatura
    *

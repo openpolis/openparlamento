@@ -3,6 +3,7 @@
 <table class="disegni-decreti column-table">
   <thead>
     <tr> 
+      <th scope="col">tipo atto:</th>
       <th scope="col">atto:</th>
       <th scope="col">indice:</th>  
       <th scope="col">azioni:</th>
@@ -17,6 +18,7 @@
       
       <tr class="<?php echo $tr_class; ?>">
       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+        <td><?php echo $atto->getOppTipoAtto()->getDenominazione() ?></td>
         <th scope="row">
           <?php if (!is_null($atto)): ?>
             <p><?php echo link_to($atto->getTitoloCompleto(), 

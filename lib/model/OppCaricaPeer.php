@@ -217,8 +217,10 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // definizione array tipi di cariche
     if ($ramo == 'C') {
       $tipi_cariche = array(1);
-    } else {      
+    } else if ($ramo == 'S') {      
       $tipi_cariche = array(4, 5);
+    } else {
+      $tipi_cariche = array(1, 4, 5);      
     }
 
     // estrazione di tutte le firme relative ad atti taggati con argomento
@@ -253,7 +255,9 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     }
 
     // ordinamento per rilevanza, prima dello slice
-    usort($politici, array("OppCaricaPeer", "comparisonIndice"));
+    if (count($politici) > 1)
+      usort($politici, array("OppCaricaPeer", "comparisonIndice"));
+
 
     // slice dell'array, se specificata l'opzione limit
     if (!is_null($limit) && count($politici) > $limit)
