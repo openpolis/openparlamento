@@ -176,7 +176,7 @@ class datiStoriciActions extends sfActions
   {
     $this->session = $this->getUser();
     
-    $this->ramo = $this->getRequestParameter('ramo', 'S');
+    $this->ramo = $this->getRequestParameter('ramo', 'C');
     
     $this->tag_name = $this->getRequestParameter('tag_name', '');
     $this->argomento = TagPeer::retrieveByTagName($this->tag_name);
