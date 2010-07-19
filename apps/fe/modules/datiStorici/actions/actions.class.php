@@ -290,6 +290,24 @@ class datiStoriciActions extends sfActions
     }
   }
 
+  protected function addListSortCriteriaAtti($c)
+  {
+    if ($sort_column = $this->session->getAttribute('sort', 'indice', 'sf_admin/opp_storici/sort'))
+    {
+      if (!in_array($sort_column, array('presenze', 'assenze', 'missioni'))) {
+        $sort_column = OppActHistoryCachePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+        if ($this->session->getAttribute('type', null, 'sf_admin/opp_storici/sort') == 'asc')
+        {
+          $c->addAscendingOrderByColumn($sort_column);
+        }
+        else
+        {
+          $c->addDescendingOrderByColumn($sort_column);
+        }
+      }
+    }
+  }
+
   protected function addFiltersCriteriaAtti($c)
   {
     // filtro per data
@@ -321,22 +339,5 @@ class datiStoriciActions extends sfActions
       
   }
 
-  
-  protected function addListSortCriteriaAtti($c)
-  {
-    if ($sort_column = $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort'))
-    {
-      $sort_column = OppActHistoryCachePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
-      if ($this->session->getAttribute('type', null, 'sf_admin/opp_storici/sort') == 'asc')
-      {
-        $c->addAscendingOrderByColumn($sort_column);
-      }
-      else
-      {
-        $c->addDescendingOrderByColumn($sort_column);
-      }
-    }
-  }
-  
   
 }

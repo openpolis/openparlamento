@@ -12,16 +12,16 @@
     </li>
     <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'assenze'): ?>
-        <?php echo link_to('assenze', 'datiStorici/assenze?sort=assenze&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+        <?php echo link_to('assenze', 'datiStorici/presenze?sort=assenze&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
       <?php else: ?>
-        <?php echo link_to('assenze', 'datiStorici/assenze?sort=assenze&type=desc') ?>
+        <?php echo link_to('assenze', 'datiStorici/presenze?sort=assenze&type=desc') ?>
       <?php endif; ?>
     </li>
     <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'missioni'): ?>
-        <?php echo link_to('missioni', 'datiStorici/missioni?sort=missioni&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+        <?php echo link_to('missioni', 'datiStorici/presenze?sort=missioni&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
       <?php else: ?>
-        <?php echo link_to('missioni', 'datiStorici/missioni?sort=missioni&type=desc') ?>
+        <?php echo link_to('missioni', 'datiStorici/presenze?sort=missioni&type=desc') ?>
       <?php endif; ?>
     </li>
   </ul>
