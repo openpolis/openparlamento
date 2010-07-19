@@ -35,7 +35,7 @@ jQuery.noConflict();
     <?php echo radiobutton_tag('ramo', 'C', $ramo == 'C') ?>
     <label for="ramo_S">Senato</label>
     <?php echo radiobutton_tag('ramo', 'S', $ramo == 'S') ?>
-    <input id="tag_name" name="tag_name" type="hidden" value="<?php echo $argomento->getName()?>"/>
+    <input id="tag_name" name="tag_name" type="hidden" value="<?php echo $argomento?$argomento->getName():''?>"/>
     <?php echo submit_image_tag('btn-cerca-small.png', 
                                 array('alt' => 'cerca', 'id' => 'aggiungi', 'name' => 'aggiungi')) ?>
 	</fieldset>
