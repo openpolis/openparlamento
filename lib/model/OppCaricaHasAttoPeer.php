@@ -49,6 +49,10 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
       case 'C':
         $val = 0.1;
         break;
+      
+      case 'I':
+        $val = 0.1;
+        break;
         
       default:
         $val = 0.;

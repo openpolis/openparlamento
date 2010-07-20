@@ -99,8 +99,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // calcolo gruppi e schieramenti che presentano
     list($schier_pres, $grup_pres) = OppCaricaHasAttoPeer::getSchierGrupPresAtto($atto_id, $data);
 
-    // variabile che indica se l'atto è stato presentato dalla maggioranza
-    $di_maggioranza = count($schier_pres) == 1 && $schier_pres[0] == 1;
+    // il peso di un atto non dipende mai da chi lo ha presentato
+    // il coefficiente che si considera è sempre quello di maggioranza
+    $di_maggioranza = true;
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
@@ -114,7 +115,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     
     // --- consenso ---
     $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
-    $firmeRS = OppCaricaHasAttoPeer::getFirmeAttoDataTipoRS($atto_id, $data);
+    $firmeRS = OppCaricaHasAttoPeer::getFirmeAttoDataTipoRS($atto_id, $data, 'C');
 
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0);
     while ($firmeRS->next()) {

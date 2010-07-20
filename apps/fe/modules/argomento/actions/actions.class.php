@@ -88,6 +88,7 @@ class argomentoActions extends sfActions
 
   public function executeListSiOccupanoDi()
   {
+    return self::deprecated;
     $this->argomento_tv = $this->getRequestParameter('triple_value');
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->argomento_tv);
     $this->ramo = $this->getRequestParameter('ramo');
