@@ -99,6 +99,13 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // calcolo gruppi e schieramenti che presentano
     list($schier_pres, $grup_pres) = OppCaricaHasAttoPeer::getSchierGrupPresAtto($atto_id, $data);
 
+    if ($verbose)
+    {
+      printf("\n  presentazione:\n");
+      printf("    schieramenti: %s\n", join(',', $schier_pres));
+      printf("    gruppi: %s\n", join(',', $grup_pres));
+    }
+
     // il peso di un atto non dipende mai da chi lo ha presentato
     // il coefficiente che si considera è sempre quello di maggioranza
     $di_maggioranza = true;
@@ -121,6 +128,10 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     while ($firmeRS->next()) {
       $row = $firmeRS->getRow();
       
+      
+      if ($verbose)
+        printf("    %d firme per gruppo %d\n", $row['nf'], $row['gruppo_id']);
+        
       // gestione del caso in cui l'atto è presentato dai due schieramenti
       // tutte le firme sono assegnate a gruppo, altri e opp
       if (count($schier_pres) > 1)
@@ -146,9 +157,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       if (in_array($row['gruppo_id'], $grup_pres)) {
         if ($row['nf'] > 1) $n_firme['gruppo'] += $row['nf'];
       } else if ($row['maggioranza'] == $schier_pres[0]) {
-        $n_firme['altri'] + $row['nf'];
+        $n_firme['altri'] += $row['nf'];
       } else {
-        $n_firme['gruppo'] + $row['nf'];        
+        $n_firme['gruppo'] += $row['nf'];        
       }
       
     }

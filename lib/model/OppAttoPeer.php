@@ -68,7 +68,7 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of OppAtto
    * @author Guglielmo Celata
    */
-  public function getRSFromIDArray($ids)
+  public function getRSFromIDArray($ids, $con = null)
   {
 		if ($con === null) {
 			$con = Propel::getConnection(self::DATABASE_NAME);

@@ -21,7 +21,7 @@ function link_to_politicoNomeTipoFromCaricaId($carica_id, $relevance)
 
   // Visualizzazione dell'indice di rilevanza
   $punteggio = $relevance['punteggio'];
-  return link_to($str." [".$punteggio."]", '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => "punteggio: " . $punteggio));
+  return link_to($str, '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => "punteggio: " . $punteggio));
   
   // Visualizza senza indice di rilevanza
   // return link_to($str, '@parlamentare?id='.$politico->getId(), array('class' => 'folk2', 'title' => $relevance));
