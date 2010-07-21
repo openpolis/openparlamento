@@ -101,9 +101,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
     if ($verbose)
     {
-      printf("\n  presentazione:\n");
-      printf("    schieramenti: %s\n", join(',', $schier_pres));
-      printf("    gruppi: %s\n", join(',', $grup_pres));
+      printf("\n    presentazione:\n");
+      printf("      schieramenti: %s\n", join(',', $schier_pres));
+      printf("      gruppi: %s\n", join(',', $grup_pres));
     }
 
     // il peso di un atto non dipende mai da chi lo ha presentato
@@ -127,7 +127,6 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0);
     while ($firmeRS->next()) {
       $row = $firmeRS->getRow();
-      
       
       if ($verbose)
         printf("    %d firme per gruppo %d\n", $row['nf'], $row['gruppo_id']);
@@ -237,6 +236,8 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $sedute_commissioni_node = $sedute_con_interventi_node->addChild('commissioni', null, self::$opp_ns);
     $n_sedute_commissioni = OppInterventoPeer::getNSeduteConInterventiAttoData($atto_id, 'C', $data);
     if ($n_sedute_commissioni) $n_sedute_commissioni--;
+    if ($verbose)
+      printf("    n. sedute in commissione   %d\n", $n_sedute_commissioni);
     $d_punteggio_sedute_commissioni = $n_sedute_commissioni * self::getPunteggio($tipo_atto, 'discusso_in_seduta_comm', $di_maggioranza);
     $sedute_commissioni_node->addAttribute('n_sedute', $n_sedute_commissioni);
     $sedute_commissioni_node->addAttribute('totale', $d_punteggio_sedute_commissioni);
@@ -244,6 +245,8 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $sedute_assemblea_node = $sedute_con_interventi_node->addChild('assemblea', null, self::$opp_ns);
     $n_sedute_assemblea = OppInterventoPeer::getNSeduteConInterventiAttoData($atto_id, 'A', $data);
     if ($n_sedute_assemblea) $n_sedute_assemblea--;
+    if ($verbose)
+      printf("    n. sedute in commissione   %d\n", $n_sedute_commissioni);
     $d_punteggio_sedute_assemblea = $n_sedute_assemblea * self::getPunteggio($tipo_atto, 'discusso_in_seduta_ass', $di_maggioranza);
     $sedute_assemblea_node->addAttribute('n_sedute', $n_sedute_assemblea);
     $sedute_assemblea_node->addAttribute('totale', $d_punteggio_sedute_assemblea);

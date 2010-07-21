@@ -61,6 +61,7 @@ class OppInterventoPeer extends BaseOppInterventoPeer
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     $rs->next();
     $row = $rs->getRow();
+    
     return $row['n_sedute'];
   }
   
