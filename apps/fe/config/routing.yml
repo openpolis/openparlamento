@@ -238,7 +238,7 @@ argomento_nonleg:
 
 argomento_sioccupanodi:
   url:   /argomento_sioccupanodi/:triple_value/:ramo/*
-  param: { module: argomento, action: listSiOccupanoDi }
+  param: { module: datiStorici, action: interessi }
   
 argomenti_actionaid:
   url:   /argomenti_actionaid/:ramo/*
@@ -299,7 +299,7 @@ parlamentariSearch:
 
 parlamentari_nuovo_indice:
   url: /parlamentari_nuovo_indice/:ramo
-  param: { module: parlamentare, action: listNuovoIndice, ramo: camera }
+  param: { module: datiStorici, action: indice, ramo: camera }
   
 parlamentari:
 #  url:   /parlamentari/:ramo/*

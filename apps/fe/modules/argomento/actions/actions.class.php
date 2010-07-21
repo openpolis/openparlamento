@@ -86,9 +86,17 @@ class argomentoActions extends sfActions
     
   }
 
+
+  /**
+   * questa azione è deprecata
+   * il routing reindirizza a datiStorici/interessi
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function executeListSiOccupanoDi()
   {
-    return self::deprecated;
+    
     $this->argomento_tv = $this->getRequestParameter('triple_value');
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->argomento_tv);
     $this->ramo = $this->getRequestParameter('ramo');

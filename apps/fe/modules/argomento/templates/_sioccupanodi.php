@@ -1,5 +1,6 @@
 <?php echo use_helper('Parlamentare') ?>
 
+TEMPLATE DEPRECATO: la action è rediretta su datiStorici/interessi
 
 <div class="float-left" style="width: 33%">
   <?php if (count($politici) > 0): ?>

@@ -40,7 +40,16 @@ class datiStoriciActions extends sfActions
       $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
-    $this->processFilters(array('ramo', 'data'));
+    // se si arriva dalla rule parlamentari_nuovo_indice, è specificato il ramo
+    if ($this->hasRequestParameter('ramo'))
+    {
+      $ramo = $this->getRequestParameter('ramo');
+      if ($ramo == 'camera') $ramo = 'c';
+      elseif ($ramo == 'senato') $ramo = 's';
+      $this->session->setAttribute('ramo', $ramo, 'sf_admin/opp_storici/filter');
+    }
+
+    $this->processFilters(array('ramo', 'data'), $last_date);
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&
@@ -49,7 +58,7 @@ class datiStoriciActions extends sfActions
       $this->redirect('datiStorici/indice');
     }
 
-    $this->processListSort();
+    $this->processListSort('indice');
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -88,7 +97,7 @@ class datiStoriciActions extends sfActions
       $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
-    $this->processFilters(array('ramo', 'data'));
+    $this->processFilters(array('ramo', 'data'), $last_date);
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&
@@ -97,7 +106,7 @@ class datiStoriciActions extends sfActions
       $this->redirect('datiStorici/presenze');
     }
 
-    $this->processListSort();
+    $this->processListSort('presenze');
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -139,7 +148,7 @@ class datiStoriciActions extends sfActions
       $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
     }
 
-    $this->processFilters(array('tags_category', 'act_type', 'ramo', 'act_stato', 'data'));
+    $this->processFilters(array('tags_category', 'act_type', 'ramo', 'act_stato', 'data'), $last_date);
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_tags_category') == '0' &&
@@ -151,7 +160,7 @@ class datiStoriciActions extends sfActions
       $this->redirect('datiStorici/rilevanza');
     }
 
-    $this->processListSort();
+    $this->processListSort('indice');
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -178,9 +187,18 @@ class datiStoriciActions extends sfActions
     
     $this->ramo = $this->getRequestParameter('ramo', 'C');
     
-    $this->tag_name = $this->getRequestParameter('tag_name', '');
-    $this->argomento = TagPeer::retrieveByTagName($this->tag_name);
-    
+    if ($this->hasRequestParameter('triple_value'))
+    {
+      $triple_value = $this->getRequestParameter('triple_value');      
+      $this->argomento = TagPeer::retrieveFirstByTripleValue($triple_value);
+    }
+    else
+    {
+      $this->tag_name = $this->getRequestParameter('tag_name', '');
+      $this->argomento = TagPeer::retrieveByTagName($this->tag_name);      
+    }
+      
+
     if ($this->hasRequestParameter('limit'))
       $limit = $this->getRequestParameter('limit');
 
@@ -204,7 +222,7 @@ class datiStoriciActions extends sfActions
    * @return void
    * @author Guglielmo Celata
    */
-  protected function processFilters($active_filters)
+  protected function processFilters($active_filters, $date = '0')
   {
     $filters = array();
 
@@ -240,12 +258,12 @@ class datiStoriciActions extends sfActions
       $filters['ramo'] = $this->session->getAttribute('ramo', '0', 'sf_admin/opp_storici/filter');
 
     if (in_array('data', $active_filters))
-      $filters['data'] = $this->session->getAttribute('data', '0', 'sf_admin/opp_storici/filter');
+      $filters['data'] = $this->session->getAttribute('data', $date, 'sf_admin/opp_storici/filter');
 
     $this->filters = $filters;
   }
 
-  protected function processListSort()
+  protected function processListSort($default_sort_field = 'chi_id')
   {
     if ($this->getRequestParameter('sort'))
     {
@@ -256,9 +274,22 @@ class datiStoriciActions extends sfActions
     // valore di default
     if (!$this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort'))
     {
-      $this->session->setAttribute('sort', 'chi_id', 'sf_admin/opp_storici/sort');
+      $this->session->setAttribute('sort', $default_sort_field, 'sf_admin/opp_storici/sort');
       $this->session->setAttribute('type', 'desc', 'sf_admin/opp_storici/sort');
     }
+    
+    // ristabilisce indici di default se si passa attraverso le presenze
+    $action_name = $this->getActionName();
+    if (($action_name == 'indice' || $action_name == 'rilevanza') && $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort') != 'indice')
+    {
+      $this->session->setAttribute('sort', $default_sort_field, 'sf_admin/opp_storici/sort');      
+    }
+
+    if ($action_name == 'presenze' && $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'indice')
+    {
+      $this->session->setAttribute('sort', $default_sort_field, 'sf_admin/opp_storici/sort');      
+    }
+    
   }
 
   protected function addFiltersCriteria($c)
