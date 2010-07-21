@@ -238,7 +238,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     if ($n_sedute_commissioni) $n_sedute_commissioni--;
     if ($verbose)
       printf("    n. sedute in commissione   %d\n", $n_sedute_commissioni);
-    $d_punteggio_sedute_commissioni = $n_sedute_commissioni * self::getPunteggio($tipo_atto, 'discusso_in_seduta_comm', $di_maggioranza);
+    $d_punteggio_sedute_commissioni = $n_sedute_commissioni * parent::$punteggi['seduta_in_comm'];
     $sedute_commissioni_node->addAttribute('n_sedute', $n_sedute_commissioni);
     $sedute_commissioni_node->addAttribute('totale', $d_punteggio_sedute_commissioni);
     
@@ -246,8 +246,8 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $n_sedute_assemblea = OppInterventoPeer::getNSeduteConInterventiAttoData($atto_id, 'A', $data);
     if ($n_sedute_assemblea) $n_sedute_assemblea--;
     if ($verbose)
-      printf("    n. sedute in commissione   %d\n", $n_sedute_commissioni);
-    $d_punteggio_sedute_assemblea = $n_sedute_assemblea * self::getPunteggio($tipo_atto, 'discusso_in_seduta_ass', $di_maggioranza);
+      printf("    n. sedute in commissione   %d\n", $n_sedute_assemblea);
+    $d_punteggio_sedute_assemblea = $n_sedute_assemblea * parent::$punteggi['seduta_in_ass'];
     $sedute_assemblea_node->addAttribute('n_sedute', $n_sedute_assemblea);
     $sedute_assemblea_node->addAttribute('totale', $d_punteggio_sedute_assemblea);
     
