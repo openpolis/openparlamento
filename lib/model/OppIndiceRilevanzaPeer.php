@@ -347,6 +347,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       $punteggio += $d_punteggio = OppActHistoryCachePeer::getIndiceForAttoData($atto_id, $data);
       $atto_node = $tag_node->addChild('atto', null, self::$opp_ns);
       $atto_node->addAttribute('totale', $d_punteggio);
+      $atto_node->addAttribute('atto_id', $atto_id);
       if ($verbose)
         printf("atto: %10s totale: %7.2f\n", $atto_id, $d_punteggio);
     }
