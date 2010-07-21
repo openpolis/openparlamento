@@ -45,7 +45,7 @@
 
     <tr>
       <td align="center" colspan='4'>
-        <?php echo pager_navigation($pager, 'datiStorici/rilevanza') ?>
+        <?php echo pager_navigation($pager, 'datiStorici/rilevanzaAtti') ?>
       </td>
     </tr>
 

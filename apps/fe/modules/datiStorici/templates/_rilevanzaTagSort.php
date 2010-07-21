@@ -5,9 +5,9 @@
   <ul>
     <li>
       <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'indice'): ?>
-        <?php echo link_to('indice', 'datiStorici/rilevanza?sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+        <?php echo link_to('indice', 'datiStorici/rilevanzaTag?sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
       <?php else: ?>
-        <?php echo link_to('indice', 'datiStorici/rilevanza?sort=indice&type=desc') ?>
+        <?php echo link_to('indice', 'datiStorici/rilevanzaTag?sort=indice&type=desc') ?>
       <?php endif; ?>
     </li>
   </ul>

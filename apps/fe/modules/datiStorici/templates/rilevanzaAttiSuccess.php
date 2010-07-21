@@ -1,4 +1,4 @@
-<?php include_partial('tabs', array('current' => 'rilevanza')) ?>
+<?php include_partial('tabs', array('current' => 'rilevanzaAtti')) ?>
 
 <div id="content" class="tabbed float-container">
   <a name="top"></a>
@@ -14,13 +14,13 @@
                                 'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0,
                                 'selected_data' => array_key_exists('data', $filters)?$filters['data']:0)) ?>
                                 
-    <?php include_partial('rilevanzaSort') ?>
+    <?php include_partial('rilevanzaAttiSort') ?>
                                 
 
     <?php echo include_partial('default/listNotice', 
                                array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
 
-    <?php include_partial('rilevanzaList', array('pager' => $pager)) ?>
+    <?php include_partial('rilevanzaAttiList', array('pager' => $pager)) ?>
     
   </div>
 </div>

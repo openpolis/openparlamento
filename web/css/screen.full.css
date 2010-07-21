@@ -1220,5 +1220,6 @@ form#premium-form div#perche input { margin-bottom: 0.2em; }
 table#tabella_maturita td, table#tabella_maturita th { padding: 0.75em; }
 table#tabella_maturita { border: 1px solid gray; }
 
+ul.small-titles h2 { font-size: 16px; }
 
 .flash-messages { background-color: #ffff66; border: 1px solid darkgray; font-size: 1.2em; padding: 1em; margin: 1em; font-weight: bold; text-align: center;}

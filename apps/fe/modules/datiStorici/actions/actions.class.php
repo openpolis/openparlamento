@@ -125,7 +125,7 @@ class datiStoriciActions extends sfActions
     $this->pager->init();
   }
 
-  public function executeRilevanza()
+  public function executeRilevanzaAtti()
   {
     $this->session = $this->getUser();
     $last_date = OppActHistoryCachePeer::fetchLastData();
@@ -157,7 +157,7 @@ class datiStoriciActions extends sfActions
         $this->getRequestParameter('filter_act_stato') == '0' &&
         $this->getRequestParameter('filter_data') == $last_date)
     {
-      $this->redirect('datiStorici/rilevanza');
+      $this->redirect('datiStorici/rilevanzaAtti');
     }
 
     $this->processListSort('indice');
@@ -174,6 +174,51 @@ class datiStoriciActions extends sfActions
     $this->addListSortCriteriaAtti($c);      
     $c->addDescendingOrderByColumn(OppActHistoryCachePeer::CHI_ID);
     $c->add(OppActHistoryCachePeer::CHI_TIPO, 'A');
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->setPeerMethod('doSelect');
+    $this->pager->init();
+  }
+
+  public function executeRilevanzaTag()
+  {
+    $this->session = $this->getUser();
+    $last_date = OppTagHistoryCachePeer::fetchLastData();
+
+    // estrae tutte le date per cui esistono dati
+    $this->all_dates = OppTagHistoryCachePeer::extractDates();
+    $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+    // reset dei filtri, se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+      $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
+    }
+
+    $this->processFilters(array('tags_category', 'data'), $last_date);
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_tags_category') == '0' &&
+        $this->getRequestParameter('filter_data') == $last_date)
+    {
+      $this->redirect('datiStorici/rilevanzaTag');
+    }
+
+    $this->processListSort('indice');
+
+    if ($this->hasRequestParameter('itemsperpage'))
+      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+    $this->pager = new sfPropelPager('OppTagHistoryCache', $itemsperpage);
+
+    $c = new Criteria();
+    $c->addJoin(TagPeer::ID, OppTagHistoryCachePeer::CHI_ID);
+    $this->addFiltersCriteriaTag($c);  
+    $this->addListSortCriteriaTag($c);      
+    $c->addDescendingOrderByColumn(OppTagHistoryCachePeer::CHI_ID);
+    $c->add(OppTagHistoryCachePeer::CHI_TIPO, 'S');
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
@@ -280,7 +325,7 @@ class datiStoriciActions extends sfActions
     
     // ristabilisce indici di default se si passa attraverso le presenze
     $action_name = $this->getActionName();
-    if (($action_name == 'indice' || $action_name == 'rilevanza') && $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort') != 'indice')
+    if (($action_name == 'indice' || ($action_name == 'rilevanzaAtti' || $action_name == 'rilevanzaTag')) && $this->session->getAttribute('sort', null, 'sf_admin/opp_storici/sort') != 'indice')
     {
       $this->session->setAttribute('sort', $default_sort_field, 'sf_admin/opp_storici/sort');      
     }
@@ -303,6 +348,58 @@ class datiStoriciActions extends sfActions
       $c->add(OppPoliticianHistoryCachePeer::DATA, $this->filters['data']);
 
   }
+
+  protected function addFiltersCriteriaAtti($c)
+  {
+    // filtro per data
+    if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
+      $c->add(OppActHistoryCachePeer::DATA, $this->filters['data']);
+
+    // filtro per ramo
+    if (array_key_exists('ramo', $this->filters) && $this->filters['ramo'] != '0')
+      $c->add(OppAttoPeer::RAMO, $this->filters['ramo']);
+      
+    // filtro per stato di avanzamento
+    if (array_key_exists('act_stato', $this->filters) && $this->filters['act_stato'] != '0')
+      $c->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
+
+    // filtro per tipo di decreto legislativo
+    if (array_key_exists('act_type', $this->filters) && $this->filters['act_type'] != '0')
+      $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
+
+    // filtro per categoria
+    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    {
+      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
+      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+      $c->setDistinct();
+    }    
+      
+  }
+  
+  protected function addFiltersCriteriaTag($c)
+  {
+    // filtro per data
+    if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
+      $c->add(OppTagHistoryCachePeer::DATA, $this->filters['data']);
+
+    // filtro per categoria
+    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    {
+      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
+      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
+      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
+      $c->setDistinct();
+    }    
+      
+  }
+  
+
 
   
   protected function addListSortCriteria($c)
@@ -339,35 +436,22 @@ class datiStoriciActions extends sfActions
     }
   }
 
-  protected function addFiltersCriteriaAtti($c)
+  protected function addListSortCriteriaTag($c)
   {
-    // filtro per data
-    if (array_key_exists('data', $this->filters) && $this->filters['data'] != '0')
-      $c->add(OppActHistoryCachePeer::DATA, $this->filters['data']);
-
-    // filtro per ramo
-    if (array_key_exists('ramo', $this->filters) && $this->filters['ramo'] != '0')
-      $c->add(OppAttoPeer::RAMO, $this->filters['ramo']);
-      
-    // filtro per stato di avanzamento
-    if (array_key_exists('act_stato', $this->filters) && $this->filters['act_stato'] != '0')
-      $c->add(OppAttoPeer::STATO_COD, $this->filters['act_stato']);      
-
-    // filtro per tipo di decreto legislativo
-    if (array_key_exists('act_type', $this->filters) && $this->filters['act_type'] != '0')
-      $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
-
-    // filtro per categoria
-    if (array_key_exists('tags_category', $this->filters) && $this->filters['tags_category'] != '0')
+    if ($sort_column = $this->session->getAttribute('sort', 'indice', 'sf_admin/opp_storici/sort'))
     {
-      $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
-      $c->addJoin(TagPeer::ID, OppTagHasTtPeer::TAG_ID);
-      $c->addJoin(TagPeer::ID, TaggingPeer::TAG_ID);
-      $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
-      $c->add(OppTagHasTtPeer::TESEOTT_ID, $this->filters['tags_category']);
-      $c->setDistinct();
-    }    
-      
+      if (!in_array($sort_column, array('presenze', 'assenze', 'missioni'))) {
+        $sort_column = OppTagHistoryCachePeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+        if ($this->session->getAttribute('type', null, 'sf_admin/opp_storici/sort') == 'asc')
+        {
+          $c->addAscendingOrderByColumn($sort_column);
+        }
+        else
+        {
+          $c->addDescendingOrderByColumn($sort_column);
+        }
+      }
+    }
   }
 
   
