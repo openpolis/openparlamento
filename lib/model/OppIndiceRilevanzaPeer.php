@@ -115,7 +115,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     
     // --- consenso ---
     $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
-    $firmeRS = OppCaricaHasAttoPeer::getFirmeAttoDataTipoRS($atto_id, $data, 'C');
+    $firmeRS = OppCaricaHasAttoPeer::getFirmeAttoDataTipoRS($atto_id, $data, "'C'");
 
     $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0);
     while ($firmeRS->next()) {
