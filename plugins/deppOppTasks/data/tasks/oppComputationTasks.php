@@ -234,9 +234,11 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
 
   if ($data != '') {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
+    $data_lookup = OppActHistoryCachePeer::fetchLastData();
   }
 
 
@@ -276,7 +278,7 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data, 'A', $atto_id);
+    $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'A', $atto_id);
     if (!$cache_record) {
       $cache_record = new OppActHistoryCache();
     }
@@ -342,6 +344,9 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
   $verbose = false;
   $offset = null;
   $limit = null;
+  
+  $start_time = time();
+  
   if (array_key_exists('data', $options)) {
     $data = $options['data'];
   }
@@ -357,9 +362,11 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
 
   if ($data != '') {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;    
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
+    $data_lookup = OppTagHistoryCachePeer::fetchLastData();
   }
 
 
@@ -374,15 +381,17 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
     $tags_ids = TaggingPeer::getActiveTagsIdsData('OppAtto', $data);    
   }
 
+  $n_tags = count($tags_ids);
+  
   echo "memory usage: " . memory_get_usage( ) . "\n";
 
   foreach ($tags_ids as $cnt => $tag_id) {
 
-    printf("%4d) %d ... ", $cnt+1, $tag_id);
+    printf("%5d/%6d) %40s %6d ... ", $cnt+1, $n_tags, TagPeer::retrieveByPK($tag_id), $tag_id);
     $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_tag($tag_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_tag_history_cache
-    $cache_record = OppTagHistoryCachePeer::retrieveByDataChiTipoChiId($data, 'S', $tag_id);
+    $cache_record = OppTagHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'S', $tag_id);
     if (!$cache_record) {
       $cache_record = new OppTagHistoryCache();
     }
@@ -398,7 +407,7 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
     $msg = sprintf("%7.2f", $indice);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
 
-    $msg = sprintf(" %10d\n", memory_get_usage( ));
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
     echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
   }
 

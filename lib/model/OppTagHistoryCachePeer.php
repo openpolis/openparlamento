@@ -9,6 +9,27 @@
  */ 
 class OppTagHistoryCachePeer extends BaseOppTagHistoryCachePeer
 {
+  
+  
+  /**
+   * prende l'ultimo valore della data dai record S
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function fetchLastData()
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+		
+		$sql = sprintf("select distinct data from opp_tag_history_cache where chi_tipo='S' order by data desc");
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $rs->next();
+    $row = $rs->getRow();
+    return $row['data'];    
+  }
+  
   /**
    * estrazione di tutti i record relativi a un atto per una legislatura
    *
