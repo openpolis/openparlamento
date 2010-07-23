@@ -1100,7 +1100,7 @@ class apiActions extends sfActions
     
 		$con = Propel::getConnection('propel');
 
-    $current_data = OppPoliticianHistoryCachePeer::fetchLastData($con);
+    $current_data = OppPoliticianHistoryCachePeer::fetchLastData('P', $con);
 
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
 
