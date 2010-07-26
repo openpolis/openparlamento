@@ -88,11 +88,11 @@ class Text
 
       case '2':
         if($atto->getRamo()=='C')
-          $sub_str_pos = strpos($atto->getDescrizione(),  'La Camera');
+          $sub_str_pos = strpos(strip_tags($atto->getDescrizione(),'<br/>'),  'La Camera');
         else
-          $sub_str_pos = strpos($atto->getDescrizione(),  'Il Senato');
+          $sub_str_pos = strpos(strip_tags($atto->getDescrizione(),'<br/>'),  'Il Senato');
         
-        $descrizione = substr($atto->getDescrizione(), $sub_str_pos + 10 );
+        $descrizione = substr(strip_tags($atto->getDescrizione(),'<br/>'), $sub_str_pos + 10 );
         
         if($atto->getNumfase()==$atto->getTitolo())
         {
@@ -112,8 +112,8 @@ class Text
               
       default:
   	    //$descrizione = $atto->getDescrizione();
-        $sub_str_pos = strpos($atto->getDescrizione(),  'seduta n.');
-  		  $sub_str1 = substr($atto->getDescrizione(), $sub_str_pos + 10 );
+        $sub_str_pos = strpos(strip_tags($atto->getDescrizione(),'<br/>'),  'seduta n.');
+  		  $sub_str1 = substr(strip_tags($atto->getDescrizione(),'<br/>'), $sub_str_pos + 10 );
   		  $sub_str_pos2 = strpos($sub_str1,  '<br/>');
   		  $sub_str2 = substr($sub_str1, $sub_str_pos2 + 5 );
   		  $descrizione =$sub_str2;
