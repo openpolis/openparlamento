@@ -166,8 +166,11 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $d_punteggio = 0.0;
     foreach ($n_firme as $tipo => $value) {
       if (!$value) continue;
+
+      $soglia = self::$soglia_cofirme;
+      if ($tipo_atto == 'mozione') $soglia = self::$soglia_cofirme_mozioni;
       
-      if ($value <= self::$soglia_cofirme)
+      if ($value <= $soglia)
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_lo", $di_maggioranza);
       else
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_hi", $di_maggioranza);

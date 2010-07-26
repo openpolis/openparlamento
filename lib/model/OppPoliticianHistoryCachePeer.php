@@ -136,12 +136,12 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     return $row['data'];    
   }
   
-  public static function extractDates($type = 'P', $con = null)
+  public static function extractDates($type = 'P', $con = null, $limit = 10)
   {
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		
-		$sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' order by data desc limit 10");
+		$sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' order by data desc limit $limit");
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 

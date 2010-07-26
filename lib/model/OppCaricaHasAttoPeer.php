@@ -88,7 +88,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
   }
 
   /**
-   * conta il numero di atti in cui la carica ha fatto da relatore
+   * torna gli atti in cui la carica ha fatto da relatore
    *
    * @param string $carica_id 
    * @param integer $legislatura
@@ -96,18 +96,20 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
    * @return integer
    * @author Guglielmo Celata
    */
-  public static function countRelazioni($carica_id, $legislatura, $data)
+  public static function getRelazioni($carica_id, $legislatura, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select count(*) as n from opp_carica_has_atto ca, opp_carica c, opp_atto a where c.id=ca.carica_id and a.id=ca.atto_id and ca.carica_id=%d and a.data_pres <= '%s' and c.legislatura = %d and ca.tipo='R';",
+    $sql = sprintf("select a.id, a.data_pres from opp_carica_has_atto ca, opp_carica c, opp_atto a where c.id=ca.carica_id and a.id=ca.atto_id and ca.carica_id=%d and a.data_pres <= '%s' and c.legislatura = %d and ca.tipo='R';",
                    $carica_id, $data, $legislatura);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     
-    $rs->next();
-    $row = $rs->getRow();
+    $atti = array();
+    while ($rs->next()) {
+      $atti []= $rs->getRow();
+    }
 
-    return $row['n'];
+    return $atti;
   }
 
 

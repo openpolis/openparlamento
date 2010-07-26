@@ -26,6 +26,9 @@ pake_task('opp-build-cache-rami', 'project_exists');
 pake_desc("ri-costruisce dati dei delta per gli storici");
 pake_task('opp-rebuild-deltas', 'project_exists');
 
+pake_desc("aggiorna i dati delle posizioni per gli storici");
+pake_task('opp-rebuild-positions', 'project_exists');
+
 
 /**
  * Calcola o ri-calcola i dati da cachare per i politici
@@ -487,6 +490,96 @@ function run_opp_rebuild_deltas($task, $args, $options)
 }
 
 
+
+/**
+ * calcola o ri-calcola le posizioni per indici e presenze
+ * nelle tabelle cache, a una determinata data (o a tutte)
+ *
+ * @param string $task 
+ * @param string $args 
+ * @param string $options 
+ * @return void
+ * @author Guglielmo Celata
+ */
+function run_opp_rebuild_positions($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
+  }
+
+  $data = '';
+  $dry_run = false;
+  
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('dry-run', $options)) {
+    $dry_run = true;
+  }
+  
+  $msg = sprintf("start time: %s\n", date('H:i:s'));
+  echo $msg;
+  
+  if ($data != '') {
+    $p_dates = array($data => $data);
+  }
+  $p_dates = OppPoliticianHistoryCachePeer::extractDates('N', null, 10000);
+  while ($rs->next()) {
+    $cnt++;
+    $r = $rs->getRow();
+    printf("%6d) %1s %7d ... ", $cnt, $r['chi_tipo'], $r['chi_id']);
+    
+    // calcolo date fine mese scorso e precedente
+    list($data_1, $data_2) = Util::getLast2MonthsDate($data);
+
+    // estrazione record storici a due mesi
+    $r_1 = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_1, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+    $r_2 = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_2, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+
+    // salta record per cui non c'è abbastanza storia
+    if (!$r_1 instanceof OppPoliticianHistoryCache ||
+        !$r_2 instanceof OppPoliticianHistoryCache)
+    {
+      printf(" NA \n");
+      continue;
+    }
+    
+    list($presenze_delta, $assenze_delta, $missioni_delta) = presenzeDelta($data_lookup, $r, $r_1, $r_2);
+    printf("d_presenze: %7.2f,  d_assenze: %7.2f,  d_missioni: %7.2f,  ", 
+           $presenze_delta, $assenze_delta, $missioni_delta);
+    $indice_delta = indiceDelta($data_lookup, $r, $r_1, $r_2, $data_1, $data_2);
+    printf("d_indice: %7.2f,  ", $indice_delta);
+    $ribellioni_delta = ribellioniDelta($data_lookup, $r, $r_1, $r_2, $data_1, $data_2);
+    printf("d_ribellioni: %7.2f", $ribellioni_delta);
+    
+    if (!$dry_run) {
+      $r = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, $r['chi_tipo'], $r['chi_id'], $r['ramo']);
+      $r->setPresenzeDelta($presenze_delta);
+      $r->setAssenzeDelta($assenze_delta);
+      $r->setMissioniDelta($missioni_delta);
+      $r->setIndiceDelta($indice_delta);
+      $r->setRibellioniDelta($ribellioni_delta);
+      $r->save();
+      printf(" OK!\n");
+    } else {
+      printf("\n");
+    }
+  }
+  
+  echo "data: $data_lookup\n";
+  
+  $msg = sprintf("end time: %s\n", date('H:i:s'));
+  echo $msg;
+  
+}
+
+
+
 function ribellioniDelta($data, $r, $r_1, $r_2)
 {
   // calcolo indice
@@ -517,6 +610,7 @@ function ribellioniDelta($data, $r, $r_1, $r_2)
   // estrazione delta
   return 100*($ribellioni_1_norm - $ribellioni_2_norm);
 }
+
 
 function indiceDelta($data, $r, $r_1, $r_2, $data_1, $data_2)
 {

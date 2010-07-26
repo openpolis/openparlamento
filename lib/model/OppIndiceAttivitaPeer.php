@@ -151,19 +151,34 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $punteggio += $d_punteggio;
 
     // --- componente indice dovuta alle firme come relatore
-    $n_relazioni = OppCaricaHasAttoPeer::countRelazioni($carica_id, $legislatura, $data);
-    if ($n_relazioni > 0)
-    {
-      $punteggio += $d_punteggio = self::$punteggi['relatore'] * $n_relazioni;
+    // TODO: estrarre gli atti di cui è relatore, loop e calcolo punteggio se di maggioranza o opp.
+    //       al momento della presentazione dell'atto.
+    $relazioni = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
+    $n_relazioni = count($relazioni);
+    $relazioni_node = $content_node->addChild('relazioni', null, self::$opp_ns);
+    $relazioni_node->addAttribute('n_relazioni', $n_relazioni);
+
+
+    $d_punteggio = 0;
+    foreach ($relazioni as $atto) {
+      $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto['data_pres']);
+      $d_punteggio += $dd_punteggio = self::$punteggi['relatore'][$in_maggioranza?'m':'o'];
+      $relazione_node = $relazioni_node->addChild('relazione', null, self::$opp_ns);
+      $relazione_node->addAttribute('atto_id', $atto['id']);
+      $relazione_node->addAttribute('data_pres', $atto['data_pres']);
+      $relazione_node->addAttribute('schieramento', $in_maggioranza?'m':'o');
+      $relazione_node->addAttribute('punteggio', $dd_punteggio);
+      
       if ($verbose)
-      {
-        printf("\n  numero relazioni: %d - punteggio: %7.2f\n", $n_relazioni, $d_punteggio);
-        
-      }
-      $relazioni_node = $content_node->addChild('relazioni', null, self::$opp_ns);
-      $relazioni_node->addAttribute('n_relazioni', $n_relazioni);
-      $relazioni_node->addAttribute('totale', $d_punteggio);
+        printf("    atto: %d - data: %s - schieramento: %s - punteggio: %7.2f\n", 
+               $atto['id'], $atto['data_pres'], $in_maggioranza?'m':'o', $dd_punteggio);        
     }
+
+    $relazioni_node->addAttribute('totale', $d_punteggio);
+    if ($verbose)
+      printf("  relazioni: %d - punteggio: %7.2f\n", $n_relazioni, $d_punteggio);        
+
+    $punteggio += $d_punteggio;
     
     
     // componente indice dovuta agli emendamenti
@@ -184,7 +199,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       
       $em_punteggio += $d_punteggio = self::calcolaComponenteEmendamentiPerCaricaAtto($carica_id, $em_atto_id, $data, $em_atto_node, $verbose);
     }
-
     
     $emendamenti_node->addAttribute('numero_atti', count($atti_for_emendamenti_ids));
     $emendamenti_node->addAttribute('numero', $n_emendamenti);
@@ -313,8 +327,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $d_punteggio = 0.0;
     foreach ($n_firme as $tipo => $value) {
       if (!$value) continue;
+
+      $soglia = self::$soglia_cofirme;
+      if ($tipo_atto == 'mozione') $soglia = self::$soglia_cofirme_mozioni;
       
-      if ($value <= self::$soglia_cofirme)
+      if ($value <= $soglia)
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_lo", $in_maggioranza);
       else
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_hi", $in_maggioranza);
