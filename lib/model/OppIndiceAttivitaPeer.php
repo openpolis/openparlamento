@@ -349,7 +349,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $passaggio_node->addAttribute('tipo', $passaggio);
 
       $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
-      if (is_null($passaggio)) continue;
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
       if ($verbose)
         printf("    iter %s (%s %s) %7.2f\n", 
