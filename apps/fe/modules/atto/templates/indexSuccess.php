@@ -88,7 +88,7 @@
         <?php if($tipo_iniziativa != ''): ?>
           <li><h6>tipo di iniziativa: <em><?php echo $tipo_iniziativa ?></em></h6></li>
         <?php endif; ?>			  
-        <?php if($link != '#'): ?>
+        <?php if($link != '#' && $atto->getParlamentoID()!=NULL): ?>
           <li><?php echo link_to("link alla fonte", $link, array('class' => 'external', 'target' => '_blank')) ?></li>
         <?php endif; ?>		  
       </ul>
