@@ -8,8 +8,6 @@
 class OppIndiceAttivitaPeer extends OppIndicePeer
 {
 
-  public static $soglia_cofirme = 10;
-
   public static $opp_ns = 'http://www.openpolis.it/2010/opp';
   public static $op_ns = 'http://www.openpolis.it/2010/op';
   public static $xlink_ns = 'http://www.w3.org/1999/xlink';

@@ -19,6 +19,30 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
   }
 
   /**
+   * torna il numero di emendamenti presentati (P) in relazione a un atto, entro una certa data
+   *
+   * @param string $atto_id 
+   * @param string $date 
+   * @param string $con 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function countEmendamentiAttoData($atto_id, $date, $con = null)
+  {
+    if (is_null($con))
+      $con = Propel::getConnection(self::DATABASE_NAME);
+    
+    $sql = sprintf("SELECT COUNT(*) cnt FROM opp_atto_has_emendamento ae, opp_emendamento e, opp_carica_has_emendamento ce WHERE ae.emendamento_id=e.id and e.id=ce.emendamento_id and ae.atto_id=%d and ce.tipo='P' and ce.data < '%s' and ae.portante=1",
+                        $atto_id, $date);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    $rs->next();
+    $row = $rs->getRow();
+    return  $row['cnt']*1250;
+  }
+
+
+  /**
    * torna il numero di emendamenti presentati (P) da una carica, in relazione a un atto, entro una certa data
    *
    * @param string $carica_id 

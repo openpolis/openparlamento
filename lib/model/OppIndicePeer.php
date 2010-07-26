@@ -142,8 +142,10 @@ class OppIndicePeer
      'presenze_voti_finali'       => 0.1,
      'presenze_voti_magg_battuta' => 0.3,
      'relatore'                   => array('m' => 5.0, 'o' => 10),
-     'emendamenti_soglia'         => 40,
-     'emendamenti_larghezza'      => 100.
+     'emendamenti_soglia'         => 40.,
+     'emendamenti_larghezza'      => 100.,
+     'emendamenti_soglia_rilevanza' => 200.,
+     'emendamenti_larghezza_rilevanza' => 3000.
   );
  
   public static function getFileSystem()
