@@ -93,9 +93,9 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     }
 
     if ($gruppo_id) {
-      OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($gruppo_id, $data);
+      return OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($gruppo_id, $data);
     } else {
-      return null;
+      return null; // impossibile
     }
   }
   
