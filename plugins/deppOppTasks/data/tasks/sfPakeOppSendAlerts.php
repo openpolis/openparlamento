@@ -72,6 +72,7 @@ function run_opp_send_alerts($task, $args, $options)
 
     echo "$cnt/$n_users ";
     opp_send_single_user_alerts($user, $last_alert);
+    
   }
   
   $total_time = microtime(true) - $start_time;

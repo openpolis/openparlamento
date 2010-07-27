@@ -102,7 +102,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 
   /**
    * estrae gli atti presentati entro una certa data
-   * di iniziativa parlamentare o non legislativi
+   * di iniziativa parlamentare, governativa o non legislativi
    * @param string   $data ['', 'y-m-d']
    * @param integer  $offset
    * @param integer  $limit
@@ -115,7 +115,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     $legislatura = OppLegislaturaPeer::getCurrent($data);
 
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.id, a.tipo_atto_id from opp_atto a where legislatura = %d and data_pres < '%s' and (a.iniziativa = 1 or a.iniziativa is null) order by data_pres desc",
+    $sql = sprintf("select a.id, a.tipo_atto_id from opp_atto a where legislatura = %d and data_pres < '%s' and (a.iniziativa = 1 or a.iniziativa = 2 or a.iniziativa is null) order by data_pres desc",
                    $legislatura, $data);
     if (!is_null($limit)) {
       if (!is_null($offset))
