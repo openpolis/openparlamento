@@ -15,8 +15,8 @@ class OppIterPeer extends BaseOppIterPeer
     4 => 'discusso_in_comm',
     7 => 'discusso_in_ass',
     58 => 'votato', 57 => 'votato', 54 => 'votato', 52 => 'votato', 36 => 'votato', 30 => 'votato',
-    58 => 'approvato', 57 => 'approvato', 54 => 'approvato', 52 => 'approvato', 36 => 'approvato', 30 => 'approvato', 22 => 'approvato', 25 => 'approvato',
-    20 => 'approvato_camera',
+    58 => 'approvato', 57 => 'approvato', 54 => 'approvato', 52 => 'approvato', 36 => 'approvato', 30 => 'approvato', 
+    20 => 'approvato', 22 => 'approvato', 25 => 'approvato'
     16 => 'diventato_legge' ,
     11 => 'assorbito',
     13 => 'concluso', 40 => 'concluso', 41 => 'concluso', 42 => 'concluso', 45 => 'concluso', 50 => 'concluso', 56 => 'concluso'  
