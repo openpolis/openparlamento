@@ -85,7 +85,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select count(*) as nm from opp_votazione_has_atto va, opp_votazione v, opp_votazione_has_gruppo vg, opp_gruppo_is_maggioranza gm, opp_seduta s  where va.votazione_id=v.id and v.seduta_id=s.id and vg.votazione_id=v.id and vg.gruppo_id=gm.gruppo_id and va.atto_id=%d and v.finale=1 and gm.maggioranza = 0 and s.data < '%s' and gm.data_inizio < '%s' and (gm.data_fine > '%s' or gm.data_fine is null)",
+    $sql = sprintf("select count(*) as nm from opp_votazione_has_atto va, opp_votazione v, opp_votazione_has_gruppo vg, opp_gruppo_is_maggioranza gm, opp_seduta s  where va.votazione_id=v.id and v.seduta_id=s.id and vg.votazione_id=v.id and vg.gruppo_id=gm.gruppo_id and va.atto_id=%d and v.finale=1 and gm.maggioranza = 0  and vg.voto = 'Favorevole' and vg.gruppo_id != 13 and s.data < '%s' and gm.data_inizio < '%s' and (gm.data_fine > '%s' or gm.data_fine is null)",
                    $atto_id, $data, $data, $data);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

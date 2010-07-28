@@ -86,6 +86,15 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    */
   public function inMaggioranza($carica_id, $data, $gruppo_id = null)
   {
+    
+    $carica = self::retrieveByPK($carica_id);
+    
+    // ministri, viceministri e sottosegretari, sono sempre in maggioranza
+    if ($carica->getOppTipoCarica()->getNome() == 'Ministro' ||
+        $carica->getOppTipoCarica()->getNome() == 'Sottosegretario' ||
+        $carica->getOppTipoCarica()->getNome() == 'Viceministro')
+        return true;
+        
     if (is_null($gruppo_id))
     {
       $gruppo_ar = self::getGruppo($carica_id, $data);

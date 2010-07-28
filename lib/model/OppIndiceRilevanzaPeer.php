@@ -155,7 +155,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       
       if (in_array($row['gruppo_id'], $grup_pres)) {
         if ($row['nf'] > 1) $n_firme['gruppo'] += $row['nf'];
-      } else if ($row['maggioranza'] == $schier_pres[0]) {
+      } else if (count($schier_pres) > 0 && $row['maggioranza'] == $schier_pres[0]) {
         $n_firme['altri'] += $row['nf'];
       } else {
         $n_firme['gruppo'] += $row['nf'];        
@@ -226,6 +226,30 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
         }
       }
     }
+    
+    // controlla se diventato legge dopo passaggi in altri rami
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $c = new Criteria();
+    $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+    while ($atto_succ_id = $atto->getSucc())
+    {
+      $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+      if ($atto->countOppAttoHasIters($c) > 0)
+      {
+        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
+
+        $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+        $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+        $passaggio_node->addAttribute('totale', $dd_punteggio);
+
+        if ($verbose)
+          printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+      }
+    }
+    unset($c);
+    unset($atto);
+    
+    
     $punteggio += $d_punteggio;
     if ($verbose)
       printf("  totale iter   %7.2f\n", $d_punteggio);

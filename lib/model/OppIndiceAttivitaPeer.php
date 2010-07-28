@@ -382,6 +382,31 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         }
       }
     }
+    
+    
+    // controlla se diventato legge dopo passaggi in altri rami
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $carica_in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
+    $c = new Criteria();
+    $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+    while ($atto_succ_id = $atto->getSucc())
+    {
+      $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+      if ($atto->countOppAttoHasIters($c) > 0)
+      {
+        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $in_maggioranza);
+
+        $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+        $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+        $passaggio_node->addAttribute('totale', $dd_punteggio);
+
+        if ($verbose)
+          printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+      }
+    }
+    unset($c);
+    unset($atto);
+    
     $punteggio += $d_punteggio;
     if ($verbose)
       printf("  totale iter   %7.2f\n", $d_punteggio);
