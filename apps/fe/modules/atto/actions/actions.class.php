@@ -886,6 +886,12 @@ class attoActions extends sfActions
      $this->documento = OppDocumentoPeer::retrieveByPk($this->getRequestParameter('id'));
      $this->forward404Unless($this->documento);
      
+     if ($this->getUser()->isAuthenticated() && !$this->getUser()->hasCredential('noemend'))
+     {
+       $this->getResponse()->addJavascript("/sfEmendPlugin/emend.boot.js");
+     }
+      
+     
      $this->getResponse()->setTitle($this->documento->getOppAtto()->getOppTipoAtto()->getDescrizione().' '.$this->documento->getOppAtto()->getRamo().'. '.$this->documento->getOppAtto()->getNumfase().' / '.$this->documento->getTitolo().' - '.sfConfig::get('app_main_title'));
      
      $c = new Criteria();

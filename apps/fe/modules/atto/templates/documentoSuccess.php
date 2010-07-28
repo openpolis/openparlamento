@@ -5,9 +5,13 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
     <div class="W100_100 float-left">
-  <p class="tools-container float-left float-container"><a class="ico-help" href="#">come posso commentare questo documento</a></p>
-  <div class="clear-both"></div>
-      <p><?php echo image_tag('/images/emend-help.png') ?></p>
+      
+      <?php if ($sf_user->isAuthenticated() && !$sf_user->hasCredential('noemend')): ?>
+        <p class="tools-container float-left float-container"><a class="ico-help" href="#">come posso commentare questo documento</a></p>
+        <div class="clear-both"></div>
+        <p><?php echo image_tag('/images/emend-help.png') ?></p>                
+      <?php endif ?>
+      
       <?php if($documento->getUrlTesto()): ?>
         <div><b><?php echo link_to('link alla fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
          <?php if($documento->getUrlPdf()): ?>
