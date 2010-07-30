@@ -76,7 +76,7 @@
   <?php $status_value= array_values($atto->getStatus()) ?>
   <?php $status_date= array_keys($atto->getStatus()) ?>
   <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()==1 && $atto->getTipoAttoId()!=12): ?>
-    <?php if ($status_value[0])==16 || $status_value[0]==15) : ?>
+    <?php if ($status_value[0]==16 || $status_value[0]==15) : ?>
       <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
       <p><?php echo "approvato".($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
       <?php if ($status_value[0]==16) : ?>
