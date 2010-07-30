@@ -99,7 +99,7 @@
     <?php foreach ($atto->getAllSucc() as $k=>$succ): ?>
       <?php $status_value= array_values($succ->getStatus()) ?>
       <?php $status_date= array_keys($succ->getStatus()) ?>
-      <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1) : ?>
+      <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1 && $status_value[0]!=15) : ?>
         <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
         <p><?php echo "da approvare".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php if($dl==1) : ?>
