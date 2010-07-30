@@ -76,11 +76,13 @@
   <?php $status_value= array_values($atto->getStatus()) ?>
   <?php $status_date= array_keys($atto->getStatus()) ?>
   <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()==1 && $atto->getTipoAttoId()!=12): ?>
-    <?php if (($status_value[0])==16) : ?>
+    <?php if ($status_value[0])==16 || $status_value[0]==15) : ?>
       <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
       <p><?php echo "approvato".($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
-      <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
-      <p><?php echo "divenuto legge" ?></p></li>
+      <?php if ($status_value[0]==16) : ?>
+        <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+        <p><?php echo "divenuto legge" ?></p></li>
+      <?php endif ?>  
     <?php else :?>
         <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
          <p><?php echo  OppIterPeer::retrieveByPk($status_value[0])->getShortName().($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
@@ -107,11 +109,13 @@
         <li><span class="date">&nbsp;</span>
         <p>diventa legge</p></li>
       <?php else: ?>
-        <?php if (($status_value[0])==16) : ?>
+        <?php if ($status_value[0]==16 || $status_value[0]==15) : ?>
           <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
           <p><?php echo "approvato".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
-          <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
-          <p><?php echo "divenuto legge" ?></p></li>
+           <?php if ($status_value[0]==16) : ?>
+             <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+              <p><?php echo "divenuto legge" ?></p></li>
+            <?php endif ?>  
           <?php else: ?>
             <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
             <p><?php echo OppIterPeer::retrieveByPk($status_value[0])->getShortName().($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
