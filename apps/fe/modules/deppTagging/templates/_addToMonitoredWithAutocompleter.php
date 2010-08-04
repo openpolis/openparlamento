@@ -9,7 +9,8 @@ jQuery.noConflict();
     		},
         formatResult: function(row, i, max) {
     			return row[0];
-    		},    		
+    		}, 
+    		extraParams: { caller: 'addToMonitored' },   		
         minChars: "2", width: "300px", max: "50", scrollHeight: "250px"
       }).result(function(event, data) {
          $("#name").get(0).value =  !data ? "No match!" :  data[2];

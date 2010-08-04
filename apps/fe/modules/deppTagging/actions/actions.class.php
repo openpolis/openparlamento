@@ -15,10 +15,17 @@ class deppTaggingActions extends BasedeppTaggingActions
   public function executeTagsAutocomplete() {
 		$this->my_str = $this->getRequestParameter('q');
 		$limit = $this->getRequestParameter('limit');
+		$caller = $this->getRequestParameter('caller');
     
     // estrazione elementi che iniziano per ...
 		$c = new Criteria();
 		$c->add(TagPeer::TRIPLE_VALUE, $this->my_str."%", Criteria::LIKE);
+		
+		$opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+		// esclusione tag già monitorati se chiamta da addToMonitored
+		if ($caller == 'addToMonitored' && $opp_user instanceof OppUser)
+		  $c->add(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::NOT_IN);
 
 		if (isset($limit))
 		  $c->setLimit($limit);
@@ -35,6 +42,11 @@ class deppTaggingActions extends BasedeppTaggingActions
 		$c = new Criteria();
 		$c->add(TagPeer::TRIPLE_VALUE, "%".$this->my_str."%", Criteria::LIKE);
     $c->add(TagPeer::ID, $tags_ids, Criteria::NOT_IN);
+
+		// esclusione tag già monitorati se chiamta da addToMonitored
+		if ($caller == 'addToMonitored' && $opp_user instanceof OppUser)
+		  $c->add(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::NOT_IN);
+
 		if (isset($limit))
 		  $c->setLimit($limit - count($tags_starting));
 
