@@ -41,12 +41,17 @@ class deppTaggingActions extends BasedeppTaggingActions
     // estrazione elementi che contengono ... (tranne quelli che iniziano per)
 		$c = new Criteria();
 		$c->add(TagPeer::TRIPLE_VALUE, "%".$this->my_str."%", Criteria::LIKE);
-    $c->add(TagPeer::ID, $tags_ids, Criteria::NOT_IN);
+		$c1 = $c->getNewCriterion(TagPeer::ID, $tags_ids, Criteria::NOT_IN);
 
-		// esclusione tag già monitorati se chiamta da addToMonitored
+		// esclusione tag già monitorati se chiamata da addToMonitored
 		if ($caller == 'addToMonitored' && $opp_user instanceof OppUser)
-		  $c->add(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::NOT_IN);
+		{
+		  $c2 = $c->getNewCriterion(TagPeer::ID, $opp_user->getMonitoredPks('Tag'), Criteria::NOT_IN);
+		  $c1->addAnd($c2);		  
+		}
 
+    $c->add($c1);
+    
 		if (isset($limit))
 		  $c->setLimit($limit - count($tags_starting));
 
