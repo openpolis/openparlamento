@@ -23,11 +23,17 @@ if ($argv[1])
 	$c = new Criteria();
     $c->add(OppSedutaPeer::ID, $votazione->getSedutaId(), Criteria::EQUAL);
     $seduta = OppSedutaPeer::doSelectOne($c);
-	
+    
     $c = new Criteria();
-    $c->add(OppLegislaturaHasGruppoPeer::LEGISLATURA, $seduta->getLegislatura(), Criteria::EQUAL);
-    $c->add(OppLegislaturaHasGruppoPeer::RAMO, $seduta->getRamo(), Criteria::EQUAL);
-    $gruppi_votazione = OppLegislaturaHasGruppoPeer::doSelect($c);
+    $crit0 = $c->getNewCriterion(OppGruppoRamoPeer::RAMO, $seduta->getRamo());
+    $crit1 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_INIZIO, $seduta->getData(), Criteria::LESS_EQUAL);
+    $crit2 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_FINE, $seduta->getData(), Criteria::GREATER_EQUAL);
+    $crit3 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_FINE, NULL, Criteria::ISNULL);
+    $crit2->addOr($crit3);
+    $crit0->addAnd($crit1);
+    $crit0->addAnd($crit2);
+    $c->add($crit0);
+    $gruppi_votazione = OppGruppoRamoPeer::doSelect($c);
     
 	foreach ($gruppi_votazione as $gruppo)
 	{
