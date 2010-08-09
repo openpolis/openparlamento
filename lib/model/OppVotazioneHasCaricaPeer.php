@@ -129,12 +129,12 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
    * @return integer
    * @author Guglielmo Celata
    */
-  public static function countRibellioniCaricaData($carica_id, $legislatura, $data)
+  public static function countRibellioniCaricaData($carica_id, $legislatura, $data, $data_inizio)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select count(vc.ribelle) n_ribellioni from opp_votazione_has_carica vc, opp_votazione v, opp_seduta s where vc.votazione_id=v.id and v.seduta_id=s.id and vc.ribelle = 1 and vc.carica_id=%d and s.data < '%s' and s.legislatura=%d",
-                   $carica_id, $data, $legislatura);
+    $sql = sprintf("select count(vc.ribelle) n_ribellioni from opp_votazione_has_carica vc, opp_votazione v, opp_seduta s where vc.votazione_id=v.id and v.seduta_id=s.id and vc.ribelle = 1 and vc.carica_id=%d and s.data <= '%s' and s.data>='%s' and s.legislatura=%d",
+                   $carica_id, $data, $data_inizio, $legislatura);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     $rs->next(); $row = $rs->getRow();
