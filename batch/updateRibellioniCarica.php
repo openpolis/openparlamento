@@ -26,7 +26,7 @@ while ($parlamentari_rs->next())
     printf("WARNING: NESSUN RECORD: carica: %d, gruppo: %d\n", $carica_id, $gruppo_id);     
     continue; 
   }
-  $n_ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($p['id'], $legislatura_corrente, $data);
+  $n_ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($p['id'], $legislatura_corrente, $data, $gruppo_obj->getDataInizio());
   $gruppo_obj->setRibelle($n_ribellioni);
   $gruppo_obj->save();
   printf("carica: %d, gruppo: %d, n_ribellioni: %d\n", $carica_id, $gruppo_id, $n_ribellioni);  
