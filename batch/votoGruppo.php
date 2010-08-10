@@ -27,7 +27,7 @@ if ($argv[1])
     $c = new Criteria();
     $crit0 = $c->getNewCriterion(OppGruppoRamoPeer::RAMO, $seduta->getRamo());
     $crit1 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_INIZIO, $seduta->getData(), Criteria::LESS_EQUAL);
-    $crit2 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_FINE, $seduta->getData(), Criteria::GREATER_EQUAL);
+    $crit2 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_FINE, $seduta->getData(), Criteria::GREATER_THAN);
     $crit3 = $c->getNewCriterion(OppGruppoRamoPeer::DATA_FINE, NULL, Criteria::ISNULL);
     $crit2->addOr($crit3);
     $crit0->addAnd($crit1);

@@ -34,7 +34,7 @@ $cton->addOr($c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criter
 $c->add($cton);
 */
 $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data_votazione, Criteria::LESS_EQUAL);
-$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_EQUAL);
+$cton4 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data_votazione, Criteria::GREATER_THAN);
 $cton5 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
   $cton4->addOr($cton5);
   $c->add($cton4);
