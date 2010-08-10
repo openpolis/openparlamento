@@ -28,7 +28,6 @@ $crit3->addAnd($crit4);
 $crit0->addOr($crit3);
 
 $c->add($crit0);
-$c->add(OppCaricaPeer::ID,332779);
 
 $cariche = OppCaricaPeer::doSelect($c);
 
