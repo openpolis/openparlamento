@@ -17,7 +17,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 			$con = Propel::getConnection(self::DATABASE_NAME);
 		}
 		
-		$sql = sprintf("select carica_id from opp_carica_has_gruppo where gruppo_id=%d and data_inizio < '%s' and (data_fine >= '%s' or data_fine is null);",
+		$sql = sprintf("select carica_id from opp_carica_has_gruppo where gruppo_id=%d and data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
                     $gruppo_id, $data, $data);
 
     $stm = $con->createStatement(); 
