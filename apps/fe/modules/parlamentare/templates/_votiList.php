@@ -17,7 +17,11 @@
     <?php foreach ($pager->getResults() as $votazione_has_carica): ?>
       <?php $votazione = $votazione_has_carica->getOppVotazione(); ?>
       <?php $voto_parlamentare =  $votazione_has_carica->getVoto() ?>
-      <?php $voto_gruppo = $votazione->getVotoGruppo($id_gruppo_corrente) ?>
+      <?php $data_voto= $votazione->getOppSeduta()->getData()?>
+      
+      <?php $gruppo=$votazione_has_carica->getOppCarica()->getGruppo($data_voto) ?>
+      <?php $voto_gruppo= $votazione->getVotoGruppo($gruppo->getId()) ?>
+      <?php //$voto_gruppo = $votazione->getVotoGruppo($id_gruppo_corrente) ?>
       <tr class="<?php echo ribelleStyle($voto_parlamentare, $voto_gruppo) ?>">
         <th scope="row">
         <p class="content-meta">
@@ -26,7 +30,7 @@
         <p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p>
         </th>
         <td><p><?php echo $voto_parlamentare ?></p></td>
-        <td><p><?php echo $voto_gruppo?></p></td>
+        <td><p><?php echo "<small style='color:gray'>".$gruppo->getAcronimo()."</small><br/>"?><?php echo $voto_gruppo?></p></td>
   	    <td>
     		  <?php if($votazione->getEsito()=='APPROVATA'): ?>
     		    <?php $class = "green thumb-approved"; ?>
