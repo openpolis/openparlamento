@@ -5,4 +5,4 @@
 ./symfony opp-rebuild-deltas
 ./symfony opp-calcola-nuovo-indice
 ./symfony opp-calcola-rilevanza-atti
-
+./symfony opp-calcola-rilevanza-tag

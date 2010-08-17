@@ -6,4 +6,4 @@ export data=`php -r"echo date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-0
 ./symfony opp-rebuild-deltas --data=$data
 ./symfony opp-calcola-nuovo-indice --data=$data
 ./symfony opp-calcola-rilevanza-atti --data=$data
-
+./symfony opp-calcola-rilevanza-tag --data=$data
