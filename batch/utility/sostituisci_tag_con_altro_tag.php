@@ -275,7 +275,8 @@ if (count($tag_old)==count($tag_new))
   }
   
   //SOSTITUISCI TAG MONITORATI CON NUOVO TAG
-  
+  $number_monitor_ok=0;
+  $number_monitor_no=0;
   foreach ($tag_old as $k=>$old)
   {
     $c= new Criteria();
@@ -294,9 +295,14 @@ if (count($tag_old)==count($tag_new))
         $rs->setMonitorableId($tag_new[$k]);
         //$rs->save();
         echo "Monitoraggio cambiato: ".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
+        $number_monitor_ok=$number_monitor_ok+1;
       }
       else
+      {
+        $number_monitor_no=$number_monitor_no+1;
         echo "!!!! DOPPIONE".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
+      }
+        
     }
   }
 }
@@ -304,5 +310,6 @@ else
   echo "!!!!! Gli array hanno un numero di elementi diversi!";
 
 echo "\n============\n".$number_tagging_ok." - ".$number_tagging_no;
+echo "\n============\n".$number_monitor_ok." - ".$number_monitor_no;
 
 ?>
