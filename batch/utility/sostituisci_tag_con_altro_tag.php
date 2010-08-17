@@ -301,7 +301,7 @@ if (count($tag_old)==count($tag_new))
   }
 }
 else
-  echo "!!!!! Gli array hanno un numero di elementi diversi!"
+  echo "!!!!! Gli array hanno un numero di elementi diversi!";
 
 echo "\n============\n".$number_tagging_ok." - ".$number_tagging_no;
 
