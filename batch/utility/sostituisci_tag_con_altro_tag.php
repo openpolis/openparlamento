@@ -247,6 +247,8 @@ $tag_new=array(17,
 
 if (count($tag_old)==count($tag_new))
 {
+  $number_tagging_ok=0;
+  $number_tagging_no=0;
   //SOSTITUISCI OGGETTI TAGGATI CON NUOVO TAG
   foreach ($tag_old as $k=>$old)
   {
@@ -265,11 +267,15 @@ if (count($tag_old)==count($tag_new))
         $rs->setTagId($tag_new[$k]);
         //$rs->save();
         echo "sostituito ".$old." con ".$tag_new[$k]." in ".$rs->getTaggableId()."\n";
+        $number_tagging_ok=$number_tagging_ok+1;
       }
+      else
+        $number_tagging_no=$number_tagging_no+1;
     }
   }
   
   //SOSTITUISCI TAG MONITORATI CON NUOVO TAG
+  
   foreach ($tag_old as $k=>$old)
   {
     $c= new Criteria();
@@ -297,6 +303,6 @@ if (count($tag_old)==count($tag_new))
 else
   echo "!!!!! Gli array hanno un numero di elementi diversi!"
 
-
+echo "\n============\n".$number_tagging_ok." - ".$number_tagging_no;
 
 ?>
