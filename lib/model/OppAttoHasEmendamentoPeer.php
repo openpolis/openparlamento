@@ -38,7 +38,7 @@ class OppAttoHasEmendamentoPeer extends BaseOppAttoHasEmendamentoPeer
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     $rs->next();
     $row = $rs->getRow();
-    return  $row['cnt']*1250;
+    return  $row['cnt'];
   }
 
 
