@@ -17,6 +17,7 @@ sfContext::getInstance();
 
 $c= new Criteria();
 $c->add(OppAttoPeer::TIPO_ATTO_ID,array(2,3,4,5,6,7,8,9,10,11), Criteria::IN);
+$c->addDescendingOrderByColumn(OppAttoPeer::CREATED_AT);
 $attos=OppAttoPeer::doSelect($c);
 foreach ($attos as $atto)
 {
