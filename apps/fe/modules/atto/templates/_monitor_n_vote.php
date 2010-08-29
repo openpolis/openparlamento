@@ -1,4 +1,4 @@
-<?php use_helper('deppVotingYesNo', 'deppLaunching') ?>
+<?php use_helper('deppVotingYesNo', 'deppPrioritising', 'deppLaunching') ?>
 
 <div id="monitor-n-vote">
 
@@ -23,10 +23,15 @@
   <?php echo depp_voting_block_no_ajax($atto, $sf_flash->has('depp_voting_message')?$sf_flash->get('depp_voting_message'):'') ?>
   <hr class="dotted" />
   
-   <!-- blocco lanci home x admin -->
+   <!-- blocco lanci home x admin e priorita atti -->
   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <h6>lanci in home page</h6>
     <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'home')); ?>    
     <hr class="dotted" />
+
+    <h6>assegna priorit&agrave; a questo atto</h6>
+    <?php echo depp_prioritising_block($atto,
+        $sf_flash->has('depp_prioritising_message')?$sf_flash->get('depp_prioritising_message'):'') ?>
+    
   <?php endif ?>
 </div>

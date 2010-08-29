@@ -1,0 +1,24 @@
+ul#prioritising-items {
+  margin: 10px;
+}
+
+ul#prioritising-items li {
+  display: inline;
+  font-size: 14px;
+  padding: 2px 8px; margin: 2px;
+  border: 1px solid #666;
+}
+
+ul#prioritising-items li a {
+  font-weight: bold;
+  color: #4472AC;
+}
+
+ul#prioritising-items li a:visited {
+  color: #4472AC;
+}
+
+ul#prioritising-items li.current {
+  background-color: #4472AC;
+  color: white;
+}

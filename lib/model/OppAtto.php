@@ -684,6 +684,13 @@ sfPropelBehavior::add(
 
 sfPropelBehavior::add(
   'OppAtto', 
+  array('deppPropelActAsPrioritisableBehavior' =>
+        array('max_priority'    => 3,
+              'priority_field'    => 'Priority',
+              'null_priority'=> true)));
+
+sfPropelBehavior::add(
+  'OppAtto', 
   array('deppPropelActAsTaggableBehavior' => array()));
 
 sfPropelBehavior::add(

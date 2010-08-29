@@ -1,0 +1,16 @@
+propel:
+  _attributes:              { package: plugins.deppPropelActAsPrioritisableBehaviorPlugin.lib.model }
+
+  sf_priority:
+    _attributes:            { phpName: sfPriority, package: plugins.deppPropelActAsPrioritisableBehaviorPlugin.lib.model }
+    id:
+    prioritisable_model:    { type: varchar, size: 50, required: true }
+    prioritisable_id:       { type: integer, required: true }
+    user_id:                { type: integer }
+    priority:               { type: integer, required: true, default: 1 }
+    created_at:
+    updated_at:
+    _indexes:
+      prioritisable_index:  [prioritisable_model, prioritisable_id]
+
+  
