@@ -29,7 +29,7 @@ if (!defined('TEST_CLASS') or !class_exists(TEST_CLASS))
 }
 
 // start tests
-$t = new lime_test(14, new lime_output_color());
+$t = new lime_test(16, new lime_output_color());
 
 $t->diag('deppPropelActAsPrioritisableBehaviorPlugin API unit test');
 
@@ -54,9 +54,19 @@ $method_setter = TEST_METHOD_SETTER;
 
 
 
-// clean the database
-sfPriorityPeer::doDeleteAll();
-call_user_func(array(_create_object()->getPeer(), 'doDeleteAll'));
+// remove the prioritisable objects (and thus their priorities)
+// and tests the preDelete method
+$c = new Criteria();
+$prioritisable_objects = call_user_func(array(_create_object()->getPeer(), 'doSelect'), $c);
+foreach ($prioritisable_objects as $po) {
+  $po->delete();
+}
+
+
+$c = new Criteria();
+$c->add(sfPriorityPeer::PRIORITISABLE_MODEL, 'sfTestPrioritisable');
+$priorities = sfPriorityPeer::doSelect($c);
+$t->ok(count($priorities) == 0, 'all priorities related to sfTestPrioritisable objects have been removed');
 
 // an object is created and a test on the countPriorities and getPriority values is performed
 $obj1 = _create_object();
@@ -128,16 +138,16 @@ $t->ok($obj2->hasBeenPrioritised() == false, 'hasBeenPrioritised() obj2 has NOT 
 sfConfig::set(
     sprintf('propel_behavior_sfPropelActAsRatableBehavior_%s_reference_field', 
             get_class($obj1)), '');
-$t->is($obj1->getReferenceKey(), $obj1->getPrimaryKey(), 'getReferenceKey() get the primary key as default');
+$t->is($obj1->getPrioritisableReferenceKey(), $obj1->getPrimaryKey(), 'getReferenceKey() get the primary key as default');
 
 
 // test the getLastUser method
 $t->ok($obj1->getPriorityLastUser() == $user_2_id, 'getPriorityLastUser last user that set the priority is user2');
 $t->ok($obj1->getPriorityLastUpdate('U') == $time, sprintf('getPriorityLastUpdate: obj1 was last updated at %s', $obj1->getPriorityLastUpdate()));
 
-// thest the clearPriority() method
-// $res = $obj1->clearPriority();
-// $t->ok($obj1->hasBeenPrioritised() == false, 'clearPriority() remove the priority from an object');
+// test the clearPriority() method
+$res = $obj1->clearPriority();
+$t->ok($obj1->hasBeenPrioritised() == false, 'clearPriority() remove the priority from an object');
 
 
 // first user tries to express the neutral opinion, when allowed

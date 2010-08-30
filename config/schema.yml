@@ -44,7 +44,6 @@ propel:
     nb_commenti:        { type: integer, required: true, default: 0 }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     n_interventi:       { type: integer, required: true, default: 0, index: multiple }
-    priority:          { type: integer }    
     created_at:
 
   opp_atto_has_iter:

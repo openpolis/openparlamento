@@ -68,29 +68,19 @@ class deppPropelActAsPrioritisableBehavior
     $priority_object->setPriority($priority);
     $ret = $priority_object->save();
     
-    // set cached priority values into object field
-    self::setPriorityCacheToObject($object, $priority);
-
     return $ret;
   }
   
 
   /**
    * Retrieves the object priority
-   * by default, retrieves it by reading the value in the sf_priority table
-   * to force a read from the cache, set the cached params to true
    *
    * @param  BaseObject  $object
    * @param  boolean     wether to read the cached value or not (default: no)
    * @return integer
    **/
-  public function getPriorityValue(BaseObject $object, $cached = false)
+  public function getPriorityValue(BaseObject $object)
   {
-    if ($cached === true && !is_null(self::getObjectPriorityField($object)))
-    {
-      return self::getPriorityCacheFromObject($object);
-    }
-    
     $p = sfPriorityPeer::getPriorityObject($object);
     if ($p) {
       return $p->getPriority();
@@ -164,8 +154,6 @@ class deppPropelActAsPrioritisableBehavior
     $c->add(sfPriorityPeer::PRIORITISABLE_MODEL, get_class($object));
     $priority = sfPriorityPeer::doSelectOne($c);
     $priority->delete();
-
-    return $ret;
   }
 
   
@@ -331,69 +319,6 @@ class deppPropelActAsPrioritisableBehavior
 
 
 
-
-
-
-  /**
-   * Retrieves priority_fields phpName from configuration
-   * 
-   * @param  BaseObject  $object
-   * @return hash (1 => 'NFavour', -1 => 'NAgainst')
-   */
-  protected static function getObjectPriorityField(BaseObject $object)
-  {
-    return sfConfig::get(
-      sprintf('propel_behavior_deppPropelActAsPrioritisableBehavior_%s_priority_field', 
-              get_class($object)));
-  }
-
-  /**
-   * Sets cached priority value to the object
-   * 
-   * @param  BaseObject  $object
-   * @param  integer     $value
-   */
-  protected static function setPriorityCacheToObject(BaseObject $object, $value)
-  {
-    $field = self::getObjectPriorityField($object);
-    if (!is_null($field)) 
-    {
-      $setter = 'set'.$field;
-      if (method_exists($object, $setter))
-      {
-        if (is_null($value))
-          $object->$setter(null);
-        else
-          $object->$setter($value);      
-      }
-      return $object->save();
-    }
-  } 
-  
-  /**
-   * Return cached priority value from object
-   * 
-   * @param  BaseObject  $object
-   * @return integer     $value
-   */
-  protected static function getPriorityCacheFromObject(BaseObject $object)
-  {
-    $field = self::getObjectVotingField($object);
-    if (!is_null($field)) 
-    {
-      $details = array();
-      $getter = 'get'.$field; 
-      if (method_exists($object, $getter))
-      {
-        $v = $object->$getter();
-        if (!is_null($v))
-          return $v;
-      }        
-    }
-    return null;
-  }
-  
-  
   /**
    * Retrieve an existing priority object, or return a new empty one
    *
