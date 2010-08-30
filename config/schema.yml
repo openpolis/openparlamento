@@ -542,7 +542,6 @@ propel:
     _attributes:       { phpName: sfTestPrioritisable }
     id:
     title:             { type: varchar(50), required: true, default: 'Nessun titolo' }
-    priority:          { type: integer }
 
   sf_test_monitorable:
     _attributes:         { phpName: sfTestMonitorable }
