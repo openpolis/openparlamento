@@ -43,8 +43,11 @@ if (count($tags)==count($macrotags))
             $t=TagPeer::retrieveByPk($macrotags[$k][$x]);
             if ($t)
             {
-              $rs->setTagId($macrotags[$k][$x]);
-              $rs->save();
+              $insert=new Tagging();
+              $insert->setTagId($macrotags[$k][$x]);
+              $insert->setTaggableId($rs->getTaggableId());
+              $insert->setTaggableModel($rs->getTaggableModel());
+              $insert->save();
               echo "++++++++++++++++++++++++++++++++++++++++++ aggiunto ".$macrotags[$k][$x]." - ".$t->getTripleValue()." in ".$rs->getTaggableId()."\n";
               $number_tagging_ok=$number_tagging_ok+1;
             }
