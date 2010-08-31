@@ -20,7 +20,7 @@ foreach ($news as $n)
 {
   $tag=TagPeer::retrieveByPk($n->getRelatedMonitorableId());
   if (!$tag)
-    echo "tag id=".$n->getRelatedMonitorableId()." non esiste\n";
+    echo "tag id=".$n->getRelatedMonitorableId().", trovato nelle news id=".$n->getId()." non esiste\n";
     
 }
 
