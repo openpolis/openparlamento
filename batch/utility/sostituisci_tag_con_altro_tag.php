@@ -1,12 +1,13 @@
 <?php
 
 /*
-lo script sostituisci gli oggetti taggati con tag_old con tag_new
+lo script sostituisce gli oggetti taggati e i monitoraggi con tag_old con tag_new 
+cancella le news relative a tag_old e cancella tag_old.
 */
  
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
 define('SF_APP',         'fe');
-define('SF_ENVIRONMENT', 'dev');
+define('SF_ENVIRONMENT', 'prod');
 define('SF_DEBUG',       false);
  
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
@@ -257,20 +258,29 @@ if (count($tag_old)==count($tag_new))
     $results=TaggingPeer::doSelect($c);
     foreach($results as $rs)
     {
-      $c= new Criteria();
-      $c->add(TaggingPeer::TAG_ID,$tag_new[$k]);
-      $c->add(TaggingPeer::TAGGABLE_ID,$rs->getTaggableId());
-      $c->add(TaggingPeer::TAGGABLE_MODEL,$rs->getTaggableModel());
-      $r=TaggingPeer::doSelectOne($c);
-      if (!$r)
+      $obj_tag=TagPeer::retrieveByPk($tag_new[$k]);
+      if ($obj_tag)
       {
-        $rs->setTagId($tag_new[$k]);
-        //$rs->save();
-        echo "sostituito ".$old." con ".$tag_new[$k]." in ".$rs->getTaggableId()."\n";
-        $number_tagging_ok=$number_tagging_ok+1;
+        $c= new Criteria();
+        $c->add(TaggingPeer::TAG_ID,$tag_new[$k]);
+        $c->add(TaggingPeer::TAGGABLE_ID,$rs->getTaggableId());
+        $c->add(TaggingPeer::TAGGABLE_MODEL,$rs->getTaggableModel());
+        $r=TaggingPeer::doSelectOne($c);
+        if (!$r)
+        {
+          $rs->setTagId($tag_new[$k]);
+          $rs->save();
+          echo "sostituito ".$old." con ".$tag_new[$k]." in ".$rs->getTaggableId()."\n";
+          $number_tagging_ok=$number_tagging_ok+1;
+        }
+        else
+        {
+          $rs->delete();
+          $number_tagging_no=$number_tagging_no+1;
+        }
       }
       else
-        $number_tagging_no=$number_tagging_no+1;
+       echo "non esiste tag con id=".$tag_new[$k]."\n";
     }
   }
   
@@ -285,26 +295,53 @@ if (count($tag_old)==count($tag_new))
     $results=MonitoringPeer::doSelect($c);
     foreach($results as $rs)
     {
-      $c= new Criteria();
-      $c->add(MonitoringPeer::MONITORABLE_ID,$tag_new[$k]);
-      $c->add(MonitoringPeer::MONITORABLE_MODEL,'Tag');
-      $c->add(MonitoringPeer::USER_ID,$rs->getUserId());
-      $r=MonitoringPeer::doSelectOne($c);
-      if (!$r)
+      $obj_tag=TagPeer::retrieveByPk($tag_new[$k]);
+      if ($obj_tag)
       {
-        $rs->setMonitorableId($tag_new[$k]);
-        //$rs->save();
-        echo "Monitoraggio cambiato: ".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
-        $number_monitor_ok=$number_monitor_ok+1;
-      }
-      else
-      {
-        $number_monitor_no=$number_monitor_no+1;
-        echo "!!!! DOPPIONE".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
-      }
-        
+        $c= new Criteria();
+        $c->add(MonitoringPeer::MONITORABLE_ID,$tag_new[$k]);
+        $c->add(MonitoringPeer::MONITORABLE_MODEL,'Tag');
+        $c->add(MonitoringPeer::USER_ID,$rs->getUserId());
+        $r=MonitoringPeer::doSelectOne($c);
+        if (!$r)
+        {
+          $rs->setMonitorableId($tag_new[$k]);
+          $rs->save();
+          echo "Monitoraggio cambiato: ".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
+          $number_monitor_ok=$number_monitor_ok+1;
+        }
+        else
+        {
+          $rs->delete();
+          $number_monitor_no=$number_monitor_no+1;
+          echo "!!!! DOPPIONE".$old." con ".$tag_new[$k]." per utente ".$rs->getUserId()."\n";
+        }
+      } 
     }
   }
+  
+  //Cancella tutte le news legate ai vecchi tags
+  foreach ($tag_old as $k=>$old)
+  {
+    $news=NewsPeer::getNewsRelatedToMonitorableModelAndId('Tag',$old);
+    foreach($news as $new)
+    {
+      $new->delete();
+      echo "cancello news \n";
+    }
+  }
+  
+  //Cancella i tag vecchi
+  foreach ($tag_old as $k=>$old)
+  {
+    $tag=TagPeer::retrieveByPk($old);
+    if ($tag)
+    {
+      $tag->delete();
+      echo "cancello tag \n"; 
+    }
+  }
+  
 }
 else
   echo "!!!!! Gli array hanno un numero di elementi diversi!";
