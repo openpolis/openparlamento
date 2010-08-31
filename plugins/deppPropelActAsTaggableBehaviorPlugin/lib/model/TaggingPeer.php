@@ -14,14 +14,15 @@ class TaggingPeer extends BaseTaggingPeer
  * estrae la lista dei tag con il numero di atti  associati per ogni tag
  *
  * @param string $value indica il tipo di oggetto taggato (OppAtto o OppEmendamento)
+ * @param @param array $tipo indica il tipo di tag (user,teseo, geoteseo,op)
  * @return void
  * @author Ettore Di Cesare
  */
-public function CountTagForAtti($value)
+public function CountTagForAtti($value, $tipo="('teseo','geoteseo','user','op')")
 {
   $con = Propel::getConnection(self::DATABASE_NAME);
 
-  $sql = sprintf("select count(*) as cn, t.id as id, t.triple_value as value from sf_tagging tg,sf_tag t where t.id=tg.tag_id and taggable_model='".$value."' and (t.triple_namespace='user' or t.triple_namespace='teseo')  group by t.id");
+  $sql = sprintf("select count(*) as cn, t.id as id, t.triple_value as value from sf_tagging tg,sf_tag t where t.id=tg.tag_id and taggable_model='".$value."' and t.triple_namespace in ". $tipo ." group by t.id");
   $stm = $con->createStatement(); 
   $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
