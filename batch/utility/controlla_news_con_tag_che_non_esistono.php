@@ -15,12 +15,13 @@ sfContext::getInstance();
 
 $c= new Criteria();
 $c->add(NewsPeer::RELATED_MONITORABLE_MODEL,'Tag');
-$news=TagPeer::doSelect($c);
+$news=NewsPeer::doSelect($c);
 foreach ($news as $n)
 {
   $tag=TagPeer::retrieveByPk($n->getRelatedMonitorableId());
   if (!$tag)
     echo "tag id=".$n->getRelatedMonitorableId()." non esiste\n";
+    
 }
 
 ?>
