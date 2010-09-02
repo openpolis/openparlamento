@@ -52,7 +52,7 @@ if (count($tags)==count($macrotags))
               $number_tagging_ok=$number_tagging_ok+1;
             }
             else
-              echo "!!!! non esiste tag con id=".$macrotags[$k][$x]."\n";
+              echo "!!!! non esiste Macrotags con id=".$macrotags[$k][$x]."\n";
             
           }
           else
