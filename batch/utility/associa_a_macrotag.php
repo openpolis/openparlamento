@@ -2,6 +2,8 @@
 
 /*
 lo script associa gli oggetti taggati con tags con macrotags
+in input
+- 0 Tuuti gli oggetti, 1 solo gli atti (non gli emendamenti)
 */
  
 define('SF_ROOT_DIR',    realpath(dirname(__FILE__).'/../..'));
@@ -25,6 +27,8 @@ if (count($tags)==count($macrotags))
   {
     $c= new Criteria();
     $c->add(TaggingPeer::TAG_ID,$tag);
+    if ($argv[1]==1)
+      $c->add(TaggingPeer::TAGGABLE_MODEL,'OppAtto');
     $results=TaggingPeer::doSelect($c);
     $number=$number+count($results);
     foreach($results as $rs)
