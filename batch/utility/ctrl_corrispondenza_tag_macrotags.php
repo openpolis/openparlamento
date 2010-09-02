@@ -34,7 +34,7 @@ if (count($tags)==count($macrotags))
         if ($mt)
           echo $result->getId()."\t".$result->getTripleValue()."\t".$mt->getId()."\t".$mt->getTripleValue()."\n";
         elseif ($macrotags[$k][$x]!=0)
-          echo "!!!! \t errore non esiste macrotag=\t".$macrotags[$k][$x]."\t\n";
+          echo "!!!! ".$result->getId()."\t".$result->getTripleValue()." \t errore non esiste macrotag=\t".$macrotags[$k][$x]."\n";
       }
     }  
     else
