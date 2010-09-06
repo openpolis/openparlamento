@@ -21,7 +21,7 @@
             <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
             <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
             <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
-            <td><p><?php echo link_to("vai all'intervento", (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$intervento_singolo) ) ?></p></td>
+            <td><p><?php echo link_to("vai all'intervento", (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://www.camera.it/').$intervento_singolo) ) ?></p></td>
           </tr>
           <?php $limit_count++; ?>
         <?php else: ?>
@@ -58,7 +58,7 @@
                 <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
                 <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
                 <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
-                <td><p><?php echo link_to("vai all'intervento", $intervento_singolo) ?></p></td>
+                <td><p><?php echo link_to("vai all'intervento", (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://www.camera.it/').$intervento_singolo) ) ?></p></td>
               </tr>
             <?php else: ?>
               <?php $limit_count++; ?>  	  
