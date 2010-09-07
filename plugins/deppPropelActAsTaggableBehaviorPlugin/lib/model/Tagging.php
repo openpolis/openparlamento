@@ -20,12 +20,9 @@ class Tagging extends BaseTagging
 
 /**
  * tagging an object, generates news related to the tag (that is monitored)
- **/
-/* 
+ **/ 
 sfPropelBehavior::add(
   'Tagging',
   array('deppPropelActAsNewsGeneratorBehavior' =>
         array('monitorable_models' => array( 'Tag' => 'getTag'),
-              'priority'           => '1')));
-              
-*/              
+              'priority'           => '1')));             
