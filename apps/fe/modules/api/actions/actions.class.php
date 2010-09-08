@@ -17,7 +17,49 @@ class apiActions extends sfActions
   var $xlink_ns = 'http://www.w3.org/1999/xlink';
 
 
+  public function executeGetNumeroAtti()
+  {
+    $c= new Criteria();
+    $number=OppAttoPeer::doCount($c);
+    $resp_node = new SimpleXMLElement('<openparlamento_response></openparlamento_response>');
+    $number_node = $resp_node->addChild('numero_atti',$number);
+    $this->xmlContent = $resp_node->asXML();
 
+    $this->response->setContentType('text/xml; charset=utf-8');
+    $this->response->setHttpHeader('Content-Length: ',  strlen($this->xmlContent));
+    $this->setLayout(false);
+    
+  }  
+  
+  public function executeGetNumeroEmendamenti()
+  {
+    $c= new Criteria();
+    $number=OppEmendamentoPeer::doCount($c);
+    $resp_node = new SimpleXMLElement('<openparlamento_response></openparlamento_response>');
+    $number_node = $resp_node->addChild('numero_emendamenti',$number);
+    $this->xmlContent = $resp_node->asXML();
+
+    $this->response->setContentType('text/xml; charset=utf-8');
+    $this->response->setHttpHeader('Content-Length: ',  strlen($this->xmlContent));
+    $this->setLayout(false);
+    
+  }  
+  
+  public function executeGetNumeroVotazioni()
+   {
+     $c= new Criteria();
+     $c->addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
+     $c->add(OppSedutaPeer::LEGISLATURA,16,Criteria::GREATER_EQUAL);
+     $number=OppVotazionePeer::doCount($c);
+     $resp_node = new SimpleXMLElement('<openparlamento_response></openparlamento_response>');
+     $number_node = $resp_node->addChild('numero_voti',$number);
+     $this->xmlContent = $resp_node->asXML();
+
+     $this->response->setContentType('text/xml; charset=utf-8');
+     $this->response->setHttpHeader('Content-Length: ',  strlen($this->xmlContent));
+     $this->setLayout(false);
+
+   }
 
   public function executeGetPolImage()
   {
