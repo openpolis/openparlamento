@@ -163,7 +163,7 @@ class feedActions extends sfActions
       'sy_updateBase' => '2000-01-01T12:00+00:00'	    
     ));
 
-    $atti = OppAttoPeer::getAttiInEvidenza();
+    $atti = OppAttoPeer::getAttiInEvidenza('lex');
     foreach ($atti as $atto)
     {
       $description =  $atto->getOppTipoAtto()->getDescrizione() . ($atto->getRamo()=='C' ? ' alla Camera' : ' al Senato');

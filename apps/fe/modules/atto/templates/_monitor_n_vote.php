@@ -29,6 +29,10 @@
     <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'home')); ?>    
     <hr class="dotted" />
 
+    <h6>in evidenza per CittadinoLex</h6>
+    <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'lex')); ?>    
+    <hr class="dotted" />
+
     <h6>assegna priorit&agrave; a questo atto</h6>
     <?php echo depp_prioritising_block($atto,
         $sf_flash->has('depp_prioritising_message')?$sf_flash->get('depp_prioritising_message'):'') ?>
