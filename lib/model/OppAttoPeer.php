@@ -207,6 +207,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     $c = new Criteria();
     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
+    $c->addDescendingOrderByColumn(OppAttoPeer::STATO_LAST_DATE);
     $c->addJoin(sfLaunchingPeer::OBJECT_ID, OppAttoPeer::ID);
     $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppAtto');
