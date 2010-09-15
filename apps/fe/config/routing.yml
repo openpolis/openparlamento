@@ -110,7 +110,10 @@ feed_atto:
   url: /feed/atto/:id
   param: { module: feed, action: lastAtto }
 
-
+feed_atti_in_evidenza:
+  url: /feed/atti_in_evidenza
+  param: { module: feed, action: attiInEvidenza }
+  
 monitoring_news:
   url: /monitoring_news/:user_token/*
   param: { module: monitoring, action: news}

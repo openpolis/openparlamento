@@ -141,6 +141,62 @@ class feedActions extends sfActions
     return sfView::NONE;    
   }
   
+
+  public function executeAttiInEvidenza()
+  {
+    // setlocale(LC_TIME, 'it_IT');
+    sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
+    
+    $feed = new sfRss2ExtendedFeed();
+    $feed->initialize(array(
+      'title'       => 'Atti in evidenza',
+      'link'        => url_for('@homepage', true),
+      'feedUrl'     => $this->getRequest()->getURI(),
+      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+      'language'    => 'it',
+      'authorEmail' => 'info@openparlamento.it',
+      'authorName'  => 'Openparlamento',
+      'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+      'sy_updatePeriod' => 'daily',
+      'sy_updateFrequency' => '1',
+      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
+    ));
+
+    $atti = OppAttoPeer::getAttiInEvidenza();
+    foreach ($atti as $atto)
+    {
+      $description =  $atto->getOppTipoAtto()->getDescrizione() . ($atto->getRamo()=='C' ? ' alla Camera' : ' al Senato');
+    	
+    	$f_signers = OppAttoPeer::doSelectPrimiFirmatari($atto->getId());
+    	if (count($f_signers) > 0)
+    	{
+    		$c = new Criteria();
+    		$c->add(OppPoliticoPeer::ID, key($f_signers));
+    		$f_signer = OppPoliticoPeer::doSelectOne($c);
+    		$description .= ' di ' . $f_signer->getCognome() . (count($f_signers)>1 ? ' e altri' : '');    	
+    	}
+      $description .= ", presentato il " . $atto->getDataPres('d/M/Y');
+    	
+      $item = new sfRss2ExtendedItem();
+      $item->initialize( array(
+        'title' => Text::denominazioneAtto($atto, 'list'),
+        'link'  => url_for('@singolo_atto?id='.$atto->getId(), true),
+        'permalink' => url_for('@singolo_atto?id='.$atto->getId(), true),
+        'pubDate' => $atto->getStatoLastDate('U') ? $atto->getStatoLastDate('U') : $atto->getDataPres('U'),
+        'uniqueId' => $atto->getId(),
+        'description' => $description,
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',        
+      ));
+      $feed->addItem($item);
+    }
+
+    $this->_send_output($feed);
+    return sfView::NONE;    
+  }
+  
+  
   protected function _send_output($feed)
   {
     $this->setLayout(false);    
