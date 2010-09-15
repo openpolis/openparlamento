@@ -107,7 +107,7 @@ function data_format($data_string)
 
 $alfabeto = array("A", "B", "C", "D", "E", "F" ,"G" ,"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" ,"U", "V", "W","Y","X","Z");
 
-$alfabeto=array("S");
+//$alfabeto=array("S");
 
 foreach($alfabeto as $lettera)
 {
