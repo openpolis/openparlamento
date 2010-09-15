@@ -144,7 +144,9 @@ class feedActions extends sfActions
 
   public function executeAttiInEvidenza()
   {
-    // setlocale(LC_TIME, 'it_IT');
+    $namespace = $this->getRequestParameter('namespace');
+    
+    setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
     $feed = new sfRss2ExtendedFeed();
@@ -163,7 +165,7 @@ class feedActions extends sfActions
       'sy_updateBase' => '2000-01-01T12:00+00:00'	    
     ));
 
-    $atti = OppAttoPeer::getAttiInEvidenza('lex');
+    $atti = OppAttoPeer::getAttiInEvidenza($namespace);
     foreach ($atti as $atto)
     {
       $description =  $atto->getOppTipoAtto()->getDescrizione() . ($atto->getRamo()=='C' ? ' alla Camera' : ' al Senato');

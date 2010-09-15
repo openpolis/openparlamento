@@ -111,8 +111,8 @@ feed_atto:
   param: { module: feed, action: lastAtto }
 
 feed_atti_in_evidenza:
-  url: /feed/atti_in_evidenza
-  param: { module: feed, action: attiInEvidenza }
+  url: /feed/atti_in_evidenza/:namespace
+  param: { module: feed, action: attiInEvidenza, namespace: all }
   
 monitoring_news:
   url: /monitoring_news/:user_token/*

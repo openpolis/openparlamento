@@ -203,7 +203,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   }
   
   
-  public static function getAttiInEvidenza($namespace = null)
+  public static function getAttiInEvidenza($namespace = 'all')
   {
     $c = new Criteria();
     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
@@ -211,7 +211,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     $c->addJoin(sfLaunchingPeer::OBJECT_ID, OppAttoPeer::ID);
     $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppAtto');
-    if (!is_null($namespace)) {
+    if ($namespace != 'all') {
       $c->add(sfLaunchingPeer::NAMESPACE, $namespace);
     }
     return OppAttoPeer::doSelect($c);
