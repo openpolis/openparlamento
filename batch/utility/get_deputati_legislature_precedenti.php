@@ -100,7 +100,7 @@ foreach($alfabeto as $lettera)
 {
   if ($leg>=13)
   {
-      $uri=$leg_url."/deputatism/240/documentoxml.asp?sezione=&Lettera=".$lettera;
+      $uri=$leg_url."/deputatism/240/documentoxml.asp?sezione=&Let=".$lettera;
 
 
     $html=file_get_html($uri);
