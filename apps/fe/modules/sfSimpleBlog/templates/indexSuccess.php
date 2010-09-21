@@ -25,11 +25,12 @@
         <?php endforeach; ?>
       </ul>
 
-
       <?php if($post_pager->haveToPaginate()): ?>
-        <?php if($post_pager->getPage() != 1): ?>
+        <?php if($post_pager->getPage() > 1): ?>
           <?php echo link_to(__('< earlier posts'), 'sfSimpleBlog/index?page='.$post_pager->getPreviousPage()) ?>
-        <?php elseif($post_pager->getPage() != $post_pager->getLastPage()): ?>
+	<?php endif ?>
+        &nbsp;&nbsp;&nbsp;
+        <?php if($post_pager->getPage() < $post_pager->getLastPage()): ?>
           <?php echo link_to(__('older posts >'), 'sfSimpleBlog/index?page='.$post_pager->getNextPage()) ?>
         <?php endif; ?>
       <?php endif; ?>
