@@ -76,7 +76,6 @@ class deppPropelActAsPrioritisableBehavior
    * Retrieves the object priority
    *
    * @param  BaseObject  $object
-   * @param  boolean     wether to read the cached value or not (default: no)
    * @return integer
    **/
   public function getPriorityValue(BaseObject $object)
@@ -90,12 +89,11 @@ class deppPropelActAsPrioritisableBehavior
   }
 
   /**
-   * Retrieves the object priority
+   * Retrieves the last user that updated the priority
    * by default, retrieves it by reading the value in the sf_priority table
    * to force a read from the cache, set the cached params to true
    *
    * @param  BaseObject  $object
-   * @param  boolean     wether to read the cached value or not (default: no)
    * @return integer
    **/
   public function getPriorityLastUser(BaseObject $object)
@@ -109,12 +107,11 @@ class deppPropelActAsPrioritisableBehavior
   }
 
   /**
-   * Retrieves the object priority
+   * Retrieves the last timestamp the priority was updated
    * by default, retrieves it by reading the value in the sf_priority table
    * to force a read from the cache, set the cached params to true
    *
    * @param  BaseObject  $object
-   * @param  boolean     wether to read the cached value or not (default: no)
    * @return integer
    **/
   public function getPriorityLastUpdate(BaseObject $object, $format = null)

@@ -20,6 +20,7 @@ class OppIndicePeer
   
   public static $punteggi = array(
      'ddl'           => array('presentazione'       => array('m' => 0.08, 'o' =>   0.08),
+                              'relazione'           => array('m' => 5.00, 'o' =>  10.00),
                               'cofirme_gruppo_lo'   => array('m' => 0.10,  'o' =>  0.10),
                               'cofirme_gruppo_hi'   => array('m' => 0.20,  'o' =>  0.20),
                               'cofirme_altri_lo'    => array('m' => 0.20,  'o' =>  0.20),
@@ -134,7 +135,6 @@ class OppIndicePeer
      'presenze_voti'              => 0.001,
      'presenze_voti_finali'       => 0.1,
      'presenze_voti_magg_battuta' => 0.3,
-     'relatore'                   => array('m' => 5.0, 'o' => 10),
      'emendamenti_soglia'         => 40.,
      'emendamenti_larghezza'      => 100.,
      'emendamenti_soglia_rilevanza' => 200.,

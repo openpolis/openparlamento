@@ -65,7 +65,7 @@ class argomentoComponents extends sfComponents
       if (!array_key_exists($carica_id, $politici))
         $politici[$carica_id] = 0;
 
-      $politici[$carica_id] += OppCaricaHasAttoPeer::get_fattore_firma($tipo) *
+      $politici[$carica_id] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo) *
                                  OppAttoPeer::get_fattore_tipo_atto($tipo_atto_id);
     }
 
@@ -120,7 +120,7 @@ class argomentoComponents extends sfComponents
       if (!array_key_exists($carica_id, $politici))
         $politici[$carica_id] = 0;
 
-      $politici[$carica_id] += OppCaricaHasAttoPeer::get_fattore_firma($tipo) *
+      $politici[$carica_id] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo) *
                                  OppAttoPeer::get_fattore_tipo_atto($tipo_atto_id);
     }
 

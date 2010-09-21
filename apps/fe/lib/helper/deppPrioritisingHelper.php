@@ -58,9 +58,11 @@ function depp_prioritiser($object, $message='', $options = array())
     
     $list_content = '';    
     
+    $object_priority = is_null($object->getPriorityValue()) ? 1 : $object->getPriorityValue();
+    
     for ($i=($object->allowsNullPriority()?0:1); $i<=$object->getMaxPriority(); $i++)
     {
-      if ($object->getPriorityValue() == $i) 
+      if ($object_priority == $i) 
       {
         $label = sprintf(__('Priority last set by user %d at %s'), $object->getPriorityLastUser(), $object->getPriorityLastUpdate('Y-m-d h:i'));
         $image_name = "btn-current-$i.png";  

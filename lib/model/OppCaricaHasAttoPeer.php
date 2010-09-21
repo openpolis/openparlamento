@@ -43,7 +43,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
         break;
       
       case 'R':
-        $val = 0.5;
+        $val = 5.0;
         break; 
         
       case 'C':
@@ -51,7 +51,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
         break;
       
       case 'I':
-        $val = 0.1;
+        $val = 0.2;
         break;
         
       default:
@@ -99,7 +99,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
   public static function getRelazioni($carica_id, $legislatura, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.id, a.data_pres from opp_carica_has_atto ca, opp_carica c, opp_atto a where c.id=ca.carica_id and a.id=ca.atto_id and ca.carica_id=%d and a.data_pres <= '%s' and c.legislatura = %d and ca.tipo='R';",
+    $sql = sprintf("select a.id, a.tipo_atto_id, a.data_pres from opp_carica_has_atto ca, opp_carica c, opp_atto a where c.id=ca.carica_id and a.id=ca.atto_id and ca.carica_id=%d and a.data_pres <= '%s' and c.legislatura = %d and ca.tipo='R';",
                    $carica_id, $data, $legislatura);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

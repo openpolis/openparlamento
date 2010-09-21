@@ -134,48 +134,34 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     $punteggio = 0.;
   
-    // --- componente dell'indice dovuta agli atti ---
-    $atti_node = $content_node->addChild('atti', null, self::$opp_ns);
-    $atti_node->addAttribute('n_atti', 
-                             count($attis));
+    // --- componente dell'indice dovuta agli atti presentati (primo firmatario) ---
+    $n_atti = count($attis);
+    $atti_node = $content_node->addChild('atti_presentati', null, self::$opp_ns);
+    $atti_node->addAttribute('n_atti_presentati', $n_atti);
     
-    if ($verbose)
-      printf("\n  numero atti: %d\n", count($attis));
     $d_punteggio = 0.;
     foreach ($attis as $atto) {
       $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
     }
     $atti_node->addAttribute('totale', $d_punteggio);
+    if ($verbose)
+      printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
     $punteggio += $d_punteggio;
 
     // --- componente indice dovuta alle firme come relatore
-    // TODO: estrarre gli atti di cui è relatore, loop e calcolo punteggio se di maggioranza o opp.
-    //       al momento della presentazione dell'atto.
-    $relazioni = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
-    $n_relazioni = count($relazioni);
-    $relazioni_node = $content_node->addChild('relazioni', null, self::$opp_ns);
-    $relazioni_node->addAttribute('n_relazioni', $n_relazioni);
-
+    $atti_relazionati = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
+    $n_atti_relazionati = count($atti_relazionati);
+    $atti_relazionati_node = $content_node->addChild('atti_relazionati', null, self::$opp_ns);
+    $atti_relazionati_node->addAttribute('n_atti_relazionati', $n_atti_relazionati);
 
     $d_punteggio = 0;
-    foreach ($relazioni as $atto) {
-      $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto['data_pres']);
-      $d_punteggio += $dd_punteggio = self::$punteggi['relatore'][$in_maggioranza?'m':'o'];
-      $relazione_node = $relazioni_node->addChild('relazione', null, self::$opp_ns);
-      $relazione_node->addAttribute('atto_id', $atto['id']);
-      $relazione_node->addAttribute('data_pres', $atto['data_pres']);
-      $relazione_node->addAttribute('schieramento', $in_maggioranza?'m':'o');
-      $relazione_node->addAttribute('punteggio', $dd_punteggio);
-      
-      if ($verbose)
-        printf("    atto: %d - data: %s - schieramento: %s - punteggio: %7.2f\n", 
-               $atto['id'], $atto['data_pres'], $in_maggioranza?'m':'o', $dd_punteggio);        
+    foreach ($atti_relazionati as $atto) {
+      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 
-    $relazioni_node->addAttribute('totale', $d_punteggio);
+    $atti_relazionati_node->addAttribute('totale', $d_punteggio);
     if ($verbose)
-      printf("  relazioni: %d - punteggio: %7.2f\n", $n_relazioni, $d_punteggio);        
-
+      printf("totale atti relazionati: %d - punteggio: %7.2f\n", $n_atti_relazionati, $d_punteggio);
     $punteggio += $d_punteggio;
     
     
@@ -274,15 +260,18 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    * @param integer  $tipo_atto_id
    * @param string   $data
    * @param SimpleXMLElement    $xml_node   
-   * @param boolean   $verbose
+   * @param boolean  $verbose
+   * @param string   $mode presentazione || relazione
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $xml_node, $verbose = false)
+  public static function calcolaIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $xml_node, $verbose = false, $mode = 'presentazione')
   {
     $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
     
     $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+    
     // calcolo se appartiene alla maggioranza o all'opposizione (al momento della presentazione di un atto)
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
     
@@ -295,57 +284,70 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       printf("atto: %10s %15s\n", $atto_id, $tipo_atto);
 
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
+    $atto_node->addAttribute('priorita', $priorita);
     $atto_node->addAttribute('id', $atto_id);    
 
     $punteggio = 0.0;
-    
-    // --- presentazione ---
-    $d_punteggio = self::getPunteggio($tipo_atto, 'presentazione', $in_maggioranza);
-    $punteggio += $d_punteggio;
-    if ($verbose)
-      printf("  presentazione %7.2f\n", $d_punteggio);
-    $presentazione_node = $atto_node->addChild('presentazione', null, self::$opp_ns);
-    $presentazione_node->addAttribute('totale', $d_punteggio);
 
-    // --- consenso ---
-    $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);  
-    $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
-    foreach ($firme_atto as $firma) {
-      $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);
-      if (is_null($relazione)) continue;
-      $n_firme[$relazione] += 1;
-    }
-
-    // TODO: aggiungere controllo se carica cambia nel tempo tra maggioranza e opposizione,
-    //       in caso si decida di avere parametri del consenso differenti tra M e O
-    //       ora sono uguali
-    $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
-    $consenso_node->addAttribute('n_firme', count($firme_atto));
-
-    $d_punteggio = 0.0;
-    foreach ($n_firme as $tipo => $value) {
-      if (!$value) continue;
-
-      $soglia = self::$soglia_cofirme;
-      if ($tipo_atto == 'mozione') $soglia = self::$soglia_cofirme_mozioni;
-      
-      if ($value <= $soglia)
-        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_lo", $in_maggioranza);
-      else
-        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_hi", $in_maggioranza);
-
-      $firme_node = $consenso_node->addChild('firme_'.$tipo, null, self::$opp_ns);
-      $firme_node->addAttribute('n_firme', $value);
-      $firme_node->addAttribute('totale', $dd_punteggio);
-
+    if ($mode == 'relazione') {
+      // --- relazione ---
+      $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
+      $punteggio += $d_punteggio;
       if ($verbose)
-        printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
+        printf("  relazione %7.2f\n", $d_punteggio);
+      $relazione_node = $atto_node->addChild('relazione', null, self::$opp_ns);
+      $relazione_node->addAttribute('totale', $d_punteggio);
     }
-    $punteggio += $d_punteggio;
-    if ($verbose)
-      printf("  totale firme  %7.2f\n", $d_punteggio);
- 
-    $consenso_node->addAttribute('totale', $d_punteggio);
+    
+    if ($mode == 'presentazione') {
+      // --- presentazione ---
+      $d_punteggio = self::getPunteggio($tipo_atto, 'presentazione', $in_maggioranza);
+      $punteggio += $d_punteggio;
+      if ($verbose)
+        printf("  presentazione %7.2f\n", $d_punteggio);
+      $presentazione_node = $atto_node->addChild('presentazione', null, self::$opp_ns);
+      $presentazione_node->addAttribute('totale', $d_punteggio);
+
+      // --- consenso ---
+      $firme_atto = OppCaricaHasAttoPeer::getFirme($atto_id, $data);  
+      $n_firme = array ('gruppo' => 0, 'altri' => 0, 'opp' => 0, 'gov' => 0, 'mia' => 0);
+      foreach ($firme_atto as $firma) {
+        $relazione = OppCaricaPeer::getRelazioneCon($carica_id, $firma['carica_id'], $firma['data']);
+        if (is_null($relazione)) continue;
+        $n_firme[$relazione] += 1;
+      }
+
+      // TODO: aggiungere controllo se carica cambia nel tempo tra maggioranza e opposizione,
+      //       in caso si decida di avere parametri del consenso differenti tra M e O
+      //       ora sono uguali
+      $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
+      $consenso_node->addAttribute('n_firme', count($firme_atto));
+
+      $d_punteggio = 0.0;
+      foreach ($n_firme as $tipo => $value) {
+        if (!$value) continue;
+
+        $soglia = self::$soglia_cofirme;
+        if ($tipo_atto == 'mozione') $soglia = self::$soglia_cofirme_mozioni;
+
+        if ($value <= $soglia)
+          $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_lo", $in_maggioranza);
+        else
+          $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, "cofirme_${tipo}_hi", $in_maggioranza);
+
+        $firme_node = $consenso_node->addChild('firme_'.$tipo, null, self::$opp_ns);
+        $firme_node->addAttribute('n_firme', $value);
+        $firme_node->addAttribute('totale', $dd_punteggio);
+
+        if ($verbose)
+          printf("    firme %s (%d) %7.2f\n", $tipo, $value, $dd_punteggio);
+      }
+      $punteggio += $d_punteggio;
+      if ($verbose)
+        printf("  totale firme  %7.2f\n", $d_punteggio);
+
+      $consenso_node->addAttribute('totale', $d_punteggio);
+    }
       
     
     // --- iter ---
@@ -414,7 +416,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $iter_node->addAttribute('n_passaggi', $n_passaggi);
     $iter_node->addAttribute('totale', $d_punteggio);
 
+    $punteggio = $priorita * $punteggio;
     $atto_node->addAttribute('totale', $punteggio);
+
+    if ($verbose)
+      printf(" totale atto   %7.2f\n", $punteggio);
 
     return $punteggio;
   }
@@ -563,7 +569,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = $n_interventi * self::$punteggi['intervento'];
     if ($verbose)
-      printf("  interventi   %7.2f\n", $d_punteggio);
+      printf("interventi   %7.2f\n", $d_punteggio);
 
     return $d_punteggio;
   }
@@ -577,7 +583,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = $n_presenze * self::$punteggi['presenze_voti'];
     if ($verbose)
-      printf("  presenze ai voti   %7.2f\n", $d_punteggio);
+      printf("presenze ai voti   %7.2f\n", $d_punteggio);
 
     $xml_node->addAttribute('totale', $d_punteggio);
 
@@ -593,7 +599,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = $n_presenze * self::$punteggi['presenze_voti_finali'];
     if ($verbose)
-      printf("  presenze ai voti finali   %7.2f\n", $d_punteggio);
+      printf("presenze ai voti finali   %7.2f\n", $d_punteggio);
 
     $xml_node->addAttribute('totale', $d_punteggio);
 
@@ -611,7 +617,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = $n_presenze * self::$punteggi['presenze_voti_magg_battuta'];
     if ($verbose)
-      printf("  presenze ai voti con maggioranza battuta  %7.2f\n", $d_punteggio);
+      printf("presenze ai voti con maggioranza battuta  %7.2f\n", $d_punteggio);
 
     $xml_node->addAttribute('totale', $d_punteggio);
 

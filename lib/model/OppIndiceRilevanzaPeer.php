@@ -109,6 +109,10 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // il peso di un atto non dipende mai da chi lo ha presentato
     // il coefficiente che si considera è sempre quello di maggioranza
     $di_maggioranza = true;
+
+    // determina la priorità dell'atto
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
@@ -116,6 +120,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     if (is_null($tipo_atto)) return 0;
     
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
+    $atto_node->addAttribute('priorita', $priorita);
     $atto_node->addAttribute('id', $atto_id);    
 
     $punteggio = 0.0;
@@ -290,6 +295,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
     $sedute_con_interventi_node->addAttribute('totale', $d_punteggio_sedute);
     
+    $punteggio = $priorita * $punteggio;
     $atto_node->addAttribute('totale', $punteggio);
 
     return $punteggio;
