@@ -31,7 +31,7 @@ class datiStoriciActions extends sfActions
 
 
     // estrae tutte le date per cui esistono dati di tipo N (indice)
-    $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('N');
+    $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('P');
 
     // reset dei filtri, se richiesto esplicitamente
     if ($this->getRequestParameter('reset_filters', 'false') == 'true')
@@ -70,7 +70,7 @@ class datiStoriciActions extends sfActions
     $this->addFiltersCriteria($c);  
     $this->addListSortCriteria($c);      
     $c->addDescendingOrderByColumn(OppPoliticianHistoryCachePeer::CHI_ID);
-    $c->add(OppPoliticianHistoryCachePeer::CHI_TIPO, 'N');
+    $c->add(OppPoliticianHistoryCachePeer::CHI_TIPO, 'P');
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelect');
