@@ -10,6 +10,26 @@
 class OppGruppoPeer extends BaseOppGruppoPeer
 {
   
+  /**
+   * torna array di OppGruppo a partire da un array di ID
+   *
+   * @param array $ids 
+   * @return array of OppGruppo
+   * @author Guglielmo Celata
+   */
+  public function getRSFromIDArray($ids, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+
+    $sql = sprintf("select g.id, g.nome, g.acronimo from opp_gruppo g where g.id in (%s)",
+                   implode(",", $ids));
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+
+
   public static function getGruppiRamoDataRS($ramo, $data)
   {
     // estrazione dei  gruppi appartenenti a un ramo, in una certa data
