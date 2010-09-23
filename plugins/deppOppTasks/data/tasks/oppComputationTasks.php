@@ -6,6 +6,11 @@
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
+ *
+ * Questi task sono DEPRECATI. In sostituzione, usare i task:
+ * - opp-build-cache-politici --ramo=parlamento (calcola anche le presenze e i ribelli)
+ * - opp-build-cache-atti
+ * - opp-build-cache-tag
  */
 ?>
 <?php

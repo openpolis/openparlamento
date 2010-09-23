@@ -29,9 +29,18 @@ pake_task('opp-rebuild-deltas', 'project_exists');
 pake_desc("aggiorna i dati delle posizioni per gli storici");
 pake_task('opp-rebuild-positions', 'project_exists');
 
+pake_desc("costruisce cache per gli atti");
+pake_task('opp-build-cache-atti', 'project_exists');
+
+pake_desc("costruisce cache per i tag");
+pake_task('opp-build-cache-tag', 'project_exists');
+
 
 /**
  * Calcola o ri-calcola i dati da cachare per i politici
+ * - presenze, assenze, missioni
+ * - indice di attività (nuovo)
+ * - ribellioni
  * Si può specificare:
  * - il ramo (camera, senato, governo, parlamento, tutti*)
  * - la data (da inizio legislatura a quella data)
@@ -68,6 +77,15 @@ function run_opp_build_cache_politici($task, $args, $options)
     $verbose = true;
   }
 
+  // restrizione su un subset di atti/emendamenti per eventuale debug
+  $atti_ids = array();
+  if (array_key_exists('atti', $options)) {
+    $atti_ids = explode(",", $options['atti']);
+  }
+  $emendamenti_ids = array();
+  if (array_key_exists('emendamenti', $options)) {
+    $emendamenti_ids = explode(",", $options['emendamenti']);
+  }
 
   // definisce la data fino alla quale vanno fatti i calcoli
   // data_lookup serve per controllare se i record già esistono
@@ -77,11 +95,10 @@ function run_opp_build_cache_politici($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P');
   }
 
-
-  $msg = sprintf("data: %s, ramo: %s\n", $data, $ramo);
+  $msg = sprintf("calcolo cache per politici data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
 
@@ -95,6 +112,9 @@ function run_opp_build_cache_politici($task, $args, $options)
   } else {
     $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $legislatura_corrente, $data);    
   }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
 
   $cnt = 0;
   while ($parlamentari_rs->next())
@@ -141,7 +161,9 @@ function run_opp_build_cache_politici($task, $args, $options)
     $msg = sprintf("i: %7.2f   p:%4d    a:%4d   m:%4d,   r:%4d", $indice, $presenze, $assenze, $missioni, $ribellioni);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
 
-    echo "\n";
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+
 
   }
 
@@ -490,7 +512,6 @@ function run_opp_rebuild_deltas($task, $args, $options)
 }
 
 
-
 /**
  * calcola o ri-calcola le posizioni per indici e presenze
  * nelle tabelle cache, a una determinata data (o a tutte)
@@ -577,7 +598,6 @@ function run_opp_rebuild_positions($task, $args, $options)
   echo $msg;
   
 }
-
 
 
 function ribellioniDelta($data, $r, $r_1, $r_2)
@@ -692,6 +712,215 @@ function presenzeDelta($data, $r, $r_1, $r_2)
   $missioni_delta = $missioni_1_norm - $missioni_2_norm;
   return array($presenze_delta*100., $assenze_delta*100., $missioni_delta*100.);
 }
+
+
+/**
+ * Calcola o ri-calcola la cache dell'indice di rilevanza degli atti
+ * Si può specificare il una data fino alla quale calcolare la rilevanza
+ * Se sono passati degli ID (argomenti), sono interpretati come ID di atti e il calcolo è fatto solo per loro
+ */
+function run_opp_build_cache_atti($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+
+  $data = '';
+  $verbose = false;
+  $offset = null;
+  $limit = null;
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('verbose', $options)) {
+    $verbose = true;
+  }
+  if (array_key_exists('offset', $options)) {
+    $offset = $options['offset'];
+  }
+  if (array_key_exists('limit', $options)) {
+    $limit = $options['limit'];
+  }
+
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;
+  } else {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d');
+    $data_lookup = OppActHistoryCachePeer::fetchLastData();
+  }
+
+
+  $msg = sprintf("calcolo rilevanza - fino a: %10s\n", $data);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+  $start_time = time();
+  
+  if (count($args) > 0)
+  {
+    try {
+      $atti_rs = OppAttoPeer::getRSFromIDArray($args);            
+    } catch (Exception $e) {
+      throw new Exception("Specificare degli ID validi. \n" . $e);
+    }
+  } else {
+    $atti_rs = OppAttoPeer::getAttiDataRS($data, $offset, $limit);    
+  }
+
+  $n_atti = $atti_rs->getRecordCount();
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $cnt = 0;
+  while ($atti_rs->next())
+  {
+    $a = $atti_rs->getRow();
+
+    $atto_id = $a['id'];
+    $tipo_atto_id = $a['tipo_atto_id'];
+
+    $cnt++;
+
+    if (!array_key_exists($tipo_atto_id, OppTipoAttoPeer::$tipi_per_indice)) continue;
+    
+    printf("%5d/%6d) %40s %d ... ", $cnt, $n_atti, OppTipoAttoPeer::$tipi_per_indice[$tipo_atto_id], $atto_id);
+    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
+
+    // inserimento o aggiornamento del valore in opp_politician_history_cache
+    $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'A', $atto_id);
+    if (!$cache_record) {
+      $cache_record = new OppActHistoryCache();
+    }
+    $cache_record->setLegislatura($legislatura_corrente);
+    $cache_record->setChiTipo('A');
+    $cache_record->setChiId($atto_id);
+    $cache_record->setTipoAttoId($tipo_atto_id);
+    $cache_record->setIndice($indice);
+    $cache_record->setData($data);
+    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
+    $cache_record->save();
+    unset($cache_record);
+
+    $msg = sprintf("%7.2f", $indice);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+
+    
+  }
+
+  $msg = sprintf("%d atti elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+}
+
+
+/**
+ * Calcola o ri-calcola la rilevanza degli argomenti, come somma della rilevanza degli atti taggati
+ * Si può specificare il una data fino alla quale calcolare la rilevanza
+ * Se sono passati degli ID (argomenti), sono interpretati come ID di argomenti e il calcolo è fatto solo per loro
+ */
+function run_opp_build_cache_tag($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $data = '';
+  $verbose = false;
+  $offset = null;
+  $limit = null;
+  
+  $start_time = time();
+  
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('verbose', $options)) {
+    $verbose = true;
+  }
+  if (array_key_exists('offset', $options)) {
+    $offset = $options['offset'];
+  }
+  if (array_key_exists('limit', $options)) {
+    $limit = $options['limit'];
+  }
+
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;    
+  } else {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d');
+    $data_lookup = OppTagHistoryCachePeer::fetchLastData();
+  }
+
+
+  $msg = sprintf("calcolo rilevanza tag - fino a: %10s\n", $data);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+  if (count($args) > 0)
+  {
+    $tags_ids = $args;
+  } else {
+    $tags_ids = TaggingPeer::getActiveTagsIdsData('OppAtto', $data);    
+  }
+
+  $n_tags = count($tags_ids);
+  
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  foreach ($tags_ids as $cnt => $tag_id) {
+
+    printf("%5d/%6d) %40s %6d ... ", $cnt+1, $n_tags, TagPeer::retrieveByPK($tag_id), $tag_id);
+    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_tag($tag_id, $data, $verbose);
+
+    // inserimento o aggiornamento del valore in opp_tag_history_cache
+    $cache_record = OppTagHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'S', $tag_id);
+    if (!$cache_record) {
+      $cache_record = new OppTagHistoryCache();
+    }
+    $cache_record->setLegislatura($legislatura_corrente);
+    $cache_record->setChiTipo('S');
+    $cache_record->setChiId($tag_id);
+    $cache_record->setIndice($indice);
+    $cache_record->setData($data);
+    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
+    $cache_record->save();
+    unset($cache_record);
+
+    $msg = sprintf("%7.2f", $indice);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+  }
+
+  $msg = sprintf("%d tag elaborati\n", $cnt+1);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+}
+
 
 
 function task_loader($value='')
