@@ -18,4 +18,3 @@ for data in '2020-08-31 2010-07-31 2010-06-30 2010-05-31 2010-04-30' '2010-03-31
 do 
   ./symfony opp-rebuild-deltas --data=$data
 done
-
