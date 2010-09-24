@@ -100,5 +100,25 @@ class OppActHistoryCachePeer extends BaseOppActHistoryCachePeer
     
   }
   
+  /**
+   * estrae tutti i record a partire da una data
+   *
+   * @param string $data 
+   * @return RecordSet come array associativo
+   * @author Guglielmo Celata
+   */
+  public static function getRSByData($data, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$sql = sprintf("select * from opp_act_history_cache where data='%s' ", $data);
+		
+    $stm = $con->createStatement();
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+  
+  
 }
 

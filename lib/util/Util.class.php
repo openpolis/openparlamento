@@ -48,6 +48,10 @@ class Util
       $start_of_period = date('Y-m-d', strtotime($mesi . ' months ago', strtotime($first_of_month)));
     return array($start_of_period, $end_of_period);  
   }
-  
+
+  public static function getLastMonthDates($data)
+  {
+    return self::getLastNMonthsDates($data);
+  }
     
 }

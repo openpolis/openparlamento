@@ -26,23 +26,23 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     return $row['num'];    
   }
 
-  public static function getMediaDatoRamoData($ramo, $data, $nome, $con = null)
+  public static function getSommaDatoRamoData($ramo, $data, $nome, $con = null)
   {
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		
-		$sql = sprintf("select sum(%s)/count(%s) as avg from opp_politician_history_cache where chi_tipo='P' and ramo='%s' and data='%s'",
-		               $nome, $nome, $ramo, $data);
+		$sql = sprintf("select sum(%s) as somma from opp_politician_history_cache where chi_tipo='P' and ramo='%s' and data='%s'",
+		               $nome, $ramo, $data);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
     $rs->next();
     $row = $rs->getRow();
-    return $row['avg'];    
+    return $row['somma'];    
   }
  
   /**
-   * raccoglie i dati relativi a un ramo per una data e li aggrega (media e numero)
+   * raccoglie i dati relativi a un ramo per una data e li aggrega (somma e numero)
    * tornando un risultato
    *
    * @param string  $ramo 
@@ -62,10 +62,12 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 
     $dati = array('indice', 'presenze', 'assenze', 'missioni', 'ribellioni');
     foreach ($dati as $nome) {
-      $res[$nome] = self::getMediaDatoRamoData($ramo, $data, $nome, $con);
+      $res[$nome] = self::getSommaDatoRamoData($ramo, $data, $nome, $con);
     }
     return $res;
   }
+
+
 
   public static function countRecordsGruppoRamoData($gruppo_id, $ramo, $data, $con = null)
   {
@@ -81,18 +83,18 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     return $row['num'];    
   }
 
-  public static function getMediaDatoGruppoRamoData($gruppo_id, $ramo, $data, $nome, $con = null)
+  public static function getSommaDatoGruppoRamoData($gruppo_id, $ramo, $data, $nome, $con = null)
   {
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		
-		$sql = sprintf("select sum(%s)/count(%s) as avg from opp_politician_history_cache where chi_tipo='P' and gruppo_id=%d and ramo='%s' and data='%s'", $nome, $nome, $gruppo_id, $ramo, $data);
+		$sql = sprintf("select sum(%s) as somma from opp_politician_history_cache where chi_tipo='P' and gruppo_id=%d and ramo='%s' and data='%s'", $nome, $gruppo_id, $ramo, $data);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
     $rs->next();
     $row = $rs->getRow();
-    return $row['avg'];    
+    return $row['somma'];    
   }
  
   /**
@@ -117,7 +119,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 
     $dati = array('indice', 'presenze', 'assenze', 'missioni', 'ribellioni');
     foreach ($dati as $nome) {
-      $res[$nome] = self::getMediaDatoGruppoRamoData($gruppo_id, $ramo, $data, $nome, $con);
+      $res[$nome] = self::getSommaDatoGruppoRamoData($gruppo_id, $ramo, $data, $nome, $con);
     }
     return $res;
   }
