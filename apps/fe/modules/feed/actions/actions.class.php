@@ -181,8 +181,9 @@ class feedActions extends sfActions
       $description .= ", presentato il " . $atto->getDataPres('d/M/Y');
     	
       $item = new sfRss2ExtendedItem();
+      $aggiuntivo_only = true;
       $item->initialize( array(
-        'title' => Text::denominazioneAtto($atto, 'list'),
+        'title' => Text::denominazioneAtto($atto, 'list', $aggiuntivo_only),
         'link'  => url_for('@singolo_atto?id='.$atto->getId(), true),
         'permalink' => url_for('@singolo_atto?id='.$atto->getId(), true),
         'pubDate' => $atto->getStatoLastDate('U') ? $atto->getStatoLastDate('U') : $atto->getDataPres('U'),

@@ -420,14 +420,14 @@ class OppAtto extends BaseOppAtto
     return 'errore';
   }
   
-  public function getTitolo()
+  public function getTitolo($aggiuntivo_only = false)
   {
     if ($this->getTitoloAggiuntivo() && $this->getTitoloAggiuntivo() != '')
      {
-       if (parent::getTitolo()!=$this->getNumfase())
-        return "[".$this->getTitoloAggiuntivo()."] ".parent::getTitolo();
+       if (parent::getTitolo()==$this->getNumfase() || $aggiuntivo_only)
+         return "[".$this->getTitoloAggiuntivo()."]";
        else   
-        return "[".$this->getTitoloAggiuntivo()."]";
+         return "[".$this->getTitoloAggiuntivo()."] ".parent::getTitolo();
      }    
      else
       return parent::getTitolo();

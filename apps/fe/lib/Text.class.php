@@ -78,12 +78,12 @@ class Text
    * @version $Id$
    * @package lib
    */
-  public static function denominazioneAtto($atto, $action='list')
+  public static function denominazioneAtto($atto, $action='list', $aggiuntivo_only = false)
   {
     switch($atto->getTipoAttoId())
     {
       case '14':
-        return $atto->getTitolo();
+        return $atto->getTitolo($aggiuntivo_only);
         break;
 
       case '2':
@@ -104,9 +104,9 @@ class Text
         else
         {  
           if($action=='list')
-            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".$atto->getTitolo();
+            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".$atto->getTitolo($aggiuntivo_only);
           else  
-            return $atto->getTitolo();
+            return $atto->getTitolo($aggiuntivo_only);
         }
         break;   
               
@@ -128,9 +128,9 @@ class Text
         else
         {  
           if($action=='list')
-            return $atto->getRamo().".".$atto->getNumfase().' '.$atto->getTitolo();
+            return $atto->getRamo().".".$atto->getNumfase().' '.$atto->getTitolo($aggiuntivo_only);
           else  
-            return $atto->getTitolo();//." ".strip_tags(Text::shorten($descrizione, 200));
+            return $atto->getTitolo($aggiuntivo_only);//." ".strip_tags(Text::shorten($descrizione, 200));
         }
         break;  
     }
