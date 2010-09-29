@@ -84,6 +84,41 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
     
 	  return $gruppi;
   }
+  
+  /**
+   * si differenzia dalla doSelectGruppiPerCarica in quanto prende TUTTI i gruppi anche quelli
+   * in cui un parlamentare è uscito e poi rientrato.
+   *
+   * @param string $section 
+   * @param string $field - the field to sum
+   * @return void
+   * @author Guglielmo Celata
+   */
+  
+  public static function doSelectTuttiGruppiPerCarica($carica_id,$order = 0)
+  {
+    $gruppi = array();
+  	$c = new Criteria();
+  	$c->clearSelectColumns();
+  	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
+  	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_FINE);
+  	$c->addSelectColumn(OppCaricaHasGruppoPeer::GRUPPO_ID);
+  	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
+    if ($order==0)
+      $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
+    else
+      $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
+    $rs = OppCaricaHasGruppoPeer::doSelectRS($c);
+	
+	  while ($rs->next())
+    {
+	    $gruppi[] = array('data_inizio' => $rs->getDate(1, 'Y-m-d'), 
+	                                       'data_fine'   => $rs->getDate(2, 'Y-m-d'), 
+	                                       'gruppo_id'   => $rs->getInt(3));
+	  }	
+    
+	  return $gruppi;
+  }
   	
 }
 
