@@ -111,6 +111,7 @@ if (count($parlamentari_change)>0)
     echo "<td>";
     foreach ($res as $k => $rs)
     {
+      print_r($rs);
       if (substr_count($rs['data_fine'],"-")>0)
         $date_check=true;
       else
