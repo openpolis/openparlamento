@@ -106,10 +106,9 @@ if (count($parlamentari_change)>0)
   {
     echo "<tr>";
     echo"<th scope='row'>". link_to(OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getCognome(). " ".OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getNome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getId())."</th>";
-    $res=OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($p,1);
+    $res=OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($p,1);
     echo "<td>".(count($res)-1)."</td>";
     echo "<td>";
-    print_r($res);
     foreach ($res as $k => $rs)
     {
       
