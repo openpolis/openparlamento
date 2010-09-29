@@ -1000,7 +1000,10 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
  {
    
  }   
-  
+ public function executeGruppiSenato()
+ {
+   
+ }  
 }
 
 ?>

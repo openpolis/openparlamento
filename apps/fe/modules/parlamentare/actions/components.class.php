@@ -303,6 +303,8 @@ class parlamentareComponents extends sfComponents
     $gruppo_in=array();
     $gruppo_out=array();
     $gruppo_now=array();
+    $parlamentari_change=array();
+    
     $c1=new Criteria();
     $gruppi=OppGruppoPeer::doSelect($c1);
     foreach ($gruppi as $gruppo)
@@ -326,6 +328,10 @@ class parlamentareComponents extends sfComponents
           $gruppo_now[$gruppo->getId()]=$gruppo_now[$gruppo->getId()]+1;
         else
         {
+         
+          if (!in_array($r->getCaricaId(),$parlamentari_change))
+            $parlamentari_change[]=$r->getCaricaId();
+            
           $gruppo_out[$gruppo->getId()]=$gruppo_out[$gruppo->getId()]+1;
           $c2= new Criteria();
           $c2->add(OppCaricaHasGruppoPeer::CARICA_ID,$r->getCaricaId());
@@ -333,6 +339,7 @@ class parlamentareComponents extends sfComponents
           $diff=OppCaricaHasGruppoPeer::doSelectOne($c2);
           if ($diff)
           {
+            
             if (array_key_exists($diff->getGruppoId(),$gruppo_in))
                $gruppo_in[$diff->getGruppoId()]=$gruppo_in[$diff->getGruppoId()]+1;
             else
@@ -359,6 +366,7 @@ class parlamentareComponents extends sfComponents
     $this->gruppo_out=$gruppo_out;
     $this->gruppo_now=$gruppo_now;
     $this->array_diff= $array_diff;
+    $this->parlamentari_change=$parlamentari_change;
   
       
   }

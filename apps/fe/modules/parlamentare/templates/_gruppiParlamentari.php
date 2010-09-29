@@ -1,26 +1,31 @@
+<br/>
+<h5 class="subsection">La composizione dei gruppi parlamentari <?php echo ($ramo==1?'della Camera':'del Senato')?> e variazioni nel corso della legislatura</h5>
+
 <table class="disegni-decreti column-table lazyload">
   <thead>
     <tr>
       <th scope="col">Gruppo:</th>
-      <th scope="col">Attuali:</th> 	
-      <th scope="col">Entranti:</th>
-      <th scope="col">Uscenti:</th>
+      <th scope="col">Membri<br/>attuali:</th> 	
+      <th scope="col">Conquistati:</th>
+      <th scope="col">Perduti:</th>
       <th scope="col">Saldo:</th>
     </tr>
   </thead>
 
   <tbody>
 <?php    
+$tr_class = 'even';
 foreach ($gruppo_now as $k => $g)
 {
   if ($g!==0)
   {
-    echo "<tr>";
-    echo "<td>".OppGruppoPeer::retrieveByPk($k)->getNome()."</td>";
-    echo "<td>".$g."</td>";
+    echo "<tr class='".$tr_class."'>";
+    $tr_class = ($tr_class == 'even' ? 'odd' : 'even' );
+    echo "<th scope='row'>".link_to(OppGruppoPeer::retrieveByPk($k)->getNome(),'@parlamentari?ramo='.($ramo==1?'camera':'senato').'&sort=nome&type=asc&filter_group='.$k)."</th>";
+    echo "<td>".link_to($g,'@parlamentari?ramo='.($ramo==1?'camera':'senato').'&sort=nome&type=asc&filter_group='.$k)."</td>";
     echo "<td>".$gruppo_in[$k]."</td>";
     echo "<td>".$gruppo_out[$k]."</td>";
-    echo "<td>".($gruppo_in[$k]-$gruppo_out[$k])."</td>";
+    echo "<td><strong>".(($gruppo_in[$k]-$gruppo_out[$k])>0 ? '+'.($gruppo_in[$k]-$gruppo_out[$k]) : ($gruppo_in[$k]-$gruppo_out[$k]))."</strong></td>";
     echo "</tr>";
   }
   
@@ -28,25 +33,31 @@ foreach ($gruppo_now as $k => $g)
 ?>
  </tbody>
 </table> 
-
-<table border=1>
-  <tbody>
+<br/>
+<h5 class="subsection">Gruppo VS Gruppo: chi guadagna e chi perde da inizio legislatura ad oggi</h5>
+<br/>
+<table class="disegni-decreti column-table lazyload">
+    <thead>
   <tr>
   <td></td>  
 <?php
-echo "<br/><br/><br/>";
 
 foreach($array_diff as $k => $diff)
 {
   $pos[]=$k;
-  echo "<td>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</td>";
+  echo "<th scope='col'>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</th>";
 }
-echo "<td>saldo</td>";
+echo "<th scope='col'>Saldo</th>";
 echo "</tr>";  
+echo "</thead>";
+echo "<tbody>";
+$tr_class = 'even';
 
 foreach($array_diff as $k => $diff)
 {
-  echo "<tr><td>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</td>";
+  echo "<tr class='".$tr_class."'>";
+  $tr_class = ($tr_class == 'even' ? 'odd' : 'even' );
+  echo "<td style='font-size:11px;'><strong>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</strong></td>";
   $saldo=0;
   
   for ($x=0;$x<count($array_diff);$x++)
@@ -54,23 +65,59 @@ foreach($array_diff as $k => $diff)
     if (array_key_exists($pos[$x],$diff))
     {
       $saldo=$saldo+$diff[$pos[$x]];
-      echo "<td>".$diff[$pos[$x]]."</td>";
+      echo "<td style='border:1px solid #DFE0E0;'>".(($diff[$pos[$x]]>0) ? '+'.$diff[$pos[$x]] : $diff[$pos[$x]])."</td>";
     }
     else
-      echo "<td>0</td>";
+    {
+      if ($pos[$x]==$k)
+        echo "<td class='evident' style='border:1px solid #DFE0E0;'>&nbsp;</td>";
+      else
+        echo "<td style='border:1px solid #DFE0E0;'>0</td>";
+    }
+      
    
   }
-  echo "<td>".$saldo."</td>";
+  echo "<td><strong>".(($saldo>0) ? '+'.$saldo : $saldo)."</strong></td>";
   echo "</tr>";
-  /*
-  foreach ($diff as $k1 => $d)
-  {
-    echo OppGruppoPeer::retrieveByPk($k1)->getNome()."*".$d;
-     echo "<br/>";
-  }
-  */
 }
 
 ?>
 </tbody>
 </table>
+
+<br/>
+<h5 class="subsection">I <?php echo ($ramo==1?'deputati':'senatori')?> che hanno cambiato gruppo</h5>
+
+<table class="disegni-decreti column-table lazyload">
+  <thead>
+    <tr>
+      <th scope="col"><?php echo ($ramo==1?'Deputato':'Senatore')?></th>
+      <th scope="col">Numero di<br/>passaggi</th>
+      <th scope="col">Passaggi di gruppo</th>
+    </tr>
+  </thead>
+  <tbody>
+
+<?php 
+
+if (count($parlamentari_change)>0)
+{
+  foreach ($parlamentari_change as $p)
+  {
+    echo "<tr>";
+    echo"<th scope='row'>". link_to(OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getCognome(). " ".OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getNome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($p)->getOppPolitico()->getId())."</th>";
+    $res=OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($p,1);
+    echo "<td>".(count($res)-1)."</td>";
+    echo "<td>";
+    foreach ($res as $k => $rs)
+    {
+      echo OppGruppoPeer::retrieveByPk($rs['gruppo_id'])->getAcronimo().($rs['data_fine']!=""?" ==> ":"");
+    }
+    echo "<td>";
+    echo "</tr>";
+  }
+}
+?>
+  </tbody>
+</table>
+

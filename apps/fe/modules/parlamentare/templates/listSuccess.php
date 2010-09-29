@@ -1,6 +1,6 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs') ?>
+<?php include_partial('tabs',array('gruppi'=> false)) ?>
 
 <div id="content" class="tabbed float-container">
   <div id="main">
