@@ -111,8 +111,11 @@ if (count($parlamentari_change)>0)
     echo "<td>";
     foreach ($res as $k => $rs)
     {
-      $date=
-      echo OppGruppoPeer::retrieveByPk($rs['gruppo_id'])->getAcronimo().(substr_count($rs['data_fine'],"-")>0 ?" ==> ":"");
+      if (substr_count($rs['data_fine'],"-")>0)
+        $date_check=true;
+      else
+        $date_check=false;
+      echo OppGruppoPeer::retrieveByPk($rs['gruppo_id'])->getAcronimo().($date_check ? " ==> ":"");
     }
     echo "<td>";
     echo "</tr>";
