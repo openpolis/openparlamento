@@ -41,23 +41,26 @@ foreach($array_diff as $k => $diff)
   $pos[]=$k;
   echo "<td>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</td>";
 }
+echo "<td>saldo</td>";
 echo "</tr>";  
 
 foreach($array_diff as $k => $diff)
 {
   echo "<tr><td>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</td>";
-  echo "=====".$k."===============\n";
-  var_dump($diff);
-  echo "<br/>";
+  $saldo=0;
+  
   for ($x=0;$x<count($array_diff);$x++)
   {
-
     if (array_key_exists($pos[$x],$diff))
+    {
+      $saldo=$saldo+$diff[$pos[$x]];
       echo "<td>".$diff[$pos[$x]]."</td>";
+    }
     else
       echo "<td>0</td>";
    
   }
+  echo "<td>".$saldo."</td>";
   echo "</tr>";
   /*
   foreach ($diff as $k1 => $d)
