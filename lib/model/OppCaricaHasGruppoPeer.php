@@ -54,10 +54,9 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
       return 0;
   }
   
-  public static function doSelectGruppiPerCarica($carica_id)
+  public static function doSelectGruppiPerCarica($carica_id,$order = 0)
   {
     $gruppi = array();
-	
   	$c = new Criteria();
   	$c->clearSelectColumns();
   	$c->addSelectColumn(OppGruppoPeer::ACRONIMO);
@@ -68,7 +67,10 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
   	$c->addSelectColumn(OppCaricaHasGruppoPeer::PRESENZE);
   	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
     $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
-    $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
+    if ($order==0)
+      $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
+    else
+      $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
     $rs = OppCaricaHasGruppoPeer::doSelectRS($c);
 	
 	  while ($rs->next())
