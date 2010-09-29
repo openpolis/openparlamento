@@ -995,7 +995,11 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
       $this->redirect('/parlamentare/comparaDeputati/?id1='.$parlamentare1.'&id2='.$parlamentare2.'&ramo=2');    
   }
  }
-  
+
+ public function executeGruppiCamera()
+ {
+   
+ }   
   
 }
 

@@ -293,4 +293,73 @@ class parlamentareComponents extends sfComponents
     $parlamentare2 = $this->getRequestParameter('parlamentare2');
     $this->redirect('votazione/list');
   }
+  
+  public function executeGruppiParlamentari()
+  {
+    if ($this->ramo==1) $this->tipo_carica=1;
+    else $this->tipo_carica=4;
+  
+    $array_diff=array();
+    $gruppo_in=array();
+    $gruppo_out=array();
+    $gruppo_now=array();
+    $c1=new Criteria();
+    $gruppi=OppGruppoPeer::doSelect($c1);
+    foreach ($gruppi as $gruppo)
+    {
+      if (!array_key_exists($gruppo->getId(),$gruppo_in))
+        $gruppo_in[$gruppo->getId()]=0; 
+      if (!array_key_exists($gruppo->getId(),$gruppo_out))  
+        $gruppo_out[$gruppo->getId()]=0; 
+      if (!array_key_exists($gruppo->getId(),$gruppo_now))  
+        $gruppo_now[$gruppo->getId()]=0;
+      $c= new Criteria();
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID,$this->tipo_carica);
+      $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
+      $c->add(OppCaricaPeer::LEGISLATURA,$this->leg);
+      $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
+      $c->add(OppCaricaHasGruppoPeer::GRUPPO_ID,$gruppo->getId());
+      $rs=OppCaricaHasGruppoPeer::doSelect($c);
+      foreach($rs as $r)
+      {
+        if ($r->getDataFine()==NULL)
+          $gruppo_now[$gruppo->getId()]=$gruppo_now[$gruppo->getId()]+1;
+        else
+        {
+          $gruppo_out[$gruppo->getId()]=$gruppo_out[$gruppo->getId()]+1;
+          $c2= new Criteria();
+          $c2->add(OppCaricaHasGruppoPeer::CARICA_ID,$r->getCaricaId());
+          $c2->add(OppCaricaHasGruppoPeer::DATA_INIZIO,$r->getDataFine());
+          $diff=OppCaricaHasGruppoPeer::doSelectOne($c2);
+          if ($diff)
+          {
+            if (array_key_exists($diff->getGruppoId(),$gruppo_in))
+               $gruppo_in[$diff->getGruppoId()]=$gruppo_in[$diff->getGruppoId()]+1;
+            else
+              $gruppo_in[$diff->getGruppoId()]=1;
+               
+             if (isset($array_diff[$diff->getGruppoId()][$gruppo->getId()]))
+             {
+               $array_diff[$diff->getGruppoId()][$gruppo->getId()]=$array_diff[$diff->getGruppoId()][$gruppo->getId()]+1;
+             }
+             else
+             {
+               $array_diff[$diff->getGruppoId()][$gruppo->getId()]=1;
+             }
+            if (isset($array_diff[$gruppo->getId()][$diff->getGruppoId()]))
+              $array_diff[$gruppo->getId()][$diff->getGruppoId()]=$array_diff[$gruppo->getId()][$diff->getGruppoId()]-1;
+            else
+              $array_diff[$gruppo->getId()][$diff->getGruppoId()]=-1;
+          }
+        }  
+      }
+    }
+  
+    $this->gruppo_in=$gruppo_in;
+    $this->gruppo_out=$gruppo_out;
+    $this->gruppo_now=$gruppo_now;
+    $this->array_diff= $array_diff;
+  
+      
+  }
 }
