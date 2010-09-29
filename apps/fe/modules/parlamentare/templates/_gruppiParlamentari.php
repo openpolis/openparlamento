@@ -87,7 +87,8 @@ foreach($array_diff as $k => $diff)
 
 <br/>
 <h5 class="subsection">I <?php echo ($ramo==1?'deputati':'senatori')?> che hanno cambiato gruppo</h5>
-
+Dall'inizio della legislatura ad oggi, <strong><?php echo count($parlamentari_change) ?> <?php echo ($ramo==1?'deputati':'senatori')?></strong> hanno cambiato gruppo di appartenenza <?php echo ($ramo==1?'alla Camera':'al Senato')?>.
+<br/><br/>
 <table class="disegni-decreti column-table lazyload">
   <thead>
     <tr>
