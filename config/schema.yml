@@ -96,7 +96,7 @@ propel:
   opp_carica_has_gruppo:
     carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE } 
-    data_inizio:      { type: date }
+    data_inizio:      { type: date, required: true, primaryKey: true }
     data_fine:        { type: date }
     presenze:         { type: integer }
     ribelle:          { type: integer }
