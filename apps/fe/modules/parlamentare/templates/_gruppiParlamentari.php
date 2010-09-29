@@ -109,9 +109,10 @@ if (count($parlamentari_change)>0)
     $res=OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($p,1);
     echo "<td>".(count($res)-1)."</td>";
     echo "<td>";
+    print_r($res);
     foreach ($res as $k => $rs)
     {
-      print_r($rs);
+      
       if (substr_count($rs['data_fine'],"-")>0)
         $date_check=true;
       else
