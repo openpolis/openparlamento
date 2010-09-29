@@ -312,6 +312,10 @@ parlamentari:
 parlamentare:
   url:   /parlamentare/:id
   param: { module: parlamentare, action: cosa }
+  
+gruppi_camera:
+  url:   /parlamentari/GruppiCamera/
+  param: { module: parlamentare, action: gruppiCamera }  
 
 parlamentare_atti:
   url:  /parlamentare_atti/:id/:sort/:type/*
