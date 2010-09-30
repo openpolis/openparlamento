@@ -117,7 +117,7 @@ if (count($parlamentari_change)>0)
         $date_check=true;
       else
         $date_check=false;
-      echo OppGruppoPeer::retrieveByPk($rs['gruppo_id'])->getAcronimo().($date_check==true ? " ==> ":"");
+      echo OppGruppoPeer::retrieveByPk($rs['gruppo_id'])->getAcronimo().($date_check==true ? image_tag('rightArrow.png', array('style' => 'width:18px; vertical-align: text-bottom; padding: 0 3px 0 3px')) : "");
     }
     echo "<td>";
     echo "</tr>";

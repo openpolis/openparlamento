@@ -12,3 +12,8 @@
 
   </div>
 </div>  
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+    gruppi della camera
+<?php end_slot() ?>
