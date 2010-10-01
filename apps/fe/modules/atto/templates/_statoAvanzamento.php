@@ -44,11 +44,11 @@
     <?php foreach ($atto->getAllPred() as $k=>$pred): ?>
       <?php if ($k==0): ?>
         <?php if ($pred->getTipoAttoId()=='12') :?>
-          <li class="step-yes"><span class="date"><?php echo format_date($pred->getDataPres(), 'dd/MM/yyyy') ?></span><strong><?php echo link_to('DL.'.$pred->getNumfase(),'atto/index?id='.$pred->getId()) ?></strong>
+          <li class="step-yes"><span class="date"><?php echo format_date($pred->getDataPres(), 'dd/MM/yyyy') ?></span><strong><?php echo link_to('DL.'.(strlen($pred->getNumfase())>13 ? substr($pred->getNumfase(), 0, 12).' ...' : $pred->getNumfase()),'atto/index?id='.$pred->getId()) ?></strong>
           <p>entrata in vigore del DL</p></li>
           <?php $dl=1 ?>
         <?php else: ?>
-          <li class="step-yes"><span class="date"><?php echo format_date($pred->getDataPres(), 'dd/MM/yyyy') ?></span><strong><?php echo link_to($pred->getRamo().'.'.$pred->getNumfase(),'atto/index?id='.$pred->getId()) ?></strong>
+          <li class="step-yes"><span class="date"><?php echo format_date($pred->getDataPres(), 'dd/MM/yyyy') ?></span><strong><?php echo link_to($pred->getRamo().'.'.(strlen($pred->getNumfase())>13 ? substr($pred->getNumfase(), 0, 12).' ...' : $pred->getNumfase()),'atto/index?id='.$pred->getId()) ?></strong>
            <p>presentato<?php echo ($pred->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php endif ?>
       <?php endif ?>  
@@ -56,17 +56,17 @@
       <?php $status_value= array_values($pred->getStatus()) ?>
       <?php $status_date= array_keys($pred->getStatus()) ?>
       <?php if ($pred->getTipoAttoId()!='12') :?>
-        <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($pred->getRamo().'.'.$pred->getNumfase(),'atto/index?id='.$pred->getId()) ?></strong>
+        <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($pred->getRamo().'.'.(strlen($pred->getNumfase())>13 ? substr($pred->getNumfase(), 0, 12).' ...' : $pred->getNumfase()),'atto/index?id='.$pred->getId()) ?></strong>
         <p><?php echo OppIterPeer::retrieveByPk($status_value[0])->getShortName().($pred->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
       <?php endif ?>   
     <?php endforeach ?> 
 
   <?php else: ?>
     <?php if ($atto->getTipoAttoId()=='12') :?>
-      <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo 'DL.'.$atto->getNumfase() ?></strong>
+      <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo 'DL.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
       <p>entrata in vigore del DL</p></li>
     <?php else: ?>
-      <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+      <li class="step-yes"><span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
        <p>presentato<?php echo ($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
     <?php endif ?>
   <?php endif ?> 
@@ -77,19 +77,19 @@
   <?php $status_date= array_keys($atto->getStatus()) ?>
   <?php if ((OppIterPeer::retrieveByPk($status_value[0])->getConcluso()==1 && $atto->getTipoAttoId()!=12) || $status_value[0]==15): ?>
     <?php if ($status_value[0]==16 || $status_value[0]==15) : ?>
-      <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+      <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
       <p><?php echo "approvato".($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
       <?php if ($status_value[0]==16) : ?>
-        <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+        <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
         <p><?php echo "divenuto legge" ?></p></li>
       <?php endif ?>  
     <?php else :?>
-        <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+        <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
          <p><?php echo  OppIterPeer::retrieveByPk($status_value[0])->getShortName().($atto->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
     <?php endif ?>
   <?php else :?>
     <?php if ($atto->getTipoAttoId()!=12): ?>
-      <li class="step-now"><span class="date">&nbsp;</span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.$atto->getNumfase() ?></strong>
+      <li class="step-now"><span class="date">&nbsp;</span><strong style="background-color: yellow; color:black;"><?php echo $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()) ?></strong>
       <p>da approvare<?php echo ($atto->getRamo()=='S' ? ' al Senato':' alla Camera') ?></p></li>
     <?php endif ?>  
   <?php endif ?>   
@@ -100,7 +100,7 @@
       <?php $status_value= array_values($succ->getStatus()) ?>
       <?php $status_date= array_keys($succ->getStatus()) ?>
       <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1 && $status_value[0]!=15) : ?>
-        <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+        <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.(strlen($succ->getNumfase())>13 ? substr($succ->getNumfase(), 0, 12).' ...' : $succ->getNumfase()),'atto/index?id='.$succ->getId()) ?></strong>
         <p><?php echo "da approvare".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php if($dl==1) : ?>
           <li><span class="date">&nbsp;</span>
@@ -110,17 +110,17 @@
         <p>diventa legge</p></li>
       <?php else: ?>
         <?php if ($status_value[0]==16 || $status_value[0]==15) : ?>
-          <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+          <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.(strlen($succ->getNumfase())>13 ? substr($succ->getNumfase(), 0, 12).' ...' : $succ->getNumfase()),'atto/index?id='.$succ->getId()) ?></strong>
           <p><?php echo "approvato".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
            <?php if ($status_value[0]==16) : ?>
-             <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+             <li class="step-yes"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.(strlen($succ->getNumfase())>13 ? substr($succ->getNumfase(), 0, 12).' ...' : $succ->getNumfase()),'atto/index?id='.$succ->getId()) ?></strong>
               <p><?php echo "divenuto legge" ?></p></li>
             <?php else: ?>  
               <li><span class="date">&nbsp;</span>
               <p>diventa legge</p></li>
             <?php endif ?>  
           <?php else: ?>
-            <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.$succ->getNumfase(),'atto/index?id='.$succ->getId()) ?></strong>
+            <li class="<?php echo (OppIterPeer::retrieveByPk($status_value[0])->getColor()=='green'?'step-yes':'step-no') ?>"><span class="date"><?php echo format_date($status_date[0], 'dd/MM/yyyy') ?></span><strong><?php echo link_to($succ->getRamo().'.'.(strlen($succ->getNumfase())>13 ? substr($succ->getNumfase(), 0, 12).' ...' : $succ->getNumfase()),'atto/index?id='.$succ->getId()) ?></strong>
             <p><?php echo OppIterPeer::retrieveByPk($status_value[0])->getShortName().($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php endif ?>
       <?php endif ?>

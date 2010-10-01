@@ -876,27 +876,35 @@ class parlamentareActions extends sfActions
     if ($sort_column = $this->getUser()->getAttribute('sort', null, 'sf_admin/opp_carica/sort'))
     {
       if($sort_column!='nome')
-	    $sort_column = OppCaricaPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
-      
-	  if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_carica/sort') == 'asc')
+      {
+        $sort_column = OppCaricaPeer::translateFieldName($sort_column, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+      }
+	    if ($this->getUser()->getAttribute('type', null, 'sf_admin/opp_carica/sort') == 'asc')
       {
         if($sort_column=='nome')
-		{
-		  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	      $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);  
-		}
-		else
-		  $c->addAscendingOrderByColumn($sort_column);
+		    {
+		      $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	        $c->addAscendingOrderByColumn(OppPoliticoPeer::NOME);  
+		    }
+		    else
+		    {
+		      $c->addAscendingOrderByColumn($sort_column);
+		      $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+		    }
       }
       else
       {
         if($sort_column=='nome')
-		{
-		  $c->addDescendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	      $c->addDescendingOrderByColumn(OppPoliticoPeer::NOME);  
-		}
-		else
-		$c->addDescendingOrderByColumn($sort_column);
+		    {
+		      $c->addDescendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	        $c->addDescendingOrderByColumn(OppPoliticoPeer::NOME);  
+		    }
+		    else
+		    {
+		      $c->addDescendingOrderByColumn($sort_column);
+		      $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+		    }
+		      
       }
     }
   }

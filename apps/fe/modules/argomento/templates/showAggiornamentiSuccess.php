@@ -53,7 +53,6 @@
         </div>
       <?php endif; ?>
 
-			<h5 class="subsection-alt">Atti presentati sull'argomento</h5>
       <?php include_component('argomento', 'attiTaggati', 
                               array('triple_value' => $triple_value)) ?>
 

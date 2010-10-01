@@ -29,7 +29,7 @@
             </span>
           </p>
           <p>
-            <?php echo link_to('<em>'.$atto->getRamo().'.'.$atto->getNumfase().'</em> '.$atto->getTitolo(), '@singolo_atto?id='.$atto->getId()) ?>
+            <?php echo link_to('<em>'.$atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()). '</em> '.$atto->getTitolo(), '@singolo_atto?id='.$atto->getId()) ?>
           </p>
         </th>
         <td>

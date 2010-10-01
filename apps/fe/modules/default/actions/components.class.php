@@ -56,6 +56,7 @@ class defaultComponents extends sfComponents
     switch ($random) {
       case 1:
         $c->addDescendingOrderByColumn(OppCaricaPeer::PRESENZE);
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='green';
         $this->string='pi&ugrave; presenti';
         $this->cosa=1;
@@ -63,6 +64,7 @@ class defaultComponents extends sfComponents
       
       case 2:
         $c->addDescendingOrderByColumn(OppCaricaPeer::ASSENZE);
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='red';
         $this->string='pi&ugrave; assenti';
         $this->cosa=2;
@@ -70,6 +72,7 @@ class defaultComponents extends sfComponents
       
       case 3:
         $c->addDescendingOrderByColumn(OppCaricaPeer::INDICE);
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='blue';
         $this->string='pi&ugrave; attivi';
         $this->cosa=3;
@@ -77,6 +80,7 @@ class defaultComponents extends sfComponents
       
        case 4:
         $c->addDescendingOrderByColumn(OppPoliticoPeer::N_MONITORING_USERS);
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='orange';
         $this->string='pi&ugrave; monitorati dagli utenti';
         $this->cosa=4;
@@ -84,6 +88,7 @@ class defaultComponents extends sfComponents
       
        case 5:
         $c->addDescendingOrderByColumn(OppCaricaPeer::RIBELLE);
+        $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='violet';
         $this->string='pi&ugrave; ribelli al proprio gruppo';
         $this->cosa=5;
