@@ -97,14 +97,14 @@ class Text
         if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
+            return "<em>".$atto->getRamo().".".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase())."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
             return strip_tags(Text::shorten($descrizione, 200));
         }    
         else
         {  
           if($action=='list')
-            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".$atto->getTitolo($aggiuntivo_only);
+            return "<em>".$atto->getRamo().".".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase())."</em> ".$atto->getTitolo($aggiuntivo_only);
           else  
             return $atto->getTitolo($aggiuntivo_only);
         }
@@ -121,14 +121,14 @@ class Text
   	    if($atto->getNumfase()==$atto->getTitolo())
         {
           if($action=='list')  
-            return "<em>".$atto->getRamo().".".$atto->getNumfase()."</em> ".strip_tags(Text::shorten($descrizione, 200));
+            return "<em>".$atto->getRamo().".".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase())."</em> ".strip_tags(Text::shorten($descrizione, 200));
           else
             return strip_tags(Text::shorten($descrizione, 200));
         }    
         else
         {  
           if($action=='list')
-            return $atto->getRamo().".".$atto->getNumfase().' '.$atto->getTitolo($aggiuntivo_only);
+            return $atto->getRamo().".".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase()).' '.$atto->getTitolo($aggiuntivo_only);
           else  
             return $atto->getTitolo($aggiuntivo_only);//." ".strip_tags(Text::shorten($descrizione, 200));
         }
@@ -141,15 +141,15 @@ class Text
     switch($atto->getTipoAttoId())
     {
       case '1':
-        return $atto->getRamo().".".$atto->getNumfase();
+        return $atto->getRamo().".".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase());
         break;
       case '12':
-        return "DL.".$atto->getNumfase();
+        return "DL.".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase());
         break;  
       case '15':
       case '16':
       case '17':
-        return "DLGS.".$atto->getNumfase();
+        return "DLGS.".(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase());
         break;  
       case '14':
         return $atto->getOppTipoAtto()->getDescrizione();
@@ -159,8 +159,8 @@ class Text
         break;  
       default:
         if($atto->getRamo())
-          return $atto->getRamo().'.'.$atto->getNumfase();
-        else return $atto->getNumfase();  
+          return $atto->getRamo().'.'.(strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase());
+        else return (strlen($atto->getNumfase())>13 ? substr($atto->getNumfase(), 0, 12).' ...' : $atto->getNumfase());  
     }
   }
   
