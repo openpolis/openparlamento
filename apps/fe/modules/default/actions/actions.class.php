@@ -222,9 +222,14 @@ class defaultActions extends sfActions
      foreach ($evidences as $evidence) {
         $c1= new Criteria();
         
-     	if ($evidence->getObjectModel()=='OppAtto') {
-     		$c1->add(OppAttoPeer::ID,$evidence->getObjectId());
-     		$this->lanci[]=array(OppAttoPeer::doSelectOne($c1),$evidence->getObjectModel());
+     	if ($evidence->getObjectModel()=='OppAtto' ) 
+     	{
+     	  if ($evidence->getNamespace()=='home')
+     	  {
+     	    $c1->add(OppAttoPeer::ID,$evidence->getObjectId());
+       		$this->lanci[]=array(OppAttoPeer::doSelectOne($c1),$evidence->getObjectModel()); 
+     	  }
+     		
      	}
      	else
      	{
