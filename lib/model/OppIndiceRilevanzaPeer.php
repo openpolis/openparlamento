@@ -113,6 +113,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // determina la priorità dell'atto
     $atto = OppAttoPeer::retrieveByPK($atto_id);
     $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+    $atto_is_trattato = $atto->isTrattato();
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
@@ -294,6 +295,15 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       printf("  totale sedute   %7.2f\n", $d_punteggio_sedute);
 
     $sedute_con_interventi_node->addAttribute('totale', $d_punteggio_sedute);
+
+    if ($atto_is_trattato)
+    {
+      $atto_node->addAttribute('totale_pre_decurtazione_trattato', $punteggio);
+      if ($verbose)
+        print "questo ATTO è un trattato\n";
+       
+      $punteggio = $punteggio / 10.;
+    }
     
     $punteggio = $priorita * $punteggio;
     $atto_node->addAttribute('totale', $punteggio);

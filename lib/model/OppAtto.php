@@ -403,6 +403,20 @@ class OppAtto extends BaseOppAtto
   	return OppAttoHasSedePeer::doSelectJoinOppSede($c);
   }
 
+
+  /**
+   * torna se l'atto è un trattato internazionale
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function isTrattato()
+  {
+    $c = new Criteria();
+    $c->add(TagPeer::TRIPLE_VALUE, "%trattati%", Criteria::LIKE);
+    return $this->getTagsAsObjects($c)?true:false;
+  }
+
   /* --------- funzioni per indicizzazione sfLucene ---------- */
 
   public function getAttoId()

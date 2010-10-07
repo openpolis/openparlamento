@@ -119,7 +119,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   
     // estrae atti firmati come Primo Firmatario, fino alla data specificata
     if (count($atti_ids) == 0)
+    {
       $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
+      
+    }
     else
     {
       $attis = array();
@@ -141,7 +144,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = 0.;
     foreach ($attis as $atto) {
-      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
+      $dd_punteggio = self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
+      $d_punteggio += $dd_punteggio;
     }
     $atti_node->addAttribute('totale', $d_punteggio);
     if ($verbose)
@@ -271,6 +275,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $atto = OppAttoPeer::retrieveByPK($atto_id);
     $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+    $atto_is_trattato = $atto->isTrattato();
     
     // calcolo se appartiene alla maggioranza o all'opposizione (al momento della presentazione di un atto)
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
@@ -406,8 +411,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
           printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
       }
     }
-    unset($c);
-    unset($atto);
     
     $punteggio += $d_punteggio;
     if ($verbose)
@@ -416,11 +419,23 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $iter_node->addAttribute('n_passaggi', $n_passaggi);
     $iter_node->addAttribute('totale', $d_punteggio);
 
+    if ($atto_is_trattato)
+    {
+      $atto_node->addAttribute('totale_pre_decurtazione_trattato', $punteggio);
+      if ($verbose)
+        print "questo ATTO è un trattato\n";
+       
+      $punteggio = $punteggio / 10.;
+    }
+
     $punteggio = $priorita * $punteggio;
     $atto_node->addAttribute('totale', $punteggio);
 
     if ($verbose)
       printf(" totale atto   %7.2f\n", $punteggio);
+
+    unset($c);
+    unset($atto);
 
     return $punteggio;
   }

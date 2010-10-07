@@ -258,9 +258,13 @@ class deppPropelActAsTaggableBehavior
    * @return void
    * @author Guglielmo Celata
    */
-  public function getTagsAsObjects(BaseObject $object)
+  public function getTagsAsObjects(BaseObject $object, $criteria = null)
   {
-    $c = new Criteria();
+    if (is_null($criteria))
+      $c = new Criteria();
+    else
+      $c = clone $criteria;
+      
     $c->add(TaggingPeer::TAGGABLE_ID, $object->getPrimaryKey());
     $c->add(TaggingPeer::TAGGABLE_MODEL, get_class($object));
     $c->addJoin(TaggingPeer::TAG_ID, TagPeer::ID);
