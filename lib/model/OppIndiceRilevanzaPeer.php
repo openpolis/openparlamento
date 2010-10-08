@@ -126,6 +126,15 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
     $punteggio = 0.0;
     
+    // punteggio dato all'atto per-se, a seconda del tipo
+    if ($tipo_atto->getDenominazione() == 'SDDL') {
+      $punteggio = 1.0;
+    } else {
+      $punteggio = 0.5;
+    }
+    $presentazione_node = $atto_node->addChild('presentazione', null, self::$opp_ns);
+    $presentazione_node->addAttribute('totale', $d_punteggio);    
+    
     // --- consenso ---
     $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
     $firmeRS = OppCaricaHasAttoPeer::getFirmeAttoDataTipoRS($atto_id, $data, "'C'");

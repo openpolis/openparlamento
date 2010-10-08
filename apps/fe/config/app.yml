@@ -12,6 +12,8 @@ all:
   // numero di giorni precedenti se last_alerted null
   alert_default_days_back: 2
   
+  limit_interessi_argomento: 50
+  
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick
     default_image: { mime_type: image/jpeg, filename: Untitled.jpeg }

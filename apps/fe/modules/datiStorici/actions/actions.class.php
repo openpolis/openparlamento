@@ -244,6 +244,7 @@ class datiStoriciActions extends sfActions
     }
       
 
+    $limit = null;
     if ($this->hasRequestParameter('limit'))
       $limit = $this->getRequestParameter('limit');
 
@@ -254,8 +255,32 @@ class datiStoriciActions extends sfActions
       $data = OppActHistoryCachePeer::fetchLastData();
     
     if ($this->argomento) {
-      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $data); 
+      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $data, $limit); 
     }
+  }
+  
+  public function executeInteressiDettaglio()
+  {
+    $carica_id = $this->getRequestParameter('carica_id');
+    $argomento_id = $this->getRequestParameter('argomento_id');
+    
+    // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
+    if ($this->hasRequestParameter('data'))
+      $data = $this->getRequestParameter('data');
+    else
+      $data = OppActHistoryCachePeer::fetchLastData();
+    
+    $dettaglio = OppCaricaPeer::getDettaglioInteresseArgomenti($carica_id, array($argomento_id), $data);
+    $this->firme_p = $dettaglio['firme_p'];
+    $this->totale_firme_p = $dettaglio['totale_firme_p'];
+    $this->firme_r = $dettaglio['firme_r'];
+    $this->totale_firme_r = $dettaglio['totale_firme_r'];
+    $this->firme_c = $dettaglio['firme_c'];
+    $this->totale_firme_c = $dettaglio['totale_firme_c'];
+    $this->interventi = $dettaglio['interventi'];
+    $this->totale_interventi = $dettaglio['totale_interventi'];
+    
+
   }
 
 

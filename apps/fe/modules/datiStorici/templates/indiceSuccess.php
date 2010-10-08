@@ -24,3 +24,4 @@
 <?php slot('breadcrumbs') ?>
     <?php echo link_to("home", "@homepage") ?> / dati storici su indice attivit&agrave;
 <?php end_slot() ?>
+

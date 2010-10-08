@@ -30,6 +30,9 @@ jQuery.noConflict();
 <?php echo form_tag('datiStorici/interessi', array('id' => 'search-autocompleter')); ?>
 	
 	<fieldset id="search-autocompleter-fbox">
+	  <?php if (isset($limit)): ?>
+  	  <input id="limit" name="limit" value="<?php echo $limit ?>" type="hidden"/>	   
+	  <?php endif ?>
     <input id="tag_search" class="ac_input blur" value="<?php echo $argomento?$argomento->getTripleValue():''?>"/>
     <label for="ramo_C">Camera</label>
     <?php echo radiobutton_tag('ramo', 'C', $ramo == 'C') ?>

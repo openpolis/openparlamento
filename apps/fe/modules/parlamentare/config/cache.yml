@@ -9,7 +9,7 @@ interventi:
   enabled: on
 
 index:
-  enabled: on
+  enabled: off
 
 list:
   enabled: on

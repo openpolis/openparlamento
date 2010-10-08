@@ -208,6 +208,61 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     
   }
 
+  public static function getDettaglioInteresseArgomenti($carica_id, $argomenti_ids, $data)
+  {
+    $con = Propel::getConnection(self::DATABASE_NAME);
+
+    $dettaglio = array();
+    
+    // estrazione di tutte le firme della carica relative ad atti taggati con argomento e del peso degli atti
+    foreach (array('P', 'R', 'C') as $tipo_firma) {
+      $sql = sprintf("select ca.atto_id, ah.indice from opp_carica_has_atto ca, sf_tagging t, opp_act_history_cache ah where ca.tipo='%s' and ca.carica_id=%d and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and t.tag_id in (%s) group by ca.atto_id", $tipo_firma, $carica_id, $data, implode(", ", $argomenti_ids));
+
+      $stm = $con->createStatement(); 
+      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+      // costruzione array del dettaglio firme
+      $dettaglio["firme_".strtolower($tipo_firma)] = array();
+      $totale = 0;
+      while ($rs->next())
+      {
+        $row = $rs->getRow();
+        $atto_id = $row['atto_id'];
+        $punti_atto = $row['indice'];
+
+        $dettaglio["firme_".strtolower($tipo_firma)][] = array('atto_id' => $atto_id, 'punti_atto' => $punti_atto);
+        $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo_firma) * $punti_atto;
+      }
+      $dettaglio['totale_firme_'.strtolower($tipo_firma)] = $totale;
+
+    }
+
+    // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
+    $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice from opp_intervento i, sf_tagging t, opp_act_history_cache ah where ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and t.taggable_model='OppAtto' and t.taggable_id=i.atto_id and t.id in (%s)  group by i.atto_id, i.sede_id, i.data;", $carica_id, $data, implode(", ", $argomenti_ids));
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // costruzione array del dettaglio interventi
+    $dettaglio["interventi"] = array();
+    $totale = 0;
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $atto_id = $row['atto_id'];
+      $sede_intervento = $row['sede_id'];
+      $data_intervento = $row['data_intervento'];
+      $punti_atto = $row['indice'];
+
+      $dettaglio["interventi"][] = array('atto_id' => $atto_id, 'punti_atto' => $punti_atto,
+                                         'sede_intervento' => $sede_intervento, 'data_intervento' => $data_intervento);
+      $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+    }
+    $dettaglio['totale_interventi'] = $totale;
+
+    return $dettaglio;
+  }
+
   /**
    * torna un array associativo di politici che si occupano di certi argomenti, 
    * ordinati in base al punteggio, con eventuale limit
@@ -295,7 +350,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
     // ordinamento per rilevanza, prima dello slice
     if (count($politici) > 1)
-      usort($politici, array("OppCaricaPeer", "comparisonIndice"));
+      uasort($politici, array("OppCaricaPeer", "comparisonIndice"));
 
 
     // slice dell'array, se specificata l'opzione limit

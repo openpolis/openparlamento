@@ -35,6 +35,11 @@ dati_storici_interessi:
   url:   /interessi/*
   param: { module: datiStorici, action: interessi }
 
+dati_storici_dettaglio_interessi:
+  url:   /dettaglio_interessi/:carica_id/:argomento_id
+  param: { module: datiStorici, action: interessiDettaglio }
+
+
   
 tesseramento:
   url: /tesseramento
@@ -242,7 +247,7 @@ argomento_nonleg:
 argomento_sioccupanodi:
   url:   /argomento_sioccupanodi/:triple_value/:ramo/*
   param: { module: datiStorici, action: interessi }
-  
+
 argomenti_actionaid:
   url:   /argomenti_actionaid/:ramo/*
   param: { module: argomento, action: listClassificaActionAid }
