@@ -6,7 +6,7 @@
       <?php //include_partial('wikiGruppi') ?>       
     </div>
     
-<div class="W73_100 float-left" style="width:63%">
+<div>
 <?php echo include_component('parlamentare','gruppiParlamentari',array('ramo' => 1, 'leg'=> 16)) ?>
 </div>
 
