@@ -222,7 +222,8 @@ foreach($array_diff as $k => $diff)
     </tr>
   </tbody>
 </table>      
-    
+<br/>
+Per la maggioranza in questo ramo del Parlamento sono necessari <?php echo ($ramo==1 ? '316 deputati' : '161 senatori')?>. Oggi il Governo ha un margine di <strong><?php echo ($num_magg-($ramo==1 ? '316' : '161')) ?></strong> <?php echo ($ramo==1 ? ' deputati.' : ' senatori.') ?>  
 
 </div>
 <div class="W73_100 float-left" style="width:60%">

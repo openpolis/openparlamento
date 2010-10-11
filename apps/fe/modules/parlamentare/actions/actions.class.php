@@ -1006,11 +1006,11 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
 
  public function executeGruppiCamera()
  {
-   
+   $this->getResponse()->setTitle('Il dettaglio dei gruppi della Camera dei Deputati - '.sfConfig::get('app_main_title'));
  }   
  public function executeGruppiSenato()
  {
-   
+  $this->getResponse()->setTitle('Il dettaglio dei gruppi del Senato della Repubblica - '.sfConfig::get('app_main_title')); 
  }  
 }
 
