@@ -60,6 +60,22 @@ class OppAttoPeer extends BaseOppAttoPeer
     
   }
   
+  
+  public static function isUnifiedText($atto_id)
+  {
+    
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select a.is_main_unified, ra.tipo_relazione_id from opp_atto a, opp_relazione_atto ra where (ra.atto_from_id=a.id) and ra.tipo_relazione_id=1 and a.id=%d group by a.id;",
+                   $atto_id);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    if (!$rs->next()) return null;
+    else return $rs->getRow();
+    
+  }
+  
 
   /**
    * torna array di OppAtto a partire da un array di ID 

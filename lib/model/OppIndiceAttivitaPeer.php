@@ -160,10 +160,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     $d_punteggio = 0;
     foreach ($atti_relazionati as $atto) {
-      // il relatore prende punteggio 
-      if ($atto['is_main_unified']) {
-        $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
-      }
+      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 
     $atti_relazionati_node->addAttribute('totale', $d_punteggio);
@@ -285,6 +282,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
+
+    // determina se l'atto è parte di un Testo Unificato
+    $is_unified = OppAttoPeer::isUnifiedText($atto_id);
     
     if (is_null($tipo_atto)) return 0;
     
@@ -299,7 +299,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     if ($mode == 'relazione') {
       // --- relazione ---
-      $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
+      if (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified']) {
+        $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
+      } else {
+        $d_punteggio = 0;
+      }
+      
       $punteggio += $d_punteggio;
       if ($verbose)
         printf("  relazione %7.2f\n", $d_punteggio);
@@ -357,62 +362,89 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $consenso_node->addAttribute('totale', $d_punteggio);
     }
       
-    
     // --- iter ---
     $itinera_atto = OppAttoHasIterPeer::getItinera($atto_id, $data);
     $iter_node = $atto_node->addChild('iter', null, self::$opp_ns);
-    
     $d_punteggio = 0.0;
     $n_passaggi = 0;
-    foreach ($itinera_atto as $iter_atto) {
-      $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
-      if (is_null($passaggio)) continue;
 
-      $n_passaggi++;
-      
-      $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-      $passaggio_node->addAttribute('tipo', $passaggio);
+    // il punteggio dell'iter non viene calcolato per i relatori di testi unificati non principali
+    // (in tutti gli altri casi sì)
+    $is_unificato_non_main = ($mode == 'presentazione' && is_array($is_unified) && !$is_unified['is_main_unified']);
+    if ($mode == 'presentazione' ||
+        $mode == 'relazione' && (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified'])) {
 
-      $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
-      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
-      if ($verbose)
-        printf("    iter %s (%s %s) %7.2f\n", 
-               $passaggio, $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
-      
-      $passaggio_node->addAttribute('totale', $dd_punteggio);
+      foreach ($itinera_atto as $iter_atto) {
+        $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
+        // salta passaggi nulli (?)
+        if (is_null($passaggio)) continue;
         
-      // --- bonus maggioranza ---
-      if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
-        if ($carica_in_maggioranza_al_passaggio && OppAttoPeer::isAttoVotatoDaOpposizione($atto_id, $data)) {
-          $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
-          $bonus_node = $iter_node->addChild('bonus_maggioranza', null, self::$opp_ns);
-          $bonus_node->addAttribute('totale', $dd_punteggio);
-          if ($verbose)
-            printf("    bonus di maggioranza! %7.2f\n", $dd_punteggio);          
-        }
-      }
-    }
-    
-    
-    // controlla se diventato legge dopo passaggi in altri rami
-    $atto = OppAttoPeer::retrieveByPK($atto_id);
-    $carica_in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
-    $c = new Criteria();
-    $c->add(OppAttoHasIterPeer::ITER_ID, 16);
-    while ($atto_succ_id = $atto->getSucc())
-    {
-      $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
-      if ($atto->countOppAttoHasIters($c) > 0)
-      {
-        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $in_maggioranza);
+        // per i primi firmatari di atti di tipo Testo Unificato, non principali,
+        // simula assorbimenti
+        if ($is_unificato_non_main && $passaggio == 'approvato') $passaggio = 'assorbito';
+        
+        $n_passaggi++;
 
         $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-        $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+        
+        if ($is_unificato_non_main) {
+          $passaggio_node->addAttribute('tipo', 'assorbimento come unificato non principale');
+        } else {
+          $passaggio_node->addAttribute('tipo', $passaggio);
+        }
+
+        $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
+        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
+        if ($verbose)
+          if ($passaggio == 'assorbito' && $is_unificato_non_main) {
+            printf("    iter %s (%s %s) %7.2f\n", 
+                   'assorbimento come unificato non principale', 
+                   $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
+          } else {
+            printf("    iter %s (%s %s) %7.2f\n", 
+                   $passaggio, $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
+          }
+
         $passaggio_node->addAttribute('totale', $dd_punteggio);
 
-        if ($verbose)
-          printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+        if ($passaggio == 'assorbito') break;
+        
+        // --- bonus maggioranza ---
+        if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
+          if ($carica_in_maggioranza_al_passaggio && OppAttoPeer::isAttoVotatoDaOpposizione($atto_id, $data)) {
+            $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
+            $bonus_node = $iter_node->addChild('bonus_maggioranza', null, self::$opp_ns);
+            $bonus_node->addAttribute('totale', $dd_punteggio);
+            if ($verbose)
+              printf("    bonus di maggioranza! %7.2f\n", $dd_punteggio);          
+          }
+        }
       }
+
+
+      // controlla se diventato legge dopo passaggi in altri rami (se non assorbito e non unificato_non_main)
+      if (!isset($passaggio) || $passaggio != 'assorbito' && !$is_unificato_non_main) {
+        $atto = OppAttoPeer::retrieveByPK($atto_id);
+        $carica_in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
+        $c = new Criteria();
+        $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+        while ($atto_succ_id = $atto->getSucc())
+        {
+          $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+          if ($atto->countOppAttoHasIters($c) > 0)
+          {
+            $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $in_maggioranza);
+
+            $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+            $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+            $passaggio_node->addAttribute('totale', $dd_punteggio);
+
+            if ($verbose)
+              printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+          }
+        }
+      }
+      
     }
     
     $punteggio += $d_punteggio;
