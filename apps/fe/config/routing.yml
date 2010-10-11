@@ -40,6 +40,7 @@ dati_storici_dettaglio_interessi:
   param: { module: datiStorici, action: interessiDettaglio }
 
 
+
   
 tesseramento:
   url: /tesseramento
@@ -212,6 +213,10 @@ singolo_atto:
   url: /singolo_atto/:id
   param: { module: atto, action: index }
 
+set_atto_is_main_unified:
+  url: /atto_is_main_unified
+  param: { module: atto, action: setIsMainUnified }
+  
 widget_atto:
     url: /widget_atto
     param: { module: atto, action: widget }   

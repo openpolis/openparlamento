@@ -964,6 +964,17 @@ class attoActions extends sfActions
   public function executeStatistiche()
   {
     
-  }    
+  }   
+  
+  public function executeSetIsMainUnified()
+  {
+    $atto_id = $this->getRequestParameter('atto_id');
+    $value = $this->getRequestParameter('is_main_unified');
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $atto->setIsMainUnified($value);
+    $atto->save();
+
+    $this->redirect('@singolo_atto?id='.$atto_id);
+  }
   
 }

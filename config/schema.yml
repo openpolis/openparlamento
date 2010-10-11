@@ -38,6 +38,7 @@ propel:
     seduta:             { type: integer }
     pred:               { type: integer }
     succ:               { type: integer }
+    is_main_unified:    { type: boolean, required: true, default: 0 }
     voto_medio:         { type: float }
     ut_fav:             { type: integer, required: true, default: 0 }
     ut_contr:           { type: integer, required: true, default: 0 }

@@ -424,6 +424,7 @@ class OppAtto extends BaseOppAtto
     return $this->getId();
   }
 
+
   public function getTipoAtto()
   {
     $tipo_atto_id = $this->getTipoAttoId();

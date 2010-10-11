@@ -13,6 +13,7 @@
           <?php echo "</strong>"; ?>
         <?php endif; ?>
         <?php echo link_to($relazione[2],'singolo_atto/'.$relazione[0]); ?>
+        
     <?php endif; ?> 
     
     
@@ -38,7 +39,17 @@
     <?php endif; ?> 
     
    <?php endforeach; ?>    
+
+   <?php if ($relazione[3]==0 && $relazione[1] == 'T. U. con' && $sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>          
+    <br/> 
+    
+    <div id="main-change-result">
+      <?php include_partial('atto/setIsMainUnified', array('atto' => $atto)) ?>
+    </div>
+        
+   <?php endif ?>
        
 </p> 
+
 <br />
 <?php endif; ?> 

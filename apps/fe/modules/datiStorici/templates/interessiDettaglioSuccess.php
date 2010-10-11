@@ -27,7 +27,7 @@
 <?php endif ?>
 
 <?php if (count($firme_c)): ?>
-  <h6>Come corelatore (<?php echo $totale_firme_c ?>)</h6>
+  <h6>Come cofirmatario (<?php echo $totale_firme_c ?>)</h6>
   <ul>
     <?php foreach ($firme_c as $firma): ?>
       <li>
