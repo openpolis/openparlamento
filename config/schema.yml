@@ -104,10 +104,10 @@ propel:
     created_at:
  
   opp_carica_interna:
-    id:               { type: integer, required: true, primaryKey: true, index: true }
+    id:
     carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    tipo_carica_id:   { type: integer, required: true, index: true, foreignTable: opp_tipo_carica, foreignReference: id }
-    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id }
+    tipo_carica_id:   { type: integer, required: true, index: true, foreignTable: opp_tipo_carica, foreignReference: id, onDelete: CASCADE }
+    sede_id:          { type: integer, required: true, index: true, foreignTable: opp_sede, foreignReference: id, onDelete: CASCADE }
     data_inizio:      { type: date }
     data_fine:        { type: date }
     descrizione:      { type: varchar(255) }
