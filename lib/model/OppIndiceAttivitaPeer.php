@@ -422,8 +422,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       }
 
 
-      // controlla se diventato legge dopo passaggi in altri rami (se non assorbito e non unificato_non_main)
-      if (!isset($passaggio) || $passaggio != 'assorbito' && !$is_unificato_non_main) {
+      // controlla se diventato legge dopo passaggi in altri rami (se non assorbito)
+      if (!isset($passaggio) || $passaggio != 'assorbito') {
         $atto = OppAttoPeer::retrieveByPK($atto_id);
         $carica_in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
         $c = new Criteria();

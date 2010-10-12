@@ -127,13 +127,13 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $punteggio = 0.0;
     
     // punteggio dato all'atto per-se, a seconda del tipo
-    if ($tipo_atto->getDenominazione() == 'SDDL') {
+    if ($tipo_atto == 'SDDL') {
       $punteggio = 1.0;
     } else {
       $punteggio = 0.5;
     }
     $presentazione_node = $atto_node->addChild('presentazione', null, self::$opp_ns);
-    $presentazione_node->addAttribute('totale', $d_punteggio);    
+    $presentazione_node->addAttribute('totale', $punteggio);    
     
     // --- consenso ---
     $consenso_node = $atto_node->addChild('consenso', null, self::$opp_ns);
@@ -206,6 +206,11 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     
     
     // --- iter ---
+    
+    // determina se l'atto è parte di un Testo Unificato
+    $is_unified = OppAttoPeer::isUnifiedText($atto_id);
+    $is_unificato_non_main = (is_array($is_unified) && !$is_unified['is_main_unified']);
+    
     $itinera_atto_rs = OppAttoHasIterPeer::getItineraAttoDataRS($atto_id, $data);
     
     $iter_node = $atto_node->addChild('iter', null, self::$opp_ns);
@@ -218,15 +223,27 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
       if (is_null($passaggio)) continue;
 
+      // se l'atto è unificato e non-main, allora prende il punteggio come gli atti assorbiti
+      if ($is_unificato_non_main && $passaggio == 'approvato') $passaggio = 'assorbito';
+
       $n_passaggi++;
-      
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-      $passaggio_node->addAttribute('tipo', $passaggio);
+      
+      if ($is_unificato_non_main) {
+        $passaggio_node->addAttribute('tipo', 'assorbimento come unificato non principale');
+      } else {
+        $passaggio_node->addAttribute('tipo', $passaggio);
+      }
+      
 
       if (is_null($passaggio)) continue;
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $di_maggioranza);
       if ($verbose)
-        printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
+        if ($passaggio == 'assorbito' && $is_unificato_non_main) {
+          printf("    iter %s %7.2f\n", 'assorbimento come unificato non principale', $dd_punteggio);
+        } else {
+          printf("    iter %s %7.2f\n", $passaggio, $dd_punteggio);
+        }
       
       $passaggio_node->addAttribute('totale', $dd_punteggio);
         
@@ -242,27 +259,29 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       }
     }
     
-    // controlla se diventato legge dopo passaggi in altri rami
-    $atto = OppAttoPeer::retrieveByPK($atto_id);
-    $c = new Criteria();
-    $c->add(OppAttoHasIterPeer::ITER_ID, 16);
-    while ($atto_succ_id = $atto->getSucc())
-    {
-      $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
-      if ($atto->countOppAttoHasIters($c) > 0)
+    // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
+    if (!isset($passaggio) || $passaggio != 'assorbito') {
+      $atto = OppAttoPeer::retrieveByPK($atto_id);
+      $c = new Criteria();
+      $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+      while ($atto_succ_id = $atto->getSucc())
       {
-        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
+        $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+        if ($atto->countOppAttoHasIters($c) > 0)
+        {
+          $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
 
-        $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-        $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
-        $passaggio_node->addAttribute('totale', $dd_punteggio);
+          $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+          $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+          $passaggio_node->addAttribute('totale', $dd_punteggio);
 
-        if ($verbose)
-          printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+          if ($verbose)
+            printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
+        }
       }
+      unset($c);
+      unset($atto);
     }
-    unset($c);
-    unset($atto);
     
     
     $punteggio += $d_punteggio;
