@@ -9,7 +9,7 @@
           <?php foreach ($politico['firme_p'] as $firma): ?>
             <?php $atto = $firma['atto'] ?>
             <li>
-              <?php echo strtolower($atto->getOppTipoAtto()->getDenominazione()) . " - " . link_to($atto->getTitoloCompleto(), '@singolo_atto?id='.$atto->getId()) ?>
+              <?php echo strtolower($atto->getOppTipoAtto()->getDescrizione()) . " - " . link_to($atto->getTitoloCompleto(), '@singolo_atto?id='.$atto->getId()) ?>
             </li>    
           <?php endforeach ?>
         </ul>  
@@ -21,7 +21,7 @@
           <?php foreach ($politico['firme_r'] as $firma): ?>
             <?php $atto = $firma['atto'] ?>
             <li>
-              <?php echo strtolower($atto->getOppTipoAtto()->getDenominazione()) . " - " . link_to($atto->getTitoloCompleto(), '@singolo_atto?id='.$atto->getId()) ?>
+              <?php echo strtolower($atto->getOppTipoAtto()->getDescrizione()) . " - " . link_to($atto->getTitoloCompleto(), '@singolo_atto?id='.$atto->getId()) ?>
             </li>    
           <?php endforeach ?>
         </ul>  
