@@ -1216,6 +1216,11 @@ form#premium-form div#perche input { margin-bottom: 0.2em; }
 div#main-change-result { border: 1px dotted lightgray; background-color: #F6FAD9; padding: 5px; margin: 5px;}
 div#main-change-result input[type="submit"], div#tag_edit input[type="submit"] { border: 1px solid gray;}
 
+
+li.dettaglio-carica { padding-top: 0.75em; }
+li.dettaglio-carica div.elenco-atti { margin-left: 1em; }
+li.dettaglio-carica em { color: #4472AC; }
+
 .form_error { color: darkred; margin-bottom: 0.2em;}
 
 table#tabella_maturita td, table#tabella_maturita th { padding: 0.75em; }

@@ -39,7 +39,9 @@ dati_storici_dettaglio_interessi:
   url:   /dettaglio_interessi/:carica_id/:argomento_id
   param: { module: datiStorici, action: interessiDettaglio }
 
-
+attivita_gruppo_argomento:
+  url: /attivita_gruppo_argomento/:ramo/:gruppo_id/*
+  param: { module: monitoring, action: attivitaGruppoArgomento }
 
   
 tesseramento:

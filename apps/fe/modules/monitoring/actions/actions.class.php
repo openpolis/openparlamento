@@ -20,6 +20,43 @@ class monitoringActions extends sfActions
                                                         'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort'));
   }
   
+  
+  public function executeAttivitaGruppoArgomento()
+  {
+    // parametri obbligatori
+    $this->ramo = $this->getRequestParameter('ramo');
+    $gruppo_id = $this->getRequestParameter('gruppo_id');
+
+    // parametri opzionali
+    if ($this->hasRequestParameter('triple_value'))
+    {
+      $triple_value = $this->getRequestParameter('triple_value');      
+      $this->argomento = TagPeer::retrieveFirstByTripleValue($triple_value);
+    }
+    else
+    {
+      $this->tag_name = $this->getRequestParameter('tag_name', '');
+      $this->argomento = TagPeer::retrieveByTagName($this->tag_name);      
+    }
+
+    $limit = null;
+    if ($this->hasRequestParameter('limit'))
+      $limit = $this->getRequestParameter('limit');
+
+    // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
+    if ($this->hasRequestParameter('data'))
+      $this->data = $this->getRequestParameter('data');
+    else
+      $this->data = OppActHistoryCachePeer::fetchLastData();
+
+    $this->gruppo = OppGruppoPeer::retrieveByPK($gruppo_id);
+    $this->forward404Unless($this->gruppo instanceOf OppGruppo);
+    
+    $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $this->data, $limit, $gruppo_id, false);
+    
+    
+  }
+  
   /**
    * Executes index action
    *

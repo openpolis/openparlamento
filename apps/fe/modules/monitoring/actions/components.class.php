@@ -233,6 +233,7 @@ class monitoringComponents extends sfComponents
     }
     
   }
+
   public function executeUserVsSinglePolitician()
   {
     $user_id = $this->user->getId();
@@ -281,7 +282,17 @@ class monitoringComponents extends sfComponents
     $this->contros=$contro;
     $this->indice=$indice;
   }
-  
+
+  public function executeAttivitaPoliticoArgomento()
+  {
+    $dettaglio = OppCaricaPeer::getDettaglioInteresseArgomenti($this->carica_id, array($this->argomento_id), $this->data, false);
+    $this->politico['firme_p'] = $dettaglio['firme_p'];
+    $this->politico['totale_firme_p'] = $dettaglio['totale_firme_p'];
+    $this->politico['firme_r'] = $dettaglio['firme_r'];
+    $this->politico['totale_firme_r'] = $dettaglio['totale_firme_r'];
+    $this->politico['firme_c'] = $dettaglio['firme_c'];
+    $this->politico['totale_firme_c'] = $dettaglio['totale_firme_c'];
+  }
 }
 
 ?>
