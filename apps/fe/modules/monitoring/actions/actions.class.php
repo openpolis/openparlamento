@@ -33,10 +33,17 @@ class monitoringActions extends sfActions
       $triple_value = $this->getRequestParameter('triple_value');      
       $this->argomento = TagPeer::retrieveFirstByTripleValue($triple_value);
     }
-    else
+
+    if ($this->hasRequestParameter('tag_name'))
     {
       $this->tag_name = $this->getRequestParameter('tag_name', '');
       $this->argomento = TagPeer::retrieveByTagName($this->tag_name);      
+    }
+
+    if ($this->hasRequestParameter('tag_id'))
+    {
+      $this->tag_id = $this->getRequestParameter('tag_id', '');
+      $this->argomento = TagPeer::retrieveByPK($this->tag_id);      
     }
 
     $limit = null;
