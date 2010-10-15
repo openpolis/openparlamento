@@ -326,16 +326,16 @@ parlamentare:
   param: { module: parlamentare, action: cosa }
   
 gruppi_camera:
-  url:   /camera/GruppiCamera
+  url:   /gruppi_camera
   param: { module: parlamentare, action: gruppiCamera }
 
 gruppi_senato:
-  url:   /senato/GruppiSenato
+  url:   /gruppi_senato
   param: { module: parlamentare, action: gruppiSenato }    
   
 commissioni_camera:
-  url:   /camera/CommissioniCamera
-  param: { module: parlamentare, action: CommissioniCamera }  
+  url:   /commissioni_camera
+  param: { module: parlamentare, action: commissioniCamera }  
  
 parlamentare_atti:
   url:  /parlamentare_atti/:id/:sort/:type/*
