@@ -119,6 +119,26 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
     
 	  return $gruppi;
   }
+  
+  /**
+    * restituisce il gruppo_id corrente per la carica
+    *
+    * @param integer $carica_id 
+    * @return void
+    * @author Ettore Di Cesare
+    */
+
+   public static function getGruppoCorrentePerCarica($carica_id)
+   {
+   	$c = new Criteria();
+   	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
+   	$c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL , Criteria::ISNULL);
+    $rs = OppCaricaHasGruppoPeer::doSelectOne($c);
+    if ($rs)
+      return $rs->getGruppoId();
+    else
+      return NULL;
+   }
   	
 }
 
