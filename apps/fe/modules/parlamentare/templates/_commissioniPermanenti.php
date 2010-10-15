@@ -7,7 +7,7 @@
         <th scope="col">Presidente:</th> 	
         <th scope="col">Vicepresidenti:</th>
         <th scope="col">Segretari:</th>
-        <th scope="col">Componenti:</th>
+        <th scope="col">Membri:</th>
         <th scope="col">Totale:</th>
       </tr>
     </thead>
@@ -24,7 +24,7 @@
   <th scope='row'><span style='background-color:<?php echo $color_gruppo ?>; color:white; margin:5px;'>&nbsp;</span><?php echo OppGruppoPeer::retrieveByPk($k)->getAcronimo(); ?></th>
   <td>
     <?php if (array_key_exists($k,$gruppi_p)) : ?>
-      <?php echo $gruppi_p[$k]; ?>
+      <span style="font-weight:bold; background-color:yellow; padding:3px;"><?php echo $gruppi_p[$k]; ?></span>
     <?php else : ?>  
       <?php echo "0"; ?>
     <?php endif; ?>
@@ -50,11 +50,20 @@
       <?php echo "0"; ?>
     <?php endif; ?>
   </td>
-  <td>
+  <td class="evident">
       <strong><?php echo $gruppo ?></strong>
   </td>
  </tr>
+   
 <?php endforeach; ?>  
+<tr>
+   <th scope='row'>Totali</th>
+   <td><?php echo array_sum($gruppi_p)?></td>
+   <td><?php echo array_sum($gruppi_vp)?></td>
+   <td><?php echo array_sum($gruppi_s)?></td>
+   <td><?php echo array_sum($gruppi_c)?></td>
+   <td class="evident"><strong><?php echo array_sum($gruppi_all)?></strong></td>
+  </tr>
 </tbody>
 </table>
 <br/>
@@ -139,26 +148,37 @@
 
   }
   
+ 
   $chld="";
-  $chm="";
-  $color="ffffff|";
-  $z=0;
-  arsort($membri_regione);
+   $color="";
+   $z=0;
+   arsort($membri_regione);
   foreach ($membri_regione as $k => $m)
   {
     $chld=$chld."IT-".$k."|";
-    if ($m>0)
-    {
-      $chm=$chm."f".$m.",000000,0,".$z.",10|";
-      $color=$color."f9ee70|";
-    }
-    else
-      $color=$color."736F6E|";
+
+      if ($m>=15)
+         $color=$color."CC0000|";
+       elseif ($m<15 && $m>=12)  
+         $color=$color."CC3D00|";
+       elseif ($m<12 && $m>=8)  
+           $color=$color."CC6600,";
+       elseif ($m<8 && $m>=4)  
+           $color=$color."CC7A00|"; 
+       elseif ($m<4 && $m>=2)  
+           $color=$color."CC8400|"; 
+       elseif ($m==1)  
+           $color=$color."CC8E00|";
+       elseif ($m==0)  
+           $color=$color."676767|";               
+      
     $z++;
   }
+  
+  $color="FFFFFF|".$color;
   
 ?>  
 <img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?php echo rtrim($perc_grafico,',') ?>&chs=380x240&chl=<?php echo rtrim($label_grafico, '|') ?>&chco=<?php echo rtrim($color_grafico,'|') ?>">
 
-<img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>&chm=<?php echo trim($chm,"|") ?>">
+<img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
 </div>
