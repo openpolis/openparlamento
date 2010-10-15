@@ -157,18 +157,20 @@
   {
     $chld=$chld."IT-".$k."|";
 
-      if ($m>=15)
+      if ($m>=10)
          $color=$color."CC0000|";
-       elseif ($m<15 && $m>=12)  
+       elseif ($m<10 && $m>=8)  
          $color=$color."CC3D00|";
-       elseif ($m<12 && $m>=8)  
-           $color=$color."CC6600,";
-       elseif ($m<8 && $m>=4)  
+       elseif ($m<8 && $m>=6)  
+           $color=$color."CC5100,";
+       elseif ($m<6 && $m>=4)  
+           $color=$color."CC6600|"; 
+       elseif ($m==3)  
            $color=$color."CC7A00|"; 
-       elseif ($m<4 && $m>=2)  
-           $color=$color."CC8400|"; 
+      elseif ($m==1)  
+          $color=$color."CC8400|";     
        elseif ($m==1)  
-           $color=$color."CC8E00|";
+           $color=$color."CC9900|";
        elseif ($m==0)  
            $color=$color."676767|";               
       
