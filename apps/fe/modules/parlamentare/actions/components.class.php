@@ -230,7 +230,7 @@ class parlamentareComponents extends sfComponents
   
   }
   
-   public function executeAllvoteComparati()
+public function executeAllvoteComparati()
 {
       
 }
@@ -370,4 +370,73 @@ class parlamentareComponents extends sfComponents
   
       
   }
+  
+  public function executeCommissioniPermanenti()
+  {
+    $gruppi_all=array();
+    $gruppi_p=array();
+    $gruppi_vp=array();
+    $gruppi_s=array();
+    $gruppi_c=array();
+    $membri_regione=array(21 => 0,23 => 0,25 => 0,32 => 0,34 => 0,36 => 0,42 => 0,45 => 0,52 => 0,55 => 0,57 => 0,62 => 0,65 => 0,67 => 0,72 => 0,75 => 0,77 => 0,78 => 0,82 => 0,88 => 0);
+    
+    $c=new Criteria();
+    $c->addJoin(OppCaricaInternaPeer::CARICA_ID,OppCaricaPeer::ID);
+    $c->add(OppCaricaPeer::LEGISLATURA,$this->leg);
+    $c->add(OppCaricaInternaPeer::SEDE_ID,$this->sede_id);
+    $c->add(OppCaricaInternaPeer::DATA_FINE,NULL, Criteria::ISNULL);
+    $membri=OppCaricaInternaPeer::doSelect($c);
+    foreach ($membri as $membro)
+    {
+      $regione=strtolower(str_replace(array(" ","'","-"),"_",$membro->getOppCarica()->getCircoscrizione()));
+      $codice_regione=sfConfig::get('app_circoscrizioni_'.$regione);
+      if (array_key_exists($codice_regione,$membri_regione))
+        $membri_regione[$codice_regione]=$membri_regione[$codice_regione]+1;
+          
+      $gruppo_id=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($membro->getCaricaId());
+      $tipo_carica=OppTipoCaricaPeer::retrieveByPk($membro->getTipoCaricaId())->getNome();
+      
+      if (array_key_exists($gruppo_id,$gruppi_all))
+        $gruppi_all[$gruppo_id]=$gruppi_all[$gruppo_id]+1;
+      else
+        $gruppi_all[$gruppo_id]=1;
+      
+      if ($tipo_carica=='Presidente')
+      {
+        if (array_key_exists($gruppo_id,$gruppi_p))
+          $gruppi_p[$gruppo_id]=$gruppi_p[$gruppo_id]+1;
+        else
+          $gruppi_p[$gruppo_id]=1;
+      }
+      if ($tipo_carica=='Vicepresidente')
+      {
+        if (array_key_exists($gruppo_id,$gruppi_vp))
+          $gruppi_vp[$gruppo_id]=$gruppi_vp[$gruppo_id]+1;
+        else
+          $gruppi_vp[$gruppo_id]=1;
+      }
+      if ($tipo_carica=='Segretario')
+      {
+        if (array_key_exists($gruppo_id,$gruppi_s))
+          $gruppi_s[$gruppo_id]=$gruppi_s[$gruppo_id]+1;
+        else
+          $gruppi_s[$gruppo_id]=1;
+      }
+      if ($tipo_carica=='Componente')
+      {
+        if (array_key_exists($gruppo_id,$gruppi_c))
+          $gruppi_c[$gruppo_id]=$gruppi_c[$gruppo_id]+1;
+        else
+          $gruppi_c[$gruppo_id]=1;
+      }
+    }
+    $this->gruppi_all=$gruppi_all;
+    $this->gruppi_p=$gruppi_p;
+    $this->gruppi_vp=$gruppi_vp;
+    $this->gruppi_s=$gruppi_s;
+    $this->gruppi_c=$gruppi_c;
+    $this->membri_regione=$membri_regione;
+  }
+  
+  
 }
