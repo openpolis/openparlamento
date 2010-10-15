@@ -1015,7 +1015,7 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
  
  public function executeCommissioniCamera()
   {
-    $this->getResponse()->setTitle('Il dettaglio delle Commissioni della camera dei Deputati - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Il dettaglio delle Commissioni della Camera - '.sfConfig::get('app_main_title'));
     
     //estrae le commissioni parmanenti camera
     $c=new Criteria();
@@ -1023,7 +1023,16 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
     $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
     $this->comms=OppSedePeer::doSelect($c);
   }
-   
+  public function executeCommissioniSenato()
+    {
+      $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
+
+      //estrae le commissioni parmanenti camera
+      $c=new Criteria();
+      $c->add(OppSedePeer::RAMO,'S');
+      $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
+      $this->comms=OppSedePeer::doSelect($c);
+    }   
 }
 
 ?>

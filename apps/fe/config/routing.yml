@@ -335,7 +335,11 @@ gruppi_senato:
   
 commissioni_camera:
   url:   /commissioni_camera
-  param: { module: parlamentare, action: commissioniCamera }  
+  param: { module: parlamentare, action: commissioniCamera }
+
+commissioni_camera:
+  url:   /commissioni_senato
+  param: { module: parlamentare, action: commissioniSenato }    
  
 parlamentare_atti:
   url:  /parlamentare_atti/:id/:sort/:type/*
