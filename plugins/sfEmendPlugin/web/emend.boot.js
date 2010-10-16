@@ -11,7 +11,7 @@ var eMend = {
     jquery_min_version: '1.3.2',                           // minimum version of jQuery
     login_needed_to_post: true,                            // checks if user is logged-in and eventually redirects
     login_page: "/login",                                  // login page 
-    debug: false                                            // enable/disable uncompressed scripts inclusion for debug
+    debug: true // enable/disable uncompressed scripts inclusion for debug
   }
 };	
 

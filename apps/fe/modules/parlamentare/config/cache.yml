@@ -12,7 +12,7 @@ index:
   enabled: off
 
 list:
-  enabled: on
+  enabled: off
 
 all:
   with_layout: false

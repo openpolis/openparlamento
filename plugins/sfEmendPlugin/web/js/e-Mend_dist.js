@@ -4309,7 +4309,7 @@ eMend.dataset.prototype = {
     var childs = contentEl.childNodes, o,c;
     for (var node in childs) {
       o = childs[node];
-      if(!o.nodeType || $(o).hasClass('write-protect')) continue;
+      if(!o.nodeType || $(o).hasClass('write-protect') || o.nodeName == 'SCRIPT') continue;
       switch(o.nodeType) {
         case 1:
         case 3:
@@ -4327,7 +4327,7 @@ eMend.dataset.prototype = {
 
     // remove all content element childs except write-protected
     while (childs.length - wprt) {
-      if($(parent.firstChild).hasClass('write-protect')) {
+      if($(parent.firstChild).hasClass('write-protect') || parent.firstChild.nodeName == 'SCRIPT') {
         wprt++;
         continue;
       }
@@ -4336,7 +4336,8 @@ eMend.dataset.prototype = {
 
     // restore nodes from backup
     for(var i=b.length-1; i>-1; i--) {
-      parent.insertBefore(b[i].cloneNode(true),parent.firstChild);
+      var cln = b[i].cloneNode(true); 
+      parent.insertBefore(cln,parent.firstChild);
     }
 
     document.body.normalize();
@@ -6587,8 +6588,8 @@ eMend.backstore.sfEmendPluginLog.prototype = {
 //#ifdef CONSOLE_COMPAT
 //=================================================
 
-
-if (!window.console || !window.console.firebug) {
+/*
+if (!window.console.firebug || !window.console ) {
   if (window.opera && !window.console) {
     window.console = {};
     function fn() { opera.postError(arguments); };
@@ -6607,7 +6608,7 @@ if (!window.console || !window.console.firebug) {
        }
    }
 }
-
+*/
 //=================================================
 //#endif
 //CONSOLE_COMPAT

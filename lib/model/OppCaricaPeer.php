@@ -332,7 +332,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     if ($fetch_interventi) {
       // Interventi
       // estrazione di tutte le sedute con interventi relativi ad atti taggati con argomenti
-      $sql = sprintf("select p.id, p.nome, p.cognome, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by t.tag_id, i.carica_id, i.atto_id, i.sede_id, i.data;",
+      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by t.tag_id, i.carica_id, i.atto_id, i.sede_id, i.data;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
@@ -341,6 +341,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       // costruzione array associativo dei politici
       while ($rs->next())
       {
+        $row = $rs->getRow();
         $carica_id = $row['carica_id'];
         $atto_id = $row['atto_id'];
         $punti_atto = $row['indice'];
@@ -348,7 +349,6 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $nome = $row['nome'];
         $cognome = $row['cognome'];
         $acronimo = $row['acronimo'];
-
 
         if (!array_key_exists($carica_id, $politici))
           $politici[$carica_id] = array('politico_id' => $politico_id, 
