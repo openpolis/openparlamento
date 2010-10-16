@@ -56,7 +56,7 @@
   <?php endforeach ?>
   <?php endif ?> 
 <?php else : ?>  
-  <br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
   <?php foreach ($g_membri as $g => $membri) : ?>
     <?php echo OppGruppoPeer::retrieveByPk($g)->getNome() ?>
     <br/>
@@ -68,5 +68,6 @@
       ($k[1]!="componente" ? "-".ucfirst($k[1]):"" ) ?>
        <br/>
     <?php endforeach ?>
+    
   <?php endforeach ?>
 <?php endif ?>

@@ -68,6 +68,8 @@
 </table>
 <br/>
 <div><span style="background-color:#022468; color:white; padding: 3px; margin-right:10px; font-size:10px;">maggioranza</span><span style="background-color:#766d04; color:white; padding: 3px; margin-right:10px; font-size:10px">opposizione</span></div>
+<br/>
+
 </div>
 <div class="W73_100 float-right" style="width:56%;">
 <?php  
@@ -184,3 +186,26 @@
 
 <img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
 </div>
+<div class="W100_100 float-left">
+  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
+  Componenti ordinati per incarico <?php echo link_to('mostra',
+                      '@commissioni_membri?sede='.$sede_id.'&sort=carica',
+                      array('class' => 'show-hide-dettaglio')) ?>
+  </li>
+  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
+    Componenti ordinati per gruppo 
+  <?php echo link_to('mostra',
+                      '@commissioni_membri?sede='.$sede_id.'&sort=gruppo',
+                      array('class' => 'show-hide-dettaglio')) ?>
+  </li>
+  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
+  Leggi approvate: <?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg)) ?> [<?php echo link_to('mostra',
+                      '@disegno_commissione?sede='.$sede_id.'&stato=approvato definitivamente',
+                      array('class' => 'show-hide-dettaglio')) ?>]
+  </li>
+  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
+  Disegni di legge in discussione in sede referente: <?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg)) ?> [<?php echo link_to('mostra',
+                      '@disegno_commissione?sede='.$sede_id,
+                      array('class' => 'show-hide-dettaglio')) ?>]
+  </li>
+</div>  

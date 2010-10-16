@@ -24,9 +24,7 @@ foreach ($news as $n)
     echo "tag id=".$n->getRelatedMonitorableId().", trovato nelle news id=".$n->getId()." non esiste. Cancello la news\n";
     $n->delete();
     
-  }
-    
-    
+  } 
 }
 
 ?>

@@ -90,7 +90,7 @@ function datafine($leg)
 
 $alfabeto = array("A", "B", "C", "D", "E", "F" ,"G" ,"H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T" ,"U", "V", "W","Y","X","Z");
 
-//$alfabeto=array("A");
+//$alfabeto=array("F");
 
 $leg=$argv[1];
 

@@ -104,6 +104,8 @@ function trova_sede($parametro,$ramo,$tipo=0)
   $c->add(OppSedePeer::RAMO,$ramo);
   if ($tipo==0)
     $c->add(OppSedePeer::CODICE,$codice);
+  else
+    $c->add(OppSedePeer::DENOMINAZIONE,$parametro);  
   $rsede=OppSedePeer::doSelectOne($c);
   if ($rsede)
     return $rsede->getId();
@@ -197,6 +199,8 @@ $r=OppCaricaPeer::retrieveByPk($argv[1]);
   
   $comps=$html->find('div[class!=cnt_incarichi] ul.list_ul li[class^=list_li_]');
   
+  
+  
   foreach($comps as $comp)
   {
     $html2=str_get_html($comp->innertext);
@@ -230,6 +234,7 @@ $r=OppCaricaPeer::retrieveByPk($argv[1]);
     }
     if ($data_inizio_1!="" && $ctrl_1==1 && $sede_id_1!=0 && $tipo_carica_id_1!=0)
     {
+      $array
       $data_inizio_1=formatta_data($data_inizio_1);
       $data_fine_1=formatta_data($data_fine_1);
       $c= new Criteria();

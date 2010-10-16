@@ -982,18 +982,8 @@ class attoActions extends sfActions
     $sede_id = $this->getRequestParameter('sede');
     $stato = $this->getRequestParameter('stato');
     $leg = $this->getRequestParameter('leg');
-    $c= new Criteria();
-    $c->addJoin(OppAttoPeer::ID,OppAttoHasSedePeer::ATTO_ID);
-    $c->add(OppAttoPeer::LEGISLATURA,$leg);
-    if ($stato!='approvato definitivamente')
-      $c->add(OppAttoPeer::STATO_FASE,$stato);
-    else
-      $c->add(OppAttoPeer::STATO_FASE,'%approvato definitivamente%',Criteria::LIKE);
-    $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
-    $c->add(OppAttoHasSedePeer::SEDE_ID,$sede_id);
-    $c->add(OppAttoHasSedePeer::TIPO,'Referente');
-    $c->addDescendingOrderByColumn(OppAttoPeer::STATO_LAST_DATE);
-    $this->atti = OppAttoPeer::doSelect($c);
+    
+    $this->atti = OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,$stato,$leg);
   }
   
 }
