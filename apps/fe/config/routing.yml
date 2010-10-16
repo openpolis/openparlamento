@@ -337,9 +337,17 @@ commissioni_camera:
   url:   /commissioni_camera
   param: { module: parlamentare, action: commissioniCamera }
 
-commissioni_camera:
+commissioni_senato:
   url:   /commissioni_senato
   param: { module: parlamentare, action: commissioniSenato }    
+
+commissioni_membri:
+  url:   /commissioni_membri/:sede/:sort
+  param: { module: parlamentare, action: commissioniMembri,  sede: 1, sort: carica }
+  
+disegno_commissione:
+  url:   /disegno_commissione/:sede/:stato/:leg
+  param: { module: atto, action: disegnoCommissione,  sede: 1, stato: in corso di esame in commissione, leg: 16 }    
  
 parlamentare_atti:
   url:  /parlamentare_atti/:id/:sort/:type/*

@@ -977,4 +977,19 @@ class attoActions extends sfActions
     $this->redirect('@singolo_atto?id='.$atto_id);
   }
   
+  public function executeDisegnoCommissione()
+  {
+    $sede_id = $this->getRequestParameter('sede');
+    $stato = $this->getRequestParameter('stato');
+    $leg = $this->getRequestParameter('leg');
+    $c= new Criteria();
+    $c->addJoin(OppAttoPeer::ID,OppAttoHasSedePeer::ATTO_ID);
+    $c->add(OppAttoPeer::LEGISLATURA,$leg);
+    $c->add(OppAttoPeer::STATO_FASE,$stato);
+    $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+    $c->add(OppAttoHasSedePeer::SEDE_ID,$sede_id);
+    $c->add(OppAttoHasSedePeer::TIPO,'Referente');
+    $this->atti = OppAttoPeer::doSelect($c);
+  }
+  
 }

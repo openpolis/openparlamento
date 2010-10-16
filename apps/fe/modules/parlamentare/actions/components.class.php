@@ -393,7 +393,7 @@ public function executeAllvoteComparati()
       if (array_key_exists($codice_regione,$membri_regione))
         $membri_regione[$codice_regione]=$membri_regione[$codice_regione]+1;
           
-      $gruppo_id=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($membro->getCaricaId());
+      $gruppo_id=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($membro->getCaricaId())->getId();
       $tipo_carica=OppTipoCaricaPeer::retrieveByPk($membro->getTipoCaricaId())->getNome();
       
       if (array_key_exists($gruppo_id,$gruppi_all))

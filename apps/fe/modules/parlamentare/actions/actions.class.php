@@ -1014,9 +1014,8 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
  }
  
  public function executeCommissioniCamera()
-  {
+ {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni della Camera - '.sfConfig::get('app_main_title'));
-    
     //estrae le commissioni parmanenti camera
     $c=new Criteria();
     $c->add(OppSedePeer::RAMO,'C');
@@ -1024,15 +1023,50 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
     $this->comms=OppSedePeer::doSelect($c);
   }
   public function executeCommissioniSenato()
-    {
-      $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
-
-      //estrae le commissioni parmanenti camera
-      $c=new Criteria();
-      $c->add(OppSedePeer::RAMO,'S');
-      $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
-      $this->comms=OppSedePeer::doSelect($c);
-    }   
+  {
+    $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
+    //estrae le commissioni parmanenti senato
+    $c=new Criteria();
+    $c->add(OppSedePeer::RAMO,'S');
+    $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
+    $this->comms=OppSedePeer::doSelect($c);
+  }   
+  public function executeCommissioniMembri()
+  {
+     $this->setLayout(false);  
+     $this->getResponse()->setTitle('I componenti della Commissione - '.sfConfig::get('app_main_title'));
+     $sede_id=$this->getRequestParameter('sede');
+     $this->sort=$this->getRequestParameter('sort');
+     
+     //estrae le commissioni parmanenti senato
+     $c=new Criteria();
+     $c->clearSelectColumns();
+     $c->addSelectColumn(OppCaricaPeer::ID);
+     $c->addSelectColumn(OppTipoCaricaPeer::NOME);
+     $c->addSelectColumn(OppCaricaHasGruppoPeer::GRUPPO_ID);
+     
+     $c->addJoin(OppCaricaInternaPeer::TIPO_CARICA_ID,OppTipoCaricaPeer::ID);
+     $c->addJoin(OppCaricaInternaPeer::CARICA_ID,OppCaricaPeer::ID);
+     $c->addJoin(OppPoliticoPeer::ID,OppCaricaPeer::POLITICO_ID);
+     $c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID,OppCaricaPeer::ID);
+     $c->add(OppCaricaInternaPeer::SEDE_ID,$sede_id);
+     $c->add(OppCaricaInternaPeer::DATA_FINE,NULL,Criteria::ISNULL);
+     $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL,Criteria::ISNULL);
+     $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+     $rs=OppCaricaPeer::doSelectRS($c);
+     $g_membri=array();
+     while($rs->next())
+     {
+       $c_membri[$rs->getInt(1)] = strtolower($rs->getString(2));
+       if (array_key_exists($rs->getInt(3),$g_membri))
+         $g_membri[$rs->getInt(3)] =$g_membri[$rs->getInt(3)] .",".$rs->getInt(1)."-".strtolower($rs->getString(2));
+       else
+        $g_membri[$rs->getInt(3)] =$rs->getInt(1)."-".strtolower($rs->getString(2));
+         
+     }
+     $this->c_membri=$c_membri;
+     $this->g_membri=$g_membri;
+   }
 }
 
 ?>
