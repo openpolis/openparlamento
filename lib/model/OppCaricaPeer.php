@@ -238,7 +238,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
     if ($fetch_interventi) {
       // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
-      $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice from opp_intervento i, sf_tagging t, opp_act_history_cache ah where ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and t.taggable_model='OppAtto' and t.taggable_id=i.atto_id and t.id in (%s)  group by t.tag_id, i.atto_id, i.sede_id, i.data;", $carica_id, $data, implode(", ", $argomenti_ids));
+      $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice from opp_intervento i, sf_tagging t, opp_act_history_cache ah where ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and t.taggable_model='OppAtto' and t.taggable_id=i.atto_id and t.tag_id in (%s)  group by t.tag_id, i.atto_id, i.sede_id, i.data;", $carica_id, $data, implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
       $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
