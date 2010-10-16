@@ -131,11 +131,12 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
    public static function getGruppoCorrentePerCarica($carica_id)
    {
    	$c = new Criteria();
+   	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
    	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
    	$c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL , Criteria::ISNULL);
-    $rs = OppCaricaHasGruppoPeer::doSelectOne($c);
+    $rs = OppGruppoPeer::doSelectOne($c);
     if ($rs)
-      return $rs->getGruppoId();
+      return $rs;
     else
       return NULL;
    }
