@@ -20,8 +20,6 @@
       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="politician-id">
-            <?php //echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 
-                   //              array('width' => '40','height' => '53' )) ?>	
             <?php echo image_tag('/images/ico-type-politico-portrait.png', 
                                  array('width' => '40','height' => '53', 'highsrc' => OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2))  )) ?>	
             <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>

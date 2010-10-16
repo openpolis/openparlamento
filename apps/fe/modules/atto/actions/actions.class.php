@@ -979,6 +979,7 @@ class attoActions extends sfActions
   
   public function executeDisegnoCommissione()
   {
+    $this->setLayout(false);  
     $sede_id = $this->getRequestParameter('sede');
     $stato = $this->getRequestParameter('stato');
     $leg = $this->getRequestParameter('leg');

@@ -24,12 +24,12 @@ jQuery.noConflict();
         {
           parent_li.append("<div style=\"margin-left: 1.5em;\"></div>");
           parent_li.children("div").load(url);
-          $this.text('nascondi');
+          $this.text('chiudi');
           $this.data('details_loaded', true);
         } else {
           parent_li.children("div").remove();
           $this.data('details_loaded', false);
-          $this.text('mostra');
+          $this.text('apri');
         }
         return false;
     	}

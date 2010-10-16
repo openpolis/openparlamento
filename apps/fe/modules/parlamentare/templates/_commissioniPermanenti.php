@@ -186,26 +186,28 @@
 
 <img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
 </div>
-<div class="W100_100 float-left">
-  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
-  Componenti ordinati per incarico <?php echo link_to('mostra',
+<div class="W73_100 float-left">
+  <ul style="list-style-type:none;">
+  <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
+  <span style="font-size:16px;">Componenti ordinati per incarico [<?php echo link_to('mostra',
                       '@commissioni_membri?sede='.$sede_id.'&sort=carica',
-                      array('class' => 'show-hide-dettaglio')) ?>
+                      array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
-  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
-    Componenti ordinati per gruppo 
-  <?php echo link_to('mostra',
+  <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
+    <span style="font-size:16px;">Componenti ordinati per gruppo 
+  [<?php echo link_to('mostra',
                       '@commissioni_membri?sede='.$sede_id.'&sort=gruppo',
-                      array('class' => 'show-hide-dettaglio')) ?>
+                      array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
-  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
-  Leggi approvate: <?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg)) ?> [<?php echo link_to('mostra',
+  <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
+  <span style="font-size:16px;">Leggi approvate discusse in sede referente: <strong><?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg)) ?></strong> [<?php echo link_to('mostra',
                       '@disegno_commissione?sede='.$sede_id.'&stato=approvato definitivamente',
-                      array('class' => 'show-hide-dettaglio')) ?>]
+                      array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
-  <li style="font-size:12px; padding:5px 0 0 0;" id="sede-<?php echo $sede_id ?>">
-  Disegni di legge in discussione in sede referente: <?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg)) ?> [<?php echo link_to('mostra',
+  <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
+  <span style="font-size:16px;">Disegni di legge attualmente in discussione in sede referente: <strong><?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg)) ?></strong> [<?php echo link_to('mostra',
                       '@disegno_commissione?sede='.$sede_id,
-                      array('class' => 'show-hide-dettaglio')) ?>]
+                      array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
+  </ul>
 </div>  

@@ -1,4 +1,4 @@
-
+<br/>
     <table class="disegni-decreti column-table lazyload">
       <thead>
         <tr>
@@ -9,65 +9,56 @@
       </thead>
 
       <tbody>
-        </tbody>
-      </table>  
+       
         
 <?php if ($sort=='carica') :?>
+  <?php $tr_class = 'even' ?>
+  <?php foreach (array('presidente','vicepresidente','segretario','componente') as $tipo_carica) :?>
+    <?php foreach (array_keys($c_membri, $tipo_carica) as $k) :?>
+    <tr class="<?php echo $tr_class; ?>">
+    <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+      <th scope="row">  
+      <p class="politician-id"><?php echo image_tag('/images/ico-type-politico-portrait.png', 
+                           array('width' => '40','height' => '53', 'highsrc' => OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()))) ?>
+      <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()) ?>
+      <?php echo ($tipo_carica!='componente'? ' ('.ucfirst($tipo_carica).')' :'') ?>
+      </p>
+      </th>
+      <td>
+        <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($k)->getAcronimo() ?>
+      </td>
+      <td>
+        <?php echo OppCaricaPeer::retrieveByPk($k)->getCircoscrizione() ?>
+      </td>
+    </tr>        
+    <?php endforeach ?>
+  <?php endforeach ?>   
+  
 
-  <?php if(count(array_keys($c_membri, "presidente"))>0 ) :?>
-    Presidente
-    <br/>
-  <?php foreach (array_keys($c_membri, "presidente") as $k) :?>
-    <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId())."-".
-    OppCaricaPeer::retrieveByPk($k)->getCircoscrizione()."-". 
-    OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($k)->getAcronimo() ?>
-     <br/>
-  <?php endforeach ?> 
-  <?php endif ?> 
-
-  <?php if(count(array_keys($c_membri, "vicepresidente"))>0 ) :?>
-    <?php echo (array_keys($c_membri, "vicepresidente")==1?'Vicepresidente':'Vicepresidenti')?>
-  <br/>
-  <?php foreach (array_keys($c_membri, "vicepresidente") as $k) :?>
-    <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId())."-".
-    OppCaricaPeer::retrieveByPk($k)->getCircoscrizione()."-". 
-    OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($k)->getAcronimo() ?>
-     <br/>
-  <?php endforeach ?>
-  <?php endif ?> 
-  <?php if(count(array_keys($c_membri, "segretario"))>0 ) :?>
-    <?php echo (array_keys($c_membri, "segretario")==1?'Segretario':'Segretari')?>
-    <br/>
-  <?php foreach (array_keys($c_membri, "segretario") as $k) :?>
-    <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId())."-".
-    OppCaricaPeer::retrieveByPk($k)->getCircoscrizione()."-". 
-    OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($k)->getAcronimo() ?>
-     <br/>
-  <?php endforeach ?>
-  <?php endif ?> 
-  <?php if(count(array_keys($c_membri, "componente"))>0 ) :?>
-    Membri
-    <br/>
-  <?php foreach (array_keys($c_membri, "componente") as $k) :?>
-    <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId())."-".
-    OppCaricaPeer::retrieveByPk($k)->getCircoscrizione()."-". 
-    OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($k)->getAcronimo() ?>
-     <br/>
-  <?php endforeach ?>
-  <?php endif ?> 
 <?php else : ?>  
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <?php $tr_class = 'even' ?>
   <?php foreach ($g_membri as $g => $membri) : ?>
-    <?php echo OppGruppoPeer::retrieveByPk($g)->getNome() ?>
-    <br/>
     <?php $temp=explode(",",trim($membri,",")) ?>
     <?php foreach ($temp as $k) :?>
       <?php $k=explode("-",$k)?>
-      <?php echo link_to(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId())."-".
-      OppCaricaPeer::retrieveByPk($k[0])->getCircoscrizione(). 
-      ($k[1]!="componente" ? "-".ucfirst($k[1]):"" ) ?>
-       <br/>
+      <tr class="<?php echo $tr_class; ?>">
+      <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+        <th scope="row">  
+        <p class="politician-id"><?php echo image_tag('/images/ico-type-politico-portrait.png', 
+                             array('width' => '40','height' => '53', 'highsrc' => OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()))) ?>
+        <?php echo link_to(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()) ?>
+        <?php echo ($k[1]!="componente" ? " (".ucfirst($k[1]).")":"" ) ?>
+        </p>
+        </th>
+        <td>
+          <?php echo OppGruppoPeer::retrieveByPk($g)->getAcronimo() ?>
+        </td>
+        <td>
+          <?php echo OppCaricaPeer::retrieveByPk($k[0])->getCircoscrizione() ?>
+        </td>
     <?php endforeach ?>
-    
   <?php endforeach ?>
 <?php endif ?>
+
+   </tbody>
+  </table>
