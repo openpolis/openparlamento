@@ -129,6 +129,7 @@ class OppIndicePeer
                                'concluso'            => array('m' =>   0, 'o' =>    0),
                                'bonus_bi_partisan'   => array('m' => 1.0, 'o' =>    0),
                               ),
+     'audizione'      => array( 'presentazione'      => array('m' => 5.0, 'o' =>  5.0)),
      'intervento'                 => 0.4,
      'seduta_in_comm'             => 0.5,
      'seduta_in_ass'              => 1.0,
@@ -138,7 +139,8 @@ class OppIndicePeer
      'emendamenti_soglia'         => 40.,
      'emendamenti_larghezza'      => 100.,
      'emendamenti_soglia_rilevanza' => 40.,
-     'emendamenti_larghezza_rilevanza' => 100.
+     'emendamenti_larghezza_rilevanza' => 100.,
+     'fattore_diminuzione_ratifica' => 10.
   );
  
   public static function getFileSystem()

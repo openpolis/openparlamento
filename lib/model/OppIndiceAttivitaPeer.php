@@ -275,7 +275,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $atto = OppAttoPeer::retrieveByPK($atto_id);
     $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
-    $atto_is_trattato = $atto->isTrattato();
+    $atto_is_ratifica = $atto->isRatifica();
     
     // calcolo se appartiene alla maggioranza o all'opposizione (al momento della presentazione di un atto)
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
@@ -300,7 +300,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     if ($mode == 'relazione') {
       // --- relazione ---
       if (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified']) {
-        $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
+        // $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
+        $d_punteggio = 0; // eliminato come da indicazioni di Vittorio (mail del 13 ott)
       } else {
         $d_punteggio = 0;
       }
@@ -454,16 +455,16 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $iter_node->addAttribute('n_passaggi', $n_passaggi);
     $iter_node->addAttribute('totale', $d_punteggio);
 
-    if ($atto_is_trattato)
+    if ($atto_is_ratifica)
     {
-      $atto_node->addAttribute('totale_pre_decurtazione_trattato', $punteggio);
+      $atto_node->addAttribute('totale_pre_diminuzione_ratifica', $punteggio);
       if ($verbose)
-        print "questo ATTO è un trattato\n";
+        print "questo ATTO è una ratifica\n";
        
-      $punteggio = $punteggio / 10.;
+      $punteggio = $punteggio / self::$punteggi['fattore_diminuzione_ratifica'];
     }
 
-    $punteggio = $priorita * $punteggio;
+    // $punteggio = $priorita * $punteggio;
     $atto_node->addAttribute('totale', $punteggio);
 
     if ($verbose)
@@ -692,7 +693,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // presentazione emendamenti legati all'atto
     $n_emendamenti = OppAttoHasEmendamentoPeer::countEmendamentiAttoDaCaricaData($carica_id, $atto_id, $data);
     $larghezza = self::$punteggi['emendamenti_larghezza']; 
-    $soglia = self::$punteggi['emendamenti_soglia']; ;
+    $soglia = self::$punteggi['emendamenti_soglia'];
 
     // calcolo valore emendamenti presentati per atto, con soglia discendente
     // 1 + tanh(0.01*(s-x))

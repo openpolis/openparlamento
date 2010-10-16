@@ -410,10 +410,10 @@ class OppAtto extends BaseOppAtto
    * @return void
    * @author Guglielmo Celata
    */
-  public function isTrattato()
+  public function isRatifica()
   {
     $c = new Criteria();
-    $c->add(TagPeer::TRIPLE_VALUE, "%trattati%", Criteria::LIKE);
+    $c->add(TagPeer::TRIPLE_VALUE, "ratifiche");
     return $this->getTagsAsObjects($c)?true:false;
   }
 
