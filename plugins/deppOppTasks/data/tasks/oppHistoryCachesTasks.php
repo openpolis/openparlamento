@@ -239,7 +239,7 @@ function run_opp_build_cache_gruppi($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('G');
   }
 
   // costruisce array di rami a partire da ramo esteso
@@ -382,7 +382,7 @@ function run_opp_build_cache_rami($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData();
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('R');
   }
   
   foreach (array('C', 'S') as $ramo) {
