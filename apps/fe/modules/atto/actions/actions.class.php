@@ -985,10 +985,14 @@ class attoActions extends sfActions
     $c= new Criteria();
     $c->addJoin(OppAttoPeer::ID,OppAttoHasSedePeer::ATTO_ID);
     $c->add(OppAttoPeer::LEGISLATURA,$leg);
-    $c->add(OppAttoPeer::STATO_FASE,$stato);
+    if ($stato!='approvato definitivamente')
+      $c->add(OppAttoPeer::STATO_FASE,$stato);
+    else
+      $c->add(OppAttoPeer::STATO_FASE,'%approvato definitivamente%',Criteria::LIKE);
     $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
     $c->add(OppAttoHasSedePeer::SEDE_ID,$sede_id);
     $c->add(OppAttoHasSedePeer::TIPO,'Referente');
+    $c->addDescendingOrderByColumn(OppAttoPeer::STATO_LAST_DATE);
     $this->atti = OppAttoPeer::doSelect($c);
   }
   
