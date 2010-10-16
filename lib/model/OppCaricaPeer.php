@@ -254,7 +254,8 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $data_intervento = $row['data_intervento'];
         $punti_atto = $row['indice'];
 
-        $dettaglio["interventi"][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'punti_atto' => $punti_atto,
+        $dettaglio["interventi"][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'atto_id' => $atto_id, 
+                                           'punti_atto' => $punti_atto,
                                            'sede_intervento' => $sede_intervento, 'data_intervento' => $data_intervento);
         $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
       }
