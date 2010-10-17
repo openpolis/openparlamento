@@ -1066,6 +1066,7 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
      }
      $this->c_membri=$c_membri;
      $this->g_membri=$g_membri;
+     $this->sede_id=$sede_id;
    }
 }
 
