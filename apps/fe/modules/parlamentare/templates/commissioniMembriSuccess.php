@@ -46,7 +46,7 @@
       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">  
         <p class="politician-id">
-          <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()), 
+          <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()), 
                                array('width' => '40','height' => '53')) ?>
         <?php echo link_to(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()) ?>
         <?php echo ($k[1]!="componente" ? " (".ucfirst($k[1]).")":"" ) ?>
