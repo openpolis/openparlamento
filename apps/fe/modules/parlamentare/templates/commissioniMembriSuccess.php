@@ -21,7 +21,7 @@
       <p class="politician-id">
         <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()), 
                              array('width' => '40','height' => '53')) ?>
-      <?php echo link_to((OppSedePeer::retrieveByPk($sede_id)->getRamo=='CS' ? (OppCaricaPeer::retrieveByPk($k)->getTipoCaricaId()==1?'On. ':'Sen. ') :'').
+      <?php echo link_to((OppSedePeer::retrieveByPk($sede_id)->getRamo()=='CS' ? (OppCaricaPeer::retrieveByPk($k)->getTipoCaricaId()==1?'On. ':'Sen. ') :'').
       OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()) ?>
       <?php echo ($tipo_carica!='componente'? ' ('.ucfirst($tipo_carica).')' :'') ?>
       </p>
