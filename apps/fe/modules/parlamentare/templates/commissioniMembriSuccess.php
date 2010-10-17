@@ -18,8 +18,9 @@
     <tr class="<?php echo $tr_class; ?>">
     <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
       <th scope="row">  
-      <p class="politician-id"><?php echo image_tag("http://op_openparlamento_images.s3.amazonaws.com/parlamentari/thumb/".OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId().".jpeg", 
-                           array('width' => '40','height' => '53')) ?>
+      <p class="politician-id">
+        <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()), 
+                             array('width' => '40','height' => '53')) ?>
       <?php echo link_to(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()) ?>
       <?php echo ($tipo_carica!='componente'? ' ('.ucfirst($tipo_carica).')' :'') ?>
       </p>
