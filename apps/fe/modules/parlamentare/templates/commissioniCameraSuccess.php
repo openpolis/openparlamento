@@ -2,7 +2,8 @@
   <div id="main">
   <?php foreach ($comms as $comm) : ?>
     <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
-  <?php endforeach; ?>  
+  <?php endforeach; ?>
+  <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => 68,'leg' => 16)) ?>
   </div>
 </div>              
                     
