@@ -344,6 +344,10 @@ commissioni_senato:
 commissioni_membri:
   url:   /commissioni_membri/:sede/:sort
   param: { module: parlamentare, action: commissioniMembri,  sede: 1, sort: carica }
+
+commissioni_bicamerali:
+  url:   /commissioni_bicamerali
+  param: { module: parlamentare, action: commissioniBicamerali }  
   
 disegno_commissione:
   url:   /disegno_commissione/:sede/:stato/:leg

@@ -3,7 +3,6 @@
   <?php foreach ($comms as $comm) : ?>
     <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
   <?php endforeach; ?>
-  <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => 68,'leg' => 16)) ?>
   </div>
 </div>              
                     
@@ -25,12 +24,12 @@ jQuery.noConflict();
         {
           parent_li.append("<div style=\"margin-left: 1.5em;\"></div>");
           parent_li.children("div").load(url);
-          $this.text('chiudi');
+          $this.text('nascondi');
           $this.data('details_loaded', true);
         } else {
           parent_li.children("div").remove();
           $this.data('details_loaded', false);
-          $this.text('apri');
+          $this.text('mostra');
         }
         return false;
     	}

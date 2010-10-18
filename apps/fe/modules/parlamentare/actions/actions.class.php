@@ -1031,6 +1031,12 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
     $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
     $this->comms=OppSedePeer::doSelect($c);
   }   
+  
+  public function executeCommissioniBicamerali()
+  {
+    $this->getResponse()->setTitle('Il dettaglio delle Commissioni Bicamerali - '.sfConfig::get('app_main_title'));
+  }
+  
   public function executeCommissioniMembri()
   {
      $this->setLayout(false);  
