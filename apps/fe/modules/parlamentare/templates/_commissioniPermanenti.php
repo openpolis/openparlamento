@@ -199,7 +199,7 @@
                       '@commissioni_membri?sede='.$sede_id.'&sort=gruppo',
                       array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
-  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg))) ?>
+  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg))) : ?>
     <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
       <span style="font-size:16px;">Leggi approvate discusse in sede referente: <strong><?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg)) ?></strong> [<?php echo link_to('mostra',
                       '@disegno_commissione?sede='.$sede_id.'&stato=approvato definitivamente',
