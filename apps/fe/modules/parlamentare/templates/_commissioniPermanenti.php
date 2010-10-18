@@ -154,27 +154,29 @@
   $chld="";
    $color="";
    $z=0;
-   arsort($membri_regione);
+  arsort($membri_regione);
   foreach ($membri_regione as $k => $m)
   {
     $chld=$chld."IT-".$k."|";
 
       if ($m>=10)
-         $color=$color."CC0000|";
+         $color=$color."ff0000|";
        elseif ($m<10 && $m>=8)  
-         $color=$color."CC3D00|";
+         $color=$color."ff3200|";
        elseif ($m<8 && $m>=6)  
-           $color=$color."CC5100,";
-       elseif ($m<6 && $m>=4)  
-           $color=$color."CC6600|"; 
-       elseif ($m==3)  
-           $color=$color."CC7A00|"; 
+           $color=$color."ff4a00|";
+       elseif ($m<6 && $m>=5)  
+           $color=$color."ff6100|"; 
+       elseif ($m==4)  
+           $color=$color."ff7d00|"; 
+      elseif ($m==3)  
+          $color=$color."ff9600|";     
+      elseif ($m==2)  
+           $color=$color."ffba00|";
       elseif ($m==1)  
-          $color=$color."CC8400|";     
-       elseif ($m==1)  
-           $color=$color."CC9900|";
-       elseif ($m==0)  
-           $color=$color."676767|";               
+           $color=$color."ffb500|";     
+      elseif ($m==0)  
+           $color=$color."a0a0a0|";               
       
     $z++;
   }
