@@ -199,14 +199,14 @@
                       '@commissioni_membri?sede='.$sede_id.'&sort=gruppo',
                       array('class' => 'show-hide-dettaglio')) ?>]</span>
   </li>
-  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg))) : ?>
+  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg))>0) : ?>
     <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
       <span style="font-size:16px;">Leggi approvate discusse in sede referente: <strong><?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'approvato definitivamente',$leg)) ?></strong> [<?php echo link_to('mostra',
                       '@disegno_commissione?sede='.$sede_id.'&stato=approvato definitivamente',
                       array('class' => 'show-hide-dettaglio')) ?>]</span>
   <?php endif ?>                    
   </li>
-  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg)))>0 : ?>
+  <?php if (count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg))>0) : ?>
     <li id="sede-<?php echo $sede_id ?>" style="padding-bottom:5px;">
       <span style="font-size:16px;">Disegni di legge attualmente in discussione in sede referente: <strong><?php echo count(OppAttoPeer::getAttiPerCommissioneLastIter($sede_id,'in corso di esame in commissione',$leg)) ?></strong> [<?php echo link_to('mostra',
                       '@disegno_commissione?sede='.$sede_id,
