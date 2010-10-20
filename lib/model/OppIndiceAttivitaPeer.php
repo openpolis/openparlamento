@@ -388,7 +388,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
         $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
         
-        if ($is_unificato_non_main) {
+        if ($is_unificato_non_main && $passaggio = 'assorbito') {
           $passaggio_node->addAttribute('tipo', 'assorbimento come unificato non principale');
         } else {
           $passaggio_node->addAttribute('tipo', $passaggio);
