@@ -376,6 +376,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         $mode == 'relazione' && (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified'])) {
 
       foreach ($itinera_atto as $iter_atto) {
+        print("iter id: " . $iter_atto['iter_id'] . "\n");
+
         $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
         // salta passaggi nulli (?)
         if (is_null($passaggio)) continue;
