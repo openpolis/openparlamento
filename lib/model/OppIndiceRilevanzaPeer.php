@@ -229,7 +229,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       $n_passaggi++;
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
       
-      if ($is_unificato_non_main && $passaggio = 'assorbito') {
+      if ($passaggio == 'assorbito' && $is_unificato_non_main) {
         $passaggio_node->addAttribute('tipo', 'assorbimento come unificato non principale');
       } else {
         $passaggio_node->addAttribute('tipo', $passaggio);
