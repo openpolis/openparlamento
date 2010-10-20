@@ -257,8 +257,8 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
         }
       }
       
-      // break se approvato
-      if ($passaggio == 'approvato') break;
+      // break se mozione, risoluzione o odg approvato
+      if (in_array($tipo_atto, array('mozione', 'risoluzione', 'odg')) && $passaggio == 'approvato') break;
     }
     
     // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
