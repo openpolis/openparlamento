@@ -236,7 +236,6 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       }
       
 
-      if (is_null($passaggio)) continue;
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $di_maggioranza);
       if ($verbose)
         if ($passaggio == 'assorbito' && $is_unificato_non_main) {
@@ -257,6 +256,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
             printf("    bonus di maggioranza! %7.2f\n", $dd_punteggio);          
         }
       }
+      
+      // break se approvato
+      if ($passaggio == 'approvato') break;
     }
     
     // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami

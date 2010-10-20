@@ -420,6 +420,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
               printf("    bonus di maggioranza! %7.2f\n", $dd_punteggio);          
           }
         }
+        
+        // break se approvato
+        if ($passaggio == 'approvato') break;
+        
       }
 
 
