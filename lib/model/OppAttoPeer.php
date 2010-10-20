@@ -97,6 +97,19 @@ class OppAttoPeer extends BaseOppAttoPeer
   }
 
 
+  public function isPrimoAttoRelazionatoInNavettaDaCarica($atto_id, $carica_id)
+  {
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $atto_preds = $atto->getAllPred();
+    foreach ($atto_preds as $atto_pred) {
+      $relatori = self::doSelectRelatori($atto_pred->getId());
+      if (array_key_exists($carica_id, $relatori)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static function isAttoVotatoDaOpposizione($atto_id, $data)
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);
@@ -404,6 +417,8 @@ class OppAttoPeer extends BaseOppAttoPeer
     
 	return $co_firmatari;
   }
+  
+  
   
    public static function doSelectRelatori($pred)
   {

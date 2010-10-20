@@ -160,7 +160,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     $d_punteggio = 0;
     foreach ($atti_relazionati as $atto) {
-      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+      $primo_atto_relazionato_in_navetta_da_me = OppAttoPeer::isPrimoAttoRelazionatoInNavettaDaCarica($atto['id'], $carica_id);
+      if ($primo_atto_relazionato_in_navetta_da_me)      
+        $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 
     $atti_relazionati_node->addAttribute('totale', $d_punteggio);
