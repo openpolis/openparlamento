@@ -65,7 +65,7 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.is_main_unified, ra.tipo_relazione_id from opp_atto a, opp_relazione_atto ra where (ra.atto_from_id=a.id) and ra.tipo_relazione_id=1 and a.id=%d group by a.id;",
+    $sql = sprintf("select a.is_main_unified, ra.tipo_relazione_id, ra.atto_to_id from opp_atto a, opp_relazione_atto ra where (ra.atto_from_id=a.id) and ra.tipo_relazione_id=1 and a.id=%d group by a.id;",
                    $atto_id);
 
     $stm = $con->createStatement(); 

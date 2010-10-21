@@ -366,8 +366,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
     $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
     
-    if ($mode == 'presentazione' || 
-        $mode == 'relazione' && (is_null($is_absorbed) || is_null($is_unified) || $is_unificato_main)) {
+    if ($mode == 'presentazione' ||
+        $mode == 'relazione' && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
 
       foreach ($itinera_atto as $iter_atto) {
 
@@ -438,6 +438,18 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         }
       }
       
+    }
+    
+    if ($mode == 'relazione' && $is_absorbed) {
+      if ($verbose)
+        printf("  atto assorbito da %d\n", $is_absorbed);
+      $iter_node->addAttribute('assorbito_da', $is_absorbed);
+    }
+
+    if ($mode == 'relazione' && is_array($is_unified) && $is_unificato_non_main) {
+      if ($verbose)
+        printf("  atto unificato (principale: %d)\n", $is_unified['atto_to_id']);
+      $iter_node->addAttribute('unificato_in', $is_unified['atto_to_id']);
     }
     
     $punteggio += $d_punteggio;
