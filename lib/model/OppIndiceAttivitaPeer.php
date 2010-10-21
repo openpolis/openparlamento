@@ -289,6 +289,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     // determina se l'atto è parte di un Testo Unificato
     $is_unified = OppAttoPeer::isUnifiedText($atto_id);
     
+    // determina se l'atto è stato assorbito
+    $is_absorbed = OppAttoPeer::isAbsorbed($atto_id);
+    
     if (is_null($tipo_atto)) return 0;
     
     if ($verbose)
@@ -357,12 +360,14 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $d_punteggio = 0.0;
     $n_passaggi = 0;
 
-    // il punteggio dell'iter non viene calcolato per i relatori di testi unificati non principali
-    // (in tutti gli altri casi sì)
+    // il punteggio dell'iter non viene calcolato per 
+    // i relatori di testi unificati non principali e di atti assorbiti
+    // (in tutti gli altri casi sì: primi firmatari e relatori atti non assorbiti, non unificati o unificati principali)
     $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
     $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
     
-    if ($mode == 'presentazione' || is_null($is_unified) || $is_unificato_main) {
+    if ($mode == 'presentazione' || 
+        $mode == 'relazione' && (is_null($is_absorbed) || is_null($is_unified) || $is_unificato_main)) {
 
       foreach ($itinera_atto as $iter_atto) {
 
@@ -371,8 +376,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         // salta passaggi nulli
         if (is_null($passaggio)) continue;
         
-        // per i primi firmatari di atti di tipo Testo Unificato, non principali,
-        // simula assorbimenti
+        // simula assorbimenti per primi firmatari di atti di tipo Testo Unificato, non principali,
         if ($is_unificato_non_main && $passaggio == 'approvato') $passaggio = 'assorbito';
         
         $n_passaggi++;
@@ -383,17 +387,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
           $passaggio_node->addAttribute('tipo', 'testo unificato non principale');
         } else {
           $passaggio_node->addAttribute('tipo', $passaggio);
-        }
-
-        // il break su atti assorbiti avviene prima dell'assegnazione del punteggio
-        // il break non coinvolge atti unificati main (che risultano assorbiti)
-        if ($mode=='relazione' && $passaggio == 'assorbito' && is_null($is_unified))
-        {
-          if ($verbose) {
-            echo "--- atto assorbito (o unificato non main)\n";
-          }
-          $passaggio_node->addAttribute('totale', 0);          
-          break;
         }
 
         $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);

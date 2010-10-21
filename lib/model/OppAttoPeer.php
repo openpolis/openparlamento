@@ -75,6 +75,32 @@ class OppAttoPeer extends BaseOppAttoPeer
     else return $rs->getRow();
     
   }
+
+  /**
+   * check if an act is absorbed by another
+   *
+   * @param string $atto_id 
+   * @return id of the absorbing act or null
+   * @author Guglielmo Celata
+   */
+  public static function isAbsorbed($atto_id)
+  {
+    
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select ra.atto_to_id from opp_atto a, opp_relazione_atto ra, opp_tipo_relazione r where ra.atto_from_id=a.id and ra.tipo_relazione_id=r.id and a.id=%d and r.id=4;",
+                   $atto_id);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    if (!$rs->next()) return null;
+    else 
+    {
+      $row = $rs->getRow();
+      return $row['atto_to_id'];      
+    }
+    
+  }
   
 
   /**
