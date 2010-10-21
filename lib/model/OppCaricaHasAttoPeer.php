@@ -76,6 +76,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
     $con = Propel::getConnection(self::DATABASE_NAME);
     $sql = sprintf("select ca.carica_id, ca.data from opp_carica_has_atto ca where ca.atto_id=%d and ca.data <= '%s';",
                    $atto_id, $data);
+    
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     

@@ -48,6 +48,26 @@ class OppAtto extends BaseOppAtto
   {
     return array_merge($this->getDirectlyMonitoringUsersPKs(), $this->getIndirectlyMonitoringUsersPKs());
   }
+
+  /**
+   * torna se l'atto è il primo nella navetta parlamentare relazionato da una carica
+   *
+   * @param string $carica_id 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function getIsPrimoRelazionatoInNavettaDaCarica($carica_id)
+  {
+    $atto_preds = $this->getAllPred();
+    foreach ($atto_preds as $atto_pred) {
+      $relatori = $atto_pred->getFirmatariIds('R');
+      if (in_array($carica_id, $relatori)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   
   /**
    * returns an array with all pred and succ
@@ -58,22 +78,19 @@ class OppAtto extends BaseOppAtto
    **/
    public function getAllPred()
    {
-     $allPred=array();
-     $atto=$this;
-     $pred=$atto->getPred();
+     $allPred = array();
+     $atto = $this;
+     $pred = $atto->getPred();
      
-     while ($pred!='' && $pred!=NULL)
+     while ($pred !='' && !is_null($pred))
      {
-       
-        $c= new Criteria();
-        $c->add(OppAttoPeer::ID,$atto->getId());
-        $result=OppAttoPeer::doSelectOne($c);
+        $result = OppAttoPeer::retrieveByPK($atto->getId());
         
-        if ($result->getPred()!='' && $result->getPred()!=NULL)
+        if ($result->getPred() !='' && !is_null($result->getPred()))
         {
-          $atto=OppAttoPeer::retrieveByPk($result->getPred());
-          $pred=$atto->getId();
-          $allPred[]=$atto;
+          $atto = OppAttoPeer::retrieveByPk($result->getPred());
+          $pred = $atto->getId();
+          $allPred[] = $atto;
         }
         else
           $pred='';
@@ -131,6 +148,25 @@ class OppAtto extends BaseOppAtto
     return OppCaricaHasAttoPeer::getFirme($this->getId(), $data);
   }
   
+  public function getFirmatariIds($tipo = null)
+  {
+    $con = Propel::getConnection(OppAttoPeer::DATABASE_NAME);
+    $sql = sprintf("select ca.carica_id from opp_carica_has_atto ca where ca.atto_id=%d",
+                   $this->getId());
+    if (!is_null($tipo)) {
+      $sql .= " and ca.tipo='$tipo'";
+    }
+    
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    
+    $ids = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $ids []= $row['carica_id'];
+    }
+		return $ids;		
+  }
   
   /**
    * estrae tutti gli iter di un atto fino a una certa data

@@ -159,10 +159,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $atti_relazionati_node->addAttribute('n_atti_relazionati', $n_atti_relazionati);
 
     $d_punteggio = 0;
-    foreach ($atti_relazionati as $atto) {
-      $primo_atto_relazionato_in_navetta_da_me = OppAttoPeer::isPrimoAttoRelazionatoInNavettaDaCarica($atto['id'], $carica_id);
+    foreach ($atti_relazionati as $atto_hash) {
+      $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
+      $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
       if ($primo_atto_relazionato_in_navetta_da_me)      
-        $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+        $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 
     $atti_relazionati_node->addAttribute('totale', $d_punteggio);
@@ -298,24 +299,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $atto_node->addAttribute('id', $atto_id);    
 
     $punteggio = 0.0;
-
-    if ($mode == 'relazione') {
-      // --- relazione ---
-      if (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified']) {
-        // $d_punteggio = self::getPunteggio($tipo_atto, 'relazione', $in_maggioranza);
-        $d_punteggio = 0; // eliminato come da indicazioni di Vittorio (mail del 13 ott)
-      } else {
-        $d_punteggio = 0;
-      }
-      
-      $punteggio += $d_punteggio;
-      if ($verbose)
-        printf("  relazione %7.2f\n", $d_punteggio);
-      $relazione_node = $atto_node->addChild('relazione', null, self::$opp_ns);
-      $relazione_node->addAttribute('totale', $d_punteggio);
-    }
     
     if ($mode == 'presentazione') {
+
       // --- presentazione ---
       $d_punteggio = self::getPunteggio($tipo_atto, 'presentazione', $in_maggioranza);
       $punteggio += $d_punteggio;
@@ -373,14 +359,16 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     // il punteggio dell'iter non viene calcolato per i relatori di testi unificati non principali
     // (in tutti gli altri casi sì)
-    $is_unificato_non_main = ($mode == 'presentazione' && is_array($is_unified) && !$is_unified['is_main_unified']);
-    if ($mode == 'presentazione' ||
-        $mode == 'relazione' && (is_null($is_unified) || is_array($is_unified) && $is_unified['is_main_unified'])) {
+    $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
+    $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
+    
+    if ($mode == 'presentazione' || $mode == 'relazione' && $is_unificato_main) {
 
       foreach ($itinera_atto as $iter_atto) {
 
         $passaggio = OppIterPeer::getIterPerIndice($iter_atto['iter_id']);
-        // salta passaggi nulli (?)
+
+        // salta passaggi nulli
         if (is_null($passaggio)) continue;
         
         // per i primi firmatari di atti di tipo Testo Unificato, non principali,
@@ -392,26 +380,27 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
         
         if ($passaggio == 'assorbito' && $is_unificato_non_main) {
-          $passaggio_node->addAttribute('tipo', 'assorbimento come unificato non principale');
+          $passaggio_node->addAttribute('tipo', 'testo unificato non principale');
         } else {
           $passaggio_node->addAttribute('tipo', $passaggio);
+        }
+
+        // il break su atti assorbiti avviene prima dell'assegnazione del punteggio
+        // il break non coinvolge atti unificati main (che risultano assorbiti)
+        if (mode=='relazione' && $passaggio == 'assorbito' && !is_array($is_unified))
+        {
+          $passaggio_node->addAttribute('totale', 0);          
+          break;
         }
 
         $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
         if ($verbose)
-          if ($passaggio == 'assorbito' && $is_unificato_non_main) {
-            printf("    iter %s (%s %s) %7.2f\n", 
-                   'assorbimento come unificato non principale', 
-                   $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
-          } else {
-            printf("    iter %s (%s %s) %7.2f\n", 
-                   $passaggio, $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
-          }
+          printf("    iter %s (%s %s) %7.2f\n", 
+                 $passaggio, $iter_atto['data'], $carica_in_maggioranza_al_passaggio?'magg':'opp', $dd_punteggio);
 
         $passaggio_node->addAttribute('totale', $dd_punteggio);
 
-        if ($passaggio == 'assorbito') break;
         
         // --- bonus maggioranza ---
         if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {

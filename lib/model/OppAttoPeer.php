@@ -97,18 +97,6 @@ class OppAttoPeer extends BaseOppAttoPeer
   }
 
 
-  public function isPrimoAttoRelazionatoInNavettaDaCarica($atto_id, $carica_id)
-  {
-    $atto = OppAttoPeer::retrieveByPK($atto_id);
-    $atto_preds = $atto->getAllPred();
-    foreach ($atto_preds as $atto_pred) {
-      $relatori = self::doSelectRelatori($atto_pred->getId());
-      if (array_key_exists($carica_id, $relatori)) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   public static function isAttoVotatoDaOpposizione($atto_id, $data)
   {
@@ -499,7 +487,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	return $relazioni;
   }
   
-  public static function getRecordsetFirmatari($pred, $tipo)
+  public static function getRecordsetFirmatari($id, $tipo)
   {
     $c = new Criteria();
 	  $c->clearSelectColumns();
@@ -510,7 +498,8 @@ class OppAttoPeer extends BaseOppAttoPeer
 	  $c->addSelectColumn(OppCaricaHasAttoPeer::DATA);
 	  $c->addSelectColumn(OppGruppoPeer::ACRONIMO);
 	  $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
-	  $c->add(OppCaricaHasAttoPeer::ATTO_ID, $pred, Criteria::EQUAL);
+	  $c->addSelectColumn(OppCaricaPeer::ID);
+	  $c->add(OppCaricaHasAttoPeer::ATTO_ID, $id, Criteria::EQUAL);
 	  $c->addJoin(OppCaricaHasAttoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
 	  $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
 	  $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);
