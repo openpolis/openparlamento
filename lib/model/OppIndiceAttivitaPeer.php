@@ -362,7 +362,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
     $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
     
-    if ($mode == 'presentazione' || $mode == 'relazione' && $is_unificato_main) {
+    if ($mode == 'presentazione' || is_null($is_unified) || $is_unificato_main) {
 
       foreach ($itinera_atto as $iter_atto) {
 
@@ -387,8 +387,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
         // il break su atti assorbiti avviene prima dell'assegnazione del punteggio
         // il break non coinvolge atti unificati main (che risultano assorbiti)
-        if (mode=='relazione' && $passaggio == 'assorbito' && !is_array($is_unified))
+        if ($mode=='relazione' && $passaggio == 'assorbito' && is_null($is_unified))
         {
+          if ($verbose) {
+            echo "--- atto assorbito (o unificato non main)\n";
+          }
           $passaggio_node->addAttribute('totale', 0);          
           break;
         }
