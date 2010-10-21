@@ -305,7 +305,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
-    // costruzione array associativo dei politici
+    // costruzione array associativo dei politici (sommatoria pesata)
     $politici = array();
     while ($rs->next())
     {
@@ -319,13 +319,15 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $cognome = $row['cognome'];
       $acronimo = $row['acronimo'];
       
-
+      $atto = OppAttoPeer::retrieveByPK($atto_id);
+      $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+      
       if (!array_key_exists($carica_id, $politici))
         $politici[$carica_id] = array('politico_id' => $politico_id, 
                                       'nome' => $nome, 'cognome' => $cognome, 'acronimo' => $acronimo, 
                                       'punteggio' => 0);
 
-      $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo) * $punti_atto;
+      $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo) * $punti_atto / (float)$priorita;
     }
 
 
@@ -338,7 +340,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $stm = $con->createStatement(); 
       $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
-      // costruzione array associativo dei politici
+      // costruzione array associativo dei politici (sommatoria pesata)
       while ($rs->next())
       {
         $row = $rs->getRow();
@@ -350,12 +352,15 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $cognome = $row['cognome'];
         $acronimo = $row['acronimo'];
 
+        $atto = OppAttoPeer::retrieveByPK($atto_id);
+        $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+
         if (!array_key_exists($carica_id, $politici))
           $politici[$carica_id] = array('politico_id' => $politico_id, 
                                         'nome' => $nome, 'cognome' => $cognome, 'acronimo' => $acronimo, 
                                         'punteggio' => 0);
 
-        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto / (float)$priorita;
       }
     }
     
