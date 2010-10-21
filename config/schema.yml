@@ -307,6 +307,7 @@ propel:
     chi_tipo:         { type: varchar(1), required: true, default: 'T' }
     chi_id:           { type: integer, required: true, default: 0 }
     tipo_atto_id:     { type: integer, index: true }
+    priorita:         { type: integer, default: 1 }
     created_at:
     updated_at:
     _uniques:

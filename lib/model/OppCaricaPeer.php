@@ -299,7 +299,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // Firme
     // estrazione di tutte le firme relative ad atti taggati con argomento
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.atto_id, ca.carica_id",
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.atto_id, ca.carica_id",
                    $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
     $stm = $con->createStatement(); 
@@ -314,13 +314,12 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $atto_id = $row['atto_id'];
       $tipo = $row['tipo'];
       $punti_atto = $row['indice'];
+      $priorita = $row['priorita'];
       $politico_id = $row['politico_id'];
       $nome = $row['nome'];
       $cognome = $row['cognome'];
       $acronimo = $row['acronimo'];
       
-      $atto = OppAttoPeer::retrieveByPK($atto_id);
-      $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
       
       if (!array_key_exists($carica_id, $politici))
         $politici[$carica_id] = array('politico_id' => $politico_id, 
@@ -334,7 +333,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     if ($fetch_interventi) {
       // Interventi
       // estrazione di tutte le sedute con interventi relativi ad atti taggati con argomenti
-      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by t.tag_id, i.carica_id, i.atto_id, i.sede_id, i.data;",
+      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by t.tag_id, i.carica_id, i.atto_id, i.sede_id, i.data;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
@@ -346,14 +345,12 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $row = $rs->getRow();
         $carica_id = $row['carica_id'];
         $atto_id = $row['atto_id'];
+        $priorita = $row['priorita'];
         $punti_atto = $row['indice'];
         $politico_id = $row['politico_id'];
         $nome = $row['nome'];
         $cognome = $row['cognome'];
         $acronimo = $row['acronimo'];
-
-        $atto = OppAttoPeer::retrieveByPK($atto_id);
-        $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
 
         if (!array_key_exists($carica_id, $politici))
           $politici[$carica_id] = array('politico_id' => $politico_id, 

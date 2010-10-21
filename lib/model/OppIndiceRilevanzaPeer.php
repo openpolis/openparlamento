@@ -37,7 +37,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data = '', $verbose = '')
+  public static function calcola_rilevanza_atto($atto, $tipo_atto_id, $data = '', $verbose = '')
   {
     // inizializzazione xml con dettaglio computazione
     $xml_node = new SimpleXMLElement(
@@ -49,8 +49,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // self::addProcessingInstruction($xml_node, 'xml-stylesheet', 'type="text/xsl" href="../xslt/politici.xslt"');
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
-    $punteggio = self::calcolaRilevanzaAtto($atto_id, $tipo_atto_id, $data, $content_node, $verbose);
-  
+    $atto_id = $atto->getId();
+
+    $punteggio = self::calcolaRilevanzaAtto($atto, $tipo_atto_id, $data, $content_node, $verbose);
 
     $content_node->addAttribute('totale', $punteggio);
 
@@ -92,9 +93,10 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaRilevanzaAtto($atto_id, $tipo_atto_id, $data, $xml_node, $verbose = false)
+  public static function calcolaRilevanzaAtto($atto, $tipo_atto_id, $data, $xml_node, $verbose = false)
   {
     $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
+    $atto_id = $atto->getId();
     
     // calcolo gruppi e schieramenti che presentano
     list($schier_pres, $grup_pres) = OppCaricaHasAttoPeer::getSchierGrupPresAtto($atto_id, $data);
@@ -111,7 +113,6 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     $di_maggioranza = true;
 
     // determina la priorità dell'atto
-    $atto = OppAttoPeer::retrieveByPK($atto_id);
     $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
     $atto_is_ratifica = $atto->isRatifica();
     

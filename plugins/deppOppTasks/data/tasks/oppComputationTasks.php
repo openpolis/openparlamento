@@ -275,12 +275,15 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $atto_id = $a['id'];
     $tipo_atto_id = $a['tipo_atto_id'];
 
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
+
     $cnt++;
 
     if (!array_key_exists($tipo_atto_id, OppTipoAttoPeer::$tipi_per_indice)) continue;
     
     printf("%5d/%6d) %40s %d ... ", $cnt, $n_atti, OppTipoAttoPeer::$tipi_per_indice[$tipo_atto_id], $atto_id);
-    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
+    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto, $tipo_atto_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
     $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'A', $atto_id);
@@ -292,6 +295,7 @@ function run_opp_calcola_rilevanza_atti($task, $args, $options)
     $cache_record->setChiId($atto_id);
     $cache_record->setTipoAttoId($tipo_atto_id);
     $cache_record->setIndice($indice);
+    $cache_record->setPriorita($priorita);
     $cache_record->setData($data);
     $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
