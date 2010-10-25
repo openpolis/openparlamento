@@ -477,6 +477,13 @@ class apiActions extends sfActions
     $tipo_atto = null;
     if ($this->hasRequestParameter('tipo_atto'))
       $tipo_atto = $this->getRequestParameter('tipo_atto');
+      
+    $escludi_tipi = array();
+    if ($this->hasRequestParameter('escludi_tipi'))
+    {
+      $escludi_tipi_str = urldecode($this->getRequestParameter('escludi_tipi'));  
+      $escludi_tipi = explode(",", $escludi_tipi_str);
+    }
     
     $key = $this->getRequestParameter('key');
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
@@ -492,7 +499,7 @@ class apiActions extends sfActions
   		// start producing xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
       
-      $atti = OppAttoPeer::getAttiInDateInterval($data_inizio, $data_fine, $ramo, $tipo_atto);
+      $atti = OppAttoPeer::getAttiInDateInterval($data_inizio, $data_fine, $ramo, $tipo_atto, $escludi_tipi);
 
       $atti_node = $content_node->addChild('atti', null, $this->opp_ns);      
       $atti_node->addAttribute('n_atti', count($atti));

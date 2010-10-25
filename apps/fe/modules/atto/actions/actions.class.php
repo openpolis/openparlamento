@@ -35,6 +35,107 @@ class attoActions extends sfActions
                                                   array('acts_filter', 'sf_admin/opp_atto/sort'));
   }
 
+  public function executeAddAjaxTagForIndex()
+  {
+    $this->forward404Unless($this->getRequest()->isXmlHttpRequest());
+
+    // identify the act
+    $atto_id = $this->getRequestParameter('atto_id');
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    
+    $tag_search = trim(strip_tags($this->getRequestParameter('tag_search_for_index')), " ,");
+    
+    // transform tag values into triple names
+    // add the tag to the associated tag pool
+    if ($tag_search != '') {
+      $tags_names = $this->_getNamesFromValues($tag_search);      
+      $atto->addTagForIndex($tags_names);
+      $atto->save();      
+    }
+
+    // fetch dei tag legati al content
+    $this->tags = $atto->getTagsForIndice();
+    $this->setTemplate('ajaxAssociatedTagsForIndex');
+  }
+
+  public function executeAjaxRemoveTagFromAssociatedTagsForIndex()
+  {
+    // $this->forward404Unless($this->getRequest()->isXmlHttpRequest());
+
+    // identify the act
+    $atto_id = $this->getRequestParameter('atto_id');
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+
+    // remove the tag from the associated tag pool
+    $tag_triple = $this->getRequestParameter('tag_triple');
+    $tag_name = $this->_getNamesFromValues($tag_triple);      
+    $atto->removeTagForIndex($tag_name);
+    $atto->save();
+
+    // fetch dei tag legati al content
+    $this->tags = $atto->getTagsForIndice();
+    $this->setTemplate('ajaxAssociatedTagsForIndex');
+  }
+
+  /**
+   * transform a list of tag values into an array of tag names
+   * the criterion is the following:
+   * - a tag value that is not already among the triple_values in sf_tag, gets the user:tag ns and key
+   * - a tag value that is already existing, gets its own ns and key
+   *
+   * it is assumed that the triple_value field is unique, which is not the case for the plugin,
+   * but can safely be assumed so thanks to this function 
+   * (no user will ever be able to insert an already existing tag with ns=user)
+   *
+   * @param  String
+   * @return String
+   * @author Guglielmo Celata
+   **/
+  private function _getNamesFromValues($values)
+  {
+    $tagvalues = explode(",", $values);
+    $tagnames = array();
+    foreach ($tagvalues as $tagvalue)
+    {
+      $c = new Criteria();
+      $c->add(TagPeer::TRIPLE_VALUE, trim($tagvalue));
+      $tag = TagPeer::doSelectOne($c);
+      if ($tag instanceof Tag)
+      {
+        $tagnames []= $tag->getName();
+      } else {
+        $tagnames []= deppPropelActAsTaggableToolkit::transformTagStringIntoTripleString($tagvalue, 'user', 'tag');
+      }
+    }
+    
+    return implode(",", $tagnames);
+    
+  }
+
+
+  public function executeSetOmnibusStatus()
+  {
+    // Retrieve parameters from request
+    $object_id = $this->getRequestParameter('id');
+    $status = (int)$this->getRequestParameter('status');
+    
+    $object = OppAttoPeer::retrieveByPK($object_id);
+    
+    // rimuovi tutti i tag
+    // se prima di metterlo a omnibus: reset
+    // se prima di metterlo a non omnibus: clean
+    $object->removeAllTagsForIndex();
+    
+    // Set dello status
+    $object->setIsOmnibus($status);
+    $object->save();
+
+    // Redirect alla pagina da cui si proviene
+    $this->redirect($this->getRequest()->getReferer());
+    
+  }
+
+
   /**
    * check request parameters and set session values for the filters
    * reads filters from session, so that a clean url builds up with user's values
@@ -519,6 +620,7 @@ class attoActions extends sfActions
   {
     $this->atto = OppAttoPeer::retrieveByPK($this->getRequestParameter('id'));
   }
+
 
   /**
    * Executes index action

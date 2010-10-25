@@ -1175,7 +1175,7 @@ input.blur { color:#AAAAAA; }
 ul.monitoring-list { min-height: 30px;} 
 li.top_term li a:hover { background-color: #ededed;}
 
-#tag_edit .ac_input {
+#tag_edit .ac_input, #tag_edit_for_index .ac_input {
   border:1px solid gray;
   font-size:1.2em;
   height:1.25em;
@@ -1214,8 +1214,12 @@ form#premium-form div#perche {
 form#premium-form div#perche input { margin-bottom: 0.2em; }
 
 div#main-change-result { border: 1px dotted lightgray; background-color: #F6FAD9; padding: 5px; margin: 5px;}
-div#main-change-result input[type="submit"], div#tag_edit input[type="submit"] { border: 1px solid gray;}
 
+div#main-change-result input[type="submit"], 
+div#tag_edit input[type="submit"], div#tag_edit_for_index input[type="submit"] { border: 1px solid gray;}
+
+div#tag_associati, div#tags_associati_for_index {margin: 20px 0; padding: 5px;}
+div#tags_associati_for_index {border: 1px dotted gray }
 
 li.dettaglio-carica { padding-top: 0.75em; }
 li.dettaglio-carica div.elenco-atti { margin-left: 1em; }

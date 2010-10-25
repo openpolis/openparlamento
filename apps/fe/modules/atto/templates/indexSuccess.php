@@ -112,6 +112,11 @@
 	  
       <!-- partial per la visualizzazione e l'edit-in-place dei tags associati all'atto -->
       <?php echo include_component('deppTagging', 'edit', array('content' => $atto)); ?>
+      
+      
+      <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore') && $atto->getIsOmnibus()): ?>
+        <?php echo include_component('atto', 'editTagsForIndice', array('content' => $atto)); ?>        
+      <?php endif ?>
 
       <!-- component per l'elenco dei documenti -->
       <a name="documenti"></a>

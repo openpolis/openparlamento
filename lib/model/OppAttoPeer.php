@@ -177,10 +177,11 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @param string   $data_fine ['y-m-d']
    * @param integer  $ramo
    * @param integer  $tipo_atto
+   * @param integer  $escludi_tipi - array di id opp_tipo_atto
    * @return array di OppAtto
    * @author Guglielmo Celata
    */
-  public static function getAttiInDateInterval($data_inizio, $data_fine, $ramo = null, $tipo_atto = null)
+  public static function getAttiInDateInterval($data_inizio, $data_fine, $ramo = null, $tipo_atto = null, $escludi_tipi = array())
   {
     if ($data_fine < $data_inizio)
       throw new Exception('La data_inizio deve essere precedente o uguale alla data_fine');
@@ -204,39 +205,15 @@ class OppAttoPeer extends BaseOppAttoPeer
     // non sono estratti odg e comunicati gov, a meno che non siano richiesti esplicitamente
     if ($tipo_atto)
     {
-      switch (strtoupper($tipo_atto)) {
-        case 'SDDL':
-          $c->add(self::TIPO_ATTO_ID, 1);
-          break;
-        case 'MOZIONE':
-          $c->add(self::TIPO_ATTO_ID, 2);
-          break;
-        case 'INTERPELLANZA':
-          $c->add(self::TIPO_ATTO_ID, 3);
-          break;
-        case 'INTERROGAZIONE':
-          $c->add(self::TIPO_ATTO_ID, array(4, 5, 6), Criteria::IN);
-          break;
-        case 'RISOLUZIONE':
-          $c->add(self::TIPO_ATTO_ID, array(7, 8, 9), Criteria::IN);
-          break;
-        case 'ODG':
-          $c->add(self::TIPO_ATTO_ID, array(10, 11), Criteria::IN);
-          break;
-        case 'DECRETO':
-          $c->add(self::TIPO_ATTO_ID, 12);
-          break;
-        case 'AUDIZIONE':
-          $c->add(self::TIPO_ATTO_ID, 14);
-          break;
-        case 'DLGS':
-          $c->add(self::TIPO_ATTO_ID, array(15, 16, 17), Criteria::IN);
-          break;
-        default:
-          break;
-      }
+      $tipi_ids = self::getTipiIdsFromDenominazioneFB($tipo_atto);
+      $c->add(self::TIPO_ATTO_ID, $tipi_ids, Criteria::IN);
     } else {
-      $c->add(self::TIPO_ATTO_ID, array(10, 11, 13), Criteria::NOT_IN);      
+      // di default esclude atti di tipo ODG e Comunicati del Governo
+      $escludi_tipi_ids = array(10, 11, 13);
+      foreach ($escludi_tipi as $tipo_atto) {
+        $escludi_tipi_ids = array_merge($escludi_tipi_ids, self::getTipiIdsFromDenominazioneFB(trim($tipo_atto)));
+      }
+      $c->add(self::TIPO_ATTO_ID, $escludi_tipi_ids, Criteria::NOT_IN);
     }
     
     $c->setLimit(500);
@@ -245,6 +222,42 @@ class OppAttoPeer extends BaseOppAttoPeer
     return self::doSelect($c);
   }
   
+  public static function getTipiIdsFromDenominazioneFB($denominazione)
+  {
+    switch (strtoupper($denominazione)) {
+      case 'SDDL':
+        $tipi_ids = array(1);
+        break;
+      case 'MOZIONE':
+        $tipi_ids = array(2);
+        break;
+      case 'INTERPELLANZA':
+        $tipi_ids = array(3);
+        break;
+      case 'INTERROGAZIONE':
+        $tipi_ids = array(4, 5, 6);
+        break;
+      case 'RISOLUZIONE':
+        $tipi_ids = array(7, 8, 9);
+        break;
+      case 'ODG':
+        $tipi_ids = array(10, 11);
+        break;
+      case 'DECRETO':
+        $tipi_ids = array(12);
+        break;
+      case 'AUDIZIONE':
+        $tipi_ids = array(14);
+        break;
+      case 'DLGS':
+        $tipi_ids = array(15, 16, 17);
+        break;
+      default:
+        $tipi_ids = array();
+        break;
+    }
+    return $tipi_ids;    
+  }
   
   public static function getAttiInEvidenza($namespace = 'all')
   {

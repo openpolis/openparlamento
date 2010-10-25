@@ -52,6 +52,12 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 	protected $lastOppTagHasTtCriteria = null;
 
 	
+	protected $collTaggingForIndexs;
+
+	
+	protected $lastTaggingForIndexCriteria = null;
+
+	
 	protected $alreadyInSave = false;
 
 	
@@ -383,6 +389,14 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collTaggingForIndexs !== null) {
+				foreach($this->collTaggingForIndexs as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 		}
 		return $affectedRows;
@@ -434,6 +448,14 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 				if ($this->collOppTagHasTts !== null) {
 					foreach($this->collOppTagHasTts as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collTaggingForIndexs !== null) {
+					foreach($this->collTaggingForIndexs as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -623,6 +645,10 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 
 			foreach($this->getOppTagHasTts() as $relObj) {
 				$copyObj->addOppTagHasTt($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getTaggingForIndexs() as $relObj) {
+				$copyObj->addTaggingForIndex($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -823,6 +849,111 @@ abstract class BaseTag extends BaseObject  implements Persistent {
 		$this->lastOppTagHasTtCriteria = $criteria;
 
 		return $this->collOppTagHasTts;
+	}
+
+	
+	public function initTaggingForIndexs()
+	{
+		if ($this->collTaggingForIndexs === null) {
+			$this->collTaggingForIndexs = array();
+		}
+	}
+
+	
+	public function getTaggingForIndexs($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTaggingForIndexPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTaggingForIndexs === null) {
+			if ($this->isNew()) {
+			   $this->collTaggingForIndexs = array();
+			} else {
+
+				$criteria->add(TaggingForIndexPeer::TAG_ID, $this->getID());
+
+				TaggingForIndexPeer::addSelectColumns($criteria);
+				$this->collTaggingForIndexs = TaggingForIndexPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(TaggingForIndexPeer::TAG_ID, $this->getID());
+
+				TaggingForIndexPeer::addSelectColumns($criteria);
+				if (!isset($this->lastTaggingForIndexCriteria) || !$this->lastTaggingForIndexCriteria->equals($criteria)) {
+					$this->collTaggingForIndexs = TaggingForIndexPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastTaggingForIndexCriteria = $criteria;
+		return $this->collTaggingForIndexs;
+	}
+
+	
+	public function countTaggingForIndexs($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseTaggingForIndexPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(TaggingForIndexPeer::TAG_ID, $this->getID());
+
+		return TaggingForIndexPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addTaggingForIndex(TaggingForIndex $l)
+	{
+		$this->collTaggingForIndexs[] = $l;
+		$l->setTag($this);
+	}
+
+
+	
+	public function getTaggingForIndexsJoinOppAtto($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseTaggingForIndexPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collTaggingForIndexs === null) {
+			if ($this->isNew()) {
+				$this->collTaggingForIndexs = array();
+			} else {
+
+				$criteria->add(TaggingForIndexPeer::TAG_ID, $this->getID());
+
+				$this->collTaggingForIndexs = TaggingForIndexPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(TaggingForIndexPeer::TAG_ID, $this->getID());
+
+			if (!isset($this->lastTaggingForIndexCriteria) || !$this->lastTaggingForIndexCriteria->equals($criteria)) {
+				$this->collTaggingForIndexs = TaggingForIndexPeer::doSelectJoinOppAtto($criteria, $con);
+			}
+		}
+		$this->lastTaggingForIndexCriteria = $criteria;
+
+		return $this->collTaggingForIndexs;
 	}
 
 

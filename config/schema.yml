@@ -39,6 +39,7 @@ propel:
     pred:               { type: integer }
     succ:               { type: integer }
     is_main_unified:    { type: boolean, required: true, default: 0 }
+    is_omnibus:         { type: boolean, required: true, default: 0 }
     voto_medio:         { type: float }
     ut_fav:             { type: integer, required: true, default: 0 }
     ut_contr:           { type: integer, required: true, default: 0 }
@@ -531,6 +532,14 @@ propel:
     perche_altro_desc:   { type: varchar(255) }
     created_at:
     user_id:             { type: integer, required: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
+
+
+  sf_tagging_for_index:
+    _attributes:  { phpName: TaggingForIndex }
+    tag_id:       { type: integer, required: true, primaryKey: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
+    atto_id:      { type: integer, required: true, primaryKey: true, foreignTable: opp_atto, foreignReference: id, onDelete: CASCADE }
+    user_id:      { type: integer }
+    created_at:
 
   
   sf_test_object:

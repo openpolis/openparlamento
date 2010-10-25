@@ -6,6 +6,23 @@ class attoComponents extends sfComponents
     
   }
   
+  
+  public function executeEditTagsForIndice()
+	{
+
+    // embed javascripts for edit-in-place and auto-completer
+	  $response = sfContext::getInstance()->getResponse();
+    $response->addJavascript('prototype.js');
+    $response->addJavascript('effects.js');
+    $response->addJavascript('controls.js');
+    $response->addStylesheet('/deppPropelActAsTaggableBehaviorPlugin/css/depp_tagging.css');
+
+    // fetch dei tag legati al content
+    $this->tags = $this->content->getTagsForIndice();
+
+    $user_id = sfContext::getInstance()->getUser()->getId();
+	}	
+  
   public function executeItemshortinline()
   {
     switch(get_class($this->item)){

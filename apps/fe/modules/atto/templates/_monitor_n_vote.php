@@ -1,4 +1,4 @@
-<?php use_helper('deppVotingYesNo', 'deppPrioritising', 'deppLaunching') ?>
+<?php use_helper('deppVotingYesNo', 'deppPrioritising', 'deppLaunching', 'deppOmnibus') ?>
 
 <div id="monitor-n-vote">
 
@@ -23,7 +23,7 @@
   <?php echo depp_voting_block_no_ajax($atto, $sf_flash->has('depp_voting_message')?$sf_flash->get('depp_voting_message'):'') ?>
   <hr class="dotted" />
   
-   <!-- blocco lanci home x admin e priorita atti -->
+   <!-- blocco lanci home x admin, priorita atti e flag omnibus -->
   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <h6>lanci in home page</h6>
     <?php echo include_partial('deppLaunching/launcher', array('object' => $atto, 'namespace' => 'home')); ?>    
@@ -36,6 +36,10 @@
     <h6>assegna priorit&agrave; a questo atto</h6>
     <?php echo depp_prioritising_block($atto,
         $sf_flash->has('depp_prioritising_message')?$sf_flash->get('depp_prioritising_message'):'') ?>
+
+    <h6>&egrave; atto <em>omnibus</em>?</h6>
+    <?php echo depp_omnibus_block($atto,
+        $sf_flash->has('depp_omnibus_message')?$sf_flash->get('depp_omnibus_message'):'') ?>
     
   <?php endif ?>
 </div>

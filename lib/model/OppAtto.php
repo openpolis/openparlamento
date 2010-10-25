@@ -13,6 +13,98 @@ class OppAtto extends BaseOppAtto
   protected $lastIMTagsCriteria = null;
   public $priority_override = 0;
   
+  /**
+   * torna array di tag per il calcolo dell'indice (atti Omnibus)
+   *
+   * @return array of Tag
+   * @author Guglielmo Celata
+   */
+  public function getTagsForIndice()
+  {
+    $taggings = $this->getTaggingForIndexsJoinTag();
+    $tags = array();
+    foreach ($taggings as $tagging) {
+      $tags []= $tagging->getTag();
+    }
+    return $tags;
+  }
+  
+  /**
+   * Adds a tag (index-computing) to this act. The "tagname" param can be a string or an array
+   * of strings. These 3 code sequences produce an equivalent result :
+   *
+   * 1- $object->addTagForIndex('tag1,tag2,tag3');
+   * 2- $object->addTagForIndex('tag1');
+   *    $object->addTagForIndex('tag2');
+   *    $object->addTagForIndex('tag3');
+   * 3- $object->addTagForIndex(array('tag1','tag2','tag3'));
+   *
+   * @param      mixed       $tagname
+   */
+  public function addTagForIndex($tagname)
+  {
+    $tagname = deppPropelActAsTaggableToolkit::explodeTagString($tagname);
+
+    if (is_array($tagname))
+    {
+      foreach ($tagname as $tag)
+      {
+        $this->addTagForIndex($tag);
+      }
+    }
+    else
+    {
+      $tagname = deppPropelActAsTaggableToolkit::cleanTagName($tagname);
+      sfContext::getInstance()->getLogger()->info('{opp_debug}' . $tagname);
+      $tag_object = TagPeer::retrieveByTagname($tagname);
+      $user_id = sfContext::getInstance()->getUser()->getId();
+      $tagging = TaggingForIndexPeer::retrieveOrCreateByTagAndAtto($tag_object->getId(), $this->getId());      
+      if ($tagging->isNew())
+      { 
+        $tagging->setUserId($user_id);
+        $tagging->save();        
+      }
+    }
+  }
+  
+  /**
+   * Removes a tag or a set of tags from the object. As usual, the second
+   * parameter might be an array of tags or a comma-separated string.
+   *
+   * @param      BaseObject  $object
+   * @param      mixed       $tagname
+   */
+  public function removeTagForIndex($tagname)
+  {
+    $tagname = deppPropelActAsTaggableToolkit::explodeTagString($tagname);
+
+    if (is_array($tagname))
+    {
+      foreach ($tagname as $tag)
+      {
+        $this->removeTagForIndex($tag);
+      }
+    }
+    else
+    {
+      $tagname = deppPropelActAsTaggableToolkit::cleanTagName($tagname);
+      sfContext::getInstance()->getLogger()->info('{opp_debug}' . $tagname);
+      $tag_object = TagPeer::retrieveByTagname($tagname);
+      $tagging = TaggingForIndexPeer::retrieveByTagAndAtto($tag_object->getId(), $this->getId());
+      $tagging->delete();
+    }
+  }
+
+  public function removeAllTagsForIndex()
+  {
+    $c = new Criteria();
+    $c->add(TaggingForIndexPeer::ATTO_ID, $this->getId());
+    $taggings = TaggingForIndexPeer::doSelect($c);
+    foreach ($taggings as $tagging) {
+      $tagging->delete();
+    }
+  }
+  
   public function getRamoNumfase()
   {
     return $this->getRamo().".".$this->getNumfase();
