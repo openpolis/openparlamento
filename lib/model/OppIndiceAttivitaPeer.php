@@ -441,7 +441,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       // controlla se diventato legge dopo passaggi in altri rami (se non assorbito)
       // assegna punteggio se diventato legge in altri rami
       if ($diventato_legge_in_altri_rami) {
-        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
+        $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $in_maggioranza);
 
         $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
         $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
