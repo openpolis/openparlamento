@@ -15,6 +15,9 @@
  *             stores resized versions in the op_openparlamento db
  * @author     Guglielmo Celata <guglielmo.celata@depp.it>
  */
+pake_desc("add tags to acts");
+pake_task('opp-add-tags-to-acts', 'project_exists');
+
 pake_desc("sync politicians' images from op_openpolis, storing resized versions in the local db");
 pake_task('opp-sync-polimages', 'project_exists');
 
@@ -24,9 +27,111 @@ pake_task('opp-urls-to-cache', 'project_exists');
 pake_desc('load data from fixtures directory (using myPropelData class)');
 pake_task('opp-load-fixtures', 'project_exists');
 
+
 /**
-* Fetch politicians' images from op_openpolis via remote getPolImage API call and store resized versions in the local db
-*/
+ * Add one or more tags to  different acts
+ */
+function run_opp_add_tags_to_acts($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
+    define('SF_APP', 'fe');
+    define('SF_ENVIRONMENT', 'task');
+    define('SF_DEBUG', true);
+
+    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
+                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
+                  DIRECTORY_SEPARATOR.'config.php');
+
+
+    sfContext::getInstance();
+    sfConfig::set('pake', true);
+    
+    error_reporting(E_ALL);
+
+    $loaded = true;
+  }
+
+  if (array_key_exists('tags', $options)) {
+    $tags = $options['tags'];
+    $tags_names = trim(strip_tags(getNamesFromValues($tags)));
+  } else {
+    throw new Exception("No tags specified, use --tags=TAG1,TAG2");
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
+
+  $msg = sprintf("aggiunta dei tag %s\n", $tags);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+  // lettura argomenti da stdin (id degli atti da taggare)
+  stream_set_blocking(STDIN, false);
+  $stdin_atti = array();
+  while ($stdin = (trim(fgets(STDIN))))
+  {
+   if ($stdin) $stdin_atti[]= $stdin;
+  }
+  
+  if (count($stdin_atti))
+  {
+    $msg = sprintf("%d atti letti da STDIN\n", count($stdin_atti));
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+  }
+  
+  $atti = array_merge($args, $stdin_atti);
+  foreach ($atti as $atto_id) {
+    $msg = sprintf("atto ID: $atto_id ...");
+    echo pakeColor::colorize($msg, array('fg' => 'green', 'bold' => false));
+
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    if ($atto instanceof OppAtto) {
+      $atto->addTag($tags_names);
+      $atto->save();      
+      $msg = sprintf("OK (%d)\n", memory_get_usage());
+      echo pakeColor::colorize($msg, array('fg' => 'green', 'bold' => true));
+    } else {
+      $msg = sprintf("SKIP - Atto non in DB (%d)\n", memory_get_usage());
+      echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => true));      
+    }
+    
+
+    unset($atto);
+
+  }
+
+
+}
+
+
+function getNamesFromValues($values)
+{
+  $tagvalues = explode(",", $values);
+  $tagnames = array();
+  foreach ($tagvalues as $tagvalue)
+  {
+    $c = new Criteria();
+    $c->add(TagPeer::TRIPLE_VALUE, $tagvalue);
+    $tag = TagPeer::doSelectOne($c);
+    if ($tag instanceof Tag)
+    {
+      $tagnames []= $tag->getName();
+    } else {
+      $tagnames []= deppPropelActAsTaggableToolkit::transformTagStringIntoTripleString($tagvalue, 'user', 'tag');
+    }
+  }
+  
+  return implode(",", $tagnames);  
+}
+
+
+/**
+ * Fetch politicians' images from op_openpolis via remote getPolImage API call and store resized versions in the local db
+ */
 function run_opp_sync_polimages($task, $args)
 {
   static $loaded;
