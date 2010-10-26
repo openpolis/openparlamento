@@ -208,6 +208,26 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     
     // --- iter ---
     
+    // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
+    // atti diventati legge non prendono il punteggio di approvazione
+    $diventato_legge_in_altri_rami = false;
+    if (!isset($passaggio) || $passaggio != 'assorbito') {
+      $atto = OppAttoPeer::retrieveByPK($atto_id);
+      $c = new Criteria();
+      $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+      while ($atto_succ_id = $atto->getSucc())
+      {
+        $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+        if ($atto->countOppAttoHasIters($c) > 0)
+        {
+          $diventato_legge_in_altri_rami = true;
+        }
+      }
+      unset($c);
+      unset($atto);
+    }
+    
+    
     // determina se l'atto è parte di un Testo Unificato
     $is_unified = OppAttoPeer::isUnifiedText($atto_id);
     $is_unificato_non_main = (is_array($is_unified) && !$is_unified['is_main_unified']);
@@ -226,6 +246,9 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
 
       // se l'atto è unificato e non-main, allora prende il punteggio come gli atti assorbiti
       if ($is_unificato_non_main && $passaggio == 'approvato') $passaggio = 'assorbito';
+      
+      // se diventato legge in altri rami, non prende punteggio di approvazione
+      if ($diventato_legge_in_altri_rami && $passaggio == 'approvato') continue;
 
       $n_passaggi++;
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
@@ -248,7 +271,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       $passaggio_node->addAttribute('totale', $dd_punteggio);
         
       // --- bonus maggioranza ---
-      if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
+      if ($passaggio == 'approvato') {
         if ($di_maggioranza && OppAttoPeer::isAttoVotatoDaOpposizione($atto_id, $data)) {
           $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'bonus_bi_partisan', true);
           $bonus_node = $iter_node->addChild('bonus_maggioranza', null, self::$opp_ns);
@@ -262,28 +285,16 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       if (in_array($tipo_atto, array('mozione', 'risoluzione', 'odg')) && $passaggio == 'approvato') break;
     }
     
-    // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
-    if (!isset($passaggio) || $passaggio != 'assorbito') {
-      $atto = OppAttoPeer::retrieveByPK($atto_id);
-      $c = new Criteria();
-      $c->add(OppAttoHasIterPeer::ITER_ID, 16);
-      while ($atto_succ_id = $atto->getSucc())
-      {
-        $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
-        if ($atto->countOppAttoHasIters($c) > 0)
-        {
-          $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
+    // assegna punteggio se diventato legge in altri rami
+    if ($diventato_legge_in_altri_rami) {
+      $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
 
-          $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
-          $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
-          $passaggio_node->addAttribute('totale', $dd_punteggio);
+      $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
+      $passaggio_node->addAttribute('tipo', "diventato legge in altri rami");
+      $passaggio_node->addAttribute('totale', $dd_punteggio);
 
-          if ($verbose)
-            printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
-        }
-      }
-      unset($c);
-      unset($atto);
+      if ($verbose)
+        printf("    iter %s %7.2f\n", "diventato legge in altri rami", $dd_punteggio);
     }
     
     
