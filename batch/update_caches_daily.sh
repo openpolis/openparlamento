@@ -6,4 +6,4 @@
 ./symfony opp-calcola-rilevanza-atti
 ./symfony opp-calcola-rilevanza-tag
 
-./symfony opp-rebuild-deltas
+#./symfony opp-rebuild-deltas
