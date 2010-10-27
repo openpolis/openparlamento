@@ -50,6 +50,7 @@ class datiStoriciActions extends sfActions
     }
 
     $this->processFilters(array('ramo', 'data'), $last_date);
+    $this->date = $this->filters['data'];
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&
@@ -98,6 +99,7 @@ class datiStoriciActions extends sfActions
     }
 
     $this->processFilters(array('ramo', 'data'), $last_date);
+    $this->date = $this->filters['data'];
 
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ramo') == '0' &&

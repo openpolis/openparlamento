@@ -16,7 +16,7 @@
     <?php echo include_partial('default/listNotice', 
                                array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
 
-    <?php include_partial('indiceList', array('pager' => $pager)) ?>
+    <?php include_partial('indiceList', array('pager' => $pager, 'date' => $date)) ?>
     
   </div>
 </div>

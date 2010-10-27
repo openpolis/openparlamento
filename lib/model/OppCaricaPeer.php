@@ -59,7 +59,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    * @return array ('id' => ID, 'nome' => Partito Democratico, 'acronimo' => PD)
    * @author Guglielmo Celata
    */
-  public function getGruppo($carica_id, $data)
+  public static function getGruppo($carica_id, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
     $sql = sprintf("select g.id, g.nome, g.acronimo from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
@@ -84,7 +84,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    * @return boolean
    * @author Guglielmo Celata
    */
-  public function inMaggioranza($carica_id, $data, $gruppo_id = null)
+  public static function inMaggioranza($carica_id, $data, $gruppo_id = null)
   {
     
     $carica = self::retrieveByPK($carica_id);
