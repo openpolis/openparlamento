@@ -419,7 +419,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         $passaggio_node->addAttribute('totale', $dd_punteggio);
 
         // il break su atti assorbiti avviene dopo l'assegnazione del punteggio
-        if (mode == 'presentazione' && $passaggio == 'assorbito')
+        if ($mode == 'presentazione' && $passaggio == 'assorbito')
         {
           break;
         }
