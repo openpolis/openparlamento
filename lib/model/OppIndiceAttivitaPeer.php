@@ -291,6 +291,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     // determina se l'atto è stato assorbito
     $is_absorbed = OppAttoPeer::isAbsorbed($atto_id);
+
+    // determina se l'atto unificato è principale o meno
+    $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
+    $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
     
     if (is_null($tipo_atto)) return 0;
     
@@ -360,32 +364,27 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $d_punteggio = 0.0;
     $n_passaggi = 0;
 
-    // il punteggio dell'iter non viene calcolato per 
-    // i relatori di testi unificati non principali e di atti assorbiti
-    // (in tutti gli altri casi sì: primi firmatari e relatori atti non assorbiti, non unificati o unificati principali)
-    $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
-    $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
-    
-    if (is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
+    // l'iter è calcolato sempre per i primi firmatari
+    // per atti non assorbiti e non unificati o unificati principali, per i relatori
+    if ($mode == 'presentazione' || 
+        $mode == 'relazione' && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
 
       // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
       // atti diventati legge non prendono il punteggio di approvazione
       $diventato_legge_in_altri_rami = false;
-      if (!isset($passaggio) || $passaggio != 'assorbito') {
-        $atto = OppAttoPeer::retrieveByPK($atto_id);
-        $c = new Criteria();
-        $c->add(OppAttoHasIterPeer::ITER_ID, 16);
-        while ($atto_succ_id = $atto->getSucc())
+      $atto = OppAttoPeer::retrieveByPK($atto_id);
+      $c = new Criteria();
+      $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+      while ($atto_succ_id = $atto->getSucc())
+      {
+        $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
+        if ($atto->countOppAttoHasIters($c) > 0)
         {
-          $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
-          if ($atto->countOppAttoHasIters($c) > 0)
-          {
-            $diventato_legge_in_altri_rami = true;
-          }
+          $diventato_legge_in_altri_rami = true;
         }
-        unset($c);
-        unset($atto);
       }
+      unset($c);
+      unset($atto);
 
       foreach ($itinera_atto as $iter_atto) {
 
@@ -419,6 +418,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
         $passaggio_node->addAttribute('totale', $dd_punteggio);
 
+        // il break su atti assorbiti avviene dopo l'assegnazione del punteggio
+        if (mode == 'presentazione' && $passaggio == 'assorbito')
+        {
+          break;
+        }
+
         
         // --- bonus maggioranza ---
         if ($passaggio == 'approvato' || $passaggio == 'approvato_camera') {
@@ -439,7 +444,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
       // controlla se diventato legge dopo passaggi in altri rami (se non assorbito)
       // assegna punteggio se diventato legge in altri rami
-      if ($diventato_legge_in_altri_rami) {
+      if ($diventato_legge_in_altri_rami && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $in_maggioranza);
 
         $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
