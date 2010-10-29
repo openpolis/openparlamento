@@ -1035,6 +1035,11 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
   public function executeCommissioniBicamerali()
   {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni Bicamerali - '.sfConfig::get('app_main_title'));
+     $c=new Criteria();
+     $c->add(OppSedePeer::RAMO,'CS');
+     $c->add(OppSedePeer::TIPOLOGIA,'Commissione bicamerale');
+     $this->comms=OppSedePeer::doSelect($c);
+    
   }
   
   public function executeCommissioniMembri()
