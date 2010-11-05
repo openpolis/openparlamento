@@ -519,10 +519,11 @@ function run_opp_build_cache_atti($task, $args, $options)
 
     $cnt++;
 
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
     if (!array_key_exists($tipo_atto_id, OppTipoAttoPeer::$tipi_per_indice)) continue;
     
     printf("%5d/%6d) %40s %d ... ", $cnt, $n_atti, OppTipoAttoPeer::$tipi_per_indice[$tipo_atto_id], $atto_id);
-    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto_id, $tipo_atto_id, $data, $verbose);
+    $indice = OppIndiceRilevanzaPeer::calcola_rilevanza_atto($atto, $tipo_atto_id, $data, $verbose);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
     $cache_record = OppActHistoryCachePeer::retrieveByDataChiTipoChiId($data_lookup, 'A', $atto_id);
