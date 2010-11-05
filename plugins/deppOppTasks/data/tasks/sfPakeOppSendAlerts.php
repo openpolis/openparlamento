@@ -67,8 +67,7 @@ function run_opp_send_alerts($task, $args, $options)
   $n_users = count($users);
   foreach ($users as $cnt => $user)
   {
-    if (is_null($last_alert)) 
-      $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
+    $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
 
     echo "$cnt/$n_users ";
     opp_send_single_user_alerts($user, $last_alert);
@@ -198,8 +197,7 @@ function run_opp_test_alerts($task, $args, $options)
   echo pakeColor::colorize("$n_users users set alerts. Here are the notifications we would send them.\n", array('fg' => 'green'));
   foreach ($users as $cnt => $user)
   {
-    if (is_null($last_alert)) 
-      $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
+    $last_alert = $user->getLastAlertedAt("%Y-%m-%dT%H:%M:%SZ");
 
     echo "$cnt/$n_users ";
     opp_test_single_user_alerts($user, $last_alert);
