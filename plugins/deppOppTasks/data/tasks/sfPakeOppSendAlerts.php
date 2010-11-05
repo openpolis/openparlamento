@@ -125,6 +125,10 @@ function opp_send_single_user_alerts($user, $last_alert)
        $raw_email = sfContext::getInstance()->getController()->sendEmail('monitoring', 'sendAlerts');
        // log the email
        sfContext::getInstance()->getLogger()->debug($raw_email);
+ 
+       // set the last_alerted_at field to now in the opp_user table
+       $user->setLastAlertedAt(date('Y-m-d H:i'));
+       $user->save();
      } catch (Exception $e) {
        echo pakeColor::colorize(sprintf(" err: %s - ", $e->getMessage()), array('fg' => 'red', 'bold' => true));
      }
