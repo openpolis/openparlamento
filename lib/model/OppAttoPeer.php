@@ -305,7 +305,7 @@ class OppAttoPeer extends BaseOppAttoPeer
    * @return array of objects
    * @author Guglielmo Celata
    **/
-  public static function doSelectIndirectlyMonitoredByUser($user, $type = null, $tag_criteria = null, $my_monitored_tags_pks = null, $act_criteria = null)
+  public static function doSelectIndirectlyMonitoredByUser($user, $type = null, $act_criteria = null, $my_monitored_tags_pks = null, $act_criteria = null)
   {
     if (!($user instanceof OppUser)) throw new Exception('A user must be specified');
 
@@ -324,7 +324,12 @@ class OppAttoPeer extends BaseOppAttoPeer
       $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());
     }
     $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+    $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
     $c->add(TaggingPeer::TAG_ID, $my_monitored_tags_pks, Criteria::IN);
+
+    // elimina atti conclusi
+    $c->add(OppAttoPeer::STATO_COD, 'CO', Criteria::NOT_EQUAL);
+
     $indirectly_monitored_acts = OppAttoPeer::doSelect($c);
     unset($c);
     
@@ -360,7 +365,13 @@ class OppAttoPeer extends BaseOppAttoPeer
       $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());
     }
     $c->addJoin(OppAttoPeer::ID, TaggingPeer::TAGGABLE_ID);
+    $c->add(TaggingPeer::TAGGABLE_MODEL, 'OppAtto');
+    
     $c->add(TaggingPeer::TAG_ID, $my_monitored_tags_pks, Criteria::IN);
+
+    // elimina atti conclusi
+    $c->add(OppAttoPeer::STATO_COD, 'CO', Criteria::NOT_EQUAL);
+
     $indirectly_monitored_acts = OppAttoPeer::doSelect($c);
     unset($c);
     
@@ -392,6 +403,10 @@ class OppAttoPeer extends BaseOppAttoPeer
     {
       $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
       $c->add(OppTipoAttoPeer::ID, $type->getPrimaryKey());      
+      
+      // elimina atti conclusi
+      $c->add(OppAttoPeer::STATO_COD, 'CO', Criteria::NOT_EQUAL);
+
     }
 
     // fetch directly monitored acts PKs

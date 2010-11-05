@@ -384,13 +384,13 @@ class monitoringActions extends sfActions
     } else
       $tag_filtering_criteria = null;
 
-    // estrae tutti gli atti monitorati dall'utente, per costruire la select
+    // estrae tutti i tag monitorati dall'utente, per costruire la tendina
     $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
     
-    // estrae gli atti monitorati, con l'eventuale filtro
+    // estrae le primary keys dei tag monitorati (sempre per la tendina?)
     $this->my_monitored_tags_pks = $this->user->getMonitoredPks('Tag', $tag_filtering_criteria);
 
-    // estrae tutti i tipi di atti monitorati dall'utente (senza filtri), per la select
+    // estrae tutti i tipi di atti monitorati dall'utente (senza filtri), per le tendine
     $indirectly_monitored_acts_types = OppTipoAttoPeer::doSelectIndirectlyMonitoredByUser($this->user, $this->type);
     $directly_monitored_acts_types = OppTipoAttoPeer::doSelectDirectlyMonitoredByUser($this->user, $this->type);
 
@@ -582,10 +582,6 @@ class monitoringActions extends sfActions
     $mail->setSubject($subj);
 
     $this->mail = $mail;
-    
-    // set the last_alerted_at field to now in the opp_user table
-    $this->user->setLastAlertedAt(date('Y-m-d H:i'));
-    $this->user->save();
   }
   
 
