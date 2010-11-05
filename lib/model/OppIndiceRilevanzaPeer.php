@@ -230,7 +230,13 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     
     // determina se l'atto è parte di un Testo Unificato
     $is_unified = OppAttoPeer::isUnifiedText($atto_id);
-    $is_unificato_non_main = (is_array($is_unified) && !$is_unified['is_main_unified']);
+    
+    // determina se l'atto è stato assorbito
+    $is_absorbed = OppAttoPeer::isAbsorbed($atto_id);
+
+    // determina se l'atto unificato è principale o meno
+    $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
+    $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
     
     $itinera_atto_rs = OppAttoHasIterPeer::getItineraAttoDataRS($atto_id, $data);
     
@@ -269,6 +275,12 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
         }
       
       $passaggio_node->addAttribute('totale', $dd_punteggio);
+        
+      // il break su atti assorbiti avviene dopo l'assegnazione del punteggio
+      if ($passaggio == 'assorbito')
+      {
+        break;
+      }
         
       // --- bonus maggioranza ---
       if ($passaggio == 'approvato') {
