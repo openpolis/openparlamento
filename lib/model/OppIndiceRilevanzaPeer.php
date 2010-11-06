@@ -237,7 +237,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     // determina se l'atto unificato è principale o meno
     $is_unificato_non_main = is_array($is_unified) && !$is_unified['is_main_unified'];
     $is_unificato_main = is_array($is_unified) && $is_unified['is_main_unified'];
-    
+
     $itinera_atto_rs = OppAttoHasIterPeer::getItineraAttoDataRS($atto_id, $data);
     
     $iter_node = $atto_node->addChild('iter', null, self::$opp_ns);
@@ -298,7 +298,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
     }
     
     // assegna punteggio se diventato legge in altri rami
-    if ($diventato_legge_in_altri_rami) {
+    if ($diventato_legge_in_altri_rami && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
       $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, 'diventato_legge', $di_maggioranza);
 
       $passaggio_node = $iter_node->addChild('passaggio', null, self::$opp_ns);
