@@ -12,9 +12,8 @@ jQuery.noConflict();
         formatResult: function(row, i, max) {
     			return row[0];
     		},    		
-        minChars: "2", width: "300px", max: "50", scrollHeight: "250px"
-      }).result(function(event, data) {
-         $("#tag_name").get(0).value =  !data ? "No match!" :  data[2];
+        minChars: "2", width: "300px", max: "50", scrollHeight: "250px",
+        multiple: true, multipleSeparator: ','
       });
       $("#tag_search").focus(function(){
         if(this.value == this.defaultValue)
@@ -33,12 +32,11 @@ jQuery.noConflict();
 	  <?php if (isset($limit)): ?>
   	  <input id="limit" name="limit" value="<?php echo $limit ?>" type="hidden"/>	   
 	  <?php endif ?>
-    <input id="tag_search" class="ac_input blur" value="<?php echo $argomento?$argomento->getTripleValue():''?>"/>
+    <input id="tag_search" name="tag_search" class="ac_input blur" value="<?php echo $tags?>"/>
     <label for="ramo_C">Camera</label>
     <?php echo radiobutton_tag('ramo', 'C', $ramo == 'C') ?>
     <label for="ramo_S">Senato</label>
     <?php echo radiobutton_tag('ramo', 'S', $ramo == 'S') ?>
-    <input id="tag_name" name="tag_name" type="hidden" value="<?php echo $argomento?$argomento->getName():''?>"/>
     <?php echo submit_image_tag('btn-cerca-small.png', 
                                 array('alt' => 'cerca', 'id' => 'aggiungi', 'name' => 'aggiungi')) ?>
 	</fieldset>

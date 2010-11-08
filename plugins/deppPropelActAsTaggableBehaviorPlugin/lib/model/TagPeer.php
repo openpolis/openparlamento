@@ -716,5 +716,33 @@ class TagPeer extends BaseTagPeer
     return $tag;
   }
   
+  /**
+   * extracts an array of ids from a string of (comma) separated values
+   *
+   *
+   * @param string $values
+   * @param string $separator 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function getIdsFromTagsValues($values, $separator = ",")
+  {
+    $tags_values = explode($separator, $values);
+    $ids = array();
+    foreach ($tags_values as $tag_value)
+    {
+      $c = new Criteria();
+      $c->add(TagPeer::TRIPLE_VALUE, $tag_value);
+      $tag = TagPeer::doSelectOne($c);
+      if ($tag instanceof Tag)
+      {
+        $ids []= $tag->getId();
+      }
+    }
+    
+    return $ids;
+    
+  }
+  
 
 }

@@ -233,16 +233,18 @@ class datiStoriciActions extends sfActions
     $this->session = $this->getUser();
     
     $this->ramo = $this->getRequestParameter('ramo', 'C');
+
     
     if ($this->hasRequestParameter('triple_value'))
     {
       $triple_value = $this->getRequestParameter('triple_value');      
-      $this->argomento = TagPeer::retrieveFirstByTripleValue($triple_value);
+      $this->tags_ids = array(TagPeer::retrieveFirstByTripleValue($triple_value));
     }
     else
     {
-      $this->tag_name = $this->getRequestParameter('tag_name', '');
-      $this->argomento = TagPeer::retrieveByTagName($this->tag_name);      
+      $this->tags = trim(strip_tags($this->getRequestParameter('tag_search', '')), " ,");      
+      sfContext::getInstance()->getLogger()->info('{interessi}' . $this->tags);
+      $this->tags_ids = TagPeer::getIdsFromTagsValues($this->tags);
     }
       
 
@@ -256,15 +258,15 @@ class datiStoriciActions extends sfActions
     else
       $data = OppActHistoryCachePeer::fetchLastData();
     
-    if ($this->argomento) {
-      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti(array($this->argomento->getId()), $this->ramo, $data, $limit); 
+    if (is_array($this->tags_ids) && count($this->tags_ids)) {
+      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $this->ramo, $data, $limit); 
     }
   }
   
   public function executeInteressiDettaglio()
   {
     $carica_id = $this->getRequestParameter('carica_id');
-    $argomento_id = $this->getRequestParameter('argomento_id');
+    $tags_ids = explode(",", trim(strip_tags($this->getRequestParameter('tags_ids', '')), " ,")); 
     
     // la data è passata come parametro o viene estratta l'ultima nella cache (per dati di tipo 'A', singoli atti)
     if ($this->hasRequestParameter('data'))
@@ -272,7 +274,7 @@ class datiStoriciActions extends sfActions
     else
       $data = OppActHistoryCachePeer::fetchLastData();
     
-    $dettaglio = OppCaricaPeer::getDettaglioInteresseArgomenti($carica_id, array($argomento_id), $data);
+    $dettaglio = OppCaricaPeer::getDettaglioInteresseArgomenti($carica_id, $tags_ids, $data);
     $this->firme_p = $dettaglio['firme_p'];
     $this->totale_firme_p = $dettaglio['totale_firme_p'];
     $this->firme_r = $dettaglio['firme_r'];

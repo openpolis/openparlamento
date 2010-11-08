@@ -12,7 +12,7 @@ jQuery.noConflict();
         formatResult: function(row, i, max) {
     			return row[0];
     		},    		
-        minChars: "2", width: "300px", max: "50", scrollHeight: "250px"
+        minChars: "2", width: "300px", max: "50", scrollHeight: "250px", highlight: true
       }).result(function(event, data) {
          $("#tag_name").get(0).value =  !data ? "No match!" :  data[2];
       });

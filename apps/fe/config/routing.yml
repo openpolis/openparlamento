@@ -36,7 +36,7 @@ dati_storici_interessi:
   param: { module: datiStorici, action: interessi }
 
 dati_storici_dettaglio_interessi:
-  url:   /dettaglio_interessi/:carica_id/:argomento_id
+  url:   /dettaglio_interessi/:carica_id/:tags_ids
   param: { module: datiStorici, action: interessiDettaglio }
 
 attivita_gruppo_argomento:

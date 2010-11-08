@@ -5,15 +5,14 @@
 <div id="content" class="tabbed float-container">
   <a name="top"></a>
   <div id="main">
-
       <?php echo include_partial('datiStorici/searchWithAutocompleter', 
                                  array('limit' => sfconfig::get('app_limit_interessi_argomento', 50),
-                                       'argomento' => $argomento,
+                                       'tags' => $tags,
                                        'ramo' => $ramo,
                                        'tag_count'=>TagPeer::getAllWithCount())); ?>
 
 
-      <?php if ($argomento): ?>
+      <?php if (count($tags_ids)): ?>
         <div class="evidence-box float-container">
 
           <h5 class="subsection">
@@ -23,7 +22,7 @@
             <?php else: ?>
               senatori
             <?php endif ?>
-            che pi&ugrave; si occupano di <em><?php echo $argomento->getTripleValue() ?></em>
+            che pi&ugrave; si occupano di <em><?php echo $tags ?></em>
           </h5>
 
           <div class="pad10">
@@ -35,7 +34,7 @@
            	        <?php echo ++$cnt ?>)
            	        <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)
            	        (<?php echo link_to('mostra dettaglio',
-           	                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&argomento_id='.$argomento->getId(),
+           	                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
            	                            array('class' => 'show-hide-dettaglio')) ?>)
            	      </li>
             	  <?php endforeach ?>
