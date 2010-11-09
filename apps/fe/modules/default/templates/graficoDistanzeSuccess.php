@@ -69,5 +69,6 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
+  <?php echo link_to("parlamentari", "@parlamentari") ?>/
     le distanze tra i parlamentari  
 <?php end_slot() ?>

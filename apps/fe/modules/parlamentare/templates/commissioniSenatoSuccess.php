@@ -16,6 +16,12 @@
   </div>
 </div>
 
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php echo link_to("organi del senato", "/organi/senato") ?> /
+    commissioni permanenti  
+<?php end_slot() ?>
+
 <!-- slider jQuery per i componenti -->
 <script type="text/javascript">
 //<![CDATA[

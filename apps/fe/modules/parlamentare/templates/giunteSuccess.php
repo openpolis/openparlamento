@@ -14,6 +14,16 @@
   </div>
 </div>
 
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php if ($ramo=='camera') :?>
+    <?php echo link_to("organi della camera", "/organi/camera") ?>/
+  <?php else :?>  
+    <?php echo link_to("organi del senato", "/organi/camera") ?> /
+  <?php endif; ?>  
+    giunte  
+<?php end_slot() ?>
+
 <!-- slider jQuery per i componenti -->
 <script type="text/javascript">
 //<![CDATA[

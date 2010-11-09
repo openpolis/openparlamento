@@ -221,6 +221,15 @@
   </div>
 </div> 
 
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php if ($ramo=='camera') :?>
+    <?php echo "organi della camera" ?>
+  <?php else :?>  
+    <?php echo "organi del senato" ?>
+  <?php endif; ?>  
+<?php end_slot() ?>
+
 <!-- slider jQuery per i componenti -->
 <script type="text/javascript">
 //<![CDATA[
