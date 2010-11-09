@@ -859,6 +859,9 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .btn-open { padding-right: 20px; background: transparent url(../images/bg-ico-open-close.png) no-repeat top right; }
 .btn-close { padding-right: 20px; background: transparent url(../images/bg-ico-open-close.png) no-repeat bottom right; }
 
+.btn-open-section { padding-left: 20px; background: transparent url(../images/bg-arrow-open.png) no-repeat center; }
+.btn-close-section { padding-left: 20px; background: transparent url(../images/bg-arrow-close.png) no-repeat center; }
+
 .btn-open-table { background: transparent url(../images/bg-ico-open-close.png) no-repeat 99% 0; border: 1px solid #e2e2e2; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; display: block; float: right; padding: 3px 20px 5px 3px; margin-top: 20px; position: relative; bottom: -5px; }
 .btn-open-table:hover { border: 1px solid #f00; }
 .btn-close-table { background: transparent url(../images/bg-ico-open-close.png) no-repeat 99% -19px; border: 1px solid #f00; border-bottom-color: #ffe6e6; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; display: block; padding: 3px 20px 5px 3px; height: 37px; position: relative; z-index: 10; margin-top: 20px; bottom: -5px;}

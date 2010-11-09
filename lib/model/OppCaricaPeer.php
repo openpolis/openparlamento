@@ -697,7 +697,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   }
 
 
-  public static function getActiveMPs($ramo, $limit = 0)
+  public static function getActiveMPs($ramo, $limit = 0, $leg = 16 )
   {
     
     if (!in_array($ramo, array('C', 'S')))
@@ -721,7 +721,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       
     }
 
-    $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+    $c->add(OppCaricaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
     $c->add(self::DATA_FINE, null, Criteria::ISNULL);
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 
