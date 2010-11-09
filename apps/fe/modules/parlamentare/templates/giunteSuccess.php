@@ -33,6 +33,7 @@ jQuery.noConflict();
   $().ready(function(){
 
     $('#accordion').accordion({
+      icons: { 'header': 'btn-open-section', 'headerSelected': 'btn-close-section' },
       collapsible: true,
       navigation: true,
       animated: 'easeslide'
