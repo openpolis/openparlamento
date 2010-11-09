@@ -1,20 +1,14 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs',array('gruppi'=> false)) ?>
+<?php include_partial('tabs',array('ramo' => $sf_params->get('ramo'),'gruppi'=> false)) ?>
 
 <div id="content" class="tabbed float-container">
   <div id="main">
-    <div class="W25_100 float-right">
-     <p align=right>
-	       <a href="#decaduti">guarda le variazioni nella legislatura</a> 
-	       <p align=right style="padding-top:20px;"><?php if ($sf_params->get('ramo')=='camera') : ?>
-	             <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_C') ?>
-	           <?php else : ?>
-	              <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_S') ?>
-	           <?php endif ?>
-	       </p>    
-      </p>	       
-    </div>
+    
+    <?php echo include_partial('secondLevelMenuParlamentari', 
+                               array('current' => 'lista',
+                               'ramo' => $sf_params->get('ramo'))); ?>
+                               
     <div class="W73_100 float-left">	
       <?php include_partial('wiki') ?>       
     

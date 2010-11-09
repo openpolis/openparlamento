@@ -13,7 +13,7 @@
         
 <?php if ($sort=='carica') :?>
   <?php $tr_class = 'even' ?>
-  <?php foreach (array('presidente','vicepresidente','segretario','componente') as $tipo_carica) :?>
+  <?php foreach (array('presidente','vicepresidente','questore','segretario','componente') as $tipo_carica) :?>
     <?php foreach (array_keys($c_membri, $tipo_carica) as $k) :?>
     <tr class="<?php echo $tr_class; ?>">
     <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>

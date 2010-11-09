@@ -1,10 +1,13 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs',array('ramo'=>$ramo,'compare'=>true)) ?>
+<?php include_partial('tabs',array('ramo'=>$ramo,'gruppi'=>false)) ?>
 
 <div id="content" class="tabbed float-container">
 <a name="top"></a>
   <div id="main">
+    <?php echo include_partial('secondLevelMenuParlamentari', 
+                               array('current' => 'confronta',
+                               'ramo' => $sf_params->get('ramo'))); ?>
 	
 	<div style="width:80%; border: 1px solid #4E8480; background-color: rgb(247, 247, 247); padding: 10px 5px 15px 5px; -moz-border-radius: 5px 5px 5px 5px;">
 		<p style="padding-bottom:5px; font-size:18px">Scegli i <?php echo ($ramo=='1' ? 'deputati' : 'senatori') ?> da confrontare:</p> 

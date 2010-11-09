@@ -1025,6 +1025,8 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
   public function executeCommissioniSenato()
   {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
+    
+    $compara_comm=array();
     //estrae le commissioni parmanenti senato
     $c=new Criteria();
     $c->add(OppSedePeer::RAMO,'S');
@@ -1039,6 +1041,7 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
      $c->add(OppSedePeer::RAMO,'CS');
      $c->add(OppSedePeer::TIPOLOGIA,'Commissione bicamerale');
      $this->comms=OppSedePeer::doSelect($c);
+     $this->ramo=$this->getRequestParameter('ramo');
     
   }
   
@@ -1079,6 +1082,126 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
      $this->g_membri=$g_membri;
      $this->sede_id=$sede_id;
    }
+   
+   public function executeGiunte()
+   {
+     $c=new Criteria();
+     if ($this->getRequestParameter('ramo')=='camera')
+     {
+       $this->getResponse()->setTitle('Il dettaglio delle Giunte della Camera - '.sfConfig::get('app_main_title'));
+       $c->add(OppSedePeer::RAMO,'C'); 
+     }
+     else
+     {
+       $this->getResponse()->setTitle('Il dettaglio delle Giunte del Senato - '.sfConfig::get('app_main_title'));
+       $c->add(OppSedePeer::RAMO,'S');
+     }
+     $c->add(OppSedePeer::TIPOLOGIA,'Giunta');
+     $this->comms=OppSedePeer::doSelect($c);
+     $this->ramo=$this->getRequestParameter('ramo');
+   }
+   
+   public function executeOrgani()
+    {
+      $c=new Criteria();
+      if ($this->getRequestParameter('ramo')=='camera')
+      {
+        $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni della Camera - '.sfConfig::get('app_main_title'));
+        $c->add(OppSedePeer::RAMO,'C');
+      }
+      else
+      {
+        $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni del Senato - '.sfConfig::get('app_main_title'));
+        $c->add(OppSedePeer::RAMO,'S');
+      }
+      $c->add(OppSedePeer::TIPOLOGIA,'Presidenza');
+      $this->comm=OppSedePeer::doSelectOne($c);
+      $this->ramo=$this->getRequestParameter('ramo');
+      
+      $gruppi_all=array();
+      $gruppi_p=array();
+      $gruppi_q=array();
+      $gruppi_vp=array();
+      $gruppi_s=array();
+      $gruppi_c=array();
+      $membri_regione=array(21 => 0,23 => 0,25 => 0,32 => 0,34 => 0,36 => 0,42 => 0,45 => 0,52 => 0,55 => 0,57 => 0,62 => 0,65 => 0,67 => 0,72 => 0,75 => 0,77 => 0,78 => 0,82 => 0,88 => 0);
+
+      $c=new Criteria();
+      $c->addJoin(OppCaricaInternaPeer::CARICA_ID,OppCaricaPeer::ID);
+      $c->addJoin(OppCaricaInternaPeer::SEDE_ID,OppSedePeer::ID);
+      if ($this->getRequestParameter('ramo')=='camera')
+      {
+        $c->add(OppSedePeer::RAMO,array('C','CS'),Criteria::IN);
+        $c->add(OppCaricaPeer::TIPO_CARICA_ID,1);
+      } 
+      else
+      {
+        $c->add(OppSedePeer::RAMO,array('S','CS'),Criteria::IN);
+        $c->add(OppCaricaPeer::TIPO_CARICA_ID,4);
+      }
+      $c->add(OppCaricaInternaPeer::DATA_FINE,NULL, Criteria::ISNULL);
+      $membri=OppCaricaInternaPeer::doSelect($c);
+      foreach ($membri as $membro)
+      {
+        $regione=strtolower(str_replace(array(" ","'","-"),"_",$membro->getOppCarica()->getCircoscrizione()));
+        $codice_regione=sfConfig::get('app_circoscrizioni_'.$regione);
+        if (array_key_exists($codice_regione,$membri_regione))
+          $membri_regione[$codice_regione]=$membri_regione[$codice_regione]+1;
+
+        $gruppo_id=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($membro->getCaricaId())->getId();
+        $tipo_carica=OppTipoCaricaPeer::retrieveByPk($membro->getTipoCaricaId())->getNome();
+
+        if (array_key_exists($gruppo_id,$gruppi_all))
+          $gruppi_all[$gruppo_id]=$gruppi_all[$gruppo_id]+1;
+        else
+          $gruppi_all[$gruppo_id]=1;
+
+        if ($tipo_carica=='Presidente')
+        {
+          if (array_key_exists($gruppo_id,$gruppi_p))
+            $gruppi_p[$gruppo_id]=$gruppi_p[$gruppo_id]+1;
+          else
+            $gruppi_p[$gruppo_id]=1;
+        }
+        if ($tipo_carica=='Questore')
+        {
+          if (array_key_exists($gruppo_id,$gruppi_q))
+            $gruppi_q[$gruppo_id]=$gruppi_q[$gruppo_id]+1;
+          else
+            $gruppi_q[$gruppo_id]=1;
+        }
+        if ($tipo_carica=='Vicepresidente')
+        {
+          if (array_key_exists($gruppo_id,$gruppi_vp))
+            $gruppi_vp[$gruppo_id]=$gruppi_vp[$gruppo_id]+1;
+          else
+            $gruppi_vp[$gruppo_id]=1;
+        }
+        if ($tipo_carica=='Segretario')
+        {
+          if (array_key_exists($gruppo_id,$gruppi_s))
+            $gruppi_s[$gruppo_id]=$gruppi_s[$gruppo_id]+1;
+          else
+            $gruppi_s[$gruppo_id]=1;
+        }
+        if ($tipo_carica=='Componente')
+        {
+          if (array_key_exists($gruppo_id,$gruppi_c))
+            $gruppi_c[$gruppo_id]=$gruppi_c[$gruppo_id]+1;
+          else
+            $gruppi_c[$gruppo_id]=1;
+        }
+      }
+      $this->gruppi_all=$gruppi_all;
+      $this->gruppi_p=$gruppi_p;
+      $this->gruppi_q=$gruppi_q;
+      $this->gruppi_vp=$gruppi_vp;
+      $this->gruppi_s=$gruppi_s;
+      $this->gruppi_c=$gruppi_c;
+      $this->membri_regione=$membri_regione;
+      
+    }
+    
 }
 
 ?>

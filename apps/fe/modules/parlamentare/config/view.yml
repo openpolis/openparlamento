@@ -7,5 +7,20 @@ listSuccess:
   
 commissioniCameraSuccess:
     metas:
-    javascripts:    [fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
+    javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
     stylesheets:    [monitoring, jquery.autocomplete.css]
+
+commissioniSenatoSuccess:
+    metas:
+    javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
+    stylesheets:    [monitoring, jquery.autocomplete.css]
+    
+commissioniBicameraliSuccess:
+    metas:
+    javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
+    stylesheets:    [monitoring, jquery.autocomplete.css]    
+
+giunteSuccess:
+    metas:
+    javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
+    stylesheets:    [monitoring, jquery.autocomplete.css]    

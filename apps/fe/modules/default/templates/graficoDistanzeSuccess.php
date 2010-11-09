@@ -1,15 +1,23 @@
 <?php use_helper('I18N', 'Date') ?> 
 
-<ul id="content-tabs" class="float-container tools-container">
-   <li class="<?php echo($tipo=='votes_16_C' ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Le distanze tra i Deputati', '@grafico_distanze?tipo=votes_16_C') ?></h2>   
-  </li><li class="<?php echo($tipo=='votes_16_S' ? 'current' : '' ) ?>">
-    <h2><?php echo link_to('Le distanze tra i Senatori', '@grafico_distanze?tipo=votes_16_S') ?></h2>   
-  </li>
-</ul>
+<?php echo $sf_params->get('ramo') ?>
+
+<?php if ($tipo=='votes_16_C') :?>
+  <?php $ramo=1 ?>
+<?php else : ?>
+  <?php $ramo=2 ?>
+<?php endif; ?>  
+
+
+<?php include_partial('parlamentare/tabs',array('ramo'=> $ramo,'gruppi'=>false)) ?>
 
 <div id="content" class="tabbed float-container">
 <div id="main" style="width: 870px;">
+  
+  <?php echo include_partial('parlamentare/secondLevelMenuParlamentari', 
+                             array('current' => 'distanze',
+                             'ramo' => $ramo)); ?>
+  
 <p class="tools-container" style="padding: 10px;"><a href="#" class="ico-help">cos'&egrave; il grafico delle distanze</a></p>
 <div style="display: block;" class="help-box float-container float-left">
   <div class="inner float-container">

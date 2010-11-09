@@ -17,6 +17,10 @@ api_parlamentare:
 api_parlamentari:
   url: /elenco_parlamentari/:key/:ramo/:infotype/:orderby/:ordertype
   param: { module: api, action: elencoParlamentari }
+  
+api_parlamentari:
+  url: /elenco_parlamentari_id/:ramo
+  param: { module: api, action: getParlamentoIdParlamentariInCarica }  
 
 api_voti_chiave:
   url: /elenco_voti_chiave/:key/*
@@ -346,8 +350,16 @@ commissioni_membri:
   param: { module: parlamentare, action: commissioniMembri,  sede: 1, sort: carica }
 
 commissioni_bicamerali:
-  url:   /commissioni_bicamerali
-  param: { module: parlamentare, action: commissioniBicamerali }  
+  url:   /commissioni_bicamerali/:ramo
+  param: { module: parlamentare, action: commissioniBicamerali, ramo: 'camera' }
+
+giunte:
+  url: /giunte/:ramo
+  param: { module: parlamentare, action: giunte, ramo: 'camera' }    
+
+organi:
+  url: /organi/:ramo
+  param: { module: parlamentare, action: organi, ramo: 'camera' }  
   
 disegno_commissione:
   url:   /disegno_commissione/:sede/:stato/:leg

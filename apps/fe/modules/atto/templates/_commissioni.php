@@ -19,10 +19,17 @@
   <?php foreach($commissioni as $id => $commissione): ?>
     <?php if($commissione->getTipo() != 'Consultiva'): ?>
 	  <li>
-        <?php if($commissione->getOppSede()->getRamo()=='S'): $sede_comm="Senato" ?>
-          <?php else: $sede_comm="Camera" ?>
+        <?php if($commissione->getOppSede()->getRamo()=='S'): ?>
+          <?php $sede_comm="Senato" ?>
+          <?php $uri_comm="/commissioni_senato" ?>
+        <?php elseif ($commissione->getOppSede()->getRamo()=='C') : ?>
+          <?php $sede_comm="Camera" ?>
+          <?php $uri_comm="/commissioni_camera" ?>
+        <?php elseif ($commissione->getOppSede()->getRamo()=='CS') : ?>
+          <?php $sede_comm="Bicamerale" ?>
+          <?php $uri_comm="/commissioni_bicamerali" ?>
         <?php endif; ?>
-        <?php echo "Sede ".$commissione->getTipo().": ".$sede_comm." Commissione ".$commissione->getOppSede()->getDenominazione(); ?>
+        <?php echo "Sede ".$commissione->getTipo().": ".$sede_comm." ".link_to($commissione->getOppSede()->getDenominazione(),$uri_comm.'#'.$commissione->getOppSede()->getId()) ?>
       </li>
 	<?php else: ?>
       <?php $consultive_count++; ?>  	
@@ -39,12 +46,19 @@
     <ul class="square-bullet">
       <?php foreach($commissioni as $id => $commissione): ?>
         <?php if($commissione->getTipo() == 'Consultiva'): ?>
-	      <li>
-            <?php if($commissione->getOppSede()->getRamo()=='S'): $sede_comm="Senato" ?>
-              <?php else: $sede_comm="Camera" ?>
-            <?php endif; ?>
-            <?php echo $sede_comm." Commissione ".$commissione->getOppSede()->getDenominazione(); ?>
-          </li>
+	        <li>
+              <?php if($commissione->getOppSede()->getRamo()=='S'): ?>
+                <?php $sede_comm="Senato" ?>
+                <?php $uri_comm="/commissioni_senato" ?>
+              <?php elseif ($commissione->getOppSede()->getRamo()=='C') : ?>
+                <?php $sede_comm="Camera" ?>
+                <?php $uri_comm="/commissioni_camera" ?>
+              <?php elseif ($commissione->getOppSede()->getRamo()=='CS') : ?>
+                <?php $sede_comm="Bicamerale" ?>
+                <?php $uri_comm="/commissioni_bicamerali" ?>
+              <?php endif; ?>
+              <?php echo $sede_comm." ".link_to($commissione->getOppSede()->getDenominazione(),$uri_comm.'#'.$commissione->getOppSede()->getId()) ?>
+            </li>
         <?php endif; ?>  
       <?php endforeach; ?>	
     </ul>

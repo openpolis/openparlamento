@@ -1,4 +1,7 @@
-<div class="W100_100 float-right"><h5 class="subsection"><?php echo OppSedePeer::retrieveByPk($sede_id)->getDenominazione() ?></h5></div>
+ <h3 class="subsection" id="#<?php echo $sede_id ?>" style="float:left; width:95%; font-size: 16px;">
+   <a href="#<?php echo $sede_id ?>" name="<?php echo $sede_id ?>"><?php echo OppSedePeer::retrieveByPk($sede_id)->getDenominazione() ?></a>
+ </h3>
+<div>
 <div class="W73_100 float-left" style="width:40%">
   <table class="disegni-decreti column-table lazyload">
     <thead>
@@ -6,8 +9,9 @@
         <th scope="col">Gruppo:</th>
         <th scope="col">Presidente:</th> 	
         <th scope="col">Vicepresidenti:</th>
+        <?php echo (OppSedePeer::retrieveByPk($sede_id)->getTipologia()=='Presidenza' ?'<th scope="col">Questori:</th>' :'') ?>
         <th scope="col">Segretari:</th>
-        <th scope="col">Membri:</th>
+        <?php echo (OppSedePeer::retrieveByPk($sede_id)->getTipologia()=='Presidenza' ?'' :'<th scope="col">Membri:</th>') ?>
         <th scope="col">Totale:</th>
       </tr>
     </thead>
@@ -16,6 +20,7 @@
 <?php $tr_class = 'even'; ?>
 <?php foreach ($gruppi_all as $k => $gruppo) : ?>
   <tr class="<?php echo ($tr_class == 'even' ? 'odd' : 'even' ); ?>">
+  <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
   <?php if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1) : ?>
     <?php $color_gruppo="#022468"; ?>
   <?php else : ?>
@@ -36,6 +41,16 @@
       <?php echo "0"; ?>
     <?php endif; ?>
   </td>
+  <?php if(OppSedePeer::retrieveByPk($sede_id)->getTipologia()=='Presidenza') :?>
+    <td>
+      <?php if (array_key_exists($k,$gruppi_q)) : ?>
+        <?php echo $gruppi_q[$k]; ?>
+      <?php else :?>  
+        <?php echo "0"; ?>
+      <?php endif; ?>
+    </td>
+  <?php endif; ?>  
+    
   <td>
     <?php if (array_key_exists($k,$gruppi_s)) : ?>
       <?php echo $gruppi_s[$k]; ?>
@@ -43,6 +58,7 @@
       <?php echo "0"; ?>
     <?php endif; ?>
   </td>
+  <?php if(OppSedePeer::retrieveByPk($sede_id)->getTipologia()!='Presidenza') :?>
   <td>
     <?php if (array_key_exists($k,$gruppi_c)) : ?>
       <?php echo $gruppi_c[$k]; ?>
@@ -50,6 +66,7 @@
       <?php echo "0"; ?>
     <?php endif; ?>
   </td>
+  <?php endif; ?>
   <td class="evident">
       <strong><?php echo $gruppo ?></strong>
   </td>
@@ -60,8 +77,13 @@
    <th scope='row'>Totali</th>
    <td><?php echo array_sum($gruppi_p)?></td>
    <td><?php echo array_sum($gruppi_vp)?></td>
+   <?php if(OppSedePeer::retrieveByPk($sede_id)->getTipologia()=='Presidenza') :?>
+      <td><?php echo array_sum($gruppi_q)?></td>
+   <?php endif; ?>    
    <td><?php echo array_sum($gruppi_s)?></td>
-   <td><?php echo array_sum($gruppi_c)?></td>
+    <?php if(OppSedePeer::retrieveByPk($sede_id)->getTipologia()!='Presidenza') :?>
+      <td><?php echo array_sum($gruppi_c)?></td>
+    <?php endif; ?>  
    <td class="evident"><strong><?php echo array_sum($gruppi_all)?></strong></td>
   </tr>
 </tbody>
@@ -216,4 +238,5 @@
   <?php endif ?>                    
   </li>
   </ul>
-</div>  
+</div> 
+</div> 

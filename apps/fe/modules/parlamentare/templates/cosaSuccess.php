@@ -174,7 +174,9 @@
   		
   			
 		    <?php if ($carica) : ?>
-		      
+		    
+		    <!-- INCARICHI PARLAMENTARI -->
+		    <?php echo include_component('parlamentare','incarichiParlamentare', array('carica_id' => $carica->getId(), 'ramo' => $ramo)) ?>  
 		    
 		    <!-- BOX PRESENZE -->
   			<h5 class="subsection-alt" style="margin:0">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>

@@ -375,6 +375,7 @@ public function executeAllvoteComparati()
   {
     $gruppi_all=array();
     $gruppi_p=array();
+    $gruppi_q=array();
     $gruppi_vp=array();
     $gruppi_s=array();
     $gruppi_c=array();
@@ -408,6 +409,13 @@ public function executeAllvoteComparati()
         else
           $gruppi_p[$gruppo_id]=1;
       }
+      if ($tipo_carica=='Questore')
+      {
+        if (array_key_exists($gruppo_id,$gruppi_q))
+          $gruppi_q[$gruppo_id]=$gruppi_q[$gruppo_id]+1;
+        else
+          $gruppi_q[$gruppo_id]=1;
+      }
       if ($tipo_carica=='Vicepresidente')
       {
         if (array_key_exists($gruppo_id,$gruppi_vp))
@@ -432,11 +440,78 @@ public function executeAllvoteComparati()
     }
     $this->gruppi_all=$gruppi_all;
     $this->gruppi_p=$gruppi_p;
+    $this->gruppi_q=$gruppi_q;
     $this->gruppi_vp=$gruppi_vp;
     $this->gruppi_s=$gruppi_s;
     $this->gruppi_c=$gruppi_c;
     $this->membri_regione=$membri_regione;
   }
   
+  public function executeLavoroCommissioni()
+  {
+    $c=new Criteria();
+    $c->add(OppSedePeer::RAMO,$this->ramo);
+    $c->add(OppSedePeer::TIPOLOGIA,'Commissione permanente');
+    $comms=OppSedePeer::doSelect($c);
+    
+    foreach($comms as $comm)
+    {
+      $c= new Criteria();
+      $c->addJoin(OppAttoPeer::ID, OppAttoHasSedePeer::ATTO_ID);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+      $c->add(OppAttoHasSedePeer::SEDE_ID,$comm->getId());
+      $c->add(OppAttoHasSedePeer::TIPO,'Referente');
+      $ref=OppAttoHasSedePeer::doCount($c);
+
+      $c= new Criteria();
+      $c->addJoin(OppAttoPeer::ID, OppAttoHasSedePeer::ATTO_ID);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+      $c->add(OppAttoHasSedePeer::SEDE_ID,$comm->getId());
+      $c->add(OppAttoHasSedePeer::TIPO,'Consultiva');
+      $con=OppAttoHasSedePeer::doCount($c);
+      
+      $c= new Criteria();
+      $c->addJoin(OppAttoPeer::ID, OppAttoHasSedePeer::ATTO_ID);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppAttoPeer::TIPO_ATTO_ID,1, Criteria::NOT_EQUAL);
+      $c->add(OppAttoHasSedePeer::SEDE_ID,$comm->getId());
+      $atti_non_leg=OppAttoHasSedePeer::doCount($c);
+      
+      $c= new Criteria();
+      $c->add(OppResocontoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppResocontoPeer::SEDE_ID,$comm->getId());
+      $sedute=OppResocontoPeer::doCount($c);
+
+      $c= new Criteria();
+      $c->addJoin(OppAttoPeer::ID, OppInterventoPeer::ATTO_ID);
+      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+      $c->add(OppInterventoPeer::SEDE_ID,$comm->getId());
+      $interventi=OppInterventoPeer::doCount($c);
+
+      $compara_comm[$comm->getId()]=array($ref,$con, $atti_non_leg, $sedute,$interventi);
+    }
+    $this->compara_comm=$compara_comm;
+  }
+  
+  public function executeIncarichiParlamentare()
+  {
+    // cariche attuali
+    $c= new Criteria();
+    $c->add(OppCaricaInternaPeer::CARICA_ID, $this->carica_id);
+    $c->add(OppCaricaInternaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+    $c->addAscendingOrderByColumn(OppCaricaInternaPeer::SEDE_ID);
+    $cariche=OppCaricaInternaPeer::doSelect($c);
+    $this->cariche=$cariche;
+    
+    //cariche passate
+    $c= new Criteria();
+    $c->add(OppCaricaInternaPeer::CARICA_ID, $this->carica_id);
+    $c->add(OppCaricaInternaPeer::DATA_FINE, NULL, Criteria::ISNOTNULL);
+    $c->addDescendingOrderByColumn(OppCaricaInternaPeer::DATA_FINE);
+    $pasts=OppCaricaInternaPeer::doSelect($c);
+    $this->pasts=$pasts;
+  }
   
 }
