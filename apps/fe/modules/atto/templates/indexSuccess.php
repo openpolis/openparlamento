@@ -19,7 +19,7 @@
                                        'context' => 0,
                                        'rss_link' => '@feed_atto?id='.$atto->getId()));  
       ?>
-       <?php endif; ?>  
+    <?php endif; ?>  
     </div>
     
     <div class="W73_100 float-left">
@@ -96,19 +96,19 @@
        	    <ul class="presentation float-container" style="margin-bottom:12px;">
                <?php include_partial('status', array('status' => $status,'atto' => $atto)) ?>
                <?php if(count($iter_completo)!=0): ?>
-	          <?php echo include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
-	       <?php endif; ?>
-	    </ul>
+	               <?php echo include_partial('iterCompleto', array('iter_completo' => $iter_completo,'atto' => $atto)) ?>
+	           <?php endif; ?>
+	         </ul>
 	    
-	    
-	    <!-- Iter grafico per ddl e dl -->
-	    <?php include_partial('statoAvanzamento', 
+	        <!-- Iter grafico per ddl e dl -->
+	        <?php include_partial('statoAvanzamento', 
 	                      array('atto' => $atto)) ?>
-	<?php endif; ?>						  
+	                      
+	        <!-- Pred e Succ per atti non legislativi -->
+          <?php include_partial('predSuccAttiNonLeg', 
+                	          array('atto' => $atto)) ?>                
+	      <?php endif; ?>						  
 	    
-	  
-	    
-	  
       <!-- partial per la visualizzazione e l'edit-in-place dei tags associati all'atto -->
       <?php echo include_component('deppTagging', 'edit', array('content' => $atto)); ?>
       
