@@ -121,7 +121,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
   }
   
   /**
-    * restituisce il gruppo_id corrente per la carica
+    * restituisce il gruppo corrente per la carica
     *
     * @param integer $carica_id 
     * @return void

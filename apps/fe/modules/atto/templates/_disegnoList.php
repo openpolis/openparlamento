@@ -19,13 +19,14 @@
           <p class="content-meta">
             <span class="date"><?php echo format_date($atto->getDataPres(), 'dd/MM/yyyy') ?>,</span>
             <span><?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?>
-            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
-            <?php if (count($f_signers)>0) : ?>
-               <?php $c = new Criteria() ?>
-               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
-               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
-               <?php echo ' da '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
-             <?php endif; ?>   
+              
+              <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($atto->getId(),'P'); ?>
+              <?php if (count($f_signers)>0) : ?>
+                  <?php if ($f_signers->next()) :?>  
+                    <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').(count($f_signers)>1 ? ' e altri' : '') ?>
+                  <?php endif; ?>
+               <?php endif; ?>
+              
             </span>
           </p>
           <p>

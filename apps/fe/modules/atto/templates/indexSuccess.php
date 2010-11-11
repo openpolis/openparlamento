@@ -48,17 +48,16 @@
        <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
        <span style="color:#888888;font-size:16px;font-weight:bolder">
             
-            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($atto->getId()); ?>
+            <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($atto->getId(),'P'); ?>
             <?php if (count($f_signers)>0) : ?>
-               <?php $c = new Criteria() ?>
-               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
-               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
                 <?php if($atto->getTipoAttoId()==1 ): ?>
                    <?php echo ' presentato da ' ?>
                 <?php else : ?>
                    <?php echo ' di ' ?>
-                <?php endif; ?>      
-               <?php echo link_to($f_signer->getNome().' '.$f_signer->getCognome(),'parlamentare/'.$f_signer->getId()).(count($f_signers)>1 ? ' e altri' : '') ?>
+                <?php endif; ?>    
+                <?php if ($f_signers->next()) :?>  
+                  <?php echo link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'parlamentare/'.$f_signers->getInt(1)).(count($f_signers)>1 ? ' e altri' : '') ?>
+                <?php endif; ?>
              <?php endif; ?>   
         <?php else: ?>
           <?php if($atto->getRamo()): ?>

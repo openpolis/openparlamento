@@ -561,7 +561,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	  //$c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
 	  $c->add(OppCaricaHasAttoPeer::TIPO, $tipo, Criteria::EQUAL);
 	  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
-	  //$c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
+	  $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
 	  $rs = OppCaricaHasAttoPeer::doSelectRS($c);
 	
 	  return $rs;
