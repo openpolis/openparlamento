@@ -22,23 +22,20 @@
                     il <span class="date"><?php echo format_date($em->getDataPres(), 'dd/MM/yyyy') ?>,</span>                    
                   <?php endif ?>
                   in <span><?php echo $em->getOppSede()->getDenominazione() ?>
-                  <?php $f_signers= OppEmendamentoPeer::doSelectPrimiFirmatari($em->getId()); ?>
-                  <?php if (count($f_signers)>0) : ?>
-                     <?php $c = new Criteria() ?>
-                     <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
-                     <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
-                     <?php echo ' da '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
-                   <?php else :?>
-                     <?php if ($em->getNota()) : ?>
-                        <?php if ($em->getNota()=='commissione') echo 'dalla' ?>
-                        <?php if ($em->getNota()=='governo') echo 'dal' ?>
-                        <?php if (preg_match('#^commissioni#',$em->getNota())) echo 'dalle' ?>
-                        <?php if ($em->getNota()=='relatori') echo 'dai' ?>
-                        
-                      <?php echo strtoupper($em->getNota()) ?>
-                      
-                     <?php endif ?>   
-                   <?php endif; ?>   
+                  <?php $f_signers= OppEmendamentoPeer::getRecordsetFirmatari($em->getId(),'P'); ?>
+                  <?php if ($f_signers->next()) :?>  
+                       <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').($f_signers->next() ? ' e altri' : '') ?>
+                  <?php else :?>
+                    <?php if ($em->getNota()) : ?>
+                       <?php if ($em->getNota()=='commissione') echo 'dalla' ?>
+                       <?php if ($em->getNota()=='governo') echo 'dal' ?>
+                       <?php if (preg_match('#^commissioni#',$em->getNota())) echo 'dalle' ?>
+                       <?php if ($em->getNota()=='relatori') echo 'dai' ?>
+                       <em>
+                     <?php echo ucfirst($em->getNota()) ?>.
+                     </em>
+                    <?php endif ?>        
+                  <?php endif ?>
                   </span>
                 </p>
                 <p>

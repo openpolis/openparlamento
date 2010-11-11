@@ -21,12 +21,9 @@
             <span><?php echo($atto->getRamo()=='C' ? 'presentato alla Camera' : 'presentato al Senato') ?>
               
               <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($atto->getId(),'P'); ?>
-              <?php if (count($f_signers)>0) : ?>
                   <?php if ($f_signers->next()) :?>  
-                    <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').(count($f_signers)>1 ? ' e altri' : '') ?>
+                    <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').($f_signers->next() ? ' e altri' : '') ?>
                   <?php endif; ?>
-               <?php endif; ?>
-              
             </span>
           </p>
           <p>

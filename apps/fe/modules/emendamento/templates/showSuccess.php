@@ -37,15 +37,10 @@
         <ul style="margin-bottom: 12px; margin-top: 12px;" class="presentation float-container">
           <li><h6>presentato il <em><?php echo format_date($emendamento->getDataPres(), 'dd/MM/yyyy') ?></em>
           in <em><?php echo $emendamento->getOppSede()->getDenominazione() ?><?php echo ($emendamento->getOppSede()->getRamo()=='C'?' della Camera':' del Senato') ?></em>
-           <?php $f_signers= OppEmendamentoPeer::doSelectPrimiFirmatari($emendamento->getId()); ?>
-            <?php if (count($f_signers)>0) : ?>
-               <?php $c = new Criteria() ?>
-               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
-               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
-                da
-                 <em>
-               <?php echo link_to($f_signer->getNome()." ".$f_signer->getCognome(),'/parlamentare/'.$f_signer->getId()) ?>
-               </em>
+           <?php $f_signers= OppEmendamentoPeer::getRecordsetFirmatari($emendamento->getId(),'P'); ?>
+           
+            <?php if ($f_signers->next()) :?>  
+                 <?php echo ' da '.link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'/parlamentare/'.$f_signers->getInt(1)).($f_signers->next() ? ' e altri' : '') ?>
             <?php else :?>
               <?php if ($emendamento->getNota()) : ?>
                  <?php if ($emendamento->getNota()=='commissione') echo 'dalla' ?>

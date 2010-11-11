@@ -68,7 +68,7 @@ class OppEmendamentoPeer extends BaseOppEmendamentoPeer
 	  return $relatori;
   }
   
-  protected static function getRecordsetFirmatari($pred, $tipo)
+  public static function getRecordsetFirmatari($em_id, $tipo)
   {
     $c = new Criteria();
   	$c->clearSelectColumns();
@@ -77,7 +77,8 @@ class OppEmendamentoPeer extends BaseOppEmendamentoPeer
   	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
   	$c->addSelectColumn(OppGruppoPeer::NOME);
   	$c->addSelectColumn(OppCaricaHasEmendamentoPeer::DATA);
-  	$c->add(OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID, $pred, Criteria::EQUAL);
+  	$c->addSelectColumn(OppGruppoPeer::ACRONIMO);
+  	$c->add(OppCaricaHasEmendamentoPeer::EMENDAMENTO_ID, $em_id, Criteria::EQUAL);
   	$c->addJoin(OppCaricaHasEmendamentoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
   	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
   	$c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);

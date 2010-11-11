@@ -25,13 +25,12 @@
             <?php if ($ddl->getRamo()=='S') : ?>
               <?php echo ' al Senato' ?>
             <?php endif; ?>
-            <?php $f_signers= OppAttoPeer::doSelectPrimiFirmatari($ddl->getId()); ?>
-            <?php if (count($f_signers)>0) : ?>
-               <?php $c = new Criteria() ?>
-               <?php $c->add(OppPoliticoPeer::ID, key($f_signers), Criteria::EQUAL); ?>
-               <?php $f_signer = OppPoliticoPeer::doSelectOne($c) ?>
-               <?php echo ' di '.$f_signer->getCognome().(count($f_signers)>1 ? ' e altri' : '') ?>
-             <?php endif; ?>   
+            <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($ddl->getId(),'P'); ?>
+            
+                <?php if ($f_signers->next()) :?>  
+                  <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').($f_signers->next() ? ' e altri' : '') ?>
+                <?php endif; ?>
+          
             </span> 
           </p>
 	      <p>

@@ -20,11 +20,10 @@
             <span class="date"><?php echo format_date($ddl->getDataPres(), 'dd/MM/yyyy') ?>,</span>
             <span><?php echo $ddl->getOppTipoAtto()->getDescrizione() ?><?php echo($ddl->getRamo()=='C' ? ' alla Camera' : ' al Senato') ?>
               <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($ddl->getId(),'P'); ?>
-              <?php if (count($f_signers)>0) : ?>
+              
                   <?php if ($f_signers->next()) :?>  
-                    <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').(count($f_signers)>1 ? ' e altri' : '') ?>
+                    <?php echo ' da '.$f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :'').($f_signers->next() ? ' e altri' : '') ?>
                   <?php endif; ?>
-               <?php endif; ?>
             </span> 
           </p>
 	      <p>
