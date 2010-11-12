@@ -18,7 +18,7 @@ api_parlamentari:
   url: /elenco_parlamentari/:key/:ramo/:infotype/:orderby/:ordertype
   param: { module: api, action: elencoParlamentari }
   
-api_parlamentari:
+api_parlamentari_id:
   url: /elenco_parlamentari_id/:ramo
   param: { module: api, action: getParlamentoIdParlamentariInCarica }  
 
