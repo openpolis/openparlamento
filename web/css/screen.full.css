@@ -453,15 +453,16 @@ p.wiki-form-submit { margin-left: 20px;}
 
 .second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 1px; float: left; position: relative; left: -9px; top: -6px; }
 .second-level-tabs li, .second-level-tabs h5 { display: inline; }
-.second-level-tabs a { color: #999; display: block; float: left; padding: 0 10px; height: 45px; line-height: 40px; border-right: 1px solid #fff; border-left: 1px solid #f0f0f0; }
+.second-level-tabs a, .second-level-tabs span { color: #999; display: block; float: left; padding: 0 10px; height: 45px; line-height: 40px; border-right: 1px solid #fff; border-left: 1px solid #f0f0f0; }
 .second-level-tabs a:hover { color: #0066ff; }
 
 .second-level-tabs li:last-child a { border-right: none; }
 
 
-.second-level-tabs .current a { color: #941299; cursor: default; background-color: #fff; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.second-level-tabs .current a, .second-level-tabs .current span { color: #941299; cursor: default; background-color: #fff; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 .second-level-tabs .current a:hover { text-decoration: none; }
 
+#second-level-menu-argomenti ul.second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; float: left; padding: 1px; position: relative; left: 0px; top: 0px; }
 
 /*
  * JUMP TO BUTTONS

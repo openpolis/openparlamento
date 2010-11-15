@@ -142,6 +142,14 @@ monitoring_tags:
   url: /monitoring_tags/:user_token
   param: { module: monitoring, action: tags }
 
+monitoring_tags_deputati:
+  url: /monitoring_tags_deputati/:user_token
+  param: { module: monitoring, action: tagsDeputati}
+
+monitoring_tags_senatori:
+  url: /monitoring_tags_senatori/:user_token
+  param: { module: monitoring, action: tagsSenatori}
+  
 monitoring_alerts:
   url: /monitoring_alerts/:user_token
   param: { module: monitoring, action: alerts }  

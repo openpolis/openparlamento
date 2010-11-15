@@ -462,9 +462,64 @@ class monitoringActions extends sfActions
     $c = new Criteria();
     $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
     $this->my_tags = TagPeer::getPopulars($c);
+
     $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
                             $this->opp_user->countMonitoredObjects('Tag');
     
+  }
+  
+  public function executeTagsDeputati()
+  {
+    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+    // get user's monitored tags as a cloud
+    $c = new Criteria();
+    $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
+    $this->my_tags = TagPeer::getPopulars($c);
+
+    $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
+                            $this->opp_user->countMonitoredObjects('Tag');
+    $this->tags_ids = $this->opp_user->getMonitoredPks('Tag');
+
+    $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
+    $data = OppActHistoryCachePeer::fetchLastData();
+    
+    if (count($this->tags_ids)) {
+      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, 'C', $data, $limit); 
+    }
+    $this->chart_title = 'Andamento storico';
+    $this->chart_params = array(
+      "chtt={$this->chart_title}",
+      'chts=4e8480,20',
+      'cht=lc',
+      'chs=500x400',
+      'chd=t:30,40,20,10,40,50,80|20,10,20,30,40,30,50',
+      'chdl=Pierino|Giovanni',
+      'chdlp=r',
+      'chco=FF0000,00FF00',
+      'chxt=x,y,r,t'
+    );
+  }
+
+  public function executeTagsSenatori()
+  {
+    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+    // get user's monitored tags as a cloud
+    $c = new Criteria();
+    $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
+    $this->my_tags = TagPeer::getPopulars($c);
+
+    $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
+                            $this->opp_user->countMonitoredObjects('Tag');
+    $this->tags_ids = $this->opp_user->getMonitoredPks('Tag');
+
+    $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
+    $data = OppActHistoryCachePeer::fetchLastData();
+    
+    if (count($this->tags_ids)) {
+      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, 'S', $data, $limit); 
+    }
   }
   
   public function executeAddAlert()

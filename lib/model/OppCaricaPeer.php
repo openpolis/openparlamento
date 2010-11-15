@@ -208,6 +208,27 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     
   }
 
+
+
+  /**
+   * estrae il dettaglio degli interessi di un politico per gli argomenti, a una certa data
+   *
+   * @param string $carica_id 
+   * @param string $argomenti_ids 
+   * @param string $data 
+   * @param string $fetch_interventi 
+   * @return hash
+   *         'firme_r' => [{'atto' => 1, 'punti_atto' => 232.23}, {'atto' => ID, 'punti_atto' => 12.34}, ...],
+   *         'totale_firme_r' => 344.12,
+   *         'firme_p' => [{'atto' => 2, 'punti_atto' => 123.45}, {'atto' => ID, 'punti_atto' => 23.34}, ...],
+   *         'totale_firme_p' => 244.12,
+   *         'firme_c' => [{'atto' => 3, 'punti_atto' => 234.56}, {'atto' => ID, 'punti_atto' => 34.56}, ...],
+   *         'totale_firme_c' => 354.12,
+   *         'interventi' => [{'atto' => 4, 'punti_atto' => 345.67, {'atto' => ID, 'punti_atto' => 56.67}, ...],
+   *         'totale_interventi' => 456.12,
+   *
+   * @author Guglielmo Celata
+   */
   public static function getDettaglioInteresseArgomenti($carica_id, $argomenti_ids, $data, $fetch_interventi = true)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
@@ -216,55 +237,160 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     
     // estrazione di tutte le firme della carica relative ad atti taggati con argomento e del peso degli atti
     foreach (array('P', 'R', 'C') as $tipo_firma) {
-      $sql = sprintf("select ca.atto_id, ah.indice from opp_carica_has_atto ca, sf_tagging t, opp_act_history_cache ah where ca.tipo='%s' and ca.carica_id=%d and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and t.tag_id in (%s) group by ca.atto_id", $tipo_firma, $carica_id, $data, implode(", ", $argomenti_ids));
-
-      $stm = $con->createStatement(); 
-      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
-
-      // costruzione array del dettaglio firme
       $dettaglio["firme_".strtolower($tipo_firma)] = array();
-      $totale = 0;
-      while ($rs->next())
-      {
-        $row = $rs->getRow();
-        $atto_id = $row['atto_id'];
-        $punti_atto = $row['indice'];
-        $dettaglio["firme_".strtolower($tipo_firma)][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'punti_atto' => $punti_atto);
-        $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo_firma) * $punti_atto;
-      }
-      $dettaglio['totale_firme_'.strtolower($tipo_firma)] = $totale;
+      $dettaglio['totale_firme_'.strtolower($tipo_firma)]  = 0;
+      foreach (array(0, 1) as $is_omnibus) {
+        if ($is_omnibus) {
+          $tagging_table = 'sf_tagging_for_index';
+          $tagging_conditions = "t.atto_id=ca.atto_id";
+        } else {
+          $tagging_table = 'sf_tagging';
+          $tagging_conditions = "t.taggable_id=ca.atto_id and t.taggable_model='OppAtto'";          
+        }
+      
+        $sql = sprintf("select ca.atto_id, ah.indice, ah.priorita from opp_atto a, opp_carica_has_atto ca, $tagging_table t, opp_act_history_cache ah where a.id=ca.atto_id and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and t.tag_id in (%s) group by ca.atto_id", $tipo_firma, $carica_id, $data, implode(", ", $argomenti_ids));
 
+        $stm = $con->createStatement(); 
+        $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+        // costruzione array del dettaglio firme
+        $totale = 0;
+        while ($rs->next())
+        {
+          $row = $rs->getRow();
+          $atto_id = $row['atto_id'];
+          $priorita = $row['priorita'];
+          $punti_atto = $row['indice']/(float)$priorita;
+          $dettaglio["firme_".strtolower($tipo_firma)][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'punti_atto' => $punti_atto);
+          $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo_firma) * $punti_atto;
+        }
+        $dettaglio['totale_firme_'.strtolower($tipo_firma)] += $totale;
+      }
     }
 
     if ($fetch_interventi) {
-      // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
-      $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice from opp_intervento i, sf_tagging t, opp_act_history_cache ah where ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and t.taggable_model='OppAtto' and t.taggable_id=i.atto_id and t.tag_id in (%s)  group by t.tag_id, i.atto_id, i.sede_id, i.data;", $carica_id, $data, implode(", ", $argomenti_ids));
-
-      $stm = $con->createStatement(); 
-      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
-
-      // costruzione array del dettaglio interventi
       $dettaglio["interventi"] = array();
-      $totale = 0;
-      while ($rs->next())
-      {
-        $row = $rs->getRow();
-        $atto_id = $row['atto_id'];
-        $sede_intervento = $row['sede_id'];
-        $data_intervento = $row['data_intervento'];
-        $punti_atto = $row['indice'];
+      $dettaglio['totale_interventi'] = 0;
+      foreach (array(0, 1) as $is_omnibus) {
+        if ($is_omnibus) {
+          $tagging_table = 'sf_tagging_for_index';
+          $tagging_conditions = "t.atto_id=i.atto_id";
+        } else {
+          $tagging_table = 'sf_tagging';
+          $tagging_conditions = "t.taggable_id=i.atto_id and t.taggable_model='OppAtto'";          
+        }
+        // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
+        $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice, ah.priorita from opp_atto a, opp_intervento i, $tagging_table t, opp_act_history_cache ah where a.id=i.atto_id and a.is_omnibus=$is_omnibus and ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and $tagging_conditions and t.tag_id in (%s)  group by t.tag_id, i.atto_id, i.sede_id, i.data;", $carica_id, $data, implode(", ", $argomenti_ids));
 
-        $dettaglio["interventi"][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'atto_id' => $atto_id, 
-                                           'punti_atto' => $punti_atto,
-                                           'sede_intervento' => $sede_intervento, 'data_intervento' => $data_intervento);
-        $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+        $stm = $con->createStatement(); 
+        $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+        // costruzione array del dettaglio interventi
+        $totale = 0;
+        while ($rs->next())
+        {
+          $row = $rs->getRow();
+          $atto_id = $row['atto_id'];
+          $sede_intervento = $row['sede_id'];
+          $data_intervento = $row['data_intervento'];
+          $priorita = $row['priorita'];
+          $punti_atto = $row['indice']/(float)$priorita;
+
+          $dettaglio["interventi"][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'atto_id' => $atto_id, 
+                                             'punti_atto' => $punti_atto,
+                                             'sede_intervento' => $sede_intervento, 'data_intervento' => $data_intervento);
+          $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+        }
+        $dettaglio['totale_interventi'] += $totale;
       }
-      $dettaglio['totale_interventi'] = $totale;
     }
 
     return $dettaglio;
   }
 
+
+  /**
+   * torna un array associativo con i dati storici dell'interesse di un politico su argomenti
+   *
+   * @param array $argomenti_ids 
+   * @param string $carica_id 
+   * @return hash, con la data come chiave
+   *         - 2010-04-30 => 34.56
+   *         - 2010-05-31 => 39.63
+   *         - ...
+   * @author Guglielmo Celata
+   */
+  public static function getStoricoInteressePoliticoArgomenti($carica_id, $argomenti_ids)
+  { 
+    $storico = array();
+    
+    // FIRME
+    // estrazione di tutte le firme della carica relative ad atti taggati con argomento e del peso degli atti
+    foreach (array('P', 'R', 'C') as $tipo_firma) {
+      foreach (array(0, 1) as $is_omnibus) {
+        if ($is_omnibus) {
+          $tagging_table = 'sf_tagging_for_index';
+          $tagging_conditions = "t.atto_id=ca.atto_id";
+        } else {
+          $tagging_table = 'sf_tagging';
+          $tagging_conditions = "t.taggable_id=ca.atto_id and t.taggable_model='OppAtto'";          
+        }
+        $sql = sprintf("select ca.atto_id, ah.indice, ah.data, ah.priorita from opp_atto a, opp_carica_has_atto ca, $tagging_table t, opp_act_history_cache ah where ca.atto_id=a.id and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and ah.chi_tipo='A' and ah.chi_id=ca.atto_id and t.tag_id in (%s)", $tipo_firma, $carica_id, implode(", ", $argomenti_ids));
+
+        $stm = $con->createStatement(); 
+        $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+        while ($rs->next())
+        {
+          $row = $rs->getRow();
+          
+          $data = $row['data'];
+          $atto_id = $row['chi_id'];
+          $priorita = $row['priorita'];
+          $punti_atto = $row['indice']/(float)$priorita;
+          
+          if (!array_key_exists($data, $storico))
+            $storico[$data] = 0;
+
+          $storico[$data] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma($tipo_firma) * $punti_atto;
+        }        
+      }
+    }
+    
+    // INTERVENTI
+    // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
+    foreach (array(0, 1) as $is_omnibus) {
+      if ($is_omnibus) {
+        $tagging_table = 'sf_tagging_for_index';
+        $tagging_conditions = "t.atto_id=i.atto_id";
+      } else {
+        $tagging_table = 'sf_tagging';
+        $tagging_conditions = "t.taggable_id=i.atto_id and t.taggable_model='OppAtto'";          
+      }
+      $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice from opp_intervento i, opp_atto a, $tagging_table t, opp_act_history_cache ah where ah.chi_id=i.atto_id and ai.atto_id=a.id and a.is_omnibus=$is_omnibus and i.carica_id = %d and $tagging_conditions and t.tag_id in (%s)  group by t.tag_id, i.atto_id, i.sede_id, i.data;", $carica_id, implode(", ", $argomenti_ids));
+
+      $stm = $con->createStatement(); 
+      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+      while ($rs->next())
+      {
+        $row = $rs->getRow();
+        
+        $data = $row['data'];
+        $atto_id = $row['chi_id'];
+        $punti_atto = $row['indice'];
+        $punti_atto = $row['indice']/(float)$priorita;
+        
+        if (!array_key_exists($data, $storico))
+          $storico[$data] = 0;
+
+        $storico[$data] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+      }        
+    }
+    
+
+    
+  }
+  
   /**
    * torna un array associativo di politici che si occupano di certi argomenti, 
    * ordinati in base al punteggio, con eventuale limit
