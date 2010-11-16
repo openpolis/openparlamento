@@ -425,32 +425,30 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // INTERVENTI
     // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
     $atti_ids = self::getAttiConInterventiPerTag($carica_id, $argomenti_ids, $tipo_firma, $con);
-    if (count($atti_ids) == 0) continue;
-    
-    $sql = sprintf("select ah.chi_id, ah.indice, ah.data, ah.priorita from opp_act_history_cache ah where ah.chi_tipo='A' $data_condition and ah.chi_id in (%s) order by ah.data", implode(", ", array_keys($atti_ids)));
-
-    $stm = $con->createStatement(); 
-    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
-    while ($rs->next())
+    if (count($atti_ids) > 0)
     {
-      $row = $rs->getRow();
-      
-      $data = $row['data'];
-      $priorita = $row['priorita'];
+      $sql = sprintf("select ah.chi_id, ah.indice, ah.data, ah.priorita from opp_act_history_cache ah where ah.chi_tipo='A' $data_condition and ah.chi_id in (%s) order by ah.data", implode(", ", array_keys($atti_ids)));
 
-      // punti moltiplicati per il *peso* dell'atto (n. di sedi e date con almeno un intervento)
-      // poi divisi per la priorità
-      $punti_atto = $atti_ids[$row['chi_id']] * $row['indice']/(float)$priorita;
-      
-      if (!array_key_exists($data, $storico))
-        $storico[$data] = 0;
+      $stm = $con->createStatement(); 
+      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+      while ($rs->next())
+      {
+        $row = $rs->getRow();
 
-      $storico[$data] += $delta = OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
-    }  
+        $data = $row['data'];
+        $priorita = $row['priorita'];
+
+        // punti moltiplicati per il *peso* dell'atto (n. di sedi e date con almeno un intervento)
+        // poi divisi per la priorità
+        $punti_atto = $atti_ids[$row['chi_id']] * $row['indice']/(float)$priorita;
+
+        if (!array_key_exists($data, $storico))
+          $storico[$data] = 0;
+
+        $storico[$data] += $delta = OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+      }  
+    }
     
-    // TODO: normalizzazione dei dati
-    // il range da zero al massimo valore globale (che deve essere passato come argomento)    
-  
     ksort($storico);
     return $storico;
     
