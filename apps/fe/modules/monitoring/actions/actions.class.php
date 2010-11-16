@@ -470,7 +470,30 @@ class monitoringActions extends sfActions
   
   public function executeTagsDeputati()
   {
+    $this->tagsParlamentari('C');
+  }
+  
+  
+  public function executeTagsSenatori()
+  {
+    $this->tagsParlamentari('S');
+  }
+  
+  /**
+   * costruzione delle classifiche e dei parametri per il google chart
+   * di un dato ramo
+   *
+   * @param string $ramo 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  protected function tagsParlamentari($ramo)
+  {
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+
+    // dalla cache, vengono estratti i dati fino a un anno fa
+    $data_condition = sprintf(" and ah.data > '%s' ", date('Y-m-d', strtotime('2 years 1 month ago')));
+    $data_condition = '';
 
     // get user's monitored tags as a cloud
     $c = new Criteria();
@@ -485,41 +508,71 @@ class monitoringActions extends sfActions
     $data = OppActHistoryCachePeer::fetchLastData();
     
     if (count($this->tags_ids)) {
-      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, 'C', $data, $limit); 
+      $politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $ramo, $data, $limit); 
+
+      $chd = "t:"; // dati
+      $chdl = "";  // label per le linee (dati)
+      $chco = "";  // colori
+
+      $date = array();
+      $cnt = 0;
+      $punteggio_max = '0';
+      $politici_label = array();
+      $politici_storico = array();
+      $date = array();
+      foreach ($politici as $carica_id => $politico) {
+
+        // calcolo max punteggio dei politici
+        if ($politico['punteggio'] > $punteggio_max) $punteggio_max = $politico['punteggio'];
+        
+        $politici_label[$carica_id] = sprintf("%s %s (%s)", $politico['nome'], $politico['cognome'], $politico['acronimo']);
+        $storico = OppCaricaPeer::getStoricoInteressePoliticoArgomenti($carica_id, $this->tags_ids, $data_condition);
+        $politici_storico[$carica_id] = implode(",", $storico);
+        $date = array_merge($date, array_diff(array_keys($storico), $date));
+      }
+      sort($date);
+      
+      // costruzione delle label semestrali delle date
+      $date_labels = array();
+      foreach ($date as $data) {
+        setlocale(LC_TIME, 'it_IT');
+        $month_num = date('m', strtotime($data));
+        $month = strftime('%h', strtotime($data));
+        $year = date('y', strtotime($data));
+
+        if ($month_num == '07' || $month_num == '01') {
+          $date_labels []= sprintf("%2s '%2s", $month, $year);
+        } else {
+          $date_labels []= '';
+        }
+      }
+      
+      // arrotonda il punteggio massimo alla decina superiore
+      $punteggio_max = 10 * ceil($punteggio_max / 10.0);
     }
-    $this->chart_title = 'Andamento storico';
+    
+    $this->politici = $politici;
+    
+    $this->chart_title = 'Andamento storico dell\'interesse';
     $this->chart_params = array(
       "chtt={$this->chart_title}",
       'chts=4e8480,20',
       'cht=lc',
-      'chs=500x400',
-      'chd=t:30,40,20,10,40,50,80|20,10,20,30,40,30,50',
-      'chdl=Pierino|Giovanni',
+      'chs=600x400',
+      'chd=t:'.implode("|", array_values($politici_storico)),
+      "chds=0,$punteggio_max",
+      'chdl='.implode("|", array_values($politici_label)),
       'chdlp=r',
-      'chco=FF0000,00FF00',
-      'chxt=x,y,r,t'
+      'chco=DD0000,00DD00,0000DD,00DDDD,DD00DD,CCCCCC',
+      "chxr=1,0,$punteggio_max",
+      'chxt=x,y,x,y',
+      'chxl=0:'.implode("|", $date_labels).'2:|Mesi|3:|Punteggio',
+      'chxp=2,50|3,50',
+      'chxs=0,555555,10,0,t|2,0000DD,13,0|3,0000DD,13,0',
+      'chg=0,'.(10 * 100./$punteggio_max),
+      'chf=c,lg,0,FFE7C6,0,FEFEFE,1'
     );
-  }
-
-  public function executeTagsSenatori()
-  {
-    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
-
-    // get user's monitored tags as a cloud
-    $c = new Criteria();
-    $c->add(TagPeer::ID, $this->opp_user->getMonitoredPks('Tag'), Criteria::IN);
-    $this->my_tags = TagPeer::getPopulars($c);
-
-    $this->remaining_tags = $this->opp_user->getNMaxMonitoredTags() -
-                            $this->opp_user->countMonitoredObjects('Tag');
-    $this->tags_ids = $this->opp_user->getMonitoredPks('Tag');
-
-    $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
-    $data = OppActHistoryCachePeer::fetchLastData();
     
-    if (count($this->tags_ids)) {
-      $this->politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, 'S', $data, $limit); 
-    }
   }
   
   public function executeAddAlert()

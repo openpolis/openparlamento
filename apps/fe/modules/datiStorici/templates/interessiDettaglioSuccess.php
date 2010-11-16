@@ -49,7 +49,7 @@
     <?php foreach ($interventi as $intervento): ?>
       <?php $atto = $intervento['atto'] ?>
       <li>
-        Data: <?php echo link_to($intervento['atto_id'], '@singolo_atto?id='.$intervento['atto']->getId()) ?>,  
+        Data: <?php echo $intervento['data_intervento'] ?>,  
         Sede: <?php echo $intervento['sede_intervento'] ?>,
         Atto:  <?php echo link_to($atto->getShortTitle(), '@singolo_atto?id='.$atto->getId()) ?>
         punti: <?php echo $intervento['punti_atto'] ?> x 

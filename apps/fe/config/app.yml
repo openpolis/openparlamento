@@ -6,29 +6,6 @@ require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));
 # default values
 all:
   
-  sfStatistics: 
-    categories: 
-      acts_relevancy: 
-        name: Acts Relevancy
-        items: 
-          acts_relevancy_by_month: 
-            name: Acts relevancy statistic by month
-            model_parameters: 
-              class_y: opp_act_history_cache
-              column_y: id
-              column_x: data
-              type: date
-              increment: month
-              aggregation_method: count
-              period_column: data
-            chart_parameters:
-              type: line
-              size: 600x300
-              bg: ffffff
-              fg: ff9900
-              label_length: 20
-      
-  
   // massimo numero di notifiche per un termine
   alert_max_results: 100
   
@@ -36,6 +13,7 @@ all:
   alert_default_days_back: 2
   
   limit_interessi_argomento: 10
+  limit_classifica_parlamentari_sioccupanodi: 5
   
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick
