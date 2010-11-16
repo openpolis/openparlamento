@@ -26,7 +26,8 @@
 
     <?php include_partial('monitoring/classifica', 
                           array('politici' => $politici, 'tags_ids' => $tags_ids,
-                                'chart_params' => $chart_params, 'chart_title' => $chart_title)) ?>
+                                'chart_params' => $chart_params, 'chart_title' => $chart_title,
+                                'chart_img_name' => $chart_img_name)) ?>
 
 
   </div>

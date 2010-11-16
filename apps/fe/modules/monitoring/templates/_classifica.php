@@ -28,5 +28,9 @@
 </div>
 
 <p id="chart_container" style="background-color:#fff; float: right">
+  <img src="/google_chart_image.php?chart_img_name=<?php echo $chart_img_name ?>" alt="<?php echo $chart_title ?>" />
+
+  <?php /* 
   <img src="http://chart.apis.google.com/chart?<?php echo implode('&amp;', $chart_params) ?>" alt="<?php echo $chart_title ?>" />
+  */ ?>
 </p>

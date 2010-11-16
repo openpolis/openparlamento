@@ -29,7 +29,8 @@ class OppUser extends BaseOppUser
     $apikey = sfConfig::get('api_opaccesso_key', 'XXXX');
     
     $user_id = $this->getId();
-    // controllo validità utente e password in remoto
+    
+    // lettura del token in remoto (su accesso)
     $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it');
     $xml = simplexml_load_file("http://$remote_guard_host/index.php/api/getUserToken/apikey/$apikey/user_id/$user_id");
 

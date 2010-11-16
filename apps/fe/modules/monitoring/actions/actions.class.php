@@ -569,24 +569,63 @@ class monitoringActions extends sfActions
     // costruzione dei parametri per la generazione del grafico
     $this->chart_title = 'Andamento storico dell\'interesse';
     $this->chart_params = array(
-      "chtt={$this->chart_title}",
-      'chts=4e8480,20',
-      'cht=lc',
-      'chs=600x400',
-      'chd=t:'.implode("|", array_values($politici_storico)),
-      "chds=0,$punteggio_max",
-      'chdl='.implode("|", array_values($politici_label)),
-      'chdlp=r',
-      'chco=DD0000,00DD00,0000DD,00DDDD,DD00DD,CCCCCC',
-      "chxr=1,0,$punteggio_max",
-      'chxt=x,y,x,y',
-      'chxl=0:'.implode("|", $date_labels).'2:|Mesi|3:|Punteggio',
-      'chxp=2,50|3,50',
-      'chxs=0,555555,10,0,t|2,0000DD,13,0|3,0000DD,13,0',
-      'chg=0,'.(10 * 100./$punteggio_max),
-      'chf=c,lg,0,FFE7C6,0,FEFEFE,1'
+      'chtt'  => $this->chart_title,
+      'chts'  => '4e8480,20',
+      'cht'   => 'lc',
+      'chs'   => '600x400',
+      'chd'   => 't:'.implode("|", array_values($politici_storico)),
+      'chds'  => "0,$punteggio_max",
+      'chdl'  => implode("|", array_values($politici_label)),
+      'chdlp' => 'r',
+      'chco'  => implode(",", $this->generateRandomerPalette(count($this->politici))),
+      'chxr'  => "1,0,$punteggio_max",
+      'chxt'  => 'x,y,x,y',
+      'chxl'  => '0:'.implode("|", $date_labels).'2:|Mesi|3:|Punteggio',
+      'chxp'  => '2,50|3,50',
+      'chxs'  => '0,555555,10,0,t|2,0000DD,13,0|3,0000DD,13,0',
+      'chg'   => '0,'.(10 * 100./$punteggio_max),
+      'chf'   => 'c,lg,0,FFE7C6,0,FEFEFE,1'
     );
     
+    // scrittura parametri del chart su file con hash utente (serializzato)
+    $chart_img_path = SF_ROOT_DIR . sfConfig::get('app_serialized_chart_parameters', '/data/serialized_chart_parameters');
+    $this->chart_img_name = $this->getUser()->getToken(). '.ch';
+    file_put_contents($chart_img_path . "/" . $this->chart_img_name, serialize($this->chart_params), FILE_USE_INCLUDE_PATH);
+    
+  }
+  
+  protected function generateRandomPalette($count)
+  {
+    // where we'll store our generated colors
+    $palette = array();
+
+    // keep going until we fill the palette
+    while(count($palette) < $count) {
+        // randomly create a color
+        $color
+            = sprintf( '%02s', dechex(mt_rand(0,255)) )
+            . sprintf( '%02s', dechex(mt_rand(0,255)) )
+            . sprintf( '%02s', dechex(mt_rand(0,255)) );
+
+        // insert into palette if not already there
+        if(! in_array($color, $palette) ) $palette[] = $color;
+    }
+
+    return $palette;
+  }
+  
+  protected function generateRandomerPalette($count)
+  {
+    $palette = range(0, 0xFFFFFF, floor(0xFFFFFF / $count));
+    shuffle($palette);
+    array_walk(
+       $palette,
+       create_function(
+          '&$val, $key',
+          '$val = sprintf("%06X", $val);'
+       )
+    );
+    return($palette);
   }
   
   public function executeAddAlert()
