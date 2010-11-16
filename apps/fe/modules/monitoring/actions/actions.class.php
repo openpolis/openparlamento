@@ -616,7 +616,7 @@ class monitoringActions extends sfActions
   
   protected function generateRandomerPalette($count)
   {
-    $palette = range(0, 0xFFFFFF, floor(0xFFFFFF / $count));
+    $palette = range(0, 0xDDDDDD, floor(0xDDDDDD / $count));
     shuffle($palette);
     array_walk(
        $palette,
