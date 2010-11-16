@@ -491,8 +491,7 @@ class monitoringActions extends sfActions
   {
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
 
-    // dalla cache, vengono estratti i dati fino a un anno fa
-    $data_condition = sprintf(" and ah.data > '%s' ", date('Y-m-d', strtotime('2 years 1 month ago')));
+    // dalla cache, vengono estratti tutti i dati esistenti
     $data_condition = '';
 
     // get user's monitored tags as a cloud
@@ -508,27 +507,41 @@ class monitoringActions extends sfActions
     $data = OppActHistoryCachePeer::fetchLastData();
     
     if (count($this->tags_ids)) {
+      // estrazione classifica dei politici che più si interessano degli argomenti monitorati
       $politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $ramo, $data, $limit); 
 
+      // inizializzazione variabili usate nel chart
       $chd = "t:"; // dati
       $chdl = "";  // label per le linee (dati)
       $chco = "";  // colori
-
+      
       $date = array();
       $cnt = 0;
       $punteggio_max = '0';
       $politici_label = array();
       $politici_storico = array();
       $date = array();
+      
+      // costruzione delle serie storiche per ogni politico
       foreach ($politici as $carica_id => $politico) {
 
         // calcolo max punteggio dei politici
         if ($politico['punteggio'] > $punteggio_max) $punteggio_max = $politico['punteggio'];
         
-        $politici_label[$carica_id] = sprintf("%s %s (%s)", $politico['nome'], $politico['cognome'], $politico['acronimo']);
         $storico = OppCaricaPeer::getStoricoInteressePoliticoArgomenti($carica_id, $this->tags_ids, $data_condition);
-        $politici_storico[$carica_id] = implode(",", $storico);
+        
+        // arrotonda l'array dei valori storici a due cifre decimali (max)
+        foreach ($storico as $key => $value) {
+          $storico[$key] = round($value, 2);
+        }
+        $storico_valori = array_values($storico);
+        
+        // aggiorna l'array complessivo delle date (merge + diff simula la union)
         $date = array_merge($date, array_diff(array_keys($storico), $date));
+
+        // genero il label e la serie storica dei dati come stringhe, per il chart
+        $politici_label[$carica_id] = sprintf("%s %s (%s)", $politico['nome'], $politico['cognome'], $politico['acronimo']);
+        $politici_storico[$carica_id] = implode(",", $storico_valori);
       }
       sort($date);
       
@@ -552,7 +565,8 @@ class monitoringActions extends sfActions
     }
     
     $this->politici = $politici;
-    
+
+    // costruzione dei parametri per la generazione del grafico
     $this->chart_title = 'Andamento storico dell\'interesse';
     $this->chart_params = array(
       "chtt={$this->chart_title}",
