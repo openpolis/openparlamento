@@ -470,7 +470,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
    *          - punteggio
    * @author Guglielmo Celata
    */
-  public static function getClassificaPoliticiSiOccupanoDiArgomenti($argomenti_ids, $ramo, $data, $limit = null, $gruppo_id = null, $fetch_interventi = true)
+  public static function getClassificaPoliticiSiOccupanoDiArgomenti($argomenti_ids, $ramo, $data, $limit = null, $gruppo_ids = null, $fetch_interventi = true)
   {
     
     // definizione array tipi di cariche
@@ -482,10 +482,18 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $tipi_cariche = array(1, 4, 5);      
     }
 
-    if (!is_null($gruppo_id))
-      $group_constraint = " and g.id = $gruppo_id "; 
-    else
+    if (is_array($gruppo_ids))
+    {
+      if (count($gruppo_ids) > 0) {
+        $group_constraint = sprintf(" and g.id in (%s) ", implode(", ", $gruppo_ids));
+      } else {
+        $group_constraint = '';
+      }
+    }
+    else if (is_null($gruppo_ids))
       $group_constraint = '';
+    else
+      $group_constraint = " and g.id = $gruppo_ids "; 
       
     // Firme
     // estrazione di tutte le firme relative ad atti non-omnibus taggati con argomento

@@ -19,9 +19,15 @@
       </div>
     <?php endif; ?>
 
+    <?php include_partial('monitoring/groupFilter', array('items' => $groups, 'group_filter' => $group_filter)) ?>
+
     <?php include_partial('monitoring/tagsMonitoredByUser', 
                           array('opp_user' => $opp_user, 'sf_user' => $sf_user, 
                                 'my_tags' => $my_tags, 'remaining_tags' => $remaining_tags)) ?>
+
+    <p id="chart_container" style="background-color:#fff;">
+      <img src="/google_chart_image.php?chart_img_name=<?php echo $chart_img_name ?>" alt="<?php echo $chart_title ?>" />
+    </p>
 
 
     <?php include_partial('monitoring/classifica', 

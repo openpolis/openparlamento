@@ -13,7 +13,8 @@ all:
   alert_default_days_back: 2
   
   limit_interessi_argomento: 10
-  limit_classifica_parlamentari_sioccupanodi: 10
+  limit_classifica_parlamentari_sioccupanodi: 50
+  limit_classifica_parlamentari_sioccupanodi_chart: 10
   
   sfImageTransformPlugin:
     default_adapter: GD # GD or ImageMagick

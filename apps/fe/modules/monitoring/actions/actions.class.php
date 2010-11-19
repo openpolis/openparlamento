@@ -470,12 +470,14 @@ class monitoringActions extends sfActions
   
   public function executeTagsDeputati()
   {
+    $this->groups = OppGruppoRamoPeer::getGruppiRamo('C');
     $this->tagsParlamentari('C');
   }
   
   
   public function executeTagsSenatori()
   {
+    $this->groups = OppGruppoRamoPeer::getGruppiRamo('S');
     $this->tagsParlamentari('S');
   }
   
@@ -504,11 +506,21 @@ class monitoringActions extends sfActions
     $this->tags_ids = $this->opp_user->getMonitoredPks('Tag');
 
     $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
+    $limit_chart = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi_chart', 15);
     $data = OppActHistoryCachePeer::fetchLastData();
     
     if (count($this->tags_ids)) {
+      
+      $this->group_filter = $this->getRequestParameter('group_filter');
+      if (is_array($this->group_filter)) {
+        $c = new Criteria();
+        $c->add(OppGruppoPeer::ID, $this->group_filter, Criteria::IN);
+      } else {
+        $this->group_filter = array();
+      }
+      
       // estrazione classifica dei politici che più si interessano degli argomenti monitorati
-      $politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $ramo, $data, $limit); 
+      $politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $ramo, $data, $limit, $this->group_filter); 
 
       // inizializzazione variabili usate nel chart
       $chd = "t:"; // dati
@@ -523,7 +535,11 @@ class monitoringActions extends sfActions
       $date = array();
       
       // costruzione delle serie storiche per ogni politico
+      $cnt = 0;
       foreach ($politici as $carica_id => $politico) {
+        if ($cnt++ >= $limit_chart) {
+          continue;
+        }
 
         // calcolo max punteggio dei politici
         if ($politico['punteggio'] > $punteggio_max) $punteggio_max = $politico['punteggio'];
@@ -572,7 +588,7 @@ class monitoringActions extends sfActions
       'chtt'  => $this->chart_title,
       'chts'  => '4e8480,20',
       'cht'   => 'lc',
-      'chs'   => '600x400',
+      'chs'   => '700x400',
       'chd'   => 't:'.implode("|", array_values($politici_storico)),
       'chds'  => "0,$punteggio_max",
       'chdl'  => implode("|", array_values($politici_label)),

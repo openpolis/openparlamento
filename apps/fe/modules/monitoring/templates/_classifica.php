@@ -1,8 +1,12 @@
 <div class="evidence-box float-container" style="float: left; width: 50%">
 
   <h5 class="subsection">
-    I <?php echo sfconfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15)  ?> deputati
-    che pi&ugrave; si occupano di questi argomenti 
+    I <?php echo count($politici) ?> deputati
+    che 
+    <?php if (count($politici) == sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15)): ?>
+      pi&ugrave;       
+    <?php endif ?>
+    si occupano di questi argomenti 
   </h5>
 
   <div class="pad10"">
@@ -27,10 +31,3 @@
   
 </div>
 
-<p id="chart_container" style="background-color:#fff; float: right">
-  <img src="/google_chart_image.php?chart_img_name=<?php echo $chart_img_name ?>" alt="<?php echo $chart_title ?>" />
-
-  <?php /* 
-  <img src="http://chart.apis.google.com/chart?<?php echo implode('&amp;', $chart_params) ?>" alt="<?php echo $chart_title ?>" />
-  */ ?>
-</p>
