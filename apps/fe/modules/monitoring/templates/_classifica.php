@@ -99,7 +99,7 @@ jQuery.noConflict();
         } else {
           $('#dettaglio').remove();
           $this.data('details_loaded', false);
-          $this.text('mostra');
+          $this.text('dettaglio');
         }
         return false;
     	}
