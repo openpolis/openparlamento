@@ -48,10 +48,10 @@
                     <?php echo $politico['circoscrizione'] ?>
                   </td>
                   <td>
-                    <?php foreach ($cariche_interne = OppCaricaInternaPeer::getPermanentiAttuali($carica_id) as $cnt => $carica_interna): ?>
+                    <?php foreach ($cariche_interne = OppCaricaInternaPeer::getPermanentiAttuali($carica_id) as $c => $carica_interna): ?>
                       <?php echo $tipo_carica = $carica_interna->getOppTipoCarica()->getNome() != 'Componente' ? $tipo_carica : ''; ?>
                       <?php echo $carica_interna->getOppSede()->getDenominazione(); ?>
-                      <?php if ($cnt < count($cariche_interne)-1): ?>,<?php endif ?>
+                      <?php if ($c < count($cariche_interne)-1): ?>,<?php endif ?>
                     <?php endforeach ?>
                   </td>                  
                   <td style="text-align: right; padding-right: 20px">
