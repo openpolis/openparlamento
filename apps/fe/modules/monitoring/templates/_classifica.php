@@ -23,6 +23,7 @@
               <th scope="col">Circoscrizione:</th>
               <th scope="col">Commissone Perm.:</th>              
               <th scope="col">Punteggio:</th>
+              <th></th>
             </tr>
           </thead>
 
@@ -56,6 +57,11 @@
                   <td style="text-align: right; padding-right: 20px">
                     <?php printf("%01.2f", $politico['punteggio']) ?>
                   </td>
+                  <td>
+                    (<?php echo link_to('mostra dettaglio',
+                                        '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
+                                         array('class' => 'show-hide-dettaglio')) ?>)
+                  </td>
                 </tr>        
         	  <?php endforeach ?>
 
@@ -69,4 +75,64 @@
   </div> 
   
 </div>
+
+<!-- slider jQuery per il dettaglio del punteggio di un parlamentare -->
+<script type="text/javascript">
+//<![CDATA[
+
+jQuery.noConflict();
+(function($) {
+  $().ready(function(){
+
+    $('a.show-hide-dettaglio').click(
+    	function(){
+    	  $this = $(this);
+
+    		var parent_tr = $this.parents('tr');
+        var url = $this.attr('href');
+        if (!$this.data('details_loaded'))
+        {
+          parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"7\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
+          $('#dettaglio td').load(url);
+          $this.text('nascondi dettaglio');
+          $this.data('details_loaded', true);
+        } else {
+          $('#dettaglio').remove();
+          $this.data('details_loaded', false);
+          $this.text('mostra dettaglio');
+        }
+        return false;
+    	}
+    );
+
+  	// Setup the ajax indicator
+  	$("body").append('<div id="ajaxBusy"><p><img src="/images/loading.gif"></p></div>');
+
+  	$('#ajaxBusy').css({
+  		display:"none",
+  		padding:"0px",
+  		position:"absolute",
+  		right:"0px",
+  		top:"0px",
+  		left:"0px",
+  		bottom:"0px",
+  		margin:"auto",
+  		width:"40px",
+  		height:"40px"
+  	});
+
+  	// Ajax activity indicator bound 
+  	// to ajax start/stop document events
+  	$(document).ajaxStart(function(){ 
+  		$('#ajaxBusy').show(); 
+  	}).ajaxStop(function(){ 
+  		$('#ajaxBusy').hide();
+  	});
+
+
+  })
+})(jQuery);
+
+//]]>
+</script>
 
