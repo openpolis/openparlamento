@@ -10,6 +10,7 @@
 class OppCarica extends BaseOppCarica
 {
   
+  
   /**
    * legge l'indice di attività dalla cache
    *
