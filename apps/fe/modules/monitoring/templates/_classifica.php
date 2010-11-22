@@ -94,12 +94,12 @@ jQuery.noConflict();
         {
           parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"7\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
           $('#dettaglio td').load(url);
-          $this.text('nascondi dettaglio');
+          $this.text('nascondi');
           $this.data('details_loaded', true);
         } else {
           $('#dettaglio').remove();
           $this.data('details_loaded', false);
-          $this.text('mostra dettaglio');
+          $this.text('mostra');
         }
         return false;
     	}
