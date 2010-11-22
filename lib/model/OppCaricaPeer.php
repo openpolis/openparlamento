@@ -532,7 +532,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // Firme
     // estrazione di tutte le firme relative ad atti omnibus taggati con argomento
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and a.is_omnibus = 1 and t.atto_id=ca.atto_id  a.pred is null and and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and a.id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and a.is_omnibus = 1 and t.atto_id=ca.atto_id and a.pred is null and  ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and a.id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
                    $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
     $stm = $con->createStatement(); 
