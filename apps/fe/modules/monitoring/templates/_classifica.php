@@ -58,9 +58,9 @@
                     <?php printf("%01.2f", $politico['punteggio']) ?>
                   </td>
                   <td>
-                    (<?php echo link_to('mostra dettaglio',
+                    <?php echo link_to('dettaglio',
                                         '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-                                         array('class' => 'show-hide-dettaglio')) ?>)
+                                         array('class' => 'show-hide-dettaglio')) ?>
                   </td>
                 </tr>        
         	  <?php endforeach ?>
