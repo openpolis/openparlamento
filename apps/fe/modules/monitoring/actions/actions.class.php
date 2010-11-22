@@ -492,6 +492,7 @@ class monitoringActions extends sfActions
   protected function tagsParlamentari($ramo)
   {
     $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->forward404Unless($this->getUser()->hasCredential('adhoc'));
 
     // dalla cache, vengono estratti tutti i dati esistenti
     $data_condition = '';

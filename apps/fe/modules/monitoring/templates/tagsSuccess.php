@@ -3,9 +3,11 @@
 <?php echo include_component('monitoring', 'submenu', array('current' => 'tags')); ?>
 
 <div id="content" class="tabbed-orange float-container">
-  <?php echo include_partial('secondLevelMenuArgomenti', 
-                             array('current' => 'overview')); ?>
-
+  <?php if ($sf_user->hasCredential('adhoc')): ?>    
+    <?php echo include_partial('secondLevelMenuArgomenti', 
+                               array('current' => 'overview')); ?>
+  <?php endif; ?>
+  
   <div id="main">
 
     <?php if ($sf_flash->has('subscription_promotion')): ?>
