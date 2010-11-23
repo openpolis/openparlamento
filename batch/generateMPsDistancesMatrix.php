@@ -79,7 +79,16 @@ try {
 
 	// generazione della matrice di dissimilarità nel file temporaneo
 	// che sarà invocato da octave
-
+  
+  //calcola il numro totale di votazioni per ramp per escludere i parl. con poche votazioni
+  $c=new Criteria();
+  $c->addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
+  $c->add(OppSedutaPeer::LEGISLATURA,$legislatura);
+  //$c->add(OppCaricaPeer::IS_IMPORTED,1);
+  $c->add(OppSedutaPeer::RAMO, $ramo);
+  $num_votazioni=OppVotazionePeer::doCount($c);
+  $min_presenze=intval($num_votazioni*50/100);
+  
   // estrae le cariche (attuali) per ramo e legislatura
   $c = new Criteria();
   $c->add(OppCaricaPeer::LEGISLATURA, $legislatura);
@@ -88,7 +97,8 @@ try {
     $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
   else
     $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(4, 5), Criteria::IN);
-  // $c->setLimit(20);
+  //selezione dei parlamentari con il 60% minimo di presenze al voto
+  $c->add(OppCaricaPeer::PRESENZE, $min_presenze, Criteria::GREATER_THAN);
   $cariche = OppCaricaPeer::doSelect($c);
   unset($c);
 

@@ -101,6 +101,9 @@ foreach($coords_content as $coords_line){
   list($dummy, $cognome) = explode(":", $cognome_field);
   list($dummy, $gruppo_id) = explode(":", $gruppo_field);
   
+  //HACK PER GRUPPO FUTURO E LIBERTA'
+  if ($gruppo_id==21)
+    $gruppo_id=1;
 	
 	$person_node = $people_node->addChild('person');
 	$id_node = $person_node->addChild('id',$id);
@@ -123,8 +126,15 @@ $c->addAscendingOrderByColumn(OppGruppoPeer::ID);
 $gruppi=OppGruppoPeer::doSelect($c);
 
 foreach ($gruppi as $gruppo) {
+  
+    //HACK PER GRUPPO FUTURO E LIBERTA'
+    if ($gruppo->getId()==21)
+      $gruppo_id=1;
+    else
+      $gruppo_id=$gruppo->getId();
+      
    $group_node = $groups_node->addChild('group');
-   $id_group = $group_node->addChild('id',$gruppo->getId());
+   $id_group = $group_node->addChild('id',$gruppo_id);
    $name_group = $group_node->addChild('name',$gruppo->getAcronimo());
 }   
 
