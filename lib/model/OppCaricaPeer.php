@@ -247,7 +247,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
           $tagging_conditions = "t.taggable_id=ca.atto_id and t.taggable_model='OppAtto'";          
         }
       
-        $sql = sprintf("select ca.atto_id, ah.indice, ah.priorita from opp_atto a, opp_carica_has_atto ca, $tagging_table t, opp_act_history_cache ah where a.id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) is null and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and t.tag_id in (%s) group by ca.atto_id", $tipo_firma, $carica_id, $data, implode(", ", $argomenti_ids));
+        $sql = sprintf("select ca.atto_id, ah.indice, ah.priorita from opp_atto a, opp_carica_has_atto ca, $tagging_table t, opp_act_history_cache ah where a.id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and t.tag_id in (%s) group by ca.atto_id", $tipo_firma, $carica_id, $data, implode(", ", $argomenti_ids));
 
         $stm = $con->createStatement(); 
         $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -323,7 +323,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         $tagging_table = 'sf_tagging';
         $tagging_conditions = "t.taggable_id=ca.atto_id and t.taggable_model='OppAtto'";          
       }
-      $sql = sprintf("select ca.atto_id from opp_atto a, opp_carica_has_atto ca, $tagging_table t where ca.atto_id=a.id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) is null and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and t.tag_id in (%s)", $tipo_firma, $carica_id, implode(", ", $argomenti_ids));
+      $sql = sprintf("select ca.atto_id from opp_atto a, opp_carica_has_atto ca, $tagging_table t where ca.atto_id=a.id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and a.is_omnibus=$is_omnibus and ca.tipo='%s' and ca.carica_id=%d and $tagging_conditions and t.tag_id in (%s)", $tipo_firma, $carica_id, implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
       $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
