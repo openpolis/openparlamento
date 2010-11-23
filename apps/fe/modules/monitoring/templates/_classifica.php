@@ -1,4 +1,4 @@
-<div class="evidence-box float-container" style="float: left; width: 50%">
+<div class="evidence-box float-container" style="float: left; width: 70%">
 
   <h5 class="subsection">
     I <?php echo count($politici) ?> deputati
