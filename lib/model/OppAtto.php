@@ -12,6 +12,19 @@ class OppAtto extends BaseOppAtto
   protected $collIMTags;
   protected $lastIMTagsCriteria = null;
   public $priority_override = 0;
+
+
+  /**
+   * torna array di tag id
+   *
+   * @return array of ID
+   * @author Guglielmo Celata
+   */
+  public function getTagsIds()
+  {
+    $tags_ids = TaggingPeer::getTagIDsByTaggableIDAndTaggableModel($this->getId(), 'OppAtto');
+    return $tags_ids;
+  }
   
   /**
    * torna array di tag per il calcolo dell'indice (atti Omnibus)

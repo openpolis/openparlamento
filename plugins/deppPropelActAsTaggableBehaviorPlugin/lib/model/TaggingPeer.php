@@ -111,5 +111,23 @@ public function CountTagForAtti($value, $tipo="('teseo','geoteseo','user','op')"
     $c->addSelectColumn(self::TAGGABLE_ID);
     return self::doSelectRS($c);
   }
+
+
+  public static function getTagIDsByTaggableIDAndTaggableModel($taggable_id, $taggable_model)
+  {
+    $c = new Criteria();
+    $c->add(self::TAGGABLE_ID, $taggable_id);
+    $c->add(self::TAGGABLE_MODEL, $taggable_model);
+    $c->clearSelectColumns();
+    $c->addSelectColumn(self::TAG_ID);
+    $rs = self::doSelectRS($c);
+    
+    $ids = array();
+    while ($rs->next()) {
+      $ids []= $rs->getInt(1);
+    }
+    
+    return $ids;
+  }
     
 }

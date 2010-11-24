@@ -33,7 +33,7 @@ if ( array_key_exists('deleteAll', $args) )
 # controllo sintassi
 if ( $argc < 2 ) 
 {
-  print "sintassi: php batch/updateMPSDistanceForVotes C|S NLEG [--deleteAll]\n";  
+  print "sintassi: php batch/updateSimilaritaForVotes C|S NLEG [--deleteAll]\n";  
   print "            C|S - (C)amera o (S)enato\n";
   print "            NLEG - 15, 16\n";
   exit;
