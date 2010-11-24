@@ -584,7 +584,7 @@ class monitoringActions extends sfActions
     $this->politici = $politici;
 
     // costruzione dei parametri per la generazione del grafico
-    $this->chart_title = 'Andamento storico dell\'interesse';
+    $this->chart_title = '';
     $this->chart_params = array(
       'chtt'  => $this->chart_title,
       'chts'  => '4e8480,20',
