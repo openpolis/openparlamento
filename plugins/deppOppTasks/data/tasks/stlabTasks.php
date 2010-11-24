@@ -183,7 +183,7 @@ function run_stlab_genera_testi_atti($task, $args, $options)
 
   $n_docs = count($docs);
   foreach ($docs as $cnt => $doc) {
-    printf("%5d/%5d: ", $cnt+1, $n_docs);
+    printf("%5d/%5d: ", $c->getOffset() + $cnt + 1, $c->getOffset() + $n_docs);
     
     // definizione nome nell'archivio (attoID_docID)
     $file_name = $doc->getAttoId() . "_" . $doc->getId() . ".txt";
