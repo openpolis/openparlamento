@@ -498,7 +498,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // Firme
     // estrazione di tutte le firme relative ad atti non-omnibus taggati con argomento
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, c.circoscrizione, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and a.is_omnibus = 0 and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id  and a.id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, c.circoscrizione, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id=g.id %s and a.is_omnibus = 0 and t.taggable_id=ca.atto_id and t.taggable_model='OppAtto' and ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id  and a.id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
                    $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
     $stm = $con->createStatement(); 
@@ -533,7 +533,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     // Firme
     // estrazione di tutte le firme relative ad atti omnibus taggati con argomento
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, c.circoscrizione, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s and a.is_omnibus = 1 and t.atto_id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and  ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and a.id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
+    $sql = sprintf("select p.nome, p.cognome, p.id as politico_id, g.acronimo, c.id as carica_id, c.circoscrizione, ca.tipo, ca.atto_id, ah.indice, ah.priorita from opp_carica c, opp_carica_has_atto ca, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah, opp_politico p, opp_atto a where p.id=c.politico_id and c.id=ca.carica_id and cg.carica_id=c.id and cg.data_fine is null and cg.gruppo_id=g.id %s and a.is_omnibus = 1 and t.atto_id=ca.atto_id and (ca.tipo != 'P' or ca.tipo = 'P' and a.pred is null) and  ah.chi_tipo='A' and ah.data='%s' and ah.chi_id=ca.atto_id and a.id=ca.atto_id and c.tipo_carica_id in (%s) and c.data_fine is null and cg.data_fine is null and t.tag_id in (%s) group by ca.tipo, ca.atto_id, ca.carica_id",
                    $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
     $stm = $con->createStatement(); 
@@ -566,7 +566,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     if ($fetch_interventi) {
       // Interventi
       // estrazione di tutte le sedute con interventi relativi ad atti non-omnibus taggati con argomenti
-      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 0 and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
+      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.data_fine is null  and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 0 and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
@@ -595,7 +595,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       }
 
       // estrazione di tutte le sedute con interventi relativi ad atti omnibus taggati con argomenti
-      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 1 and t.atto_id=a.id and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
+      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id  and cg.data_fine is null and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 1 and t.atto_id=a.id and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
