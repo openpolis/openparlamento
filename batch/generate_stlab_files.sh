@@ -6,7 +6,7 @@
 
 
 # generazione testi (zip)
-./symfony stlab-genera-testi-atti --limit=10000
-./symfony stlab-genera-testi-atti --limit=10000 --offset=10001
-./symfony stlab-genera-testi-atti --limit=10000 --offset=20001
-./symfony stlab-genera-testi-atti --limit=10000 --offset=30001
+for i in 0 10001 20001 30001 40001; 
+do
+  ./symfony stlab-genera-testi-atti --limit=10000 --ofset=$i
+done
