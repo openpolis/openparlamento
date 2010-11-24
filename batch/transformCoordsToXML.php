@@ -135,7 +135,11 @@ foreach ($gruppi as $gruppo) {
       
    $group_node = $groups_node->addChild('group');
    $id_group = $group_node->addChild('id',$gruppo_id);
-   $name_group = $group_node->addChild('name',$gruppo->getAcronimo());
+   //HACK PER GRUPPO FUTURO E LIBERTA'
+   if ($gruppo_id!=1)
+     $name_group = $group_node->addChild('name',$gruppo->getAcronimo());
+   else
+     $name_group = $group_node->addChild('name','FLI');   
 }   
 
 
