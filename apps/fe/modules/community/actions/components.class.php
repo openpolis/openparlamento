@@ -33,28 +33,51 @@ class communityComponents extends sfComponents
     $c->addDescendingOrderByColumn(OppPoliticoPeer::N_MONITORING_USERS);
     $c->setLimit(3);
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
-    
   }
+
   
   public function executeAttiutenti()
   {
+    // costruzione del criterio di ordinamento
+    switch ($this->type) {
+      case 'commenti':
+        $order_clause = ' order by nb_commenti desc ';
+        break;
+
+      case 'monitor':
+        $order_clause = ' order by n_monitoring_users desc ';
+        break;
+      
+      case 'voti':
+        $order_clause = ' order by (ut_fav+ut_contr) desc ';
+        break;
+
+      default:
+        $order_clause = '';
+        break;
+    }
+    
+    $limit = 5;
+    
+		$con = Propel::getConnection(OppAttoPeer::DATABASE_NAME);
+		
+    // estrazione degli atti (sia positivi che negativi)
+    $sql = sprintf("select id from opp_atto where legislatura=16 %s limit %d;",
+                   $order_clause, $limit);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // estrazione atti che verificano
+    $atti = array();
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $atti []= OppAttoPeer::retrieveByPK($row['id']);
+    }
   
-  $c = new Criteria();
-  $c->add(OppAttoPeer::LEGISLATURA,16);
-    
-    // deputati + monitorati
-    if ($this->type == 'commenti')
-    	$c->addDescendingOrderByColumn(OppAttoPeer::NB_COMMENTI);
-    if ($this->type == 'monitor')
-    	$c->addDescendingOrderByColumn(OppAttoPeer::N_MONITORING_USERS);	
-    if ($this->type == 'voti') {
-    	$c->addDescendingOrderByColumn(OppAttoPeer::UT_FAV);	
-    	$c->addDescendingOrderByColumn(OppAttoPeer::UT_CONTR);
-    }	
- 
-    $c->setLimit(5);
-    $this->atti = OppAttoPeer::doSelect($c);
-    
+    $this->atti = $atti;
+        
   }
 
 }
