@@ -215,6 +215,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
       $atto = OppAttoPeer::retrieveByPK($atto_id);
       $c = new Criteria();
       $c->add(OppAttoHasIterPeer::ITER_ID, 16);
+      $c->add(OppAttoHasIterPeer::DATA, $data, Criteria::LESS_EQUAL);
       while ($atto_succ_id = $atto->getSucc())
       {
         $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
