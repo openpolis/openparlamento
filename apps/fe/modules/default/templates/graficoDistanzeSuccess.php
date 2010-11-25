@@ -37,10 +37,7 @@ Prende forma in questo modo uno spazio politico inedito in cui &egrave; possibil
 con <?php echo link_to('approssimazione affidabile','/static/faq#11a') ?>, i comportamenti di voto di singoli rappresentanti e gruppi.
 Uno spazio in cui le coordinate geografiche (destra/sinistra e alto/basso) non contano nulla e in cui
 semplicemente chi vota nello stesso modo si trova pi&ugrave; vicino e chi vota in maniera difforme &egrave; pi&ugrave; lontanto.<br />
-Presidenti e Vice-Presidenti di Camera e Senato e i parlamentari che ricoprono incarichi di governo
-partecipano molto meno degli altri alle votazioni pertanto la loro collocazione nello spazio del grafico
-risulta condizionata in misura proporzionata al numero di voti espressi e tendenzialmente vanno a
-collocarsi nello spazio centrale, equidistante dagli estremi.
+<span style="font-size:14px; font-weight:bold;">Dal calcolo e dal grafico sono stati esclusi quei parlamentari con meno del 50% di presenze nelle votazioni elettroniche d'aula.<span>
 </p>
   </div>
 </div>
@@ -53,7 +50,9 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 </div>
 </div>
 </div>
-		<script type="text/javascript">
+
+		
+    <script type="text/javascript">
 			var flashvars = {};
 			flashvars.xmlfilepath = "<?php echo sfConfig::get('sf_resources_host'); ?>/posizioni/opp_<?php echo($tipo) ?>.xml";
 			flashvars.imgfilepath = "http://op_openparlamento_images.s3.amazonaws.com/parlamentari/thumb/";
@@ -66,6 +65,8 @@ OOPS! .... per visualizzare il grafico delle distanze<br /><br />&egrave; necess
 			var attributes = {};
 			swfobject.embedSWF("<?php echo sfConfig::get('sf_resources_host'); ?>/swf/DistanceGraph.swf", "distanceGraph", "870", "540", "9.0.0", "<?php echo sfConfig::get('sf_resources_host'); ?>/swf/expressInstall.swf", flashvars, params, attributes);
 		</script>
+
+
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
