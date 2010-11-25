@@ -7,7 +7,7 @@ define('SF_DEBUG',       true);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
-$XY_MAX = 1400;
+$XYZ_MAX = 1400;
 
 require_once("batch/get_args_options.php");
 $args = arguments($argv);
@@ -74,14 +74,15 @@ if (!$fp) {
 
 $coords_content = file($coords_file);
 
-// calcolo minmax globale
-$xy_max = 0;
+// calcolo valore max assoluto globale
+$xyz_max = 0;
 foreach($coords_content as $coords_line){
   // spacchettamento record coordinate
   $line = trim(str_replace("\n", "", $coords_line), " ;");
   list ($cnt, $x, $y, $z, $id_field, $nome_field, $cognome_field, $gruppo_field) = explode(",", $line);
-  if (abs($x) > $xy_max) $xy_max = $x;
-  if (abs($y) > $xy_max) $xy_max = $y;
+  if (abs($x) > $xyz_max) $xyz_max = $x;
+  if (abs($y) > $xyz_max) $xyz_max = $y;
+  if (abs($z) > $xyz_max) $xyz_max = $z;
 }
 
 $arr_gruppi=array();
@@ -111,11 +112,18 @@ foreach($coords_content as $coords_line){
 	if (!in_array($gruppo_id, $arr_gruppi)) $arr_gruppi[]=$gruppo_id;
 	$name_node = $person_node->addChild('name',$nome);
 	$surname_node = $person_node->addChild('surname',$cognome);
-	$x_node = $person_node->addChild('x', sprintf('%7.2f', norm($x, $XY_MAX, $xy_max)));
-	$y_node = $person_node->addChild('y', sprintf('%7.2f', norm($z, $XY_MAX, $xy_max)));
+	$x_node = $person_node->addChild('x', sprintf('%7.2f', norm($x, $XYZ_MAX, $xyz_max)));
+	
+	// hack per leggere le colonne giuste dai files di coordinate
+	if ($ramo == 'C') {
+  	$y_node = $person_node->addChild('y', sprintf('%7.2f', norm($y, $XYZ_MAX, $xyz_max)));
+	} else {
+	  $y_node = $person_node->addChild('y', sprintf('%7.2f', norm($z, $XYZ_MAX, $xyz_max)));
+	}
+	
 	printf("%d: (%7.2f, %7.2f) %s %s - %d [%d]\n\n", $cnt, 
-	                                           norm($x, $XY_MAX, $xy_max), 
-	                                           norm($z, $XY_MAX, $xy_max), 
+	                                           norm($x, $XYZ_MAX, $xyz_max), 
+	                                           norm($z, $XYZ_MAX, $xyz_max), 
 	                                           $nome, $cognome, $gruppo_id, $id);
 }
 $groups_node = $xml->addChild('groups');
@@ -153,9 +161,9 @@ fwrite($xml_fp, $xml->asXML());
 fclose($xml_fp); fclose($fp);
 
 
-function norm($val, $XY_MAX, $xy_max)
+function norm($val, $XYZ_MAX, $xyz_max)
 {
-  return $XY_MAX + $val * $XY_MAX / $xy_max;
+  return $XYZ_MAX + $val * $XYZ_MAX / $xyz_max;
 }
 
 ?>
