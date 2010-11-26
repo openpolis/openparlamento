@@ -206,7 +206,9 @@ function opp_test_single_newsletter($user, $date = null)
                            array('fg' => 'red', 'bold' => true));
 
 
-  $news = oppNewsPeer::fetchTodayNewsForUser($user, $date);
+  $news_c = oppNewsPeer::getTodayNewsForUserCriteria($user, $today_date);
+  $news_c->add(oppNewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
+  $news = oppNewsPeer::doSelect($news_c);
 
   // raggruppa le news per data
   $grouped_news = array();
