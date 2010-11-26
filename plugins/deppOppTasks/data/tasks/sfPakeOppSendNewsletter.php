@@ -243,7 +243,7 @@ function opp_test_single_newsletter($user, $date = null)
     
     foreach ($news as $i => $n) {
       echo pakeColor::colorize(sprintf("\t%3d | %9d | %10s | %10s | %9d | %20s | %1d |\n", 
-                                       $i+1, $n->getId(), $n->getCreatedAt('y-m-d h:i'), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
+                                       $i+1, $n->getId(), $n->getCreatedAt('y-m-d H:i'), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
                                        $n->getGeneratorModel(), $n->getPriority()));
     }
   }
