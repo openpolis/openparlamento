@@ -37,7 +37,7 @@
             
            <?php if ((array_key_exists('ns', $values) || array_key_exists('nc', $values)) && ($values['nc']+$values['ns']) > 0): ?>
             <td><?php echo link_to($values['nc']+$values['ns'],
-                             sprintf('@argomento_%s?triple_value=%s&filter_act_%s_type=%s',
+                             sprintf('@argomento_%s?triple_value=%s&filter_act_%s_type=%s&filter_act_ramo=0',
                                       $values['routing'], $triple_value, 
                                       $values['routing'], $values['type_filter'] )) ?></td>
           <?php else: ?>
