@@ -38,7 +38,7 @@
       <?php endif ?>
       <td><?php echo link_to_wiki(null, $page->getName(), array('revision' => $revision->getRevision())) ?></td>
       <td><?php echo format_datetime($revision->getCreatedAt('U')) ?></td>
-      <td><?php echo link_to_wiki_user(null, $revision->getUserName()) ?></td>
+      <td><?php echo $revision->getUserName() ?></td>
      <!-- <td><em><?php //echo $revision->getComment() ?></em></td> -->
     </tr>
   <?php endforeach ?>
