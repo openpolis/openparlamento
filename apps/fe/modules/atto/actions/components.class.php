@@ -29,18 +29,21 @@ class attoComponents extends sfComponents
       case 'OppPolitico':
         $str = $this->item->__toString();
         $url = '@parlamentare?id='.$this->item->getId();
+        $this->title = '';
         break;
       case 'OppAtto':
         $str = $this->item->getRamo() .".". $this->item->getNumfase();
         $url = '@singolo_atto?id='.$this->item->getId();
+        $this->title = Text::denominazioneAtto($this->item, 'index');
         break;
       case 'Tag':
         $str = $this->item->getTripleValue();
         $url = '@argomento?triple_value='.$this->item->getTripleValue();
+        $this->title = '';
         break;
     }
     $this->str = $str . " (".$this->item->getNMonitoringUsers().")"; 
-    $this->url=$url;
+    $this->url = $url;
   }
 
   public function executeProusersdo()

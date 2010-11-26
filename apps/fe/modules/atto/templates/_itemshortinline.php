@@ -1,1 +1,1 @@
-<?php echo link_to($str, $url) ?>
+<?php echo link_to($str, $url, array('title' => $title)) ?>
