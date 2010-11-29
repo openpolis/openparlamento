@@ -620,7 +620,6 @@ class oppNewsPeer extends NewsPeer
     # some dates
     $default_time = sfConfig::get('app_default_newsletter_sendtime', '12:45:00');
     $date_noon = date("Y-m-d $default_time", strtotime($date));
-    echo "DATA: $date_noon";
     $date_noon_minus_24 = date("Y-m-d $default_time", strtotime('1 day ago', strtotime($date)));
     $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago', strtotime($date))); 	 	 
 
