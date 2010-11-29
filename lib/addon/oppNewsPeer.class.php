@@ -614,14 +614,23 @@ class oppNewsPeer extends NewsPeer
     // remove news related to actions dated more than 15 days ago (related to the date passed)
     if (is_null($date)) 
     {
-      $c->add(self::CREATED_AT, date('Y-m-d'), Criteria::GREATER_THAN);      
-      $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago')); 	 	 
+      $date = date('Y-m-d');
     }
-    else
-    {
-      $c->add(self::CREATED_AT, "$date%", Criteria::LIKE);          
-      $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago', strtotime($date))); 	 	 
-    }
+
+    # some dates
+    $default_time = sfConfig::get('app_default_newsletter_sendtime', '12:45:00');
+    $date_noon = date("Y-m-d $default_time", strtotime($date));
+    echo "DATA: $date_noon";
+    $date_noon_minus_24 = date("Y-m-d $default_time", strtotime('1 day ago', strtotime($date)));
+    $fifteen_days_ago = date('Y-m-d', strtotime('15 days ago', strtotime($date))); 	 	 
+
+
+    # today's news are last 24 hours news, starting at 12:45:00
+    $crit0 = $c->getNewCriterion(self::CREATED_AT, $date_noon, Criteria::LESS_EQUAL); 	 	 
+    $crit1 = $c->getNewCriterion(self::CREATED_AT, $date_noon_minus_24, Criteria::GREATER_THAN); 	 	 
+    $crit0->addAnd($crit1); 	 	 
+    $c->add($crit0);          
+
 
     # check date, if present 	 	 
     $crit0 = $c->getNewCriterion(self::DATE, null, Criteria::ISNOTNULL); 	 	 

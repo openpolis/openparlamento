@@ -191,6 +191,7 @@ function run_opp_test_newsletter($task, $args, $options)
 
 /**
  * fetch today's news regarding objects monitored by the user
+ * today's news are last 24h's news
  *
  * @param string $user - OppUser object
  * @return void
@@ -229,7 +230,7 @@ function opp_test_single_newsletter($user, $date = null)
   echo pakeColor::colorize(sprintf("(%d)\n", count($news)), array('fg' => 'cyan'));
   if (count($news) > 0)
   {
-    echo pakeColor::colorize(sprintf("\t    |        ID | CREATED_AT         | REL_MODEL |    REL_ID |      GENERATOR_MODEL | P |\n"), 
+    echo pakeColor::colorize(sprintf("\t    |        ID | CREATED_AT      | REL_MODEL |    REL_ID |      GENERATOR_MODEL | P |\n"), 
                                      array('fg' => 'cyan', 'bold' => true));
     
   }
@@ -240,10 +241,10 @@ function opp_test_single_newsletter($user, $date = null)
                              $df->format($date_ts, 'MMM'), 
                              $df->format($date_ts, 'yyyy')),
                              array('fg' => 'cyan', 'bold' => true));
-    
     foreach ($news as $i => $n) {
       echo pakeColor::colorize(sprintf("\t%3d | %9d | %10s | %10s | %9d | %20s | %1d |\n", 
-                                       $i+1, $n->getId(), $n->getCreatedAt('y-m-d H:i'), $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
+                                       $i+1, $n->getId(), $n->getCreatedAt('y-m-d H:i'), 
+                                       $n->getRelatedMonitorableModel(), $n->getRelatedMonitorableId(), 
                                        $n->getGeneratorModel(), $n->getPriority()));
     }
   }
