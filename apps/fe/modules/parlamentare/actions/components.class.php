@@ -176,7 +176,7 @@ class parlamentareComponents extends sfComponents
      $c->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
      $c->add(OppSedutaPeer::RAMO,($this->ramo=='senato' ? 'S' : 'C'));
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
-     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE,'key_vote');
      //$c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
      $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
      $evidences=sfLaunchingPeer::doSelect($c);
@@ -200,7 +200,7 @@ class parlamentareComponents extends sfComponents
      $lanci=array();
      $c = new Criteria();
      $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppVotazione'); 
-     $c->add(sfLaunchingPeer::NAMESPACE,'key_vote');
+     $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE,'key_vote');
      $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
      $evidences=sfLaunchingPeer::doSelect($c);
      foreach ($evidences as $evidence) {
