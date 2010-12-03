@@ -59,7 +59,7 @@
                   <td style="text-align: right; padding-right: 20px">
                     <?php printf("%01.2f", $politico['punteggio']) ?>
                   </td>
-                  <?php if ($sf_user->hasCredentials('amministratore')): ?>
+                  <?php if ($sf_user->hasCredential('amministratore')): ?>
                     <td>
                       <?php echo link_to('dettaglio',
                                           '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
