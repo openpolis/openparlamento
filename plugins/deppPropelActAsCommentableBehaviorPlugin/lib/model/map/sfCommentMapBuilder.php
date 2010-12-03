@@ -38,7 +38,7 @@ class sfCommentMapBuilder {
 
 		$tMap->addColumn('COMMENTABLE_ID', 'CommentableId', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('NAMESPACE', 'Namespace', 'string', CreoleTypes::VARCHAR, false, 50);
+		$tMap->addColumn('COMMENT_NAMESPACE', 'CommentNamespace', 'string', CreoleTypes::VARCHAR, false, 50);
 
 		$tMap->addColumn('TITLE', 'Title', 'string', CreoleTypes::VARCHAR, false, 100);
 

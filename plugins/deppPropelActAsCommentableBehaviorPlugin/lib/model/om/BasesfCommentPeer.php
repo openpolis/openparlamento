@@ -29,7 +29,7 @@ abstract class BasesfCommentPeer {
 	const COMMENTABLE_ID = 'sf_comment.COMMENTABLE_ID';
 
 	
-	const NAMESPACE = 'sf_comment.NAMESPACE';
+	const COMMENT_NAMESPACE = 'sf_comment.COMMENT_NAMESPACE';
 
 	
 	const TITLE = 'sf_comment.TITLE';
@@ -61,17 +61,17 @@ abstract class BasesfCommentPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'CommentableModel', 'CommentableId', 'Namespace', 'Title', 'Text', 'AuthorId', 'AuthorName', 'AuthorEmail', 'AuthorWebsite', 'CreatedAt', 'IsPublic', ),
-		BasePeer::TYPE_COLNAME => array (sfCommentPeer::ID, sfCommentPeer::COMMENTABLE_MODEL, sfCommentPeer::COMMENTABLE_ID, sfCommentPeer::NAMESPACE, sfCommentPeer::TITLE, sfCommentPeer::TEXT, sfCommentPeer::AUTHOR_ID, sfCommentPeer::AUTHOR_NAME, sfCommentPeer::AUTHOR_EMAIL, sfCommentPeer::AUTHOR_WEBSITE, sfCommentPeer::CREATED_AT, sfCommentPeer::IS_PUBLIC, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'commentable_model', 'commentable_id', 'namespace', 'title', 'text', 'author_id', 'author_name', 'author_email', 'author_website', 'created_at', 'is_public', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'CommentableModel', 'CommentableId', 'CommentNamespace', 'Title', 'Text', 'AuthorId', 'AuthorName', 'AuthorEmail', 'AuthorWebsite', 'CreatedAt', 'IsPublic', ),
+		BasePeer::TYPE_COLNAME => array (sfCommentPeer::ID, sfCommentPeer::COMMENTABLE_MODEL, sfCommentPeer::COMMENTABLE_ID, sfCommentPeer::COMMENT_NAMESPACE, sfCommentPeer::TITLE, sfCommentPeer::TEXT, sfCommentPeer::AUTHOR_ID, sfCommentPeer::AUTHOR_NAME, sfCommentPeer::AUTHOR_EMAIL, sfCommentPeer::AUTHOR_WEBSITE, sfCommentPeer::CREATED_AT, sfCommentPeer::IS_PUBLIC, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'commentable_model', 'commentable_id', 'comment_namespace', 'title', 'text', 'author_id', 'author_name', 'author_email', 'author_website', 'created_at', 'is_public', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CommentableModel' => 1, 'CommentableId' => 2, 'Namespace' => 3, 'Title' => 4, 'Text' => 5, 'AuthorId' => 6, 'AuthorName' => 7, 'AuthorEmail' => 8, 'AuthorWebsite' => 9, 'CreatedAt' => 10, 'IsPublic' => 11, ),
-		BasePeer::TYPE_COLNAME => array (sfCommentPeer::ID => 0, sfCommentPeer::COMMENTABLE_MODEL => 1, sfCommentPeer::COMMENTABLE_ID => 2, sfCommentPeer::NAMESPACE => 3, sfCommentPeer::TITLE => 4, sfCommentPeer::TEXT => 5, sfCommentPeer::AUTHOR_ID => 6, sfCommentPeer::AUTHOR_NAME => 7, sfCommentPeer::AUTHOR_EMAIL => 8, sfCommentPeer::AUTHOR_WEBSITE => 9, sfCommentPeer::CREATED_AT => 10, sfCommentPeer::IS_PUBLIC => 11, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'commentable_model' => 1, 'commentable_id' => 2, 'namespace' => 3, 'title' => 4, 'text' => 5, 'author_id' => 6, 'author_name' => 7, 'author_email' => 8, 'author_website' => 9, 'created_at' => 10, 'is_public' => 11, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'CommentableModel' => 1, 'CommentableId' => 2, 'CommentNamespace' => 3, 'Title' => 4, 'Text' => 5, 'AuthorId' => 6, 'AuthorName' => 7, 'AuthorEmail' => 8, 'AuthorWebsite' => 9, 'CreatedAt' => 10, 'IsPublic' => 11, ),
+		BasePeer::TYPE_COLNAME => array (sfCommentPeer::ID => 0, sfCommentPeer::COMMENTABLE_MODEL => 1, sfCommentPeer::COMMENTABLE_ID => 2, sfCommentPeer::COMMENT_NAMESPACE => 3, sfCommentPeer::TITLE => 4, sfCommentPeer::TEXT => 5, sfCommentPeer::AUTHOR_ID => 6, sfCommentPeer::AUTHOR_NAME => 7, sfCommentPeer::AUTHOR_EMAIL => 8, sfCommentPeer::AUTHOR_WEBSITE => 9, sfCommentPeer::CREATED_AT => 10, sfCommentPeer::IS_PUBLIC => 11, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'commentable_model' => 1, 'commentable_id' => 2, 'comment_namespace' => 3, 'title' => 4, 'text' => 5, 'author_id' => 6, 'author_name' => 7, 'author_email' => 8, 'author_website' => 9, 'created_at' => 10, 'is_public' => 11, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
 	);
 
@@ -132,7 +132,7 @@ abstract class BasesfCommentPeer {
 
 		$criteria->addSelectColumn(sfCommentPeer::COMMENTABLE_ID);
 
-		$criteria->addSelectColumn(sfCommentPeer::NAMESPACE);
+		$criteria->addSelectColumn(sfCommentPeer::COMMENT_NAMESPACE);
 
 		$criteria->addSelectColumn(sfCommentPeer::TITLE);
 

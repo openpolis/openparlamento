@@ -207,27 +207,3 @@ function run_stlab_genera_testi_atti($task, $args, $options)
 }
 
 
-function _loader()
-{
-  static $loaded;
-  
-  define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
-  define('SF_APP', 'fe');
-  define('SF_ENVIRONMENT', 'task');
-  define('SF_DEBUG', false);
-
-  require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
-                DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
-                DIRECTORY_SEPARATOR.'config.php');
-
-
-  sfContext::getInstance();
-  sfConfig::set('pake', true);
-  
-  error_reporting(E_ALL);
-
-  $loaded = true;
-}
-
-
-

@@ -37,7 +37,7 @@ class deppPropelActAsLaunchableBehavior
     $c->add(sfLaunchingPeer::OBJECT_ID, $object->getPrimaryKey());
     $c->add(sfLaunchingPeer::OBJECT_MODEL, get_class($object));
     $c->clearSelectColumns();
-    $c->addSelectColumn(sfLaunchingPeer::NAMESPACE);
+    $c->addSelectColumn(sfLaunchingPeer::LAUNCH_NAMESPACE);
     $rs = sfLaunchingPeer::doSelectRS($c);
     $launches = array();
     while($rs->next())

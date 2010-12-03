@@ -18,6 +18,11 @@
 pake_desc("add tags to acts");
 pake_task('opp-add-tags-to-acts', 'project_exists');
 
+
+pake_desc("get all opp_carica_id(s) from the politician_id");
+pake_task('opp-get-carica-id', 'project_exists');
+
+
 pake_desc("sync politicians' images from op_openpolis, storing resized versions in the local db");
 pake_task('opp-sync-polimages', 'project_exists');
 
@@ -26,6 +31,48 @@ pake_task('opp-urls-to-cache', 'project_exists');
 
 pake_desc('load data from fixtures directory (using myPropelData class)');
 pake_task('opp-load-fixtures', 'project_exists');
+
+
+/**
+ * estrae e mostra le cariche id relative al politico id
+ */
+function run_opp_get_carica_id($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    _loader();
+  }
+
+  $politici_id = $args;
+  foreach ($politici_id as $politico_id) {
+    $msg = sprintf("politico ID: $politico_id ... ");
+    echo pakeColor::colorize($msg, array('fg' => 'green', 'bold' => false));
+
+    $politico = OppPoliticoPeer::retrieveByPK($politico_id);
+    if ($politico instanceof OppPolitico) {
+      $cariche = $politico->getOppCaricas();
+      $cariche_ids = array();
+      foreach ($cariche as $carica) {
+        $cariche_ids []= $carica->getId();
+      }
+      $msg = sprintf("%s\n", join(",", $cariche_ids));
+      echo pakeColor::colorize($msg, array('fg' => 'green', 'bold' => true));
+    } else {
+      $msg = sprintf("SKIP - Politico inseistente\n");
+      echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => true));      
+    }
+    
+
+    unset($atto);
+
+  }
+
+
+}
+
 
 
 /**
@@ -38,22 +85,7 @@ function run_opp_add_tags_to_acts($task, $args, $options)
   // load application context
   if (!$loaded)
   {
-    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
-    define('SF_APP', 'fe');
-    define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', true);
-
-    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
-                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
-                  DIRECTORY_SEPARATOR.'config.php');
-
-
-    sfContext::getInstance();
-    sfConfig::set('pake', true);
-    
-    error_reporting(E_ALL);
-
-    $loaded = true;
+    _loader();
   }
 
   if (array_key_exists('tags', $options)) {
@@ -139,22 +171,7 @@ function run_opp_sync_polimages($task, $args)
   // load application context
   if (!$loaded)
   {
-    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
-    define('SF_APP', 'fe');
-    define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', true);
-
-    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
-                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
-                  DIRECTORY_SEPARATOR.'config.php');
-
-
-    sfContext::getInstance();
-    sfConfig::set('pake', true);
-    
-    error_reporting(E_ALL);
-
-    $loaded = true;
+    _loader();
   }
 
   if (count($args) > 1)
@@ -266,7 +283,7 @@ function opp_sync_politician_image($pol)
 
 
 /**
- * extracts a list of URLs to pre-fetch, in order to pre-fetch them (wget, curl, jmeter, ...)
+ * extracts a list of URLs, in order to pre-fetch them (wget, curl, jmeter, ...)
  * and generate the cache on the server (memcache, filecache) and avoid cpu boost after system restart
  *
  * @param string $task 
@@ -282,22 +299,7 @@ function run_opp_urls_to_cache($task, $args)
   // load application context
   if (!$loaded)
   {
-    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
-    define('SF_APP', 'fe');
-    define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', false);
-
-    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
-                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
-                  DIRECTORY_SEPARATOR.'config.php');
-
-
-    sfContext::getInstance();
-    sfConfig::set('pake', true);
-    
-    error_reporting(E_ALL);
-
-    $loaded = true;
+    _loader();
   }
   
   $site_url = sfConfig::get('sf_site_url', 'op_openparlamento');
@@ -447,3 +449,27 @@ function run_opp_load_fixtures($task, $args)
     $data->loadData($fixtures_dir);
   }
 }
+
+
+function _loader()
+{
+  static $loaded;
+  
+  define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
+  define('SF_APP', 'fe');
+  define('SF_ENVIRONMENT', 'task');
+  define('SF_DEBUG', false);
+
+  require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
+                DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
+                DIRECTORY_SEPARATOR.'config.php');
+
+
+  sfContext::getInstance();
+  sfConfig::set('pake', true);
+  
+  error_reporting(E_ALL);
+
+  $loaded = true;
+}
+

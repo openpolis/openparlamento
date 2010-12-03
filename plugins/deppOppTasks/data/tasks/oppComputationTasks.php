@@ -28,6 +28,11 @@ pake_task('opp-calcola-rilevanza-atti', 'project_exists');
 pake_desc("calcola la rilevanza per gli argomenti");
 pake_task('opp-calcola-rilevanza-tag', 'project_exists');
 
+pake_desc("calcola e mostra interesse di parlamentari su argomenti a una data");
+pake_task('opp-get-storico-interesse', 'project_exists');
+
+
+
 /**
  * Calcola o ri-calcola l'indice di attività.
  * Si può specificare il ramo (camera, senato, governo, tutti) e la data
@@ -329,22 +334,7 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
   // load application context
   if (!$loaded)
   {
-    define('SF_ROOT_DIR', sfConfig::get('sf_root_dir'));
-    define('SF_APP', 'fe');
-    define('SF_ENVIRONMENT', 'task');
-    define('SF_DEBUG', false);
-
-    require_once (SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.
-                  DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.
-                  DIRECTORY_SEPARATOR.'config.php');
-
-
-    sfContext::getInstance();
-    sfConfig::set('pake', true);
-    
-    error_reporting(E_ALL);
-
-    $loaded = true;
+    _loader();
   }
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
@@ -427,3 +417,77 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
 }
 
 
+/**
+ * Calcola e mostra lo storico dell'interesse dei politici su determinati argomenti
+ * Si deve specificare gli ID dei politici e l'ID degli argomenti
+ */
+function run_opp_get_storico_interesse($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    _loader();
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
+
+  // parameteri obbligatori
+  if (array_key_exists('tags', $options)) {
+    $tags = $options['tags'];
+    $tags_ids = split(",", $tags);
+  } else
+    throw new Exception("E' obbligatorio specificare i tags, ad esempio: 845,3487,123");
+
+  // specificare la data fino alla quale estrarre lo storico
+  $data = '';
+  if (array_key_exists('data', $options)) {
+    // verifica che si tratti di una data (evita sql-injection)
+    $data = date('Y-m-d', strtotime($options['data']));
+    $data_condition = " data < $data ";
+  } else 
+    $data_condition = null;
+
+
+  $msg = sprintf("calcolo storico interesse su tag: %s\n", $tags);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+  if (count($args) > 0)
+  {
+    try {
+      $parlamentari_rs = OppCaricaPeer::getRSFromIDArray($args);            
+    } catch (Exception $e) {
+      throw new Exception("Specificare dei carica_id validi. \n" . $e);
+    }
+  } else {
+    throw new Exception("Specificare almeno un carica_id valido. \n" . $e);
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $cnt = 0;
+  while ($parlamentari_rs->next())
+  {
+    $cnt++;
+    $p = $parlamentari_rs->getRow();
+
+    $msg = sprintf("%d %s %s\n", $cnt, 
+                   $p['tipo_carica_id'] == '1' ? 'On.' : 'Sen.', 
+                   ucfirst($p['nome']) .' '. strtoupper($p['cognome']));
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+    $storico = OppCaricaPeer::getStoricoInteressePoliticoArgomenti($p['id'], $tags_ids, $data_condition);
+    foreach ($storico as $key => $value) {
+      $msg = sprintf("\t %s => %7.2f\n", $key, round($value, 2));
+      echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+    }
+    
+    
+  }
+
+  
+  $msg = sprintf("%d parlamentari elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+}

@@ -268,7 +268,7 @@ class OppAttoPeer extends BaseOppAttoPeer
     $c->addJoin(OppTipoAttoPeer::ID, OppAttoPeer::TIPO_ATTO_ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppAtto');
     if ($namespace != 'all') {
-      $c->add(sfLaunchingPeer::NAMESPACE, $namespace);
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, $namespace);
     }
     return OppAttoPeer::doSelect($c);
   }

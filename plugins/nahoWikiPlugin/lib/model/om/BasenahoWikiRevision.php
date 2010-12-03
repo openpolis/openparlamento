@@ -121,9 +121,7 @@ abstract class BasenahoWikiRevision extends BaseObject  implements Persistent {
 	public function setPageId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -141,9 +139,7 @@ abstract class BasenahoWikiRevision extends BaseObject  implements Persistent {
 	public function setRevision($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -157,9 +153,7 @@ abstract class BasenahoWikiRevision extends BaseObject  implements Persistent {
 	public function setUserName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -173,9 +167,7 @@ abstract class BasenahoWikiRevision extends BaseObject  implements Persistent {
 	public function setComment($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -189,9 +181,7 @@ abstract class BasenahoWikiRevision extends BaseObject  implements Persistent {
 	public function setContentId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

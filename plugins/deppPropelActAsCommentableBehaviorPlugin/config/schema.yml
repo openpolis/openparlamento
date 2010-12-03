@@ -12,7 +12,7 @@ propel:
     id:                { phpName: Id, type: integer, required: true, primaryKey: true, autoincrement: true }
     commentable_model: varchar(30)
     commentable_id:    integer
-    namespace:         varchar(50)
+    comment_namespace: varchar(50)
     title:             varchar(100)
     text:              longvarchar
     author_id:         integer
@@ -22,7 +22,7 @@ propel:
     created_at:
     is_public:         { type: tinyint, required: true, default: 1 }
     _indexes:
-      comments_index:  [namespace, commentable_model, commentable_id]
+      comments_index:  [comment_namespace, commentable_model, commentable_id]
       object_index:    [commentable_model, commentable_id]
       author_index:    [author_id]
       

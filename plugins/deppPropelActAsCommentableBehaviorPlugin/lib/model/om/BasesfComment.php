@@ -21,7 +21,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 
 
 	
-	protected $namespace;
+	protected $comment_namespace;
 
 
 	
@@ -83,10 +83,10 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getNamespace()
+	public function getCommentNamespace()
 	{
 
-		return $this->namespace;
+		return $this->comment_namespace;
 	}
 
 	
@@ -164,9 +164,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -180,9 +178,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setCommentableModel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -196,9 +192,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setCommentableId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -209,18 +203,16 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setNamespace($v)
+	public function setCommentNamespace($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
-		if ($this->namespace !== $v) {
-			$this->namespace = $v;
-			$this->modifiedColumns[] = sfCommentPeer::NAMESPACE;
+		if ($this->comment_namespace !== $v) {
+			$this->comment_namespace = $v;
+			$this->modifiedColumns[] = sfCommentPeer::COMMENT_NAMESPACE;
 		}
 
 	} 
@@ -228,9 +220,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setTitle($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -244,9 +234,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setText($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -260,9 +248,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -276,9 +262,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorName($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -292,9 +276,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorEmail($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -308,9 +290,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorWebsite($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -341,9 +321,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setIsPublic($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -364,7 +342,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 
 			$this->commentable_id = $rs->getInt($startcol + 2);
 
-			$this->namespace = $rs->getString($startcol + 3);
+			$this->comment_namespace = $rs->getString($startcol + 3);
 
 			$this->title = $rs->getString($startcol + 4);
 
@@ -561,7 +539,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 				return $this->getCommentableId();
 				break;
 			case 3:
-				return $this->getNamespace();
+				return $this->getCommentNamespace();
 				break;
 			case 4:
 				return $this->getTitle();
@@ -600,7 +578,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getCommentableModel(),
 			$keys[2] => $this->getCommentableId(),
-			$keys[3] => $this->getNamespace(),
+			$keys[3] => $this->getCommentNamespace(),
 			$keys[4] => $this->getTitle(),
 			$keys[5] => $this->getText(),
 			$keys[6] => $this->getAuthorId(),
@@ -634,7 +612,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 				$this->setCommentableId($value);
 				break;
 			case 3:
-				$this->setNamespace($value);
+				$this->setCommentNamespace($value);
 				break;
 			case 4:
 				$this->setTitle($value);
@@ -670,7 +648,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setCommentableModel($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setCommentableId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setNamespace($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setCommentNamespace($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setTitle($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setText($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setAuthorId($arr[$keys[6]]);
@@ -689,7 +667,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(sfCommentPeer::ID)) $criteria->add(sfCommentPeer::ID, $this->id);
 		if ($this->isColumnModified(sfCommentPeer::COMMENTABLE_MODEL)) $criteria->add(sfCommentPeer::COMMENTABLE_MODEL, $this->commentable_model);
 		if ($this->isColumnModified(sfCommentPeer::COMMENTABLE_ID)) $criteria->add(sfCommentPeer::COMMENTABLE_ID, $this->commentable_id);
-		if ($this->isColumnModified(sfCommentPeer::NAMESPACE)) $criteria->add(sfCommentPeer::NAMESPACE, $this->namespace);
+		if ($this->isColumnModified(sfCommentPeer::COMMENT_NAMESPACE)) $criteria->add(sfCommentPeer::COMMENT_NAMESPACE, $this->comment_namespace);
 		if ($this->isColumnModified(sfCommentPeer::TITLE)) $criteria->add(sfCommentPeer::TITLE, $this->title);
 		if ($this->isColumnModified(sfCommentPeer::TEXT)) $criteria->add(sfCommentPeer::TEXT, $this->text);
 		if ($this->isColumnModified(sfCommentPeer::AUTHOR_ID)) $criteria->add(sfCommentPeer::AUTHOR_ID, $this->author_id);
@@ -732,7 +710,7 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 
 		$copyObj->setCommentableId($this->commentable_id);
 
-		$copyObj->setNamespace($this->namespace);
+		$copyObj->setCommentNamespace($this->comment_namespace);
 
 		$copyObj->setTitle($this->title);
 

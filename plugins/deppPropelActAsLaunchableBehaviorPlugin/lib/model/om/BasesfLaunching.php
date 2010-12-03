@@ -21,7 +21,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 
 
 	
-	protected $namespace = 'home';
+	protected $launch_namespace = 'home';
 
 
 	
@@ -59,10 +59,10 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	}
 
 	
-	public function getNamespace()
+	public function getLaunchNamespace()
 	{
 
-		return $this->namespace;
+		return $this->launch_namespace;
 	}
 
 	
@@ -98,9 +98,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -114,9 +112,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setObjectModel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -130,9 +126,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setObjectId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -143,18 +137,16 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 
 	} 
 	
-	public function setNamespace($v)
+	public function setLaunchNamespace($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
-		if ($this->namespace !== $v || $v === 'home') {
-			$this->namespace = $v;
-			$this->modifiedColumns[] = sfLaunchingPeer::NAMESPACE;
+		if ($this->launch_namespace !== $v || $v === 'home') {
+			$this->launch_namespace = $v;
+			$this->modifiedColumns[] = sfLaunchingPeer::LAUNCH_NAMESPACE;
 		}
 
 	} 
@@ -179,9 +171,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setPriority($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -202,7 +192,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 
 			$this->object_id = $rs->getInt($startcol + 2);
 
-			$this->namespace = $rs->getString($startcol + 3);
+			$this->launch_namespace = $rs->getString($startcol + 3);
 
 			$this->created_at = $rs->getTimestamp($startcol + 4, null);
 
@@ -387,7 +377,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 				return $this->getObjectId();
 				break;
 			case 3:
-				return $this->getNamespace();
+				return $this->getLaunchNamespace();
 				break;
 			case 4:
 				return $this->getCreatedAt();
@@ -408,7 +398,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getObjectModel(),
 			$keys[2] => $this->getObjectId(),
-			$keys[3] => $this->getNamespace(),
+			$keys[3] => $this->getLaunchNamespace(),
 			$keys[4] => $this->getCreatedAt(),
 			$keys[5] => $this->getPriority(),
 		);
@@ -436,7 +426,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 				$this->setObjectId($value);
 				break;
 			case 3:
-				$this->setNamespace($value);
+				$this->setLaunchNamespace($value);
 				break;
 			case 4:
 				$this->setCreatedAt($value);
@@ -454,7 +444,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setObjectModel($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setObjectId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setNamespace($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setLaunchNamespace($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setPriority($arr[$keys[5]]);
 	}
@@ -467,7 +457,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(sfLaunchingPeer::ID)) $criteria->add(sfLaunchingPeer::ID, $this->id);
 		if ($this->isColumnModified(sfLaunchingPeer::OBJECT_MODEL)) $criteria->add(sfLaunchingPeer::OBJECT_MODEL, $this->object_model);
 		if ($this->isColumnModified(sfLaunchingPeer::OBJECT_ID)) $criteria->add(sfLaunchingPeer::OBJECT_ID, $this->object_id);
-		if ($this->isColumnModified(sfLaunchingPeer::NAMESPACE)) $criteria->add(sfLaunchingPeer::NAMESPACE, $this->namespace);
+		if ($this->isColumnModified(sfLaunchingPeer::LAUNCH_NAMESPACE)) $criteria->add(sfLaunchingPeer::LAUNCH_NAMESPACE, $this->launch_namespace);
 		if ($this->isColumnModified(sfLaunchingPeer::CREATED_AT)) $criteria->add(sfLaunchingPeer::CREATED_AT, $this->created_at);
 		if ($this->isColumnModified(sfLaunchingPeer::PRIORITY)) $criteria->add(sfLaunchingPeer::PRIORITY, $this->priority);
 
@@ -504,7 +494,7 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 
 		$copyObj->setObjectId($this->object_id);
 
-		$copyObj->setNamespace($this->namespace);
+		$copyObj->setLaunchNamespace($this->launch_namespace);
 
 		$copyObj->setCreatedAt($this->created_at);
 

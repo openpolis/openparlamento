@@ -223,7 +223,7 @@ class deppPropelActAsCommentableBehavior
 
     if (isset($options['namespace']))
     {
-      $c->add(sfCommentPeer::NAMESPACE, $options['namespace']);
+      $c->add(sfCommentPeer::COMMENT_NAMESPACE, $options['namespace']);
     }
 
     if (isset($options['order']) && ($options['order'] == 'desc'))
@@ -289,7 +289,7 @@ class deppPropelActAsCommentableBehavior
 
     if ($namespace != null)
     {
-      $c->add(sfCommentPeer::NAMESPACE, $namespace);
+      $c->add(sfCommentPeer::COMMENT_NAMESPACE, $namespace);
     }
 
     $res = sfCommentPeer::doDelete($c);

@@ -16,7 +16,7 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
       throw new deppPropelActAsLaunchableException('Namespace must be specified');
 
     $c = new Criteria();
-    $c->add(self::NAMESPACE, $namespace);
+    $c->add(self::LAUNCH_NAMESPACE, $namespace);
     $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
     return $c;
   }
@@ -27,7 +27,7 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
       throw new deppPropelActAsLaunchableException('Namespace must be specified');
 
     $c = new Criteria();
-    $c->add(self::NAMESPACE, $namespace);
+    $c->add(self::LAUNCH_NAMESPACE, $namespace);
     $c->addAscendingOrderByColumn(sfLaunchingPeer::PRIORITY);
     return $c;
   }
@@ -36,7 +36,7 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
   {
     $c = new Criteria();
     $c->clearSelectColumns();
-    $c->addSelectColumn(self::NAMESPACE);
+    $c->addSelectColumn(self::LAUNCH_NAMESPACE);
     $c->setDistinct();
     $rs = self::doSelectRS($c);
     $namespaces = array();
@@ -57,14 +57,14 @@ class sfLaunchingPeer extends BasesfLaunchingPeer
     $c = new Criteria();
     $c->add(sfLaunchingPeer::OBJECT_MODEL, $model);
     $c->add(sfLaunchingPeer::OBJECT_ID, $id);
-    $c->add(sfLaunchingPeer::NAMESPACE, $namespace);
+    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, $namespace);
     return sfLaunchingPeer::doSelectOne($c);
   }
 
   public static function retrieveByNamespacePriority($namespace, $priority)
   {
     $c = new Criteria();
-    $c->add(sfLaunchingPeer::NAMESPACE, $namespace);
+    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, $namespace);
     $c->add(sfLaunchingPeer::PRIORITY, $priority);
     return sfLaunchingPeer::doSelectOne($c);
   }

@@ -224,7 +224,7 @@ class defaultActions extends sfActions
         
      	if ($evidence->getObjectModel()=='OppAtto' ) 
      	{
-     	  if ($evidence->getNamespace()=='home')
+     	  if ($evidence->getLaunchNamespace()=='home')
      	  {
      	    $c1->add(OppAttoPeer::ID,$evidence->getObjectId());
        		$this->lanci[]=array(OppAttoPeer::doSelectOne($c1),$evidence->getObjectModel()); 

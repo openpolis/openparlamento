@@ -29,7 +29,7 @@ abstract class BasesfLaunchingPeer {
 	const OBJECT_ID = 'sf_launching.OBJECT_ID';
 
 	
-	const NAMESPACE = 'sf_launching.NAMESPACE';
+	const LAUNCH_NAMESPACE = 'sf_launching.LAUNCH_NAMESPACE';
 
 	
 	const CREATED_AT = 'sf_launching.CREATED_AT';
@@ -43,17 +43,17 @@ abstract class BasesfLaunchingPeer {
 
 	
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'ObjectModel', 'ObjectId', 'Namespace', 'CreatedAt', 'Priority', ),
-		BasePeer::TYPE_COLNAME => array (sfLaunchingPeer::ID, sfLaunchingPeer::OBJECT_MODEL, sfLaunchingPeer::OBJECT_ID, sfLaunchingPeer::NAMESPACE, sfLaunchingPeer::CREATED_AT, sfLaunchingPeer::PRIORITY, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'object_model', 'object_id', 'namespace', 'created_at', 'priority', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'ObjectModel', 'ObjectId', 'LaunchNamespace', 'CreatedAt', 'Priority', ),
+		BasePeer::TYPE_COLNAME => array (sfLaunchingPeer::ID, sfLaunchingPeer::OBJECT_MODEL, sfLaunchingPeer::OBJECT_ID, sfLaunchingPeer::LAUNCH_NAMESPACE, sfLaunchingPeer::CREATED_AT, sfLaunchingPeer::PRIORITY, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'object_model', 'object_id', 'launch_namespace', 'created_at', 'priority', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ObjectModel' => 1, 'ObjectId' => 2, 'Namespace' => 3, 'CreatedAt' => 4, 'Priority' => 5, ),
-		BasePeer::TYPE_COLNAME => array (sfLaunchingPeer::ID => 0, sfLaunchingPeer::OBJECT_MODEL => 1, sfLaunchingPeer::OBJECT_ID => 2, sfLaunchingPeer::NAMESPACE => 3, sfLaunchingPeer::CREATED_AT => 4, sfLaunchingPeer::PRIORITY => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'object_model' => 1, 'object_id' => 2, 'namespace' => 3, 'created_at' => 4, 'priority' => 5, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'ObjectModel' => 1, 'ObjectId' => 2, 'LaunchNamespace' => 3, 'CreatedAt' => 4, 'Priority' => 5, ),
+		BasePeer::TYPE_COLNAME => array (sfLaunchingPeer::ID => 0, sfLaunchingPeer::OBJECT_MODEL => 1, sfLaunchingPeer::OBJECT_ID => 2, sfLaunchingPeer::LAUNCH_NAMESPACE => 3, sfLaunchingPeer::CREATED_AT => 4, sfLaunchingPeer::PRIORITY => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'object_model' => 1, 'object_id' => 2, 'launch_namespace' => 3, 'created_at' => 4, 'priority' => 5, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
@@ -114,7 +114,7 @@ abstract class BasesfLaunchingPeer {
 
 		$criteria->addSelectColumn(sfLaunchingPeer::OBJECT_ID);
 
-		$criteria->addSelectColumn(sfLaunchingPeer::NAMESPACE);
+		$criteria->addSelectColumn(sfLaunchingPeer::LAUNCH_NAMESPACE);
 
 		$criteria->addSelectColumn(sfLaunchingPeer::CREATED_AT);
 

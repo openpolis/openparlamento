@@ -38,7 +38,7 @@ class sfLaunchingMapBuilder {
 
 		$tMap->addColumn('OBJECT_ID', 'ObjectId', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('NAMESPACE', 'Namespace', 'string', CreoleTypes::VARCHAR, true, 100);
+		$tMap->addColumn('LAUNCH_NAMESPACE', 'LaunchNamespace', 'string', CreoleTypes::VARCHAR, true, 100);
 
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
 

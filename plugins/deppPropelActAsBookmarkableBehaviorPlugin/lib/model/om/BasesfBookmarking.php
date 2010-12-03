@@ -72,9 +72,7 @@ abstract class BasesfBookmarking extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -88,9 +86,7 @@ abstract class BasesfBookmarking extends BaseObject  implements Persistent {
 	public function setBookmarkableModel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -104,9 +100,7 @@ abstract class BasesfBookmarking extends BaseObject  implements Persistent {
 	public function setBookmarkableId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -120,9 +114,7 @@ abstract class BasesfBookmarking extends BaseObject  implements Persistent {
 	public function setUserId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -136,9 +128,7 @@ abstract class BasesfBookmarking extends BaseObject  implements Persistent {
 	public function setBookmarking($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

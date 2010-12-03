@@ -23,7 +23,9 @@
               <th scope="col">Circoscrizione:</th>
               <th scope="col">Commissone Perm.:</th>              
               <th scope="col">Punteggio:</th>
-              <th></th>
+              <?php if ($sf_user->hasCredential('amministratore')): ?>
+                <th></th>
+              <?php endif ?>
             </tr>
           </thead>
 
@@ -57,11 +59,13 @@
                   <td style="text-align: right; padding-right: 20px">
                     <?php printf("%01.2f", $politico['punteggio']) ?>
                   </td>
-                  <td>
-                    <?php echo link_to('dettaglio',
-                                        '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-                                         array('class' => 'show-hide-dettaglio')) ?>
-                  </td>
+                  <?php if ($sf_user->hasCredentials('amministratore')): ?>
+                    <td>
+                      <?php echo link_to('dettaglio',
+                                          '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
+                                           array('class' => 'show-hide-dettaglio')) ?>
+                    </td>                    
+                  <?php endif ?>
                 </tr>        
         	  <?php endforeach ?>
 

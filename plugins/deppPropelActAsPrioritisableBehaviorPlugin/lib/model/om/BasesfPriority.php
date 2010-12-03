@@ -124,9 +124,7 @@ abstract class BasesfPriority extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -140,9 +138,7 @@ abstract class BasesfPriority extends BaseObject  implements Persistent {
 	public function setPrioritisableModel($v)
 	{
 
-		
-		
-		if ($v !== null && !is_string($v)) {
+						if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -156,9 +152,7 @@ abstract class BasesfPriority extends BaseObject  implements Persistent {
 	public function setPrioritisableId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -172,9 +166,7 @@ abstract class BasesfPriority extends BaseObject  implements Persistent {
 	public function setUserId($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -188,9 +180,7 @@ abstract class BasesfPriority extends BaseObject  implements Persistent {
 	public function setPriority($v)
 	{
 
-		
-		
-		if ($v !== null && !is_int($v) && is_numeric($v)) {
+						if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

@@ -60,7 +60,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
 
     $votazioni = array();
@@ -80,7 +80,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
     if ($limit != 0)
        $c->setLimit($limit);
