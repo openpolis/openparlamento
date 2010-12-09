@@ -1,3 +1,1 @@
-<?php echo use_helper('deppVotingYesNo') ?>
-
-<?php echo depp_voter($object, $domid, $message) ?>
+<?php include_component('deppVoting', 'votingBlockSmall', array('object' => $object)) ?>

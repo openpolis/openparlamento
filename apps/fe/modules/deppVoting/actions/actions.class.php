@@ -11,6 +11,23 @@ require_once(dirname(__FILE__).'/../../../../../plugins/deppPropelActAsVotableBe
 class deppVotingActions extends BasedeppVotingActions
 {
   
+  public function executeVotingDetails()
+  {
+    // Retrieve parameters from request
+    $token  = $this->getRequestParameter('token');
+    
+    // Retrieve votable propel object
+    if (is_null($token))
+    {
+      return $this->renderText($this->messages['missing_params']);
+    }
+
+    $this->type = $this->getRequestParameter('type', '');
+
+    $this->setLayout(false);
+    $this->object = deppPropelActAsVotableBehaviorToolkit::retrieveFromToken($token);
+  }
+  
   /**
    * <p>Revoke a vote from an object in an un-ajax way</p>
    * 
@@ -138,6 +155,7 @@ class deppVotingActions extends BasedeppVotingActions
           }
           else
           {
+            sfLogger::getInstance()->info("{voting} object_id: " . $object->getId());
             $object->setVoting((int) $voting, $user_id);
             $message = $this->messages['thank_you'];          
           }          

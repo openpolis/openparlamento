@@ -38,11 +38,6 @@ class BasedeppVotingActions extends sfActions
    */
   public function executeUnvote()
   {
-    if ($this->getRequest()->getMethod() !== sfRequest::POST)
-    {
-      return $this->renderText($this->messages['post_only']);
-    }
-
     // Retrieve parameters from request
     $token  = $this->getRequestParameter('token');
     $this->domid  = $this->getRequestParameter('domid');
@@ -82,11 +77,6 @@ class BasedeppVotingActions extends sfActions
     
     try
     {
-      if ($this->getRequest()->getMethod() !== sfRequest::POST)
-      {
-        return $this->renderText($this->messages['post_only']);
-      }
-      
       // Retrieve parameters from request
       $token  = $this->getRequestParameter('token');
       $voting = $this->getRequestParameter('voting');

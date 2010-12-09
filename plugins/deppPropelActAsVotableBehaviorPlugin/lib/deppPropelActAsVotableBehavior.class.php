@@ -216,11 +216,11 @@ class deppPropelActAsVotableBehavior
     $c->add(sfVotingPeer::VOTABLE_MODEL, get_class($object));
     $c->add(sfVotingPeer::USER_ID, $user_id);
     $v = sfVotingPeer::doSelectOne($c);
-    $v->delete();
+    if ($v instanceof sfVoting) {
+      $v->delete();
+    }
     self::setVotingToObject($object, $this->getVoting($object, self::getPrecision(), true));
     self::setVotingDetailsToObject($object, $this->getVotingDetails($object, true, true));
-
-    return $ret;
   }
 
   /**

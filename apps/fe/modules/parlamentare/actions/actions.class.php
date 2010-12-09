@@ -459,10 +459,28 @@ class parlamentareActions extends sfActions
   }
 
 
-  
   public function executeInterventi()
   {
+    $response = sfContext::getInstance()->getResponse();
+    $response->addStylesheet('popup_interventi');
+	  
     $this->_getAndCheckParlamentare();  
+
+    $this->session = $this->getUser();  
+    
+    // reset dei filtri se richiesto esplicitamente
+    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+    {
+      $this->getRequest()->getParameterHolder()->set('filter_ddls_collegati', '0');
+    }
+
+    $this->processInterventiFilters(array('ddls_collegati'));
+
+    // if all filters were reset, then restart
+    if ($this->getRequestParameter('filter_ddls_collegati') == '0')
+    {
+      $this->redirect('@parlamentare_interventi?id='.$this->getRequestParameter('id'));
+    }
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -473,10 +491,15 @@ class parlamentareActions extends sfActions
     $c = new Criteria();
     $c->add(OppInterventoPeer::CARICA_ID, $this->carica->getId());	  
   	$c->addDescendingOrderByColumn(OppInterventoPeer::CREATED_AT);
+  	$this->addInterventiFiltersCriteria($c);    
+	  
   	$this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->setPeerMethod('doSelectJoinAll');
     $this->pager->init();
+    
+    $cariche_ids = $this->parlamentare->getCaricheCorrentiIds();
+    $this->ddls_collegati = OppInterventoPeer::getDDLCollegatiCariche($cariche_ids);
     
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
@@ -622,6 +645,39 @@ class parlamentareActions extends sfActions
       $c->add(OppAttoPeer::TIPO_ATTO_ID, $this->filters['act_type']);
       
      */   
+    
+  }
+
+
+  protected function processInterventiFilters($active_filters)
+  {
+
+    $this->filters = array();
+
+    // legge i filtri dalla request e li scrive nella sessione utente
+    // sia in POST che in GET (per i link a liste filtrate)
+    if ($this->getRequest()->getMethod() == sfRequest::POST ||
+        $this->getRequest()->getMethod() == sfRequest::GET) 
+    {
+      
+      if ($this->hasRequestParameter('filter_ddls_collegati'))
+        $this->session->setAttribute('ddls_collegati', $this->getRequestParameter('filter_ddls_collegati'), 'acts_filter');
+      
+    }
+    
+    // legge sempre i filtri dalla sessione utente (quelli attivi)
+    if (in_array('ddls_collegati', $active_filters))
+      $this->filters['ddls_collegati'] = $this->session->getAttribute('ddls_collegati', '0', 'acts_filter');
+  }
+  
+  protected function addInterventiFiltersCriteria($c)
+  {
+    // filtro per ddl
+    if (array_key_exists('ddls_collegati', $this->filters) && $this->filters['ddls_collegati'] != '0')
+    {
+      $c->add(OppInterventoPeer::ATTO_ID, $this->filters['ddls_collegati']);
+      $c->setDistinct();
+    }  
     
   }
 

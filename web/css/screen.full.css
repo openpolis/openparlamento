@@ -1041,6 +1041,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 .column-table .content-meta { padding-bottom: 4px; color: #999; }
 .column-table .date { color: #bebebe; font-size: 11px; font-weight: bold; margin-bottom: 4px; padding-left: 2px; }
 .user-stats-column { width: 10em; }
+.user-vote-column { width: 8em; }
 .user-stats-column p { font-size: 11px; clear: left; text-align: right; padding-right: 8px; }
 .column-table .politician-id img { background: transparent url(../images/bg-ico-portrait-small.png) no-repeat center center; padding: 6px; margin: 0 2px; vertical-align: middle; }
 

@@ -20,7 +20,7 @@
   <h6>sei favorevole o contrario?</h6>
 
   <!-- blocco voting -->
-  <?php echo depp_voting_block_no_ajax($atto, $sf_flash->has('depp_voting_message')?$sf_flash->get('depp_voting_message'):'') ?>
+  <?php include_component('deppVoting', 'votingBlock', array('object' => $atto)) ?>
   <hr class="dotted" />
   
    <!-- blocco lanci home x admin, priorita atti e flag omnibus -->

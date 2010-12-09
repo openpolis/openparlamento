@@ -25,7 +25,7 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->addJoin(OppVotazionePeer::ID, self::VOTAZIONE_ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    $c->add(sfLaunchingPeer::NAMESPACE, 'key_vote');
+    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
     $c->add(self::CARICA_ID, $carica_id);
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
     return self::doSelect($c);

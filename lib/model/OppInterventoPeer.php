@@ -9,6 +9,31 @@
  */ 
 class OppInterventoPeer extends BaseOppInterventoPeer
 {
+  /**
+   * torna i ddl collegati agli interventi delle cariche
+   *
+   * @param string $cariche_ids 
+   * @return array di OppAtto
+   * @author Guglielmo Celata
+   */
+  public static function getDDLCollegatiCariche($cariche_ids)
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select i.atto_id, count(i.atto_id) n_interventi from opp_intervento i where i.carica_id in (%s) group by i.atto_id order by n_interventi desc",
+                   implode(",", $cariche_ids));
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    
+    $ddl = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $ddl [] = OppAttoPeer::retrieveByPK($row['atto_id']);
+    }
+    
+    return $ddl;
+    
+  }
+
 
   /**
    * calcola il numero di interventi di una carica

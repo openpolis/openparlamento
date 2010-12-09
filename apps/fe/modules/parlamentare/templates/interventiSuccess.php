@@ -22,6 +22,15 @@
    				<p>In questa pagina trovi la lista degli interventi del parlamentare in aula e in commissione</p>
    			</div>
    		</div>
+   		
+   		<?php include_partial('interventiFilter',
+                            array('ddls_collegati' => $ddls_collegati,
+                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                                                        
+                                  'selected_ddls_collegati' => array_key_exists('ddls_collegati', $filters)?$filters['ddls_collegati']:0)) ?>
+ 
+ 
+   		<?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_interventi?id='.$parlamentare->getId())); ?>
+
 
       <?php include_partial('interventiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>

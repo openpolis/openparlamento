@@ -237,6 +237,8 @@ propel:
     numero:           { type: integer }
     ap:               { type: tinyint }
     created_at:
+    ut_fav:           { type: integer, required: true, default: 0 }
+    ut_contr:         { type: integer, required: true, default: 0 }
 
   opp_iter:
     id:

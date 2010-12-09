@@ -203,7 +203,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
 
           // link all'atto
           $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
-                                         $news->getRelatedMonitorableId());
+                                         array($news->getRelatedMonitorableId()));
       
           $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
