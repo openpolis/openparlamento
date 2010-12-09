@@ -7,12 +7,21 @@
   <div id="main">
   
    <div class="W25_100 float-right">
-    <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+    
+     <!-- blocco voting -->
+     <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
+       <?php include_component('deppVoting', 'votingBlock', array('object' => $votazione)) ?>
+       <hr class="dotted" />
+     <?php endif ?>
+
+     <!-- blocco voti chiave -->
+     <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
        <h6>Lancia come key-vote</h6>
        <?php echo include_partial('deppLaunching/launcher', array('object' => $votazione, 'namespace' => 'key_vote')); ?>    
         <br />
        <hr class="dotted" />
      <?php endif ?>
+    
     
      
     <div style="background-color:#f7f7ff; padding: 5px;">

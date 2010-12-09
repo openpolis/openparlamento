@@ -33,7 +33,7 @@
 		  <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>
 		</td>
         <td><p><?php echo $votazione->getMargine() ?></p></td>
-        <td><p><?php echo $votazione->getRibelli() ?></p></td>
+        <td><p><?php echo $votazione->getRibelli() ?></p></td>        
       </tr>
     <?php endforeach; ?>
   </tbody>

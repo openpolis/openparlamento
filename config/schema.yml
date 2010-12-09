@@ -498,6 +498,8 @@ propel:
     finale:             { type: integer, required: true, default: 0 }
     nb_commenti:        { type: integer, required: true, default: 0 }
     is_imported:        { type: tinyint, required: true, default: 0 }
+    ut_fav:             { type: integer, required: true, default: 0 }
+    ut_contr:           { type: integer, required: true, default: 0 }
     
 
   opp_votazione_has_atto:

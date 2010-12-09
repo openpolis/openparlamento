@@ -9,6 +9,9 @@
       <th scope="col">esito in<br />Parlamento:</th>
       <th scope="col">voti di<br />scarto:</th>
       <th scope="col">numero di<br />ribelli:</th>
+      <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
+        <th scope="col">il tuo parere</th>
+      <?php endif ?>
     </tr>
   </thead>
 
@@ -43,6 +46,15 @@
   		  </td>
         <td><p><?php echo $votazione->getMargine() ?></p></td>
         <td><p><?php echo $votazione->getRibelli() ?></p></td>
+
+        <td>
+          <?php if ($sf_user->isAuthenticated() && 
+                  ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc')) &&
+                  $votazione->hasBeenVotedByUser($sf_user->getId()) == true): ?>
+            <?php include_component('deppVoting', 'votingBlockSmall', array('object' => $votazione)) ?>
+          <?php endif ?>
+        </td>
+
       </tr>
     <?php endforeach; ?>
   </tbody>

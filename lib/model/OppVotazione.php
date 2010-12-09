@@ -351,6 +351,16 @@ class OppVotazione extends BaseOppVotazione
     
 }
 
+
+sfPropelBehavior::add(
+  'OppVotazione', 
+  array('deppPropelActAsVotableBehavior' =>
+        array('voting_range'    => 1,              
+              'voting_fields'   => array(1 => 'UtFav', -1 => 'UtContr'),
+              'neutral_position'=> false,
+              'anonymous_voting'=> false,
+              'clear_cache_after_update' => true )));
+
 sfPropelBehavior::add('OppVotazione', 
                       array('wikifiableBehavior' => 
                             array('prefix' => 'votazione',
