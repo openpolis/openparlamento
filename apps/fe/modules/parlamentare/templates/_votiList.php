@@ -50,7 +50,7 @@
         <td>
           <?php if ($sf_user->isAuthenticated() && 
                   ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc')) &&
-                  $votazione->hasBeenVotedByUser($sf_user->getId()) == true): ?>
+                  $votazione->hasBeenVotedByUser($sf_user->getId())): ?>
             <?php include_component('deppVoting', 'votingBlockSmall', array('object' => $votazione)) ?>
           <?php endif ?>
         </td>
