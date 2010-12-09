@@ -157,6 +157,44 @@
         <target>Diminuisci priorità</target>
       </trans-unit>
 
+      <trans-unit>
+        <source>You have already voted</source>
+        <target>Hai già votato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Parameters are missing to retrieve votable object</source>
+        <target>Mancano dei parametri per recuperare l'oggetto'</target>
+      </trans-unit>
+      <trans-unit>
+        <source>POST requests only</source>
+        <target>Solo richieste di tipo POST</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Unable to retrieve votable object</source>
+        <target>Impossibile trovare l'oggetto da votare</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Anonymous voting is not allowed</source>
+        <target>Voti anonimi non sono permessi</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you for your vote</source>
+        <target>Grazie per aver votato</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thank you</source>
+        <target>Grazie</target>
+      </trans-unit>
+      <trans-unit>
+        <source>Thanks for updating your vote</source>
+        <target>Grazie per aver modificato voto</target>
+      </trans-unit>
+      <trans-unit>
+        <source>A problem has occured, sorry for the inconvenience</source>
+        <target>Problema di natura sconosciuta. Contattare il supporto.</target>
+      </trans-unit>
+      
+
     </body>
   </file>
 </xliff>

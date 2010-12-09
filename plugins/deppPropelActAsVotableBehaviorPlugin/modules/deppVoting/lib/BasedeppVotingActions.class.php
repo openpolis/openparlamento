@@ -18,9 +18,9 @@ class BasedeppVotingActions extends sfActions
     sfLoader::loadHelpers('I18N');
     $this->messages = array(
       'already_voted'    => __('You have already voted'),
-      'missing_params'   => __('Parameters are missing to retrieve ratable object'),
+      'missing_params'   => __('Parameters are missing to retrieve votable object'),
       'post_only'        => __('POST requests only'),
-      'votable_error'    => __('Unable to retrieve votable object: %s'),
+      'votable_error'    => __('Unable to retrieve votable object'),
       'anonymous_not_allowed' => __('Anonymous voting is not allowed'),
       'thank_you'        => __('Thank you for your vote'),
       'thank_unvote'     => __('Thank you'),
@@ -52,13 +52,13 @@ class BasedeppVotingActions extends sfActions
     
     if (is_null($object))
     {
-      return $this->renderFatalError($this->message['votable_error']);
+      return $this->renderFatalError($this->messages['votable_error']);
     }
 
     $user_id = deppPropelActAsVotableBehaviorToolkit::getUserId();
     if ((is_null($user_id) || $user_id == '') && !$object->allowsAnonymousVoting())
     {
-      return $this->renderFatalError($this->message['anonymous_not_allowed']);      
+      return $this->renderFatalError($this->messages['anonymous_not_allowed']);      
     }
     
     $object->clearUserVoting($user_id);
@@ -93,7 +93,7 @@ class BasedeppVotingActions extends sfActions
       
       if (is_null($object))
       {
-        return $this->renderFatalError($this->message['votable_error']);
+        return $this->renderFatalError($this->messages['votable_error']);
       }
       
       // User retrieval
@@ -162,7 +162,7 @@ class BasedeppVotingActions extends sfActions
     }
     catch (Exception $e)
     {
-      return $this->renderFatalError($e->getMessage());
+      return $this->renderText($e->getMessage());
     }
   }
   
@@ -182,7 +182,7 @@ class BasedeppVotingActions extends sfActions
     {
       sfLogger::getInstance()->warning('Voting error: '.$log_info);
     }
-    return $this->renderText($this->messages['user_error']);
+    return $this->renderText($log_info);
   }
   
 }
