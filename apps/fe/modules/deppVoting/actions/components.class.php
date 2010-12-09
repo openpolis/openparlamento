@@ -53,6 +53,10 @@ class deppVotingComponents extends BasedeppVotingComponents
       $this->must_login = true;
     }
     
+    if (!isset($this->can_unvote)) {
+      $this->can_unvote = true;
+    }
+    
     $object_class = get_class($this->object);
     $object_id = $this->object->getReferenceKey();
     $this->token = deppPropelActAsVotableBehaviorToolkit::addTokenToSession($object_class, $object_id);
