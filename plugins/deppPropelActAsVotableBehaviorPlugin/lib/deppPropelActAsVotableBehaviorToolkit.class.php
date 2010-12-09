@@ -80,7 +80,7 @@ class deppPropelActAsVotableBehaviorToolkit
     $token = self::generateToken($object_model, $object_id);
     $tokens = $session->getAttribute('tokens', array(), 'sf_votables');
     $tokens = array($token => array($object_model, $object_id)) + $tokens;
-    $tokens = array_slice($tokens, 0, sfConfig::get('app_voting_max_tokens', 10));
+    $tokens = array_slice($tokens, 0, sfConfig::get('app_voting_max_tokens', 150));
     $session->setAttribute('tokens', $tokens, 'sf_votables');
     return $token;
   }
