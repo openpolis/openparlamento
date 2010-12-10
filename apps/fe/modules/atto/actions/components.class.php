@@ -130,9 +130,9 @@ class attoComponents extends sfComponents
   public function executeInterventi()
   {
     $this->limit = 2;
-	$this->limit_count = 0;
+	  $this->limit_count = 0;
 	
-	$this->interventi_count = count($this->interventi);
+	  $this->interventi_count = count($this->interventi);
   }
   
   public function executeCommissioni()

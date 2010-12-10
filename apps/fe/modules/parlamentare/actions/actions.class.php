@@ -462,7 +462,12 @@ class parlamentareActions extends sfActions
   public function executeInterventi()
   {
     $response = sfContext::getInstance()->getResponse();
-    $response->addStylesheet('popup_interventi');
+    if ($this->getUser()->isAuthenticated() && 
+        ($this->getUser()->hasCredential('amministratore') || $this->getUser()->hasCredential('adhoc')))
+    {
+      $response->addStylesheet('votazione_interventi', 'last');
+      $response->addJavascript('votazione_interventi', 'last');      
+    }
 	  
     $this->_getAndCheckParlamentare();  
 

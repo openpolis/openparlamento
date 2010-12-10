@@ -488,32 +488,36 @@ class OppAtto extends BaseOppAtto
   {
     $interventi = array();
 	
-	$c = new Criteria();
+	  $c = new Criteria();
     $c->clearSelectColumns();
     //$c->addAsColumn('ID_INTERVENTO', OppInterventoPeer::ID);
-	$c->addSelectColumn(OppInterventoPeer::ID);
-	$c->addSelectColumn(OppPoliticoPeer::ID);
-	$c->addSelectColumn(OppPoliticoPeer::NOME);
-	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
-	$c->addSelectColumn(OppInterventoPeer::DATA);
+  	$c->addSelectColumn(OppInterventoPeer::ID);
+  	$c->addSelectColumn(OppPoliticoPeer::ID);
+  	$c->addSelectColumn(OppPoliticoPeer::NOME);
+  	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
+  	$c->addSelectColumn(OppInterventoPeer::DATA);
     $c->addSelectColumn(OppInterventoPeer::TIPOLOGIA);
-	$c->addSelectColumn(OppInterventoPeer::URL);
-	$c->addSelectColumn(OppSedePeer::RAMO);
-	$c->addSelectColumn(OppsedePeer::DENOMINAZIONE);
-	$c->addJoin(OppInterventoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
-	$c->addJoin(OppInterventoPeer::SEDE_ID, OppSedePeer::ID, Criteria::LEFT_JOIN);	
+  	$c->addSelectColumn(OppInterventoPeer::URL);
+  	$c->addSelectColumn(OppSedePeer::RAMO);
+  	$c->addSelectColumn(OppsedePeer::DENOMINAZIONE);
+  	$c->addJoin(OppInterventoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::LEFT_JOIN);
+  	$c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
+  	$c->addJoin(OppInterventoPeer::SEDE_ID, OppSedePeer::ID, Criteria::LEFT_JOIN);	
     $c->add(OppInterventoPeer::ATTO_ID, $this->getId(), Criteria::EQUAL);
     $c->addDescendingOrderByColumn(OppInterventoPeer::DATA);
-	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);   
-	$rs = OppInterventoPeer::doSelectRS($c);
+  	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);   
+  	$rs = OppInterventoPeer::doSelectRS($c);
 	
-	while ($rs->next())
+  	while ($rs->next())
     {
-      $interventi[$rs->getInt(1)] = array('politico_id' => $rs->getInt(2), 'nome' => $rs->getString(3), 'cognome' => $rs->getString(4), 'data' => $rs->getDate(5, 'Y-m-d'), 'tipo' => $rs->getString(6), 'link' => $rs->getString(7), 'ramo' => $rs->getString(8), 'denominazione' => $rs->getString(9) );  	
-	}
+      $interventi[$rs->getInt(1)] = array('id' => $rs->getInt(1), 'politico_id' => $rs->getInt(2), 
+                                          'nome' => $rs->getString(3), 'cognome' => $rs->getString(4), 
+                                          'data' => $rs->getDate(5, 'Y-m-d'), 'tipo' => $rs->getString(6), 
+                                          'link' => $rs->getString(7), 'ramo' => $rs->getString(8), 
+                                          'denominazione' => $rs->getString(9) );  	
+  	}
 	
-	return $interventi;
+  	return $interventi;
   
   }
   

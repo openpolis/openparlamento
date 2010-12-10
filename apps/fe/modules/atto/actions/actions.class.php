@@ -635,7 +635,16 @@ class attoActions extends sfActions
     $this->atto = $this->atti[0];
     $this->forward404Unless($this->atto);
     
-    $this->getResponse()->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
+    $response = sfContext::getInstance()->getResponse();
+    if ($this->getUser()->isAuthenticated() && 
+        ($this->getUser()->hasCredential('amministratore') || $this->getUser()->hasCredential('adhoc')))
+    {
+      $response->addStylesheet('votazione_interventi', 'last');
+      $response->addJavascript('votazione_interventi', 'last');      
+    }
+    
+    
+    $response->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
     
     
     //individuazione link fonte
