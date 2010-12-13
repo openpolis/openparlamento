@@ -12,6 +12,9 @@ all:
   // numero di giorni precedenti se last_alerted null
   alert_default_days_back: 2
   
+  // n. max di token memorizzati nella session per utente
+  voting_max_tokens: 1200
+  
   limit_interessi_argomento: 10
   limit_classifica_parlamentari_sioccupanodi: 50
   limit_classifica_parlamentari_sioccupanodi_chart: 10
