@@ -70,7 +70,7 @@ class deppPropelActAsLaunchableBehavior
     $launch = new sfLaunching();
     $launch->setObjectModel(get_class($object));
     $launch->setObjectId($object->getPrimaryKey());
-    $launch->setNamespace($namespace);
+    $launch->setLaunchNamespace($namespace);
     $launch->setPriority(sfLaunchingPeer::getNewLaunchPriority($namespace));
     $ret = $launch->save();
 
