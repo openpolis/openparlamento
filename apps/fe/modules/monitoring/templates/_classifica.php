@@ -23,6 +23,7 @@
               <th scope="col">Circoscrizione:</th>
               <th scope="col">Commissone Perm.:</th>              
               <th scope="col">Punteggio:</th>
+              <th scope="col">Posizione:</th>
               <?php if ($sf_user->hasCredential('amministratore')): ?>
                 <th></th>
               <?php endif ?>
@@ -58,6 +59,9 @@
                   </td>                  
                   <td style="text-align: right; padding-right: 20px">
                     <?php printf("%01.2f", $politico['punteggio']) ?>
+                  </td>
+                  <td style="text-align: right; padding-right: 20px">
+                    <?php printf("%7.2f", OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $sf_user->getId())) ?>
                   </td>
                   <?php if ($sf_user->hasCredential('amministratore')): ?>
                     <td>

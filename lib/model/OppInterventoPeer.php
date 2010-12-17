@@ -9,6 +9,12 @@
  */ 
 class OppInterventoPeer extends BaseOppInterventoPeer
 {
+  
+  public static function get_fattore_intervento_posizione($tipo_intervento)
+  {
+    return 1;
+  }
+  
   /**
    * torna i ddl collegati agli interventi delle cariche
    *

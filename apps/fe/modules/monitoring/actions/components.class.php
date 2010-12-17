@@ -110,83 +110,93 @@ class monitoringComponents extends sfComponents
     $this->user_is_monitoring_act = $this->user->isMonitoring('OppAtto', $this->act_id);
   }
   
-  protected function calcolaIndice($atto,$tipo)
+  protected function calcolaIndice($atto, $tipo)
   {
-    if ($atto==1)
+    if ($atto == 1)
     {
-      if ($tipo=="P") return "6";
-      if ($tipo=="C") return "2";
-      if ($tipo=="R") return "0";
+      if ($tipo == "P") return "6";
+      if ($tipo == "C") return "2";
+      if ($tipo == "R") return "0";
     }
-    if ($atto==2)
+    if ($atto == 2)
     {
-      if ($tipo=="P") return "3";
-      if ($tipo=="C") return "0.5";
+      if ($tipo == "P") return "3";
+      if ($tipo == "C") return "0.5";
     }
-    if ($atto>=3 || $atto<=6)
+    if ($atto >= 3 || $atto <= 6)
     {
-      if ($tipo=="P") return "1";
-      if ($tipo=="C") return "0.5";
+      if ($tipo == "P") return "1";
+      if ($tipo == "C") return "0.5";
     }
-    if ($atto>=7 || $atto<=9)
+    if ($atto >= 7 || $atto <= 9)
     {
-      if ($tipo=="P") return "2";
-      if ($tipo=="C") return "0.5";
+      if ($tipo == "P") return "2";
+      if ($tipo == "C") return "0.5";
     }
-    if ($atto>=10 || $atto<=11)
+    if ($atto >= 10 || $atto <= 11)
     {
-      if ($tipo=="P") return "2";
-      if ($tipo=="C") return "0.5";
+      if ($tipo == "P") return "2";
+      if ($tipo == "C") return "0.5";
     }
   }
   
   public function executeUserVspolitician()
   {
-    $arr=array();
+    $arr = array();
     $user_id = $this->user->getId();
-    $num=$this->num;
-    $leg=$this->legislatura;
+    $num = $this->num;
+    $leg = $this->legislatura;
+    
     $c = new Criteria();
     $c->add(sfVotingPeer::USER_ID, $user_id);
     $voting_objects = sfVotingPeer::doSelect($c);
-    $this->voti_utente=count($voting_objects);
+    $this->voti_utente = count($voting_objects);
     foreach ($voting_objects as $voting_object)
     {
       $c = new Criteria();
-      $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
-      $c->add(OppAttoPeer::ID,$voting_object->getVotableID());
-      $c->add(OppAttoPeer::LEGISLATURA,$leg);
-      $c->add(OppCaricaHasAttoPeer::TIPO,'R',Criteria::NOT_EQUAL);
-      $firme = OppCaricaHasAttoPeer::doSelect($c);
+      $c->addJoin(OppAttoPeer::ID, OppCaricaHasAttoPeer::ATTO_ID);
+      $c->addJoin(OppCaricaPeer::ID, OppCaricaHasAttoPeer::CARICA_ID);
+      $c->add(OppAttoPeer::ID, $voting_object->getVotableID());
+      $c->add(OppAttoPeer::LEGISLATURA, $leg);
+      $c->add(OppCaricaHasAttoPeer::TIPO, 'R', Criteria::NOT_EQUAL);
+
+      // aggiunge vincolo su cariche (dep e sen. della leg. corrente + sen. a vita)
+      $crit1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, $leg);
+      $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
+      $crit1->addOr($crit2);
+      $c->add($crit1);
+      
+      $firme = OppCaricaHasAttoPeer::doSelectJoinAll($c);
       foreach ($firme as $firma)
       {
-        $value=$this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(),$firma->getTipo());
-        $carica=OppCaricaPeer::retrieveByPk($firma->getCaricaId());
-        if (!array_key_exists($carica->getPoliticoId(),$arr)) 
-          $arr[$carica->getPoliticoId()]=$value*$voting_object->getVoting();
+        $value = $this->calcolaIndice($firma->getOppAtto()->getTipoAttoId(), $firma->getTipo());
+        $carica = $firma->getOppCarica();
+        if (!array_key_exists($carica->getPoliticoId(), $arr)) 
+          $arr[$carica->getPoliticoId()] = $value * $voting_object->getVoting();
         else 
-          $arr[$carica->getPoliticoId()]= $arr[$carica->getPoliticoId()] + $value*$voting_object->getVoting();
+          $arr[$carica->getPoliticoId()] += $value * $voting_object->getVoting();
       }
     }
-    $this->vicini=array();
-    $this->lontani=array();
-    if (count($arr)>0) 
+    $this->vicini = array();
+    $this->lontani = array();
+
+    if (count($arr) > 0) 
     {
       arsort($arr);
-      if ($num!=1000)
-        $vicini=array_slice($arr,0,$num,true);
+      if ($num != 1000)
+        $vicini = array_slice($arr, 0, $num, true);
       else
-        $vicini=$arr;
+        $vicini = $arr;
         
-      $max_valore_abs=max(abs(min($arr)),max($arr));
-      $this->normalize=100/$max_valore_abs;
-      $this->posizione=$arr;
+      $max_valore_abs = max(abs(min($arr)),max($arr));
+      $this->normalize = 100/$max_valore_abs;
+      $this->posizione = $arr;
       
-      foreach($vicini as $key=>$vicino)
+      foreach($vicini as $key => $vicino)
       {
-        if ($vicino>0)
+        if ($vicino > 0)
         {
-          $c= new Criteria();
+          $c = new Criteria();
           $crit0 = $c->getNewCriterion(OppCaricaPeer::POLITICO_ID, $key);
           $crit1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, 16);
           $crit2 = $c->getNewCriterion(OppCaricaPeer::TIPO_CARICA_ID, 5);
@@ -198,19 +208,19 @@ class monitoringComponents extends sfComponents
           $c->add($crit0);
           
           $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
-          $carica=OppCaricaPeer::doSelectOne($c);
-          $this->vicini[]=array($vicino,$carica);
+          $carica = OppCaricaPeer::doSelectOne($c);
+          $this->vicini []= array($vicino, $carica);
         }
         else break;
       }
-      if ($num!=1000)
-        $lontani=array_slice($arr,count($arr)-$num,count($arr),true);
+      if ($num != 1000)
+        $lontani = array_slice($arr,count($arr)-$num,count($arr),true);
       else
-        $lontani=$arr;
+        $lontani = $arr;
         
       asort($lontani);
       
-      foreach ($lontani as $key=>$lontano)
+      foreach ($lontani as $key => $lontano)
       {
         if ($lontano<0)
         {
@@ -226,8 +236,8 @@ class monitoringComponents extends sfComponents
             $c->add($crit0);
 
             $c->addAscendingOrderByColumn(OppCaricaPeer::TIPO_CARICA_ID);
-          $carica=OppCaricaPeer::doSelectOne($c);
-          $this->lontani[]=array($lontano,$carica);
+          $carica = OppCaricaPeer::doSelectOne($c);
+          $this->lontani []= array($lontano,$carica);
         }
       }
     }

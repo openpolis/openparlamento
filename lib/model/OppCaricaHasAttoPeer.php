@@ -9,6 +9,38 @@
  */ 
 class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
 {
+  
+  
+  public static function get_fattore_firma_posizione($tipo_firma, $tipo_atto_id)
+  {
+    if ($tipo_atto_id == 1)
+    {
+      if ($tipo_firma == "P") return "6";
+      if ($tipo_firma == "C") return "2";
+      if ($tipo_firma == "R") return "0";
+    }
+    if ($tipo_atto_id == 2)
+    {
+      if ($tipo_firma == "P") return "3";
+      if ($tipo_firma == "C") return "0.5";
+    }
+    if ($tipo_atto_id >= 3 || $tipo_atto_id <= 6)
+    {
+      if ($tipo_firma == "P") return "1";
+      if ($tipo_firma == "C") return "0.5";
+    }
+    if ($tipo_atto_id >= 7 || $tipo_atto_id <= 9)
+    {
+      if ($tipo_firma == "P") return "2";
+      if ($tipo_firma == "C") return "0.5";
+    }
+    if ($tipo_atto_id >= 10 || $tipo_atto_id <= 11)
+    {
+      if ($tipo_firma == "P") return "2";
+      if ($tipo_firma == "C") return "0.5";
+    }
+  }
+
   public static function get_fattore_firma($tipo)
   {
     switch ($tipo)

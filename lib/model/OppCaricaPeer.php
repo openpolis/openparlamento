@@ -379,6 +379,71 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   }
 
 
+  public static function getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $user_id, $verbose = false, $data = null, $con = null)
+  {
+    
+    // Firme
+    // estrazione di tutti gli atti taggati con un pool di argomenti e votati da un utente
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select f.tipo, f.atto_id, a.tipo_atto_id, t.tag_id, v.voting from opp_carica_has_atto f, opp_atto a, sf_tagging t, sf_votings v  where f.carica_id=%d and f.atto_id=a.id and t.taggable_model='OppAtto' and t.taggable_id = a.id and t.tag_id in (%s) and v.votable_model='OppAtto' and v.votable_id=a.id and v.user_id=%d",
+                   $carica_id, implode(", ", $tags_ids), $user_id);
+
+
+    if ($verbose) {
+      echo "\nAtti: " . $sql . "\n\n";
+    }
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // calcolo del punteggio
+    $punteggio = 0;
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $atto_id = $row['atto_id'];
+      $tipo_atto_id = $row['tipo_atto_id'];
+      $tipo_firma = $row['tipo'];
+      $voto = $row['voting'];
+      
+      $d_punteggio = OppCaricaHasAttoPeer::get_fattore_firma_posizione($tipo_firma, $tipo_atto_id) * $voto;
+      if ($verbose) {
+        echo sprintf("  atto: %9d, tipo_atto: %4d, tipo_firma: %1s, voto: %3d, punteggio: %7.2f\n", $atto_id, $tipo_atto_id, $tipo_firma, $voto, $d_punteggio);
+      }
+      $punteggio += $d_punteggio;
+    }
+
+    // Interventi
+    // estrazione di tutti gli interventi votati da un utente e relativi ad atti taggati con un pool di argomenti
+		$con = Propel::getConnection(self::DATABASE_NAME);
+    $sql = sprintf("select i.id, i.tipologia, i.atto_id, t.tag_id, v.voting from opp_intervento i, sf_tagging t, sf_votings v  where i.carica_id=%d and t.taggable_model='OppAtto' and t.taggable_id = i.atto_id and t.tag_id in (%s) and v.votable_model='OppIntervento' and v.votable_id=i.id and v.user_id=%d",
+                   $carica_id, implode(", ", $tags_ids), $user_id);
+
+     if ($verbose) {
+       echo "\nInterventi: " . $sql . "\n\n";
+     }
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    // calcolo del punteggio
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      $intervento_id = $row['id'];
+      $tipo_intervento = $row['tipologia'];
+      $atto_id = $row['atto_id'];
+      $voto = $row['voting'];
+      
+      $d_punteggio = OppInterventoPeer::get_fattore_intervento_posizione($tipo_intervento) * $voto;
+      if ($verbose) {
+        echo sprintf("  atto: %9d, voto: %3d, tipo_intervento: %61s\n", $atto_id, $tipo_intervento, $voto, $d_punteggio);
+      }
+      $punteggio += $d_punteggio;
+    }
+    
+    return $punteggio;
+  }
+
   /**
    * torna un array associativo con i dati storici dell'interesse di un politico su argomenti
    *

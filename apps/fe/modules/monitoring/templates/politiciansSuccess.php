@@ -70,12 +70,11 @@
     <a name="rappresentometro">&nbsp;</a>  
     
   <!--  Mostra dieci parlamentari per gli utenti normali, TUTTI per gli ad hoc -->  
-  <?php if (!$sf_user->hasCredential('adhoc')) : ?>
-    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 10, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
-  <?php else : ?>  
-    <?php echo include_component('monitoring', 'userVspolitician', array('user' => $sf_user, 'num'=> 1000, 'ambient' =>'monitor', 'legislatura' => 16)); ?>
-  <?php endif ?>  
-    
+  <?php echo include_component('monitoring', 'userVspolitician', 
+                               array('user'        => $sf_user, 
+                                     'num'         => $sf_user->hasCredential('adhoc')?1000:10, 
+                                     'ambient'     => 'monitor', 
+                                     'legislatura' => 16)); ?>
     
   </div>
 </div>

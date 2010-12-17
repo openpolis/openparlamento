@@ -31,6 +31,120 @@ pake_task('opp-calcola-rilevanza-tag', 'project_exists');
 pake_desc("calcola e mostra interesse di parlamentari su argomenti a una data");
 pake_task('opp-get-storico-interesse', 'project_exists');
 
+pake_desc("mostra dettaglio posizionamento parlamentare rispetto a utente su argomenti");
+pake_task('opp-get-posizionamento', 'project_exists');
+
+
+/**
+ * Calcola o ri-calcola l'indice di attività.
+ * Si può specificare il ramo (camera, senato, governo, tutti) e la data
+ * Se sono passati degli ID (argomenti), sono interpretati come ID di politici e il calcolo è fatto solo per loro
+ */
+function run_opp_get_posizionamento($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    _loader();
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
+
+  $ramo = '';
+  if (array_key_exists('ramo', $options)) {
+    $ramo = strtolower($options['ramo']);
+  }
+
+  $verbose = false;
+  if (array_key_exists('verbose', $options)) {
+    $verbose = true;
+  }
+
+  $tags_ids = array();
+  if (array_key_exists('tags', $options)) {
+    $tags_ids = explode(",", $options['tags']);
+  }
+
+  $user_id = 0;
+  if (array_key_exists('user', $options)) {
+    $user_id = $options['user'];
+  }
+
+  $tags_names = array();
+  foreach ($tags_ids as $tag_id) {
+    $tag = TagPeer::retrieveByPK($tag_id);
+    $tags_names []= $tag->getTripleValue();
+  }
+  
+  
+  $msg = sprintf("calcolo posizionamento per i tag: %s\n", implode(",", $tags_names));
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+  if (count($args) > 0)
+  {
+    try {
+      $parlamentari_rs = OppCaricaPeer::getRSFromIDArray($args);            
+    } catch (Exception $e) {
+      throw new Exception("Specificare degli ID validi. \n" . $e);
+    }
+  } else {
+    throw new Exception("Specificare uno o più ID di carica dei parlamentari. \n" . $e);
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $cnt = 0;
+  while ($parlamentari_rs->next())
+  {
+    $cnt++;
+    
+    $p = $parlamentari_rs->getRow();
+    $nome = $p['nome'];
+    $cognome = $p['cognome'];
+    $tipo_carica_id = $p['tipo_carica_id'];
+    $carica_id = $p['id'];
+    switch ($tipo_carica_id) {
+      case 1:
+        $ramo = 'C';
+        $prefisso = 'On.';
+        break;
+      case 4:
+      case 5:
+        $ramo = 'S';
+        $prefisso = 'Sen.';
+        break;
+      case 2:
+      case 3:
+      case 6:
+      case 7:
+        $ramo = 'G';
+        $prefisso = '';
+        break;
+      
+      default:
+        break;
+    }
+
+    $politico_stringa = sprintf("%s %s %s", $prefisso, $nome, strtoupper($cognome));
+    printf("%4d) %40s [%06d] ... ", $cnt, $politico_stringa, $carica_id);
+
+    $punteggio = OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $user_id, true);
+
+    $msg = sprintf("  Punteggio totale: %7.2f", $punteggio);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+  }
+
+  
+  $msg = sprintf("%d parlamentari elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+}
+
 
 
 /**
