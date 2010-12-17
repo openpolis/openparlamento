@@ -226,6 +226,7 @@
   				                     '@parlamentari?ramo=' . $ramo .
   				                      '&sort=presenze&type=desc') ?> 
   				</p>
+  				<span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
   			</div>
   			
   			<!-- BOX PER I VOTI CHIAVE -->
@@ -313,6 +314,7 @@
   				                     '@parlamentari?ramo=' . $ramo .
   				                      '&sort=indice&type=desc') ?>
   				</p>
+  				<span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">L'indice di attività non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).</span>
   			</div>
   		
 
