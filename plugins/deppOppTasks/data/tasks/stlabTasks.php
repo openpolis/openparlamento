@@ -53,6 +53,7 @@ function run_stlab_genera_atti_tags_csv($task, $args, $options)
   $fh = fopen($file_path, 'w');
 
   // estrae tutti i DDL
+  $c = new Criteria();
   $c->add(OppAttoPeer::TIPO_ATTO_ID, 1); 
   $atti = OppAttoPeer::doSelect($c);
   $n_atti = count($atti);
@@ -122,7 +123,7 @@ function run_stlab_genera_tags_csv($task, $args, $options)
  * ATTO_ID_i.txt - i num progressivo del testo
  */
 function run_stlab_genera_testi_atti($task, $args, $options)
-{
+{l
   static $loaded;
 
   // load application context
