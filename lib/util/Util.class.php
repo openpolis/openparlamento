@@ -29,6 +29,21 @@ class Util
     $end_of_two_months_date = date('Y-m-d', strtotime('-1 day', strtotime(date('Y-m-01', strtotime($end_of_last_month_date)))));
     return array($end_of_last_month_date, $end_of_two_months_date);  
   }
+  
+  public static function buildCacheDatesArray($data_inizio, $data_fine)
+  {
+    $data = $data_inizio;
+    $date = array();
+    
+    $cnt = 0;
+    do {
+      $date []= $data;
+      $data = date('Y-m-t', strtotime('+1 day', strtotime($data)));
+      $cnt++;
+    } while ($data < $data_fine && $cnt < 100);
+    
+    return $date;
+  }
 
   /**
    * torna data di inizio e fine periodo a partire da una data, risalendo da fine mese a n mesi precedenti

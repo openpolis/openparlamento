@@ -469,13 +469,13 @@ class monitoringActions extends sfActions
     $this->groups = OppGruppoRamoPeer::getGruppiRamo('C');
     $this->tagsParlamentari('C');
   }
-  
-  
+
   public function executeTagsSenatori()
   {
     $this->groups = OppGruppoRamoPeer::getGruppiRamo('S');
     $this->tagsParlamentari('S');
   }
+
   
   /**
    * costruzione delle classifiche e dei parametri per il google chart
@@ -604,6 +604,88 @@ class monitoringActions extends sfActions
     $chart_img_path = SF_ROOT_DIR . sfConfig::get('app_serialized_chart_parameters', '/data/serialized_chart_parameters');
     $this->chart_img_name = $this->getUser()->getToken(). '.ch';
     file_put_contents($chart_img_path . "/" . $this->chart_img_name, serialize($this->chart_params), FILE_USE_INCLUDE_PATH);
+    
+  }
+ 
+
+
+  public function executeImpactFactorDeputatiCSV()
+  {
+    $this->impactFactorCSV('C');
+  }
+
+  public function executeImpactFactorSenatoriCSV()
+  {
+    $this->impactFactorCSV('S');
+  }
+
+  protected function impactFactorCSV($ramo)
+  {
+    sfLoader::loadHelpers(array('Number'));
+
+    $this->opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
+    $this->forward404Unless($this->getUser()->hasCredential('adhoc'));
+
+    // get user's monitored tags
+    $this->tags_ids = $this->opp_user->getMonitoredPks('Tag');
+
+    $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
+
+    $data_inizio = '2008-04-30';
+    $data_fine = OppActHistoryCachePeer::fetchLastData();
+    $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));  
+    
+    $politici_csv = array();
+    if (count($this->tags_ids)) {
+      
+      $this->group_filter = $this->getRequestParameter('group_filter');
+      if (is_array($this->group_filter)) {
+        $c = new Criteria();
+        $c->add(OppGruppoPeer::ID, $this->group_filter, Criteria::IN);
+      } else {
+        $this->group_filter = array();
+      }
+      
+      // estrazione classifica dei politici che più si interessano degli argomenti monitorati
+      $politici = OppCaricaPeer::getClassificaPoliticiSiOccupanoDiArgomenti($this->tags_ids, $ramo, $data_fine, $limit, $this->group_filter); 
+
+      // costruzione delle serie storiche per ogni politico (da inizio legislatura)
+      foreach ($politici as $carica_id => $politico) {
+
+        // genero il label
+        $label = sprintf("%s %s (%s)", $politico['nome'], $politico['cognome'], $politico['acronimo']);
+        
+        // arrotonda l'array dei valori storici a due cifre decimali (max)
+        $storico = OppCaricaPeer::getStoricoInteressePoliticoArgomenti($carica_id, $this->tags_ids);
+
+        // calcola la posizione del politico
+        $posizione =  OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $this->tags_ids, $this->getUser()->getId());
+        $posizione = format_number(round($posizione, 2), 'it_IT');
+        
+        // primi campi (dati fissi)
+        $csv_row = "$carica_id,\"$label\",\"$posizione\",";
+        
+        foreach ($date as $cnt => $data) {
+          if (array_key_exists($data, $storico)) {
+            $storico[$data] = format_number(round($storico[$data], 2), 'it_IT');
+          } else {
+            $storico[$data] = 0;
+          }
+          $csv_row .= '"' . $storico[$data] . '"';
+          if ($cnt < count($date) -1) $csv_row .= ",";
+        }
+        
+        $politici_csv []= $csv_row;
+      }
+     
+    }
+    
+    $this->date_csv = "carica_id,politico,posizione," . implode(",", $date);
+    $this->politici_csv = $politici_csv;
+    
+    $this->setLayout(false);   
+    $this->setTemplate('impactFactorCSV'); 
+    $this->response->setContentType('text/csv');
     
   }
  

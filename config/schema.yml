@@ -214,7 +214,7 @@ propel:
     gruppo_id:        { type: integer, required: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE }
     data_inizio:      { type: date, required: true }
     data_fine:        { type: date }
-    maggioranza:      { type: boolean, reqiured: true }
+    maggioranza:      { type: boolean }
     
   opp_esito_seduta:
     id:

@@ -35,6 +35,9 @@
                                 'chart_params' => $chart_params, 'chart_title' => $chart_title,
                                 'chart_img_name' => $chart_img_name, 'sf_user' => $sf_user)) ?>
 
+    <div style="clear: both; text-align: center">
+      <?php echo link_to('scarica in formato CSV', '@monitoring_senatori_export?user_token='. sfContext::getInstance()->getUser()->getToken()) ?>
+    </div>
   </div>
 </div>
 

@@ -34,19 +34,6 @@ api_votazione:
   url: /votazione/:key/:id
   param: { module: api, action: votazione }
   
-
-dati_storici_interessi:
-  url:   /interessi/*
-  param: { module: datiStorici, action: interessi }
-
-dati_storici_dettaglio_interessi:
-  url:   /dettaglio_interessi/:carica_id/:tags_ids
-  param: { module: datiStorici, action: interessiDettaglio }
-
-monitoring_dettaglio_posizione:
-  url:   /dettaglio_posizione/:carica_id/:tags_ids
-  param: { module: monitoring, action: posizioneDettaglio }
-
 attivita_gruppo_argomento:
   url: /attivita_gruppo_argomento/:ramo/:gruppo_id/*
   param: { module: monitoring, action: attivitaGruppoArgomento }
@@ -153,6 +140,34 @@ monitoring_tags_deputati:
 monitoring_tags_senatori:
   url: /monitoring_tags_senatori/:user_token
   param: { module: monitoring, action: tagsSenatori}
+
+
+dati_storici_interessi:
+  url:   /interessi/*
+  param: { module: datiStorici, action: interessi }
+
+dati_storici_dettaglio_interessi:
+  url:   /dettaglio_interessi/:carica_id/:tags_ids
+  param: { module: datiStorici, action: interessiDettaglio }
+
+monitoring_dettaglio_posizione:
+  url:   /dettaglio_posizione/:carica_id/:tags_ids
+  param: { module: monitoring, action: posizioneDettaglio }
+
+monitoring_deputati_export:
+  url: /impact_factor_deputati_export/:user_token
+  param: { module: monitoring, action: impactFactorDeputatiCSV }
+  requirements: 
+    method: [get]
+
+monitoring_senatori_export:
+  url: /impact_factor_senatori_export/:user_token
+  param: { module: monitoring, action: impactFactorSenatoriCSV }
+  requirements: 
+    method: [get]
+
+
+
   
 monitoring_alerts:
   url: /monitoring_alerts/:user_token

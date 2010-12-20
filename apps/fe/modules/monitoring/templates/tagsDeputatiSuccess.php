@@ -34,9 +34,13 @@
                           array('politici' => $politici, 'tags_ids' => $tags_ids,
                                 'chart_params' => $chart_params, 'chart_title' => $chart_title,
                                 'chart_img_name' => $chart_img_name)) ?>
-
+                                
+    <div style="clear: both; text-align: center">
+      <?php echo link_to('scarica in formato CSV', '@monitoring_deputati_export?user_token='. sfContext::getInstance()->getUser()->getToken()) ?>
+    </div>
 
   </div>
+  
 </div>
 
 <?php slot('breadcrumbs') ?>
