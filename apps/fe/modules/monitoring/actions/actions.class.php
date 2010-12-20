@@ -64,10 +64,6 @@ class monitoringActions extends sfActions
     
   }
   
-  /**
-   * Executes index action
-   *
-   */
   public function executeIndex()
   {
     $this->redirect('@monitoring_news?user_token=' . $this->getUser()->getToken());
@@ -609,6 +605,15 @@ class monitoringActions extends sfActions
     $this->chart_img_name = $this->getUser()->getToken(). '.ch';
     file_put_contents($chart_img_path . "/" . $this->chart_img_name, serialize($this->chart_params), FILE_USE_INCLUDE_PATH);
     
+  }
+ 
+  public function executePosizioneDettaglio()
+  {
+    $carica_id = $this->getRequestParameter('carica_id');
+    $tags_ids = explode(",", trim(strip_tags($this->getRequestParameter('tags_ids', '')), " ,")); 
+    $user_id = $this->getUser()->getId();
+    
+    $this->messaggi_dettaglio = OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $user_id, false, true);
   }
   
   protected function generateRandomPalette($count)

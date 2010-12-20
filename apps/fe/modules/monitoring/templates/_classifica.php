@@ -55,7 +55,7 @@
                     <?php if ($sf_user->hasCredential('amministratore')): ?>
                         (<?php echo link_to('dettaglio',
                                             '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-                                             array('id' => 'dettaglio-interessi', 'class' => 'show-hide-dettaglio')) ?>)
+                                             array('class' => 'link-dettaglio-interessi')) ?>)
                     <?php endif ?>                    
                   </td>
                   <td style="text-align: right; padding-right: 20px">
@@ -63,7 +63,7 @@
                     <?php if ($sf_user->hasCredential('amministratore')): ?>
                         (<?php echo link_to('dettaglio',
                                             '@monitoring_dettaglio_posizione?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-                                             array('id' => 'dettaglio-posizione', 'class' => 'show-hide-dettaglio')) ?>)
+                                             array('class' => 'link-dettaglio-posizione')) ?>)
                     <?php endif ?>                    
                   </td>
                 </tr>        
@@ -88,7 +88,7 @@ jQuery.noConflict();
 (function($) {
   $().ready(function(){
 
-    $('a#dettaglio-interessi').click(
+    $('a.link-dettaglio-interessi').click(
     	function(){
     	  $this = $(this);
 
@@ -96,38 +96,38 @@ jQuery.noConflict();
         var url = $this.attr('href');
         if (!$this.data('details_loaded'))
         {
-          parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
-          $('#dettaglio td').load(url);
+          parent_tr.after("<tr id=\"dettaglio-interessi\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
+          $('#dettaglio-interessi td').load(url);
           $this.text('nascondi');
           $this.data('details_loaded', true);
         } else {
-          $('#dettaglio').remove();
+          $('#dettaglio-interessi').remove();
           $this.data('details_loaded', false);
           $this.text('dettaglio');
         }
         return false;
     	}
+    );
 
-      $('a#dettaglio-posizione').click(
-      	function(){
-      	  $this = $(this);
+    $('a.link-dettaglio-posizione').click(
+    	function(){
+    	  $this = $(this);
 
-      		var parent_tr = $this.parents('tr');
-          var url = $this.attr('href');
-          if (!$this.data('details_loaded'))
-          {
-            parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
-            $('#dettaglio td').load(url);
-            $this.text('nascondi');
-            $this.data('details_loaded', true);
-          } else {
-            $('#dettaglio').remove();
-            $this.data('details_loaded', false);
-            $this.text('dettaglio');
-          }
-          return false;
-      	}
-
+    		var parent_tr = $this.parents('tr');
+        var url = $this.attr('href');
+        if (!$this.data('details_loaded'))
+        {
+          parent_tr.after("<tr id=\"dettaglio-posizione\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
+          $('#dettaglio-posizione td').load(url);
+          $this.text('nascondi');
+          $this.data('details_loaded', true);
+        } else {
+          $('#dettaglio-posizione').remove();
+          $this.data('details_loaded', false);
+          $this.text('dettaglio');
+        }
+        return false;
+    	}
     );
 
   	// Setup the ajax indicator
@@ -136,11 +136,9 @@ jQuery.noConflict();
   	$('#ajaxBusy').css({
   		display:"none",
   		padding:"0px",
-  		position:"absolute",
-  		right:"0px",
-  		top:"0px",
-  		left:"0px",
-  		bottom:"0px",
+  		position:"fixed",
+  		left:"50%",
+  		top:"50%",
   		margin:"auto",
   		width:"40px",
   		height:"40px"

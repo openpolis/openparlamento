@@ -379,7 +379,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
   }
 
 
-  public static function getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $user_id, $verbose = false, $data = null, $con = null)
+  public static function getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $user_id, $verbose = false, $log = null, $data = null, $con = null)
   {
     
     // Firme
@@ -395,8 +395,12 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
+    $log_msgs = array();
+    
     // calcolo del punteggio
     $punteggio = 0;
+    $punteggio_firme = 0;
+    $punteggio_interventi = 0;
     while ($rs->next())
     {
       $row = $rs->getRow();
@@ -406,11 +410,17 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $voto = $row['voting'];
       
       $d_punteggio = OppCaricaHasAttoPeer::get_fattore_firma_posizione($tipo_firma, $tipo_atto_id) * $voto;
+      
+      $log_msgs [] = $log_msg = sprintf("atto: %9d, tipo_atto: %4d, tipo_firma: %1s, voto: %3d, punteggio: %7.2f", $atto_id, $tipo_atto_id, $tipo_firma, $voto, $d_punteggio);
       if ($verbose) {
-        echo sprintf("  atto: %9d, tipo_atto: %4d, tipo_firma: %1s, voto: %3d, punteggio: %7.2f\n", $atto_id, $tipo_atto_id, $tipo_firma, $voto, $d_punteggio);
+        echo sprintf ("  %s\n", $log_msg);
       }
-      $punteggio += $d_punteggio;
+      
+      $punteggio_firme += $d_punteggio;
     }
+
+    $log_msgs []= sprintf("Totale firme: %7.2f", $punteggio_firme);
+
 
     // Interventi
     // estrazione di tutti gli interventi votati da un utente e relativi ad atti taggati con un pool di argomenti
@@ -435,13 +445,26 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       $voto = $row['voting'];
       
       $d_punteggio = OppInterventoPeer::get_fattore_intervento_posizione($tipo_intervento) * $voto;
+
+      $log_msgs [] = $log_msg = sprintf("  atto: %9d, voto: %3d, tipo_intervento: %61s\n", $atto_id, $tipo_intervento, $voto, $d_punteggio);
       if ($verbose) {
-        echo sprintf("  atto: %9d, voto: %3d, tipo_intervento: %61s\n", $atto_id, $tipo_intervento, $voto, $d_punteggio);
+        echo sprintf ("  %s\n", $log_msg);
       }
-      $punteggio += $d_punteggio;
+      
+      $punteggio_interventi += $d_punteggio;
     }
     
-    return $punteggio;
+    $punteggio = $punteggio_firme + $punteggio_interventi;
+    
+    $log_msgs []= sprintf("Totale interventi: %7.2f", $punteggio_interventi);
+    $log_msgs []= sprintf("Totale: %7.2f", $punteggio);
+    
+    
+    if (is_null($log)) {
+      return $punteggio;
+    } else {
+      return $log_msgs;
+    }
   }
 
   /**
