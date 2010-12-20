@@ -52,7 +52,9 @@ function run_stlab_genera_atti_tags_csv($task, $args, $options)
 
   $fh = fopen($file_path, 'w');
 
-  $atti = OppAttoPeer::doSelect(new Criteria());
+  // estrae tutti i DDL
+  $c->add(OppAttoPeer::TIPO_ATTO_ID, 1); 
+  $atti = OppAttoPeer::doSelect($c);
   $n_atti = count($atti);
   foreach ($atti as $cnt => $atto) {
     $tags_ids = $atto->getTagsIds();
@@ -178,7 +180,9 @@ function run_stlab_genera_testi_atti($task, $args, $options)
     $c->setOffset($offset);
   }
   
-  // estrazione atti
+  // estrazione documenti (solo per ddl)
+  $c->addJoin(OppDocumentoPeer::ATTO_ID, OppAttoPeer::ID);
+  $c->add(OppAttoPeer::TIPO_ATTO_ID, 1);
   $docs = OppDocumentoPeer::doSelect($c);
 
   $n_docs = count($docs);

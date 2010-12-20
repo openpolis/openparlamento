@@ -43,6 +43,10 @@ dati_storici_dettaglio_interessi:
   url:   /dettaglio_interessi/:carica_id/:tags_ids
   param: { module: datiStorici, action: interessiDettaglio }
 
+monitoring_dettaglio_posizione:
+  url:   /dettaglio_posizione/:carica_id/:tags_ids
+  param: { module: monitoring, action: posizioneDettaglio }
+
 attivita_gruppo_argomento:
   url: /attivita_gruppo_argomento/:ramo/:gruppo_id/*
   param: { module: monitoring, action: attivitaGruppoArgomento }

@@ -1,4 +1,4 @@
-<div class="evidence-box float-container" style="float: left; width: 70%">
+<div class="evidence-box float-container" style="float: left; width: 90%">
 
   <h5 class="subsection">
     I <?php echo count($politici) ?> deputati
@@ -19,14 +19,10 @@
             <tr>
               <th scope="col">Pos:</th>
               <th scope="col">Parlamentare:</th>
-              <th scope="col">Gruppo:</th> 	
               <th scope="col">Circoscrizione:</th>
               <th scope="col">Commissone Perm.:</th>              
-              <th scope="col">Punteggio:</th>
+              <th scope="col">Impact:</th>
               <th scope="col">Posizione:</th>
-              <?php if ($sf_user->hasCredential('amministratore')): ?>
-                <th></th>
-              <?php endif ?>
             </tr>
           </thead>
 
@@ -45,9 +41,6 @@
                     </p>
                   </th>
                   <td>
-                    <?php echo $politico['acronimo'] ?>
-                  </td>
-                  <td>
                     <?php echo $politico['circoscrizione'] ?>
                   </td>
                   <td>
@@ -59,17 +52,20 @@
                   </td>                  
                   <td style="text-align: right; padding-right: 20px">
                     <?php printf("%01.2f", $politico['punteggio']) ?>
+                    <?php if ($sf_user->hasCredential('amministratore')): ?>
+                        (<?php echo link_to('dettaglio',
+                                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
+                                             array('id' => 'dettaglio-interessi', 'class' => 'show-hide-dettaglio')) ?>)
+                    <?php endif ?>                    
                   </td>
                   <td style="text-align: right; padding-right: 20px">
-                    <?php printf("%7.2f", OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $sf_user->getId())) ?>
+                    <?php printf("%7.2f",   OppCaricaPeer::getPosizionePoliticoOggettiVotatiPerArgomenti($carica_id, $tags_ids, $sf_user->getId())) ?>
+                    <?php if ($sf_user->hasCredential('amministratore')): ?>
+                        (<?php echo link_to('dettaglio',
+                                            '@monitoring_dettaglio_posizione?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
+                                             array('id' => 'dettaglio-posizione', 'class' => 'show-hide-dettaglio')) ?>)
+                    <?php endif ?>                    
                   </td>
-                  <?php if ($sf_user->hasCredential('amministratore')): ?>
-                    <td>
-                      <?php echo link_to('dettaglio',
-                                          '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-                                           array('class' => 'show-hide-dettaglio')) ?>
-                    </td>                    
-                  <?php endif ?>
                 </tr>        
         	  <?php endforeach ?>
 
@@ -92,7 +88,7 @@ jQuery.noConflict();
 (function($) {
   $().ready(function(){
 
-    $('a.show-hide-dettaglio').click(
+    $('a#dettaglio-interessi').click(
     	function(){
     	  $this = $(this);
 
@@ -100,7 +96,7 @@ jQuery.noConflict();
         var url = $this.attr('href');
         if (!$this.data('details_loaded'))
         {
-          parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"7\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
+          parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
           $('#dettaglio td').load(url);
           $this.text('nascondi');
           $this.data('details_loaded', true);
@@ -111,6 +107,27 @@ jQuery.noConflict();
         }
         return false;
     	}
+
+      $('a#dettaglio-posizione').click(
+      	function(){
+      	  $this = $(this);
+
+      		var parent_tr = $this.parents('tr');
+          var url = $this.attr('href');
+          if (!$this.data('details_loaded'))
+          {
+            parent_tr.after("<tr id=\"dettaglio\" style=\"margin-left: 1.5em;\"><td colspan=\"6\" style=\"text-align:left; padding-left: 90px;\"></td></tr>");
+            $('#dettaglio td').load(url);
+            $this.text('nascondi');
+            $this.data('details_loaded', true);
+          } else {
+            $('#dettaglio').remove();
+            $this.data('details_loaded', false);
+            $this.text('dettaglio');
+          }
+          return false;
+      	}
+
     );
 
   	// Setup the ajax indicator
