@@ -123,7 +123,7 @@ function run_stlab_genera_tags_csv($task, $args, $options)
  * ATTO_ID_i.txt - i num progressivo del testo
  */
 function run_stlab_genera_testi_atti($task, $args, $options)
-{l
+{
   static $loaded;
 
   // load application context
