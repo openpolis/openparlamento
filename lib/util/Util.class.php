@@ -35,12 +35,17 @@ class Util
     $data = $data_inizio;
     $date = array();
     
+    // loop che costruisce l'array di tutti i fine mese, dalla data iniziale
+    // tranne la data finale
     $cnt = 0;
     do {
       $date []= $data;
       $data = date('Y-m-t', strtotime('+1 day', strtotime($data)));
       $cnt++;
     } while ($data < $data_fine && $cnt < 100);
+
+    // aggiunge la data finale
+    $date []= $data_fine;
     
     return $date;
   }
