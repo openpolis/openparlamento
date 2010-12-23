@@ -278,8 +278,8 @@ class OppCaricaPeer extends BaseOppCaricaPeer
           $tagging_table = 'sf_tagging';
           $tagging_conditions = "t.taggable_id=i.atto_id and t.taggable_model='OppAtto'";          
         }
-        // estrazione di tutte le sedute con almeno un intervento della carica relativo ad atti taggati con argomento 
-        $sql = sprintf("select i.atto_id, i.sede_id, i.data as data_intervento, ah.indice, ah.priorita from opp_atto a, opp_intervento i, $tagging_table t, opp_act_history_cache ah where a.id=i.atto_id and a.is_omnibus=$is_omnibus and ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and $tagging_conditions and t.tag_id in (%s)  group by i.atto_id, i.sede_id, i.data order by i.atto_id, i.data, i.sede_id;", $carica_id, $data, implode(", ", $argomenti_ids));
+        // estrazione di tutti gli interventi della carica relativo ad atti taggati con argomento 
+        $sql = sprintf("select count(*) as ni, i.atto_id, ah.indice, ah.priorita from opp_atto a, opp_intervento i, $tagging_table t, opp_act_history_cache ah where a.id=i.atto_id and a.is_omnibus=$is_omnibus and ah.chi_id=i.atto_id and i.carica_id = %d and ah.data='%s' and $tagging_conditions and t.tag_id in (%s)  group by i.atto_id order by i.atto_id;", $carica_id, $data, implode(", ", $argomenti_ids));
 
         $stm = $con->createStatement(); 
         $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
@@ -289,16 +289,15 @@ class OppCaricaPeer extends BaseOppCaricaPeer
         while ($rs->next())
         {
           $row = $rs->getRow();
+          $n_interventi = $row['ni'];
           $atto_id = $row['atto_id'];
-          $sede_intervento = $row['sede_id'];
-          $data_intervento = $row['data_intervento'];
           $priorita = $row['priorita'];
           $punti_atto = $row['indice']/(float)$priorita;
 
           $dettaglio["interventi"][] = array('atto' => OppAttoPeer::retrieveByPK($atto_id), 'atto_id' => $atto_id, 
                                              'punti_atto' => $punti_atto,
-                                             'sede_intervento' => $sede_intervento, 'data_intervento' => $data_intervento);
-          $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto;
+                                             'n_interventi' => $n_interventi);
+          $totale += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $n_interventi * $punti_atto;
         }
         $dettaglio['totale_interventi'] += $totale;
       }
@@ -653,8 +652,8 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
     if ($fetch_interventi) {
       // Interventi
-      // estrazione di tutte le sedute con interventi relativi ad atti non-omnibus taggati con argomenti
-      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.data_fine is null  and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 0 and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
+      // estrazione degli interventi relativi ad atti non-omnibus taggati con argomenti
+      $sql = sprintf("select count(*) as ni, p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id and cg.data_fine is null  and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 0 and t.taggable_id=a.id and t.taggable_model='OppAtto' and t.tag_id in (%s) group by i.carica_id, i.atto_id;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
@@ -664,6 +663,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       while ($rs->next())
       {
         $row = $rs->getRow();
+        $n_interventi = $row['ni'];
         $carica_id = $row['carica_id'];
         $atto_id = $row['atto_id'];
         $circoscrizione = $row['circoscrizione'];
@@ -679,11 +679,11 @@ class OppCaricaPeer extends BaseOppCaricaPeer
                                         'nome' => $nome, 'cognome' => $cognome, 'acronimo' => $acronimo, 
                                         'punteggio' => 0);
 
-        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto / (float)$priorita;
+        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $n_interventi * $punti_atto / (float)$priorita;
       }
 
       // estrazione di tutte le sedute con interventi relativi ad atti omnibus taggati con argomenti
-      $sql = sprintf("select p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id  and cg.data_fine is null and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 1 and t.atto_id=a.id and t.tag_id in (%s) group by i.carica_id, i.atto_id, i.sede_id, i.data;",
+      $sql = sprintf("select count(*) as ni, p.id as politico_id, p.nome, p.cognome, c.circoscrizione, g.acronimo, i.atto_id, i.sede_id, i.data, i.carica_id, ah.indice, ah.priorita from opp_intervento i, opp_atto a, opp_politico p, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo g, sf_tagging_for_index t, opp_act_history_cache ah where p.id=c.politico_id and ah.chi_id=i.atto_id and i.atto_id=a.id and c.id=i.carica_id and cg.carica_id=c.id  and cg.data_fine is null and cg.gruppo_id=g.id %s  and ah.data='%s' and c.tipo_carica_id in (%s) and c.data_fine is null and a.is_omnibus = 1 and t.atto_id=a.id and t.tag_id in (%s) group by i.carica_id, i.atto_id;",
                      $group_constraint, $data, implode(", ", $tipi_cariche), implode(", ", $argomenti_ids));
 
       $stm = $con->createStatement(); 
@@ -693,6 +693,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
       while ($rs->next())
       {
         $row = $rs->getRow();
+        $n_interventi = $row['ni'];
         $carica_id = $row['carica_id'];
         $circoscrizione = $row['circoscrizione'];
         $atto_id = $row['atto_id'];
@@ -708,7 +709,7 @@ class OppCaricaPeer extends BaseOppCaricaPeer
                                         'nome' => $nome, 'cognome' => $cognome, 'acronimo' => $acronimo, 
                                         'punteggio' => 0);
 
-        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $punti_atto / (float)$priorita;
+        $politici[$carica_id]['punteggio'] += OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') * $n_interventi * $punti_atto / (float)$priorita;
       }
 
 

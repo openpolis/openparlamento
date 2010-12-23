@@ -49,12 +49,11 @@
     <?php foreach ($interventi as $intervento): ?>
       <?php $atto = $intervento['atto'] ?>
       <li>
-        Data: <?php echo $intervento['data_intervento'] ?>,  
-        Sede: <?php echo $intervento['sede_intervento'] ?>,
+        <?php echo $intervento['n_interventi'] ?> Interventi:
         Atto:  <?php echo link_to($atto->getShortTitle(), '@singolo_atto?id='.$atto->getId()) ?>
-        punti: <?php echo $intervento['punti_atto'] ?> x 
+        punti: <?php echo $intervento['n_interventi'] ?> x <?php echo $intervento['punti_atto'] ?> x 
                <?php echo OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I') ?> = 
-               <?php echo $intervento['punti_atto']*OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I')?>
+               <?php echo $intervento['punti_atto']*$intervento['n_interventi']*OppCaricaHasAttoPeer::get_nuovo_fattore_firma('I')?>
       </li>    
     <?php endforeach ?>
   </ul>  
