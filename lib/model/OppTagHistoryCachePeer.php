@@ -49,8 +49,38 @@ class OppTagHistoryCachePeer extends BaseOppTagHistoryCachePeer
     return $dates;
   }
   
+  public static function getHistory($chi_tipo, $chi_id, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$storico = array();
+
+    $sql = sprintf("select th.chi_id, th.indice, th.data from opp_tag_history_cache th where th.chi_tipo='%s' and th.chi_id=%s order by th.data", $chi_tipo, $chi_id);
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      
+      $data = $row['data'];
+      $rilevanza = $row['indice'];
+      
+      if (!array_key_exists($data, $storico))
+        $storico[$data] = 0;
+
+      $storico[$data] += $rilevanza;
+    }  
+    
+    return $storico;      
+    
+  }
+  
   /**
-   * estrazione di tutti i record relativi a un atto per una legislatura
+   * retrieve di un record dati data, tipo e id
    *
    * @param string $data 
    * @param string $chi_tipo 

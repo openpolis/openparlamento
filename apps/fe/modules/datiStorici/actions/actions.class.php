@@ -228,6 +228,64 @@ class datiStoriciActions extends sfActions
   }
   
 
+  public function executeRilevanzaTagExport()
+  {
+    sfLoader::loadHelpers(array('Number'));
+
+    $this->session = $this->getUser();
+    $this->forward404Unless($this->session->hasCredential('adhoc'));
+
+    $data_inizio = OppLegislaturaPeer::$legislature[OppLegislaturaPeer::getCurrent()]['data_inizio'];
+    $data_fine = OppTagHistoryCachePeer::fetchLastData();
+    $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));  
+
+    $limit = $this->getRequestParameter('limit', 50);
+
+    $c = new Criteria();
+    $c->addJoin(TagPeer::ID, OppTagHistoryCachePeer::CHI_ID);
+    $c->add(OppTagHistoryCachePeer::CHI_TIPO, 'S');
+    $c->add(OppTagHistoryCachePeer::DATA, $data_fine);
+    $c->addDescendingOrderByColumn(OppTagHistoryCachePeer::INDICE);
+    $c->setLimit($limit);
+    $tags = TagPeer::doSelect($c);
+    
+    $tags_csv = array();
+      
+    // costruzione delle serie storiche per ogni politico (da inizio legislatura)
+    foreach ($tags as $cnt => $tag) {
+      $tag_id = $tag->getId();
+
+      // genero il label
+      $label = sprintf("%s(%s)", $tag->getTripleValue(), $tag->getTripleNamespace());
+      
+      // arrotonda l'array dei valori storici a due cifre decimali (max)
+      $storico = OppTagHistoryCachePeer::getHistory('S', $tag->getId());
+
+      // primi campi (dati fissi)
+      $csv_row = "$tag_id,\"$label\",";
+      
+      foreach ($date as $cnt => $data) {
+        if (array_key_exists($data, $storico)) {
+          $storico[$data] = format_number(round($storico[$data], 2), 'it_IT');
+        } else {
+          $storico[$data] = 0;
+        }
+        $csv_row .= '"' . $storico[$data] . '"';
+        if ($cnt < count($date) -1) $csv_row .= ",";
+      }
+      
+      $tags_csv []= $csv_row;
+    }
+     
+    $this->date_csv = "tag_id,tag(namespace)," . implode(",", $date);
+    $this->tags_csv = $tags_csv;
+    
+    $this->setLayout(false);   
+    $this->response->setContentType('text/plain');
+    
+  }
+ 
+
   public function executeInteressi()
   {
     $this->session = $this->getUser();

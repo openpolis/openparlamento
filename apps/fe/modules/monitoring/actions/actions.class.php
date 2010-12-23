@@ -631,7 +631,7 @@ class monitoringActions extends sfActions
 
     $limit = sfConfig::get('app_limit_classifica_parlamentari_sioccupanodi', 15);
 
-    $data_inizio = '2008-04-30';
+    $data_inizio = OppLegislaturaPeer::$legislature[OppLegislaturaPeer::getCurrent()]['data_inizio'];
     $data_fine = OppActHistoryCachePeer::fetchLastData();
     $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));  
     

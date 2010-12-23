@@ -100,6 +100,7 @@ class OppActHistoryCachePeer extends BaseOppActHistoryCachePeer
     
   }
   
+  
   /**
    * estrae tutti i record a partire da una data
    *

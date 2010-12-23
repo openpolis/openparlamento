@@ -32,7 +32,7 @@ class Util
   
   public static function buildCacheDatesArray($data_inizio, $data_fine)
   {
-    $data = $data_inizio;
+    $data = date('Y-m-t', strtotime($data_inizio));
     $date = array();
     
     // loop che costruisce l'array di tutti i fine mese, dalla data iniziale

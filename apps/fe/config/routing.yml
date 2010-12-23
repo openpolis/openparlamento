@@ -150,6 +150,12 @@ dati_storici_dettaglio_interessi:
   url:   /dettaglio_interessi/:carica_id/:tags_ids
   param: { module: datiStorici, action: interessiDettaglio }
 
+dati_storici_rilevanza_tag_export:
+  url:   /rilevanza_tag_export/:limit
+  param: { module: datiStorici, action: rilevanzaTagExport, limit: 50 }
+  
+
+
 monitoring_dettaglio_posizione:
   url:   /dettaglio_posizione/:carica_id/:tags_ids
   param: { module: monitoring, action: posizioneDettaglio }
