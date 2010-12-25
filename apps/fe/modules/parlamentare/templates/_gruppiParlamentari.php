@@ -20,37 +20,51 @@ $saldo_magg=0;
 $num_magg=0;
 $saldo_min=0;
 $num_min=0;
+$saldo_neutral=0;
+$num_neutral=0;
 $tr_class = 'even';
 foreach ($gruppo_now as $k => $g)
 {
   if ($g!==0)
   {
+    $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'));
     echo "<tr class='".$tr_class."'>";
     $tr_class = ($tr_class == 'even' ? 'odd' : 'even' );
-    if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1)
-      $color_gruppo="#022468";
-    else
+    if ($valore===null)
+      $color_gruppo="#a29c9c"; 
+    elseif ($valore==0)
       $color_gruppo="#766d04";
+    elseif ($valore==1)
+    $color_gruppo="#022468";
+       
     echo "<th scope='row'><span style='background-color:".$color_gruppo."; color:white; margin:5px;'>&nbsp;</span>".link_to(OppGruppoPeer::retrieveByPk($k)->getNome(),'@parlamentari?ramo='.($ramo==1?'camera':'senato').'&sort=nome&type=asc&filter_group='.$k)."</th>";
     echo "<td>".link_to($g,'@parlamentari?ramo='.($ramo==1?'camera':'senato').'&sort=nome&type=asc&filter_group='.$k)."</td>";
     echo "<td>".$gruppo_in[$k]."</td>";
     echo "<td>".$gruppo_out[$k]."</td>";
     echo "<td><strong>".(($gruppo_in[$k]-$gruppo_out[$k])>0 ? '+'.($gruppo_in[$k]-$gruppo_out[$k]) : ($gruppo_in[$k]-$gruppo_out[$k]))."</strong></td>";
-    if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1)
+    
+    if ($valore===null)
+    {
+      $saldo_neutral=$saldo_neutral+$gruppo_in[$k]-$gruppo_out[$k];
+      $num_neutral=$num_neutral+$g;
+    }
+    elseif ($valore==1)
     {
       $saldo_magg=$saldo_magg+$gruppo_in[$k]-$gruppo_out[$k];
       $num_magg=$num_magg+$g;
     }
-    else
+    elseif ($valore==0)
     {
        $saldo_min=$saldo_min+$gruppo_in[$k]-$gruppo_out[$k];
        $num_min=$num_min+$g;
     }
     echo "</tr>";
    
-    if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date("Y-m-d"))==1)
+   if ($valore===null)
+      $perc_neutral[$k]=$g;
+   elseif ($valore==1)
       $perc_magg[$k]=$g;
-    else
+   elseif ($valore==0)
       $perc_min[$k]=$g;
   }
   
@@ -66,6 +80,16 @@ foreach($perc_magg as $k => $perc)
     $perc_grafico=$perc_grafico.(number_format($perc*100/321/2,2)).",";
   $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|";
 }
+
+foreach($perc_neutral as $k => $perc)
+{
+  if ($ramo==1)
+    $perc_grafico=$perc_grafico.(number_format($perc*100/630/2,2)).",";
+  else
+    $perc_grafico=$perc_grafico.(number_format($perc*100/321/2,2)).",";
+  $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
+}
+
 foreach($perc_min as $k => $perc)
 {
   if ($ramo==1)
@@ -74,6 +98,8 @@ foreach($perc_min as $k => $perc)
     $perc_grafico=$perc_grafico.(number_format($perc*100/321/2,2)).",";
   $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
 }
+
+
 for ($x=0;$x<count($perc_magg);$x++)
 {
   switch ($x) {
@@ -98,6 +124,32 @@ for ($x=0;$x<count($perc_magg);$x++)
   }
 
 }
+
+for ($x=0;$x<count($perc_neutral);$x++)
+{
+  switch ($x) {
+      case 0:
+          $color_grafico=$color_grafico."a29c9c|";
+          break;
+      case 1:
+          $color_grafico=$color_grafico."938f8f|";
+          break;
+      case 2:
+          $color_grafico=$color_grafico."8a8585|";
+          break;
+      case 3:
+          $color_grafico=$color_grafico."837e7e|";
+          break;    
+      case 4:
+          $color_grafico=$color_grafico."767373|";
+          break;
+      case 5:
+          $color_grafico=$color_grafico."636060|";
+          break;    
+  }
+
+}
+
 
 for ($x=0;$x<count($perc_min);$x++)
 {
@@ -157,12 +209,16 @@ $tr_class = 'even';
 
 foreach($array_diff as $k => $diff)
 {
+  $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'));
   echo "<tr class='".$tr_class."'>";
   $tr_class = ($tr_class == 'even' ? 'odd' : 'even' );
-  if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1)
-    $color_gruppo="#022468";
-  else
+  if ($valore===null)
+    $color_gruppo="#a29c9c"; 
+  elseif ($valore==0)
     $color_gruppo="#766d04";
+  elseif ($valore==1)
+    $color_gruppo="#022468";
+    
   echo "<th scope='row' style='font-size:11px;'><span style='background-color:".$color_gruppo."; color:white; margin:5px;'>&nbsp;</span><strong>".OppGruppoPeer::retrieveByPk($k)->getAcronimo()."</strong></td>";
   $saldo=0;
   
@@ -223,7 +279,10 @@ foreach($array_diff as $k => $diff)
   </tbody>
 </table>      
 <br/>
-Per la maggioranza in questo ramo del Parlamento sono necessari <?php echo ($ramo==1 ? '316 deputati' : '161 senatori')?>. Oggi il Governo ha un margine di <strong><?php echo ($num_magg-($ramo==1 ? '316' : '161')) ?></strong> <?php echo ($ramo==1 ? ' deputati.' : ' senatori.') ?>  
+<?php $margine_maggioranza=$num_magg-($ramo==1 ? '316' : '161') ?>
+Per la maggioranza in questo ramo del Parlamento sono necessari <?php echo ($ramo==1 ? '<strong>316</strong> deputati' : '<strong>161</strong> senatori')?>.<br/>
+Oggi il Governo ha il sostegno di <strong><?php echo $num_magg ?></strong> <?php echo ($ramo==1 ? 'deputati' : 'senatori')?> <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>
+<?php echo ($margine_maggioranza>0 ?'Possiede quindi un margine di <strong>'.$margine_maggioranza.'</strong> parlamentari.' :'Ha bisogno quindi del sostegno di<strong>'.$margine_maggioranza.'</strong> parlamentari di altri gruppi.') ?> 
 
 </div>
 <div class="W73_100 float-left" style="width:60%">

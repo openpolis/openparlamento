@@ -35,10 +35,13 @@
          <tbody>
      <?php $tr_class = 'even'; ?>
      <?php foreach ($gruppi_all as $k => $gruppo) : ?>
+       <?php $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d')); ?>
        <tr class="<?php echo ($tr_class == 'even' ? 'odd' : 'even' ); ?>">
-       <?php if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1) : ?>
+       <?php if ($valore===null) : ?>
+         <?php $color_gruppo="#a29c9c"; ?>
+       <?php elseif($valore==1) : ?>   
          <?php $color_gruppo="#022468"; ?>
-       <?php else : ?>
+       <?php elseif($valore==0) : ?>
          <?php $color_gruppo="#766d04"; ?>
         <?php endif; ?>  
        <th scope='row'><span style='background-color:<?php echo $color_gruppo ?>; color:white; margin:5px;'>&nbsp;</span><?php echo OppGruppoPeer::retrieveByPk($k)->getAcronimo(); ?></th>
@@ -100,13 +103,17 @@
      <?php  
        $perc_magg=array();
        $perc_min=array();
+       $perc_neutral=array();
        $num_totale=0;
        foreach ($gruppi_all as $k => $gruppo)
        {
-         if (OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'))==1)
-           $perc_magg[$k]=$gruppo;
-         else
-           $perc_min[$k]=$gruppo;
+         $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'));
+         if ($valore===null)
+          $perc_neutral[$k]=$gruppo;
+         elseif($valore==1)
+          $perc_magg[$k]=$gruppo;
+         elseif($valore==0) 
+          $perc_min[$k]=$gruppo;
 
          $num_totale=$num_totale+$gruppo;  
        }
@@ -115,16 +122,22 @@
        $color_grafico="FFFFFF|";
        foreach($perc_magg as $k => $perc)
        {
-
          $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
          $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|";
        }
+       
+       foreach($perc_neutral as $k => $perc)
+        {
+          $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
+          $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
+        }
+       
        foreach($perc_min as $k => $perc)
        {
-
          $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
          $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
        }
+       
        for ($x=0;$x<count($perc_magg);$x++)
        {
          switch ($x) {
@@ -145,6 +158,31 @@
                  break;
              case 5:
                  $color_grafico=$color_grafico."6f9df9|";
+                 break;    
+         }
+
+       }
+       
+       for ($x=0;$x<count($perc_neutral);$x++)
+       {
+         switch ($x) {
+             case 0:
+                 $color_grafico=$color_grafico."a29c9c|";
+                 break;
+             case 1:
+                 $color_grafico=$color_grafico."938f8f|";
+                 break;
+             case 2:
+                 $color_grafico=$color_grafico."8a8585|";
+                 break;
+             case 3:
+                 $color_grafico=$color_grafico."837e7e|";
+                 break;    
+             case 4:
+                 $color_grafico=$color_grafico."767373|";
+                 break;
+             case 5:
+                 $color_grafico=$color_grafico."636060|";
                  break;    
          }
 
