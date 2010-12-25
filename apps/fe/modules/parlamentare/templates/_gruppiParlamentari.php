@@ -280,9 +280,9 @@ foreach($array_diff as $k => $diff)
 </table>      
 <br/>
 <?php $margine_maggioranza=$num_magg-($ramo==1 ? '316' : '161') ?>
+<p style="font-size:16px;">Il Governo <?php echo ($margine_maggioranza>0 ?'ha un margine di <strong>'.abs($margine_maggioranza).'</strong> parlamentari.' :'ha bisogno del sostegno di<strong>'.abs($margine_maggioranza).'</strong> parlamentari di altri gruppi.') ?></p> 
 Per la maggioranza in questo ramo del Parlamento sono necessari <?php echo ($ramo==1 ? '<strong>316</strong> deputati' : '<strong>161</strong> senatori')?>.<br/>
 Oggi il Governo ha il sostegno di <strong><?php echo $num_magg ?></strong> <?php echo ($ramo==1 ? 'deputati' : 'senatori')?> <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>
-<?php echo ($margine_maggioranza>0 ?'Possiede quindi un margine di <strong>'.$margine_maggioranza.'</strong> parlamentari.' :'Ha bisogno quindi del sostegno di<strong>'.$margine_maggioranza.'</strong> parlamentari di altri gruppi.') ?> 
 
 </div>
 <div class="W73_100 float-left" style="width:60%">

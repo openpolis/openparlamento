@@ -185,7 +185,6 @@
                  $color_grafico=$color_grafico."636060|";
                  break;    
          }
-
        }
 
        for ($x=0;$x<count($perc_min);$x++)
