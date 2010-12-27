@@ -335,7 +335,7 @@ class datiStoriciActions extends sfActions
     }
      
     $this->csv_header = "tag_id,tag(namespace)," . implode(",", $date);
-    $this->csv_rows = $tags_csv;
+    $this->csv_rows = $csv_rows;
     
     $this->setLayout(false);   
     $this->response->setContentType('text/plain');
