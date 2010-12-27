@@ -250,11 +250,11 @@ class datiStoriciActions extends sfActions
     $macroregions = OppLocationPeer::retrieveMacroregions();
 
     
-    foreach ($macroregions as $cnt => $region) {
-      $region_id = $region['id'];
-      $region_name = $region['name'];
-      $csv_row = $region['name'] . ",";
-      $locations_ids = OppLocationPeer::getLocationsIdsByMacroRegion($region_id);
+    foreach ($macroregions as $cnt => $macro_region) {      
+      $macro_region_id = $macro_region['macroregional_id'];
+      $macro_region_name = $macro_region['name'];
+      $csv_row = $macro_region_name . ",";
+      $locations_ids = OppLocationPeer::getLocationsIdsByMacroRegion($macro_region_id);
       $storico = OppTagHistoryCachePeer::getAggregatedHistory('S', $locations_ids);
 
       foreach ($date as $cnt => $data) {
@@ -268,9 +268,31 @@ class datiStoriciActions extends sfActions
       }
 
       $csv_rows []= $csv_row;
+      
+      
+      $regions = OppLocationPeer::getRegionsByMacroRegion($macro_region_id);
+      foreach ($regions as $cnt => $region) {
+        $region_id = $region['regional_id'];
+        $region_name = $region['name'];
+        $csv_row = $region_name . ",";
+        $locations_ids = OppLocationPeer::getLocationsIdsByRegion($region_id);
+        $storico = OppTagHistoryCachePeer::getAggregatedHistory('S', $locations_ids);
+
+        foreach ($date as $cnt => $data) {
+          if (array_key_exists($data, $storico)) {
+            $storico[$data] = format_number(round($storico[$data], 2), 'it_IT');
+          } else {
+            $storico[$data] = 0;
+          }
+          $csv_row .= '"' . $storico[$data] . '"';
+          if ($cnt < count($date) -1) $csv_row .= ",";
+        }
+
+        $csv_rows []= $csv_row;
+      }
     }
 
-    $this->csv_header = "macroregion," . implode(",", $date);
+    $this->csv_header = "(macro)region name," . implode(",", $date);
     $this->csv_rows = $csv_rows;
     
     $this->setLayout(false);   
