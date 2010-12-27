@@ -78,6 +78,37 @@ class OppTagHistoryCachePeer extends BaseOppTagHistoryCachePeer
     return $storico;      
     
   }
+
+  
+  public static function getAggregatedHistory($chi_tipo, $chi_ids, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$storico = array();
+
+    $sql = sprintf("select sum(th.indice) as i, th.data from opp_tag_history_cache th where th.chi_tipo='%s' and th.chi_id in (%s) group by data order by th.data", $chi_tipo, implode(',', $chi_ids));
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      
+      $data = $row['data'];
+      $rilevanza = $row['i'];
+      
+      if (!array_key_exists($data, $storico))
+        $storico[$data] = 0;
+
+      $storico[$data] += $rilevanza;
+    }  
+    
+    return $storico;      
+    
+  }
   
   /**
    * retrieve di un record dati data, tipo e id

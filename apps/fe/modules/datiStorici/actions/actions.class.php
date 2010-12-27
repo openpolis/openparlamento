@@ -228,6 +228,63 @@ class datiStoriciActions extends sfActions
   }
   
 
+  /**
+   * esporta csv con dati storici della somma della rilevanza dei tag op_geo
+   * aggregati per macro-regioni
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function executeGeoAggregatiRilevanzaTagExport()
+  {
+    sfLoader::loadHelpers(array('Number'));
+
+    $this->session = $this->getUser();
+    $this->forward404Unless($this->session->hasCredential('adhoc'));
+
+    $data_inizio = OppLegislaturaPeer::$legislature[OppLegislaturaPeer::getCurrent()]['data_inizio'];
+    $data_fine = OppTagHistoryCachePeer::fetchLastData();
+    $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));
+
+    // fetch delle macrozone e degli id delle località relative (city, prov, reg)
+    $macroregions = OppLocationPeer::retrieveMacroregions();
+
+    
+    foreach ($macroregions as $cnt => $region) {
+      $region_id = $region['id'];
+      $region_name = $region['name'];
+      $csv_row = $region['name'] . ",";
+      $locations_ids = OppLocationPeer::getLocationsIdsByMacroRegion($region_id);
+      $storico = OppTagHistoryCachePeer::getAggregatedHistory('S', $locations_ids);
+
+      foreach ($date as $cnt => $data) {
+        if (array_key_exists($data, $storico)) {
+          $storico[$data] = format_number(round($storico[$data], 2), 'it_IT');
+        } else {
+          $storico[$data] = 0;
+        }
+        $csv_row .= '"' . $storico[$data] . '"';
+        if ($cnt < count($date) -1) $csv_row .= ",";
+      }
+
+      $csv_rows []= $csv_row;
+    }
+
+    $this->csv_header = "macroregion," . implode(",", $date);
+    $this->csv_rows = $csv_rows;
+    
+    $this->setLayout(false);   
+    $this->setTemplate('rilevanzaTagExport');
+    $this->response->setContentType('text/plain');
+    
+  }
+  
+  /**
+   * esporta csv con dati storici della rilevanza dei tag, con limite custom
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
   public function executeRilevanzaTagExport()
   {
     sfLoader::loadHelpers(array('Number'));
@@ -249,7 +306,7 @@ class datiStoriciActions extends sfActions
     $c->setLimit($limit);
     $tags = TagPeer::doSelect($c);
     
-    $tags_csv = array();
+    $csv_rows = array();
       
     // costruzione delle serie storiche per ogni politico (da inizio legislatura)
     foreach ($tags as $cnt => $tag) {
@@ -274,11 +331,11 @@ class datiStoriciActions extends sfActions
         if ($cnt < count($date) -1) $csv_row .= ",";
       }
       
-      $tags_csv []= $csv_row;
+      $csv_rows []= $csv_row;
     }
      
-    $this->date_csv = "tag_id,tag(namespace)," . implode(",", $date);
-    $this->tags_csv = $tags_csv;
+    $this->csv_header = "tag_id,tag(namespace)," . implode(",", $date);
+    $this->csv_rows = $tags_csv;
     
     $this->setLayout(false);   
     $this->response->setContentType('text/plain');

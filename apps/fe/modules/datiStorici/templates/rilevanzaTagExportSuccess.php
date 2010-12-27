@@ -1,5 +1,5 @@
-<?php echo $date_csv ?>
+<?php echo $csv_header ?>
 
-<?php foreach ($tags_csv as $tag): ?>
-<?php echo $tag . "\n" ?>
+<?php foreach ($csv_rows as $row): ?>
+<?php echo $row . "\n" ?>
 <?php endforeach ?>

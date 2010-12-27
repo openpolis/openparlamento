@@ -20,7 +20,8 @@
     <?php include_partial('rilevanzaTagList', array('pager' => $pager)) ?>
     
     <div style="clear: both; text-align: center">
-      <?php echo link_to('scarica in formato CSV', '@dati_storici_rilevanza_tag_export') ?>
+      <?php echo link_to('scarica dati storici (CSV)', '@dati_storici_rilevanza_tag_export') ?> |
+      <?php echo link_to('scarica dati storici aggregati per macro-regioni (CSV)', '@dati_storici_geoaggregati_rilevanza_tag_export') ?>
     </div>
 
   </div>
