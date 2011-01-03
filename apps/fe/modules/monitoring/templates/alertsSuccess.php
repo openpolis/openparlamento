@@ -21,8 +21,9 @@
       <ul id="my_alerts" class="monitoring-list">
         <?php foreach ($alerts as $alert): ?>
           <li> 
+            <?php $term = $alert->getOppAlertTerm()->getTerm() ?>
             <?php echo  link_to(image_tag('ico-remove_alert.png'), 
-                                'monitoring/delAlert?term='.($term = $alert->getOppAlertTerm()->getTerm()) , 
+                                'monitoring/delAlert?term='. str_replace("/", "|", $term) , 
                                 array('title' => 'smetti di ricevere alert su questo termine')) ?>
             <?php echo $term; ?>
           </li>

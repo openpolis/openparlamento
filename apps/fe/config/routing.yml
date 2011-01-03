@@ -331,6 +331,10 @@ votazioniSearch:
 votichiave:
   url:   /votazioni/keyvotes
   param: { module: votazione, action: keyvotes }
+
+votiRilevanti:
+  url:   /votazioniRilevanti
+  param: { module: votazione, action: relevantVotes }
   
 maggioranzaSotto:
   url:   /votazioni/maggioranzaSotto/:sort/:type/*

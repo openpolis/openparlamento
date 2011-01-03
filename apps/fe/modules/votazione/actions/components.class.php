@@ -171,7 +171,7 @@ class votazioneComponents extends sfComponents
    
   public function executeKeyvotes()
   { 
-    $this->votazioni = OppVotazionePeer::getKeyVotes($this->limit);
+    $this->votazioni = OppVotazionePeer::getKeyVotes($this->limit, $this->type);
   } 
         
 }

@@ -296,6 +296,15 @@ class votazioneActions extends sfActions
      
   
   }
+
+  public function executeRelevantVotes()
+  {
+    $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle('I voti editorialmente rilevanti di Camera e Senato - '.sfConfig::get('app_main_title'));
+  }
   
   public function executeMaggioranzaSotto()
   {

@@ -1,19 +1,16 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs', array('current' => 'voti_chiave')) ?>
+<?php include_partial('tabs', array('current' => 'voti_rilevanti')) ?>
 
 <div id="content" class="tabbed float-container">
   <div id="main">
     <div class="W25_100 float-right">
       <?php include_partial('votazioneRightColumn', array('query' => $query)) ?>  
-       <p align=center>
-      <?php echo link_to(image_tag('/images/banner_grafico_230x80.png'),'/grafico_distanze/votes_16_C') ?>
-      </p>
     </div>
     <div class="W73_100 float-left">
-      <?php include_partial('wikiKeyVotes') ?>  
+      <?php include_partial('wikiRelevantVotes') ?>  
       <p>&nbsp;</p>                 
-      <?php include_component('votazione','keyvotes', array('limit' => '0', 'pagina' => 'keyvotes', 'type' => 'key')) ?> 
+      <?php include_component('votazione', 'keyvotes', array('limit' => '0', 'type' => 'relevant', 'pagina' => 'keyvotes')) ?> 
     </div>
     <div class="clear-both"></div>
   </div>

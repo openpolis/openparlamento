@@ -54,13 +54,17 @@ class OppVotazionePeer extends BaseOppVotazionePeer
    * @return array di OppVotazione
    * @author Guglielmo Celata
    */
-  public static function getLastTwoKeyVotes()
+  public static function getLastTwoKeyVotes($type = 'key')
   {
     $c = new Criteria();
     $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
+    if ($type == 'key') {
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
+    } else {
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'relevant_vote');      
+    }
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
 
     $votazioni = array();
@@ -74,13 +78,17 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     return $votazioni;
   }
   
-  public static function getKeyVotes($limit = 0)
+  public static function getKeyVotes($limit = 0, $type = 'key')
   {
     $c = new Criteria();
     $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
+    if ($type == 'key') {
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
+    } else {
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'relevant_vote');      
+    }
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
     if ($limit != 0)
        $c->setLimit($limit);

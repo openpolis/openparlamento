@@ -741,6 +741,7 @@ class monitoringActions extends sfActions
     // read term from request parameters
     $term = $this->getRequestParameter('term');
     $this->forward404Unless($term);
+    $term = str_replace("|", "/", $term);
 
 
     // check limitations (for non-adhoc subscribers)
@@ -779,6 +780,7 @@ class monitoringActions extends sfActions
     // read term from request parameters
     $term = $this->getRequestParameter('term');
     $this->forward404Unless($term);
+    $term = str_replace("|", "/", $term);
 
     $res = OppAlertUserPeer::delAlert($term, $opp_user);
     $this->forward404Unless($res);

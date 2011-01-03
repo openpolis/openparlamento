@@ -16,6 +16,10 @@
 
      <!-- blocco voti chiave -->
      <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+       <h6>Lancia come relevant-vote</h6>
+       <?php echo include_partial('deppLaunching/launcher', array('object' => $votazione, 'namespace' => 'relevant_vote')); ?>    
+        <br />
+       <hr class="dotted" />
        <h6>Lancia come key-vote</h6>
        <?php echo include_partial('deppLaunching/launcher', array('object' => $votazione, 'namespace' => 'key_vote')); ?>    
         <br />
