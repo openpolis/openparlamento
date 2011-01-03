@@ -132,13 +132,34 @@ class parlamentareActions extends sfActions
       $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
       
-      // altre cariche
+      // altre cariche da openpolis
       $xml= simplexml_load_file("http://www.openpolis.it/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
       $this->descrizione_cariche=array();
       if ($xml)
       {
           $this->descrizione_cariche = $xml->xpath("//description"); 
       }
+      
+      // da quanti giorni è parlamentare da openpolis
+      
+      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$this->parlamentare->getId());
+      $this->giorni=array();
+      if ($xml)
+      {
+          $giorni = $xml->xpath("//days"); 
+      }
+      if ($giorni[0]/365>1)
+        $durata=intval($giorni[0]/365).' anni e ';
+      elseif ($giorni[0]/365==1)  
+        $durata='un anno e ';
+      else
+        $durata="";
+      
+      if (($giorni[0]%365)>0)
+        $durata=($durata.$giorni[0]%365)." giorni";
+      
+      $this->durata=$durata;
+      
       	
     }   
     

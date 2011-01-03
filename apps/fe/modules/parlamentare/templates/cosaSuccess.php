@@ -51,7 +51,6 @@
     	                                     	
     <div class="W100_100 float-left">
     <div class="W25_100 float-right" style="width:37%"> 
-          
   		    
   		  <?php echo link_to('la sua pagina su ' . image_tag('/images/op_logo_small.png', 
   		                                                    array('alt' => 'vai al sito openpolis')), 
@@ -84,7 +83,12 @@
           
   				<div class="politician-more-info">
   				    <?php if ($carica) : ?>	
-  				    	<p><label><?php echo ($carica->getTipoCaricaId()!=5 ? $carica->getLegislatura()."&#186; legislatura: " :"") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?></label></p>
+  				    	<p><label>
+  				    	<?php echo ($carica->getTipoCaricaId()!=5 ? $carica->getLegislatura()."&#186; legislatura: " :"come Senatore a vita: ") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?>
+  				    	</label></p>
+  				    	<p> 
+  				    	<?php echo 'in carriera è stato parlamentare per '.link_to($durata,'http://www.openpolis.it/politico/'.$parlamentare->getId()."#carriera")?> 
+  				    	</p>
   					<p><label>gruppo:</label>  
   					
 					     <?php echo link_to($acronimo_gruppo_corrente,  
@@ -114,7 +118,7 @@
   				    <?php endif ?>	 
   					
   					
-  					   <?php echo include_partial('altreCariche',array('descrizione_cariche' => $descrizione_cariche)); ?> 
+  					   <?php echo include_partial('altreCariche',array('descrizione_cariche' => $descrizione_cariche)); ?>
   					
   				</div>
   	</div>
