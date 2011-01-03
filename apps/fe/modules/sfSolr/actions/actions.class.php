@@ -47,10 +47,41 @@ class sfSolrActions extends BasesfSolrActions
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+    
+    if ($this->hasRequestParameter('date_filter')) {
+      $date_filter = $this->getRequestParameter('date_filter', '');
+      // $this->getUser()->setAttribute('search_date_filter', $this->getRequestParameter('date_filter'));
+    }
+    // $date_filter = $this->getUser()->getAttribute('search_date_filter', '');
 
     // did user enter a query?
     if ($query)
     {
+      sfContext::getInstance()->getLogger()->info('{sfSolr} query: ' . $query);
+
+      sfConfig::set('solr_query_debug_level', 1);
+      
+      $fields_constraints = array();
+      
+      if ($date_filter != '') {
+        switch ($date_filter) {
+          case 'week':
+            $fields_constraints['created_at_dt'] = "[NOW-7DAYS/SECOND TO NOW]";
+            break;
+
+          case 'month':
+            $fields_constraints['created_at_dt'] = "[NOW-1MONTH/SECOND TO NOW]";
+            break;
+
+          case 'semester':
+            $fields_constraints['created_at_dt'] = "[NOW-6MONTHS/SECOND TO NOW]";
+            break;
+          
+          case 'year':
+            $fields_constraints['created_at_dt'] = "[NOW-1YEAR/SECOND TO NOW]";
+            break;
+        }
+      }
  
       $pager = new sfSolrPager();
       $pager->setMaxPerPage($itemsperpage);
@@ -60,7 +91,7 @@ class sfSolrActions extends BasesfSolrActions
       $pager->setSearch($this->getSolrInstance());
  
       try {
-        $pager->setResults($this->getResults($query, $offset, $pager->getMaxPerPage()));      
+        $pager->setResults($this->getResults($query, $offset, $pager->getMaxPerPage(), $fields_constraints));      
       } catch (sfSolrException $e) {
         $this->setTitle($query);
         $this->query = $query;

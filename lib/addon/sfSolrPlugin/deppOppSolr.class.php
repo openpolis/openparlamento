@@ -86,12 +86,14 @@ class deppOppSolr extends sfSolr
     }                                                                                                       
     $query_options['fq'] = $filter_query;
     
+    
 
     if (sfConfig::get('solr_query_debug_level', 1) > 0)
     {
       // add debug query parameter
       $query_options['debugQuery'] = 'true';
     }                                                                                   
+    sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfDismaxResults} fq: %s", $query_options['fq']));
 
     // returns the pager or trap the exception
     try {                                                                                                                                                                       
