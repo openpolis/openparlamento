@@ -1,1 +1,3 @@
 <?php echo OppTipoAttoPeer::retrieveByPK($result->tipo_atto_id)->getDescrizione() ?> - <?php echo link_to(highlight_keywords($result->titolo, $query, sfConfig::get('app_lucene_result_highlighter', '<strong class="highlight">%s</strong>')), add_highlight_qs($result->getInternalUri(), $query)) ?>
+
+<span style="font-size: 11px; color: gray;">(<?php echo date("d/m/Y", strtotime($result->data_pres_dt)) ?>)</span>

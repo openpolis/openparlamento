@@ -26,16 +26,17 @@ class deppOppSolr extends sfSolr
    * @param string $limit 
    * @param string $fields_constraints 
    * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
+   * @param string $sort    
    * @return sfSolrPager                                                                                      
    * @author Guglielmo Celata
    */
-  public static function getSfResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
+  public static function getSfResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false, $sort_specification = '')
   {
     $query_handler = sfConfig::get('solr_query_handler');
     if ($query_handler == 'dismax') {
-      return self::getSfDismaxResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode);
+      return self::getSfDismaxResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode, $sort_specification);
     } else {
-      return self::getSfStandardResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode);      
+      return self::getSfStandardResults($querystring, $offset, $limit, $fields_constraints, $quotes_mode, $sort_specification);      
     }
   }
   
@@ -47,11 +48,12 @@ class deppOppSolr extends sfSolr
    * @param int    $limit                                                                        
    * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
    * @param boolean $alert_mode  specifies wether terms should be only searched as quoted text (for Alerts)
+   * @param string $sort    
    * @return sfSolrPager                                                                                      
    * @throws sfSolrException     
    * @author Guglielmo Celata                                                                               
    */                                                                                                       
-  public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $alert_mode = false )
+  public static function getSfDismaxResults( $querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $alert_mode = false, $sort_specification = '' )
   {
     
     $query = strip_tags(trim($querystring));   
@@ -66,6 +68,15 @@ class deppOppSolr extends sfSolr
     // opzioni aggiuntive per la ricerca
     $query_options = array('qt' => 'dismax', 'fl' => '*,score');
     
+    // aggiunge specifica del sort, se presente
+    if ($sort_specification != '')
+    {
+      $query_options['sort'] = $sort_specification;
+      sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfDismaxResults} sort specification: %s", 
+                                            $query_options['sort']));      
+    }
+
+
     // se in modalità alert, trasforma la query type in dismaxAlerts
     if ($alert_mode)
       $query_options['qt'] = 'dismaxAlerts';
@@ -115,11 +126,12 @@ class deppOppSolr extends sfSolr
    * @param int    $limit                                                                        
    * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
    * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
+   * @param string $sort    
    * @return sfSolrPager                                                                                      
    * @throws sfSolrException     
    * @author Guglielmo Celata                                                                               
    */                                                                                                       
-  public static function getSfStandardResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false)
+  public static function getSfStandardResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $quotes_mode = false, $sort_specification = '')
   {
     sfLogger::getInstance()->info(sprintf("{deppOppSolr::getSfStandardResults} using Standard query type for %s", $querystring));
     
@@ -127,6 +139,10 @@ class deppOppSolr extends sfSolr
     
     // opzioni aggiuntive per la ricerca
     $query_options = array('fl' => '*,score');
+    
+    // aggiunge specifica del sort, se presente
+    if ($sort_specification != '')
+      $query_options['sort'] = $sort_specification;
     
     $q_first = ""; $quoted = false;
    	if (strpos($query, '"') === false)                                                                

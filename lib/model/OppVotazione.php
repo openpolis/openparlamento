@@ -344,6 +344,9 @@ class OppVotazione extends BaseOppVotazione
       $document->hasDescrizioneWiki = false;            
     }
 
+    if ($this->getOppSeduta()->getData())
+      $document->data_pres_dt = $this->getOppSeduta()->getData('%Y-%m-%dT%H:%M:%SZ');
+
     // ritorna il documento da aggiungere
     return $document;
   }

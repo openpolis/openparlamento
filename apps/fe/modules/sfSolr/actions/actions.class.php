@@ -48,40 +48,86 @@ class sfSolrActions extends BasesfSolrActions
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
     
-    if ($this->hasRequestParameter('date_filter')) {
-      $date_filter = $this->getRequestParameter('date_filter', '');
-      // $this->getUser()->setAttribute('search_date_filter', $this->getRequestParameter('date_filter'));
-    }
-    // $date_filter = $this->getUser()->getAttribute('search_date_filter', '');
-
+    $date_filter = $this->getRequestParameter('date_filter', '');
+    $type_filter = $this->getRequestParameter('type_filter', '');
+    $sort = $this->getRequestParameter('sort', '');
+    
     // did user enter a query?
     if ($query)
     {
       sfContext::getInstance()->getLogger()->info('{sfSolr} query: ' . $query);
 
-      sfConfig::set('solr_query_debug_level', 1);
-      
       $fields_constraints = array();
       
       if ($date_filter != '') {
         switch ($date_filter) {
+          case 'today':
+            $fields_constraints['data_pres_dt'] = "[NOW-1DAYS/SECOND TO NOW]";
+            break;
+          
           case 'week':
-            $fields_constraints['created_at_dt'] = "[NOW-7DAYS/SECOND TO NOW]";
+            $fields_constraints['data_pres_dt'] = "[NOW-7DAYS/SECOND TO NOW]";
             break;
 
           case 'month':
-            $fields_constraints['created_at_dt'] = "[NOW-1MONTH/SECOND TO NOW]";
+            $fields_constraints['data_pres_dt'] = "[NOW-1MONTH/SECOND TO NOW]";
             break;
 
           case 'semester':
-            $fields_constraints['created_at_dt'] = "[NOW-6MONTHS/SECOND TO NOW]";
+            $fields_constraints['data_pres_dt'] = "[NOW-6MONTHS/SECOND TO NOW]";
             break;
           
           case 'year':
-            $fields_constraints['created_at_dt'] = "[NOW-1YEAR/SECOND TO NOW]";
+            $fields_constraints['data_pres_dt'] = "[NOW-1YEAR/SECOND TO NOW]";
             break;
         }
+        
       }
+      
+      if ($type_filter != '') {
+        switch ($type_filter) {
+          case 'politici':
+            $fields_constraints['sfl_model'] = "OppPolitico";
+            break;
+          case 'argomenti':
+            $fields_constraints['sfl_model'] = "Tag";
+            break;
+          case 'emendamenti':
+            $fields_constraints['sfl_model'] = "OppEmendamento";
+            break;
+          case 'votazioni':
+            $fields_constraints['sfl_model'] = "OppVotazione";
+            break;
+          case 'resoconti':
+            $fields_constraints['sfl_model'] = "OppResoconto";
+            break;
+          case 'disegni':
+          case 'decreti':
+          case 'decrleg':
+          case 'mozioni':
+          case 'interpellanze':
+          case 'interrogazioni':
+          case 'risoluzioni':
+          case 'odg':
+          case 'comunicazionigoverno':
+          case 'audizioni':
+            $fields_constraints['sfl_model'] = "(OppAtto OppDocumento)";
+            $fields_constraints['tipo_atto_s'] = $type_filter;
+            break;
+          
+        }
+      }
+      
+      switch ($sort) {
+        case 'date':
+          $sort_specification = 'data_pres_dt desc';
+          break;
+        
+        default:
+          $sort_specification = '';
+          break;
+      }
+      
  
       $pager = new sfSolrPager();
       $pager->setMaxPerPage($itemsperpage);
@@ -91,7 +137,7 @@ class sfSolrActions extends BasesfSolrActions
       $pager->setSearch($this->getSolrInstance());
  
       try {
-        $pager->setResults($this->getResults($query, $offset, $pager->getMaxPerPage(), $fields_constraints));      
+        $pager->setResults($this->getResults($query, $offset, $pager->getMaxPerPage(), $fields_constraints, $sort_specification));      
       } catch (sfSolrException $e) {
         $this->setTitle($query);
         $this->query = $query;
@@ -100,31 +146,31 @@ class sfSolrActions extends BasesfSolrActions
  
       $num = $pager->getNbResults();
 
-      // were any results returned?
-      if ($num > 0)
-      {
-        $this->safelySetPagerPage($pager, $page);
+      $this->safelySetPagerPage($pager, $page);
 
-        $this->num = $num;
-        $pager_results = $pager->getResults();
-   
-        $this->qTime = $pager_results->getQTime();
-        $this->start = $pager_results->getStart();
-        $this->rows = min($pager_results->getRows(), $num);
-        $this->pager = $pager;
-        $this->query = $query;
+      $this->num = $num;
+      $pager_results = $pager->getResults();
+ 
+      $this->qTime = $pager_results->getQTime();
+      $this->start = $pager_results->getStart();
+      $this->rows = min($pager_results->getRows(), $num);
+      $this->pager = $pager;
+      $this->query = $query;
+      $this->date_filter = $date_filter;
+      $this->type_filter = $type_filter;
+      $this->sort = $sort;
+      
+      $search_route =  "@sf_solr_search_results?query=$query"; 
+      $this->base_search_route = $search_route;
+      
+      if ($date_filter != '') $search_route .= "&date_filter=$date_filter";
+      if ($type_filter != '') $search_route .= "&type_filter=$type_filter"; 
+      $this->pager_search_route = $search_route;
+      
 
-        $this->setTitle($query);
+      $this->setTitle($query);
 
-        return 'Results';
-      }
-      else
-      {
-        // display error
-        $this->query = $query;
-        $this->setTitle($query);                                                                                      
-        return 'NoResults';
-      }
+      return 'Results';
     }
     else
     {
@@ -314,13 +360,14 @@ class sfSolrActions extends BasesfSolrActions
    * @param int    $offset
    * @param int    $limit                                                                        
    * @param string $fields_constraints  a hash of the form $field => $constraint - ('model' => 'OppAtto') 
+   * @param string $sort    
    * @return sfSolrPager                                                                                           
    * @author Guglielmo Celata                                                                               
    */                                                                                                       
-  protected function getResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array())
+  protected function getResults($querystring, $offset = 0, $limit = 10, $fields_constraints = array(), $sort = '')
   {
     try {
-      $results = deppOppSolr::getSfResults($querystring, $offset, $limit, $fields_constraints);
+      $results = deppOppSolr::getSfResults($querystring, $offset, $limit, $fields_constraints, false, $sort);
       return $results;
     } catch (sfSolrException $e) {
       throw new sfSolrException($e->getMessage());

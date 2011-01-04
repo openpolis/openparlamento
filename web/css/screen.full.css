@@ -1238,3 +1238,26 @@ table#tabella_maturita { border: 1px solid gray; }
 ul.small-titles h2 { font-size: 16px; }
 
 .flash-messages { background-color: #ffff66; border: 1px solid darkgray; font-size: 1.2em; padding: 1em; margin: 1em; font-weight: bold; text-align: center;}
+
+
+#facet_filters {
+   float: left; 
+   width: 12%; 
+   padding: 1em; padding-right: 0.3em; 
+   margin-top: 3em; 
+   font-size: 14px;
+}
+#facet_filters hr { margin: 1em 0; }
+#facet_filters li { padding: 0.2em 0; }
+#facet_filters a:link, #facet_filters a:visited {
+  text-decoration: none;
+    color: #4472AC;
+}
+
+#search_results { 
+  float:right; 
+  width: 80%; 
+  min-height: 370px; 
+  border-left: 1px dotted lightgray; 
+  padding: 1.5em; margin: 1.5em 0;
+}

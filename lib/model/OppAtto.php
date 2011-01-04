@@ -570,13 +570,26 @@ class OppAtto extends BaseOppAtto
   }
 
 
+  /**
+   * stringa che identifica il tipo di atto a partire dal tipo_atto_id
+   * serve per filtrare i risultati (filtri a faccette)
+   *
+   * @return String
+   * @author Guglielmo Celata
+   */
   public function getTipoAtto()
   {
     $tipo_atto_id = $this->getTipoAttoId();
     if ($tipo_atto_id == 1) return 'disegni';
     if ($tipo_atto_id == 12) return 'decreti';
     if (in_array($tipo_atto_id, array(15, 16, 17))) return 'decrleg';
-    if (in_array($tipo_atto_id, array(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 14))) return 'nonleg';
+    if ($tipo_atto_id == 2) return 'mozioni';
+    if ($tipo_atto_id == 3) return 'interpellanze';
+    if (in_array($tipo_atto_id, array(4, 5, 6))) return 'interrogazioni';
+    if (in_array($tipo_atto_id, array(7, 8, 9))) return 'risoluzioni';
+    if (in_array($tipo_atto_id, array(10, 11))) return 'odg';
+    if ($tipo_atto_id == 13) return 'comunicazionigoverno';
+    if ($tipo_atto_id == 14) return 'audizioni';    
     return 'errore';
   }
   

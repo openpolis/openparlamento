@@ -45,12 +45,14 @@ class OppDocumento extends BaseOppDocumento
     $document->sfl_model = 'OppDocumento';
     $document->sfl_type = 'model';
 
+    $document->tipo_atto_s = strtolower($this->getOppAtto()->getTipoAtto());
+
     $document->propel_id = $id;
     $document->titolo = strip_tags(str_replace("'", "\'", $this->getTitoloCompleto()));
     $document->testo = strip_tags(str_replace("'", "\'", $this->getTesto()));
 
     if ($this->getData())
-      $document->data_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
+      $document->data_pres_dt = $this->getData('%Y-%m-%dT%H:%M:%SZ');
     $document->created_at_dt = $this->getCreatedAt('%Y-%m-%dT%H:%M:%SZ');
 
     // ritorna il documento da aggiungere
