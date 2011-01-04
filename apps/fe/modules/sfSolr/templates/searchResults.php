@@ -18,40 +18,11 @@
     <div class="W100_100 float-left">
       <?php echo include_partial('sfSolr/addAlert', array('query' => $query)); ?>
       
-      <!-- filtri a faccette per data e per tipo di risultato -->
+      <!-- sidebar per filtri a faccette e ordinamento -->
       <div id="facet_filters">
 
-        <ul>
-          <li>
-            <?php if ($date_filter == ''): ?>
-              <strong>Qualsiasi data</strong>
-            <?php else: ?>
-                <?php echo link_to('Qualsiasi data', 
-                                     $base_search_route . 
-                                      ($type_filter != ''?"&type_filter=$type_filter":""), array()) ?>            
-            <?php endif ?>
-          </li>
-
-          <?php foreach (array('Ieri e oggi' => 'today',
-                               'Questa settimana' => 'week',
-                               'Questo mese' => 'month',
-                               'Questo semestre' => 'semester',
-                               'Quest\'anno' => 'year') as $label => $filter): ?>
-             <li>
-               <?php if ($date_filter == $filter): ?>
-                <strong><?php echo $label ?></strong>
-               <?php else: ?>
-                 <?php echo link_to($label, 
-                                      $base_search_route . 
-                                       ($type_filter != ''?"&type_filter=$type_filter":"") .
-                                       "&date_filter=$filter", array()) ?>
-               <?php endif ?>
-             </li>
-          <?php endforeach ?>          
-        </ul>
         
-        <hr/>
-        
+        <!-- filtri sul tipo di oggetto puntato dal risultato -->
         <ul>
           <li>
             <?php if ($type_filter == ''): ?>
@@ -93,6 +64,39 @@
 
         <hr/>
 
+        <!-- filtri sulle date -->
+        <ul>
+          <li>
+            <?php if ($date_filter == ''): ?>
+              <strong>Qualsiasi data</strong>
+            <?php else: ?>
+                <?php echo link_to('Qualsiasi data', 
+                                     $base_search_route . 
+                                      ($type_filter != ''?"&type_filter=$type_filter":""), array()) ?>            
+            <?php endif ?>
+          </li>
+
+          <?php foreach (array('Ieri e oggi' => 'today',
+                               'Questa settimana' => 'week',
+                               'Questo mese' => 'month',
+                               'Questo semestre' => 'semester',
+                               'Quest\'anno' => 'year') as $label => $filter): ?>
+             <li>
+               <?php if ($date_filter == $filter): ?>
+                <strong><?php echo $label ?></strong>
+               <?php else: ?>
+                 <?php echo link_to($label, 
+                                      $base_search_route . 
+                                       ($type_filter != ''?"&type_filter=$type_filter":"") .
+                                       "&date_filter=$filter", array()) ?>
+               <?php endif ?>
+             </li>
+          <?php endforeach ?>          
+        </ul>
+        
+        <hr/>
+
+        <!-- ordinamento -->
         <ul>
           <li>
             <?php if ($sort == ''): ?>
