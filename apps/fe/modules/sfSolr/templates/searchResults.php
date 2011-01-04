@@ -36,7 +36,7 @@
           <?php foreach ($type_filters = array('Parlamentari' => 'politici',
                                'Disegni di legge' => 'disegni',
                                'Decreti legge' => 'decreti',
-                               'Decreti legislativo' => 'decrleg',
+                               'Decreti legislativi' => 'decrleg',
                                'Emendamenti' => 'emendamenti',
                                'Mozioni' => 'mozioni',
                                'Interpellanze' => 'interpellanze',
