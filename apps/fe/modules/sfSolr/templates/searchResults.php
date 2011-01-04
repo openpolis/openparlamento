@@ -33,7 +33,7 @@
                                       ($date_filter != ''?"&date_filter=$date_filter":""), array()) ?>            
             <?php endif ?>
           </li>
-          <?php foreach (array('Parlamentari' => 'politici',
+          <?php foreach ($type_filters = array('Parlamentari' => 'politici',
                                'Disegni di legge' => 'disegni',
                                'Decreti legge' => 'decreti',
                                'Decreti legislativo' => 'decrleg',
@@ -76,7 +76,7 @@
             <?php endif ?>
           </li>
 
-          <?php foreach (array('Ieri e oggi' => 'today',
+          <?php foreach ($date_filters = array('Ieri e oggi' => 'today',
                                'Questa settimana' => 'week',
                                'Questo mese' => 'month',
                                'Questo semestre' => 'semester',
@@ -126,12 +126,28 @@
 
       <!-- risultati -->
       <div id="search_results">
+        
+        
         <?php if ($num > 0): ?>
-          <p style="margin: 10px 0; text-align: right; padding: 5px; ">
+          <p style="margin: 10px 0; padding: 5px; ">
             Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
             <?php echo $num ?> per <strong><?php echo $query ?></strong> 
             (<?php echo $qTime ?>ms)
           </p>           
+
+          <?php if ($date_filter != '' || $type_filter != '' || $sort != ''): ?>
+            <div style="background: none repeat scroll 0% 0% rgb(235, 239, 249); margin-bottom: 1em; padding: 8px;">
+              <?php echo link_to('Reimposta', $base_search_route, array('style' => 'float:right')) ?>
+              Filtri:
+              <?php if ($date_filter): ?>
+                <?php  echo array_search($date_filter, $date_filters)?>
+              <?php endif ?>
+              <?php if ($date_filter && $type_filter): ?>+<?php endif ?>
+              <?php if ($type_filter): ?>
+                <?php  echo array_search($type_filter, $type_filters)?>
+              <?php endif ?>
+            </div>          
+          <?php endif ?>
 
           <table class="search-results-table">
           <?php $num_item=0 ?>
