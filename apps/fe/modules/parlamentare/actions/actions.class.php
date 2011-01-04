@@ -148,9 +148,9 @@ class parlamentareActions extends sfActions
       {
           $giorni = $xml->xpath("//days"); 
       }
-      if ($giorni[0]/365>1)
+      if ($giorni[0]/365>=2)
         $durata=intval($giorni[0]/365).' anni e ';
-      elseif ($giorni[0]/365==1)  
+      elseif ($giorni[0]/365>=1)  
         $durata='un anno e ';
       else
         $durata="";

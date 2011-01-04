@@ -187,7 +187,7 @@
   			<p class="float-right">ultima votazione: <strong>
   			<?php if ($ramo=='camera') : ?>
   			   <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>
-  			<?php else : ?>
+  			<?php elseif($ramo=='senato') : ?>
   			   <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>
   			<?php endif; ?>   
   			</strong></p> 
