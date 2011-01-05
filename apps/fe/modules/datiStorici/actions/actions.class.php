@@ -255,7 +255,7 @@ class datiStoriciActions extends sfActions
       $macro_region_name = $macro_region['name'];
       $csv_row = $macro_region_name . ",";
       $locations_ids = OppLocationPeer::getLocationsIdsByMacroRegion($macro_region_id);
-      $storico = OppTagHistoryCachePeer::getAggregatedHistory('S', $locations_ids);
+      $storico = OppTagHistoryCachePeer::getGeoAggregatedHistory('S', $locations_ids);
 
       foreach ($date as $cnt => $data) {
         if (array_key_exists($data, $storico)) {
@@ -276,7 +276,7 @@ class datiStoriciActions extends sfActions
         $region_name = $region['name'];
         $csv_row = $region_name . ",";
         $locations_ids = OppLocationPeer::getLocationsIdsByRegion($region_id);
-        $storico = OppTagHistoryCachePeer::getAggregatedHistory('S', $locations_ids);
+        $storico = OppTagHistoryCachePeer::getGeoAggregatedHistory('S', $locations_ids);
 
         foreach ($date as $cnt => $data) {
           if (array_key_exists($data, $storico)) {
