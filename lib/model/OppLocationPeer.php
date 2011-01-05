@@ -31,7 +31,7 @@ class OppLocationPeer
   {
     $con = Propel::getConnection('openpolis');
 		
-		$sql = sprintf("select l.id from op_location l, op_location_type lt where lt.id=l.location_type_id and lt.name != 'Regione' and l.regional_id=%s", $regional_id);
+		$sql = sprintf("select l.id from op_location l, op_location_type lt where lt.id=l.location_type_id and l.regional_id=%s", $regional_id);
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
