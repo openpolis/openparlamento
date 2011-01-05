@@ -110,6 +110,37 @@ class OppTagHistoryCachePeer extends BaseOppTagHistoryCachePeer
     
   }
   
+  public static function getGeoAggregatedHistory($chi_tipo, $location_ids, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$storico = array();
+
+    $sql = sprintf("select sum(th.indice) as i, th.data from opp_tag_history_cache th, sf_tag t where t.id=th.chi_id and th.chi_tipo='%s' and t.triple_namespace='op_geo' and t.triple_key in (%s) group by data order by th.data", $chi_tipo, implode(',', $chi_ids));
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    while ($rs->next())
+    {
+      $row = $rs->getRow();
+      
+      $data = $row['data'];
+      $rilevanza = $row['i'];
+      
+      if (!array_key_exists($data, $storico))
+        $storico[$data] = 0;
+
+      $storico[$data] += $rilevanza;
+    }  
+    
+    return $storico;      
+    
+  }
+  
+  
   /**
    * retrieve di un record dati data, tipo e id
    *
