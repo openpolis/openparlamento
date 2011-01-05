@@ -118,7 +118,7 @@ class OppTagHistoryCachePeer extends BaseOppTagHistoryCachePeer
 		
 		$storico = array();
 
-    $sql = sprintf("select sum(th.indice) as i, th.data from opp_tag_history_cache th, sf_tag t where t.id=th.chi_id and th.chi_tipo='%s' and t.triple_namespace='op_geo' and t.triple_key in (%s) group by data order by th.data", $chi_tipo, implode(',', $chi_ids));
+    $sql = sprintf("select sum(th.indice) as i, th.data from opp_tag_history_cache th, sf_tag t where t.id=th.chi_id and th.chi_tipo='%s' and t.triple_namespace='op_geo' and t.triple_key in (%s) group by data order by th.data", $chi_tipo, implode(',', $location_ids));
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
