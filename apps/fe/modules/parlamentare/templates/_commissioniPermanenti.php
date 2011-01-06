@@ -117,24 +117,32 @@
      $num_totale=$num_totale+$gruppo;  
    }
 
-   echo "<div style='padding-bottom:7px;'><p style='font-size:16px;'>Il Governo ";
+   echo "<div style='padding-bottom:7px;'>";
    $necessari=intval($num_totale/2)+1;
    if (array_sum($perc_magg)>=$necessari)
    {
+     echo "<p style='font-size:16px;'>Il Governo ";
      if ((array_sum($perc_magg)-$necessari)==0)
-       echo '<strong>ha la stretta maggioranza necessaria</strong> in questa commissione.';
+       echo '<strong>ha la stretta maggioranza necessaria</strong> in questo organo.';
      elseif((array_sum($perc_magg)-$necessari)==1)
-      echo 'ha un margine di <strong>un parlamentare</strong>  in questa commissione.';
+      echo 'ha un margine di <strong>un parlamentare</strong>  in questo organo.';
      else
-      echo 'ha un margine di <strong>'.(array_sum($perc_magg)-$necessari).' parlamentari</strong> in questa commissione.';
+      echo 'ha un margine di <strong>'.(array_sum($perc_magg)-$necessari).' parlamentari</strong> in questo organo.';
     
      echo '</p>';
    }
      
    else
-     echo 'ha bisogno del sostegno di <strong>'.abs(array_sum($perc_magg)-$necessari).'</strong> parlamentari di altri gruppi.</p>';
+   {
+     echo "<p style='font-size:16px; background-color:yellow;padding:3px;'>Il Governo ha bisogno del sostegno di <strong>";
+      if(abs(array_sum($perc_magg)-$necessari)==1)
+        echo 'un parlamentare di un altro gruppo</strong>.</p>';
+      else 
+        echo abs(array_sum($perc_magg)-$necessari).' parlamentari di altri gruppi</strong>.</p>';
+   }
+    
      
-   echo "Per la maggioranza in questa commissione sono necessari ".$necessari." parlamentari.<br/>";
+   echo "Per la maggioranza in questo organo sono necessari ".$necessari." parlamentari.<br/>";
    echo "Oggi il Governo ha il sostegno di <strong>". array_sum($perc_magg)."</strong> parlamentari <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>";
    echo "<span style='font-size:10px; color:gray;'>N.B.: nessun componente del gruppo misto &egrave; conteggiato come appartenente alla maggioranza di Governo.</span<br/>";
    echo "</div>";
