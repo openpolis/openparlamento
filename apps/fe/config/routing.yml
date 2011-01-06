@@ -402,6 +402,10 @@ organi:
   url: /organi/:ramo
   param: { module: parlamentare, action: organi, ramo: 'camera' }  
   
+giorni_di_carica:
+  url: /giorni_di_carica/:ramo
+  param: { module: parlamentare, action: giorniDiCarica, ramo: 'camera' }  
+  
 disegno_commissione:
   url:   /disegno_commissione/:sede/:stato/:leg
   param: { module: atto, action: disegnoCommissione,  sede: 1, stato: in corso di esame in commissione, leg: 16 }    
