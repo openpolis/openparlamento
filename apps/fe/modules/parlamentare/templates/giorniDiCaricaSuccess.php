@@ -9,11 +9,11 @@
     <div class="intro-box"><p style="font-size:14px;">
       Non manca in Italia occasione in cui non si discuta, a torto o a ragione, della necessit&agrave; del ricambio della classe politica.<br/>
       Per quanto riguarda i <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> attualmente in carica abbiamo calcolato da quanto tempo ricoprono incarichi parlamentari, ovvero per quanti anni e giorni sono stati seduti sugli scranni di Montecitorio o Palazzo Madama. Il calcolo viene aggiornato quotidianamente.<br/>
-      Oltre al riepilogo complessivo ed a quello diviso per gruppi parlamentari, di seguito la lista dei primi venti <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> "pi&ugrave; esperti" (<?php echo link_to('clicca qui','@giorni_di_carica?ramo='.($ramo=='C'?'senato':'camera')).' se vuoi la lista dei '.($ramo=='C'?'senatori':'deputati')?>). <br/>Come al solito openparlamento fornisce i dati, a voi analizzarli e trarne le vostre conclusioni.<br/>
+      Oltre al riepilogo complessivo ed a quello diviso per gruppi parlamentari, di seguito la lista dei primi cinquanta <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> "pi&ugrave; esperti" (<?php echo link_to('clicca qui','@giorni_di_carica?ramo='.($ramo=='C'?'senato':'camera')).' se vuoi la lista dei '.($ramo=='C'?'senatori':'deputati')?>). <br/>Come al solito openparlamento fornisce i dati, a voi analizzarli e trarne le vostre conclusioni.<br/>
       </p></div>                         
     <div class="W73_100 float-left" style="width:55%">
 
-   <h5 class="subsection">La lista dei venti <?php echo ($ramo=='C')?'deputati':'senatori'?> con maggior anni di incarichi parlamentari</h2>
+   <h5 class="subsection">La lista dei cinquanta <?php echo ($ramo=='C')?'deputati':'senatori'?> con maggior anni di incarichi parlamentari</h2>
 <table class="disegni-decreti column-table lazyload">
   <thead>
     <tr>
@@ -27,7 +27,7 @@
   <?php $cnt = 0; ?>  
 <?php foreach ($classifica as $k=>$c) :?>
   <?php $cnt = $cnt+1; ?>  
-  <?php if ($cnt>20) : ?>
+  <?php if ($cnt>50) : ?>
     <?php break; ?>
   <?php endif;?>  
   <tr class="<?php echo $tr_class; ?>">

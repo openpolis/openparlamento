@@ -23,7 +23,7 @@
 		    <?php if ($ramo=='camera' || $ramo==1) :?>
 	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=camera') ?>
 	      <?php else :?>
-	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=camera') ?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=senato') ?>
 	      <?php endif; ?>    
 		  </h5>
 		</li>
