@@ -58,3 +58,13 @@
   </div>  
   </div>
 </div>
+
+<?php slot('breadcrumbs') ?>
+  <?php echo link_to("home", "@homepage") ?> /
+  <?php if ($ramo=='C') :?>
+    <?php echo link_to("deputati", "/parlamentari/camera") ?>/
+  <?php else :?>  
+    <?php echo link_to("senatori", "/parlamentari/senato") ?> /
+  <?php endif; ?>  
+    da quanto tempo sono in parlamento i <?php echo ($ramo=='C')?'deputati':'senatori'?>  
+<?php end_slot() ?>

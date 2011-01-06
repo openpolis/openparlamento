@@ -185,11 +185,13 @@ class parlamentareActions extends sfActions
     {
       $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=0&ramo=C");
       $this->ramo='C';
+      $this->getResponse()->setTitle('Da quanto tempo sono in parlamento i deputati - '.sfConfig::get('app_main_title'));
     }
     else
     {
       $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=0&ramo=S");
       $this->ramo='S';
+      $this->getResponse()->setTitle('Da quanto tempo sono in parlamento i senatori - '.sfConfig::get('app_main_title'));
     }
       
     $classifica=array();
