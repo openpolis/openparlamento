@@ -116,6 +116,28 @@
 
      $num_totale=$num_totale+$gruppo;  
    }
+
+   echo "<div style='padding-bottom:7px;'><p style='font-size:16px;'>Il Governo ";
+   $necessari=intval($num_totale/2)+1;
+   if (array_sum($perc_magg)>=$necessari)
+   {
+     if ((array_sum($perc_magg)-$necessari)==0)
+       echo '<strong>ha la stretta maggioranza necessaria</strong> in questa commissione.';
+     elseif((array_sum($perc_magg)-$necessari)==1)
+      echo 'ha un margine di <strong>un parlamentare</strong>  in questa commissione.';
+     else
+      echo 'ha un margine di <strong>'.(array_sum($perc_magg)-$necessari).' parlamentari</strong> in questa commissione.';
+    
+     echo '</p>';
+   }
+     
+   else
+     echo 'ha bisogno del sostegno di <strong>'.abs(array_sum($perc_magg)-$necessari).'</strong> parlamentari di altri gruppi.</p>';
+     
+   echo "Per la maggioranza in questa commissione sono necessari ".$necessari." parlamentari.<br/>";
+   echo "Oggi il Governo ha il sostegno di <strong>". array_sum($perc_magg)."</strong> parlamentari <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>";
+   echo "<span style='font-size:10px; color:gray;'>N.B.: nessun componente del gruppo misto &egrave; conteggiato come appartenente alla maggioranza di Governo.</span<br/>";
+   echo "</div>";
   $perc_grafico="50,";
   $label_grafico="|";
   $color_grafico="FFFFFF|";

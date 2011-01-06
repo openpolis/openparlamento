@@ -279,6 +279,33 @@ foreach($array_diff as $k => $diff)
   </tbody>
 </table>      
 <br/>
+<?php
+echo "<div style='padding-bottom:7px;'><p style='font-size:16px;'>Il Governo ";
+if ($ramo==1)
+ $necessari=316;
+else
+ $necessari=161;
+ 
+ if ($num_magg>=$necessari)
+ {
+   if (($num_magg-$necessari)==0)
+     echo '<strong>ha la stretta maggioranza necessaria</strong> in questo ramo del Parlamento.';
+   elseif(($num_magg-$necessari)==1)
+    echo 'ha un margine di <strong>un parlamentare</strong>  in questo ramo del Parlamento.';
+   elseif(($num_magg-$necessari)>1)
+    echo 'ha un margine di <strong>'.($num_magg-$necessari).' parlamentari</strong> in questo ramo del Parlamento.';
+  
+   echo '</p>';
+ }
+   
+ else
+   echo 'ha bisogno del sostegno di <strong>'.abs($num_magg-$necessari).'</strong> parlamentari di altri gruppi.</p>';
+  
+  echo "Per la maggioranza in questo ramo del Parlamento sono necessari ".$necessari." parlamentari.<br/>";
+  echo "Oggi il Governo ha il sostegno di <strong>". $num_magg."</strong> parlamentari <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>";
+  echo "<span style='font-size:10px; color:gray;'>N.B.: nessun componente del gruppo misto &egrave; conteggiato come appartenente alla maggioranza di Governo.</span<br/>";
+  echo "</div>";
+?>
 <?php $margine_maggioranza=$num_magg-($ramo==1 ? '316' : '161') ?>
 <p style="font-size:16px;">Il Governo <?php echo ($margine_maggioranza>0 ?'ha un margine di <strong>'.abs($margine_maggioranza).'</strong> parlamentari.' :'ha bisogno del sostegno di <strong>'.abs($margine_maggioranza).'</strong> parlamentari di altri gruppi.') ?></p> 
 Per la maggioranza in questo ramo del Parlamento sono necessari <?php echo ($ramo==1 ? '<strong>316</strong> deputati' : '<strong>161</strong> senatori')?>.<br/>
