@@ -18,7 +18,15 @@
 	      <?php endif; ?>
 		  </h5>
 		</li>
-		
+		<li class="<?php echo($current=='giorni_di_carica' ? 'current' : '' ) ?>">
+		  <h5>
+		    <?php if ($ramo=='camera' || $ramo==1) :?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=camera') ?>
+	      <?php else :?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=camera') ?>
+	      <?php endif; ?>    
+		  </h5>
+		</li>
 		<li class="<?php echo($current=='distanze' ? 'current' : '' ) ?>">
 		  <h5>
 	      <?php if ($ramo=='camera' || $ramo==1) :?>

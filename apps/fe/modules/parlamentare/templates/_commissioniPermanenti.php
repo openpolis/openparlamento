@@ -1,6 +1,10 @@
  <h3 class="subsection" id="#<?php echo $sede_id ?>" style="float:left; width:95%; font-size: 16px;">
    <a href="#<?php echo $sede_id ?>" name="<?php echo $sede_id ?>"><?php echo OppSedePeer::retrieveByPk($sede_id)->getDenominazione() ?></a>
  </h3>
+  <p style="padding:5px">
+   L'insieme dei componenti divisi per incarichi e gruppi parlamentari.<br/>
+   La cartina dell'Italia mostra, a seconda dei colori, il numero di componenti suddivisi per circoscrizione elettorale. 
+   </p>
 <div>
 <div class="W73_100 float-left" style="width:40%">
   <table class="disegni-decreti column-table lazyload">

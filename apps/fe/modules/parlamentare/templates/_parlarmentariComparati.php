@@ -29,6 +29,7 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
+       <p><label>&egrave; stato stato parlamentare per</label>: <?php echo link_to($durata1,'http://www.openpolis.it/politico/'.$parlamentare1->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>
  </div>     
@@ -65,6 +66,7 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
+       <p><label>&egrave; stato parlamentare per</label>: <?php echo link_to($durata2,'http://www.openpolis.it/politico/'.$parlamentare2->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>
  </div>  

@@ -26,6 +26,8 @@
                             'parlamentare2' => $parlamentare2,
                             'assenze1' => $assenze1,
                             'assenze2' => $assenze2,
+                            'durata1' => $durata1,
+                            'durata2' => $durata2,
                             'name' => 'search_tag')) ?>
 <br />
 

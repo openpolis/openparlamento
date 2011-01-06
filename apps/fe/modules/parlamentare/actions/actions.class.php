@@ -166,6 +166,94 @@ class parlamentareActions extends sfActions
     
   }
   
+  public function executeGiorniDiCarica()
+  {
+    function getAnniGiorni($giorni)
+    {
+      if ($giorni/365>=2)
+        $durata=intval($giorni/365).' anni e ';
+      elseif ($giorni/365>=1)  
+        $durata='un anno e ';
+      else
+        $durata="";
+
+      if (($giorni%365)>0)
+        $durata=($durata.$giorni%365)." giorni";
+      return $durata;  
+    }
+    if($this->getRequestParameter('ramo')=='camera')
+    {
+      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=0&ramo=C");
+      $this->ramo='C';
+    }
+    else
+    {
+      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=0&ramo=S");
+      $this->ramo='S';
+    }
+      
+    $classifica=array();
+    $stat=array(0,0,0,0,0);
+    $stat_gruppi=array();
+    $max_gruppi=array();
+    if ($xml)
+    {
+      foreach ($xml->xpath("//politician") as $p)
+      {   
+        $polid= trim($p->opid[0]);
+        $giorni = trim($p->days[0]);
+        $durata=getAnniGiorni($giorni);
+        $classifica[$polid]=array($durata,$p->contentid[0]); 
+        //stat generali
+        if ($giorni<1825)
+          $stat[0]=$stat[0]+1;
+        elseif ($giorni>=1825 && $giorni<3650)  
+          $stat[1]=$stat[1]+1;
+        elseif ($giorni>=3650 && $giorni<5475)  
+          $stat[2]=$stat[2]+1;
+        elseif ($giorni>=5475 && $giorni<7300)  
+          $stat[3]=$stat[3]+1;
+        elseif ($giorni>=7300)  
+          $stat[4]=$stat[4]+1; 
+        //stat per gruppo
+        $content_id=$p->contentid[0];
+        if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($content_id))
+        {
+          $gruppo=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($content_id)->getId();
+          if (!array_key_exists($gruppo,$stat_gruppi))
+          {
+            $stat_gruppi[$gruppo]=array(0,0,0,0,0);
+          }
+          if (!array_key_exists($gruppo,$max_gruppi))
+          {
+            $max_gruppi[$gruppo]=array(0,0);
+          }
+          if ($giorni>$max_gruppi[$gruppo][1])
+            $max_gruppi[$gruppo]=array($polid,$giorni);
+            
+          if ($giorni<1825)
+            $stat_gruppi[$gruppo][0]=$stat_gruppi[$gruppo][0] + 1;
+          elseif ($giorni>=1825 && $giorni<3650)  
+            $stat_gruppi[$gruppo][1]=$stat_gruppi[$gruppo][1] + 1;
+          elseif ($giorni>=3650 && $giorni<5475)  
+            $stat_gruppi[$gruppo][2]=$stat_gruppi[$gruppo][2] + 1;
+          elseif ($giorni>=5475 && $giorni<7300)  
+            $stat_gruppi[$gruppo][3]=$stat_gruppi[$gruppo][3] + 1;
+          elseif ($giorni>=7300)  
+            $stat_gruppi[$gruppo][4]=$stat_gruppi[$gruppo][4] + 1;
+        }
+      }   
+    }   
+    foreach($max_gruppi as $k=>$mx)
+    {
+      $max_gruppi[$k][1]= getAnniGiorni($mx[1]);
+    }
+    $this->classifica=$classifica;
+    $this->stat=$stat;
+    $this->stat_gruppi=$stat_gruppi;
+    $this->max_gruppi=$max_gruppi;
+  }
+  
   public function executeAtti()
   {
     $this->_getAndCheckParlamentare(); 
@@ -1055,6 +1143,42 @@ class parlamentareActions extends sfActions
  	  
 	  
  	  $this->compara_ok='1';
+ 	   // da quanti giorni è parlamentare da openpolis
+      
+      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$carica1->getOppPolitico()->getId());
+      $this->giorni=array();
+      if ($xml)
+      {
+          $giorni = $xml->xpath("//days"); 
+      }
+      if ($giorni[0]/365>=2)
+        $durata=intval($giorni[0]/365).' anni e ';
+      elseif ($giorni[0]/365>=1)  
+        $durata='un anno e ';
+      else
+        $durata="";
+      
+      if (($giorni[0]%365)>0)
+        $durata=($durata.$giorni[0]%365)." giorni";
+      
+      $this->durata1=$durata;
+      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$carica2->getOppPolitico()->getId());
+      $this->giorni=array();
+      if ($xml)
+      {
+          $giorni = $xml->xpath("//days"); 
+      }
+      if ($giorni[0]/365>=2)
+        $durata=intval($giorni[0]/365).' anni e ';
+      elseif ($giorni[0]/365>=1)  
+        $durata='un anno e ';
+      else
+        $durata="";
+      
+      if (($giorni[0]%365)>0)
+        $durata=($durata.$giorni[0]%365)." giorni";
+      
+      $this->durata2=$durata;
  	  
 $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a confronto:'.$carica1->getOppPolitico()->getCognome().' vs '.$carica2->getOppPolitico()->getCognome().' - '.sfConfig::get('app_main_title')); 	  
  	  
