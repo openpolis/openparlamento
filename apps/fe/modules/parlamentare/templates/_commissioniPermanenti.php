@@ -134,11 +134,11 @@
      
    else
    {
-     echo "<p style='font-size:16px; background-color:yellow;padding:3px;'>Il Governo ha bisogno del sostegno di <strong>";
+     echo "<p style='font-size:16px;><span style='background-color:yellow;padding:3px;'>Il Governo ha bisogno del sostegno di <strong>";
       if(abs(array_sum($perc_magg)-$necessari)==1)
-        echo 'un parlamentare di un altro gruppo</strong>.</p>';
+        echo 'un parlamentare di un altro gruppo</strong>.</span></p>';
       else 
-        echo abs(array_sum($perc_magg)-$necessari).' parlamentari di altri gruppi</strong>.</p>';
+        echo abs(array_sum($perc_magg)-$necessari).' parlamentari di altri gruppi</strong>.</span></p>';
    }
     
      
