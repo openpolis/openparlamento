@@ -106,7 +106,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
   public static function getFirme($atto_id, $data)
   {
     $con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select ca.carica_id, ca.data from opp_carica_has_atto ca where ca.atto_id=%d and ca.data <= '%s';",
+    $sql = sprintf("select ca.carica_id, ca.data, ca.tipo from opp_carica_has_atto ca where ca.atto_id=%d and ca.data <= '%s';",
                    $atto_id, $data);
     
     $stm = $con->createStatement(); 
@@ -115,7 +115,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
     $firme = array();
     while ($rs->next()) {
       $row = $rs->getRow();
-      $firme []= array('carica_id' => $row['carica_id'], 'data' => $row['data']);
+      $firme []= array('carica_id' => $row['carica_id'], 'data' => $row['data'], 'tipo' => $row['tipo']);
     }
 		return $firme;		
   }

@@ -140,6 +140,71 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
     else
       return NULL;
    }
+   
+   /**
+     * restituisce tutti i componenti di un gruppo, se data_fine è zero (default, restituisce i componenti attuali, se 1 quelli di tutta la legislatura)
+     *
+     * @param integer $carica_id 
+     * @return void
+     * @author Ettore Di Cesare
+     */
+
+    public static function getCarichePerGruppo($gruppo_id, $data_fine = 0, $leg = 16)
+    {
+    	$c = new Criteria();
+    	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
+    	$c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID, OppCaricaPeer::ID);
+    	$c->add(OppCaricaPeer::LEGISLATURA, $leg , Criteria::EQUAL);
+    	$c->add(OppCaricaHasGruppoPeer::GRUPPO_ID, $gruppo_id , Criteria::EQUAL);
+    	if ($data_fine==0)
+    	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL , Criteria::ISNULL);
+     $rs = OppCaricaHasGruppoPeer::doSelect($c);
+     if ($rs)
+       return $rs;
+     else
+       return NULL;
+    }
+
+    /**
+       * restituisce i componenti del Governo (PresDelCons e Ministri) che appartengono ad un gruppo, se data_fine è zero (default, restituisce i componenti attuali, se 1 quelli di tutta la legislatura)
+       *
+       * @param integer $carica_id 
+       * @return void
+       * @author Ettore Di Cesare
+       */
+
+      public static function getCaricheGovernoPerGruppo($gruppo_id, $data_fine = 0, $leg = 16)
+      {
+      	$c = new Criteria();
+      	$c->add(OppCaricaPeer::LEGISLATURA, $leg , Criteria::EQUAL);
+      	$c->add(OppCaricaPeer::TIPO_CARICA_ID, array(2,3) , Criteria::IN);
+      	$ministri=OppCaricaPeer::doSelect($c);
+      	foreach($ministri as $ministro)
+      	{
+      	  $c= new Criteria();
+      	  $c->add(OppCaricaPeer::POLITICO_ID,$ministro->getPoliticoId());
+      	  $c->add(OppCaricaPeer::LEGISLATURA,$leg);
+      	  $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1,4,5) , Criteria::IN);
+      	  $deputato=OppCaricaPeer::doSelectOne($c);
+      	  if ($deputato)
+      	  {
+      	    $gruppi=self::doSelectTuttiGruppiPerCarica($deputato->getId());
+        	  foreach($gruppi as $gruppo)
+        	  {
+        	    if ($gruppo['gruppo_id'] == $gruppo_id)
+        	    {
+        	      $rs[]=$ministro->getId();
+        	      break;
+        	    }
+        	  }
+      	  }
+      	}
+      	if (count($rs)>0)
+          return $rs;
+        else
+          return NULL;
+      }    
+   
   	
 }
 
