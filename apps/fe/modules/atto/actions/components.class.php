@@ -184,6 +184,7 @@ class attoComponents extends sfComponents
       $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
       $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
       $c->add(OppAttoPeer::INIZIATIVA,$i);
+      $c->setDistinct(OppAttoPeer::ID);
       $atti=OppAttoPeer::doSelect($c); 
       
 
@@ -199,6 +200,7 @@ class attoComponents extends sfComponents
       $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
       $c->add(OppAttoPeer::INIZIATIVA,$i);
       $c->add(OppAttoHasIterPeer::ITER_ID,16);
+      $c->setDistinct(OppAttoPeer::ID);
       $leggi=OppAttoHasIterPeer::doSelect($c);
       $tempo_medio=0;
       foreach ($leggi as $legge)
