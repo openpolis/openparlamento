@@ -218,7 +218,7 @@ class OppCaricaHasAttoPeer extends BaseOppCaricaHasAttoPeer
     $sql = sprintf("select cg.gruppo_id, gm.maggioranza, count(cg.gruppo_id) nf from opp_carica_has_atto ca, opp_carica c, opp_carica_has_gruppo cg, opp_gruppo_is_maggioranza gm where ca.carica_id=c.id and c.id=cg.carica_id and ca.tipo in ($tipi_firma_s) and gm.gruppo_id=cg.gruppo_id and ca.atto_id=%d and ca.data < '%s' and cg.data_inizio < '%s' and (cg.data_fine > '%s' or cg.data_fine is null) group by cg.gruppo_id;",
                    $atto_id, $data, $data, $data);
                    
-    $stm = $con->createStatement(); 
+    $stm = $con->createStatement();  
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
   

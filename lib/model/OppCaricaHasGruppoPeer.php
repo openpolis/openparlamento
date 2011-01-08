@@ -198,7 +198,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
         	    }
         	  }
       	  }
-      	}
+      	} 
       	if (count($rs)>0)
           return $rs;
         else
