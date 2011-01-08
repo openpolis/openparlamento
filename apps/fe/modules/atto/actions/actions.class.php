@@ -1076,7 +1076,10 @@ class attoActions extends sfActions
   }
   public function executeStatistiche()
   {
-    
+    if($this->getRequestParameter('gruppo'))
+      $this->gruppo=$this->getRequestParameter('gruppo');
+    else
+      $this->gruppo=NULL;
   }   
   
   public function executeSetIsMainUnified()

@@ -1,4 +1,4 @@
-<h5 class="subsection">Progetti che sono diventati legge</h5>
+<h5 class="subsection">Progetti che sono diventati legge <?php echo ($gruppo!=null?'presentati  dai membri del Governo e parlamentari del gruppo '.$gruppo:'')?></h5>
 <table class="disegni-decreti column-table">
   <thead>
     <tr> 
@@ -6,7 +6,9 @@
       <th scope="col">ddl presentati:</th>  
       <th scope="col">ddl diventati legge:</th>
       <th scope="col">% di successo:</th>
-      <th scope="col">media giorni per l'approvazione:</th>
+      <?php if ($gruppo==null): ?>
+        <th scope="col">media giorni per l'approvazione:</th>
+      <?php endif ?>  
     </tr>
   </thead>
 
@@ -27,15 +29,15 @@
   <td><?php echo $arr[0] ?></td>
   <td><?php echo $arr[1] ?></td>
   <td><?php echo number_format($arr[1]*100/$arr[0],2) ?></td>
-  <td><?php echo $arr[2] ?></td>
-  <?php //echo "Presentati: ".$arr[0]." - Leggi: ".$arr[1]." - % di successo: ".number_format($arr[1]*100/$arr[0],2)." - tempo medio: ".$arr[2]." giorni" ?>
-  <?php //echo "<br/>" ?>
+  <?php if ($gruppo==null): ?>
+     <td><?php echo $arr[2] ?></td>
+   <?php endif ?>
   </tr>
 <?php endforeach ?>
 </tbody>
 </table>
 <br /><br />
-<h5 class="subsection">Quanto tempo impiegano i progetti a diventare leggi: dal più veloce al più lento</h5>
+<h5 class="subsection">Quanto tempo impiegano i progetti <?php echo ($gruppo!=null?'presentati dai membri del Governo e parlamentari del gruppo '.$gruppo:'')?> a diventare leggi: dal più veloce al più lento</h5>
 <?php //$veloci=array_slice($arr_alls, 0, 20) ?>
 <?php $veloci=$arr_alls ?>
 <table class="disegni-decreti column-table">

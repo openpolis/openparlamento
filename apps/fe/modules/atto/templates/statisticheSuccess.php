@@ -11,7 +11,7 @@
     <div class="W73_100 float-left">
 
 <?php include_component('atto', 'ddl2legge', 
-                        array('leg' => '16') ) ?> 
+                        array('leg' => '16','gruppo' => $gruppo) ) ?> 
                         
 <h2>Argomenti dei ddl</h2>                        
                         

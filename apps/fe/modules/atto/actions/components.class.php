@@ -146,11 +146,41 @@ class attoComponents extends sfComponents
   
   public function executeDdl2legge()
   {
+    if ($this->gruppo!=NULL)
+    {
+      $c= new Criteria;
+      $c->add(OppGruppoPeer::ACRONIMO,$this->gruppo);
+      $gruppo=OppGruppoPeer::doSelectOne($c);
+      $cariche=OppCaricaHasGruppoPeer::getCarichePerGruppo($gruppo->getId(),1);
+      foreach($cariche as $carica)
+      {
+        $componenti_gruppo[]=$carica->getCaricaId();
+      }
+    }
+    
+    if ($this->gruppo!=NULL)
+    {
+      $c= new Criteria;
+      $c->add(OppGruppoPeer::ACRONIMO,$this->gruppo);
+      $gruppo=OppGruppoPeer::doSelectOne($c);
+      $cariche=OppCaricaHasGruppoPeer::getCaricheGovernoPerGruppo($gruppo->getId(),1);
+      foreach($cariche as $carica)
+      {
+        $componenti_gruppo[]=$carica;
+      }
+    }
+    
     $arrs=array();
     $arr_alls=array();
     foreach(array(1,2,4) as $i)
     {
       $c=new Criteria();
+      if ($this->gruppo!=NULL)
+      {
+        $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
+        $c->add(OppCaricaHasAttoPeer::CARICA_ID,$componenti_gruppo,Criteria::IN);
+        $c->add(OppCaricaHasAttoPeer::TIPO,'P');
+      }  
       $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
       $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
       $c->add(OppAttoPeer::INIZIATIVA,$i);
@@ -158,6 +188,12 @@ class attoComponents extends sfComponents
       
 
       $c=new Criteria();
+       if ($this->gruppo!=NULL)
+        {
+          $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
+          $c->add(OppCaricaHasAttoPeer::CARICA_ID,$componenti_gruppo,Criteria::IN);
+          $c->add(OppCaricaHasAttoPeer::TIPO,'P');
+        }
       $c->addJoin(OppAttoPeer::ID,OppAttoHasIterPeer::ATTO_ID);
       $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
       $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
