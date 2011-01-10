@@ -68,7 +68,7 @@
      <div class="W45_100 float-right">
      
        <!-- box keyvotes -->
-    	   <?php include_component('votazione','keyvotes', array('limit' => '3', 'pagina' => 'homepage')) ?>
+    	   <?php include_component('votazione','keyvotes', array('limit' => '3', 'pagina' => 'homepage', 'type' => 'key')) ?>
 
        <!-- Box rotazione parlamentari -->    
        <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
