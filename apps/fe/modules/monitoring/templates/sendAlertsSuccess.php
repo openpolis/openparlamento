@@ -29,7 +29,7 @@
       <tr>
         <td style="font-size: 16px; font-weight: bold">
           <div style="margin-top:1.5em">
-            <?php if (array_key_exists('type_filters', $user_alert) && $user_alert['type_filters'] != '')): ?>
+            <?php if (array_key_exists('type_filters', $user_alert) && $user_alert['type_filters'] != ''): ?>
               Il termine <i><?php echo $user_alert['term'] ?></i>
               &egrave; stato trovato <?php echo format_number_choice('[1] una volta |(1,+Inf] %1% volte', array('%1%' => count($user_alert['results'])), count($user_alert['results'])) ?> in <?php echo implode(" + ", explode("|", $user_alert['type_filters'])) ?>            
             <?php else: ?>
