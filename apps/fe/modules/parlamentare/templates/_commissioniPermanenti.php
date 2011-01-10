@@ -1,10 +1,7 @@
  <h3 class="subsection" id="#<?php echo $sede_id ?>" style="float:left; width:95%; font-size: 16px;">
    <a href="#<?php echo $sede_id ?>" name="<?php echo $sede_id ?>"><?php echo OppSedePeer::retrieveByPk($sede_id)->getDenominazione() ?></a>
  </h3>
-  <p style="padding:5px">
-   L'insieme dei componenti divisi per incarichi e gruppi parlamentari.<br/>
-   La cartina dell'Italia mostra, a seconda dei colori, il numero di componenti suddivisi per circoscrizione elettorale. 
-   </p>
+
 <div>
 <div class="W73_100 float-left" style="width:40%">
   <table class="disegni-decreti column-table lazyload">
@@ -120,7 +117,8 @@
 
      $num_totale=$num_totale+$gruppo;  
    }
-
+   // Conteggi per maggioranza di Governo in commissione
+   /*
    echo "<div style='padding-bottom:7px;'>";
    $necessari=intval($num_totale/2)+1;
    if (array_sum($perc_magg)>=$necessari)
@@ -150,6 +148,8 @@
    echo "Oggi il Governo ha il sostegno di <strong>". array_sum($perc_magg)."</strong> parlamentari <strong>appartenenti ai gruppi di maggioranza</strong>.<br/>";
    echo "<span style='font-size:10px; color:gray;'>N.B.: nessun componente del gruppo misto &egrave; conteggiato come appartenente alla maggioranza di Governo.</span<br/>";
    echo "</div>";
+   */
+   
   $perc_grafico="50,";
   $label_grafico="|";
   $color_grafico="FFFFFF|";
@@ -197,7 +197,7 @@
    {
      switch ($x) {
          case 0:
-             $color_grafico=$color_grafico."a29c9c|";
+             $color_grafico=$color_grafico."f094f3|";
              break;
          case 1:
              $color_grafico=$color_grafico."938f8f|";
@@ -276,6 +276,10 @@
   $color="FFFFFF|".$color;
   
 ?>  
+<div style="padding:5px">
+ L'insieme dei componenti divisi per incarichi e gruppi parlamentari.<br/>
+ La cartina dell'Italia mostra, a seconda dei colori (rosso molti, grigio nessuno), il numero di componenti suddivisi per circoscrizione elettorale. 
+ </div>
 <img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?php echo rtrim($perc_grafico,',') ?>&chs=380x240&chl=<?php echo rtrim($label_grafico, '|') ?>&chco=<?php echo rtrim($color_grafico,'|') ?>">
 
 <img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
