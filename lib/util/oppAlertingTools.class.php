@@ -43,18 +43,62 @@ class oppAlertingTools
       $alert_term = $alert->getOppAlertTerm()->getTerm();
       if ($last_alert)
       {
-        $time_constraints = array(
-          'created_at_dt' => sprintf("[%s TO NOW]", $last_alert)
-        );
+        $fields_constraints = 'created_at_dt:' . sprintf("[%s TO NOW]", $last_alert);
       } else {
-        $time_constraints = array(
-          'created_at_dt' => "[NOW-".sfConfig::get('app_alert_default_days_back', 9)."DAYS/SECOND TO NOW]"
-        );
+        $fields_constraints = 'created_at_dt:' . sprintf("[NOW-%dDAYS/SECOND TO NOW]", sfConfig::get('app_alert_default_days_back', 9));
       }
 
-      $alert_results = deppOppSolr::getSfResults($alert_term, 0, $max_results, $time_constraints, true);
+      $type_filters_s = $alert->getTypeFilters();
+      if (!is_null($type_filters_s) && $type_filters_s != '') {
+        $type_filters = explode("|", $type_filters_s);
+      } else {
+        $type_filters = array();
+      }
+      
+      if (count($type_filters)) {
+        $type_constraints = "";
+        foreach ($type_filters as $cnt => $type_filter) {
+          $type_constraint = "";
+          switch ($type_filter) {
+            case 'politici':
+              $type_constraint ="(+sfl_model:OppPolitico)";
+              break;
+            case 'argomenti':
+              $type_constraint = "(+sfl_model:Tag)";
+              break;
+            case 'emendamenti':
+              $type_constraint = "(+sfl_model:OppEmendamento)";
+              break;
+            case 'votazioni':
+              $type_constraint = "(+sfl_model:OppVotazione)";
+              break;
+            case 'resoconti':
+              $type_constraint = "(+sfl_model:OppResoconto)";
+              break;
+            case 'disegni':
+            case 'decreti':
+            case 'decrleg':
+            case 'mozioni':
+            case 'interpellanze':
+            case 'interrogazioni':
+            case 'risoluzioni':
+            case 'odg':
+            case 'comunicazionigoverno':
+            case 'audizioni':
+              $type_constraint = "(+sfl_model:(OppAtto OppDocumento) +tipo_atto_s:$type_filter)";
+              break;          
+          }
+          $type_constraints .= ($cnt > 0?' OR ':'') . $type_constraint;
+        }
+        if ($type_constraints != "") {
+          $fields_constraints .= ($fields_constraints != ''?" AND ($type_constraints)":$type_constraints);
+        }
+      }
+      
+      $alert_results = deppOppSolr::getSfResults($alert_term, 0, $max_results, $fields_constraints, true);
       $user_alert = array(
         'term' => $alert_term,
+        'type_filters' => $type_filters_s,
         'results' => $alert_results
       );
       $user_alerts []= $user_alert;

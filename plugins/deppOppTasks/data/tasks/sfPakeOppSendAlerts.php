@@ -108,8 +108,8 @@ function opp_send_single_user_alerts($user, $last_alert)
    $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
 
    if ($n_total_notifications > 0) {
-     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
-                             ($n_alerts > 3?',...':'') ;
+     $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 5))) . 
+                             ($n_alerts > 5?',...':'') ;
 
      echo pakeColor::colorize(sprintf("%d %s per %s (%s) ", 
                                       $n_total_notifications, $n_total_notifications==1?'avviso':'avvisi',
@@ -219,7 +219,11 @@ function run_opp_test_alerts($task, $args, $options)
 // funzione che mappa l'estrazione dei termini dagli user_alerts
 function extractTerm($value='')
 {
-  return $value['term'];
+  $s = $value['term'];
+  if (array_key_exists('type_filters', $value)) {
+    $s .= ": " . implode(" + ", explode("|", $value['type_filters']));
+  }
+  return $s;
 }
 
 /**
@@ -244,8 +248,8 @@ function opp_test_single_user_alerts($user, $last_alert)
   $n_total_notifications = oppAlertingTools::countTotalAlertsNotifications($user_alerts);
   
   if ($n_total_notifications > 0) {
-    $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 3))) . 
-                            ($n_alerts > 3?',...':'') ;
+    $user_alerts_expanded = join(", ", array_map('extractTerm', array_slice($user_alerts, 0, 5))) . 
+                            ($n_alerts > 5?',...':'') ;
     
     echo pakeColor::colorize(sprintf("%d %s per %s (%s)\n\n", 
                                      $n_total_notifications, $n_total_notifications==1?'avviso':'avvisi',
@@ -274,9 +278,20 @@ function pakeTaskUserAlerts($user_alerts)
   foreach ($user_alerts as $user_alert) {
     $alert_term = $user_alert['term'];
     $alert_results = $user_alert['results'];
-    $string .= pakeColor::colorize(sprintf("La parola %s è stata trovata %d volte:\n", 
-                                          $alert_term, count($alert_results)),
-                                   array('fg' => 'cyan', 'bold' => true));
+    if (array_key_exists('type_filters', $user_alert) && $user_alert['type_filters'] != '')
+    {
+      $alert_type_filters = $user_alert['type_filters'];
+      $string .= pakeColor::colorize(sprintf("\n\nLa parola %s è stata trovata %d volte in %s\n", 
+                                            $alert_term, count($alert_results), implode(" + ", explode("|", $alert_type_filters))),
+                                     array('fg' => 'cyan', 'bold' => true));      
+    }
+    else {
+      $string .= pakeColor::colorize(sprintf("La parola %s è stata trovata %d volte:\n", 
+                                            $alert_term, count($alert_results)),
+                                     array('fg' => 'cyan', 'bold' => true));            
+    }
+
+
     foreach ($alert_results as $i => $res) {
       $string .= get_partial($res->getInternalAlertPartial(), array('result' => $res, 'term' => $alert_term));
     }
