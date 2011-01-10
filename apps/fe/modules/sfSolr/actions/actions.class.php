@@ -49,7 +49,26 @@ class sfSolrActions extends BasesfSolrActions
     $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
     
     $date_filter = $this->getRequestParameter('date_filter', '');
-    $type_filter = $this->getRequestParameter('type_filter', '');
+    
+    $type_filters_s = $this->getRequestParameter('type_filters', '');    
+    if ($type_filters_s != '') {
+      $type_filters = explode("|", $type_filters_s);
+    } else {
+      $type_filters = array();
+    }
+    
+    // if a switch_filter param was passed, then the filter is switched
+    // and the filters string re-generated
+    if ($this->hasRequestParameter('switch_filter')) {
+      $switch_filter = $this->getRequestParameter('switch_filter', '');
+      if ($idx = array_search($switch_filter, $type_filters)) {
+        array_splice($type_filters, $idx, 1);
+      } else {
+        array_push($type_filters, $switch_filter);
+      }
+      $type_filters_s = implode("|", $type_filters);
+    }
+    
     $sort = $this->getRequestParameter('sort', '');
     
     // did user enter a query?
@@ -57,67 +76,74 @@ class sfSolrActions extends BasesfSolrActions
     {
       sfContext::getInstance()->getLogger()->info('{sfSolr} query: ' . $query);
 
-      $fields_constraints = array();
+      $fields_constraints = '';
       
       if ($date_filter != '') {
         switch ($date_filter) {
           case 'today':
-            $fields_constraints['data_pres_dt'] = "[NOW-1DAYS/SECOND TO NOW]";
+            $fields_constraints .= "data_pres_dt:[NOW-1DAYS/SECOND TO NOW]";
             break;
           
           case 'week':
-            $fields_constraints['data_pres_dt'] = "[NOW-7DAYS/SECOND TO NOW]";
+            $fields_constraints .= "data_pres_dt:[NOW-7DAYS/SECOND TO NOW]";
             break;
 
           case 'month':
-            $fields_constraints['data_pres_dt'] = "[NOW-1MONTH/SECOND TO NOW]";
+            $fields_constraints .= "data_pres_dt:[NOW-1MONTH/SECOND TO NOW]";
             break;
 
           case 'semester':
-            $fields_constraints['data_pres_dt'] = "[NOW-6MONTHS/SECOND TO NOW]";
+            $fields_constraints .= "data_pres_dt:[NOW-6MONTHS/SECOND TO NOW]";
             break;
           
           case 'year':
-            $fields_constraints['data_pres_dt'] = "[NOW-1YEAR/SECOND TO NOW]";
+            $fields_constraints .= "data_pres_dt:[NOW-1YEAR/SECOND TO NOW]";
             break;
         }
         
       }
       
-      if ($type_filter != '') {
-        switch ($type_filter) {
-          case 'politici':
-            $fields_constraints['sfl_model'] = "OppPolitico";
-            break;
-          case 'argomenti':
-            $fields_constraints['sfl_model'] = "Tag";
-            break;
-          case 'emendamenti':
-            $fields_constraints['sfl_model'] = "OppEmendamento";
-            break;
-          case 'votazioni':
-            $fields_constraints['sfl_model'] = "OppVotazione";
-            break;
-          case 'resoconti':
-            $fields_constraints['sfl_model'] = "OppResoconto";
-            break;
-          case 'disegni':
-          case 'decreti':
-          case 'decrleg':
-          case 'mozioni':
-          case 'interpellanze':
-          case 'interrogazioni':
-          case 'risoluzioni':
-          case 'odg':
-          case 'comunicazionigoverno':
-          case 'audizioni':
-            $fields_constraints['sfl_model'] = "(OppAtto OppDocumento)";
-            $fields_constraints['tipo_atto_s'] = $type_filter;
-            break;
-          
+      
+      if (count($type_filters)) {
+        $type_constraints = "";
+        foreach ($type_filters as $cnt => $type_filter) {
+          $type_constraint = "";
+          switch ($type_filter) {
+            case 'politici':
+              $type_constraint ="(+sfl_model:OppPolitico)";
+              break;
+            case 'argomenti':
+              $type_constraint = "(+sfl_model:Tag)";
+              break;
+            case 'emendamenti':
+              $type_constraint = "(+sfl_model:OppEmendamento)";
+              break;
+            case 'votazioni':
+              $type_constraint = "(+sfl_model:OppVotazione)";
+              break;
+            case 'resoconti':
+              $type_constraint = "(+sfl_model:OppResoconto)";
+              break;
+            case 'disegni':
+            case 'decreti':
+            case 'decrleg':
+            case 'mozioni':
+            case 'interpellanze':
+            case 'interrogazioni':
+            case 'risoluzioni':
+            case 'odg':
+            case 'comunicazionigoverno':
+            case 'audizioni':
+              $type_constraint = "(+sfl_model:(OppAtto OppDocumento) +tipo_atto_s:$type_filter)";
+              break;          
+          }
+          $type_constraints .= ($cnt > 0?' OR ':'') . $type_constraint;
+        }
+        if ($type_constraints != "") {
+          $fields_constraints .= ($fields_constraints != ''?" AND ($type_constraints)":$type_constraints);
         }
       }
-      
+
       switch ($sort) {
         case 'date':
           $sort_specification = 'data_pres_dt desc';
@@ -157,14 +183,17 @@ class sfSolrActions extends BasesfSolrActions
       $this->pager = $pager;
       $this->query = $query;
       $this->date_filter = $date_filter;
-      $this->type_filter = $type_filter;
+      $this->type_filters = $type_filters_s;
       $this->sort = $sort;
       
       $search_route =  "@sf_solr_search_results?query=$query"; 
+      if (strpos($search_route, '.')) {
+        sfConfig::set('sf_no_script_name', 0);
+      }
       $this->base_search_route = $search_route;
       
       if ($date_filter != '') $search_route .= "&date_filter=$date_filter";
-      if ($type_filter != '') $search_route .= "&type_filter=$type_filter"; 
+      if ($type_filters_s != '') $search_route .= "&type_filters=$type_filters_s"; 
       $this->pager_search_route = $search_route;
       
 
@@ -359,7 +388,7 @@ class sfSolrActions extends BasesfSolrActions
    * @param string $querystring     
    * @param int    $offset
    * @param int    $limit                                                                        
-   * @param string $fields_constraints  a hash of the form $field => $constraint - ('model' => 'OppAtto') 
+   * @param mixed $fields_constraints  a string or a hash of the form $field => $constraint - ('model' => 'OppAtto') 
    * @param string $sort    
    * @return sfSolrPager                                                                                           
    * @author Guglielmo Celata                                                                               

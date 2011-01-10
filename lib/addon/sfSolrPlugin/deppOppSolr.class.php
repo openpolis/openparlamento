@@ -24,7 +24,7 @@ class deppOppSolr extends sfSolr
    * @param string $querystring 
    * @param string $offset 
    * @param string $limit 
-   * @param string $fields_constraints 
+   * @param mixed $fields_constraints  a string or a hash of the form $field => $constraint - ('model' => 'OppAtto') 
    * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
    * @param string $sort    
    * @return sfSolrPager                                                                                      
@@ -46,7 +46,7 @@ class deppOppSolr extends sfSolr
    * @param string $querystring     
    * @param int    $offset
    * @param int    $limit                                                                        
-   * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
+   * @param mixed $fields_constraints  a string or a hash of the form $field => $constraint - ('model' => 'OppAtto') 
    * @param boolean $alert_mode  specifies wether terms should be only searched as quoted text (for Alerts)
    * @param string $sort    
    * @return sfSolrPager                                                                                      
@@ -89,13 +89,16 @@ class deppOppSolr extends sfSolr
  	  $composed_query= $query;
 
     // aggiunge i constraints (filter) + obbligatori
-    if ($fields_constraints == '') $fields_constraints = array();
-    $filter_query = "";
-    foreach ($fields_constraints as $field => $constraint)                                                  
+    if (is_string($fields_constraints)) $filter_query = $fields_constraints;
+    else
     {
-      $filter_query .= " +$field:$constraint ";
-    }                                                                                                       
-    $query_options['fq'] = $filter_query;
+      $filter_query = "";
+      foreach ($fields_constraints as $field => $constraint)                                                  
+      {
+        $filter_query .= " +$field:$constraint ";
+      }                                                                                                       
+    }
+    $query_options['fq'] = $filter_query;      
     
     
 
@@ -124,7 +127,7 @@ class deppOppSolr extends sfSolr
    * @param string $querystring     
    * @param int    $offset
    * @param int    $limit                                                                        
-   * @param array $fields_constraints  a hash of the form $field => $constraint - (ex: 'model' => 'OppAtto') 
+   * @param mixed $fields_constraints  a string or a hash of the form $field => $constraint - ('model' => 'OppAtto') 
    * @param boolean $quotes_mode  specifies wether terms should be only searched as quoted text (for Alerts)
    * @param string $sort    
    * @return sfSolrPager                                                                                      
@@ -204,11 +207,13 @@ class deppOppSolr extends sfSolr
     $composed_query .= ") ";                                                                                
 
     // aggiunge i constraints (+ obbligatori)
-    if ($fields_constraints == '') $fields_constraints = array();                                           
-    foreach ($fields_constraints as $field => $constraint)                                                  
-    {
-      $composed_query .= " +$field:$constraint ";
-    }                                                                                                       
+    if (is_string($fields_constraints)) $composed_query .= " " . $fields_constraints;
+    else {
+      foreach ($fields_constraints as $field => $constraint)                                                  
+      {
+        $composed_query .= " +$field:$constraint ";
+      }                                                                                                             
+    }
 
     # query debug        
     if (sfConfig::get('solr_query_debug_level', 1) > 0)

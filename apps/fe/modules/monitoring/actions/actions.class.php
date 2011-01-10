@@ -738,10 +738,15 @@ class monitoringActions extends sfActions
     $opp_user = OppUserPeer::retrieveByPK($this->getUser()->getId());
     $this->forward404Unless($opp_user instanceof OppUser);
 
+    
     // read term from request parameters
     $term = $this->getRequestParameter('term');
     $this->forward404Unless($term);
     $term = str_replace("|", "/", $term);
+
+    // read filter on type of objects
+    $type_filters = $this->getRequestParameter('type_filters', '');
+    $type_filters_label = implode(" + ", explode("|", $type_filters));
 
 
     // check limitations (for non-adhoc subscribers)
@@ -761,11 +766,11 @@ class monitoringActions extends sfActions
       }      
     }
 
-    $res = OppAlertUserPeer::addAlert($term, $opp_user);
+    $res = OppAlertUserPeer::addAlert($term, $opp_user, $type_filters);
     if ($res == false)
-      $this->setFlash('warning', "stai gi&agrave; monitorando l'espressione <i>$term</i>");
+      $this->setFlash('warning', "stai gi&agrave; monitorando l'espressione <i>$term</i>, con questi filtri: $type_filters_label");
     else
-      $this->setFlash('notice', "da questo momento, stai monitorando l'espressione <i>$term</i>");
+      $this->setFlash('notice', "da questo momento, stai monitorando l'espressione <i>$term</i>, con questi filtri: $type_filters_label");
     
     // redirect to the referrer page
     $this->redirect($this->getRequest()->getReferer());      

@@ -16,7 +16,9 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
     <div class="W100_100 float-left">
-      <?php echo include_partial('sfSolr/addAlert', array('query' => $query)); ?>
+      <?php echo include_partial('sfSolr/addAlert', array('query' => $query, 
+                                                          'type_filters' => $type_filters,
+                                                          'type_filters_label' => implode(" + ", explode("|", $type_filters)))); ?>
       
       <!-- sidebar per filtri a faccette e ordinamento -->
       <div id="facet_filters">
@@ -25,7 +27,7 @@
         <!-- filtri sul tipo di oggetto puntato dal risultato -->
         <ul>
           <li>
-            <?php if ($type_filter == ''): ?>
+            <?php if ($type_filters == ''): ?>
               <strong>Tutti i tipi</strong>
             <?php else: ?>
                 <?php echo link_to('Tutti i tipi', 
@@ -33,7 +35,7 @@
                                       ($date_filter != ''?"&date_filter=$date_filter":""), array()) ?>            
             <?php endif ?>
           </li>
-          <?php foreach ($type_filters = array('Parlamentari' => 'politici',
+          <?php foreach ($type_filters_labels = array('Parlamentari' => 'politici',
                                'Disegni di legge' => 'disegni',
                                'Decreti legge' => 'decreti',
                                'Decreti legislativi' => 'decrleg',
@@ -50,13 +52,28 @@
                                'Resoconti stenografici' => 'resoconti'
                                ) as $label => $filter): ?>
              <li>
-               <?php if ($type_filter == $filter): ?>
-                <strong><?php echo $label ?></strong>
-               <?php else: ?>
+               <?php if ($sf_user->isAuthenticated() && 
+                         ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
+                 <?php if (strpos($type_filters, $filter) !== false): ?>
+                   <strong>
+                 <?php endif; ?>
                  <?php echo link_to($label, 
                                       $base_search_route . 
                                         ($date_filter != ''?"&date_filter=$date_filter":"") .
-                                        "&type_filter=$filter", array()) ?>
+                                        ($type_filters != ''?"&type_filters=$type_filters":"") .
+                                        "&switch_filter=$filter", array()) ?>
+                 <?php if (strpos($type_filters, $filter) !== false): ?>
+                   </strong>
+                 <?php endif; ?>
+               <?php else: ?>
+                 <?php if (strpos($type_filters, $filter) !== false): ?>
+                   <strong><?php echo $label ?></strong>
+                 <?php else: ?>
+                   <?php echo link_to($label, 
+                                        $base_search_route . 
+                                          ($date_filter != ''?"&date_filter=$date_filter":"") .
+                                          "&type_filters=$filter", array()) ?>
+                 <?php endif ?>
                <?php endif ?>
              </li>
           <?php endforeach ?>
@@ -70,24 +87,22 @@
             <?php if ($date_filter == ''): ?>
               <strong>Qualsiasi data</strong>
             <?php else: ?>
-                <?php echo link_to('Qualsiasi data', 
-                                     $base_search_route . 
-                                      ($type_filter != ''?"&type_filter=$type_filter":""), array()) ?>            
+                <?php echo link_to('Qualsiasi data', $base_search_route."&type_filters=$type_filters", array()) ?>            
             <?php endif ?>
           </li>
 
           <?php foreach ($date_filters = array('Ieri e oggi' => 'today',
-                               'Questa settimana' => 'week',
-                               'Questo mese' => 'month',
-                               'Questo semestre' => 'semester',
-                               'Quest\'anno' => 'year') as $label => $filter): ?>
+                               'Ultima settimana' => 'week',
+                               'Ultimo mese' => 'month',
+                               'Ultimo semestre' => 'semester',
+                               'Ultimo anno' => 'year') as $label => $filter): ?>
              <li>
                <?php if ($date_filter == $filter): ?>
                 <strong><?php echo $label ?></strong>
                <?php else: ?>
                  <?php echo link_to($label, 
                                       $base_search_route . 
-                                       ($type_filter != ''?"&type_filter=$type_filter":"") .
+                                      ($type_filters != ''?"&type_filters=$type_filters":"") .
                                        "&date_filter=$filter", array()) ?>
                <?php endif ?>
              </li>
@@ -105,7 +120,7 @@
                 <?php echo link_to('Ordina per rilevanza', 
                                      $base_search_route . 
                                       ($date_filter != ''?"&date_filter=$date_filter":"") .
-                                      ($type_filter != ''?"&type_filter=$type_filter":""), array()) ?>            
+                                      ($type_filters != ''?"&type_filters=$type_filters":""), array()) ?>            
             <?php endif ?>
           </li>
           <li>
@@ -115,7 +130,7 @@
                 <?php echo link_to('Ordina per data', 
                                      $base_search_route . 
                                       ($date_filter != ''?"&date_filter=$date_filter":"") .
-                                      ($type_filter != ''?"&type_filter=$type_filter":"") .
+                                      ($type_filters != ''?"&type_filters=$type_filters":"") .
                                       "&sort=date", array()) ?>            
             <?php endif ?>
           </li>
@@ -135,16 +150,16 @@
             (<?php echo $qTime ?>ms)
           </p>           
 
-          <?php if ($date_filter != '' || $type_filter != '' || $sort != ''): ?>
+          <?php if ($date_filter != '' || $type_filters != '' || $sort != ''): ?>
             <div style="background: none repeat scroll 0% 0% rgb(235, 239, 249); margin-bottom: 1em; padding: 8px;">
-              <?php echo link_to('Reimposta', $base_search_route, array('style' => 'float:right')) ?>
+              <?php echo link_to(image_tag('delete.png'), $base_search_route, array('style' => 'float:right', 'title' => 'Reimposta gli strumenti di ricerca')) ?>
               Filtri:
               <?php if ($date_filter): ?>
                 <?php  echo array_search($date_filter, $date_filters)?>
               <?php endif ?>
-              <?php if ($date_filter && $type_filter): ?>+<?php endif ?>
-              <?php if ($type_filter): ?>
-                <?php  echo array_search($type_filter, $type_filters)?>
+              <?php if ($date_filter && $type_filters): ?>+<?php endif ?>
+              <?php if ($type_filters): ?>
+                <?php echo implode(" + ", explode("|", $type_filters)) ?>
               <?php endif ?>
             </div>          
           <?php endif ?>

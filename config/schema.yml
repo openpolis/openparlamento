@@ -8,6 +8,7 @@ propel:
   opp_alert_user:
     user_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_user, foreignReference: id, onDelete: CASCADE }
     term_id:          { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_alert_term, foreignReference: id, onDelete: CASCADE }
+    type_filters:     { type: varchar(512) }
     created_at:       ~
   
   opp_appoggio:
