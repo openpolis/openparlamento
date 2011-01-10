@@ -25,7 +25,7 @@
             <?php echo  link_to(image_tag('ico-remove_alert.png'), 
                                 'monitoring/delAlert?term='. str_replace("/", "|", $term) , 
                                 array('title' => 'smetti di ricevere alert su questo termine')) ?>
-            <?php echo $term; ?><?php if ($alert->getTypeFilters() != ''): ?>:<?php endif ?><?php echo $alert->getTypeFilters() ?>
+            <?php echo $term; ?><?php if ($alert->getTypeFilters() != ''): ?>:<?php endif ?><?php echo implode(" + ", explode("|", $alert->getTypeFilters())) ?>
           </li>
         <?php endforeach ?>
       </ul>
