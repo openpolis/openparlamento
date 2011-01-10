@@ -25,7 +25,7 @@
   
   <?php $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d')); ?>
    <?php if ($valore===null) : ?>
-     <?php $color_gruppo="#a29c9c"; ?>
+     <?php $color_gruppo="#f094f3"; ?>
    <?php elseif($valore==1) : ?>   
      <?php $color_gruppo="#022468"; ?>
    <?php elseif($valore==0) : ?>
