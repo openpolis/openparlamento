@@ -12,6 +12,76 @@ class oppNewsPeer extends NewsPeer
 
 
   /**
+   * build and return criteria to fetch all news related to items monitored by a user,
+   * filtered with a given filter
+   *
+   * @param string $user 
+   * @param hash $filters 
+   * @return Propel Criteria
+   * @author Guglielmo Celata
+   */
+  public static function getMyMonitoredItemsNewsWithFiltersCriteria($user, $filters)
+  {
+    // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
+    if ($filters['tag_id'] != '0')
+    {
+      $filter_criteria = new Criteria();
+      $filter_criteria->add(TagPeer::ID, $filters['tag_id']);
+      $monitored_objects = $user->getMonitoredObjects('Tag', $filter_criteria);
+    } else
+      $monitored_objects = $user->getMonitoredObjects();
+
+
+
+    // criterio di selezione delle news dagli oggetti monitorati    
+    $c = self::getMyMonitoredItemsNewsCriteria($monitored_objects);
+    
+    // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
+    $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($user->getId());
+    if (array_key_exists('OppAtto', $blocked_items_ids) && count($blocked_items_ids['OppAtto']))
+    {
+      $blocked_news_ids = array();
+      $bc = new Criteria();
+      $bc->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
+      $bc->add(NewsPeer::RELATED_MONITORABLE_ID, $blocked_items_ids['OppAtto'], Criteria::IN);
+      $bc->clearSelectColumns(); 
+      $bc->addSelectColumn(NewsPeer::ID);
+      $rs = NewsPeer::doSelectRS($bc);
+      while ($rs->next()) {
+        array_push($blocked_news_ids, $rs->getInt(1));
+      }
+      $c0 = $c->getNewCriterion(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
+      $c->addAnd($c0);
+    }
+    
+    // le news di gruppo non sono considerate, perché ridondanti (#247)
+    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
+
+    // aggiunta filtri su tipi di atto, ramo e data
+    if ($filters['act_type_id'] != '0')
+      $c->add(NewsPeer::TIPO_ATTO_ID, $filters['act_type_id']);
+
+    if ($filters['act_ramo'] != '0')
+      $c->add(NewsPeer::RAMO_VOTAZIONE, $filters['act_ramo']);
+
+    if ($filters['date'] != '0')
+      if ($filters['date'] == 'W')
+      {
+        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 week')), Criteria::GREATER_THAN);
+      }
+      elseif ($filters['date'] == 'M') 
+      {
+        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 month')), Criteria::GREATER_THAN);
+      }
+
+    if ($filters['main_all'] == 'main')
+      $c->add(NewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
+            
+    return $c;
+  }
+
+
+  /**
    * return true, if the sf_news_cache table has a record, regarding 
    * opp_emendamentos presented on a given date,
    * either related to an opp_atto, or presented by an opp_carica

@@ -40,7 +40,8 @@
 	    </h5>
 	    
       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), 
-                         '@monitoring_news?user_token=' . $sf_user->getToken() . '&format=rss', array('style' => 'float:right', 'target' => '_blank')) ?>      
+                         '@feed_user_news?token=' . $sf_user->getToken(), 
+                         array('style' => 'float:right', 'target' => '_blank')) ?>      
       
 
 
@@ -48,7 +49,8 @@
 
       <?php echo pager_navigation($pager, 'monitoring/news') ?>
       <div style="margin: 1em 0; text-align: center">
-        <?php echo link_to('Scarica questo elenco in formato RSS', '@monitoring_news?user_token=' . $sf_user->getToken() . '&format=rss', array('target' => '_blank')) ?>        
+        <?php echo link_to('Scarica questo elenco in formato RSS', '@feed_user_news?token=' . $sf_user->getToken(), 
+                           array('target' => '_blank')) ?>        
       </div>
       
     </div>

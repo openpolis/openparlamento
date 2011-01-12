@@ -12,6 +12,56 @@ class feedActions extends sfActions
 {
 
 
+  public function executeUserNews()
+  {
+    
+    $this->session = $this->getUser();
+    
+    // legge sempre i filtri dalla sessione utente
+    $filters['tag_id'] = $this->session->getAttribute('tag_id', '0', 'monitoring_filter');
+    $filters['act_type_id'] = $this->session->getAttribute('act_type_id', '0', 'monitoring_filter');
+    $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
+    $filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
+    $filters['main_all'] = $this->session->getAttribute('main_all', 'main', 'news_filter');
+
+    $token = $this->getRequestParameter('token');
+
+    // se utente non loggato, cerca l'id con il token
+    if (!$this->session->isAuthenticated())
+    {
+      $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
+      $key = sfConfig::get('sf_internal_api_key', 'XXX');
+      $api_uri = "http://$remote_guard_host/index.php/getUserIdFromToken/$token/$key";
+      $xml = simplexml_load_file($api_uri);
+      if ($xml->user instanceof SimpleXMLElement && $xml->user->asXML() != '')
+      {
+    	  $user_id = $xml->user->id;
+      } else {
+        $this->forward404("Utente non loggato e token non riconosciuto: $api_uri");
+      }      
+    } else 
+      $user_id = $this->session->getId();
+    
+    $user = OppUserPeer::retrieveByPK($user_id);
+    
+    // costruisce criterio di fetch delle news relative agli oggetti monitorati, con filtro
+    $c = oppNewsPeer::getMyMonitoredItemsNewsWithFiltersCriteria($user, $filters);
+    $c->setLimit(50);
+
+    $this->pager = new deppNewsPager('News', 50);
+    $this->pager->setCriteria($c);
+    $this->pager->setPage($this->getRequestParameter('page', 1));
+    $this->pager->init();      
+
+    $feed = $this->_make_feed_from_pager(
+      'Ultime notizie per te', 
+      '@monitoring_news?user_token=' . $this->getUser()->getToken(), 
+      $this->pager
+    );
+    $this->_send_output($feed);
+    return sfView::NONE;    
+  }
+
   public function executeLastAtto()
   {
     $id = $this->getRequestParameter('id');

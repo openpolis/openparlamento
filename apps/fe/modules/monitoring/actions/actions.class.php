@@ -71,13 +71,14 @@ class monitoringActions extends sfActions
     
   public function executeNews()
   {
-    $this->user_id = $this->getUser()->getId();
+    $this->session = $this->getUser();
+    $this->user_id = $this->session->getId();
+
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->redirectUnless($this->user instanceof OppUser, '/');
     
     $format = $this->getRequestParameter('format', 'html');
  
-    $this->session = $this->getUser();
     
     $this->getResponse()->setTitle('le mie notizie - ' . sfConfig::get('app_main_title'));
 
@@ -131,62 +132,12 @@ class monitoringActions extends sfActions
     $filters['act_ramo'] = $this->session->getAttribute('act_ramo', '0', 'monitoring_filter');
     $filters['date'] = $this->session->getAttribute('date', '0', 'monitoring_filter');
     $filters['main_all'] = $this->session->getAttribute('main_all', 'main', 'news_filter');
-
-    // fetch degli oggetti monitorati (se c'è il filtro sui tag, fetch solo di quelli associati a questo tag)
-    if ($filters['tag_id'] != '0')
-    {
-      $filter_criteria = new Criteria();
-      $filter_criteria->add(TagPeer::ID, $filters['tag_id']);
-      $monitored_objects = $this->user->getMonitoredObjects('Tag', $filter_criteria);
-    } else
-      $monitored_objects = $this->user->getMonitoredObjects();
-
-    // criterio di selezione delle news dagli oggetti monitorati    
-    $c = oppNewsPeer::getMyMonitoredItemsNewsCriteria($monitored_objects);
     
-    // eliminazione delle notizie relative agli oggetti bookmarkati negativamente (bloccati)
-    $blocked_items_ids = sfBookmarkingPeer::getAllNegativelyBookmarkedIds($this->user_id);
-    if (array_key_exists('OppAtto', $blocked_items_ids) && count($blocked_items_ids['OppAtto']))
-    {
-      $blocked_news_ids = array();
-      $bc = new Criteria();
-      $bc->add(NewsPeer::RELATED_MONITORABLE_MODEL, 'OppAtto');
-      $bc->add(NewsPeer::RELATED_MONITORABLE_ID, $blocked_items_ids['OppAtto'], Criteria::IN);
-      $bc->clearSelectColumns(); 
-      $bc->addSelectColumn(NewsPeer::ID);
-      $rs = NewsPeer::doSelectRS($bc);
-      while ($rs->next()) {
-        array_push($blocked_news_ids, $rs->getInt(1));
-      }
-      $c0 = $c->getNewCriterion(NewsPeer::ID, $blocked_news_ids, Criteria::NOT_IN);
-      $c->addAnd($c0);
-    }
-    
-    // le news di gruppo non sono considerate, perché ridondanti (#247)
-    $c->add(NewsPeer::GENERATOR_PRIMARY_KEYS, null, Criteria::ISNOTNULL);
-
-    // aggiunta filtri su tipi di atto, ramo e data
-    if ($filters['act_type_id'] != '0')
-      $c->add(NewsPeer::TIPO_ATTO_ID, $filters['act_type_id']);
-
-    if ($filters['act_ramo'] != '0')
-      $c->add(NewsPeer::RAMO_VOTAZIONE, $filters['act_ramo']);
-
-    if ($filters['date'] != '0')
-      if ($filters['date'] == 'W')
-      {
-        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 week')), Criteria::GREATER_THAN);
-      }
-      elseif ($filters['date'] == 'M') 
-      {
-        $c->add(NewsPeer::CREATED_AT, date('Y-m-d H:i', strtotime('-1 month')), Criteria::GREATER_THAN);
-      }
-
-    if ($filters['main_all'] == 'main')
-      $c->add(NewsPeer::PRIORITY, 2, Criteria::LESS_EQUAL);
-
-    // passa la variabile filters
+    // passa la variabile filters alla view
     $this->filters = $filters;
+    
+    // costruisce criterio di fetch delle news relative agli oggetti monitorati, con filtro
+    $c = oppNewsPeer::getMyMonitoredItemsNewsWithFiltersCriteria($this->user, $this->filters);
 
     // estrae tutti gli atti monitorati dall'utente, per costruire la select
     $this->all_monitored_tags = $this->user->getMonitoredObjects('Tag');
@@ -206,18 +157,6 @@ class monitoringActions extends sfActions
     $this->pager->setPage($this->getRequestParameter('page', 1));
     $this->pager->init();      
   	
-    if ($format == 'rss') {
-      $c->setLimit(50);
-      $news = oppNewsPeer::doSelect($c);      
-
-      $feed = $this->_make_feed_from_pager(
-        'Ultime notizie per te', 
-        '@monitoring_news?user_token=' . $this->getUser()->getToken(), 
-        $this->pager
-      );
-      $this->_send_output($feed);
-      return sfView::NONE;    
-    }
   }
 
   protected function _make_feed_from_pager($title, $link, $pager, $context = null)
@@ -1021,7 +960,7 @@ class monitoringActions extends sfActions
     if ($isAjax)
       $this->setTemplate('ajaxMyTags');
     else
-      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
+      $this->redirect('monitoring/tags?user_token='.$this->getUser()->getToken());
   }
 
   public function executeAddTagValueToMyMonitoredTags()
@@ -1054,7 +993,7 @@ class monitoringActions extends sfActions
     if ($isAjax)
       $this->setTemplate('ajaxMyTags');
     else
-      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
+      $this->redirect('monitoring/tags?user_token='.$this->getUser()->getToken());
   }
 
   /**
@@ -1125,7 +1064,7 @@ class monitoringActions extends sfActions
     if ($isAjax)
       $this->setTemplate('ajaxMyTags');
     else
-      $this->redirect('monitoring/tags?usr_token='.$this->getUser()->getToken());
+      $this->redirect('monitoring/tags?user_token='.$this->getUser()->getToken());
 
     
   }

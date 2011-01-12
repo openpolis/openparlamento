@@ -116,6 +116,11 @@ feed_atto:
 feed_atti_in_evidenza:
   url: /feed/atti_in_evidenza/:namespace
   param: { module: feed, action: attiInEvidenza, namespace: all }
+
+feed_user_news:
+  url: /feed/news_utente/:token
+  param: { module: feed, action: userNews, token: '' }
+  
   
 monitoring_news:
   url: /monitoring_news/:user_token/*
