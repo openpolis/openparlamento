@@ -163,7 +163,10 @@ dati_storici_geoaggregati_rilevanza_tag_export:
   url:   /geoaggregati_rilevanza_tag_export
   param: { module: datiStorici, action: geoAggregatiRilevanzaTagExport}
   
-
+dati_storici_indice_presenze_export:
+  url:   /indice_presenze_export/*
+  param: { module: datiStorici, action: indicePresenzeExport }
+  
 
 monitoring_dettaglio_posizione:
   url:   /dettaglio_posizione/:carica_id/:tags_ids
@@ -362,10 +365,6 @@ parlamentariSearch:
   url: /parlamentariSearch/*
   param: { module: sfSolr, action: parlamentariSearch }
 
-parlamentari_nuovo_indice:
-  url: /parlamentari_nuovo_indice/:ramo
-  param: { module: datiStorici, action: indice, ramo: camera }
-  
 parlamentari:
 #  url:   /parlamentari/:ramo/*
   url:   /parlamentari/:ramo/:sort/:type/*

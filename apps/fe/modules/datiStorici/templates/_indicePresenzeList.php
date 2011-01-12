@@ -5,7 +5,9 @@
     <tr> 
       <th scope="col">parlamentare:</th>
       <th scope="col">indice:</th>  
-      <th scope="col">azioni:</th>
+      <th scope="col">presenze:</th>  
+      <th scope="col">assenze:</th>  
+      <th scope="col">missioni:</th>
     </tr>
   </thead>
 
@@ -31,25 +33,29 @@
                                   true) ?></p>
           <?php endif ?>
         </th>
-        <td class="numeric-value"><p><?php printf("%7.2f", $record->getIndice()) ?></p></td>
-        <td>
-          <?php if ($parlamentare): ?>
-            <p><a href="/xml/indici/politici/<?php echo $parlamentare->getId() ?>.xml" target="_blank">
-              vai al dettaglio (XML)
-            </a></p>            
-          <?php endif ?>
-        </td>	
+        <td class="numeric-value">
+          <p>
+            <?php printf("%7.2f", $record->getIndice()) ?> (<?php if ($parlamentare): ?>
+              <a href="/xml/indici/politici/<?php echo $parlamentare->getId() ?>.xml" target="_blank">
+                dettaglio XML
+              </a>
+            <?php endif ?>)
+          </p>
+        </td>
+        <td class="numeric-value"><p><?php printf("%d", $record->getPresenze()) ?></p></td>
+        <td class="numeric-value"><p><?php printf("%d", $record->getAssenze()) ?></p></td>
+        <td class="numeric-value"><p><?php printf("%d", $record->getMissioni()) ?></p></td>
       </tr>
     <?php endforeach; ?>
 
     <tr>
-      <td align="center" colspan='4'>
-        <?php echo pager_navigation($pager, 'datiStorici/indice') ?>
+      <td align="center" colspan='5'>
+        <?php echo pager_navigation($pager, 'datiStorici/indicePresenze') ?>
       </td>
     </tr>
 
     <tr>
-      <td align="center" colspan='4'>
+      <td align="center" colspan='5'>
         <?php echo format_number_choice('[0] nessun risultato|[1] 1 risultato|(1,+Inf] %1% risultati', array('%1%' => $pager->getNbResults()), $pager->getNbResults()) ?>
       </td>
     </tr>

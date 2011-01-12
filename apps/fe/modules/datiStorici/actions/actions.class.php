@@ -11,26 +11,86 @@
 class datiStoriciActions extends sfActions
 {
   /**
-   * Executes index action
+   * Executes index action (just a redirect to the indicePresenze, actually)
    *
    */
   public function executeIndex()
   {
-    $this->redirect('datiStorici/indice');
+    $this->redirect('datiStorici/indicePresenze');
   }
 
-  public function executeIndice()
+
+  public function executeIndicePresenzeExport()
   {
+    sfLoader::loadHelpers(array('Number'));
+
     $this->session = $this->getUser();
+    $this->forward404Unless($this->session->hasCredential('adhoc'));
+    
+    $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
+    
+    $this->processFilters(array('ramo', 'data'), $last_date);
+    $date = $this->filters['data'];
+    
+    $this->processListSort('indice', 'presenze');
+    
+    $c = new Criteria();
+    $this->addFiltersCriteria($c);  
+    $this->addListSortCriteria($c);      
+    $c->addDescendingOrderByColumn(OppPoliticianHistoryCachePeer::CHI_ID);
+    $c->add(OppPoliticianHistoryCachePeer::CHI_TIPO, 'P');
+    if ($this->hasRequestParameter('limit')) {
+      $limit = $this->getRequestParameter('limit');
+      $c->setLimit($limit);
+    }
+    
+    $items = OppPoliticianHistoryCachePeer::doSelect($c);
+    
+    $this->csv_header = "posizione,parlamentare (gruppo),indice,presenze,assenze,missioni";
+    foreach ($items as $cnt => $item) {
+      $parlamentare = OppCaricaPeer::retrieveByPK($item->getChiId());
+      if (!is_null($parlamentare)) {
+        $parlamentare_string = $parlamentare->getOppPolitico() . " (" . $parlamentare->getGruppo($date)->getAcronimo() . ")";
+      } else {
+        $parlamentare_string = $parlamentare->getId();
+      }
+      $indice = format_number(round($item->getIndice(), 2), 'it_IT');
+      $presenze = format_number(round($item->getPresenze(), 2), 'it_IT');
+      $assenze = format_number(round($item->getAssenze(), 2), 'it_IT');
+      $missioni = format_number(round($item->getMissioni(), 2), 'it_IT');
+      
+      $csv_row = sprintf("%d,%s,%s,%s,%s,%s", $cnt+1, $parlamentare_string, $indice, $presenze, $assenze, $missioni);
+      $csv_rows []= $csv_row;
+    }
+    
+    $this->csv_rows = $csv_rows;
+    $this->setLayout(false);   
+    $this->response->setContentType('text/plain');
+    
+  }
+
+  /**
+   * tabella indici e presenze
+   *
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function executeIndicePresenze()
+  {
+    sfLoader::loadHelpers(array('Number'));
+
+    $this->session = $this->getUser();
+    $this->forward404Unless($this->session->hasCredential('adhoc'));
+    
+    $limit = $this->getRequestParameter('limit', 50);
+    
     $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
     
     /*
     deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
                                                   array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
     */
-
-
-    // estrae tutte le date per cui esistono dati di tipo N (indice)
+    // estrae tutte le date per cui esistono dati di tipo P (presenze)
     $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('P');
 
     // reset dei filtri, se richiesto esplicitamente
@@ -56,10 +116,10 @@ class datiStoriciActions extends sfActions
     if ($this->getRequestParameter('filter_ramo') == '0' &&
         $this->getRequestParameter('filter_data') == $last_date)
     {
-      $this->redirect('datiStorici/indice');
+      $this->redirect('datiStorici/indicePresenze');
     }
 
-    $this->processListSort('indice');
+    $this->processListSort('indice', 'presenze');
 
     if ($this->hasRequestParameter('itemsperpage'))
       $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
@@ -79,53 +139,6 @@ class datiStoriciActions extends sfActions
     
   }
 
-  public function executePresenze()
-  {
-    $this->session = $this->getUser();
-    $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
-    
-    /*
-    deppFiltersAndSortVariablesManager::resetVars($this->session, 'action', 'storici_action', 
-                                                  array('sf_admin/opp_storici/filter', 'sf_admin/opp_storici/sort'));
-    */
-    // estrae tutte le date per cui esistono dati di tipo P (presenze)
-    $this->all_dates = OppPoliticianHistoryCachePeer::extractDates('P');
-
-    // reset dei filtri, se richiesto esplicitamente
-    if ($this->getRequestParameter('reset_filters', 'false') == 'true')
-    {
-      $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
-      $this->getRequest()->getParameterHolder()->set('filter_data', $last_date);
-    }
-
-    $this->processFilters(array('ramo', 'data'), $last_date);
-    $this->date = $this->filters['data'];
-
-    // if all filters were reset, then restart
-    if ($this->getRequestParameter('filter_ramo') == '0' &&
-        $this->getRequestParameter('filter_data') == $last_date)
-    {
-      $this->redirect('datiStorici/presenze');
-    }
-
-    $this->processListSort('presenze');
-
-    if ($this->hasRequestParameter('itemsperpage'))
-      $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
-    $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
-
-    $this->pager = new sfPropelPager('OppPoliticianHistoryCache', $itemsperpage);
-
-    $c = new Criteria();
-    $this->addFiltersCriteria($c);  
-    $this->addListSortCriteria($c);      
-    $c->addDescendingOrderByColumn(OppPoliticianHistoryCachePeer::CHI_ID);
-    $c->add(OppPoliticianHistoryCachePeer::CHI_TIPO, 'P');
-    $this->pager->setCriteria($c);
-    $this->pager->setPage($this->getRequestParameter('page', 1));
-    $this->pager->setPeerMethod('doSelect');
-    $this->pager->init();
-  }
 
   public function executeRilevanzaAtti()
   {
