@@ -46,7 +46,7 @@ class datiStoriciActions extends sfActions
     
     $items = OppPoliticianHistoryCachePeer::doSelect($c);
     
-    $this->csv_header = "posizione,parlamentare,gruppo,circoscrizione,indice,presenze,assenze,missioni";
+    $this->csv_header = "parlamentare,sesso,gruppo,circoscrizione,indice,presenze,assenze,missioni";
     foreach ($items as $cnt => $item) {
       $parlamentare = OppCaricaPeer::retrieveByPK($item->getChiId());
       if (!is_null($parlamentare)) {
