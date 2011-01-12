@@ -4,6 +4,7 @@
   <thead>
     <tr> 
       <th scope="col">parlamentare:</th>
+      <th scope="col">circoscrizione:</th>  
       <th scope="col">indice:</th>  
       <th scope="col">presenze:</th>  
       <th scope="col">assenze:</th>  
@@ -33,6 +34,7 @@
                                   true) ?></p>
           <?php endif ?>
         </th>
+        <td><?php echo $parlamentare->getCircoscrizione() ?> </td>
         <td class="numeric-value">
           <p>
             <?php printf("%7.2f", $record->getIndice()) ?> (<?php if ($parlamentare): ?>

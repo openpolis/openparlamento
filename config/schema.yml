@@ -337,6 +337,7 @@ propel:
     id:                 { type: integer, required: true, primaryKey: true, index: true } # politician_id di openpolis 
     nome:               { type: varchar(30) }
     cognome:            { type: varchar(30) }
+    sesso:              { type: varchar(1) }
     n_monitoring_users: { type: integer, required: true, default: 0, index: multiple }
     
   opp_resoconto:

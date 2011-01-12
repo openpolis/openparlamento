@@ -46,20 +46,25 @@ class datiStoriciActions extends sfActions
     
     $items = OppPoliticianHistoryCachePeer::doSelect($c);
     
-    $this->csv_header = "posizione,parlamentare (gruppo),indice,presenze,assenze,missioni";
+    $this->csv_header = "posizione,parlamentare,gruppo,circoscrizione,indice,presenze,assenze,missioni";
     foreach ($items as $cnt => $item) {
       $parlamentare = OppCaricaPeer::retrieveByPK($item->getChiId());
       if (!is_null($parlamentare)) {
-        $parlamentare_string = $parlamentare->getOppPolitico() . " (" . $parlamentare->getGruppo($date)->getAcronimo() . ")";
+        $parlamentare_string = $parlamentare->getOppPolitico();
+        $gruppo =  $parlamentare->getGruppo($date)->getAcronimo();
+        $sesso = $parlamentare->getOppPolitico()->getSesso();
       } else {
         $parlamentare_string = $parlamentare->getId();
+        $gruppo = "";
+        $sesso = "";
       }
+      $circoscrizione = $parlamentare->getCircoscrizione();
       $indice = format_number(round($item->getIndice(), 2), 'it_IT');
       $presenze = format_number(round($item->getPresenze(), 2), 'it_IT');
       $assenze = format_number(round($item->getAssenze(), 2), 'it_IT');
       $missioni = format_number(round($item->getMissioni(), 2), 'it_IT');
       
-      $csv_row = sprintf("%d,%s,%s,%s,%s,%s", $cnt+1, $parlamentare_string, $indice, $presenze, $assenze, $missioni);
+      $csv_row = sprintf("%s,%s,%s,%s,%s,%s,%s,%s", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
       $csv_rows []= $csv_row;
     }
     
