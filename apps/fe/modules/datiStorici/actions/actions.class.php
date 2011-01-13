@@ -64,7 +64,7 @@ class datiStoriciActions extends sfActions
       $assenze = format_number(round($item->getAssenze(), 2), 'it_IT');
       $missioni = format_number(round($item->getMissioni(), 2), 'it_IT');
       
-      $csv_row = sprintf("%s,%s,%s,%s,%s,%s,%s,%s", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
+      $csv_row = sprintf("%s,%s,%s,%s,\"%s\",\"%s\",\"%s\",\"%s\"", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
       $csv_rows []= $csv_row;
     }
     
