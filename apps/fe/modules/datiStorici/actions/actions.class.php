@@ -60,11 +60,11 @@ class datiStoriciActions extends sfActions
       }
       $circoscrizione = $parlamentare->getCircoscrizione();
       $indice = format_number(round($item->getIndice(), 2), 'it_IT');
-      $presenze = format_number(round($item->getPresenze(), 2), 'it_IT');
-      $assenze = format_number(round($item->getAssenze(), 2), 'it_IT');
-      $missioni = format_number(round($item->getMissioni(), 2), 'it_IT');
+      $presenze = $item->getPresenze();
+      $assenze = $item->getAssenze();
+      $missioni = $item->getMissioni();
       
-      $csv_row = sprintf("%s,%s,%s,%s,\"%s\",\"%s\",\"%s\",\"%s\"", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
+      $csv_row = sprintf("%s,%s,%s,%s,\"%s\",%d,%d,%d", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
       $csv_rows []= $csv_row;
     }
     
