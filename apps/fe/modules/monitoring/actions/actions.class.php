@@ -159,56 +159,6 @@ class monitoringActions extends sfActions
   	
   }
 
-  protected function _make_feed_from_pager($title, $link, $pager, $context = null)
-  {
-    // setlocale(LC_TIME, 'it_IT');
-    sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
-    
-    $feed = new sfRss2ExtendedFeed();
-    $feed->initialize(array(
-      'title'       => $title,
-      'link'        => url_for($link, true),
-      'feedUrl'     => $this->getRequest()->getURI(),
-      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
-      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
-      'language'    => 'it',
-      'authorEmail' => 'info@openparlamento.it',
-      'authorName'  => 'Openparlamento',
-      'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
-      'sy_updatePeriod' => 'daily',
-      'sy_updateFrequency' => '1',
-      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
-    ));
-
-    foreach ($pager->getGroupedResults() as $date_ts => $news)
-    {
-      $item = new sfRss2ExtendedItem();
-      $item->initialize( array(
-        'title' => 'Notizie del ' . strftime("%d/%m/%Y", $date_ts),
-        'link'  => url_for($link, true) . '#' . strftime('%Y%m%d%H', $date_ts),
-        'permalink' => url_for($link, true) . '#' . strftime('%Y%m%d%H', $date_ts),
-        'pubDate' => date("U", $date_ts),
-        'uniqueId' => $date_ts,
-        'description' => news_list($news, null, $context),
-        'authorEmail' => 'info@openparlamento.it',
-        'authorName'  => 'Openparlamento',        
-      ));
-      $feed->addItem($item);
-    }
-
-    return $feed;
-  }
-
-
-  
-  protected function _send_output($feed)
-  {
-    $this->setLayout(false);    
-    $this->response->setContentType('text/xml');
-    $this->response->setContent($feed->asXml());
-  }
-  
-  
   
   public function executeSendNewsletter()
   {

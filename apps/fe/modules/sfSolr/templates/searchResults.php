@@ -16,9 +16,9 @@
 <div class="tabbed float-container" id="content">
   <div id="main">
     <div class="W100_100 float-left">
-      <?php echo include_partial('sfSolr/addAlert', array('query' => $query, 
-                                                          'type_filters' => $type_filters,
-                                                          'type_filters_label' => implode(" + ", explode("|", $type_filters)))); ?>
+      <?php echo include_component('sfSolr', 'addAlert', 
+                                   array('query' => $query, 
+                                         'type_filters' => $type_filters)); ?>
       
       <!-- sidebar per filtri a faccette e ordinamento -->
       <div id="facet_filters">
@@ -35,22 +35,7 @@
                                       ($date_filter != ''?"&date_filter=$date_filter":""), array()) ?>            
             <?php endif ?>
           </li>
-          <?php foreach ($type_filters_labels = array('Parlamentari' => 'politici',
-                               'Disegni di legge' => 'disegni',
-                               'Decreti legge' => 'decreti',
-                               'Decreti legislativi' => 'decrleg',
-                               'Emendamenti' => 'emendamenti',
-                               'Mozioni' => 'mozioni',
-                               'Interpellanze' => 'interpellanze',
-                               'Interrogazioni' => 'interrogazioni',
-                               'Risoluzioni' => 'risoluzioni',
-                               'Ordini del giorno' => 'odg',
-                               'Audizioni' => 'audizioni',
-                               'Comunicati del Governo' => 'comunicazionigoverno',
-                               'Votazioni' => 'votazioni',
-                               'Argomenti' => 'argomenti',
-                               'Resoconti stenografici' => 'resoconti'
-                               ) as $label => $filter): ?>
+          <?php foreach (OppAlertTermPeer::$type_filters as $filter => $label): ?>
              <li>
                <?php if ($sf_user->isAuthenticated() && 
                          ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
@@ -159,7 +144,7 @@
               <?php endif ?>
               <?php if ($date_filter && $type_filters): ?>+<?php endif ?>
               <?php if ($type_filters): ?>
-                <?php echo implode(" + ", explode("|", $type_filters)) ?>
+                <?php echo OppAlertTermPeer::get_filters_labels($type_filters) ?>
               <?php endif ?>
             </div>          
           <?php endif ?>

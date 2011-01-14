@@ -17,4 +17,8 @@ require_once(SF_ROOT_DIR . '/plugins/sfSolrPlugin/modules/sfSolr/lib/BasesfSolrC
  */
 class sfSolrComponents extends BasesfSolrComponents
 {
+  public function executeAddAlert()
+  {
+    $this->type_filters_label = OppAlertTermPeer::get_filters_labels($this->type_filters);
+  }
 }
