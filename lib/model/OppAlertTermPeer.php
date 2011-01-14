@@ -19,7 +19,7 @@ class OppAlertTermPeer extends BaseOppAlertTermPeer
     'emendamenti'          => 'Emendamenti',
     'mozioni'              => 'Mozioni',
     'interpellanze'        => 'Interpellanze',
-    'Interrogazioni'       => 'interrogazioni',
+    'interrogazioni'       => 'Interrogazioni',
     'risoluzioni'          => 'Risoluzioni',
     'odg'                  => 'Ordini del giorno',
     'audizioni'            => 'Audizioni',
