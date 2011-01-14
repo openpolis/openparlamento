@@ -39,6 +39,7 @@ class OppAlertTermPeer extends BaseOppAlertTermPeer
    */
   public static function get_filters_labels($filters)
   {
+    if ($filters == '') return '';
     $labels = array();
     foreach (explode("|", $filters) as $filter) {
       $labels []= OppAlertTermPeer::$type_filters[$filter];

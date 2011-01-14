@@ -701,7 +701,7 @@ class monitoringActions extends sfActions
 
     // read filter on type of objects
     $type_filters = $this->getRequestParameter('type_filters', '');
-    $type_filters_label = implode(" + ", explode("|", $type_filters));
+    $type_filters_label = OppAlertTermPeer::get_filters_labels($type_filters);
 
 
     // check limitations (for non-adhoc subscribers)

@@ -27,13 +27,17 @@ class OppAlertUserPeer extends BaseOppAlertUserPeer
     
   }
   
-  public static function getAlert($term, $user, $type_filters)
+  public static function getAlert($term, $user, $type_filters = '')
   {
     $term_obj = OppAlertTermPeer::retrieveByTerm($term);
     if (!$term_obj)
       return null;
 
-    $alert = self::retrieveByPKAndTypeFilters($user->getId(), $term_obj->getId(), $type_filters);
+    if ($type_filters != '') {
+      $alert = self::retrieveByPKAndTypeFilters($user->getId(), $term_obj->getId(), $type_filters);
+    } else {
+      $alert = self::retrieveByPK($user->getId(), $term_obj->getId());      
+    }
     return $alert;
   }
   
