@@ -816,7 +816,7 @@ class monitoringActions extends sfActions
   {
     $s = $value['term'];
     if (array_key_exists('type_filters', $value)) {
-      $s .= ": " . OppAlertTermPeer::get_filters_labels($value['type_filters']);
+      $s .= ": " . $value['type_filters'];
     }
     return $s;
   }
