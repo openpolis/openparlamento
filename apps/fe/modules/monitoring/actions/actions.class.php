@@ -815,9 +815,11 @@ class monitoringActions extends sfActions
   public function extractTerm($value='')
   {
     $s = $value['term'];
+    /*
     if (array_key_exists('type_filters', $value)) {
       $s .= ": " . $value['type_filters'];
     }
+    */
     return $s;
   }
 
