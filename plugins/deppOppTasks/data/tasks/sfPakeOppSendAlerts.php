@@ -221,7 +221,7 @@ function extractTerm($value='')
 {
   $s = $value['term'];
   if (array_key_exists('type_filters', $value)) {
-    $s .= ": " . implode(" + ", explode("|", $value['type_filters']));
+    $s .= ": " . OppAlertTermPeer::get_filters_labels($value['type_filters']);
   }
   return $s;
 }
@@ -282,7 +282,8 @@ function pakeTaskUserAlerts($user_alerts)
     {
       $alert_type_filters = $user_alert['type_filters'];
       $string .= pakeColor::colorize(sprintf("\n\nLa parola %s è stata trovata %d volte in %s\n", 
-                                            $alert_term, count($alert_results), implode(" + ", explode("|", $alert_type_filters))),
+                                            $alert_term, count($alert_results), 
+                                            OppAlertTermPeer::get_filters_labels($alert_type_filters)),
                                      array('fg' => 'cyan', 'bold' => true));      
     }
     else {

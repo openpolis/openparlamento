@@ -48,9 +48,9 @@ class oppAlertingTools
         $fields_constraints = 'created_at_dt:' . sprintf("[NOW-%dDAYS/SECOND TO NOW]", sfConfig::get('app_alert_default_days_back', 9));
       }
 
-      $type_filters_s = $alert->getTypeFilters();
+      $type_filters_s = OppAlertTermPeer::get_filters_labels($alert->getTypeFilters());
       if (!is_null($type_filters_s) && $type_filters_s != '') {
-        $type_filters = explode("|", $type_filters_s);
+        $type_filters = explode("|", $alert->getTypeFilters());
       } else {
         $type_filters = array();
       }

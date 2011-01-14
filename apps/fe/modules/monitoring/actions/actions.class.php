@@ -814,7 +814,11 @@ class monitoringActions extends sfActions
 
   public function extractTerm($value='')
   {
-    return $value['term'];
+    $s = $value['term'];
+    if (array_key_exists('type_filters', $value)) {
+      $s .= ": " . OppAlertTermPeer::get_filters_labels($value['type_filters']);
+    }
+    return $s;
   }
 
   public function executeAjaxTagsForTopTerm()
