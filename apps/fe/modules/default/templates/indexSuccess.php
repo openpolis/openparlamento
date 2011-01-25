@@ -84,21 +84,13 @@
 	  
        <div class="clear-both"></div>
    
-       <!-- Box attivita' utenti -->
-       <div class="section-box">   
-	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
-	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
-       </div>     
-
-       <div class="clear-both"></div>
-       
      </div>          
 
      <div class="W52_100 float-left"> 
   
       <!-- box atti in evidenza dal parlamento -->
       <?php if (count($lanci)>0) : ?>
-        <div class="section-box">
+        <div class="section-box" style="padding-bottom:20px;">
     			<h3 class="section-box-no-rss">atti in evidenza</h3>				
     			<?php include_partial('atto/inevidenza', array('lanci' => $lanci)) ?>
         </div>	
@@ -113,6 +105,14 @@
     		  <p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
     	  </div>
       <?php endif; ?>
+      <!-- Box attivita' utenti -->
+       <div class="section-box">   
+	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
+	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
+       </div>     
+
+       <div class="clear-both"></div>
+      
   
   	
      </div>
