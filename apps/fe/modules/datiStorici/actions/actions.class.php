@@ -263,7 +263,7 @@ class datiStoriciActions extends sfActions
 
     $data_inizio = OppLegislaturaPeer::$legislature[OppLegislaturaPeer::getCurrent()]['data_inizio'];
     $data_fine = OppTagHistoryCachePeer::fetchLastData();
-    $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));
+    $date = Util::buildCacheDatesArray($data_inizio, $data_fine);
 
     // fetch delle macrozone e degli id delle località relative (city, prov, reg)
     $macroregions = OppLocationPeer::retrieveMacroregions();
@@ -335,7 +335,7 @@ class datiStoriciActions extends sfActions
 
     $data_inizio = OppLegislaturaPeer::$legislature[OppLegislaturaPeer::getCurrent()]['data_inizio'];
     $data_fine = OppTagHistoryCachePeer::fetchLastData();
-    $date = array_reverse(Util::buildCacheDatesArray($data_inizio, $data_fine));  
+    $date = Util::buildCacheDatesArray($data_inizio, $data_fine);  
 
     $limit = $this->getRequestParameter('limit', 50);
 
