@@ -9,6 +9,7 @@
       <th scope="col">presenze:</th>  
       <th scope="col">assenze:</th>  
       <th scope="col">missioni:</th>
+      <th scope="col">ribellioni:</th>
     </tr>
   </thead>
 
@@ -47,6 +48,7 @@
         <td class="numeric-value"><p><?php printf("%d", $record->getPresenze()) ?></p></td>
         <td class="numeric-value"><p><?php printf("%d", $record->getAssenze()) ?></p></td>
         <td class="numeric-value"><p><?php printf("%d", $record->getMissioni()) ?></p></td>
+        <td class="numeric-value"><p><?php printf("%d", $record->getRibellioni()) ?></p></td>
       </tr>
     <?php endforeach; ?>
 

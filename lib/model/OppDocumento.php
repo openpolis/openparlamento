@@ -9,6 +9,8 @@
  */ 
 class OppDocumento extends BaseOppDocumento
 {
+  public $skip_news_generation = true;
+
   public function getDocId()
   {
     return $this->getId();
@@ -29,6 +31,17 @@ class OppDocumento extends BaseOppDocumento
     if ($this->getId() < 1248) return true;
     else return false;
   }
+
+  public function save($con = null)
+  {
+    
+    // attiva generazione news per documenti relativi a DDL
+    if ($this->getOppAtto()->getTipoAttoId() == 1)
+      $this->skip_news_generation = false;
+      
+    return parent::save();
+  }
+
   
   /**
    * torna l'oggetto Apache_Solr_Document da indicizzare

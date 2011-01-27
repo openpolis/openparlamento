@@ -46,7 +46,7 @@ class datiStoriciActions extends sfActions
     
     $items = OppPoliticianHistoryCachePeer::doSelect($c);
     
-    $this->csv_header = "parlamentare,sesso,gruppo,circoscrizione,indice,presenze,assenze,missioni";
+    $this->csv_header = "parlamentare,sesso,gruppo,circoscrizione,indice,presenze,assenze,missioni,ribellioni";
     foreach ($items as $cnt => $item) {
       $parlamentare = OppCaricaPeer::retrieveByPK($item->getChiId());
       if (!is_null($parlamentare)) {
@@ -63,8 +63,9 @@ class datiStoriciActions extends sfActions
       $presenze = $item->getPresenze();
       $assenze = $item->getAssenze();
       $missioni = $item->getMissioni();
+      $ribellioni = $item->getRibellioni();
       
-      $csv_row = sprintf("%s,%s,%s,%s,\"%s\",%d,%d,%d", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni);
+      $csv_row = sprintf("%s,%s,%s,%s,\"%s\",%d,%d,%d,%d", $parlamentare_string, $sesso, $gruppo,$circoscrizione,$indice, $presenze, $assenze, $missioni,$ribellioni);
       $csv_rows []= $csv_row;
     }
     

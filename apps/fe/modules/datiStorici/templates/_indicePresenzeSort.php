@@ -31,5 +31,12 @@
         <?php echo link_to('missioni', 'datiStorici/indicePresenze?sort=missioni&type=desc') ?>
       <?php endif; ?>
     </li>
+    <li>
+      <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_storici/sort') == 'ribellioni'): ?>
+        <?php echo link_to('ribellioni', 'datiStorici/indicePresenze?sort=ribellioni&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_storici/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+      <?php else: ?>
+        <?php echo link_to('ribellioni', 'datiStorici/indicePresenze?sort=ribellioni&type=desc') ?>
+      <?php endif; ?>
+    </li>
   </ul>
 </div>
