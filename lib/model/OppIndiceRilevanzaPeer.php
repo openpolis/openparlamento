@@ -434,8 +434,8 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
   {
     $tag_node = $xml_node->addChild('tag', null, self::$opp_ns);
     
-    // estrazione array atti taggati a una certa data
-    $atti_ids = TaggingPeer::getTaggableIdsData($tag_id, 'OppAtto', $data);
+    // estrazione array atti taggati con un tag
+    $atti_ids = TaggingPeer::getTaggableIds($tag_id, 'OppAtto');
     
     if ($verbose)
       printf("tag: %10s\n", $tag_id);

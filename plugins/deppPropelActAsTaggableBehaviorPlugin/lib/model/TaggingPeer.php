@@ -37,19 +37,18 @@ public function CountTagForAtti($value, $tipo="('teseo','geoteseo','user','op')"
 
 
   /**
-   * estrae tutti gli id dei tag associati ad almeno un atto, prima di una data
+   * estrae tutti gli id dei tag associati ad almeno un atto
    *
    * @param string $taggable_model
-   * @param string $data 
    * @return array di id
    * @author Guglielmo Celata
    */
-  public function getActiveTagsIdsData($taggable_model, $data)
+  public function getActiveTagsIds($taggable_model)
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select distinct tag_id from sf_tagging where taggable_model='%s' and created_at < '%s'",
-                   $taggable_model, $data);
+    $sql = sprintf("select distinct tag_id from sf_tagging where taggable_model='%s'",
+                   $taggable_model);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
@@ -62,12 +61,12 @@ public function CountTagForAtti($value, $tipo="('teseo','geoteseo','user','op')"
     return $ids;
   }
 
-  public function getTaggableIdsData($tag_id, $taggable_model, $data)
+  public function getTaggableIds($tag_id, $taggable_model)
   {
 		$con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select taggable_id from sf_tagging where taggable_model='%s' and tag_id=%d and created_at < '%s'",
-                   $taggable_model, $tag_id, $data);
+    $sql = sprintf("select taggable_id from sf_tagging where taggable_model='%s' and tag_id=%d",
+                   $taggable_model, $tag_id);
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 

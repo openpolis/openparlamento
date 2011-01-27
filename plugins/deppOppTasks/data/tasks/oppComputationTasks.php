@@ -491,7 +491,7 @@ function run_opp_calcola_rilevanza_tag($task, $args, $options)
   {
     $tags_ids = $args;
   } else {
-    $tags_ids = TaggingPeer::getActiveTagsIdsData('OppAtto', $data);    
+    $tags_ids = TaggingPeer::getActiveTagsIds('OppAtto');    
   }
 
   $n_tags = count($tags_ids);
