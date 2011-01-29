@@ -561,7 +561,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         $gender = 'f';
 
       // link all'atto
-      $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+      $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo()));
     

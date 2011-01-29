@@ -25,9 +25,10 @@ class OppAttoHasIter extends BaseOppAttoHasIter
     if (in_array($this->getOppIter()->getId(), $low_priorities_iter_steps_ids))
       $this->priority_override = 3;
       
-    // skip generazione news per passaggio di stato di audizioni
+    // skip generazione news per passaggio di stato di audizioni e
+    // per alcuni passaggi
     if ($this->getOppAtto()->getTipoAttoId() == 14 || 
-        $this->getOppIter()->getFase() == 'CONCLUSO')
+        in_array($this->getIterId(), array(1, 26, 27, 28, 40)))
       $this->skip_news_generation = true;
       
     // cache in opp_atto, solo però se non è già APprovato o REspinto
