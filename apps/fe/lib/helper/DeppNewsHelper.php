@@ -183,7 +183,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
      
           $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                             'atto/index?id=' . $atto->getId(),
-                            array('title' => $atto->getTitolo()));
+                            array('title' => $atto->getTitolo(true)));
           $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
           $news_string .= '<p>'.$atto_link.'</p>';
         }   
@@ -207,7 +207,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       
           $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
                            'atto/index?id=' . $atto->getId(),
-                           array('title' => $atto->getTitolo()));
+                           array('title' => $atto->getTitolo(true)));
           $news_string .= '<p>'.$atto_link.'</p>';
       }  else $news_string .= ''; 
       
@@ -267,9 +267,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         break;
     }
     
-    $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+    $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                          'atto/index?id=' . $atto->getId(),
-                         array('title' => $atto->getTitolo()));
+                         array('title' => $atto->getTitolo(true)));
 
     $politico = $carica->getOppPolitico();
     $politico_link = link_to_in_mail($politico, 
@@ -347,9 +347,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       {
         $atto = $generator->getOppAtto();
         $tipo = $atto->getOppTipoAtto();
-        $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+        $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                              'atto/index?id=' . $atto->getId(),
-                             array('title' => $atto->getTitolo()));
+                             array('title' => $atto->getTitolo(true)));
         if ($context == CONTEXT_LIST) 
         {      
           $news_string .= "<p>".$politico_link. " <strong>interviene</strong>";
