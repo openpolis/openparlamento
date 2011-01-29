@@ -461,7 +461,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           break;
         }
       
-        $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+        $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                              'atto/index?id=' . $atto->getId(),
                              array('title' => $atto->getTitolo()));
       
@@ -882,7 +882,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           else
             $gender = 'f';
 
-          $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list'),200), 
+          $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                                'atto/index?id=' . $atto->getId(),
                                array('title' => $atto->getTitolo()));
 
@@ -1045,7 +1045,7 @@ function community_news_text($news)
         $atto_article = 'alla ';  
           
       $atto_link = $atto_article.$related_atto->getOppTipoAtto()->getDescrizione()." ";
-      $atto_link .= link_to_in_mail(Text::denominazioneAtto($related_atto, 'list'), 
+      $atto_link .= link_to_in_mail(Text::denominazioneAtto($related_atto, 'list', true), 
                                    'atto/index?id=' . $related_atto->getId(),
                                    array('title' => $related_atto->getTitolo()));
       
