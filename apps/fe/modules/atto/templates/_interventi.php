@@ -116,9 +116,12 @@
   </div>
 <?php endif; ?>
 
-<div id="popupContent">
-  <a href="#" id="popupContentClose">x</a>
-  <h1>Preview e voto</h1>
-  <iframe style="width: 100%; height: 88%" id="contentArea" src=""></iframe>
-</div>
-<div id="backgroundPopup"></div>
+<?php if ($sf_user->isAuthenticated() &&
+          ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
+  <div id="popupContent">
+    <a href="#" id="popupContentClose">x</a>
+    <h1>Preview e voto</h1>
+    <iframe style="width: 100%; height: 88%" id="contentArea" src=""></iframe>
+  </div>
+  <div id="backgroundPopup"></div>  
+<?php endif ?>

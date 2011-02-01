@@ -885,7 +885,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       // link all'atto
       $atto_link = link_to_in_mail(troncaTesto(Text::denominazioneAtto($atto,'list', true),200), 
                            'atto/index?id=' . $atto->getId(),
-                           array('title' => $atto->getTitolo()));
+                           array('title' => $atto->getTitolo(true)));
     
       // presentazione o passaggio di stato
       if ($generator_model == 'OppAtto')
@@ -898,10 +898,10 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $succ_atto = OppAttoPeer::retrieveByPK($news->getSucc());
           $succ_atto_link = link_to_in_mail($succ_atto->getRamo() . "." . $succ_atto->getNumFase(), 
                                'atto/index?id=' . $succ_atto->getId(),
-                               array('title' => $succ_atto->getTitolo()));
+                               array('title' => $succ_atto->getTitolo(true)));
           $this_atto_link = link_to_in_mail($atto->getRamo() . "." . $atto->getNumFase(), 
                                'atto/index?id=' . $atto->getId(),
-                               array('title' => $atto->getTitolo()));
+                               array('title' => $atto->getTitolo(true)));
 
           $news_string .= "<p>";
           $news_string .= "il ddl $this_atto_link, approvato ";
