@@ -35,6 +35,325 @@ function news_date($newsdate)
 }
 
 /**
+ * print news for opp_atto_has_iter
+ *
+ * @param integer $iter_id 
+ * @return string $gender
+ * @author Ettore Di Cesare
+ */
+function news_text_for_iter($iter_id, $gender)
+{
+  switch ($iter_id) 
+  {
+    case 2:
+      if ($gender=='m')
+        return "&Egrave; stato rimesso all'Assemblea";
+      else
+        return "&Egrave; stata rimessa all'Assemblea";
+      break;
+    case 3:
+      if ($gender=='m')
+        return "&Egrave; stato assegnato in Commissione";
+      else
+        return "&Egrave; stata assegnata in Commissione";
+      break;
+    case 4:
+      return "&Egrave; all'esame della Commissione";
+      break;
+    case 5:
+      return "Si &egrave; concluso l'esame in Commissione per";
+      break;
+    case 6:
+      return "&Egrave; in stato di relazione";
+      break;
+    case 7:
+      return "&Egrave; all'esame dell'Assemblea";
+      break;
+    case 8:
+      if ($gender=='m')
+        return "&Egrave; stato rinviato dall'Assemblea in Commissione";
+      else
+        return "&Egrave; stata rinviata dall'Assemblea in Commissione";
+      break;
+    case 9:
+      return "&Egrave; stata richiesta una nuova deliberazione per";
+      break;
+    case 11:
+      return "&Egrave; stato assorbito in un altro ddl";
+      break;
+    case 12:
+      if ($gender=='m')
+        return "&Egrave; stato respinto";
+      else
+        return "&Egrave; stata respinta";
+      break;
+    case 13:
+      return "Il primo firmatario ha ritirato";
+      break;
+    case 14:
+      if ($gender=='m')
+        return "&Egrave; decaduto";
+      else
+        return "&Egrave; decaduta";
+      break;    
+    case 15:
+      return "&Egrave; stato approvato definitivamente";
+      break;
+    case 16:
+      return "&Egrave; diventato legge (con pubblicazione in Gazzetta Ufficiale)";
+      break;
+    case 17:
+      return "&Egrave; stato stralciato";
+      break;
+    case 18:
+      return "L'Aula ha cancellato dall'ODG";
+      break;
+    case 19:
+      return "&Egrave; stato rinviato al Presidente della Repubblica";
+      break;
+    case 20:
+      if ($gender=='m')
+        return "&Egrave; stato approvato";
+      else
+        return "&Egrave; stata approvata";
+      break;  
+    case 21:
+      if ($gender=='m')
+        return "&Egrave; stato restituito al Governo per essere ripresentato all'altro ramo";
+      else
+        return "&Egrave; stata restituita al Governo per essere ripresentata all'altro ramo";
+      break;
+    case 22:
+      if ($gender=='m')
+        return "&Egrave; stato approvato con modifiche nel testo";
+      else
+        return "&Egrave; stata approvata con modifiche nel testo";
+      break;
+    case 25:
+      return "&Egrave; stato approvato in testo unificato";
+      break;
+    case 29:
+      if ($gender=='m')
+        return "&Egrave; stato modificato nel corso della seduta";
+      else
+        return "&Egrave; stata modificata nel corso della seduta";
+      break;
+    case 30:
+      return "Il Governo ha accolto";
+      break;
+    case 31:
+      return "Il Governo ha dato parere per";
+      break;
+    case 32:
+      return "C'&egrave; stata la rinuncia alla votazione per";
+      break;
+    case 33:
+      return "&Egrave; in discussione";
+      break;
+    case 34:
+      return "Il Governo non ha accolto";
+      break;  
+    case 35:
+      return "Ha ricevuto un invito al ritiro";
+      break;
+    case 36:
+      return "Il Governo ha accolto come raccomandazione";
+      break;
+    case 37:
+      return "Il Governo ha in parte accolto come raccomandazione";
+      break;  
+    case 38:
+      if ($gender=='m')
+        return "&Egrave; stato assegnato ad un'altra Commissione";
+      else
+        return "&Egrave; stata assegnata ad un'altra Commissione";
+      break;
+    case 39:
+      if ($gender=='m')
+        return "&Egrave; stato assegnato in Commissione";
+      else
+        return "&Egrave; stata assegnata in Commissione";
+      break;
+    case 41:
+      if ($gender=='m')
+        return "&Egrave; stato trasformato in un altro atto";
+      else
+        return "&Egrave; stata trasformata in un altro atto";
+      break;
+    case 42:
+      if ($gender=='m')
+        return "Si &egrave; svolto e concluso";
+      else
+        return "Si &egrave; svolta e conclusa";
+      break;  
+    case 43:
+      return "C'&egrave; stata una discussione congiunta per";
+      break;
+    case 44:
+      return "&Egrave; stata rinviata ad altra seduta la discussione per";
+      break;
+    case 45:
+      return "Il primo firmatario ha ritirato";
+      break;  
+    case 46:
+      return "&Egrave; stata inoltrata una richiesta di sollecito per";
+      break;
+    case 47:
+      if ($gender=='m')
+        return "&Egrave; stato dichiarato precluso";
+      else
+        return "&Egrave; stata dichiarata preclusa";
+      break; 
+    case 48:
+      if ($gender=='m')
+        return "&Egrave; stato modificato";
+      else
+        return "&Egrave; stata modificata";
+      break;
+    case 49:
+      return "&Egrave; cambiato il Ministro che dovrà rispondere a";
+      break;
+    case 50:
+      if ($gender=='m')
+        return "&Egrave; stato dichiarato decaduto";
+      else
+        return "&Egrave; stata dichiarata decaduta";
+      break;
+    case 51:
+      if ($gender=='m')
+        return "&Egrave; stato dichiarato inammissibile";
+      else
+        return "&Egrave; stata dichiarata inammissibile";
+      break;   
+    case 52:
+      return "Il Governo ha in parte accolto";
+      break; 
+    case 53:
+      if ($gender=='m')
+        return "&Egrave; stato votato per parti";
+      else
+        return "&Egrave; stata votata per parti";
+      break;
+    case 54:
+      return "&Egrave; stata approvata come risoluzione conclusiva";
+      break;
+    case 55:
+      if ($gender=='m')
+        return "&Egrave; stato rimesso all'Assemblea";
+      else
+        return "&Egrave; stata rimessa all'Assemblea";
+      break;
+    case 56:
+      return "&Egrave; stata pubblicata la risposta del Governo per";
+      break;
+    case 57:
+      return "Il Governo ha in parte accolto e in parte non accolto";
+      break;
+    case 58:
+      if ($gender=='m')
+        return "&Egrave; stato in parte approvato e in parte respinto";
+      else
+        return "&Egrave; stata in parte approvata e in parte respinta";
+      break;   
+    case 59:
+      return "&Egrave; stato cambiato il destinatario per";
+      break; 
+    case 60:
+      return "C'&egrave; un nuovo primo firmatario per";
+      break;
+    case 61:
+      if ($gender=='m')
+        return "&Egrave; stato approvato con voto di fiducia";
+      else
+        return "&Egrave; stata approvata con voto di fiducia";
+      break; 
+    case 62:
+      if ($gender=='m')
+        return "&Egrave; ritornato in Assemblea";
+      else
+        return "&Egrave; ritornata in Assemblea";
+      break;
+    case 63:
+      return "&Egrave; stato converto in legge";
+      break;
+    case 64:
+      return " &Egrave; confluito in altro Decreto Legge";
+      break;
+    case 65:
+      return "&Egrave; entrato in vigore";
+      break;
+    default:
+       return "";
+       break;
+  }
+}
+
+
+/**
+ * print articolo for tipo_atto
+ *
+ * @param integer $tipo_atto_id 
+ * @author Ettore Di Cesare
+ */
+  function articolo($tipo_atto_id)
+  {
+    switch ($tipo_atto_id) 
+    {
+      case 1:
+        return " il ";
+        break;
+      case 2:
+        return " la ";
+        break;
+      case 3:
+        return " l'";
+        break;
+      case 4:
+        return " l'";
+        break;
+      case 5:
+        return " l'";
+        break;
+      case 6:
+        return " l'";
+        break;
+      case 7:
+        return " la ";
+        break;
+      case 8:
+        return " la ";
+        break;
+      case 9:
+        return " la ";
+        break;
+      case 10:
+        return " l'";
+        break;    
+      case 11:
+        return " l'";
+        break;
+      case 12:
+        return " il ";
+        break;
+      case 13:
+        return " il ";
+        break;
+      case 14:
+        return " l'";
+        break;    
+      case 15:
+        return " il ";
+        break;
+      case 16:
+        return " il ";
+        break;
+      case 17:
+        return " il ";
+        break;
+    }
+  }
+  
+/**
  * convert a link into an absolute link, to be used inside the emails
  *
  * @param string $name 
@@ -181,7 +500,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
           $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                           $news->getRelatedMonitorableId());
      
-          $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+          $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase().' '.$atto->getTitolo(true), 
                             'atto/index?id=' . $atto->getId(),
                             array('title' => $atto->getTitolo(true)));
           $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDenominazione() .  ' ';
@@ -193,23 +512,26 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
     if ($generator_model == 'OppIntervento') 
     {
       $news_string .= "<p>";
-      //$news_string .= ($news->getRamo()=='C')?'Camera -  ' : 'Senato - ';
-      $news_string .= 'c\'&egrave; stato almeno un intervento ';
-      $news_string .= 'in ' . OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia().' '.OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione() .  '</p>';
+      $news_string .= (OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getRamo()=='C'?'Camera -  ' : 'Senato - ');
+      $news_string .= 'C\'&egrave; stato <strong>almeno un intervento</strong> in ';
+       if (OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia() != 'Assemblea') {
+          $news_string .= OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getTipologia();
+        }
+      $news_string .= ' '.OppSedePeer::retrieveByPK($news->getSedeInterventoId())->getDenominazione();
 
       if ($context = CONTEXT_LIST)
       {    
-          $news_string .= 'per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDescrizione() .  ' ';
+          $news_string .= ' per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDescrizione() .  '</p> ';
 
           // link all'atto
           $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
                                          array($news->getRelatedMonitorableId()));
       
-          $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase(), 
+          $atto_link = link_to_in_mail($atto->getRamo() . '.' .$atto->getNumfase().' '.$atto->getTitolo(true), 
                            'atto/index?id=' . $atto->getId(),
                            array('title' => $atto->getTitolo(true)));
           $news_string .= '<p>'.$atto_link.'</p>';
-      }  else $news_string .= ''; 
+      }  else $news_string .= '</p>'; 
       
     }
 
@@ -742,10 +1064,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       else if ($generator_model == 'OppAttoHasIter') 
       {
         $news_string .= "<p>";
-        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
-        $news_string .= "Lo status &egrave; ora ";
-        $news_string .= content_tag('b', ucfirst(strtolower($generator->getOppIter()->getFase())));
-        $news_string .= " per " .($gender=='m'?" ":"la "). $tipo->getDescrizione() . "</p>";
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - ';
+        $news_string .= content_tag('b', news_text_for_iter($generator->getOppIter()->getId(),$gender));
+        $news_string .= articolo($tipo->getId()). $tipo->getDescrizione() . "</p>";
         if ($context != CONTEXT_ATTO) 
           $news_string .= "<p>".$atto_link . "</p>";
         else  $news_string .= "";
@@ -754,7 +1075,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
     
       else if ($generator_model == 'Tagging')
       {
-        $news_string .= "<p>".($gender=='m'?"il ":"la ");
+        $news_string .= "<p>".articolo($tipo->getId());
         $news_string .= $tipo->getDescrizione() . " ";
         $news_string .= $atto_link . " ";
         $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
@@ -830,22 +1151,24 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       {
         $sede = $generator->getOppSede();
         $news_string .= "<p>";
-        if ($context != CONTEXT_ATTO)
-        {
-          $news_string .= $atto_link;
-          $news_string .= ", seduta ";
-        } else
-          $news_string .= "Seduta ";
+        $news_string .= ($news->getRamoVotazione()=='C')?'Camera - ' : 'Senato - ';
+        $news_string .= "<strong>Si &egrave; svolta una seduta</strong> in ";
+        if ($sede->getTipologia() != 'Assemblea') {
+            $news_string .= $sede->getTipologia().' ';
+        }
         
-        $news_string .= "in " . $sede->getDenominazione();
+        $news_string .= $sede->getDenominazione().' ';
         if ($generator->getTipologia() != 'Assemblea') {
           $news_string .= " (".$generator->getTipologia().") ";
         }
-        $news_string .= ($news->getRamoVotazione()=='C')?' della Camera' : ' del Senato';
-        $news_string .= "<br/>";
-        $news_string .= "<a class='external' target='_blank' href=" .$generator->getUrl() . ">";
+        $news_string .= "<strong><a class='external' target='_blank' href=" .$generator->getUrl() . ">";
         $news_string .= $generator->getEsito();
-        $news_string .= "</a>";
+        $news_string .= "</a></strong>";
+        if ($context != CONTEXT_ATTO)
+        {
+          $news_string .= " per il disegno di legge<br/>";
+          $news_string .= $atto_link;
+        }
         $news_string .= "</p>";
         
       }
@@ -886,7 +1209,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
                                'atto/index?id=' . $atto->getId(),
                                array('title' => $atto->getTitolo()));
 
-          $news_string .= "<p>".($gender=='m'?"il ":"la ");
+          $news_string .= "<p>".articolo($tipo->getId());
           $news_string .= $tipo->getDescrizione() . " ";
           $news_string .= $atto_link . " ";
           $news_string .= "presentat" .($gender=='m'?'o':'a') . " ";
@@ -1058,7 +1381,7 @@ function community_news_text($news)
       else 
         $gender = 'f';   
 
-      $item_type = ($gender=='m'?'':'la')." ".$item->getOppTipoAtto()->getDescrizione()." "; 
+      $item_type = articolo($item->getTipoAttoId()).$item->getOppTipoAtto()->getDescrizione()." "; 
       $link = link_to_in_mail(Text::denominazioneAtto($item, 'list'),  
                             'atto/index?id=' . $related_id, 
                             array('title' => $item->getTitolo())); 
