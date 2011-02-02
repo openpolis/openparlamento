@@ -34,3 +34,9 @@
 </div>	
 
 </div>
+<div id="footer" style="background-color: white; height: 100px;">
+<div align="center" id="footer-cont" style="padding: 10px;">
+<p style="color: grey; margin-bottom: 5px;">i siti dell'associazione openpolis:</p>
+<span style="margin-top: 100px;"><a href="http://www.openpolis.it"><img src="http://associazione.openpolis.it/images/button_op.png"  border=0 alt=" logo di openpolis"></a><a href="http://www.openparlamento.it"><img src="http://associazione.openpolis.it/images/button_opp.png"  border=0 alt="logo di openparlamento"></a><a href="http://www.voisietequi.it"><img src="http://associazione.openpolis.it/images/button_vsq.png"  border=0 alt="logo di voi siete qui"></a><a href="http://associazione.openpolis.it"><img src="http://associazione.openpolis.it/images/button_ass_op.png"  border=0 alt="logo associazione openpolis"></a></span>
+</div>
+</div>
