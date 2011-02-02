@@ -5,6 +5,94 @@ require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));
 
 # default values
 all:
+
+  sfSimpleGoogleSitemap:
+    orm:                  Propel                 # possible values: auto, Propel, DbFinder. 'auto' is auto detection. Note: case sensitive!
+    urls:                                        # define multiple static urls here
+      homepage:                                  # just a name
+        url:              http://parlamento.openpolis.it  # full URL, e.g.: with http:// prefix
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
+      disegnoList:
+        url:              http://parlamento.openpolis.it/attiDisegni  # full URL, e.g.: with http:// prefix
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
+      decretiList:
+        url:              http://parlamento.openpolis.it/attiDecretiLegge  # full URL, e.g.: with http:// prefix
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)  
+      nonLegList:
+        url:              http://parlamento.openpolis.it/attiNonLegislativi/data_pres/desc  # full URL, e.g.: with http:// prefix
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
+      votazioni:
+        url:              http://parlamento.openpolis.it/votazioni/data/desc  # full URL, e.g.: with http:// prefix
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
+      argomenti:
+        url:              http://parlamento.openpolis.it/argomenti  # full URL, e.g.: with http:// prefix
+        freq:             weekly                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)      
+    models:                                      # define multiple models to generate sitemap from
+      model_parlamentare:
+        model:            OppPolitico
+        module:           parlamentare
+        action:           cosa
+        params:                                  # parameters for the url
+            id: getId                           # name : method to get the parameter value
+        freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.75                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
+      model_posts:                               # just a name
+        model:            sfSimpleBlogPost       # model class name
+        module:           sfSimpleBlog           # name of module for the url to make up the url
+        action:           show                   # name of action for the url to make up the url
+        #routing:          "@routing"             # use a routing URL (if set)
+        params:                                  # parameters for the url
+            stripped_title: getStrippedTitle       # name : method to get the parameter value
+        date:             getCreatedAt           # method to get date last updated for the url
+        criteria:                                # criterias to filter the records to include in the sitemap
+            - { column: is_published, method: IsPublished, operator: = , value: 1 }
+        order_by: { column: id, method: Id, sort: desc }
+        limit:            10                     # limit to the first x number of records
+        freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.5                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
+      model_atto:                               # just a name
+        model:            OppAtto       # model class name
+        module:           atto           # name of module for the url to make up the url
+        action:           index                   # name of action for the url to make up the url
+        routing:          "@singolo_atto"             # use a routing URL (if set)
+        params:                                  # parameters for the url
+            id: getId       # name : method to get the parameter value
+        date:             getCreatedAt           # method to get date last updated for the url
+        order_by: { column: id, method: Id, sort: desc }
+        limit:            1000                     # limit to the first x number of records
+        freq:             hourly                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.8                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%) 
+      model_emendamento:                               # just a name
+        model:            OppEmendamento       # model class name
+        module:           emendamento           # name of module for the url to make up the url
+        action:           show                   # name of action for the url to make up the url
+        #routing:          "@singolo_atto"             # use a routing URL (if set)
+        params:                                  # parameters for the url
+            id: getId       # name : method to get the parameter value
+        date:             getCreatedAt           # method to get date last updated for the url
+        order_by: { column: id, method: Id, sort: desc }
+        limit:            1000                     # limit to the first x number of records
+        freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.8                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
+      model_argomento:                               # just a name
+        model:            Tag       # model class name
+        module:           argomento           # name of module for the url to make up the url
+        action:           showAggiornamenti                  # name of action for the url to make up the url
+        #routing:          "@singolo_atto"             # use a routing URL (if set)
+        params:                                  # parameters for the url
+            triple_value: getTripleValue      # name : method to get the parameter value
+        limit:            8000                     # limit to the first x number of records
+        freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.8                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)   
+        
+     
+
   
   // massimo numero di notifiche per un termine
   alert_max_results: 100

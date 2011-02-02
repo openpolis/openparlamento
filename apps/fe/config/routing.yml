@@ -1,3 +1,8 @@
+# google sitemap
+gsitemap:
+  url: /gsitemap
+  param: { module: sfSimpleGoogleSitemap, action: index }
+
 api_pol_image:
   url: /get_pol_image/:key/:id
   param: { module: api, action: getPolImage }

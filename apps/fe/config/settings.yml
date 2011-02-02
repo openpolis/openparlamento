@@ -38,7 +38,7 @@ all:
       available:            on
       
       i18n:                 on         
-      enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppBookmarking, deppTagging, deppCommenting, deppLaunching, nahoWiki, sfEmendAPI, sfSimpleBlog, sfSolr]
+      enabled_modules:      [default, sfGuardAuth, sfCaptcha, sfRating, deppVoting, deppBookmarking, deppTagging, deppCommenting, deppLaunching, nahoWiki, sfEmendAPI, sfSimpleBlog, sfSolr, sfSimpleGoogleSitemap]
 
     .actions:                               
       login_module:           sfGuardAuth   
