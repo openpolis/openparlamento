@@ -1,0 +1,140 @@
+sfSimpleGoogleSitemap plugin
+===================
+
+The `sfSimpleGoogleSitemapPlugin` adds ability for a Symfony website to generate Google XML Sitemap.
+
+Originally was built to go together with sfSimpleBlogPlugin, but it is configurable through app.yml, and so should be usable for other plugins.
+
+This plugin supports Propel and DbFinder. By default it tries to detect if DbFinderPlugin exists and use it, but you can force it to use Propel or DbFinder from app.yml.
+
+Visit [sfSimpleGoogleSitemapPlugin blog](http://bluehorn.co.nz/2010/06/07/sfsimplegooglesitemapplugin/) to leave comment, suggestion, etc.
+
+Contents
+--------
+
+It contains one module that you can activate in whatever application you need them:
+
+ * `sfSimpleGoogleSitemap`
+
+Installation
+------------
+
+To install the plugin for a symfony project, the usual process is to use the symfony command line:
+
+For Symfony 1.1, 1.2, 1.3 and 1.4:
+
+    $ php symfony plugin:install sfSimpleGoogleSitemapPlugin
+
+For Symfony 1.0:
+
+    $ php symfony plugin-install http://plugins.symfony-project.com/sfSimpleGoogleSitemapPlugin
+
+Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory.
+
+For symfony 1.2, 1.3 and 1.4 enable the plugin in the project's configuration.
+
+    // in config/app/ProjectConfiguration.class.php
+    class ProjectConfiguration extends sfProjectConfiguration
+    {
+      public function setup()
+      {
+        $this->enablePlugins(array('sfPropelPlugin', 'sfSimpleGoogleSitemapPlugin'));
+      }
+    }
+    
+Enable the module in your applications, via the `settings.yml` file.
+
+    # in myproject/apps/frontend/config/settings.yml
+    all:
+      .settings:
+        enabled_modules:        [default, sfSimpleGoogleSitemap]
+
+Add the following to your routing.yml.
+
+    gsitemap:
+      url: /gsitemap
+      param: { module: sfSimpleGoogleSitemap, action: index }
+
+or, if you want, you could route it to /sitemap.xml:
+
+in apps/yourapp/config/routing.yml
+
+    sitemap_xml:
+      url: /sitemap.xml
+      param: { module: sfSimpleGoogleSitemap, action: index }
+
+and if you use sitemap.xml as the URL in the routing, you might need to modify your web/.htaccess:
+    
+    # we skip all files with .something
+    # comment the following 3 lines to allow periods in routes
+    RewriteCond %{REQUEST_URI} \..+$
+    RewriteCond %{REQUEST_URI} !\.html$
+    # add this for sitemap.xml:
+    RewriteCond %{REQUEST_URI} !sitemap\.xml$
+    RewriteRule .* - [L]
+
+Configuration
+-------------
+
+### The `app.yml` file
+
+The plugin is highly configurable and should be easy to integrate to an existing project. Here is the default plugin configuration, taken from `myproject/plugins/sfSimpleGoogleSitemapPlugin/config/app.yml.sample`:
+
+Note: the provided sample is for serving sitemap for sfSimpleBlogPlugin.
+
+    all:
+      sfSimpleGoogleSitemap:
+        orm:                  auto                   # possible values: auto, Propel, DbFinder. 'auto' is auto detection. Note: case sensitive!
+        urls:                                        # define multiple static urls here
+          homepage:                                  # just a name
+            url:              http://yoursite.com    # full URL, e.g.: with http:// prefix
+            freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+            priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
+        models:                                      # define multiple models to generate sitemap from
+          model_posts:                               # just a name
+            model:            sfSimpleBlogPost       # model class name
+            module:           sfSimpleBlog           # name of module for the url to make up the url
+            action:           show                   # name of action for the url to make up the url
+            #routing:          "@routing"             # use a routing URL (if set)
+            params:                                  # parameters for the url
+              stripped_title: getStrippedTitle       # name : method to get the parameter value
+            date:             getCreatedAt           # method to get date last updated for the url
+            criteria:                                # criterias to filter the records to include in the sitemap
+              - { column: is_published, method: IsPublished, operator: = , value: 1 }
+            order_by: { column: id, method: Id, sort: desc }
+            limit:            10                     # limit to the first x number of records
+            freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+            priority:         0.5                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
+          model_tags:                                # just a name
+            model:            sfSimpleBlogTag        # model class name
+            module:           sfSimpleBlog           # name of module for the url to make up the url
+            action:           showByTag              # name of action for the url to make up the url
+            #routing:          "@routing"             # use a routing URL (if set)
+            params:                                  # parameters for the url
+              tag:            getTag                 # name : method to get the parameter value
+            group_by: { column: tag, method: Tag }   # group by the specified column/method
+            freq:             weekly                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+            priority:         0.2                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
+
+You can customize these settings in `myproject/apps/myapp/config/app.yml`
+
+Lastly, clear cache!
+
+    symfony cc
+
+Start using the plugin by browsing to the frontend module's default page:
+
+    http://myproject/frontend_dev.php/gsitemap
+
+or, if you enabled sitemap.xml in routing:
+
+    http://myproject/frontend_dev.php/sitemap.xml
+
+Visit [sfSimpleGoogleSitemapPlugin blog](http://bluehorn.co.nz/2010/06/07/sfsimplegooglesitemapplugin/) to leave comment, suggestion, etc.
+
+TODO
+----
+
+ * Make it write to a physical sitemap.xml file instead of generating it on the fly (but may be using Symfony cache is sufficient?)
+ * Add option to serve compressed sitemap, for large website?
+ * Support more advanced way to add urls, e.g.: through a class

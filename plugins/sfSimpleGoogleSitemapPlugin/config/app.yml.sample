@@ -1,0 +1,33 @@
+all:
+  sfSimpleGoogleSitemap:
+    orm:                  auto                   # possible values: auto, Propel, Doctrine, DbFinder. 'auto' is auto detection. Note: case sensitive!
+    urls:                                        # define multiple static urls here
+      homepage:                                  # just a name
+        url:              http://yoursite.com    # full URL, e.g.: with http:// prefix
+        freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
+    models:                                      # define multiple models to generate sitemap from
+      model_posts:                               # just a name
+        model:            sfSimpleBlogPost       # model class name
+        module:           sfSimpleBlog           # name of module for the url to make up the url
+        action:           show                   # name of action for the url to make up the url
+#        routing:          "@something"           # use routing for the URLs in the sitemap
+        params:                                  # parameters for the url
+          stripped_title: getStrippedTitle       # name : method to get the parameter value
+        date:             getCreatedAt           # method to get date last updated for the url
+        criteria:                                # criterias to filter the records to include in the sitemap
+          - { column: is_published, method: IsPublished, operator: = , value: 1 }
+        order_by: { column: id, method: Id, sort: desc }
+        limit:            10                     # limit to the first x number of records
+        freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.5                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
+      model_tags:                                # just a name
+        model:            sfSimpleBlogTag        # model class name
+        module:           sfSimpleBlog           # name of module for the url to make up the url
+        action:           showByTag              # name of action for the url to make up the url
+#        routing:          "@something"           # use routing for the URLs in the sitemap
+        params:                                  # parameters for the url
+          tag: getTag                            # name : method to get the parameter value
+        group_by: { column: tag, method: Tag }   # group by the specified column/method
+        freq:             weekly                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
+        priority:         0.2                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)

@@ -1,0 +1,4 @@
+all:
+  sf_google_analytics_plugin:
+    # see params section of app.yml
+    params: { enabled: off }
