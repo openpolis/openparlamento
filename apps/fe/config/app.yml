@@ -65,7 +65,7 @@ all:
             id: getId       # name : method to get the parameter value
         date:             getCreatedAt           # method to get date last updated for the url
         order_by: { column: id, method: Id, sort: desc }
-        limit:            1000                     # limit to the first x number of records
+        limit:            10000                     # limit to the first x number of records
         freq:             hourly                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         0.8                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%) 
       model_emendamento:                               # just a name
@@ -77,7 +77,7 @@ all:
             id: getId       # name : method to get the parameter value
         date:             getCreatedAt           # method to get date last updated for the url
         order_by: { column: id, method: Id, sort: desc }
-        limit:            1000                     # limit to the first x number of records
+        limit:            10000                     # limit to the first x number of records
         freq:             daily                  # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         0.8                    # 1.0 is top priority (100%) compared to 0.5 which is less priority (50%)
       model_argomento:                               # just a name
