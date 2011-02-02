@@ -45,6 +45,9 @@ function news_text_for_iter($iter_id, $gender)
 {
   switch ($iter_id) 
   {
+    case 1:
+      return "&Egrave; in attesa di essere assegnato ad una commissione";
+      break;
     case 2:
       if ($gender=='m')
         return "&Egrave; stato rimesso all'Assemblea";
@@ -132,6 +135,15 @@ function news_text_for_iter($iter_id, $gender)
     case 25:
       return "&Egrave; stato approvato in testo unificato";
       break;
+    case 26:
+      return "Ci sono nuovi firmatari per";
+      break;  
+    case 27:
+      return "&Egrave; stato collegato";
+      break;  
+    case 28:
+      return "Si &egrave; concluso";
+      break;  
     case 29:
       if ($gender=='m')
         return "&Egrave; stato modificato nel corso della seduta";
@@ -174,6 +186,9 @@ function news_text_for_iter($iter_id, $gender)
       else
         return "&Egrave; stata assegnata in Commissione";
       break;
+    case 40:
+      return "";
+      break;  
     case 41:
       if ($gender=='m')
         return "&Egrave; stato trasformato in un altro atto";
@@ -521,7 +536,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
 
       if ($context = CONTEXT_LIST)
       {    
-          $news_string .= ' per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDescrizione() .  '</p> ';
+          $news_string .= '   per ' . OppTipoAttoPeer::retrieveByPK($news->getTipoAttoId())->getDescrizione() .  '</p> ';
 
           // link all'atto
           $atto = call_user_func_array(array($news->getRelatedMonitorableModel().'Peer', 'retrieveByPK'), 
