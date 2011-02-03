@@ -46,7 +46,7 @@ class votazioneActions extends sfActions
     $this->ribelli = $this->votazione->getVotoRibelli($data);
     
     $this->getResponse()->setTitle('Votazione '.$this->ramo.' '. $this->votazione->getTitolo().' - '.sfConfig::get('app_main_title'));
-
+    $this->response->addMeta('description','Come hanno votato i gruppi, che voto hanno espresso i singoli parlamentari e quali sono stati ribelli al proprio gruppo parlamentare per la votazione '.$this->ramo.' '. $this->votazione->getTitolo(),true);
     $this->processSort();
 
   	$this->votanti = OppVotazioneHasCaricaPeer::getRSAllVotanti($votazione_id, $data);
@@ -242,7 +242,8 @@ class votazioneActions extends sfActions
     $this->query = $this->getRequestParameter('query', '');
     
     $this->getResponse()->setTitle('Tutte le votazioni elettroniche di Camera e Senato - '.sfConfig::get('app_main_title'));
-   
+    $this->response->addMeta('description','La lista e il dettaglio, voto per voto, di tutte le votazioni elettroniche di aula di Camera e Senato',true);
+    
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
@@ -293,6 +294,7 @@ class votazioneActions extends sfActions
     $this->query = $this->getRequestParameter('query', '');
     
     $this->getResponse()->setTitle('I voti chiave di Camera e Senato - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista e il dettaglio, voto per voto, delle votazioni di camera e Senato pi&ugrave; importanti per argomento trattato e significato politico ',true);
      
   
   }
@@ -313,7 +315,7 @@ class votazioneActions extends sfActions
     $this->query = $this->getRequestParameter('query', '');
     
     $this->getResponse()->setTitle('I voti di Camera e Senato in cui la maggioranza di governo e\' stata sconfitta - '.sfConfig::get('app_main_title'));
-    
+    $this->response->addMeta('description','Il dettaglio delle votazioni elettroniche di Camera e Senato in cui la maggioranza &egrave; stata sconfitta. I parlamentari di maggioranza assenti e i ribelli al proprio gruppo di appartenenza',true);
      // estrae tutte le macrocategorie, per costruire la select
       $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
 
@@ -345,8 +347,7 @@ class votazioneActions extends sfActions
 
      
       $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
-
-      $c = OppVotazionePeer::maggioranzaSottoCriteria();
+      $c = OppVotazionePeer::maggioranzaSottoCriteria(16);
       $this->addListSortCriteria($c);
       $this->addFiltersCriteria($c);    
       $this->pager->setCriteria($c);
