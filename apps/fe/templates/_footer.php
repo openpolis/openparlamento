@@ -12,7 +12,8 @@
 <ul>
   <li class="footer-title">servizi</li>
   <li><?php echo link_to('»&nbsp;premium','/sottoscrizioni_pro',array('lang'=>'it')) ?></li>
-  <li><?php echo link_to('»&nbsp;diventa socio di openpolis','/static/tesseramento',array('lang'=>'it')) ?></li>
+  <li><?php echo link_to('»&nbsp;diventa socio di openpolis','http://associazione.openpolis.it/contribuisci/diventa-socio',array('lang'=>'it')) ?></li>
+  <li><?php echo link_to('»&nbsp;fai una donazione','http://associazione.openpolis.it/contribuisci/fai-una-donazione',array('lang'=>'it')) ?></li>
   <li><?php echo link_to('»&nbsp;rss/xml','/static/rssxml',array('lang'=>'it')) ?></li>
 </ul>
 
@@ -37,6 +38,11 @@
 <div id="footer" style="background-color: white; height: 100px;">
 <div align="center" id="footer-cont" style="padding: 10px;">
 <p style="color: grey; margin-bottom: 5px;">i siti dell'associazione openpolis:</p>
-<span style="margin-top: 100px;"><a href="http://www.openpolis.it"><img src="http://associazione.openpolis.it/images/button_op.png"  border=0 alt=" logo di openpolis"></a><a href="http://www.openparlamento.it"><img src="http://associazione.openpolis.it/images/button_opp.png"  border=0 alt="logo di openparlamento"></a><a href="http://www.voisietequi.it"><img src="http://associazione.openpolis.it/images/button_vsq.png"  border=0 alt="logo di voi siete qui"></a><a href="http://associazione.openpolis.it"><img src="http://associazione.openpolis.it/images/button_ass_op.png"  border=0 alt="logo associazione openpolis"></a></span>
+<span style="margin-top: 100px;">
+  <a href="http://www.openpolis.it"><img src="http://associazione.openpolis.it/images/button_op.png"  border=0 alt=" logo di openpolis"></a>
+  <a href="http://www.openparlamento.it"><img src="http://associazione.openpolis.it/images/button_opp.png"  border=0 alt="logo di openparlamento"></a>
+  <a href="http://www.voisietequi.it"><img src="http://associazione.openpolis.it/images/button_vsq.png"  border=0 alt="logo di voi siete qui"></a>
+  <!-- <a href="http://associazione.openpolis.it"><img src="http://associazione.openpolis.it/images/button_ass_op.png"  border=0 alt="logo associazione openpolis"></a>-->
+</span>
 </div>
 </div>

@@ -21,8 +21,14 @@
     	  <div id="navigation">	
          <?php include_partial('global/navigation') ?> 
     	  </div>
+    	 
   	  
-      	<?php if ($this->getContext()->getModuleName()!='default' || $this->getContext()->getActionName()!='index') include_partial('global/breadcrumbs') ?> 
+      	<?php if ($this->getContext()->getModuleName()!='default' || $this->getContext()->getActionName()!='index') include_partial('global/breadcrumbs') ?>
+      	   <!-- banner campagna
+      	  <p align="center" style="padding:5px;">
+           <a href="http://associazione.openpolis.it/contribuisci/diventa-socio"><img src="http://op_assoc/images/banner-campagna.png" border=0></a>
+          </p> 
+          -->
       </div>
 
   	  <?php echo $sf_data->getRaw('sf_content') ?>
