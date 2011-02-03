@@ -41,8 +41,8 @@ class argomentoActions extends sfActions
   public function executeShowAggiornamenti()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
-
+    $this->getResponse()->setTitle('Tutto quello che succede in Parlamento su '.strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Le ultime notizie e atti parlamentari su '.strtolower($this->triple_value),true);
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
 
@@ -201,7 +201,8 @@ class argomentoActions extends sfActions
   public function executeShowLeggi()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('I disegni di legge su '.strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Tutti gli aggiornamenti sui disegni di legge presentati su '.strtolower($this->triple_value),true);
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
@@ -251,7 +252,8 @@ class argomentoActions extends sfActions
   public function executeShowNonleg()
   {
     $this->triple_value = $this->getRequestParameter('triple_value');
-    $this->getResponse()->setTitle(strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Mozioni, interrogazioni, odg su '.strtolower($this->triple_value).' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Tutti gli aggiornamenti sulle mozioni, interrogazioni, odg presentati in parlamento su '.strtolower($this->triple_value),true);
     $this->argomento = TagPeer::retrieveFirstByTripleValue($this->triple_value);
     $this->forward404Unless(isset($this->argomento));
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
