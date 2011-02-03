@@ -91,6 +91,9 @@ class parlamentareActions extends sfActions
          $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - cosa fa in parlamento - '.sfConfig::get('app_main_title'));
          $c->add(OppSedutaPeer::RAMO,'S');
       }
+      
+      $this->response->addMeta('description','Come vota, quali atti presenta, a chi &egrave; pi&ugrave; vicino, quanto &egrave; presente, l\'indice di produttivit&agrave; di '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
+      
       $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
       $result=OppSedutaPeer::doSelectOne($c);
       $this->ultima_votazione=$result->getData();
@@ -193,7 +196,9 @@ class parlamentareActions extends sfActions
       $this->ramo='S';
       $this->getResponse()->setTitle('Da quanto tempo sono in parlamento i senatori - '.sfConfig::get('app_main_title'));
     }
-      
+    
+    $this->response->addMeta('description','La classifica dei parlamentari che da un numero maggiore di anni ricoprono incarichi alla Camera e al Senato ',true);
+     
     $classifica=array();
     $stat=array(0,0,0,0,0);
     $stat_gruppi=array();
@@ -270,7 +275,8 @@ class parlamentareActions extends sfActions
         $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
     }
     else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
-        
+    
+    $this->response->addMeta('description','Gli atti parlamentari e il loro iter, quotidianamente aggiornato, firmati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
   
     $this->session = $this->getUser();
  
@@ -434,7 +440,9 @@ class parlamentareActions extends sfActions
        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
     else
        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
-
+    
+    $this->response->addMeta('description','I voti espressi in tutte le votazioni elettroniche di aula da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
+     
      // reset dei filtri se richiesto esplicitamente
      if ($this->getRequestParameter('reset_filters', 'false') == 'true')
      {
@@ -624,7 +632,7 @@ class parlamentareActions extends sfActions
        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
     else
        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
-	  
+	        $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli interventi in Parlamento, in aula e nelle commissioni, di '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
   }
   
   public function executeEmendamenti()
@@ -641,7 +649,8 @@ class parlamentareActions extends sfActions
         $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
     }
     else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
-        
+    
+          $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli emendamenti presentati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
   
     $this->session = $this->getUser();
     
@@ -850,6 +859,7 @@ class parlamentareActions extends sfActions
     if ($ramo == 'camera')
     {
       $this->getResponse()->setTitle('elenco dei deputati - '.sfConfig::get('app_main_title'));
+      $this->response->addMeta('description','Elenco dei deputati della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
       $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
@@ -864,6 +874,7 @@ class parlamentareActions extends sfActions
     else
     {
       $this->getResponse()->setTitle('elenco dei senatori - '.sfConfig::get('app_main_title'));
+      $this->response->addMeta('description','Elenco dei senatori della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
       $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
       //in questo modo considero i senatori a vita
@@ -1182,7 +1193,8 @@ class parlamentareActions extends sfActions
       
       $this->durata2=$durata;
  	  
-$this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a confronto:'.$carica1->getOppPolitico()->getCognome().' vs '.$carica2->getOppPolitico()->getCognome().' - '.sfConfig::get('app_main_title')); 	  
+$this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a confronto:'.$carica1->getOppPolitico()->getCognome().' vs '.$carica2->getOppPolitico()->getCognome().' - '.sfConfig::get('app_main_title'));
+$this->response->addMeta('description','Confronto tra le attivit&agrave; parlamentari di '.$carica1->getOppPolitico()->getCognome().' e '.$carica2->getOppPolitico()->getCognome(),true); 	  
  	  
  	}
  	else 
@@ -1215,15 +1227,18 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
  public function executeGruppiCamera()
  {
    $this->getResponse()->setTitle('Il dettaglio dei gruppi della Camera dei Deputati - '.sfConfig::get('app_main_title'));
+   $this->response->addMeta('description','La composizione dei gruppi alla Camera, che perde deputati e chi li guadagna',true); 	  
  }   
  public function executeGruppiSenato()
  {
   $this->getResponse()->setTitle('Il dettaglio dei gruppi del Senato della Repubblica - '.sfConfig::get('app_main_title')); 
+  $this->response->addMeta('description','La composizione dei gruppi al Senato, che perde deputati e chi li guadagna',true);
  }
  
  public function executeCommissioniCamera()
  {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni della Camera - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La composizione delle commissioni alla Camera, qual\'&egrave; il potere dei gruppi parlamentari',true);
     //estrae le commissioni parmanenti camera
     $c=new Criteria();
     $c->add(OppSedePeer::RAMO,'C');
@@ -1233,6 +1248,7 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
   public function executeCommissioniSenato()
   {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La composizione delle commissioni al Senato, qual\'&egrave; il potere dei gruppi parlamentari',true);
     
     $compara_comm=array();
     //estrae le commissioni parmanenti senato
@@ -1245,6 +1261,7 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
   public function executeCommissioniBicamerali()
   {
     $this->getResponse()->setTitle('Il dettaglio delle Commissioni Bicamerali - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La composizione delle commissioni bicamerali, qual\'&egrave; il potere dei gruppi parlamentari',true);
      $c=new Criteria();
      $c->add(OppSedePeer::RAMO,'CS');
      $c->add(OppSedePeer::TIPOLOGIA,'Commissione bicamerale');
@@ -1297,11 +1314,13 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
      if ($this->getRequestParameter('ramo')=='camera')
      {
        $this->getResponse()->setTitle('Il dettaglio delle Giunte della Camera - '.sfConfig::get('app_main_title'));
+       $this->response->addMeta('description','La composizione delle giunte alla Camera, qual\'&egrave; il potere dei gruppi parlamentari',true);
        $c->add(OppSedePeer::RAMO,'C'); 
      }
      else
      {
        $this->getResponse()->setTitle('Il dettaglio delle Giunte del Senato - '.sfConfig::get('app_main_title'));
+       $this->response->addMeta('description','La composizione delle giunte al Senato, qual\'&egrave; il potere dei gruppi parlamentari',true);
        $c->add(OppSedePeer::RAMO,'S');
      }
      $c->add(OppSedePeer::TIPOLOGIA,'Giunta');
@@ -1315,11 +1334,13 @@ $this->getResponse()->setTitle(($this->ramo==1 ? 'Deputati ' : 'Senatori ').'a c
       if ($this->getRequestParameter('ramo')=='camera')
       {
         $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni della Camera - '.sfConfig::get('app_main_title'));
+        $this->response->addMeta('description','Il potere dei gruppi parlamentari in tutti gli organi della Camera dei Deputati',true);
         $c->add(OppSedePeer::RAMO,'C');
       }
       else
       {
         $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni del Senato - '.sfConfig::get('app_main_title'));
+        $this->response->addMeta('description','Il potere dei gruppi parlamentari in tutti gli organi del Senato',true);
         $c->add(OppSedePeer::RAMO,'S');
       }
       $c->add(OppSedePeer::TIPOLOGIA,'Presidenza');
