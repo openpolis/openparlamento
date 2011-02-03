@@ -36,9 +36,6 @@
                         <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio atti e parlamentari</h6></td>
                         <td class="pad0"><h6 class="grey-box round-5-top">monitoraggio argomenti</h6></td>
                         
-                        <!-- <td class="pad0"><h6 class="grey-box round-5-top">altri servizi personalizzati</h6></td> -->
-                        <!-- <td class="pad0"><h6 class="grey-box round-5-top">account multipli</h6></td> -->
-                        
                     </tr>
                     <tr>
                         <td class="grey-box-contrast round-5-left" rowspan="3"><img src="/images/txt-tipologie-utente.png" width="18" height="134" alt="tipologie utente" /></td>
@@ -68,57 +65,16 @@
                             
                             <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>
                               <h5 class="launch-evidence-btn-mini round-5">
-                                <?php echo link_to('Prenota la tua <br />tessera per il 2010!', '@tesseramento') ?>
+                                <?php echo link_to('Diventa socio <br />di openpolis!', 'http://associazione.openpolis.it/contribuisci/diventa-socio') ?>
                               </h5>
                             <?php endif ?>
                       </td>
                           
                     </tr>
-                    <!--
-                    <tr>
-                        <td class="align-left bg-cyan-dark round-5-left"><img src="/images/ico-adhoc.png" alt="AD HOC" class="user-type" /></td>
-                        <td class="bg-cyan-light round-5-bottom">SENZA LIMITI</td>
-                        <td class="bg-cyan-light round-5-bottom">SENZA LIMITI</td>
-                        <td class="bg-cyan-light round-5-bottom">SVILUPPATI AD HOC</td>
-                        <td class="bg-cyan-light round-5-bottom">S&Iacute;</td>
-                        <td  class="bg-cyan-light round-5-no-tl"><p>condizioni<br />
-                                da concordare<br />
-                                direttamente<br />
-                            </p>
-                            <h5 class="launch-evidence-btn-mini round-5">
-                              <?php echo link_to('contattaci!', '@contatti') ?>
-                            </h5>
-                        </td>
-                    </tr>
-                    -->
                 </table>
             </div>   
             
-            <!--
-            <div class="W48_100 <?php echo (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc'))?'float-right':'" style="width: 48%; margin-left: auto; margin-right: auto;'?>">
-                <div class="launch-evidence-box emerald-box round-5"> <img src="/images/op-adhoc.png" alt="Openparlamento - Ad hoc" />
-                    <p>Rappresenti un'impresa, un ente, un organo di informazione, una categoria, un'istituzione?<br />
-                        <br />
-                        openparlamento pu&ograve; fornirti tutti i dati e le informazioni di cui hai bisogno in piena flessibilit&agrave;:</p>
-                    <ul>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            configurazione del monitoraggio di argomenti, atti e parlamentari senza limiti e secondo richieste specifiche </li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            servizi personalizzati di estrazione dati</li>
-                        <li>
-                            <h3 class="position-light-orange"><img src="/images/ico-asterisk.png" alt="*" /></h3>
-                            integrazione con altri sistemi informativi (internet, intranet)</li>
-                    </ul>
-                    <p><em class="round-3">&nbsp;<?php echo link_to("Scarica la presentazione dell'offerta (pdf - 915 kb)",'http://op_openparlamento_marketing.s3.amazonaws.com/openparlamento_set_2009.pdf') ?>&nbsp;</em></p>
-                    <p>Hai bisogno di altro? Contattaci, troveremo insieme le soluzioni.</p>
-                </div>
-                <h1 class="launch-evidence-btn round-5">
-                  <?php echo link_to('Contattaci!', '@contatti') ?>
-                </h1>
-            </div>
-            -->
+            
             <?php if (!$sf_user->hasCredential('premium') && !$sf_user->hasCredential('adhoc')): ?>              
               <div class="W100_100 float-left" style="width:90%;">
                   <div class="launch-evidence-box green-box round-5" style="height:320px;"> <img src="/images/op-premium.png" alt="Openparlamento Premium" />
@@ -141,7 +97,7 @@
                       </ul>
                   </div>
                   <h1 class="launch-evidence-btn round-5">
-                    <?php echo link_to('Prenota la tua <br />tessera per il 2010!', '@tesseramento') ?>
+                    <?php echo link_to('Diventa socio di openpolis!', 'http://associazione.openpolis.it/contribuisci/diventa-socio') ?>
                   </h1>
               </div>
               
