@@ -19,7 +19,7 @@
 <p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
 <p>&nbsp;</p>
 <p>La sostenibilit&agrave; del progetto - con tutte le sue articolazioni - viene perseguita attraverso il contributo dei soci.<br />
-<strong>Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?></strong></p>
+<strong>Promuovi la trasparenza e la partecipazione: <?php echo link_to('diventa anche tu socio di openpolis!','http://associazione.openpolis.it/contribuisci/diventa-socio') ?></strong></p>
 <p>&nbsp;</p>
 La vendita di alcuni servizi commerciali sono gestiti da una societ&agrave; apposita, la <?php echo link_to('depp srl','http://www.depp.it') ?>. 
 <p>&nbsp;</p>

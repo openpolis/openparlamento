@@ -16,18 +16,14 @@
   </div>
     <div class="W73_100 float-left">
 <div style="font-size:14px; padding:5px; line-height:1,5em;"> 
-<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
+<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://associazione.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
 <p>&nbsp;</p>
 <p>Abbiamo avviato la campagna di adesione all'associazione openpolis.<br />
 Chiediamo innanzitutto a voi utenti e visitatori dei nostri siti di diventare soci per contribuire a tenere in vita e a far crescere un'esperienza che è riconosciuta come unica in Italia e all'estero.</p>
-<p>&nbsp;</p>
-Ai soci ordinari chiediamo un contributo annuale di minimo 50 euro, a quelli sostenitori di 500 euro.<br />
-Va da s&eacute; che ogni centesimo in entrata e in uscita verr&agrave; rendicontato con scrupolo. Per ogni attivit&agrave; ci sar&agrave; la massima trasparenza e possibilit&agrave; di partecipare direttamente.
-<p>&nbsp;</p>
-<p>Ai soci, oltre ai consueti diritti di partecipazione alla vita dell'associazione, verrà dato come forma di riconoscimento, l'accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?> di <em class="open">open</em><em class="parlamento">parlamento</em>.</p>
-<p><strong>Contribuisci a sostenere openpolis/openparlamento, prenota la tessera di socio 2010!</strong></p>
-<p>&nbsp;</p>
-<p>Lascia i tuoi dati e verrai contattata/o, scrivi a info@openpolis.it</p>
+<p style="font-size:18px; padding-top:5px;">Contribuisci a sostenere openpolis, openparlamento e tutte le nuove iniziative.<br/>
+  <a href="http://associazione.openpolis.it/contribuisci/diventa-socio"><strong>Clicca qui per diventare socio!</strong></a></p>
+
+<p style="padding-top:5px;">Ai soci, oltre ai consueti diritti di partecipazione alla vita dell'associazione, verrà dato come forma di riconoscimento, l'accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?> di <em class="open">open</em><em class="parlamento">parlamento</em>.</p>
 </div>
 
     </div>
