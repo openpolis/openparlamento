@@ -240,7 +240,8 @@ class attoActions extends sfActions
     
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('disegni di legge - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Tutti i disegni di legge - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista e gli aggiornamenti su tutti i disegni di legge presentati in Parlamento ',true);
     
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
@@ -341,7 +342,8 @@ class attoActions extends sfActions
    
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('decreti legge - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Tutti i decreti legge del Governo - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista e gli aggiornamenti su tutti i decreti legge del Governo',true);
 
     // estrae tutte le macrocategorie, per costruire la select
     $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
@@ -437,7 +439,8 @@ class attoActions extends sfActions
 
     $this->query = $this->getRequestParameter('query', '');
     
-     $this->getResponse()->setTitle(sfConfig::get('app_main_title') . ' - decreti legislativi');
+     $this->getResponse()->setTitle('Tutti i decreti legislativi - '.sfConfig::get('app_main_title'));
+     $this->response->addMeta('description','La lista e gli aggiornamenti su tutti i decreti legislativi ',true);
 
     $decreti_legislativi_ids = array('15','16','17');
 
@@ -531,8 +534,9 @@ class attoActions extends sfActions
 
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('atti non legislativi - '.sfConfig::get('app_main_title'));
-
+    $this->getResponse()->setTitle('Tutti gli atti non legislativi presentati in Parlamento - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista e gli aggiornamenti su tutte le mozioni, interpellanze, interrogazioni, risoluzioni e ordini del giorno presentati in Parlamento',true);
+    
     $atti_non_legislativi_ids = array('2','3','4','5','6','7','8','9','10','11','14');
 
     // estrae tutte le macrocategorie, per costruire la select
@@ -644,8 +648,8 @@ class attoActions extends sfActions
     }
     
     
-    $response->setTitle($this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
-    
+    $response->setTitle('Scheda su '.$this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Tutti le notizie e gli ultimi aggiornamenti su '.$this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index'),true);
     
     //individuazione link fonte
     if($this->atto->getTipoAttoId() == '1')
@@ -1006,6 +1010,7 @@ class attoActions extends sfActions
       
      
      $this->getResponse()->setTitle($this->documento->getOppAtto()->getOppTipoAtto()->getDescrizione().' '.$this->documento->getOppAtto()->getRamo().'. '.$this->documento->getOppAtto()->getNumfase().' / '.$this->documento->getTitolo().' - '.sfConfig::get('app_main_title'));
+     $this->response->addMeta('description','Il testo integrale riguardante '.$this->documento->getOppAtto()->getOppTipoAtto()->getDescrizione().' '.$this->documento->getOppAtto()->getRamo().'. '.$this->documento->getOppAtto()->getNumfase().' '.$this->documento->getOppAtto()->getTitolo(),true);
      
      $c = new Criteria();
      $cton1 = $c->getNewCriterion(OppDocumentoPeer::ATTO_ID, $this->documento->getAttoId(), Criteria::EQUAL);
