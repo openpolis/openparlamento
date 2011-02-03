@@ -25,7 +25,8 @@ class newsActions extends sfActions
     
     $this->n_news = oppNewsPeer::countHomeNews();
     
-    $this->getResponse()->setTitle('tutte le notizie dal Parlamento - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Le ultime le notizie dal Parlamento - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista delle notizie dal Parlamento aggiornate quotidianamente ',true);
 
     $c = oppNewsPeer::getHomeNewsCriteria();
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
@@ -47,24 +48,28 @@ class newsActions extends sfActions
   {
     $this->_getAttiList(oppNewsPeer::ATTI_DDL_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui disegni di legge - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista delle notizie sui disegni di legge parlamentari aggiornate quotidianamente ',true);
   }
 
   public function executeDecretiList()
   {
     $this->_getAttiList(oppNewsPeer::ATTI_DECRETI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui decreti legge - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista delle notizie sui decreti legge aggiornate quotidianamente ',true);
   }
 
   public function executeDecretiLegislativiList()
   {
     $this->_getAttiList(oppNewsPeer::ATTI_DECRETI_LEGISLATIVI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sui decreti legislativi - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista delle notizie sui decreti legislativi aggiornate quotidianamente ',true);
   }
 
   public function executeAttiNonLegislativiList()
   {
     $this->_getAttiList(oppNewsPeer::ATTI_NON_LEGISLATIVI_TIPO_IDS);
     $this->getResponse()->setTitle('tutte le notizie sugli atti non legislativi - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La lista delle notizie su mozioni, interpellanze, ordini del giorno e interrogazioni parlamentari aggiornate quotidianamente',true);
   }
   
   
@@ -113,6 +118,7 @@ class newsActions extends sfActions
     $this->n_news = oppNewsPeer::countNewsForItem('OppPolitico', $this->politician_id);
     
     $this->getResponse()->setTitle('tutte le notizie sul parlamentare '.$this->politician->getNome().' '.$this->politician->getCognome().' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Tutte le notizie aggiornate quotidianamente su cosa fa in Parlamento '.$this->politician->getNome().' '.$this->politician->getCognome(),true);
     
     $c = new Criteria();
     $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(1, 4, 5), Criteria::IN);
@@ -143,7 +149,8 @@ class newsActions extends sfActions
     $this->n_news = oppNewsPeer::countNewsForItem('OppAtto', $this->act_id);
     
     $this->getResponse()->setTitle('tutte le notizie su '.$this->act->getOppTipoAtto()->getDescrizione().' '.Text::denominazioneAttoShort($this->act).' - '.sfConfig::get('app_main_title'));
-
+    $this->response->addMeta('description','Tutte le notizie aggiornate quotidianamente su presentazione e iter  '.$this->act->getOppTipoAtto()->getDescrizione().' '.Text::denominazioneAttoShort($this->act),true);
+    
     $c = oppNewsPeer::getNewsForItemCriteria('OppAtto', $this->act_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
@@ -167,7 +174,7 @@ class newsActions extends sfActions
     $this->tag = TagPeer::retrieveByPK($this->tag_id);
     
     $this->getResponse()->setTitle('tutte le notizie sull\'argomento '.$this->tag->getTripleValue().' - '.sfConfig::get('app_main_title'));
-
+    $this->response->addMeta('description','Tutte le notizie aggiornate quotidianamente sugli atti parlamentari che parlano di  '.$this->tag->getTripleValue(),true);
     $c = oppNewsPeer::getNewsForTagCriteria($this->tag_id);
     $c->addDescendingOrderByColumn(NewsPeer::DATE);
 
@@ -186,6 +193,7 @@ class newsActions extends sfActions
   public function executeComunita() 
   {
    $this->getResponse()->setTitle("le ultime 100 attivita' della comunita' - ".sfConfig::get('app_main_title'));
+   $this->response->addMeta('description','Tutte le notizie aggiornate quotidianamente sulle azioni degli utenti di openparlamento',true);
    $this->latest_activities = CommunityNewsPeer::getLatestActivities(100);
     
     
