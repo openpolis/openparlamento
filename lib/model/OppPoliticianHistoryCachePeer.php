@@ -203,7 +203,6 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 		$c->add(self::CHI_ID, $chi_id);
 		$c->add(self::RAMO, $ramo);
 		$v = self::doSelect($c, $con);
-
 		return !empty($v) ? $v[0] : null;
   }
 

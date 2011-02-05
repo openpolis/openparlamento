@@ -870,10 +870,12 @@ class OppCaricaPeer extends BaseOppCaricaPeer
 
     switch ($ramo) {
       case 'camera':
+      case 'c':
         $tipi_carica_ids = array(1);
         break;
 
       case 'senato':
+      case 's':
         $tipi_carica_ids = array(4,5);
         break;
 

@@ -17,6 +17,9 @@
 pake_desc("costruisce cache per politici");
 pake_task('opp-build-cache-politici', 'project_exists');
 
+pake_desc("costruisce posizionamento su indici per politici");
+pake_task('opp-build-pos-cache-politici', 'project_exists');
+
 pake_desc("costruisce cache per gruppi");
 pake_task('opp-build-cache-gruppi', 'project_exists');
 
@@ -87,6 +90,7 @@ function run_opp_build_cache_politici($task, $args, $options)
   if (array_key_exists('verbose', $options)) {
     $verbose = true;
   }
+  
 
   // restrizione su un subset di atti/emendamenti per eventuale debug
   $atti_ids = array();
@@ -168,14 +172,8 @@ function run_opp_build_cache_politici($task, $args, $options)
     $cache_record->setNumero(1); // il dato riguarda un solo soggetto
     $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
-    $record_id = $cache_record->getId();
-    unset($cache_record);
 
-    # store values in an array, to sort them later and get positions
-    $indice_ar   []= array($record_id => $indice);
-    $presenze_ar []= array($record_id => $presenze);
-    $missioni_ar []= array($record_id => $missioni);
-    $assenze_ar  []= array($record_id => $assenze);
+    unset($cache_record);
 
     $msg = sprintf("i: %7.2f   p:%4d    a:%4d   m:%4d,   r:%4d", $indice, $presenze, $assenze, $missioni, $ribellioni);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
@@ -185,20 +183,128 @@ function run_opp_build_cache_politici($task, $args, $options)
 
 
   }
+
+  $msg = sprintf("end time: %s\n", date('H:i:s'));
+  echo $msg;
+
+  $msg = sprintf("memory usage: %10d\n", memory_get_usage( ));
+  echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
   
-  # update positions
-  krsort($indice_ar);
-  krsort($presenze_ar);
-  krsort($missioni_ar);
-  krsort($assenze_ar);  
-  foreach ($indice_ar as $record_id => $value) {
-   $cached_record = OppPoliticianHistoryCachePeer::retrieveByPK($record_id);
-   $cached_record->setIndicePos($value);
-   $cached_record->setPresenzePos($presenze_ar[$record_id]);
-   $cached_record->setMissioniPos($missioni_ar[$record_id]);
-   $cached_record->setAssenzePos($assenze_ar[$record_id]);    
-   $cached_record->save();
+  $msg = sprintf("%d parlamentari elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+}
+
+
+/**
+ * Calcola o ri-calcola gli indici di posizionamento per:
+ * - presenze, assenze, missioni
+ * - indice di attività (nuovo)
+ * - ribellioni
+ * Si può specificare:
+ * - il ramo (camera, senato, governo, parlamento, tutti*)
+ * - la data (da inizio legislatura a quella data)
+ */
+function run_opp_build_pos_cache_politici($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
   }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $msg = sprintf("start time: %s\n", date('H:i:s'));
+  echo $msg;
+
+  $data = '';
+  $ramo = '';
+  $tipo = 'P';
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  if (array_key_exists('ramo', $options)) {
+    $ramo = substr(strtolower($options['ramo']), 0, 1);
+  }
+
+  if ($ramo != 'c' && $ramo != 's') {
+    throw new Exception("I valori per il ramo possono essere: camera o senato");
+  }
+
+  // definisce la data fino alla quale vanno fatti i calcoli
+  // data_lookup serve per controllare se i record già esistono
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;
+  } else {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d');
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData($tipo);
+  }
+
+  $msg = sprintf("calcolo indici posizionamento per politici data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+  $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $legislatura_corrente, $data);    
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
+
+  $cnt = 0;
+  $indice_ar = array(); 
+  $presenze_ar = array(); $assenze_ar = array(); $missioni_ar = array(); 
+  $ribellioni_ar = array();
+  while ($parlamentari_rs->next())
+  {
+    $cnt++;
+    
+    $p = $parlamentari_rs->getRow();
+    $id = $p['id'];
+    
+    // inserimento o aggiornamento del valore in opp_politician_history_cache
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, $tipo, $id, $ramo);
+    if (!$cache_record) {
+      throw new Exception("Record $id mancante: data: $data_lookup, tipo: $tipo, ramo: $ramo!");
+    }
+    $record_id = $cache_record->getId();
+    $indice_ar[$record_id] = $cache_record->getIndice();
+    $presenze_ar[$record_id] = $cache_record->getPresenze();
+    $assenze_ar[$record_id] = $cache_record->getAssenze();
+    $missioni_ar[$record_id] = $cache_record->getMissioni();
+    $ribellioni_ar[$record_id] = $cache_record->getRibellioni();
+
+    unset($cache_record);
+
+    $msg = sprintf("%d)  i: %7.2f   p:%4d    a:%4d   m:%4d,   r:%4d", 
+                   $cnt, $indice_ar[$record_id], 
+                   $presenze_ar[$record_id], $assenze_ar[$record_id], $missioni_ar[$record_id], 
+                   $ribellioni_ar[$record_id]);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+
+
+  }
+
+  # update positions
+  arsort($indice_ar);
+  compute_posizioni($indice_ar, 'indice');
+  arsort($presenze_ar);
+  compute_posizioni($presenze_ar, 'presenze');
+  arsort($assenze_ar);  
+  compute_posizioni($assenze_ar, 'assenze');
+  arsort($missioni_ar);
+  compute_posizioni($missioni_ar, 'missioni');
+  arsort($ribellioni_ar);
+  compute_posizioni($ribellioni_ar, 'ribellioni');
+
+  $msg = sprintf("id: indexing positions generated\n");
+  echo pakeColor::colorize($msg, array('fg' => 'green', 'bold' => true));      
 
 
   $msg = sprintf("end time: %s\n", date('H:i:s'));
@@ -212,6 +318,20 @@ function run_opp_build_cache_politici($task, $args, $options)
 }
 
 
+function compute_posizioni($values_ar, $field_name)
+{
+  $cnt = 0;
+  $msg = sprintf("computing %s\n", $field_name);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+  
+  foreach ($values_ar as $record_id => $value) {
+    $cnt ++;
+    $cached_record = OppPoliticianHistoryCachePeer::retrieveByPK($record_id);
+
+    call_user_func_array(array($cached_record, "set".ucfirst($field_name)."Pos"), array($cnt));
+    $cached_record->save();
+  }
+}
 /**
  * Calcola o ri-calcola i dati aggregati da cachare per i gruppi
  * Si può specificare:
