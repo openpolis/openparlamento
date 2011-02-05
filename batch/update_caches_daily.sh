@@ -1,5 +1,7 @@
 #!/bin/sh
 ./symfony opp-build-cache-politici --ramo=parlamento
+./symfony opp-build-pos-cache-politici --ramo=camera; 
+./symfony opp-build-pos-cache-politici --ramo=senato; 
 ./symfony opp-build-cache-gruppi
 ./symfony opp-build-cache-rami
 
