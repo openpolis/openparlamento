@@ -128,6 +128,7 @@ function run_opp_build_cache_politici($task, $args, $options)
   $start_time = time();
 
   $cnt = 0;
+  $indice_ar = array(); $presenze_ar = array(); $missioni_ar = array(); $assenze_ar = array();
   while ($parlamentari_rs->next())
   {
     $cnt++;
@@ -167,7 +168,14 @@ function run_opp_build_cache_politici($task, $args, $options)
     $cache_record->setNumero(1); // il dato riguarda un solo soggetto
     $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
     $cache_record->save();
+    $record_id = $cache_record->getId();
     unset($cache_record);
+
+    # store values in an array, to sort them later and get positions
+    $indice_ar   []= array($record_id => $indice);
+    $presenze_ar []= array($record_id => $presenze);
+    $missioni_ar []= array($record_id => $missioni);
+    $assenze_ar  []= array($record_id => $assenze);
 
     $msg = sprintf("i: %7.2f   p:%4d    a:%4d   m:%4d,   r:%4d", $indice, $presenze, $assenze, $missioni, $ribellioni);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
@@ -176,6 +184,20 @@ function run_opp_build_cache_politici($task, $args, $options)
     echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
 
 
+  }
+  
+  # update positions
+  krsort($indice_ar);
+  krsort($presenze_ar);
+  krsort($missioni_ar);
+  krsort($assenze_ar);  
+  foreach ($indice_ar as $record_id => $value) {
+   $cached_record = OppPoliticianHistoryCachePeer::retrieveByPK($record_id);
+   $cached_record->setIndicePos($value);
+   $cached_record->setPresenzePos($presenze_ar[$record_id]);
+   $cached_record->setMissioniPos($missioni_ar[$record_id]);
+   $cached_record->setAssenzePos($assenze_ar[$record_id]);    
+   $cached_record->save();
   }
 
 
