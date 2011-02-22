@@ -46,5 +46,5 @@
 
 <div id="identity">
   <?php echo link_to(image_tag('logo-openparlamento_new.png', array('alt' => 'openparlamento')), '@homepage') ?>	
-  <?php echo link_to(image_tag('logo-openpolis_new.png', array('alt' => 'openpolis')), 'http://www.openpolis.it') ?> 
+  <?php echo link_to(image_tag('logo-openpolis_new.png', array('alt' => 'openpolis')), 'http://associazione.openpolis.it') ?> 
 </div>
