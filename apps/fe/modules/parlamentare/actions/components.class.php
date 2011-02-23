@@ -17,13 +17,13 @@ class parlamentareComponents extends sfComponents
     $c->addSelectColumn(OppGruppoPeer::NOME);
     $c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
     $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
+    $c->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
     $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
     $c->addJoin(OppGruppoPeer::ID,OppCaricaHasGruppoPeer::GRUPPO_ID);
     $c->addJoin(OppCaricaPeer::POLITICO_ID,OppPoliticoPeer::ID);
     $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL, Criteria::ISNULL);
-    $c->add(OppCaricaHasGruppoPeer::DATA_INIZIO,OppCaricaPeer::DATA_INIZIO, Criteria::NOT_EQUAL);
     $c->addDescendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
-    $c->setLimit(3);
+    $c->setLimit(10);
     $parlamentari=OppCaricaHasGruppoPeer::doSelectRS($c);  
     $this->parlamentari=$parlamentari;  
     
