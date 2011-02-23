@@ -7,6 +7,29 @@ class parlamentareComponents extends sfComponents
     $this->monitorers_pks = $this->item->getAllMonitoringUsersPKs();
     $this->monitored_models_pks = MonitoringPeer::getModelsPKsMonitoredByUsers($this->monitorers_pks);
   }
+  
+  public function executeCambioGruppo()
+  {
+    $c = new Criteria();
+    $c->addSelectColumn(OppPoliticoPeer::ID);
+    $c->addSelectColumn(OppPoliticoPeer::COGNOME);
+    $c->addSelectColumn(OppPoliticoPeer::NOME);
+    $c->addSelectColumn(OppGruppoPeer::NOME);
+    $c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
+    $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
+    $c->addJoin(OppGruppoPeer::ID,OppCaricaHasGruppoPeer::GRUPPO_ID);
+    $c->addJoin(OppCaricaPeer::POLITICO_ID,OppPoliticoPeer::ID);
+    $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL, Criteria::ISNULL);
+    if ($this->ramo==1)
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID,1);
+    else
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID,4);
+    $c->addDescendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
+    $c->setLimit(3);
+    $parlamentari=OppCaricaHasGruppoPeer::doSelectRS($c);  
+    $this->parlamentari=$parlamentari;  
+    
+  }
     
   public function executeSioccupadi()
   {
