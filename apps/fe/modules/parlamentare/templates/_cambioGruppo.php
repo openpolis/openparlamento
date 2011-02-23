@@ -14,7 +14,7 @@
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(1)), 
                         array('width' => '40','height' => '53' )) ?>	
-    <?php echo ($ramo==1?'On. ':'Sen. '). link_to($parlamentari->getString(2).' '.$parlamentari->getString(3), '@parlamentare?id='.$parlamentari->getInt(1)) ?>
+    <?php echo ($parlamentari->getInt(6)==1?'On. ':'Sen. '). link_to($parlamentari->getString(2).' '.$parlamentari->getString(3), '@parlamentare?id='.$parlamentari->getInt(1)) ?>
     </p>
     </th>
     <td>
