@@ -7,22 +7,22 @@
 <?php $tr_class = 'even' ?>	
 <?php $i=0 ?>			  
 <?php while($parlamentari->next()) : ?>
-   <?php $i++ ?>
-   <tr class="<?php echo $tr_class; ?>">
-   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
-   <th scope="row">
-   <p class="politician-id">
-   <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(1)), 
+  <?php if ($parlamentari->getString(5)!=$parlamentari->getString(7) && $i<3) : ?>
+    <?php $i++ ?>
+    <tr class="<?php echo $tr_class; ?>">
+    <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
+    <th scope="row">
+      <p class="politician-id">
+      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(1)), 
                         array('width' => '40','height' => '53' )) ?>	
-    <?php echo ($parlamentari->getInt(6)==1?'On. ':'Sen. '). link_to($parlamentari->getString(2).' '.$parlamentari->getString(3), '@parlamentare?id='.$parlamentari->getInt(1)) ?>
-    </p>
-    </th>
-    <td>
+      <?php echo ($parlamentari->getInt(6)==1?'On. ':'Sen. '). link_to($parlamentari->getString(2).' '.$parlamentari->getString(3), '@parlamentare?id='.$parlamentari->getInt(1)) ?>
+      </p>
+      </th>
+      <td>
       <span class="small">il <?php echo date('d/m/Y',strtotime($parlamentari->getString(5))) ?> ha aderito al gruppo</span><br/><?php echo $parlamentari->getString(4)?>
-    </td>              
-     
+      </td>              
     </tr>
-    
+  <?php endif ?>  
 <?php endwhile; ?>
 <tr>
   <td>&nbsp;</td>
