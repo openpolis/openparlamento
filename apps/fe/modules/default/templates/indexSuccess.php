@@ -67,6 +67,9 @@
        
      <div class="W45_100 float-right">
      
+       <!-- box cambio gruppo -->
+     	   <?php include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
+     
        <!-- box keyvotes -->
     	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
 
