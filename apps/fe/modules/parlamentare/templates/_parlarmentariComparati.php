@@ -20,16 +20,17 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
-       <p><label>indice di attivit&agrave;:</label>    			                             	
-          <?php echo $parlamentare1->getIndice() ?>
+       <p><label>indice di produttivit&agrave;:</label>    			                             	
+          <span style="font-size: 14px;"><?php echo $parlamentare1->getIndice() ?></span>
           <?php if ($parlamentare1->getIndice()>$parlamentare2->getIndice()) : ?>
              <?php echo image_tag('ico-thumb-up.png') ?>
           <?php endif; ?>
           <?php if ($parlamentare1->getIndice()<$parlamentare2->getIndice()) : ?>
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
+          <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info" style="font-size:11px;">come &egrave calcolato?</a>]</span>
        </p>
-       <p><label>&egrave; stato stato parlamentare per</label>: <?php echo link_to($durata1,'http://www.openpolis.it/politico/'.$parlamentare1->getPoliticoId().'#carriera') ?></p>
+       <p><label>&egrave; parlamentare da</label> <?php echo link_to($durata1,'http://www.openpolis.it/politico/'.$parlamentare1->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>
  </div>     
@@ -57,16 +58,17 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
-       <p><label>indice di attivit&agrave;:</label>    			                             	
-          <?php echo $parlamentare2->getIndice() ?>
+       <p><label>indice di produttivit&agrave;:</label>    			                             	
+          <span style="font-size: 14px;"><?php echo $parlamentare2->getIndice() ?></span>
           <?php if ($parlamentare2->getIndice()>$parlamentare1->getIndice()) : ?>
              <?php echo image_tag('ico-thumb-up.png') ?>
           <?php endif; ?>
           <?php if ($parlamentare2->getIndice()<$parlamentare1->getIndice()) : ?>
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
+          <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info" style="font-size:11px;">come &egrave calcolato?</a>]</span>
        </p>
-       <p><label>&egrave; stato parlamentare per</label>: <?php echo link_to($durata2,'http://www.openpolis.it/politico/'.$parlamentare2->getPoliticoId().'#carriera') ?></p>
+       <p><label>&egrave; parlamentare da</label> <?php echo link_to($durata2,'http://www.openpolis.it/politico/'.$parlamentare2->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>
  </div>  

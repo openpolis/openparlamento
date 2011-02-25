@@ -1,4 +1,4 @@
-<p>Nota: l'indice di attività non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
+<p>Nota: l'indice di produttività non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato). <strong>Per la spiegazione dettagliata dei criteri di valutazione del nuovo indice di produttività <a href="http://indice.openpolis.it/info">vai qui</a>.</strong>
 <br/>
 Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.
 <br/><br/>
@@ -7,7 +7,7 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
   <thead>
     <tr>
       <th scope="col">parlamentare:</th>
-      <th scope="col">indice di attivit&agrave;:</th> 	
+      <th scope="col">indice di produttivit&agrave;: <?php echo image_tag('ico-new.png')?></th> 	
       <th scope="col">voti ribelli:</th>			
       <th scope="col" class="evident">presenze:</th>			
       <th scope="col" class="evident">assenze:</th>

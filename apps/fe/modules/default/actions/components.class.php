@@ -74,7 +74,7 @@ class defaultComponents extends sfComponents
         $c->addDescendingOrderByColumn(OppCaricaPeer::INDICE);
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='blue';
-        $this->string='pi&ugrave; attivi';
+        $this->string='pi&ugrave; produttivi <span style="margin-left:5px;"><a href="http://indice.openpolis.it/info" style="font-size:11px;">come sono calcolati?</a></span>';
         $this->cosa=3;
       break;
       

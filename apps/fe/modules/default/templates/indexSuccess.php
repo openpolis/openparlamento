@@ -5,10 +5,7 @@
   <div id="teasers">
 
     <div class="W33_100 float-right">
-        <?php echo link_to(image_tag(sfConfig::get('sf_resources_host') . '/images/banner_grafico_310x225.png', 
-                                     array('alt' => 'consulta il grafico interattivo delle posizioni dei diversi parlamentari'),
-                                     //sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze')  
-                                     sfConfig::get('sf_resources_host') != ''?true:false),'/grafico_distanze/votes_16_C') ?> 
+      <a href="http://indice.openpolis.it"><img src="https://s3-eu-west-1.amazonaws.com/op-images/banner-rapporto-big.png" border=0 /></a> 
     </div>	
 
 

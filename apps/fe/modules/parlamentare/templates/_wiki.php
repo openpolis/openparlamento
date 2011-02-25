@@ -9,12 +9,12 @@
     </div>
   </div>
 
-  <p class="tools-container float-left float-container"><?php echo link_to('Cos\'&egrave; l\'indice di attivit&agrave;', '#', array( 'class'=>'ico-help')) ?></p>
+  <p class="tools-container float-left float-container"><?php echo link_to('Cos\'&egrave; l\'indice di produttivit&agrave;', '#', array( 'class'=>'ico-help')) ?></p>
   <div class="help-box float-container clear-both" style="display: none;">
     <div class="inner float-container"> 
       <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>	   	  
-      <h5>cos'&egrave; l'indice di attivit&agrave; ?</h5>
-      <p>&Egrave; un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro.<br /> Per dettagli e commenti <a href="/blog/2009/06/16/l-indice-di-attivita-parlamentare">vai qui</a></p>
+      <h5>cos'&egrave; l'indice di produttivit&agrave; ?</h5>
+      <p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per una descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info">vai qui</a>.</strong></p>
     </div>
   </div>
 		

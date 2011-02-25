@@ -4,7 +4,6 @@ commentiSuccess:
 
 
 indexSuccess:
-  javascripts:    [fe/jquery.autocomplete.min.js]
   stylesheets:    [-*, screen.css, monitoring, jquery.autocomplete.css]
 
 documentoSuccess:

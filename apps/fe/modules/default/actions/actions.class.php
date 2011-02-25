@@ -187,7 +187,7 @@ class defaultActions extends sfActions
   public function executeClassifiche()
   {
    
-       $this->getResponse()->setTitle('le classifiche - '.sfConfig::get('app_main_title'));   
+       $this->getResponse()->setTitle('le classifiche dei parlamentari - '.sfConfig::get('app_main_title'));   
   }
   
   public function executeIndex()

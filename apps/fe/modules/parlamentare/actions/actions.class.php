@@ -19,7 +19,6 @@ class parlamentareActions extends sfActions
                                                         'argomento/atti_filter', 'argomento_leggi/sort', 'argomento_nonleg/sort',
                                                         'monitoring_filter'));
   }
-  
 
 
   public function executeTabellaDelta()

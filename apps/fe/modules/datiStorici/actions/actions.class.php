@@ -14,6 +14,12 @@ class datiStoriciActions extends sfActions
    * Executes index action (just a redirect to the indicePresenze, actually)
    *
    */
+   
+  public function executeSedute()
+  {
+    
+  }
+   
   public function executeIndex()
   {
     $this->redirect('datiStorici/indicePresenze');

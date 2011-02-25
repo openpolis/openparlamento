@@ -37,7 +37,7 @@
         </td>
      <?php elseif ($cosa==3) : ?> 
         <td>
-            <span class="small">indice di attivit&agrave;: </span><?php echo $parlamentari->getFloat(9) ?> 
+            <span class="small">indice di produttivit&agrave;: </span><?php echo $parlamentari->getFloat(9) ?> 
         </td>   
 
      <?php elseif ($cosa==4) : ?> 
@@ -70,7 +70,7 @@
         </td> 
      <?php elseif ($cosa==3) : ?> 
         <td>
-            <?php echo link_to('vai alla classifica',($nome_carica=='deputati') ? '@parlamentari?ramo=camera&sort=indice&type=desc' :'@parlamentari?ramo=senato&sort=indice&type=desc') ?>
+            <?php echo link_to('vai alla classifica dell\'indice di produttivit&agrave;','http://indice.openpolis.it') ?>
         </td>  
 
      <?php elseif ($cosa==4) : ?> 

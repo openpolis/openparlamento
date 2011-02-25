@@ -182,6 +182,36 @@
 		    <!-- INCARICHI PARLAMENTARI -->
 		    <?php echo include_component('parlamentare','incarichiParlamentare', array('carica_id' => $carica->getId(), 'ramo' => $ramo)) ?>  
 		    
+		    <!-- INDICE DI PRODUTTIVITA' -->
+		    <h5 class="subsection-alt">
+		      Nuovo indice di produttività parlamentare <?php echo image_tag('/images/ico-new.png') ?>
+		    </h5>
+
+  			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
+  			<div style="display: none;" class="help-box float-container">
+  				<div class="inner float-container">		
+  					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di produttivit&agrave; ?</h5>
+  					<p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info">vai qui</a>.</strong></p>
+  				</div>
+  			</div>
+
+  			<div class="float-container" style="padding:5px 10px 10px 20px;">
+  				<label style="color:#888888; font-weight:bold; font-size:16px;">indice di produttivit&agrave;:</label>
+  				  <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:24px;"><?php echo number_format($carica->getIndice(), 0,' ','.') ?></span>
+  			</div>
+  			<div class="float-container" style="padding:2px 10px 10px 20px;">
+  				<label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>
+  				<span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
+  				  <?php if($carica->getDataInizio('d/m/Y')>"29/04/2008") echo "(N.B. in carica dal ".$carica->getDataInizio('d/m/Y').")"; ?>
+  				   | <?php echo link_to('vai alla classifica completa', 
+  				                     'http://indice.openpolis.it') ?>
+  				  </span>
+  				
+  				<span style="font-weight:normal; padding-top:7px; float:left; text-align:left;">L'indice di produttivit&agrave; non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
+  				  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info"><strong>vai qui</strong></a>.
+  				  </span>
+  			</div>
+		    
 		    <!-- BOX PRESENZE -->
   			<h5 class="subsection-alt" style="margin:0">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
   			<p class="float-right">ultima votazione: <strong>
@@ -277,54 +307,7 @@
   				                     '@parlamentari?ramo=' . $ramo .
   				                      '&sort=ribelle&type=desc') ?>
   				</p>
-  			</div>
-
-  			<h5 class="subsection-alt">Indice di attivit&agrave; parlamentare</h5>
-
-  			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
-  			<div style="display: none;" class="help-box float-container">
-  				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di attivit&agrave; ?</h5>
-  					<p>&Egrave; un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro.<br /> Per dettagli e commenti <a href="/blog/2009/06/16/l-indice-di-attivita-parlamentare">vai qui</a></p>
-  				</div>
-  			</div>
-
-  			<div class="meter-bar float-container">
-  				<label class="mb-idx-label">indice:</label>
-  				<div class="mb-idx">
-  					<ul class="t<?php echo number_format($carica->getIndice(), 0) ?>"> <!-- usare class t0, t1 ... t9, t10 - esempio: indice = "3.14", classe = "t3" ... usare Math.floor -->
-  						<li class="i1"><p><sup>1</sup>|</p></li>
-  						<li class="i2"><p><sup>2</sup>|</p></li>
-  						<li class="i3"><p><sup>3</sup>|</p></li>
-  						<li class="i4"><p><sup>4</sup>|</p></li>
-  						<li class="i5"><p><sup>5</sup>|</p></li>
-  						<li class="i6"><p><sup>6</sup>|</p></li>
-  						<li class="i7"><p><sup>7</sup>|</p></li>
-  						<li class="i8"><p><sup>8</sup>|</p></li>
-  						<li class="i9"><p><sup>9</sup>|</p></li>
-  						<li class="i10"><p><sup>10</sup>|</p></li>
-  					</ul>
-  					<div style="left: <?php echo 10*$carica->getMedia() ?>%;" class="meter-average"><label>media deputati: <?php echo $carica->getMedia() ?></label>&nbsp;</div>
-  					<div style="left: <?php echo 10*$carica->getIndice() ?>%; font-size:16px;" class="meter-label"><?php echo number_format($carica->getIndice(), 2) ?></div>
-  				</div>
-  			</div>
-  			<div class="meter-bar float-container">
-  				<label class="mb-idx-label">classifica:</label>
-  				<div class="pos-idx"><strong><?php echo $carica->getPosizione()."&deg;" ?></strong> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
-  				  <?php if($carica->getDataInizio('d/m/Y')>"29/04/2008") echo "(N.B. in carica dal ".$carica->getDataInizio('d/m/Y').")"; ?>
-  				  </div>
-  				<p class="float-right">
-  				  <?php echo link_to('vai alla classifica', 
-  				                     '@parlamentari?ramo=' . $ramo .
-  				                      '&sort=indice&type=desc') ?>
-  				</p>
-  				<span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">L'indice di attività non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).</span>
-  			</div>
-  		
-
-
-                      
-  			
+  			</div>  			
                   <?php include_component('parlamentare', 'attiPresentati', 
                                 array('parlamentare' => $parlamentare)) ?>
                  

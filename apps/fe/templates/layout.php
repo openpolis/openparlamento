@@ -8,7 +8,7 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
- 
+
     <link rel="icon" type="image/gif" href="/ico_op_32x32.gif" />
   </head>
 
@@ -24,11 +24,12 @@
     	 
   	  
       	<?php if ($this->getContext()->getModuleName()!='default' || $this->getContext()->getActionName()!='index') include_partial('global/breadcrumbs') ?>
-      	   <!-- banner campagna
-      	  <p align="center" style="padding:5px;">
-           <a href="http://associazione.openpolis.it/contribuisci/diventa-socio"><img src="http://op_assoc/images/banner-campagna.png" border=0></a>
+      	 <?php if (!$sf_user->hasCredential('adhoc')): ?>  
+      	  <p align="center" style="padding-top:5px;">
+            <a href="http://associazione.openpolis.it/contribuisci/diventa-socio"><img id="imgAd" src="https://s3-eu-west-1.amazonaws.com/op-images/frame03.jpg" border=0 /></a>
           </p> 
-          -->
+          <?php endif; ?>
+          
       </div>
 
   	  <?php echo $sf_data->getRaw('sf_content') ?>
@@ -41,5 +42,28 @@
     <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
       <?php include_partial('global/googleAnalytics') ?>	  
     <?php endif ?>
+
+    <script type="text/javascript">
+    jQuery.noConflict();
+    (function($) {
+      $().ready(function(){
+        function rImage() {
+            var i = $("#imgAd");
+            i.animate({ opacity: 1 }, 5000, function() {
+                i.attr('src', 'https://s3-eu-west-1.amazonaws.com/op-images/frame01.jpg');
+            }).animate({ opacity: 1 }, 3000, function() {
+                i.attr('src', 'https://s3-eu-west-1.amazonaws.com/op-images/frame02.jpg');
+            }).animate({ opacity: 1 }, 5000, function() {
+                i.attr('src', 'https://s3-eu-west-1.amazonaws.com/op-images/frame03.jpg');
+                rImage();
+            })
+        };
+        rImage();        
+      })
+    })(jQuery);
+
+    //]]>
+    </script>
+ 
   </body>
 </html>

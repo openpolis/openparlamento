@@ -120,7 +120,7 @@ class emendamentoActions extends sfActions
     $this->atto = OppAttoPeer::retrieveByPK($this->getRequestParameter('id'));
     
     $this->getResponse()->setTitle('Lista degli emendamenti al ddl '.$this->atto->getRamo().'.'.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index').' - '.sfConfig::get('app_main_title'));
-    
+    $this->response->addMeta('description','La lista con i testi e gli aggiornamenti degli emendamenti presentati per il disegno di legge '.$this->atto->getRamo().'.'.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index'),true);
     
     // extracts distinct articoli for listed emendamenti
     $articles = $this->atto->getAvailableEmendamentiArticles();
@@ -242,6 +242,7 @@ class emendamentoActions extends sfActions
     
     
     $this->getResponse()->setTitle('Emendamento '.$this->emendamento->getTitolo().' al ddl '.$this->attoPortante->getRamo().'.'.$this->attoPortante->getNumfase().' '.Text::denominazioneAtto($this->attoPortante, 'index').' - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Il testo e gli aggiornamenti emendamento '.$this->emendamento->getTitolo().' al ddl '.$this->attoPortante->getRamo().'.'.$this->attoPortante->getNumfase().' '.Text::denominazioneAtto($this->attoPortante, 'index'),true);
   }
   
   /**
