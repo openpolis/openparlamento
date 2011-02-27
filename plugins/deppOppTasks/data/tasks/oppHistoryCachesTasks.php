@@ -38,16 +38,127 @@ pake_task('opp-compute-delta-atti', 'project_exists');
 pake_desc("calcola i dati dei delta per la cache dei tag");
 pake_task('opp-compute-delta-tag', 'project_exists');
 
-/*
-pake_desc("calcola i dati delle posizioni per la cache dei politici");
-pake_task('opp-compute-positions-politicians', 'project_exists');
+pake_desc("aggiorna i valori dell'indice in opp_carica, prelevandoli dalla cache");
+pake_task('opp-upgrade-opp-carica-from-cache', 'project_exists');
 
-pake_desc("calcola i dati delle posizioni per la cache degli atti");
-pake_task('opp-compute-positions-acts', 'project_exists');
 
-pake_desc("calcola i dati delle posizioni per la cache dei tag");
-pake_task('opp-compute-positions-tags', 'project_exists');
-*/
+/**
+ * Aggiorna i valori di indice e posizione nella opp_carica
+ * copiandoli dalla opp_politician_history_cache
+ * Si deve specificare:
+ * - il ramo (camera o senato)
+ * Si può specificare:
+ * - la data (da inizio legislatura a quella data)
+ * Se la data non è specificata, viene copiato il valore dell'ultima data presente nei dati
+ * Se sono passati degli ID (argomenti), sono interpretati come ID di politici e il calcolo è fatto solo per loro
+ */
+function run_opp_upgrade_opp_carica_from_cache($task, $args, $options)
+{
+  static $loaded;
+
+  // load application context
+  if (!$loaded)
+  {
+    task_loader();
+    $loaded = true;
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+
+  $msg = sprintf("start time: %s\n", date('H:i:s'));
+  echo $msg;
+
+  $data = '';
+  $tipo = 'P';
+  if (array_key_exists('data', $options)) {
+    $data = $options['data'];
+  }
+  
+  if (array_key_exists('ramo', $options)) {
+    $ramo = substr(strtolower($options['ramo']), 0, 1);
+  }
+  if ($ramo != 'c' && $ramo != 's') {
+    throw new Exception("I valori per il ramo possono essere: camera o senato");
+  }
+
+  
+  // definisce la data fino alla quale vanno fatti i calcoli
+  // data_lookup serve per controllare se i record già esistono
+  if ($data != '') {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent($data);
+    $data_lookup = $data;
+  } else {
+    $legislatura_corrente = OppLegislaturaPeer::getCurrent();
+    $data = date('Y-m-d');
+    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P');
+  }
+
+  $msg = sprintf("aggiornamento valori indice,pos per politici data: %10s\n", $data?$data:'-');
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+
+
+  if (count($args) > 0)
+  {
+    try {
+      $parlamentari_rs = OppCaricaPeer::getRSFromIDArray($args);            
+    } catch (Exception $e) {
+      throw new Exception("Specificare degli ID validi. \n" . $e);
+    }
+  } else {
+    $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS($ramo, $legislatura_corrente, $data);    
+  }
+
+  echo "memory usage: " . memory_get_usage( ) . "\n";
+  $start_time = time();
+
+  $cnt = 0;
+  while ($parlamentari_rs->next())
+  {
+    $cnt++;
+    
+    $p = $parlamentari_rs->getRow();
+    $nome = $p['nome'];
+    $cognome = $p['cognome'];
+    $tipo_carica_id = $p['tipo_carica_id'];
+    $id = $p['id'];
+
+    // inserimento o aggiornamento del valore in opp_politician_history_cache
+    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'P', $id, $ramo);
+    $carica_record = OppCaricaPeer::retrieveByPK($id);
+    if (!$cache_record instanceof OppPoliticianHistoryCache) 
+    {
+      $msg = sprintf("%s %s - %d - carica non in cache\n", $nome, $cognome, $id);
+      echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+      continue;
+    }
+    $indice = $cache_record->getIndice();
+    $posizione = $cache_record->getIndicePos();
+    $carica_record->setIndice($indice);
+    $carica_record->setPosizione($posizione);
+    $carica_record->save();
+    
+    unset($cache_record);
+    unset($carica_record);
+
+    $msg = sprintf("%s %s - i: %7.2f   p:%4d", $nome, $cognome, $indice, $posizione);
+    echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
+
+    $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
+    echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+
+
+  }
+
+  $msg = sprintf("end time: %s\n", date('H:i:s'));
+  echo $msg;
+
+  $msg = sprintf("memory usage: %10d\n", memory_get_usage( ));
+  echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
+  
+  $msg = sprintf("%d parlamentari elaborati\n", $cnt);
+  echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
+}
+
 
 
 /**

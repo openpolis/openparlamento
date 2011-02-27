@@ -10,6 +10,145 @@
 class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 {
 
+  public static function getIndexChartsPoliticians($ramo, $data, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+		$sql = sprintf("select pc.id, p.id as politico_id, p.nome, p.cognome, g.acronimo, c.circoscrizione, pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, (pc.presenze+pc.missioni+pc.assenze) as votazioni, pc.indice, pc.indice_pos from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723)", $data, $ramo);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+    
+    return $items;
+  }
+  
+  public static function getIndexChartsRegions($ramo, $data, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+		$sql = sprintf("select pc.id, if( c.circoscrizione is null, 'Senatori a vita', if(c.circoscrizione in ('America meridionale', 'America settentrionale e centrale', 'Asia-Africa-Oceania-Antartide', 'Europa'), 'Estero', if(substr(c.circoscrizione, length(c.circoscrizione)) in ('1', '2', '3'),left(c.circoscrizione, length(c.circoscrizione)-1), c.circoscrizione))) as regione, count(*) as n, sum(pc.assenze)/sum(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, sum(pc.indice) as indice_totale, sum(pc.indice)/count(*) as indice_medio from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) group by if(c.circoscrizione in ('America meridionale', 'America settentrionale e centrale', 'Asia-Africa-Oceania-Antartide', 'Europa'), 'Estero', if(substr(c.circoscrizione, length(c.circoscrizione)) in ('1', '2', '3'), left(c.circoscrizione, length(c.circoscrizione)-1), c.circoscrizione))", $data, $ramo);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+
+    return $items;
+  }
+
+
+  public static function getIndexChartsGroups($ramo, $data, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+		$sql = sprintf("select pc.id, g.acronimo, g.nome as gruppo, count(*) as n, sum(pc.assenze)/sum(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, sum(pc.indice) as indice_totale, sum(pc.indice)/count(*) as indice_medio from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) group by g.acronimo", $data, $ramo);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+
+    return $items;
+  }
+
+  public static function getIndexChartsSex($ramo, $data, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+		$sql = sprintf("select pc.id, p.sesso, count(*) as n, sum(pc.assenze)/sum(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, sum(pc.indice) as indice_totale, sum(pc.indice)/count(*) as indice_medio from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) group by p.sesso", $data, $ramo);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+
+    return $items;
+  }
+  
+  
+  public static function getIndexChartsPoliticiansInConstituency($ramo, $data, $circoscrizione_slug, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+    $circoscrizione = self::getCircoscrizioneNameFromSlug($circoscrizione_slug);
+
+    $sql = sprintf("select pc.id, p.id as politico_id, p.nome, p.cognome, g.acronimo, c.circoscrizione, pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, (pc.presenze+pc.missioni+pc.assenze) as votazioni, pc.indice from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and c.circoscrizione='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) order by pc.indice desc", $data, $ramo, $circoscrizione);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+
+    return $items;
+  }
+  
+  public static function getCircoscrizioneNameFromSlug($value)
+  {
+    $value = preg_replace('/([a-z]+)-([123])/', '$1 $2', $value);
+    
+    switch ($value) {
+      case 'emilia-romagna':
+        return "Emilia-Romagna";
+        break;
+
+      case 'valle-d-aosta':
+        return "Valle D\'Aosta";
+        break;
+
+      case 'friuli-venezia-giulia':
+        return "Friuli-Venezia Giulia";
+        break;
+
+      case 'trentino-alto-adige':
+        return "Trentino-Alto adige";
+        break;
+      
+      default:
+        return ucfirst($value);
+        break;
+    }
+  }
+  
+  public static function getIndexChartsTopPoliticians($ramo, $data, $limit, $con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+    $sql = sprintf("select pc.id, p.id as politico_id, p.nome, p.cognome, g.acronimo, c.circoscrizione, pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, (pc.presenze+pc.missioni+pc.assenze) as votazioni, pc.indice from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) order by pc.indice desc limit %s", $data, $ramo, $limit);
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row;
+    }
+
+    return $items;
+  }
+  
 
   public static function countRecordsRamoData($ramo, $data, $con = null)
   {

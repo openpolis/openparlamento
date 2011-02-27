@@ -3,6 +3,36 @@ gsitemap:
   url: /gsitemap
   param: { module: sfSimpleGoogleSitemap, action: index }
 
+json_get_last_date_for_politician_history_cache:
+  url: /json_getLastDateForPoliticianHistoryCache
+  param: { module: json, action: getLastDateForPoliticianHistoryCache }
+
+json_get_index_charts_politicians:
+  url: /json_getIndexChartsPoliticians/*
+  param: { module: json, action: getIndexChartsPoliticians }
+
+json_get_index_charts_groups:
+  url: /json_getIndexChartsGroups/*
+  param: { module: json, action: getIndexChartsGroups }
+
+json_get_index_charts_sex:
+  url: /json_getIndexChartsSex/*
+  param: { module: json, action: getIndexChartsSex }
+
+json_get_index_charts_regions:
+  url: /json_getIndexChartsRegions/*
+  param: { module: json, action: getIndexChartsRegions }
+
+json_get_index_charts_politicians_in_constituency:
+  url: /json_getIndexChartsPoliticiansInConstituency/*
+  param: { module: json, action: getIndexChartsPoliticiansInConstituency }
+
+json_get_index_charts_top_politicians:
+  url: /json_getIndexChartsTopPoliticians/*
+  param: { module: json, action: getIndexChartsTopPoliticians }
+
+
+
 api_pol_image:
   url: /get_pol_image/:key/:id
   param: { module: api, action: getPolImage }
