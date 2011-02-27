@@ -197,7 +197,7 @@
 
   			<div class="float-container" style="padding:5px 10px 10px 20px;">
   				<label style="color:#888888; font-weight:bold; font-size:16px;">indice di produttivit&agrave;:</label>
-  				  <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:24px;"><?php echo number_format($carica->getIndice(), 0,' ','.') ?></span>
+  				  <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:24px;"><?php echo number_format($carica->getIndice(), 1,',','.') ?></span>
   			</div>
   			<div class="float-container" style="padding:2px 10px 10px 20px;">
   				<label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>

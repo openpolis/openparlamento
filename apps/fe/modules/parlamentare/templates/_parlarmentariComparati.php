@@ -66,7 +66,7 @@
           <?php if ($parlamentare2->getIndice()<$parlamentare1->getIndice()) : ?>
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
-          <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info.html" style="font-size:11px;">come &egrave calcolato?</a>]</span>
+          <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info.html" style="font-size:11px;">come &egrave; calcolato?</a>]</span>
        </p>
        <p><label>&egrave; parlamentare da</label> <?php echo link_to($durata2,'http://www.openpolis.it/politico/'.$parlamentare2->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
