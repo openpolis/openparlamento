@@ -14,7 +14,7 @@
     <div class="inner float-container"> 
       <?php echo link_to('chiudi', '#', array( 'class'=>'ico-close')) ?>	   	  
       <h5>cos'&egrave; l'indice di produttivit&agrave; ?</h5>
-      <p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per una descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info">vai qui</a>.</strong></p>
+      <p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per una descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong></p>
     </div>
   </div>
 		

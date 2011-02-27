@@ -191,7 +191,7 @@
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
   					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di produttivit&agrave; ?</h5>
-  					<p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info">vai qui</a>.</strong></p>
+  					<p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong></p>
   				</div>
   			</div>
 
@@ -208,7 +208,7 @@
   				  </span>
   				
   				<span style="font-weight:normal; padding-top:7px; float:left; text-align:left;">L'indice di produttivit&agrave; non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
-  				  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info"><strong>vai qui</strong></a>.
+  				  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html"><strong>vai qui</strong></a>.
   				  </span>
   			</div>
 		    
