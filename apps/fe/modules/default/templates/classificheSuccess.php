@@ -16,7 +16,7 @@
 
   				<a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le classifiche ?</h5>
   				<p>I dati sulle <strong>presenze</strong> e <strong>assenze</strong> si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. I dati dunque si riferiscono solo al totale delle presenze e assenze nelle votazioni elettroniche in Aula.<br />
-  				  Il nuovo indice di produttivit&agrave; prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro. <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info">vai qui</a>.</strong><br />
+  				  Il nuovo indice di produttivit&agrave; prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro. <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong><br />
   				  Un parlamentare &egrave; considerato <strong>ribelle</strong> quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo.
   				  
   				</p>
