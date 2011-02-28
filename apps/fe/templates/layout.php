@@ -43,12 +43,11 @@
       <?php include_partial('global/googleAnalytics') ?>	  
     <?php endif ?>
 
+
     <script type="text/javascript">
-    jQuery.noConflict();
-    (function($) {
-      $().ready(function(){
+      jQuery().ready(function(){
         function rImage() {
-            var i = $("#imgAd");
+            var i = jQuery("#imgAd");
             i.animate({ opacity: 1 }, 5000, function() {
                 i.attr('src', 'https://s3-eu-west-1.amazonaws.com/op-images/frame01.jpg');
             }).animate({ opacity: 1 }, 3000, function() {
@@ -59,10 +58,8 @@
             })
         };
         rImage();        
-      })
-    })(jQuery);
+      });
 
-    //]]>
     </script>
  
   </body>
