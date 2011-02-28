@@ -135,7 +135,7 @@ class parlamentareActions extends sfActions
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
       
       // altre cariche da openpolis
-      $xml= simplexml_load_file("http://www.openpolis.it/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
+      $xml= simplexml_load_file("http://openpolis.it/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
       $this->descrizione_cariche=array();
       if ($xml)
       {
@@ -144,7 +144,7 @@ class parlamentareActions extends sfActions
       
       // da quanti giorni è parlamentare da openpolis
       
-      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$this->parlamentare->getId());
+      $xml= simplexml_load_file("http://openpolis.it/api/parlamentareHowDays?id=".$this->parlamentare->getId());
       $this->giorni=array();
       if ($xml)
       {
