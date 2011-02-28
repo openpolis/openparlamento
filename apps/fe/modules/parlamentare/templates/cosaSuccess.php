@@ -54,7 +54,7 @@
   		    
   		  <?php echo link_to('la sua pagina su ' . image_tag('/images/op_logo_small.png', 
   		                                                    array('alt' => 'vai al sito openpolis')), 
-  		                                                    'http://www.openpolis.it/politico/'.$parlamentare->getId(),
+  		                                                    'http://openpolis.it/politico/'.$parlamentare->getId(),
   		                                                    array('class' => 'jump-to-camera')) ?>                 
   		   
   		  <?php if ($carica) : ?>                   
@@ -87,7 +87,7 @@
   				    	<?php echo ($carica->getTipoCaricaId()!=5 ? $carica->getLegislatura()."&#186; legislatura: " :"come Senatore a vita: ") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?>
   				    	</label></p>
   				    	<p> 
-  				    	<?php echo 'in carriera è stato parlamentare per '.link_to($durata,'http://www.openpolis.it/politico/'.$parlamentare->getId()."#carriera")?> 
+  				    	<?php echo 'in carriera è stato parlamentare per '.link_to($durata,'http://openpolis.it/politico/'.$parlamentare->getId()."#carriera")?> 
   				    	</p>
   					<p><label>gruppo:</label>  
   					
