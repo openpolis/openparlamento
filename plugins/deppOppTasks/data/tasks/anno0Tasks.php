@@ -38,12 +38,13 @@ function run_a0_get_main_acts_for_tags($task, $args, $options)
   echo $msg;
 
   $n = 1;
-  if (array_key_exists('n', $options)) {
-    $n = $options['n'];
+  if (array_key_exists('nrecs', $options)) {
+    $n = (int)$options['nrecs'];
   }
   if (!is_int($n) || $n < 1)
     throw new Exception("il numero di atti deve essere un intero\n");
     
+  
   if (count($args) > 0)
   {
     $argomenti = array();
@@ -93,7 +94,7 @@ function getImportantActs($xml_url, $xsl_filename, $n_nodes)
       $cnt ++;
       $atto = OppAttoPeer::retrieveByPK($node['atto_id']);
       printf("\t%d. %s => %f\n", $cnt, $atto->getTitoloCompleto(), $node['totale']);
-      if ($cnt > $n_nodes) break;
+      if ($cnt >= $n_nodes) break;
     }
 
   } catch (Exception $e) {
