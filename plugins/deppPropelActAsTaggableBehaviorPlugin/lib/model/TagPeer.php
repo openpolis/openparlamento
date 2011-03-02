@@ -715,6 +715,8 @@ class TagPeer extends BaseTagPeer
 
     return $tag;
   }
+
+
   
   /**
    * extracts an array of ids from a string of (comma) separated values
@@ -742,6 +744,26 @@ class TagPeer extends BaseTagPeer
     
     return $ids;
     
+  }
+
+  /**
+   * extracts an id from a value   
+   *
+   * @param string $value (triple value)
+   * @return id
+   * @author Guglielmo Celata
+   */
+  public static function getIdFromTagValue($tag_value)
+  {
+      $c = new Criteria();
+      $c->add(TagPeer::TRIPLE_VALUE, $tag_value);
+      $tag = TagPeer::doSelectOne($c);
+      
+      if ($tag instanceof Tag) {
+        return $tag->getId();    
+      } else {
+        return null;
+      }
   }
   
   
