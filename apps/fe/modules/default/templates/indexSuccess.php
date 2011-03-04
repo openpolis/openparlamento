@@ -88,6 +88,16 @@
 
      <div class="W52_100 float-left"> 
   
+        <!-- in evidenza dal blog -->
+         <?php if (count($post_pager)>0) : ?>
+           <div class="section-box"  style="padding-bottom:20px;">
+             <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
+             <h3>in evidenza dal blog</h3>
+             <?php include_partial('sfSimpleBlog/inevidenza', array('post_pager' => $post_pager)) ?>
+       		  <p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
+       	  </div>
+         <?php endif; ?>
+         
       <!-- box atti in evidenza dal parlamento -->
       <?php if (count($lanci)>0) : ?>
         <div class="section-box" style="padding-bottom:20px;">
@@ -96,15 +106,7 @@
         </div>	
       <?php endif; ?>
       
-      <!-- in evidenza dal blog -->
-      <?php if (count($post_pager)>0) : ?>
-        <div class="section-box"  style="padding-bottom:20px;">
-          <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
-          <h3>in evidenza dal blog</h3>
-          <?php include_partial('sfSimpleBlog/inevidenza', array('post_pager' => $post_pager)) ?>
-    		  <p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
-    	  </div>
-      <?php endif; ?>
+     
       <!-- Box attivita' utenti -->
        <div class="section-box">   
 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
