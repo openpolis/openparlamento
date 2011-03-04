@@ -75,14 +75,16 @@
    <div class="W73_100 float-left"> 
   
       <p class="synopsis">
-        <?php echo $votazione->getTitolo() ?> 
-        <!-- bottone facebook -->
-        <span style="vertical-align:top;"><a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">condividi</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></span>
+        <?php echo $votazione->getTitolo() ?>
       </p>
         
       <ul class="presentation float-container"> 
+        <li>
+          <!-- bottone facebook -->
+          <span style="vertical-align:top;"><a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">condividi</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></span>
+        </li>  
         <?php if($votazione->getUrl()): ?>
-          <li><?php echo link_to("link alla fonte", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
+          <li><?php echo link_to("link alla fonte ufficiale", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
         <?php endif; ?>		  
       </ul> 
       
