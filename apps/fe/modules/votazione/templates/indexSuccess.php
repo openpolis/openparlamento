@@ -76,7 +76,10 @@
   
       <p class="synopsis">
         <?php echo $votazione->getTitolo() ?> 
+        <!-- bottone facebook -->
+        <span style="vertical-align:top;"><a name="fb_share" type="button" href="http://www.facebook.com/sharer.php">condividi</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></span>
       </p>
+        
       <ul class="presentation float-container"> 
         <?php if($votazione->getUrl()): ?>
           <li><?php echo link_to("link alla fonte", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
