@@ -26,7 +26,11 @@
     </div>
 
 	  <div class="W100_100 float-left"> 
-	    <?php include_partial('list', array('parlamentari' => $parlamentari, 'numero_parlamentari' => $numero_parlamentari)) ?>  
+	    <?php include_partial('list', 
+	                          array('parlamentari' => $parlamentari, 
+	                                'numero_parlamentari' => $numero_parlamentari,
+	                                'presidenti_ids' => OppPoliticoPeer::getPresidentiCamereIds(),
+	                                'membri_governo_ids' => OppPoliticoPeer::getMembriGovernoIds())) ?>  
     </div>
        
      <div class="W100_100 float-left"> 

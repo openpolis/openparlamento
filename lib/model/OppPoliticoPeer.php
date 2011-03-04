@@ -39,6 +39,54 @@ class OppPoliticoPeer extends BaseOppPoliticoPeer
     return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
   }
   
+  /**
+   * torna array di id dei politici presidenti delle camere
+   * per ora è codice statico, ma è l'unico punto che si deve modificare al cambio di legislatura
+   *
+   * @param string $ramo (camera o senato o null)
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public static function getPresidentiCamereIds($ramo = null)
+  {
+    $pres_camera = 406;  # fini
+    $pres_senato = 1723; # schifani
+    if ($ramo == 'camera') {
+      return array($pres_camera);
+    }
+    if ($ramo == 'senato') {
+      return array($pres_senato);
+    }
+    return array($pres_camera, $pres_senato);
+  }
+
+  /**
+   * torna array di id per i politici membri del governo
+   * si tratta dell'id della tabella opp_politico (o opp_carica.politico_id)
+   *
+   * @return array of integers
+   * @author Guglielmo Celata
+   */
+  public static function getMembriGovernoIds($con = null)
+  {
+    if (is_null($con))
+		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+    $sql = sprintf("select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null");
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+    $items = array();
+    while ($rs->next()) {
+      $row = $rs->getRow();
+      $items []= $row['politico_id'];
+    }
+
+    return $items;
+  }
+
+  
+  
   
 	
 }

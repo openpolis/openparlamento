@@ -45,11 +45,22 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
         </th>
         
         <td>
-		  <?php if($parlamentari->getInt(10)!='-1'): ?>
-                   <?php printf('<b>%01.2f</b><br /><span class="small">(%d° su %d)</span>', $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari) ?> 
-                  <?php else: ?>
-		    <?php printf('<b>%01.2f</b> ', $parlamentari->getFloat(9)) ?>  
-		  <?php endif; ?>
+          
+		  <?php 
+		    if ($parlamentari->getString(14) > date("Y-m-d", strtotime('today - 365 days')) ||
+		        in_array($parlamentari->getInt(2), array_merge($presidenti_ids, $membri_governo_ids))) 
+		    {
+		      print "Non applicabile";
+		    } else {
+  		    if($parlamentari->getInt(10)!='-1')
+  		    {
+  		      printf('<b>%01.2f</b><br /><span class="small">(%d° su %d)</span>', 
+                   $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari);
+          } else {
+            printf('<b>%01.2f</b> ', $parlamentari->getFloat(9));
+          }		      
+		    }
+      ?>
 	</td>
         
         <td>

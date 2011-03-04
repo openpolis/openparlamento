@@ -905,7 +905,6 @@ class parlamentareActions extends sfActions
     $this->addFiltersCriteria($c);
     $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
     
-
     $this->parlamentari = OppCaricaPeer::doSelectRS($c);
     $this->n_parlamentari = OppCaricaPeer::doCount($c);
 
