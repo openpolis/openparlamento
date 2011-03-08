@@ -1,0 +1,17 @@
+all:
+  propel:
+    class:          sfPropelDatabase
+    param:
+      dsn:          "mysql://root@localhost/op_openparlamento"
+      persistent:   true
+      encoding:     "utf8"
+      compat_assoc_lower:  true
+      compat_rtrim_string: true
+
+  openpolis:
+      class:          sfPropelDatabase
+      param:
+        encoding:     utf8
+        dsn:          mysql://root@localhost/op_openpolis
+        persistent:   true
+
