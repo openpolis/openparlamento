@@ -1,8 +1,3 @@
-# temporary redirections to block login and registration
-# temp_login_block:
-#  url: /login
-#  param: { module: static, action: bloccoTemporaneo }
-
 # google sitemap
 gsitemap:
   url: /gsitemap

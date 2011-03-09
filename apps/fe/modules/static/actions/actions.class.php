@@ -11,11 +11,6 @@
 class staticActions extends sfActions
 {
 
-  public function executeBloccoTemporaneo()
-  {
-    # code...
-  }
-
   public function executeProgetto()
   {
     $this->getResponse()->setTitle('il progetto | '.sfConfig::get('app_main_title')); 

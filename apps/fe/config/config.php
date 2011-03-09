@@ -23,3 +23,16 @@ sfPropelBehavior::registerHooks('wikifiableBehavior', array(
 
 // need to include this to use the api.yml config file
 require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));
+
+
+// blocco temporaneo degli accessi
+// per attivarlo/disattivarlo, basta modificare apps/fe/setings.yml
+// e aggiungere il modulo deppTemporaryBlock all'elenco di quelli enabled
+if (in_array('deppTemporaryBlock', sfConfig::get('sf_enabled_modules', array())))
+{
+  $r = sfRouting::getInstance();
+
+  // preprend our routes
+  $r->prependRoute('block_login', '/login', array('module' => 'deppTemporaryBlock', 'action' => 'block'));
+  $r->prependRoute('block_request_password', '/request_password', array('module' => 'deppTemporaryBlock', 'action' => 'block'));
+}
