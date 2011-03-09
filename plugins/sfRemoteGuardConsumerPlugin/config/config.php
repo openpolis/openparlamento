@@ -5,7 +5,7 @@ if (sfConfig::get('app_sf_guard_plugin_routes_register', true) && in_array('sfGu
   $r = sfRouting::getInstance();
 
   // preprend our routes
-  $r->prependRoute('sf_guard_signin', '/login', array('module' => 'sfGuardAuth', 'action' => 'signin'));
-  $r->prependRoute('sf_guard_signout', '/logout', array('module' => 'sfGuardAuth', 'action' => 'signout'));
-  $r->prependRoute('sf_guard_password', '/request_password', array('module' => 'sfGuardAuth', 'action' => 'password'));
+  $r->appendRoute('sf_guard_signin', '/login', array('module' => 'sfGuardAuth', 'action' => 'signin'));
+  $r->appendRoute('sf_guard_signout', '/logout', array('module' => 'sfGuardAuth', 'action' => 'signout'));
+  $r->appendRoute('sf_guard_password', '/request_password', array('module' => 'sfGuardAuth', 'action' => 'password'));
 }
