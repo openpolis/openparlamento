@@ -27,8 +27,9 @@
         <?php echo include_component('monitoring', 'manageItem', 
                                      array('item' => $argomento, 'item_type' => 'argomento')); ?>
         </div>                             
-                                     
-                 
+                <!--                 
+                 <?php //echo include_component('argomento','argomenticorrelati', array('tag' => $argomento)); ?> 
+                 -->
                 
                  <?php echo include_component('argomento','deputatisioccupanodi', array('tag' => $argomento)); ?> 
                  
