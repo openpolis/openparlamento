@@ -182,35 +182,46 @@
 		    <!-- INCARICHI PARLAMENTARI -->
 		    <?php echo include_component('parlamentare','incarichiParlamentare', array('carica_id' => $carica->getId(), 'ramo' => $ramo)) ?>  
 		    
-		    <!-- INDICE DI PRODUTTIVITA' -->
-		    <h5 class="subsection-alt">
-		      Nuovo indice di produttività parlamentare <?php echo image_tag('/images/ico-new.png') ?>
-		    </h5>
+		    
+		    <?php if ($carica->getDataInizio('Y-m-d') > date("Y-m-d", strtotime('today - 365 days')) ||
+		              in_array($carica->getPoliticoId(), 
+		                        array_merge(OppPoliticoPeer::getPresidentiCamereIds(), 
+		                                    OppPoliticoPeer::getMembriGovernoIds()))): ?>
+		      <!-- il box non viene proprio visualizzato -->
+		    <?php else: ?>
 
-  			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
-  			<div style="display: none;" class="help-box float-container">
-  				<div class="inner float-container">		
-  					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di produttivit&agrave; ?</h5>
-  					<p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong></p>
-  				</div>
-  			</div>
+  		    <!-- INDICE DI PRODUTTIVITA' -->
+  		    <h5 class="subsection-alt">
+  		      Nuovo indice di produttività parlamentare <?php echo image_tag('/images/ico-new.png') ?>
+  		    </h5>
 
-  			<div class="float-container" style="padding:5px 10px 10px 20px;">
-  				<label style="color:#888888; font-weight:bold; font-size:16px;">indice di produttivit&agrave;:</label>
-  				  <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:24px;"><?php echo number_format($carica->getIndice(), 1,',','.') ?></span>
-  			</div>
-  			<div class="float-container" style="padding:2px 10px 10px 20px;">
-  				<label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>
-  				<span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
-  				  <?php if($carica->getDataInizio('d/m/Y')>"29/04/2008") echo "(N.B. in carica dal ".$carica->getDataInizio('d/m/Y').")"; ?>
-  				   | <?php echo link_to('vai alla classifica completa', 
-  				                     'http://indice.openpolis.it') ?>
-  				  </span>
-  				
-  				<span style="font-weight:normal; padding-top:7px; float:left; text-align:left;">L'indice di produttivit&agrave; non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
-  				  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html"><strong>vai qui</strong></a>.
-  				  </span>
-  			</div>
+    			<p class="tools-container"><a class="ico-help" href="#">come viene calcolato</a></p>
+    			<div style="display: none;" class="help-box float-container">
+    				<div class="inner float-container">		
+    					<a class="ico-close" href="#">chiudi</a><h5>Che cos'&egrave; l'indice di produttivit&agrave; ?</h5>
+    					<p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong></p>
+    				</div>
+    			</div>
+
+    			<div class="float-container" style="padding:5px 10px 10px 20px;">
+    				<label style="color:#888888; font-weight:bold; font-size:16px;">indice di produttivit&agrave;:</label>
+    				  <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:24px;"><?php echo number_format($carica->getIndice(), 1,',','.') ?></span>
+    			</div>
+    			<div class="float-container" style="padding:2px 10px 10px 20px;">
+    				<label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>
+    				<span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
+    				  <?php if($carica->getDataInizio('d/m/Y')>"29/04/2008") echo "(N.B. in carica dal ".$carica->getDataInizio('d/m/Y').")"; ?>
+    				   | <?php echo link_to('vai alla classifica completa', 
+    				                     'http://indice.openpolis.it') ?>
+    				  </span>
+
+    				<span style="font-weight:normal; padding-top:7px; float:left; text-align:left;">L'indice di produttivit&agrave; non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
+    				  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html"><strong>vai qui</strong></a>.
+    				  </span>
+    			</div>
+		      
+		    <?php endif ?>
+		    
 		    
 		    <!-- BOX PRESENZE -->
   			<h5 class="subsection-alt" style="margin:0">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
