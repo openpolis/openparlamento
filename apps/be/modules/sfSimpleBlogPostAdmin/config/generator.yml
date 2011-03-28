@@ -19,7 +19,7 @@ generator:
         
     edit:
       title:            Edit post "%%title%%"
-      display:          [author_id, title, extract, content, tags_as_string, allow_comments, is_published]
+      display:          [_author_id, title, extract, content, tags_as_string, allow_comments, is_published]
       fields:
         allow_comments: { name: Commenti }
         tags_as_string: { name: Tags, type: input_tag }
