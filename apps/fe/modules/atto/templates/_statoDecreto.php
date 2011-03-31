@@ -1,7 +1,12 @@
 <?php $giorno = substr($ddl->getTitolo(), strlen($ddl->getTitolo()) - 11, 2); ?>
 <?php $mese = substr($ddl->getTitolo(), strlen($ddl->getTitolo()) - 8, 2); ?>
 <?php $anno = substr($ddl->getTitolo(), strlen($ddl->getTitolo()) - 5, 4); ?>  
-<?php $data_scadenza = date("Y-m-d", mktime(0,0,0,$mese + 1, $giorno + 29, $anno)) ?>
+<?php if (is_int($giorno) && is_int($mese) && is_int($anno)) :?>
+  <?php $data_scadenza = date("Y-m-d", mktime(0,0,0,$mese + 1, $giorno + 29, $anno)) ?>
+<?php else :?>
+  <?php $data_pres=explode("-",$ddl->getDataPres())?>
+  <?php $data_scadenza = date("Y-m-d", mktime(0,0,0,$data_pres[1] + 1, $data_pres[2] + 29, $data_pres[0])) ?>
+<?php endif ?>  
 <?php $differenza = (strtotime($data_scadenza) - strtotime(date("Y-m-d", time())))/(86400); ?>      
 <?php $status = $ddl->getStatus(); ?>
 
