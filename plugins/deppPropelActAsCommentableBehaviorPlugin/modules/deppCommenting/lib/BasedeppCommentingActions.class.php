@@ -67,7 +67,7 @@ class BasedeppCommentingActions extends sfActions
     // add the comment to the object
     $this->content->addComment(array('text' => $this->getRequestParameter('text'),
                                      'author_name'    => $this->getRequestParameter('name'),
-                                     'author_email'   => $this->getRequestParameter('email'),
+                                     'author_email'   => $this->getRequestParameter('mail'),
                                      'author_website' => $url));
 
     
