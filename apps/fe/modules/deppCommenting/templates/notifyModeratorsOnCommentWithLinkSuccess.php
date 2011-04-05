@@ -11,22 +11,7 @@
 </div>
 </p>
 
-<p>Il commento si riferisce 
-<?php switch ($comment_object->getCommentableModel()) {
-  case 'OppEmendamento':
-    echo "all'emendamento ";
-    break;
-  case 'OppVotazione':
-    echo "alla votazione ";
-    break;
-  case 'OppAtto':
-    echo "all'atto ";
-    break;
-  
-  default:
-    # code...
-    break;
-} ?>  
+<p>Il commento si riferisce a questo oggetto: 
 <?php echo link_to_commentable_item($comment_object) ?>
 </p>
 

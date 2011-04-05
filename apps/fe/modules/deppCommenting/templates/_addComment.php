@@ -2,6 +2,12 @@
 <a name="leave"></a>
 
 <!-- flash messages and new comment form -->
+<?php if ($sf_flash->has('warning')): ?>
+  <div class="flash-messages">
+    <?php echo $sf_flash->get('warning') ?>
+  </div>
+<?php endif; ?>
+
 <?php if($read_only): ?>
   <div class="related_details"><?php echo __('Comments are closed') ?>.</div>
 <?php else: ?>

@@ -71,6 +71,8 @@ class deppCommentingActions extends BasedeppCommentingActions
       $this->getRequest()->setAttribute('comment', $comment_object);
       $raw_email = $this->sendEmail('deppCommenting', 'notifyModeratorsOnCommentWithLink');  
       $this->logMessage($raw_email, 'debug');
+      $this->setFlash('warning', 'Il commento proviene da un utente non autenticato e contiene un link ipertestuale. Sar&agrave; pubblicato solo dopo un controllo da parte della redazione, per evitare fastidiose forme di spam. Grazie per la pazienza.'); 
+      
     }
   
     // remove session variables from comment namespace (save some values before)
