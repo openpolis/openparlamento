@@ -150,6 +150,7 @@ class deppPropelActAsCommentableBehavior
     }
   }
 
+
   /**
    * Returns the list of the comments attached to the object. The options array
    * can contain the options :

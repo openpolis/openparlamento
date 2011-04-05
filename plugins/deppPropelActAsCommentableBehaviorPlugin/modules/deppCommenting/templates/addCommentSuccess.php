@@ -6,5 +6,5 @@
 
 <?php include_component('deppCommenting', 'addComment',  
                         array('content' => $content, 
-                              'read_only' => sfConfig::get('app_ddl_comments_enabled', false),
-                              'automoderation' => sfConfig::get('app_ddl_comments_automoderation', 'captcha')) ) ?>
+                              'read_only' => sfConfig::get('app_comments_enabled', false),
+                              'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
