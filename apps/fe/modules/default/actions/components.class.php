@@ -44,6 +44,8 @@ class defaultComponents extends sfComponents
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
     $c->add(OppCaricaPeer::DATA_FINE,NULL,Criteria::ISNULL);
     $c->add(OppCaricaPeer::TIPO_CARICA_ID,$tipo_carica);
+    // escludere schifani e fini
+    $c->add(OppPoliticoPeer::ID, array(406,1723), Criteria::NOT_IN);
     
     $this->quale_pagina=$this->classifica;
     
