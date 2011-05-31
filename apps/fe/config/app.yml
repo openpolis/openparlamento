@@ -292,7 +292,7 @@ all:
     "campania":              "72"
     "campania_1":            "72"
     "campania_2":            "72"
-    "emilia-romagna":        "45"
+    "emilia_romagna":        "45"
     "friuli_venezia_giulia": "36"
     "lazio":                 "62"
     "lazio_1":               "62"
