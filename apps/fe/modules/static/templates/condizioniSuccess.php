@@ -33,7 +33,7 @@ Con l'invio e la pubblicazione del materiale, l'utente accetta di cedere e trasf
 </p>
 <br />
 <p><b>Contenuti sotto licenza Creative Commons</b></p>
-<p>Tutte le informazioni e i materiali pubblicati in openpolis e openparlamento sono rilasciati con la licenza Creative Commons Attribuzione 3.0 Unported e successive modifiche per consentirne l'uso libero e gratuito e la pi&ugrave; ampia diffusione possibile. Per il codice legale (la licenza integrale) <?php echo link_to('clicca qui','http://creativecommons.org/licenses/by-nc-sa/2.5/it/legalcode') ?>.</p>
+<p>Tutte le informazioni e i materiali pubblicati in openpolis e openparlamento sono rilasciati con la licenza Attribuzione - Non commerciale - Condividi allo stesso modo 2.5 Italia (CC BY-NC-SA 2.5) e successive modifiche per consentirne l'uso libero e gratuito e la pi&ugrave; ampia diffusione possibile. Per il codice legale (la licenza integrale) <?php echo link_to('clicca qui','http://creativecommons.org/licenses/by-nc-sa/2.5/it/legalcode') ?>.</p>
 <br />
     
     </div>
