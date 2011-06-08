@@ -29,11 +29,11 @@ L'utente si assume ogni pi&ugrave; ampia responsabilit&agrave; civile, amministr
 <br />
 <p><b>Diritti di propriet&agrave;</b></p>
 <p>L'utente riconosce alla associazione openpolis e/o ai soggetti e societ&agrave; ad essa collegate e/o ai suoi aventi causa il diritto di conservare, riprodurre, diffondere e cancellare ogni materiale inviato o pubblicato. L'utente garantisce il godimento di tutti i diritti di propriet&agrave; relativi al materiale e ai contenuti inviati. L'eventuale uso di qualsiasi materiale coperto da copyright (o qualsiasi altra forma di tutela) &egrave; ad unico rischio dell'utente ed &egrave; espressamente vietato.<br />
-Con l'invio e la pubblicazione del materiale, l'utente accetta di cedere e trasferire a titolo gratuito e definitivo i diritti relativi al suo utilizzo alle condizioni regolate dalla licenza <?php echo link_to('Creative Commons Attribuzione 3.0 Unported','http://creativecommons.org/licenses/by/3.0/deed.it') ?> adottata per i siti openpolis e openparlamento. 
+Con l'invio e la pubblicazione del materiale, l'utente accetta di cedere e trasferire a titolo gratuito e definitivo i diritti relativi al suo utilizzo alle condizioni regolate dalla licenza <?php echo link_to('Attribuzione - Non commerciale - Condividi allo stesso modo 2.5 Italia (CC BY-NC-SA 2.5)','http://creativecommons.org/licenses/by-nc-sa/2.5/it/') ?> adottata per i siti openpolis e openparlamento. 
 </p>
 <br />
 <p><b>Contenuti sotto licenza Creative Commons</b></p>
-<p>Tutte le informazioni e i materiali pubblicati in openpolis e openparlamento sono rilasciati con la licenza Creative Commons Attribuzione 3.0 Unported e successive modifiche per consentirne l'uso libero e gratuito e la pi&ugrave; ampia diffusione possibile. Per il codice legale (la licenza integrale) <?php echo link_to('clicca qui','http://creativecommons.org/licenses/by/3.0/legalcode') ?>.</p>
+<p>Tutte le informazioni e i materiali pubblicati in openpolis e openparlamento sono rilasciati con la licenza Creative Commons Attribuzione 3.0 Unported e successive modifiche per consentirne l'uso libero e gratuito e la pi&ugrave; ampia diffusione possibile. Per il codice legale (la licenza integrale) <?php echo link_to('clicca qui','http://creativecommons.org/licenses/by-nc-sa/2.5/it/legalcode') ?>.</p>
 <br />
     
     </div>
