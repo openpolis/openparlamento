@@ -39,9 +39,13 @@ function run_stlab_genera_atti_tags_csv($task, $args, $options)
   }
 
   $file_path = sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR . "stlab" . DIRECTORY_SEPARATOR . "atti_tags.csv";
+  $act_types = array();
+  
   if (array_key_exists('file_path', $options)) {
     $file_path = strtolower($options['file_path']);
   }
+  if (array_key_exists('types', $options))
+    $act_types = explode(",", $options['types']);
 
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
@@ -54,7 +58,9 @@ function run_stlab_genera_atti_tags_csv($task, $args, $options)
 
   // estrae tutti i DDL
   $c = new Criteria();
-  $c->add(OppAttoPeer::TIPO_ATTO_ID, 1); 
+  if (count($act_types)) {
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, $act_types, Criteria::IN);
+  }
   $atti = OppAttoPeer::doSelect($c);
   $n_atti = count($atti);
   foreach ($atti as $cnt => $atto) {
@@ -140,6 +146,7 @@ function run_stlab_genera_testi_atti($task, $args, $options)
   $verbose = false;
   $offset = null;
   $limit = null;
+  $act_types = array();
   if (array_key_exists('verbose', $options)) {
     $verbose = true;
   }
@@ -149,6 +156,8 @@ function run_stlab_genera_testi_atti($task, $args, $options)
   if (array_key_exists('limit', $options)) {
     $limit = $options['limit'];
   }
+  if (array_key_exists('types', $options))
+    $act_types = explode(",", $options['types']);
   
 
   echo "memory usage: " . memory_get_usage( ) . "\n";
@@ -181,9 +190,11 @@ function run_stlab_genera_testi_atti($task, $args, $options)
     $c->setOffset($offset);
   }
   
-  // estrazione documenti (solo per ddl)
+  // estrazione documenti
   $c->addJoin(OppDocumentoPeer::ATTO_ID, OppAttoPeer::ID);
-  $c->add(OppAttoPeer::TIPO_ATTO_ID, 1);
+  if (count($act_types)) {
+    $c->add(OppAttoPeer::TIPO_ATTO_ID, $act_types, Criteria::IN);
+  }
   $docs = OppDocumentoPeer::doSelect($c);
 
   $n_docs = count($docs);
