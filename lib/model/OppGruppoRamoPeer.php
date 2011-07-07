@@ -21,6 +21,16 @@ class OppGruppoRamoPeer extends BaseOppGruppoRamoPeer
   {
     $c = new Criteria();
     if (!is_null($data)) {
+      $crit0 = $c->getNewCriterion(self::DATA_FINE, $data, Criteria::GREATER_EQUAL);
+      $crit1 = $c->getNewCriterion(self::DATA_FINE, null, Criteria::ISNULL);
+
+      $crit0->addOr($crit1);
+      $crit2 = $c->getNewCriterion(self::DATA_INIZIO, $data, Criteria::LESS_EQUAL);
+
+      $crit0->addAnd($crit2);
+
+      $c->add($crit0);
+      /*
       $c->add(self::RAMO, $ramo);
       
       $c_or_data_fine = $c->getNewCriterion(self::DATA_FINE, $data, Criteria::GREATER_EQUAL);
@@ -30,6 +40,7 @@ class OppGruppoRamoPeer extends BaseOppGruppoRamoPeer
       $c_data->addAnd($c_or_data_fine);
       
       $c->add($c_data);
+      */
     } else {
       $c->add(self::DATA_FINE, null, Criteria::ISNULL);      
     }
