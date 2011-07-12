@@ -42,10 +42,12 @@ class OppLegislaturaPeer
   public static function getCurrent($date = null)
   {
 
-    foreach (self::$legislature as $cnt => $leg)
-    {
-      if ($date >= $leg['data_inizio'] && $date < $leg['data_fine'])
-        return $cnt;      
+    if (!is_null($date)) {
+      foreach (self::$legislature as $cnt => $leg)
+      {
+        if ($date >= $leg['data_inizio'] && $date < $leg['data_fine'])
+          return $cnt;      
+      }
     }
 
     return count(self::$legislature) - 1;

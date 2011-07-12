@@ -78,15 +78,16 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     return $votazioni;
   }
   
-  public static function getKeyVotes($limit = 0, $type = 'key')
+  public static function getKeyVotes($limit = 0, $namespace = 'key')
   {
     $c = new Criteria();
     $c->addJoin(OppVotazionePeer::ID, sfLaunchingPeer::OBJECT_ID);
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
     $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppVotazione'); 
-    if ($type == 'key') {
+    if ($namespace == 'key') {
       $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'key_vote');
-    } else {
+    } 
+    if ($namespace == 'relevant') {
       $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, 'relevant_vote');      
     }
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA); 
@@ -94,8 +95,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
        $c->setLimit($limit);
     return OppVotazionePeer::doSelect($c);    
   }
-
-
+  
   public static function doSelectVotoGruppo($votazione_id, $gruppo)
   {
     

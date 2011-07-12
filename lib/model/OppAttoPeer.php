@@ -171,6 +171,40 @@ class OppAttoPeer extends BaseOppAttoPeer
   }
   
   /**
+   * estrae gli id degli atti di un certo tipo (o tutti, se non specificato)
+   * @param string   $tipi un array di id 
+   * @param integer  $offset
+   * @param integer  $limit
+   * @return recordset
+   * @author Guglielmo Celata
+   */
+  public static function getAttiTipoRS($tipi = array(), $offset=null, $limit=null)
+  {
+    // calcolo della legislatura
+    $legislatura = OppLegislaturaPeer::getCurrent();
+
+    // tipi può essere un array o una stringa (id delim. da virgole)
+
+		$con = Propel::getConnection(self::DATABASE_NAME);
+		if (count($tipi)) {
+      $sql = sprintf("select id, tipo_atto_id from opp_atto where legislatura = %d and tipo_atto_id in (%s) order by data_pres desc",
+                     $legislatura, implode(",", $tipi));
+		} else {
+      $sql = sprintf("select id, tipo_atto_id from opp_atto where legislatura = %d order by data_pres desc",
+                     $legislatura);		  
+		}
+    if (!is_null($limit)) {
+      if (!is_null($offset))
+        $sql .= " limit $offset, $limit";
+      else
+        $sql .= " limit $limit";
+    }
+    $stm = $con->createStatement(); 
+    return $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+  }
+  
+  
+  /**
    * estrae gli atti presentati in un intervallo di date (al massimo 200)
    * estrae solo gli atti al primo step dell'iter (pred=null)
    * @param string   $data_inizio ['y-m-d']

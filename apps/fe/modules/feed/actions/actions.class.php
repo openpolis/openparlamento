@@ -249,6 +249,62 @@ class feedActions extends sfActions
     return sfView::NONE;    
   }
   
+  public function executeVotiInEvidenza()
+  {
+    $namespace = 'key';
+    if ($this->hasRequestParameter('namespace'))
+      $namespace = $this->getRequestParameter('namespace');
+      
+    
+    setlocale(LC_TIME, 'it_IT');
+    sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
+    
+    $feed = new sfRss2ExtendedFeed();
+    $feed->initialize(array(
+      'title'       => 'Voti in evidenza',
+      'link'        => url_for('@homepage', true),
+      'feedUrl'     => $this->getRequest()->getURI(),
+      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+      'language'    => 'it',
+      'authorEmail' => 'info@openparlamento.it',
+      'authorName'  => 'Openparlamento',
+      'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+      'sy_updatePeriod' => 'daily',
+      'sy_updateFrequency' => '1',
+      'sy_updateBase' => '2000-01-01T12:00+00:00'	    
+    ));
+
+    $voti = OppVotazionePeer::getKeyVotes(20, $namespace);
+    foreach ($voti as $voto)
+    {
+      $description =  sprintf("%s, seduta n. %s. Esito: %s. Scarto: %d. Ribelli: %d", 
+                              $voto->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato',
+                              $voto->getOppSeduta()->getNumero(),
+                              $voto->getEsito(),
+                              $voto->getMargine(),
+                              $voto->getRibelli());
+    	
+      $item = new sfRss2ExtendedItem();
+      $aggiuntivo_only = true;
+      $item->initialize( array(
+        'title' => $voto->getTitoloAggiuntivo() ? $voto->getTitoloAggiuntivo() : $voto->getTitolo(),
+        'link'  => sprintf("/votazioni/%s.xml", $voto->getId()),
+        'permalink' => url_for('@votazione?id='.$voto->getId(), true),
+        'pubDate' => $voto->getOppSeduta()->getData('U'),
+        'uniqueId' => $voto->getId(),
+        'description' => $description,
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',        
+      ));
+      $feed->addItem($item);
+    }
+
+    $this->_send_output($feed);
+    return sfView::NONE;    
+  }
+  
+  
   
   protected function _send_output($feed)
   {
