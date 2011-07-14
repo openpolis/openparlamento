@@ -64,18 +64,24 @@ function depp_prioritiser($object, $message='', $options = array())
     {
       if ($object_priority == $i) 
       {
-        $label = sprintf(__('Priority last set by user %d at %s'), $object->getPriorityLastUser(), $object->getPriorityLastUpdate('Y-m-d h:i'));
-        $image_name = "btn-current-$i.png";  
-        $list_content .= content_tag('li', image_tag($image_name, array('alt' => $i, 'title' => $label)),
+        if ($object->getPriorityLastUser() != 0)
+        {
+          $label = sprintf('Priorit&agrave; impostata da user_id:%d il %s alle %s', 
+                           $object->getPriorityLastUser(), 
+                           $object->getPriorityLastUpdate('d/m/Y'),
+                           $object->getPriorityLastUpdate('h:i'));          
+        } else 
+          $label = 'Priorit&agrave; di default';
+        $list_content .= content_tag('li', content_tag('span', $i, array('title' => $label)),
                                      array('class' => 'current'));
       }
       else
       {
         $label = sprintf(__('Set priority to %d'), $i);
         $list_content .= content_tag('li', 
-                                     link_to(image_tag("btn-$i.png", array('alt' => $i, 'title' => $label)), sprintf('deppPrioritising/prioritise?object_id=%d&object_model=%s&priority=%d', 
-                                             $object->getId(), get_class($object), $i),
-                                             array('post' => true)));
+                                     link_to($i, sprintf('deppPrioritising/prioritise?object_id=%d&object_model=%s&priority=%d', 
+                                                         $object->getId(), get_class($object), $i),
+                                             array('title' => $label, 'post' => true)));
       }
     }
 

@@ -67,7 +67,7 @@ function depp_omnibus_selector($object, $message='', $options = array())
       $label = "Marcalo come Omnibus";
     }
     
-    $selector .= link_to(image_tag("btn-omnibus-switch.png", array('alt' => $label, 'title' => $label)), 
+    $selector .= link_to($label, 
                          sprintf('atto/setOmnibusStatus?id=%d&status=%d', 
                                  $object->getId(), $object_will_be_omnibus),
                          array('post' => true));
