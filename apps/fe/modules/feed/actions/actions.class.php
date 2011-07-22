@@ -254,17 +254,29 @@ class feedActions extends sfActions
     $namespace = 'key';
     if ($this->hasRequestParameter('namespace'))
       $namespace = $this->getRequestParameter('namespace');
+    $base_href = 'openparlamento';
+    if ($this->hasRequestParameter('base_href'))
+      $base_href = $this->getRequestParameter('base_href');
+    
       
     
     setlocale(LC_TIME, 'it_IT');
     sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
     
+    if ($base_href == 'espresso') {
+      $site_link = "http://www.openpolitix.it";
+      $site_url = "http://espresso.repubblica.it/dal_parlamento/voti-chiave";
+    } else {
+      $site_link = url_for('@homepage', true);
+      $site_url = 'http://' . sfConfig::get('sf_site_url');
+    }
+    
     $feed = new sfRss2ExtendedFeed();
     $feed->initialize(array(
       'title'       => 'Voti in evidenza',
-      'link'        => url_for('@homepage', true),
+      'link'        => $site_link,
       'feedUrl'     => $this->getRequest()->getURI(),
-      'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+      'siteUrl'     => $site_url,
       'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
       'language'    => 'it',
       'authorEmail' => 'info@openparlamento.it',
@@ -286,11 +298,16 @@ class feedActions extends sfActions
                               $voto->getRibelli());
     	
       $item = new sfRss2ExtendedItem();
+      if ($base_href == 'espresso') {
+        $item_link = sprintf("http://espresso.repubblica.it/dal_parlamento/votazioni/%d", $voto->getId());        
+      } else {
+        $item_link = url_for('@votazione?id='.$voto->getId(), true);        
+      }
       $aggiuntivo_only = true;
       $item->initialize( array(
         'title' => $voto->getTitoloAggiuntivo() ? $voto->getTitoloAggiuntivo() : $voto->getTitolo(),
-        'link'  => sprintf("/votazioni/%s.xml", $voto->getId()),
-        'permalink' => url_for('@votazione?id='.$voto->getId(), true),
+        'link'  => $item_link,
+        'permalink' => $item_link,
         'pubDate' => $voto->getOppSeduta()->getData('U'),
         'uniqueId' => $voto->getId(),
         'description' => $description,

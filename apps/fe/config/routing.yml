@@ -153,8 +153,8 @@ feed_atti_in_evidenza:
   param: { module: feed, action: attiInEvidenza, namespace: all }
 
 feed_voti_in_evidenza:
-  url: /feed/voti_in_evidenza/:namespace
-  param: { module: feed, action: votiInEvidenza, namespace: all }
+  url: /feed/voti_in_evidenza/:namespace/:base_href
+  param: { module: feed, action: votiInEvidenza, namespace: all, base_href: openparlamento }
 
 feed_user_news:
   url: /feed/news_utente/:token
