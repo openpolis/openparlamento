@@ -1022,9 +1022,9 @@ class apiActions extends sfActions
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
       
       if ($home)
-        $votazioni = OppVotazionePeer::getLastTwoKeyVotes();
+        $votazioni = OppVotazionePeer::getLastTwoKeyVotes('relevant');
       else
-        $votazioni = OppVotazionePeer::getKeyVotes();
+        $votazioni = OppVotazionePeer::getKeyVotes(0, 'relevant');
 
       // voti chiave
       $voti_node = $content_node->addChild('voti_chiave', null, $this->opkw_ns);      
