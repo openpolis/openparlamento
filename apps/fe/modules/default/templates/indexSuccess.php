@@ -75,9 +75,6 @@
      			</ul>
          </div>	
        <?php endif; ?>
-     
-       <!-- box keyvotes -->
-    	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
 
          <!-- box cambio gruppo -->
         	   <?php //include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
@@ -109,7 +106,10 @@
        	  </div>
          <?php endif; ?>
       
+         <!-- box keyvotes -->
+       	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
      
+     <div class="clear-both"></div>
       <!-- Box attivita' utenti -->
        <div class="section-box">   
 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
