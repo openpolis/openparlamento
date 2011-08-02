@@ -200,7 +200,7 @@ class defaultActions extends sfActions
                                                         'monitoring_filter'));
    
     // ultime attivita' della community                                                    
-    $this->latest_activities = CommunityNewsPeer::getLatestActivities(4);
+    $this->latest_activities = CommunityNewsPeer::getLatestActivities(7);
     
     // ultime news dal parlamento
     $c = oppNewsPeer::getHomeNewsCriteria();
@@ -214,28 +214,17 @@ class defaultActions extends sfActions
     
     
     
-    // atti e voti in evidenza
+    // atti in evidenza
      $this->lanci=array();
      $c = new Criteria();
+     $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE,'home');
+     $c->add(sfLaunchingPeer::OBJECT_MODEL,'OppAtto');
+     $c->setLimit(8);
      $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
      $evidences=sfLaunchingPeer::doSelect($c);
      foreach ($evidences as $evidence) {
-        $c1= new Criteria();
-        
-     	if ($evidence->getObjectModel()=='OppAtto' ) 
-     	{
-     	  if ($evidence->getLaunchNamespace()=='home')
-     	  {
-     	    $c1->add(OppAttoPeer::ID,$evidence->getObjectId());
-       		$this->lanci[]=array(OppAttoPeer::doSelectOne($c1),$evidence->getObjectModel()); 
-     	  }
-     		
-     	}
-     	else
-     	{
-     		$c1->add(OppVotazionePeer::ID,$evidence->getObjectId());
-     		$this->lanci[]=array(OppVotazionePeer::doSelectOne($c1),$evidence->getObjectModel());
-     	}
+     	    $atto=OppAttoPeer::retrieveByPk($evidence->getObjectId());
+         	$this->lanci[]=$atto->getId();
      }	
      
      // post del blog

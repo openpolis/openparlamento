@@ -63,15 +63,26 @@
   <div id="main">
        
      <div class="W45_100 float-right">
-     
-       <!-- box cambio gruppo -->
-     	   <?php include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
+       
+       <!-- Box rotazione parlamentari -->    
+        <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+       <!-- box atti in evidenza dal parlamento -->
+       <?php if (count($lanci)>0) : ?>
+         <div class="section-box" style="padding-bottom:20px;">
+     			<h3 class="section-box-no-rss">atti in evidenza</h3>
+     			<ul id="law-n-acts-proposals">				
+     			<?php include_partial('default/lanci',array('lanci' => $lanci)) ?>
+     			</ul>
+         </div>	
+       <?php endif; ?>
      
        <!-- box keyvotes -->
     	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
 
-       <!-- Box rotazione parlamentari -->    
-       <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+         <!-- box cambio gruppo -->
+        	   <?php //include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
+        	   
+       
 
        <div class="clear-both"></div>
 
@@ -97,14 +108,6 @@
        		  <p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
        	  </div>
          <?php endif; ?>
-         
-      <!-- box atti in evidenza dal parlamento -->
-      <?php if (count($lanci)>0) : ?>
-        <div class="section-box" style="padding-bottom:20px;">
-    			<h3 class="section-box-no-rss">atti in evidenza</h3>				
-    			<?php include_partial('atto/inevidenza', array('lanci' => $lanci)) ?>
-        </div>	
-      <?php endif; ?>
       
      
       <!-- Box attivita' utenti -->
