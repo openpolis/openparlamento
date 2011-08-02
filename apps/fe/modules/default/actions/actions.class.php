@@ -200,7 +200,7 @@ class defaultActions extends sfActions
                                                         'monitoring_filter'));
    
     // ultime attivita' della community                                                    
-    $this->latest_activities = CommunityNewsPeer::getLatestActivities(7);
+    $this->latest_activities = CommunityNewsPeer::getLatestActivities(4);
     
     // ultime news dal parlamento
     $c = oppNewsPeer::getHomeNewsCriteria();
