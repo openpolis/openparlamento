@@ -92,14 +92,7 @@
 
        <div class="clear-both"></div>
 	  
-	     <!-- Box attivita' utenti -->
-        <div class="section-box" style="margin-top: 2em;">   
- 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
- 	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
-        </div>     
-
-    
-       <div class="clear-both"></div>
+	     
    
      </div>          
 
@@ -120,6 +113,14 @@
      
        <div class="clear-both"></div>
       
+       <!-- Box attivita' utenti -->
+         <div class="section-box" style="margin-top: 2em;">   
+  	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
+  	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
+         </div>     
+
+
+        <div class="clear-both"></div>
   
   	
      </div>
