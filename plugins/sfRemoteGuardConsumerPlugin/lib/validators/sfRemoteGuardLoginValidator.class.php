@@ -29,44 +29,89 @@
 class sfRemoteGuardLoginValidator extends sfValidator
 {
 
-   public function initialize($context, $parameters = null)
-   {
-     // initialize parent
-     parent::initialize($context);
+  public function initialize($context, $parameters = null)
+  {
+    // initialize parent
+    parent::initialize($context);
 
-     // set defaults
-     $this->setParameter('login_error', 'Invalid input');
-     $this->getParameterHolder()->add($parameters);
+    // set defaults
+    $this->setParameter('login_error', 'Invalid input');
+    $this->getParameterHolder()->add($parameters);
 
-     return true;
-   }
-
-   public function execute(&$value, &$error)
-   {
-     $password_param = $this->getParameter('password_field');
-     $remember_param = $this->getParameter('remember_field');
-     $password = $this->getContext()->getRequest()->getParameter($password_param);
-     $remember = $this->getContext()->getRequest()->getParameter($remember_param);
-     $username = $value;
-	   if (!$remember) $remember = 0;
-	   
-     // controllo validità utente e password in remoto
-     $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
-     $xml = simplexml_load_file("http://$remote_guard_host/index.php/getUser/$username/$password/$remember");
-
-     // l'API di op_guard torna un oggetto error e quindi il corrispettivo oggetto user è vuoto
-     // con simplexml, quando il nodo esiste è un array diverso da zero
-     if (count($xml->user) > 0)
-     {
-  	   $this->getContext()->getUser()->signIn($xml->user, $remember);
-       return true;       
-     } elseif (count($xml->error) > 0) {
-       $error = $this->getParameter('login_error');
-       return false;
-     } 
-     $error = $this->getParameter('connection_error');
-     return false;
-
+    return true;
   }
+
+  public function execute(&$value, &$error)
+  {
+    $password_param = $this->getParameter('password_field');
+    $remember_param = $this->getParameter('remember_field');
+    $password = $this->getContext()->getRequest()->getParameter($password_param);
+    $remember = $this->getContext()->getRequest()->getParameter($remember_param);
+    $username = $value;
+    if (!$remember) $remember = 0;
+
+
+    // inizio dialogo con op_access per validazione, set della remember key e retrieve xml info complete 
+
+    // controllo validità utente e password in remoto
+    $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
+    $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
+    $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
+    $xml = simplexml_load_file(sprintf("http://%s%s/verifyUser/%s/%s/%s", 
+                                      $remote_guard_host, $script, $apikey, $username, $password));
+
+    if (count($xml->error))
+    {
+      $error = $this->getParameter('login_error');
+      return false;
+    }
+
+    if (count($xml->user))
+    {
+      // rimozione remember keys expired
+      $clear_rks_xml = simplexml_load_file(sprintf("http://%s%s/clearOldRememberKeys/%s",
+                                              $remote_guard_host, $script, $apikey));
+      if (count($clear_rks_xml->error))
+      {
+        $error = $clear_rks_xml->error;
+        return false;         
+      }  	   
+
+      if (count($clear_rks_xml->success)) {
+        // set nuova remember key per l'utente
+        $set_rk_xml = simplexml_load_file(sprintf("http://%s%s/setNewUserRememberKey/%s/%s",
+                                                 $remote_guard_host, $script, $apikey, $xml->user->hash));
+        if (count($set_rk_xml->error))
+        {
+          $error = $set_rk_xml->error;
+          return false;         
+        }
+        
+        if (count($set_rk_xml->remember_key)) {
+          $rk = $set_rk_xml->remember_key;
+          
+          // richiesta xml utente completo, partendo dalla rk
+          $user_xml = simplexml_load_file(sprintf("http://%s%s/getUserByRememberKey/%s/%s", 
+                                                  $remote_guard_host, $script, $apikey, $rk));
+          if (count($user_xml->error))
+          {
+            $error = $user_xml->error;
+            return false;                  
+          }
+
+          if (count($user_xml->user)) {
+            $this->getContext()->getUser()->signIn($user_xml->user, $remember==1?'remember':'cookie');
+            return true;       
+          }
+        }
+      }
+    } 
+  
+    $error = 'generic connection_error';
+    return false;
+  }
+  
+  
+  
 }
 ?>

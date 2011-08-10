@@ -35,9 +35,14 @@ class sfRemoteGuardRememberFilter extends sfFilter
 	    $key = $this->getContext()->getRequest()->getCookie(sfConfig::get('app_cookies_remember_name', 'sfRemember'));
 	    if ($key)
 	    {
+	      sfContext::getInstance()->getLogger()->info('xxx - logging in from remember filter: ' . $key);
+
  	      // controllo esistenza utente con remember_key su server di autenticazione
- 	      $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
-        $xml = simplexml_load_file("http://$remote_guard_host/index.php/getUserByRememberKey/$key");
+        $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
+        $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
+        $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
+        $xml = simplexml_load_file(sprintf("http://%s%s/getUserByRememberKey/%s/%s", 
+                                           $remote_guard_host, $script, $apikey, $key));
         if ($xml->user instanceof SimpleXMLElement && $xml->user->asXML() != '')
      	    $this->getContext()->getUser()->signIn($xml->user);	      
 	    }

@@ -10,19 +10,16 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
    * also sets remember or sso cookie, depending on the value of the $remember parameter
    *
    * @param $xml_user - SimpleXMLObject
-   * @param $remember - boolean
+   * @param $cookie - boolean
    * @return void
    * @author Guglielmo Celata
    **/
-	public function signIn($xml_user, $remember = false)
+	public function signIn($xml_user, $cookie = 'none')
 	{
 
 	  // legge i permission dall'xml user
     $permissions = array();
-    foreach ($xml_user->permissions->permission as $perm) 
-    {
-      $permissions[] = (string)$perm;
-    }
+    foreach ($xml_user->permissions->permission as $perm) $permissions[]=$perm;
 
 	  $this->setAttribute('subscriber_id', (string)$xml_user->subscriber_id, 'subscriber');
 	  
@@ -34,31 +31,46 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
     $cookie_path = sfConfig::get('app_cookies_path', '/');
     $cookie_domain = sfConfig::get('app_cookies_domain', 'sfDomain.it');
 	  
-	  // to remember or not to remember?
-	  if ($remember)
+	  // if cookie argument was set to 'remember' or 'session' a cookie is set
+	  // this MUST only happen with signin invoked from validator (form)
+    sfContext::getInstance()->getLogger()->info('xxx - OPP signIn - cookie: ' . $cookie);
+	  if ($cookie == 'remember')
 	  {      
   		//save the key to the remember cookie
+	    sfContext::getInstance()->getLogger()->info('xxx - OPP setting remember cookie: ' . (string)$xml_user->remember_key);
   		sfContext::getInstance()->getResponse()->setCookie($cookie_remember_name, 
   		                                                   (string)$xml_user->remember_key, 
   		                                                   time() + $expiration_age,
   		                                                   $cookie_path, $cookie_domain);
-	    
-	  } else {
+
+	  } elseif ($cookie == 'session') {
 	    // save the hash to the sso cookie
+	    sfContext::getInstance()->getLogger()->info('xxx - OPP setting sso cookie: ' . (string)$xml_user->remember_key);
   		sfContext::getInstance()->getResponse()->setCookie($cookie_sso_name, 
   		                                                   (string)$xml_user->remember_key, 
   		                                                   0,
   		                                                   $cookie_path, $cookie_domain);	    
 	  }
 	
-	  // default credential for subscribed users
 	  $this->addCredential('subscriber');
 	
-	  // add all credentials from groups and direct permissions
-	  foreach ($permissions as $perm) {
-	    $this->addCredential((string)$perm);
+	  if (in_array('moderatore', $permissions))
+	  {
+	    $this->addCredential('moderator');
 	  }
-	  
+	
+	  if (in_array('amministratore', $permissions))
+	  {
+	    $this->addCredential('moderator');
+	    $this->addCredential('administrator');
+	  }
+	
+	  // add all credentials from groups and direct permissions
+    foreach ($permissions as $perm) {
+      $this->addCredential((string)$perm);
+    }
+  
+	
 	  $this->setAttribute('name', (string)$xml_user->name, 'subscriber');
 	  $this->setAttribute('firstname', (string)$xml_user->firstname, 'subscriber');
 	  $this->setAttribute('hash', (string)$xml_user->hash, 'subscriber');
@@ -68,13 +80,14 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 
     // store the new last_login ts (now) in the DB
     $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
-    $set_last_login_url = "http://$remote_guard_host/index.php/setLastLogin/" . (string)$xml_user->hash . 
-                          "/" .  urlencode(date('Y-m-d H:i:s'));
-    $xml = simplexml_load_file($set_last_login_url);
+    $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
+    $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
+    $xml = simplexml_load_file(sprintf("http://%s%s/setLastLogin/%s/%s/%s", 
+                                       $remote_guard_host, $script, $apikey, (string)$xml_user->hash, urlencode(date('Y-m-d H:i:s'))));
     
     // go home if something really wrong happens (could not write last_login to db)
     if (!$xml->ok instanceof SimpleXMLElement)
-      sfLogger::getInstance()->info('xxx: last login set failed: ' . (string)$xml->error);
+      sfLogger::getInstance()->info('xxx: not ok: ' . (string)$xml->error);
 	}
 	
 	public function __toString()
