@@ -1261,3 +1261,35 @@ ul.small-titles h2 { font-size: 16px; }
   border-left: 1px dotted lightgray; 
   padding: 1.5em; margin: 1.5em 0;
 }
+
+
+a.fb_button, a.fb_button:hover {
+  text-decoration: none;
+}
+
+.fb_button {
+  font-size: 11px;
+  line-height: 14px;
+  background: #29447E url(../images/FacebookLogos.png);
+  background-repeat: no-repeat;
+  background-position: left -188px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 0 0 0 1px;
+  text-decoration: none;
+  outline: none;
+}
+
+
+.fb_button .fb_button_text {
+  background: #5F78AB url(../images/FacebookLogos.png);
+  border-top: solid 1px #879AC0;
+  border-bottom: solid 1px #1A356E;
+  color: white;
+  display: block;
+  font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+  font-weight: bold;
+  padding: 2px 6px 3px 6px;
+  margin: 1px 1px 0 21px;
+  text-shadow: none;
+}
