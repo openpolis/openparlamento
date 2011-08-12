@@ -2,8 +2,6 @@
 
 class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 {
-  
-  
 
   /**
    * uses information in the $xml_user SimpleXML object to give attributes and permissions to the user
@@ -33,11 +31,11 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 	  
 	  // if cookie argument was set to 'remember' or 'session' a cookie is set
 	  // this MUST only happen with signin invoked from validator (form)
-    sfContext::getInstance()->getLogger()->info('xxx - OPP signIn - cookie: ' . $cookie);
+    sfContext::getInstance()->getLogger()->info('xxx - signIn - cookie: ' . $cookie);
 	  if ($cookie == 'remember')
 	  {      
   		//save the key to the remember cookie
-	    sfContext::getInstance()->getLogger()->info('xxx - OPP setting remember cookie: ' . (string)$xml_user->remember_key);
+	    sfContext::getInstance()->getLogger()->info('xxx - setting remember cookie: ' . (string)$xml_user->remember_key);
   		sfContext::getInstance()->getResponse()->setCookie($cookie_remember_name, 
   		                                                   (string)$xml_user->remember_key, 
   		                                                   time() + $expiration_age,
@@ -45,7 +43,7 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 
 	  } elseif ($cookie == 'session') {
 	    // save the hash to the sso cookie
-	    sfContext::getInstance()->getLogger()->info('xxx - OPP setting sso cookie: ' . (string)$xml_user->remember_key);
+	    sfContext::getInstance()->getLogger()->info('xxx - setting sso cookie: ' . (string)$xml_user->remember_key);
   		sfContext::getInstance()->getResponse()->setCookie($cookie_sso_name, 
   		                                                   (string)$xml_user->remember_key, 
   		                                                   0,
@@ -81,15 +79,20 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
     // store the new last_login ts (now) in the DB
     $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
     $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
+    if ($script == '/be.php') $script = '/index.php';
+
     $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
-    $xml = simplexml_load_file(sprintf("http://%s%s/setLastLogin/%s/%s/%s", 
-                                       $remote_guard_host, $script, $apikey, (string)$xml_user->hash, urlencode(date('Y-m-d H:i:s'))));
-    
-    // go home if something really wrong happens (could not write last_login to db)
+
+    $last_login_url = sprintf("http://%s%s/setLastLogin/%s/%s/%s", 
+                              $remote_guard_host, $script, $apikey, 
+                              (string)$xml_user->hash, urlencode(date('Y-m-d H:i:s')));
+    sfLogger::getInstance()->info('xxx: last_login_call: ' . $last_login_url);
+    $xml = simplexml_load_file($last_login_url);
+
     if (!$xml->ok instanceof SimpleXMLElement)
-      sfLogger::getInstance()->info('xxx: not ok: ' . (string)$xml->error);
+      sfLogger::getInstance()->info('xxx: error while setting last login: %s' . (string)$xml->error);
 	}
-	
+
 	public function __toString()
 	{
 	  return $this->getAttribute('name', '', 'subscriber');
@@ -115,7 +118,7 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
     
 	  $this->setAuthenticated(false);
 	  $this->clearCredentials();
-	  
+
 		$expiration_age = sfConfig::get('app_cookies_remember_key_expiration_age', 15 * 24 * 3600);  
     $cookie_remember_name = sfConfig::get('app_cookies_remember_name', 'sfRemember');
     $cookie_path = sfConfig::get('app_cookies_path', '/');
@@ -125,7 +128,8 @@ class sfRemoteGuardSecurityUser extends sfBasicSecurityUser
 		                                                   $cookie_path, $cookie_domain );
     sfContext::getInstance()->getResponse()->setCookie($cookie_sso_name, '', time() - 1,
                                                        $cookie_path, $cookie_domain );
-	}
+    sfContext::getInstance()->getResponse()->setCookie('symfony', '');
+  }
 	
 }
 

@@ -162,28 +162,57 @@ feed_user_news:
   
   
 monitoring_news:
-  url: /monitoring_news/:user_token/*
+  url: /monitoring_news/*
   param: { module: monitoring, action: news}
 
 monitoring_acts:
-  url: /monitoring_acts/:user_token/*
+  url: /monitoring_acts/*
   param: { module: monitoring, action: acts}
 
 monitoring_politicians:
-  url: /monitoring_politicians/:user_token
+  url: /monitoring_politicians/*
   param: { module: monitoring, action: politicians}
 
 monitoring_tags:
-  url: /monitoring_tags/:user_token
+  url: /monitoring_tags/*
   param: { module: monitoring, action: tags }
 
 monitoring_tags_deputati:
-  url: /monitoring_tags_deputati/:user_token
+  url: /monitoring_tags_deputati/*
   param: { module: monitoring, action: tagsDeputati}
 
 monitoring_tags_senatori:
-  url: /monitoring_tags_senatori/:user_token
+  url: /monitoring_tags_senatori/*
   param: { module: monitoring, action: tagsSenatori}
+
+monitoring_dettaglio_posizione:
+  url:   /dettaglio_posizione/:carica_id/:tags_ids
+  param: { module: monitoring, action: posizioneDettaglio }
+
+monitoring_deputati_export:
+  url: /impact_factor_deputati_export/*
+  param: { module: monitoring, action: impactFactorDeputatiCSV }
+  requirements: 
+    method: [get]
+
+monitoring_senatori_export:
+  url: /impact_factor_senatori_export/*
+  param: { module: monitoring, action: impactFactorSenatoriCSV }
+  requirements: 
+    method: [get]
+
+
+monitoring_alerts:
+  url: /monitoring_alerts/*
+  param: { module: monitoring, action: alerts }  
+
+addTagToMyMonitoredTags:
+  url: /addTagToMyMonitoredTags/:name
+  param: { module: monitoring, action: addTagToMyMonitoredTags }
+
+removeTagFromMyMonitoredTags:
+  url: /removeTagFromMyMonitoredTags/:name
+  param: { module: monitoring, action: removeTagFromMyMonitoredTags }
 
 
 dati_storici_interessi:
@@ -207,37 +236,7 @@ dati_storici_indice_presenze_export:
   param: { module: datiStorici, action: indicePresenzeExport }
   
 
-monitoring_dettaglio_posizione:
-  url:   /dettaglio_posizione/:carica_id/:tags_ids
-  param: { module: monitoring, action: posizioneDettaglio }
-
-monitoring_deputati_export:
-  url: /impact_factor_deputati_export/:user_token
-  param: { module: monitoring, action: impactFactorDeputatiCSV }
-  requirements: 
-    method: [get]
-
-monitoring_senatori_export:
-  url: /impact_factor_senatori_export/:user_token
-  param: { module: monitoring, action: impactFactorSenatoriCSV }
-  requirements: 
-    method: [get]
-
-
-
   
-monitoring_alerts:
-  url: /monitoring_alerts/:user_token
-  param: { module: monitoring, action: alerts }  
-
-addTagToMyMonitoredTags:
-  url: /addTagToMyMonitoredTags/:name
-  param: { module: monitoring, action: addTagToMyMonitoredTags }
-  
-removeTagFromMyMonitoredTags:
-  url: /removeTagFromMyMonitoredTags/:name
-  param: { module: monitoring, action: removeTagFromMyMonitoredTags }
-
 news_home:
   url: /news_home/*
   param: { module: news, action: homeAll }

@@ -1,8 +1,8 @@
 prod:
   enabled: off
-  level:   err
-  rotate:  on
-  purge:   off
+  level:   debug
+  rotate:  off
+  purge:   on
 
 #all:
 #  enabled: on

@@ -1,2 +1,8 @@
 default:
+  is_secure: on
+
+sendNewsletter:
+  is_secure: off
+  
+sendAlerts:
   is_secure: off

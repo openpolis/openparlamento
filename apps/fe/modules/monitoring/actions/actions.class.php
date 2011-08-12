@@ -73,7 +73,7 @@ class monitoringActions extends sfActions
   {
     $this->session = $this->getUser();
     $this->user_id = $this->session->getId();
-
+    
     $this->user = OppUserPeer::retrieveByPK($this->user_id);
     $this->redirectUnless($this->user instanceof OppUser, '/');
     

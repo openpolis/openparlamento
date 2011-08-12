@@ -20,19 +20,33 @@ class BasesfGuardAuthActions extends sfActions
 
   public function executeSignin()
   {
+    $host = $this->getRequest()->getHost();
+    $script = $this->getRequest()->getScriptName();
+
+    // in production sites, the request URI do not have the script name
+    // this depends on configuration parameter no_script_name
+    if (sfConfig::get('sf_no_script_name') && $script == '/index.php') 
+      $script = '';
+      
+    $login_url = sprintf("http://%s%s/login", $host, $script);
     $user = $this->getUser();
     if ($this->getRequest()->getMethod() == sfRequest::POST)
     {
       $redirect_url = $user->getAttribute('redirect_url', $this->getRequest()->getReferer());
+      sfContext::getInstance()->getLogger()->info(sprintf("xxx: redirect_url: %s", $redirect_url));
       $user->getAttributeHolder()->remove('redirect_url');
 
       $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $redirect_url);
+      sfContext::getInstance()->getLogger()->info(sprintf("xxx: will redirect to signin_url: %s", $signin_url));
 
       $this->redirect('' != $signin_url ? $signin_url : '@homepage');
     }
     elseif ($user->isAuthenticated())
     {
-      $this->redirect('@homepage');
+      if ($this->getRequest()->getUri() != $login_url)
+        $this->redirect($this->getRequest()->getURI());
+      else
+        $this->redirect('@homepage');
     }
     else
     {
@@ -45,9 +59,14 @@ class BasesfGuardAuthActions extends sfActions
       }
 
 
-      if (!$user->hasAttribute('redirect_url') || trim($user->getAttribute('redirect_url')) == '')
+      if ($this->getRequest()->getUri() != $login_url)
       {
-        $user->setAttribute('redirect_url', $this->getRequest()->getReferer());
+        $user->setAttribute('redirect_url', $this->getRequest()->getUri());
+        sfContext::getInstance()->getLogger()->info(sprintf("xxx: user->redirect_url was set to %s", $user->getAttribute('redirect_url')));        
+        sfContext::getInstance()->getLogger()->info(sprintf("xxx: login_url: %s", $login_url));        
+      } else {
+        $user->setAttribute('redirect_url', '@homepage');
+        sfContext::getInstance()->getLogger()->info(sprintf("xxx: user->redirect_url was set to @homepage"));        
       }
 
       if ($this->getModuleName() != ($module = sfConfig::get('sf_login_module')))

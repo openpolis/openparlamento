@@ -11,8 +11,15 @@
 # i settaggi del suo monitoraggio, 
 # è stato aggiunto un identificativo utente nella url (user_token)
 #
+
+# sono tutti spenti perché il caching impedisce il funzionamento dei filtri, 
+# dei pulsanti di attivazione/disattivazione,  del bookmarking e del paging
+
+# per il paging, nelle news, la prima pagina è cached correttamente, 
+# le altre sono uguali per tutti gli utenti
+
 news: 
-  enabled:    on
+  enabled:    off
 acts:
   enabled:    off
 politicians:

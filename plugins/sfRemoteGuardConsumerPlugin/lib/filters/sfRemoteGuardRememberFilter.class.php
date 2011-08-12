@@ -36,7 +36,6 @@ class sfRemoteGuardRememberFilter extends sfFilter
 	    if ($key)
 	    {
 	      sfContext::getInstance()->getLogger()->info('xxx - logging in from remember filter: ' . $key);
-
  	      // controllo esistenza utente con remember_key su server di autenticazione
         $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
         $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
