@@ -5,7 +5,7 @@ require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));
 
 dev:
   sf_guard_plugin:
-    is_social:            on
+    is_social:            off # spento perché facebook auth da errore, controllare i domini nell'app
   
 # default values
 all:
