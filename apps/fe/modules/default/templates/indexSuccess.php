@@ -92,7 +92,16 @@
 
        <div class="clear-both"></div>
 	  
-	     
+	     <!-- Box attivita' utenti -->
+       <div class="section-box" style="margin-top: 2em;">   
+ 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
+ 	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
+       </div>     
+
+
+       <div class="clear-both"></div>
+ 
+       
    
      </div>          
 
@@ -108,20 +117,11 @@
      		   <p align=right><strong><a href="http://blog.openpolis.it/category/openparlamento">vai al blog di openpolis</strong></p>
      	  </div>
       
-         <!-- box keyvotes -->
-       	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
+        <!-- box keyvotes -->
+       	<?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
      
-       <div class="clear-both"></div>
-      
-       <!-- Box attivita' utenti -->
-         <div class="section-box" style="margin-top: 2em;">   
-  	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
-  	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
-         </div>     
-
-
         <div class="clear-both"></div>
-  
+      
   	
      </div>
   
