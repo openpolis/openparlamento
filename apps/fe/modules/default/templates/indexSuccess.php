@@ -99,14 +99,14 @@
      <div class="W52_100 float-left"> 
   
         <!-- in evidenza dal blog -->
-         <?php if (count($post_pager)>0) : ?>
-           <div class="section-box"  style="padding-bottom:20px;">
-             <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
-             <h3>in evidenza dal blog</h3>
-             <?php include_partial('sfSimpleBlog/inevidenza', array('post_pager' => $post_pager)) ?>
-       		  <p align=right><strong><?php echo link_to('vai al blog di openparlamento','/blog') ?></strong></p>
-       	  </div>
-         <?php endif; ?>
+         <div class="section-box"  style="padding-bottom:20px;">
+           <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
+           <h3>in evidenza dal blog di openpolis</h3>
+           <?php include_partial('sfSimpleBlog/inevidenza', 
+                                 array('feed' =>
+                                       sfFeedPeer::createFromWeb('http://blog.openpolis.it/category/openparlamento/feed/'))) ?>
+     		   <p align=right><strong><a href="http://blog.openpolis.it/category/openparlamento">vai al blog di openpolis</strong></p>
+     	  </div>
       
          <!-- box keyvotes -->
        	   <?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>

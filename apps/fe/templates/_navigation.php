@@ -42,11 +42,7 @@
     <?php endif; ?>
   </li>
   <li>
-    <?php if($this->getContext()->getModuleName() == 'sfSimpleBlog'): ?>
-      <?php echo link_to('Blog', '@blog_index', array('class' => 'current')) ?>
-    <?php else: ?>
-      <?php echo link_to('Blog', '@blog_index') ?>
-    <?php endif; ?>
+    <a href="http://blog.openpolis.it/">Il blog di openpolis</a>
   </li>
   <li></li>
 </ul>
