@@ -112,8 +112,8 @@
            <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
            <h3>in evidenza dal blog di openpolis</h3>
            <?php include_partial('sfSimpleBlog/inevidenza', 
-                                 array('feed' =>
-                                       sfFeedPeer::createFromWeb('http://blog.openpolis.it/category/openparlamento/feed/'))) ?>
+                                 array('feed' => sfFeedPeer::createFromWeb('http://blog.openpolis.it/category/openparlamento/feed/'),
+                                       'limit' => 8)) ?>
      		   <p align=right><strong><a href="http://blog.openpolis.it/category/openparlamento">vai al blog di openpolis</strong></p>
      	  </div>
       
