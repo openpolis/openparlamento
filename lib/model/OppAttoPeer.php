@@ -15,6 +15,22 @@ class OppAttoPeer extends BaseOppAttoPeer
   const ATTI_DECRETI_LEGISLATIVI_TIPO_IDS = "15, 16, 17";
   const ATTI_NON_LEGISLATIVI_TIPO_IDS = "2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14";
 
+
+  public static function getKeyActs($limit = 0, $namespace = 'home')
+  {
+    $c = new Criteria();
+    $c->addJoin(OppAttoPeer::ID, sfLaunchingPeer::OBJECT_ID);
+    $c->add(sfLaunchingPeer::OBJECT_MODEL, 'OppAtto'); 
+    # validation
+    if ($namespace == 'home') {
+      $c->add(sfLaunchingPeer::LAUNCH_NAMESPACE, $namespace);
+    } 
+    $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY); 
+    if ($limit != 0)
+       $c->setLimit($limit);
+    return OppAttoPeer::doSelect($c);    
+  }
+
   public static function get_fattore_tipo_atto($tipo_atto_id)
   {
     switch ($tipo_atto_id)

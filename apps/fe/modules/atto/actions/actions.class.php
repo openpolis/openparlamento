@@ -35,6 +35,19 @@ class attoActions extends sfActions
                                                   array('acts_filter', 'sf_admin/opp_atto/sort'));
   }
 
+
+  public function executeEvidenza()
+  {
+    $this->session = $this->getUser();
+    $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle('Gli atti in evidenza - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Gli atti che la redazione ritiene o ha ritenuto importanti ', true);
+     
+  
+  }
+  
+
   public function executeAddAjaxTagForIndex()
   {
     $this->forward404Unless($this->getRequest()->isXmlHttpRequest());

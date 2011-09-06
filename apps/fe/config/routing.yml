@@ -282,6 +282,10 @@ attiSearch:
   url: /attiSearch/:type/*
   param: { module: sfSolr, action: attiSearch }
 
+attiEvidenza:
+  url: /attiEvidenza/*
+  param: { module: atto, action: evidenza }
+  
 attiDisegni:
   url: /attiDisegni/*
   param: { module: atto, action: disegnoList }

@@ -7,6 +7,11 @@ class attoComponents extends sfComponents
   }
   
   
+  public function executeEvidenza()
+  {
+    $this->atti = OppAttoPeer::getKeyActs($this->limit);
+  }
+  
   public function executeEditTagsForIndice()
 	{
 
