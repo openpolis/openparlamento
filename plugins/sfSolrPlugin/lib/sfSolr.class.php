@@ -275,12 +275,6 @@ class sfSolr
   {
     try {
       if (!$doc instanceof Apache_Solr_Document) $doc = $this->intoDocument($doc);
-      
-      if ($doc->triple_value == "calamità e disastri naturali") {
-        sfContext::getInstance()->getLogger()->info('xxx: ' . $doc->triple_value . " (" . $doc->propel_id . ") ");
-      }
-
-      
       $this->_solrInstance->addDocument($doc);
 
 
