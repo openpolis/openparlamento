@@ -15,7 +15,7 @@ class nahoWikiRevision extends PluginnahoWikiRevision
   public function getRelatedModel()
   {
     $name = $this->getnahoWikiPage()->getName();
-    list($prefix, $id) = split("_", $name);
+    list($prefix, $id) = explode("_", $name);
     switch ($prefix) 
     {
       case 'atto':
@@ -33,7 +33,7 @@ class nahoWikiRevision extends PluginnahoWikiRevision
   public function getRelatedId()
   {
     $name = $this->getnahoWikiPage()->getName();
-    list($prefix, $id) = split("_", $name);
+    list($prefix, $id) = explode("_", $name);
     return $id;
   }
   
