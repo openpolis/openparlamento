@@ -54,10 +54,10 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
 		    } else {
   		    if($parlamentari->getInt(10)!='-1')
   		    {
-  		      printf('<b>%01.2f</b><br /><span class="small">(%d° su %d)</span>', 
+  		      printf('<b>%01.1f</b><br /><span class="small">(%d° su %d)</span>', 
                    $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari);
           } else {
-            printf('<b>%01.2f</b> ', $parlamentari->getFloat(9));
+            printf('<b>%01.1f</b> ', $parlamentari->getFloat(9));
           }		      
 		    }
       ?>
