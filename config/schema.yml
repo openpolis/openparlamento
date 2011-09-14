@@ -397,7 +397,10 @@ propel:
     created_at:
 
 
-
+  opp_teseo_mapping:
+    teseo_value:      { type: longvarchar }
+    sf_tag_id:        { type: integer, required: true, primaryKey: false, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
+    
   opp_teseo:
     id:
     tipo_teseo_id:    { type: integer, required: true, index: true, foreignTable: opp_tipo_teseo, foreignReference: id }
