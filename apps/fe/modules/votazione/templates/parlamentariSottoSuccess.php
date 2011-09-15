@@ -48,12 +48,12 @@
               </p>
             </td>
             <td><?php echo $parlamentari->getString(8) ?></td>
-            <td><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></td>            
-            <td><?php echo link_to($parlamentari->getInt(7), 
-                       				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></td>
+            <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></strong></td>            
+            <td><strong><?php echo link_to($parlamentari->getInt(7), 
+                       				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></strong></td>
            
-            <td><?php echo link_to($parlamentari->getInt(5), 
-  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2') ?></td>
+            <td><strong><?php echo link_to($parlamentari->getInt(5), 
+  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2') ?></strong></td>
   				        				                         
           </tr>
           <?php else : ?>
