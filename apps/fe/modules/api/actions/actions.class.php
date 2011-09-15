@@ -917,7 +917,8 @@ class apiActions extends sfActions
   {
     $key = $this->getRequestParameter('key');
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
-
+    //$is_valid_key=true;
+    
     $resp_node = new SimpleXMLElement(
       '<opkw xmlns="'.$this->opkw_ns.'" '.
             ' xmlns:op="'.$this->op_ns.'" '.
@@ -929,7 +930,12 @@ class apiActions extends sfActions
   		// start producing xml
       $content_node = $resp_node->addChild('op:content', null, $this->op_ns);         
       
-      $votazioni = OppVotazionePeer::getMaggioranzaSottoVotes();
+      $c = new Criteria();
+      $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
+      $c->add(OppSedutaPeer::LEGISLATURA, 16);
+      $c->add(OppVotazionePeer::IS_MAGGIORANZA_SOTTO_SALVA,1);
+      $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+      $votazioni = OppVotazionePeer::doSelect($c);
 
       // voti con maggioranza sotto
       $voti_node = $content_node->addChild('voti_maggioranza_sotto', null, $this->opkw_ns);      

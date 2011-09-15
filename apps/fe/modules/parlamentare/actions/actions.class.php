@@ -544,17 +544,22 @@ class parlamentareActions extends sfActions
       $c->add(OppVotazionePeer::FINALE, $this->filters['vote_type']);
 
     // filtro per voto (favorevole, contrario o astenuto)
-    if (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0')
+    if (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] != 'Presente')
       $c->add(OppVotazioneHasCaricaPeer::VOTO, $this->filters['vote_vote']);
+    elseif (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] == 'Presente')
+     $c->add(OppVotazioneHasCaricaPeer::VOTO, array('favorevole','contrario','astenuto'), Criteria::IN);  
     
     // filtro per esito
     if (array_key_exists('vote_result', $this->filters) && $this->filters['vote_result'] != '0')
       $c->add(OppVotazionePeer::ESITO, $this->filters['vote_result']);
 
     // filtro per soli voti ribelli
-    if (array_key_exists('vote_rebel', $this->filters) && $this->filters['vote_rebel'] != '0')
+    if (array_key_exists('vote_rebel', $this->filters) && $this->filters['vote_rebel'] != '0' && $this->filters['vote_rebel'] == '1')
       $c->add(OppVotazioneHasCaricaPeer::RIBELLE, $this->filters['vote_rebel']);
-    
+    elseif (array_key_exists('vote_rebel', $this->filters) && $this->filters['vote_rebel'] != '0' && $this->filters['vote_rebel'] == '2')
+      $c->add(OppVotazioneHasCaricaPeer::MAGGIORANZA_SOTTO_SALVA, 1);
+    elseif (array_key_exists('vote_rebel', $this->filters) && $this->filters['vote_rebel'] != '0' && $this->filters['vote_rebel'] == '3')
+      $c->add(OppVotazioneHasCaricaPeer::MAGGIORANZA_SOTTO_SALVA, 2);  
   }
 
   protected function addVotiSortCriteria($c)

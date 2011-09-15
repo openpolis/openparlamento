@@ -228,7 +228,71 @@ class votazioneActions extends sfActions
       }
     }
   }
+
+ public function executeParlamentariSotto()
+ {
+   $ramo = $this->getRequestParameter('ramo');
+   $this->ramo=$ramo;
    
+   $this->getResponse()->setTitle('la classifica dei '.($ramo=='camera'?'deputati':'senatori').' che mandano sotto la maggioranza - '.sfConfig::get('app_main_title'));
+   $this->response->addMeta('description','La lista e il dettaglio dei '.($ramo=='camera'?'deputati':'senatori').' che con i loro voti e con le assenze mandano sotto la maggioranza nelle votazione elettroniche',true);
+   
+   $c = new Criteria();
+   $c->clearSelectColumns();
+   $c->addSelectColumn(OppCaricaPeer::ID);
+   $c->addSelectColumn(OppPoliticoPeer::ID);
+   $c->addSelectColumn(OppPoliticoPeer::COGNOME);
+   $c->addSelectColumn(OppPoliticoPeer::NOME);
+   $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SOTTO);
+   $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
+   $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE);
+   $c->addAsColumn("CONT", "CONCAT(".OppCaricaPeer::MAGGIORANZA_SOTTO." - ".OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE.")");
+   
+   $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+   //$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+   if ($this->getRequestParameter('ramo')=='camera')
+     $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
+   elseif ($this->getRequestParameter('ramo')=='senato')
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 4);   
+  // $c->addDescendingOrderByColumn('CAST(CONT AS UNSIGNED )');   
+  
+   $c->addDescendingOrderByColumn(OppCaricaPeer::MAGGIORANZA_SOTTO);
+   $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+   
+ }
+ 
+ public function executeParlamentariSalva()
+ {
+   $ramo = $this->getRequestParameter('ramo');
+   $this->ramo=$ramo;
+   
+   $this->getResponse()->setTitle('la classifica dei '.($ramo=='camera'?'deputati':'senatori').' di opposizione che hanno salvato la maggioranza nelle votazioni - '.sfConfig::get('app_main_title'));
+   $this->response->addMeta('description','La lista e il dettaglio dei '.($ramo=='camera'?'deputati':'senatori').' di opposizione che con i loro voti e con le assenze hanno salvato la maggioranza nelle votazione elettroniche',true);
+   
+   $c = new Criteria();
+   $c->clearSelectColumns();
+   $c->addSelectColumn(OppCaricaPeer::ID);
+   $c->addSelectColumn(OppPoliticoPeer::ID);
+   $c->addSelectColumn(OppPoliticoPeer::COGNOME);
+   $c->addSelectColumn(OppPoliticoPeer::NOME);
+   $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SALVA);
+   $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
+   $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SALVA_ASSENTE);
+   $c->addAsColumn("CONT", "CONCAT(".OppCaricaPeer::MAGGIORANZA_SALVA." - ".OppCaricaPeer::MAGGIORANZA_SALVA_ASSENTE.")");
+   $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+   
+   $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
+   //$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+   if ($this->getRequestParameter('ramo')=='camera')
+     $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
+   elseif ($this->getRequestParameter('ramo')=='senato')
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 4);   
+   //$c->addDescendingOrderByColumn(OppCaricaPeer::MAGGIORANZA_SALVA);
+   $c->addDescendingOrderByColumn('CAST(CONT AS UNSIGNED )');
+   $this->parlamentari = OppCaricaPeer::doSelectRS($c);
+ }
 
   /**
    * Executes list action
@@ -347,7 +411,59 @@ class votazioneActions extends sfActions
 
      
       $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
-      $c = OppVotazionePeer::maggioranzaSottoCriteria(16);
+      //$c = OppVotazionePeer::maggioranzaSottoCriteria(16);
+      $c= OppVotazionePeer::getVotazioniMaggioranzaSotto();
+      $this->addListSortCriteria($c);
+      $this->addFiltersCriteria($c);    
+      $this->pager->setCriteria($c);
+      $this->pager->setPage($this->getRequestParameter('page', 1));
+      $this->pager->setPeerMethod('doSelectJoinOppSeduta');
+      $this->pager->setPeerCountMethod('doCountJoinOppSeduta');
+      $this->pager->init();
+  
+  }
+  
+  public function executeMaggioranzaSalva()
+  {
+    $this->session = $this->getUser();
+
+    $this->query = $this->getRequestParameter('query', '');
+    
+    $this->getResponse()->setTitle('I voti di Camera e Senato in cui la maggioranza di governo e\' stata salvata dai voti dell\'opposizione - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','Il dettaglio delle votazioni elettroniche di Camera e Senato in cui la maggioranza &egrave; stata salvata dai voti e dalle assenze dei parlamentari di opposizione.',true);
+     // estrae tutte le macrocategorie, per costruire la select
+      $this->all_tags_categories = OppTeseottPeer::doSelect(new Criteria());        
+
+      // reset dei filtri se richiesto esplicitamente
+      if ($this->getRequestParameter('reset_filters', 'false') == 'true')
+      {
+        $this->getRequest()->getParameterHolder()->set('filter_tags_category', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_type', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_ramo', '0');
+        $this->getRequest()->getParameterHolder()->set('filter_esito', '0');      
+      }
+
+      $this->processFilters(array('tags_category', 'type', 'ramo', 'esito'));
+
+      // if all filters were reset, then restart
+      if ($this->getRequestParameter('filter_tags_category') == '0' &&
+          $this->getRequestParameter('filter_type') == '0' &&
+          $this->getRequestParameter('filter_ramo') == '0' && 
+          $this->getRequestParameter('filter_esito') == '0')
+      {
+        $this->redirect('/votazioni/maggioranzaSalva');
+      }
+
+      $this->processListSort();
+
+      if ($this->hasRequestParameter('itemsperpage'))
+        $this->getUser()->setAttribute('itemsperpage', $this->getRequestParameter('itemsperpage'));
+      $itemsperpage = $this->getUser()->getAttribute('itemsperpage', sfConfig::get('app_pagination_limit'));
+
+     
+      $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
+      
+      $c= OppVotazionePeer::getVotazioniMaggioranzaSalva();
       $this->addListSortCriteria($c);
       $this->addFiltersCriteria($c);    
       $this->pager->setCriteria($c);

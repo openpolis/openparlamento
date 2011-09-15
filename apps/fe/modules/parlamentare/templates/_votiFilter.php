@@ -18,7 +18,9 @@
                           options_for_select(array('0' => 'tutti',
                                                    'Favorevole' => 'favorevole',
                                                    'Contrario' => 'contrario',
-                                                   'Astenuto' => 'astenuto'), $selected_vote_vote)) ?>
+                                                   'Astenuto' => 'astenuto',
+                                                   'Assente' => 'assente',
+                                                   'Presente' => 'presente'), $selected_vote_vote)) ?>
 
     <?php echo select_tag('filter_vote_result', 
                           options_for_select(array('0' => 'tutti',
@@ -28,7 +30,9 @@
 
     <?php echo select_tag('filter_vote_rebel', 
                           options_for_select(array('0' => 'tutte',
-                                                   '1' => 'ribelle'), $selected_vote_rebel)) ?>
+                                                   '1' => 'ribelle',
+                                                   '2' => 'maggioranza sotto',
+                                                   '3' => 'maggioranza salva'), $selected_vote_rebel)) ?>
                                                    
     <?php echo submit_image_tag('btn-applica.png', array('id' => 'disegni-decreti-filter-apply', 'alt' => 'applica', 'style' => 'display: none;', 'name' => 'disegni-decreti-filter-apply' )) ?>
   </fieldset>

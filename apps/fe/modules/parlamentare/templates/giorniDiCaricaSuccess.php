@@ -36,7 +36,7 @@
     <p class="politician-id">
       <?php echo image_tag(OppPoliticoPeer::getThumbUrl($k), 
                            array('width' => '40','height' => '53')) ?>
-    <?php echo (OppCaricaPeer::retrieveByPk($c[1])->getTipoCaricaId()==1?'On. ':'Sen. '). link_to(OppPoliticoPeer::retrieveByPk($k)->getCognome()." ".OppPoliticoPeer::retrieveByPk($k)->getNome(), "@parlamentare?id=".$k) ?> (<?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($c[1])->getAcronimo() ?>)
+    <?php echo (OppCaricaPeer::$c[1])->getTipoCaricaId()==1?'On. ':'Sen. '). link_to(OppPoliticoPeer::retrieveByPk($k)->getCognome()." ".OppPoliticoPeer::retrieveByPk($k)->getNome(), "@parlamentare?id=".$k) ?> (<?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($c[1])->getAcronimo() ?>)
     </p>
     </th>
     <td><?php echo $c[0] ?></td>

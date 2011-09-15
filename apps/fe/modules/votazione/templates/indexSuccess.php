@@ -46,6 +46,8 @@
       <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>
     </div>
      <div style="padding: 5px">
+       <?php echo ($votazione->getIsMaggioranzaSottoSalva()==1?'<div style="background-color:white; padding:10px; margin-bottom:5px; font-weight:bold; font-size:14px;">'.image_tag('punto_esclamativo_rosso.png',array('align'=>'top')).' Maggioranza battuta</div>':'')?>
+       <?php echo ($votazione->getIsMaggioranzaSottoSalva()==2?'<div style="background-color:white; padding:10px; margin-bottom:5px; font-weight:bold; font-size:14px;">'.image_tag('punto_esclamativo_rosso.png',array('align'=>'top')).' Maggioranza salvata</div>':'')?>
      <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#39aa2d;">FAVOREVOLI: <?php echo $votazione->getFavorevoli()." (".round($votazione->getFavorevoli()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
       <br />
       <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px; color:#e10032;">CONTRARI: <?php echo $votazione->getContrari()." (".round($votazione->getContrari()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
@@ -53,8 +55,9 @@
       <div style="background-color:white; padding:5px; font-weight:bold; font-size:16px;">ASTENUTI: <?php echo $votazione->getAstenuti()." (".round($votazione->getAstenuti()*100/($votazione->getFavorevoli()+$votazione->getContrari()+$votazione->getAstenuti()),1)."%)" ?></div>
       <br />
       <div style="background-color:white; padding:5px; font-weight:bold; font-size:14px;">voti di scarto: <?php echo $votazione->getMargine() ?></div> 
+      
        <br />
-       <?php if ($ribelli): ?>
+       <?php if ($votazione->getRibelli()>0): ?>
           <div style="background-color:white; padding:5px; font-weight:bold; font-size:14px;">parlamentari ribelli: <a href="#ribelli"><?php echo $votazione->getRibelli() ?></a></div>
           <div style="border-bottom:1px dotted #4E8480; padding:10px 5px 5px 10px;"></div>
        <?php endif; ?>
@@ -147,6 +150,11 @@
         </div>   
        <div class="W56_100 float-left">
       <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
+      <p style="margin-bottom:10px;">
+      <?php echo ($votazione->getRibelli()>0?image_tag('ribelle_rosso.png', array('align'=>'middle')).'&nbsp;voto ribelle&nbsp;&nbsp;':'')?>
+      <?php echo ($votazione->getIsMaggioranzaSottoSalva()==1?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;manda la maggioranza sotto':'')?>
+      <?php echo ($votazione->getIsMaggioranzaSottoSalva()==2?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;salva la maggioranza':'')?>
+      </p>
       <?php include_partial('votanti', array('votanti' => $votanti)) ?>
       
       

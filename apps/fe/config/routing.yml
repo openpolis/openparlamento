@@ -61,7 +61,7 @@ api_voti_chiave:
   url: /elenco_voti_chiave/:key/*
   param: { module: api, action: elencoVotiChiave }
 
-api_voti_maggioranza_sotto:
+api_voti_maggioranza_:
   url: /elenco_voti_maggioranza_sotto/:key
   param: { module: api, action: elencoVotiMaggioranzaSotto }
   
@@ -389,6 +389,18 @@ votiRilevanti:
 maggioranzaSotto:
   url:   /votazioni/maggioranzaSotto/:sort/:type/*
   param: { module: votazione, action: maggioranzaSotto, sort: data, type: desc, display: false }  
+
+parlamentariSotto:
+    url:   /votazioni/parlamentariSotto/:ramo
+    param: { module: votazione, action: parlamentariSotto, ramo: camera, display: false }
+
+maggioranzaSalva:
+  url:   /votazioni/maggioranzaSalva/:sort/:type/*
+  param: { module: votazione, action: maggioranzaSalva, sort: data, type: desc, display: false }  
+
+parlamentariSalva:
+    url:   /votazioni/parlamentariSalva/:ramo
+    param: { module: votazione, action: parlamentariSalva, ramo: camera, display: false }      
   
 votazioni:
   url:   /votazioni/:sort/:type/*
