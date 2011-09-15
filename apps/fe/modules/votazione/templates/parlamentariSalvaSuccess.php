@@ -13,14 +13,14 @@
       Il calcolo tiene conto dei cambiamenti delle maggioranze parlamentari e delle diverse appartenenze ai gruppi nel corso della legislatura.
     </p>
     
-    <table class="chart tablesorter" id="complete-chart" style="width:90%;">
+    <table class="chart tablesorter" id="complete-chart" style="width:98%;">
       <thead>
         <tr>
           <th style="vertical-align:middle;"><?php echo ($ramo=='camera'?'deputato':'senatore')?>:</th>
           <th style="vertical-align:middle;">circoscrizione:</th>
+          <th style="vertical-align:middle;">totale votazioni:</th>	
           <th style="vertical-align:middle;">voti espressi determinanti:</th>
           <th style="vertical-align:middle;">assenze determinanti:</th>
-          <th style="vertical-align:middle;">totale votazioni:</th>	
         </tr>
       </thead>
 
@@ -52,11 +52,11 @@
             </td>
             
             <td><?php echo $parlamentari->getString(8) ?></td>
+            <td><strong><?php echo link_to($parlamentari->getInt(5), 
+  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3') ?></strong></td>
             <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Presente') ?></strong></td>
             <td><strong><?php echo link_to($parlamentari->getInt(7), 
                         				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Assente') ?></strong></td>            
-            <td><strong><?php echo link_to($parlamentari->getInt(5), 
-  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3') ?></strong></td>
                                
                                
           </tr>
