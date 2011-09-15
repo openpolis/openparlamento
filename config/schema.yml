@@ -86,6 +86,10 @@ propel:
     posizione:        { type: integer }
     media:            { type: float }
     ribelle:          { type: integer }
+    maggioranza_sotto:          { type: integer, required: true, default: 0}
+    maggioranza_sotto_assente:          { type: integer, required: true, default: 0}
+    maggioranza_salva:          { type: integer, required: true, default: 0 }
+    maggioranza_salva_assente:          { type: integer, required: true, default: 0}
     created_at:
 
   opp_carica_has_atto:
@@ -505,6 +509,7 @@ propel:
     is_imported:        { type: tinyint, required: true, default: 0 }
     ut_fav:             { type: integer, required: true, default: 0 }
     ut_contr:           { type: integer, required: true, default: 0 }
+    is_maggioranza_sotto_salva:    { type: smallint, required: true, default: 0 }
     
 
   opp_votazione_has_atto:
@@ -517,6 +522,8 @@ propel:
     carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
     voto:             { type: varchar(40) }
     ribelle:          { type: tinyint, required: true, default: 0 }
+    maggioranza_sotto_salva:    { type: smallint, required: true, default: 0 }
+    
     _indexes:
       voto_idx:       [voto]      
 
