@@ -83,6 +83,18 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
     return  $row['cnt'];
   }
 
+  public static function countAssentiRibelliOpposizioneVotazioneMaggioranzaSalvata($votazione_id, $assente)
+  {
+    $c = new Criteria();
+    $c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID,$votazione_id);
+    $c->add(OppVotazioneHasCaricaPeer::MAGGIORANZA_SOTTO_SALVA, 2);
+    if ($assente==1)
+      $c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente');
+    else
+      $c->add(OppVotazioneHasCaricaPeer::VOTO, 'Assente', Criteria::NOT_EQUAL);
+    return OppVotazioneHasCaricaPeer::doCount($c);
+    
+  }
 
   public static function countAssentiMaggioranzaVotazione($votazione_id, $data = null)
   {
@@ -246,6 +258,8 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
     $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);      // getString(5)
     $c->addSelectColumn(OppVotazioneHasCaricaPeer::VOTO);    // getString(6)
     $c->addSelectColumn(OppGruppoPeer::ACRONIMO);            // getString(7)
+    $c->addSelectColumn(OppVotazioneHasCaricaPeer::RIBELLE);    // getInt(8)
+    $c->addSelectColumn(OppVotazioneHasCaricaPeer::MAGGIORANZA_SOTTO_SALVA);    // getInt(9)
 
     $c->addJoin(OppVotazioneHasCaricaPeer::CARICA_ID, OppCaricaPeer::ID);
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);

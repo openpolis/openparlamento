@@ -9,6 +9,10 @@
  */ 
 class OppVotazione extends BaseOppVotazione
 {
+  public function countAssentiRibelliOpposizioneVotazioneMaggioranzaSalvata($assente)
+  {
+    return OppVotazioneHasCaricaPeer::countAssentiRibelliOpposizioneVotazioneMaggioranzaSalvata($this->getId(), $assente);
+  }
   
   public function countAssentiMaggioranza($data = null)
   {

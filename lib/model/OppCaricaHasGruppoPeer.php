@@ -10,7 +10,25 @@
 class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 {
 
+  public static function getGruppoPerParlamentareAllaData($carica_id, $data, $con = null)
+  {
+    if ($con === null) {
+			$con = Propel::getConnection(self::DATABASE_NAME);
+		}
+		
+		$sql = sprintf("select gruppo_id from opp_carica_has_gruppo where carica_id=%d and data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
+                    $carica_id, $data, $data);
 
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    if ($rs->next()) {
+      $row = $rs->getRow();
+      return $row; 		
+    }
+    return null;
+    
+  }
+  
   public static function getParlamentariGruppoData($gruppo_id, $data, $con = null)
   {
     if ($con === null) {
@@ -168,7 +186,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
     /**
        * restituisce i componenti del Governo (PresDelCons e Ministri) che appartengono ad un gruppo, se data_fine è zero (default, restituisce i componenti attuali, se 1 quelli di tutta la legislatura)
        *
-       * @param integer $carica_id 
+       * @param integer $gruppo_id 
        * @return void
        * @author Ettore Di Cesare
        */

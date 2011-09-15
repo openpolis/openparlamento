@@ -29,4 +29,26 @@ class OppGruppoIsMaggioranzaPeer extends BaseOppGruppoIsMaggioranzaPeer
     $row = $rs->getRow();
     return $row['maggioranza'];
   }
+  
+  /**
+   * etari i gruppi di magg e min. alla data e al ramo
+   *
+   * @param string $ramo 
+   * @param string $data
+   * @param integer $maggioranza 
+   * @return array
+   * @author Guglielmo Celata
+   */
+  public static function GruppiMaggioranzaMinoranzaNelRamoAllaData($ramo, $data, $maggioranza)
+  {
+    $c = new Criteria;
+    $c->add(OppGruppoIsMaggioranzaPeer::RAMO,$ramo);
+    $c->add(OppGruppoIsMaggioranzaPeer::MAGGIORANZA,$maggioranza);
+    $c->add(OppGruppoIsMaggioranzaPeer::DATA_INIZIO, $data, Criteria:: LESS_EQUAL);
+    $crit0 = $c->getNewCriterion(OppGruppoIsMaggioranzaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+    $crit1 = $c->getNewCriterion(OppGruppoIsMaggioranzaPeer::DATA_FINE, $data, Criteria::GREATER_EQUAL);
+    $crit0->addOr($crit1);
+    $c->add($crit0);
+    return $gruppi=OppGruppoIsMaggioranzaPeer::doSelect($c);
+  }
 }
