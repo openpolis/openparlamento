@@ -14,6 +14,7 @@
       <thead>
         <tr>
           <th style="vertical-align:middle;"><?php echo ($ramo=='camera'?'deputato':'senatore')?>:</th>
+          <th style="vertical-align:middle;">circoscrizione:</th>
           <th style="vertical-align:middle;">voti espressi determinanti:</th>
           <th style="vertical-align:middle;">assenze determinanti:</th>
           <th style="vertical-align:middle;">totale votazioni:</th> 	
@@ -46,6 +47,7 @@
                 )
               </p>
             </td>
+            <td><?php echo $parlamentari->getString(8) ?></td>
             <td><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></td>            
             <td><?php echo link_to($parlamentari->getInt(7), 
                        				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></td>

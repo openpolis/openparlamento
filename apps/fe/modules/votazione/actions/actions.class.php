@@ -247,6 +247,7 @@ class votazioneActions extends sfActions
    $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
    $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE);
    $c->addAsColumn("CONT", "CONCAT(".OppCaricaPeer::MAGGIORANZA_SOTTO." - ".OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE.")");
+   $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
    
    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
    //$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
