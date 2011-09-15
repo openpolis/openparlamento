@@ -10,13 +10,13 @@
       Il calcolo tiene conto dei cambiamenti delle maggioranze parlamentari e delle diverse appartenenze ai gruppi nel corso della legislatura.
     </p>
     
-    <table class="disegni-decreti column-table lazyload" style="width:70%;">
+    <table class="chart tablesorter" id="complete-chart" style="width:90%;">
       <thead>
         <tr>
-          <th scope="col"><?php echo ($ramo=='camera'?'deputato':'senatore')?>:</th>
-          <th scope="col">voti espressi determinanti:</th>
-          <th scope="col">assenze determinanti:</th>
-          <th scope="col">totale votazioni:</th> 	
+          <th style="vertical-align:middle;"><?php echo ($ramo=='camera'?'deputato':'senatore')?>:</th>
+          <th style="vertical-align:middle;">voti espressi determinanti:</th>
+          <th style="vertical-align:middle;">assenze determinanti:</th>
+          <th style="vertical-align:middle;">totale votazioni:</th> 	
         </tr>
       </thead>
 
@@ -27,7 +27,7 @@
           <?php if($parlamentari->getInt(5)>0) : ?>
           <tr class="<?php echo $tr_class; ?>">
           <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
-            <th scope="row">
+            <td style="text-align:left;">
               <p class="politician-id">
                 
                 <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
@@ -45,7 +45,7 @@
                 <?php endif ?>
                 )
               </p>
-            </th>
+            </td>
             <td><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></td>            
             <td><?php echo link_to($parlamentari->getInt(7), 
                        				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></td>
@@ -67,3 +67,12 @@
   <?php echo link_to("home", "@homepage") ?> /
   <?php echo ($ramo=='camera'?'I deputati ':'I senatori ')?>che fanno cadere la maggioranza
 <?php end_slot() ?>
+
+<script type="text/javascript" charset="utf-8">
+   $(document).ready(function() { 
+     $("#complete-chart").tablesorter({
+       sortList: [[2, 1]], 
+       widgets: ['zebra']
+     }); 
+   });  
+ </script>
