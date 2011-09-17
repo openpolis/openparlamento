@@ -35,10 +35,16 @@
               <p class="politician-id">
                 
                 <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
-                <?php echo " (".OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
+                <?php echo " (" ?>
+                <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
+                  <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
+                <?php endif; ?>
                 <?php $gruppi = OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($parlamentari->getInt(1)) ?>
-                <?php if (count($gruppi)>1) : ?>
+                <?php if (count($gruppi)>1 || !OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
                   <span style="font-size:10px">
+                    <?php if ($parlamentari->getString(9)!=NULL) :?>
+                      <?php echo "<span style='background-color:yellow;'>in carica fino al ".format_date($parlamentari->getString(9),'dd/MM/yyyy')."</span>" ?>
+                    <?php endif; ?>
                   <?php foreach ($gruppi as $g) : ?>
                     <?php if ($g['data_fine']!=null) : ?>
                       <?php $gruppo=OppGruppoPeer::retrieveByPk($g['gruppo_id']) ?>
@@ -47,7 +53,7 @@
                   <?php endforeach ?>
                   </span>
                 <?php endif ?>
-                )     
+                )
               </p>
             </td>
             

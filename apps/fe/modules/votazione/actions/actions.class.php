@@ -248,10 +248,11 @@ class votazioneActions extends sfActions
    $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE);
    $c->addAsColumn("CONT", "CONCAT(".OppCaricaPeer::MAGGIORANZA_SOTTO." - ".OppCaricaPeer::MAGGIORANZA_SOTTO_ASSENTE.")");
    $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+   $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
    
    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-   //$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-   $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   //$c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
    if ($this->getRequestParameter('ramo')=='camera')
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
    elseif ($this->getRequestParameter('ramo')=='senato')
@@ -282,16 +283,17 @@ class votazioneActions extends sfActions
    $c->addSelectColumn(OppCaricaPeer::MAGGIORANZA_SALVA_ASSENTE);
    $c->addAsColumn("CONT", "CONCAT(".OppCaricaPeer::MAGGIORANZA_SALVA." - ".OppCaricaPeer::MAGGIORANZA_SALVA_ASSENTE.")");
    $c->addSelectColumn(OppCaricaPeer::CIRCOSCRIZIONE);
+   $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
    
    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-   //$c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
-   $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   //$c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
    if ($this->getRequestParameter('ramo')=='camera')
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
    elseif ($this->getRequestParameter('ramo')=='senato')
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, 4);   
-   //$c->addDescendingOrderByColumn(OppCaricaPeer::MAGGIORANZA_SALVA);
-   $c->addDescendingOrderByColumn('CAST(CONT AS UNSIGNED )');
+   $c->addDescendingOrderByColumn(OppCaricaPeer::MAGGIORANZA_SALVA);
+   //$c->addDescendingOrderByColumn('CAST(CONT AS UNSIGNED )');
    $this->parlamentari = OppCaricaPeer::doSelectRS($c);
  }
 
