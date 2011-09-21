@@ -17,6 +17,7 @@
       <thead>
         <tr>
           <th style="vertical-align:middle;"><?php echo ($ramo=='camera'?'deputato':'senatore')?>:</th>
+          <th style="vertical-align:middle;">gruppo attuale:</th>
           <th style="vertical-align:middle;">circoscrizione:</th>
           <th style="vertical-align:middle;">totale votazioni:</th>	
           <th style="vertical-align:middle;">voti espressi determinanti:</th>
@@ -35,35 +36,39 @@
               <p class="politician-id">
                 
                 <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
-                <?php echo " (" ?>
-                <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
-                  <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
-                <?php endif; ?>
-                <?php $gruppi = OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($parlamentari->getInt(1)) ?>
-                <?php if (count($gruppi)>1 || !OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
-                  <span style="font-size:10px">
-                    <?php if ($parlamentari->getString(9)!=NULL) :?>
-                      <?php echo "<span style='background-color:yellow;'>in carica fino al ".format_date($parlamentari->getString(9),'dd/MM/yyyy')."</span>" ?>
-                    <?php endif; ?>
-                  <?php foreach ($gruppi as $g) : ?>
-                    <?php if ($g['data_fine']!=null) : ?>
-                      <?php $gruppo=OppGruppoPeer::retrieveByPk($g['gruppo_id']) ?>
-                      <?php echo ", ".$gruppo->getAcronimo()." dal ".format_date($g['data_inizio'],'dd/MM/yyyy')." al ".format_date($g['data_fine'],'dd/MM/yyyy') ?>
-                    <?php endif ?>
-                  <?php endforeach ?>
-                  </span>
-                <?php endif ?>
-                )
               </p>
             </td>
-            
+            <td>
+              <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
+                <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
+              <?php endif; ?>
+              <?php $gruppi = OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($parlamentari->getInt(1)) ?>
+              <?php if (count($gruppi)>1 || !OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
+                <span style="font-size:10px">
+                  <?php if ($parlamentari->getString(9)!=NULL) :?>
+                    <?php echo "<span style='background-color:yellow;'>in carica fino al ".format_date($parlamentari->getString(9),'dd/MM/yyyy')."</span>" ?>
+                  <?php endif; ?>
+                <?php foreach ($gruppi as $g) : ?>
+                  <?php if ($g['data_fine']!=null) : ?>
+                    <?php $gruppo=OppGruppoPeer::retrieveByPk($g['gruppo_id']) ?>
+                    <?php echo ", ".$gruppo->getAcronimo()." dal ".format_date($g['data_inizio'],'dd/MM/yyyy')." al ".format_date($g['data_fine'],'dd/MM/yyyy') ?>
+                  <?php endif ?>
+                <?php endforeach ?>
+                </span>
+              <?php endif ?>
+            </td>
             <td><?php echo $parlamentari->getString(8) ?></td>
-            <td><strong><?php echo link_to($parlamentari->getInt(5), 
+            <?php if ($parlamentari->getString(9)==NULL) :?>
+              <td><strong><?php echo link_to($parlamentari->getInt(5), 
   				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3') ?></strong></td>
-            <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Presente') ?></strong></td>
-            <td><strong><?php echo link_to($parlamentari->getInt(7), 
-                        				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Assente') ?></strong></td>            
-                               
+              <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Presente') ?></strong></td>
+              <td><strong><?php echo link_to($parlamentari->getInt(7), 
+                        				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=3&filter_vote_vote=Assente') ?></strong></td>
+            <?php else :?>            				            
+              <td><strong><?php echo $parlamentari->getInt(5) ?></strong></td>
+              <td><strong><?php echo $parlamentari->getInt(5)-$parlamentari->getInt(7) ?></strong></td>
+              <td><strong><?php echo $parlamentari->getInt(7) ?></strong></td>
+            <?php endif; ?>              			                 
                                
           </tr>
           <?php else : ?>

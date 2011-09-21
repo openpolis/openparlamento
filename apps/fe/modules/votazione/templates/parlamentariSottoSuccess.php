@@ -54,12 +54,17 @@
               </p>
             </td>
             <td><?php echo $parlamentari->getString(8) ?></td>
-            <td><strong><?php echo link_to($parlamentari->getInt(5), 
+            <?php if ($parlamentari->getString(9)==NULL) :?>
+              <td><strong><?php echo link_to($parlamentari->getInt(5), 
   				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2') ?></strong></td>
-            <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></strong></td>            
-            <td><strong><?php echo link_to($parlamentari->getInt(7), 
+              <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></strong></td>            
+              <td><strong><?php echo link_to($parlamentari->getInt(7), 
                        				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></strong></td>
-           
+            <?php else : ?>
+              <td><strong><?php echo $parlamentari->getInt(5) ?></strong></td>
+              <td><strong><?php echo $parlamentari->getInt(5)-$parlamentari->getInt(7) ?></strong></td>            
+              <td><strong><?php echo $parlamentari->getInt(7) ?></strong></td>
+            <?php endif; ?>            				
   				        				                         
           </tr>
           <?php else : ?>
