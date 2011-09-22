@@ -32,7 +32,7 @@
               <p class="politician-id">
                 
                 <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
-                <?php echo " (" ?>
+                (
                 <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
                   <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
                 <?php endif; ?>
