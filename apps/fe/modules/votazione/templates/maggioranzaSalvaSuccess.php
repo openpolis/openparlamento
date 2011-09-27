@@ -20,11 +20,11 @@
         
       </p>
     </div>
-    <div class="W73_100 float-left">
-      <?php include_partial('wikiMaggioranzaSalva') ?>  	  
-      
-      
-      <h6 style="padding:10px 0 5px 0;">In questa legislatura la maggioranza parlamentare che sostiene il Governo &egrave; stata salvata in <?php echo $pager->getNbResults() ?> votazioni elettroniche d'aula di Camera e Senato dai voti e dalle assenze dei parlamentari di opposizione.</h6>		
+    <div class="W73_100 float-left">	  
+      <p style="padding:10px 0 5px 0; font-size:16px;">
+        In questa legislatura la maggioranza che sostiene il Governo &egrave; stata salvata in <?php echo number_format($pager->getNbResults() , 0, ',', '.');?> votazioni (su un totale di <?php echo number_format(OppVotazionePeer::doSelectCountVotazioniPerPeriodo('', '', 16, 'C')+OppVotazionePeer::doSelectCountVotazioniPerPeriodo('', '', 16, 'S'), 0, ',', '.') ?> voti) dai voti e dalle assenze dei parlamentari di opposizione.<br/>
+        <?php include_partial('wikiMaggioranzaSalva') ?>  
+      </p>		
       
       <?php include_partial('filter',
                             array('tags_categories' => $all_tags_categories,

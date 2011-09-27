@@ -6,8 +6,10 @@
     <?php echo include_partial('secondLevelVotiMaggioranzaSotto', 
                                array('current' => $ramo)); ?>
                                
-    <p style="font-size:16px;width:70%;margin-bottom:10px;">L'elenco mostra nell'ordine le volte in cui i <strong><?php echo ($ramo=='camera'?'deputati':'senatori')?> della maggioranza</strong> con le loro assenze o voti differenti dal proprio gruppo di appartenenza, sono stati determinanti per la sconfitta nelle votazioni della maggioranza parlamentare.<br/>
-      Il calcolo tiene conto dei cambiamenti delle maggioranze parlamentari e delle diverse appartenenze ai gruppi nel corso della legislatura.
+    <p style="font-size:16px;width:90%;margin-bottom:10px;">L'elenco mostra le volte in cui i <strong><?php echo ($ramo=='camera'?'deputati':'senatori')?> della maggioranza</strong> con le loro assenze o voti differenti dal proprio gruppo di appartenenza, sono stati determinanti per la sconfitta nelle votazioni della maggioranza di Governo.<br/>
+      Il calcolo tiene conto delle variazioni delle maggioranze parlamentari e delle diverse appartenenze dei <?php echo ($ramo=='camera'?'deputati':'senatori')?> ai gruppi nel corso della legislatura.<br/>
+      La lista è ordinata per "totale votazioni", per altri ordinamenti, in maniera crescente o decrescente, fai click sul titolo della colonna corrispondente. 
+      <?php include_partial('wikiMaggioranzaSotto') ?> 
     </p>
     
     <table class="chart tablesorter" id="complete-chart" style="width:98%;">

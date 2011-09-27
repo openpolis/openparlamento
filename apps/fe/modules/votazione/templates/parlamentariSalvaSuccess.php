@@ -9,8 +9,10 @@
     <?php echo include_partial('secondLevelVotiMaggioranzaSalva', 
                                array('current' => $ramo)); ?>
                                
-    <p style="font-size:16px;width:70%;margin-bottom:10px;">L'elenco mostra nell'ordine le volte in cui i <strong><?php echo ($ramo=='camera'?'deputati':'senatori')?> di opposizione</strong> con le loro assenze o voti, sono stati determinanti per salvare la maggioranza nelle votazioni.<br/>
-      Il calcolo tiene conto dei cambiamenti delle maggioranze parlamentari e delle diverse appartenenze ai gruppi nel corso della legislatura.
+    <p style="font-size:16px;width:70%;margin-bottom:10px;">L'elenco mostra le volte in cui i <strong><?php echo ($ramo=='camera'?'deputati':'senatori')?> di opposizione</strong> con le loro assenze o voti, sono stati determinanti per salvare la maggioranza di Governo nelle votazioni.<br/>
+      Il calcolo tiene conto dei cambiamenti delle maggioranze parlamentari e delle diverse appartenenze ai gruppi nel corso della legislatura.<br/>
+      La lista è ordinata per "totale votazioni", per altri ordinamenti, in maniera crescente o decrescente, fai click sul titolo della colonna corrispondente. 
+      <?php include_partial('wikiMaggioranzaSalva') ?>
     </p>
     
     <table class="chart tablesorter" id="complete-chart" style="width:98%;">

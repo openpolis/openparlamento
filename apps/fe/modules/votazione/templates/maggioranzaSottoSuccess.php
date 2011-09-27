@@ -20,11 +20,11 @@
       </p>
     </div>
     <div class="W73_100 float-left">
-      <?php include_partial('wikiMaggioranzaSotto') ?>  	  
-      
-      
-      <h6 style="padding:10px 0 5px 0;">In questa legislatura la maggioranza parlamentare che sostiene il Governo &egrave; stata battuta in <?php echo $pager->getNbResults() ?> votazioni elettroniche d'aula di Camera e Senato.<br/>
-        <span style="background-color:yellow;">Non sono considerate le votazioni non elettroniche e quello con voto segreto.</span></h6>		
+       <p style="padding:10px 0 5px 0; font-size:16px;">
+         In questa legislatura la maggioranza parlamentare che sostiene il Governo &egrave; stata battuta in <?php echo $pager->getNbResults() ?> votazioni elettroniche d'aula di Camera e Senato.
+        <span style="background-color:yellow;">Non sono considerate le votazioni non elettroniche e quelle con voto segreto.</span>
+        <?php include_partial('wikiMaggioranzaSotto') ?>  
+        </p>		
       
       <?php include_partial('filter',
                             array('tags_categories' => $all_tags_categories,
