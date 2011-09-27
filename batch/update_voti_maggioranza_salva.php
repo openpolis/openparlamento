@@ -28,5 +28,5 @@ if (count($votazioni)>0)
     //}
   }
 }
-
+mail("ettore@depp.it", "UP MAGG. SALVA", $avviso, "From: 1_lista_ddl_new");
 ?>
