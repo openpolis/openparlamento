@@ -115,5 +115,5 @@ if (count($votazioni)>0)
     }
   }
 }
-mail("ettore@depp.it", "UP PARL. SALVA", $avviso, "From: 1_lista_ddl_new");
+mail("ettore@depp.it", "UP PARL. SALVA", "ctrl parl salva", "From: 1_lista_ddl_new");
 ?>

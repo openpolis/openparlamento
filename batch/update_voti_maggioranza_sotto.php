@@ -29,7 +29,7 @@ if (count($votazioni)>0)
   }
 }
 
-mail("ettore@depp.it", "UP MAGG. SOTTO", $avviso, "From: 1_lista_ddl_new");
+mail("ettore@depp.it", "UP MAGG. SOTTO", "controllo magg sotto", "From: 1_lista_ddl_new");
 
 
 ?>
