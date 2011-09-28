@@ -20,7 +20,7 @@
   <?php if (count($sotto)>0) : ?>		
   					
 	<ul id="law-n-acts-proposals">
-	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:red;">maggioranza è stata battuta</strong> (<a href="/votazioni/keyvotes" class="see-all">vedi tutte le altre <?php echo number_format(count($sotto), 0, ',', '.')?> votazioni</a>)</p>
+	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:red;">maggioranza è stata battuta</strong> (<a href="/votazioni/maggioranzaSotto/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($sotto), 0, ',', '.')?> votazioni</a>)</p>
 	  <?php foreach ($sotto as $k=>$votazione): ?>
 	    <?php if ($k<$limit) :?>
 	      <li class="float-container">
@@ -48,7 +48,7 @@
   <?php if (count($salva)>0) : ?>		
   					
 	<ul id="law-n-acts-proposals">
-	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:green;">maggioranza è stata salvata</strong> (<a href="/votazioni/keyvotes" class="see-all">vedi tutte le altre <?php echo number_format(count($salva), 0, ',', '.')?> votazioni</a>)</p>
+	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:green;">maggioranza è stata salvata</strong> (<a href="/votazioni/maggioranzaSalva/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($salva), 0, ',', '.')?> votazioni</a>)</p>
 	  <?php foreach ($salva as $k=>$votazione): ?>
 	    <?php if ($k<$limit) :?>
 	      <li class="float-container">
