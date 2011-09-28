@@ -2,6 +2,21 @@
 class votazioneComponents extends sfComponents
 {
 
+ public function executeWidgetVotiMaggioranza()
+ {
+   $c=new Criteria();
+   $c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID);
+   $c->add(OppVotazionePeer::IS_MAGGIORANZA_SOTTO_SALVA, 1);
+   $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+   $this->sotto=OppVotazionePeer::doSelect($c);
+   
+    $c=new Criteria();
+    $c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID);
+    $c->add(OppVotazionePeer::IS_MAGGIORANZA_SOTTO_SALVA, 2);
+    $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
+    $this->salva=OppVotazionePeer::doSelect($c);
+ } 
+
  public function executeChartEsito()
   {
    $fav=$this->votazione->getFavorevoli();
