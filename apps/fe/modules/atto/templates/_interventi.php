@@ -1,76 +1,18 @@
 <h5 class="subsection">gli interventi dei parlamentari sul disegno di legge:</h5>
-<h5 class="subsection-spec">i pi&ugrave; recenti:</h5>
 
+<h5 class="subsection-spec">i pi&ugrave; recenti:</h5>
 <table class="disegni-decreti column-table">
   <thead>
-    <tr>
-      <th scope="col"><br />data:</th>
-      <th scope="col"><br />sede:</th>
-      <th scope="col">intervento di:</th>
-      <th scope="col">link al testo:</th>
-      <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
-        <th scope="col">parere utenti:</th>  
-        <th scope="col">il tuo parere:</th>
-      <?php endif ?>
-    </tr>
+    <?php include_partial('atto/intervento_th', array()) ?>
   </thead>
   <tbody>
-  <?php $tr_class = 'clickable even' ?>	
-    <?php foreach($interventi as $k=>$intervento): ?>
-      <?php $intervento_obj = OppInterventoPeer::retrieveByPK($intervento['id']); ?>
-      <?php $interventi_array = explode('@', $intervento['link'] ); ?>
-      <?php foreach($interventi_array as $intervento_singolo): ?>	  	
-        <?php if($limit_count < $limit): ?>  	
-           <tr class="clickable <?php echo $tr_class; ?>">
-           <?php $tr_class = ($tr_class == 'clickable even' ? 'clickable odd' : 'clickable even' )  ?> 
-            <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
-            <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
-            <td>
-              <p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
-            <td>  
-              <?php echo link_to(image_tag('extlink.gif',
-                                           array('title' => 'Vai all\'intervento sul sito '.($intervento['ramo'] == 'C'?'della Camera':'del Senato'))) ,
-                                (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$intervento_singolo),
-                                array('class' => 'external-url-container') ) ?>
-            </td>
-            <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
-              <td>
-                <div class="user-stats-column">
-                  <?php include_component('deppVoting', 'votingDetailsSmall', array('object' => $intervento_obj)) ?>
-                </div>
-              </td>
-              <td>
-                <div class="user-vote-column">
-                  <?php include_component('deppVoting', 'votingBlockSmall', array('object' => $intervento_obj)) ?>            
-                </div>
-              </td>
-            <?php endif ?>
-            <td>          
-              <?php echo link_to(image_tag('extlink.gif',
-                                           array('title' => 'Vai all\'intervento sul sito '.($intervento['ramo'] == 'C'?'della Camera':'del Senato'))) ,
-                                (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://www.camera.it/').$intervento_singolo),
-                                array('class' => 'external-url-container') ) ?>
-            </td>
-            <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
-            <td>
-              <div class="user-stats-column">
-                <?php echo $k ?>
-                <?php include_component('deppVoting', 'votingDetailsSmall', array('object' => OppInterventoPeer::retrieveByPk($k))) ?>
-              </div>
-            </td>
-            <td>
-              <div class="user-vote-column">
-                <?php include_component('deppVoting', 'votingBlockSmall', array('object' => OppInterventoPeer::retrieveByPk($k))) ?>            
-              </div>
-            </td>
-            <?php endif ?>
-          </tr>
-          <?php $limit_count++; ?>
-        <?php else: ?>
-          <?php break; ?>  	  
-        <?php endif; ?>
-      <?php endforeach; ?>		  	
-	<?php endforeach; ?>
+    <?php foreach($interventi as $cnt => $intervento): ?>
+      <?php if ($cnt < $limit): ?>  	
+        <?php include_partial('atto/intervento_tr', array('intervento' => $intervento)) ?>	
+      <?php else: ?>
+        <?php break; ?>  	  
+      <?php endif; ?>
+    <?php endforeach; ?>		  	
   </tbody>
 </table>
 
@@ -81,74 +23,14 @@
   <!--<div class="more-results float-container" style="display: false;">-->
     <table class="disegni-decreti column-table">
       <thead>
-        <tr>
-          <th scope="col"><br />data:</th>
-          <th scope="col"><br />sede:</th>
-          <th scope="col">intervento di:</th>
-          <th scope="col">link al testo:</th>
-          <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
-            <th scope="col">parere utenti:</th>  
-            <th scope="col">il tuo parere:</th>
-          <?php endif ?>
-        </tr>
+        <?php include_partial('atto/intervento_th', array()) ?>
       </thead>
       <tbody>
-      <?php $tr_class = 'clickable even' ?>	
-        <?php $limit_count = 0; ?> 
-        <?php foreach($interventi as $k=>$intervento): ?>
-          <?php $intervento_obj = OppInterventoPeer::retrieveByPK($intervento['id']); ?>
-          <?php $interventi_array = explode('@', $intervento['link'] ); ?>
-          <?php foreach($interventi_array as $intervento_singolo): ?>	  	
-            <?php if ($limit_count >= $limit): ?>
-              <tr class="clickable <?php echo $tr_class; ?>">
-           <?php $tr_class = ($tr_class == 'clickable even' ? 'clickable odd' : 'clickable even' )  ?> 
-                <td><p><?php echo format_date($intervento['data'], 'dd/MM/yyyy') ?></p></td>				
-                <td><p><?php echo ($intervento['denominazione'].' '.($intervento['ramo']=='C' ? 'Camera' : 'Senato') ) ?></p></td>
-                <td><p><?php echo link_to($intervento['nome'].' '.$intervento['cognome'], '@parlamentare?id='.$intervento['politico_id']) ?></p></td>
-                <td>
-                  <?php echo link_to(image_tag('extlink.gif',
-                                               array('title' => 'Vai all\'intervento sul sito '.($intervento['ramo'] == 'C'?'della Camera':'del Senato'))) ,
-                                    (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://nuovo.camera.it/').$intervento_singolo),
-                                    array('class' => 'external-url-container') ) ?>
-                </td>
-                <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
-                  <td>
-                    <div class="user-stats-column">
-                      <?php include_component('deppVoting', 'votingDetailsSmall', array('object' => $intervento_obj)) ?>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="user-vote-column">
-                      <?php include_component('deppVoting', 'votingBlockSmall', array('object' => $intervento_obj)) ?>            
-                    </div>
-                  </td>
-                <?php endif ?>
-                <td>          
-                  <?php echo link_to(image_tag('extlink.gif',
-                                               array('title' => 'Vai all\'intervento sul sito '.($intervento['ramo'] == 'C'?'della Camera':'del Senato'))) ,
-                                    (preg_match("#^http:#",$intervento_singolo) ? $intervento_singolo : sfConfig::get('app_url_sito_camera', 'http://www.camera.it/').$intervento_singolo),
-                                    array('class' => 'external-url-container') ) ?>
-                </td>
-                <?php if ($sf_user->isAuthenticated() && ($sf_user->hasCredential('amministratore') || $sf_user->hasCredential('adhoc'))): ?>
-                <td>
-                  <div class="user-stats-column">
-                    <?php echo $k ?>
-                    <?php include_component('deppVoting', 'votingDetailsSmall', array('object' => OppInterventoPeer::retrieveByPk($k))) ?>
-                  </div>
-                </td>
-                <td>
-                  <div class="user-vote-column">
-                    <?php include_component('deppVoting', 'votingBlockSmall', array('object' => OppInterventoPeer::retrieveByPk($k))) ?>            
-                  </div>
-                </td>
-                <?php endif ?>
-                
-              </tr>
-            <?php else: ?>
-              <?php $limit_count++; ?>  	  
-            <?php endif; ?>
-          <?php endforeach; ?>		  	
-	    <?php endforeach; ?>
+        <?php foreach($interventi as $cnt => $intervento): ?>
+          <?php if ($cnt > $limit): ?>  
+            <?php include_partial('atto/intervento_tr', array('intervento' => $intervento)) ?>	
+          <?php endif; ?>
+        <?php endforeach; ?>		  	
       </tbody>
     </table>
     <div class="more-results-close">[ <?php echo link_to('chiudi', '#', array('class'=>'btn-close action') ) ?> ]</div>

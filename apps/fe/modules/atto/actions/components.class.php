@@ -137,7 +137,39 @@ class attoComponents extends sfComponents
     $this->limit = 2;
 	  $this->limit_count = 0;
 	
+	  $i_fields = array('data', 'denominazione', 'ramo', 'nome', 'cognome', 'politico_id');
+	
 	  $this->interventi_count = count($this->interventi);
+
+    # estende gli interventi, splittando le url quando necessario
+	  $interventi_singoli = array();
+	  foreach ($this->interventi as $key => $intervento) {
+	    $i_obj = OppInterventoPeer::retrieveByPK($intervento['id']);
+	      
+	    $links = explode('@', $intervento['link']);
+	    foreach ($links as $link) {
+  	    $i_singolo = array();
+  	    $i_singolo['obj'] = $i_obj;
+  	    foreach ($i_fields as $field)
+  	      $i_singolo[$field] = $intervento[$field];
+	      if ($i_singolo['ramo'] == 'C')
+	      {
+	        if (!preg_match("#^http:#", $link))
+	          $i_singolo['url'] = sfConfig::get('app_url_sito_camera', 'http://www.camera.it/') . $link;
+	        else
+	          $i_singolo['url'] = $link;	        
+	      }
+	      else
+	      {
+	        if (!preg_match("#^http:#", $link))
+	          $i_singolo['url'] = sfConfig::get('app_url_sito_senato', 'http://www.senato.it/') . $link;
+	        else
+	          $i_singolo['url'] = $link;	        	        
+	      }
+	      array_push($interventi_singoli, $i_singolo);
+	    }
+	  }
+	  $this->interventi = $interventi_singoli;
   }
   
   public function executeCommissioni()
