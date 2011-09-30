@@ -453,13 +453,13 @@ p.wiki-form-submit { margin-left: 20px;}
 
 .second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 1px; float: left; position: relative; left: -9px; top: -6px; }
 .second-level-tabs li, .second-level-tabs h5 { display: inline; }
-.second-level-tabs a, .second-level-tabs span { color: #999; display: block; float: left; padding: 0 10px; height: 45px; line-height: 40px; border-right: 1px solid #fff; border-left: 1px solid #f0f0f0; }
+.second-level-tabs a, .second-level-tabs span { color: #4472AC; display: block; float: left; padding: 0 10px; height: 45px; line-height: 40px; border-right: 1px solid #fff; border-left: 1px solid #f0f0f0; }
 .second-level-tabs a:hover { color: #0066ff; }
 
 .second-level-tabs li:last-child a { border-right: none; }
 
 
-.second-level-tabs .current a, .second-level-tabs .current span { color: #941299; cursor: default; background-color: #fff; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
+.second-level-tabs .current a, .second-level-tabs .current span { color: #4E8480; cursor: default; background-color: #fff; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; }
 .second-level-tabs .current a:hover { text-decoration: none; }
 
 #second-level-menu-argomenti ul.second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; float: left; padding: 1px; position: relative; left: 0px; top: 0px; }
@@ -483,9 +483,9 @@ p.wiki-form-submit { margin-left: 20px;}
  * POLITICIAN MORE INFO
  *----------------------------------------------*/
  
-.politician-more-info { padding: 20px 10px 10px 20px; font-size: 12px; color: #888; font-weight: bold; }
+.politician-more-info { padding: 10px 10px 10px 20px; font-size: 12px; color: #888; font-weight: bold; }
 .politician-more-info a { font-size: 15px; }
-.politician-more-info p { margin-bottom: 1em; }
+.politician-more-info p { margin-bottom: 0.5em; }
 .politician-more-info label { font-size: 14px; }
 .politician-more-info strong { color: #333; }
 
@@ -1260,36 +1260,4 @@ ul.small-titles h2 { font-size: 16px; }
   min-height: 370px; 
   border-left: 1px dotted lightgray; 
   padding: 1.5em; margin: 1.5em 0;
-}
-
-
-a.fb_button, a.fb_button:hover {
-  text-decoration: none;
-}
-
-.fb_button {
-  font-size: 11px;
-  line-height: 14px;
-  background: #29447E url(../images/FacebookLogos.png);
-  background-repeat: no-repeat;
-  background-position: left -188px;
-  cursor: pointer;
-  display: inline-block;
-  padding: 0 0 0 1px;
-  text-decoration: none;
-  outline: none;
-}
-
-
-.fb_button .fb_button_text {
-  background: #5F78AB url(../images/FacebookLogos.png);
-  border-top: solid 1px #879AC0;
-  border-bottom: solid 1px #1A356E;
-  color: white;
-  display: block;
-  font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
-  font-weight: bold;
-  padding: 2px 6px 3px 6px;
-  margin: 1px 1px 0 21px;
-  text-shadow: none;
 }
