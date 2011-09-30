@@ -1,7 +1,6 @@
   <?php if (count($sotto)>0 || count($salva)>0) : ?>		  
   <div class="section-box" style="padding-bottom:20px;">
-    <h3 class="section-box-no-rss">Ultimi voti con maggioranza <span style="color:red;">battuta</span> o <span style="color:green;">salvata</span> <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?><a class="ico-help" href="#">&nbsp;</a></span>	
-    
+      <h3 class="section-box-no-rss">Ultimi voti con maggioranza <span style="color:red;">battuta</span> o <span style="color:green;">salvata</span> <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?><a class="ico-help" href="#">&nbsp;</a></span>	 
 			<div style="display: none;" class="help-box float-container">
 				<div class="inner float-container" style="font-size:12px;">		
 					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti con maggioranza battuta o salvata ?</h5>
@@ -20,7 +19,7 @@
   <?php if (count($sotto)>0) : ?>		
   					
 	<ul id="law-n-acts-proposals">
-	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:red;">maggioranza è stata battuta</strong> (<a href="/votazioni/maggioranzaSotto/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($sotto), 0, ',', '.')?> votazioni</a>)</p>
+	    <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:red;">maggioranza è stata battuta</strong> (<a href="/votazioni/maggioranzaSotto/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($sotto), 0, ',', '.')?> votazioni</a>)</p>  
 	  <?php foreach ($sotto as $k=>$votazione): ?>
 	    <?php if ($k<$limit) :?>
 	      <li class="float-container">
@@ -48,7 +47,8 @@
   <?php if (count($salva)>0) : ?>		
   					
 	<ul id="law-n-acts-proposals">
-	  <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:green;">maggioranza è stata salvata</strong> (<a href="/votazioni/maggioranzaSalva/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($salva), 0, ',', '.')?> votazioni</a>)</p>
+	    <p style="margin-bottom:10px; margin-left:8px;">Ultimi voti in cui la <strong style="color:green;">maggioranza è stata salvata</strong> (<a href="/votazioni/maggioranzaSalva/data/desc" class="see-all">vedi tutte le altre <?php echo number_format(count($salva), 0, ',', '.')?> votazioni</a>)</p>
+	    
 	  <?php foreach ($salva as $k=>$votazione): ?>
 	    <?php if ($k<$limit) :?>
 	      <li class="float-container">

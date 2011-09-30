@@ -1,6 +1,13 @@
 <?php
 class parlamentareComponents extends sfComponents
 {
+  
+  public function executeWidgetVoti()
+   {
+     $this->sotto=$this->carica->getMaggioranzaSotto();
+     $this->salva=$this->carica->getMaggioranzaSalva();
+     $this->ribelle=$this->carica->getRibelle();
+   }
 
   public function executeMonitoringalso()
   {

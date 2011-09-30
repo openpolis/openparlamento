@@ -1,17 +1,21 @@
-<table class="disegni-decreti column-table">
+<table class="chart tablesorter" id="complete-chart">
   <thead>
     <tr>
-  	<th scope="col">parlamentare</th>
-	<th scope="col">voto</th>
-	<th scope="col">circoscrizione</th>
+      <th style="vertical-align:middle;">parlamentare</th>
+  	<th style="vertical-align:middle;">voto</th>
+  	<th style="vertical-align:middle;">circoscrizione</th>
     </tr>
-  </thead> 
+  </thead>
   <tbody>
   <?php $tr_class = 'even' ?>
   <?php while($votanti->next()): ?>
-   <tr class="<?php echo $tr_class; ?>">
-   <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
-  	<th scope="row"><?php echo link_to($votanti->getString(2).' '.$votanti->getString(3), '@parlamentare?id='.$votanti->getInt(1))." (".$votanti->getString(7).")".($votanti->getInt(8)==1?'&nbsp;'.image_tag('ribelle_rosso.png', array('align'=>'top')):'').($votanti->getInt(9)==1?'&nbsp;'.image_tag('punto_esclamativo_rosso.png', array('align'=>'top')):'').($votanti->getInt(9)==2?'&nbsp;'.image_tag('punto_esclamativo_rosso.png', array('align'=>'top')):'') ?></th>
+    <tr class="<?php echo $tr_class; ?>">
+    <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+      <td style="text-align:left;">
+        <p class="politician-id">
+          <?php echo link_to($votanti->getString(2).' '.$votanti->getString(3), '@parlamentare?id='.$votanti->getInt(1))." (".$votanti->getString(7).")".($votanti->getInt(8)==1?'&nbsp;'.image_tag('ribelle_rosso.png', array('align'=>'top')):'').($votanti->getInt(9)==1?'&nbsp;'.image_tag('punto_esclamativo_rosso.png', array('align'=>'top')):'').($votanti->getInt(9)==2?'&nbsp;'.image_tag('punto_esclamativo_rosso.png', array('align'=>'top')):'') ?>
+        </p>
+      </td>
 	<td><?php echo $votanti->getString(6) ?></td>
 	<?php if($votanti->getString(5)!=""): ?>
 	  <td><?php echo $votanti->getString(5) ?></td>

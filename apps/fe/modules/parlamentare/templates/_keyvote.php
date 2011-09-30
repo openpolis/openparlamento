@@ -1,6 +1,6 @@
 <?php if (count($lanci)>0) : ?>
-<h5 class="subsection-alt">Nei voti chiave: <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?></span></h5>
-<p class="tools-container"><a class="ico-help" href="#">cosa sono i voti chiave</a></p>
+<strong style="font-size:14px;">Nei voti chiave ha votato:</strong>
+<span class="tools-container"><a class="ico-help" href="#" style="text-decoration:none">&nbsp;</a></span>
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container">		
   					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti chiave ?</h5>
@@ -24,7 +24,7 @@
 		   <?php $voto_class="red thumb-rejected"; ?>
 		<?php endif; ?>
 		   
-		 <strong><span class="<?php echo $voto_class ?>" style="display:inline; font-size:12px;background-position:100% 10%;line-height:24px"><?php echo $lancio[2] ?></span></strong></p>
+		 <strong><span class="<?php echo $voto_class ?>" style="display:inline; font-size:12px;background-position:100% 10%;line-height:20px"><?php echo $lancio[2] ?></span></strong></p>
 		
 		<!-- <span class="<?php echo $class ?>"><?php echo $lancio[2] ?></span> -->
 		
@@ -36,7 +36,7 @@
             <?php endforeach; ?>
           </ul>  
             <?php if(count($lanci) > $limit): ?>
-              <p class="indent">guarda gli altri <strong><?php echo (count($lanci) - $limit) ?> </strong> voti chiave ...
+              <p class="indent" style="margin-bottom:0px;">guarda gli altri <strong><?php echo (count($lanci) - $limit) ?> </strong> voti chiave ...
                  [ <?php echo link_to('apri', '#', array('class'=>'btn-open action') ) ?> <?php echo link_to('chiudi', '#', array('class'=>'btn-close action', 'style'=>'display:none') ) ?> ]<br /><br />
               </p>  
               <div class="more-results float-container" style="display: none;"> 

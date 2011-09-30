@@ -22,7 +22,7 @@
    				<p>In questa pagina trovi tutti i voti del parlamentare relativi alle votazioni elettroniche d'aula in cui &grave; stato presente</p>
    			</div>
    		</div>
-   		
+   	
 
       <?php include_partial('votiFilter',
                             array('active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            

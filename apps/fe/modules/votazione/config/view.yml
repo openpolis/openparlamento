@@ -1,3 +1,7 @@
+indexSuccess:
+  javascripts:    ["/js/jquery-1.4.3.min.js", "/js/jquery.tablesorter.min.js"]
+  stylesheets:    ["/css/tablesorter_themes/blue/style.css"]
+  
 commentiSuccess:
   javascripts:    [-*, prototype]
   stylesheets:    [-*, screen.min.css]
@@ -9,4 +13,3 @@ parlamentariSalvaSuccess:
 parlamentariSottoSuccess:
   javascripts:    ["/js/jquery-1.4.3.min.js", "/js/jquery.tablesorter.min.js"]
   stylesheets:    ["/css/tablesorter_themes/blue/style.css"]  
-  

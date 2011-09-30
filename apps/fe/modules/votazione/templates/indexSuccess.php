@@ -171,3 +171,13 @@
   <?php $votazione = OppVotazionePeer::retrieveByPk($sf_params->get('id')); ?>
   <?php echo $votazione->getTitolo(); ?>
 <?php end_slot() ?>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery.noConflict();
+   jQuery(document).ready(function($) { 
+     $("#complete-chart").tablesorter({
+       sortList: [[0, 0]], 
+       widgets: ['zebra']
+     }); 
+   });  
+ </script>
