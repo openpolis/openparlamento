@@ -139,11 +139,9 @@
                           'legislatura' => 16));
                     
           } ?>
-          
-          <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>    
+           
            <!-- box Maggioranza sotto e salva -->
           	<?php include_component('parlamentare','widgetVoti', array('carica' => $carica, 'ribelli_perc' => $ribelli_perc)) ?>
-           <?php endif;?>
            <!-- BOX PER I VOTI CHIAVE -->
      			   <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>
      			<!-- FINE VOTI CHIAVE -->

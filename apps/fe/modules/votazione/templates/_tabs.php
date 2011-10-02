@@ -6,11 +6,9 @@
   <li class="<?php echo($current == 'maggioranza_sotto' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Maggioranza battuta', 'votazione/maggioranzaSotto') ?></h2>   
   </li>
-  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
   <li class="<?php echo($current == 'maggioranza_salva' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Maggioranza salvata', 'votazione/maggioranzaSalva') ?></h2>   
   </li>
-  <?php endif; ?>
   <li class="<?php echo($current == 'voti_tutti' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Tutte le votazioni', 'votazione/list') ?></h2>   
   </li>

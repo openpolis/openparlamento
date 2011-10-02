@@ -63,11 +63,9 @@
   <div id="main">
        
      <div class="W45_100 float-right">
-       
-       <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>    
+          
        <!-- box Maggioranza sotto e salva -->
       	<?php include_component('votazione','widgetVotiMaggioranza', array('limit' => '2')) ?>
-       <?php endif;?>
        
        <!-- Box rotazione parlamentari -->    
         <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>

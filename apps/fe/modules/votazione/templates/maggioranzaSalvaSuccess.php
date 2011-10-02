@@ -5,7 +5,6 @@
 
 <div id="content" class="tabbed float-container">
   <div id="main">
-<?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>    
     <?php echo include_partial('secondLevelVotiMaggioranzaSalva', 
                                array('current' => 'lista')); ?>
                                
@@ -41,10 +40,6 @@
       <?php include_partial('maggioranzaSalva', array('pager' => $pager)) ?>  
     </div>
     <div class="clear-both"></div>
-    
-    <?php else :?>
-      pagina in costruzione
-    <?php endif; ?>
     
   </div>
 </div>

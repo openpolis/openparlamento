@@ -19,7 +19,7 @@ if (count($cariche)>0)
       $uri="/giunte/";  
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Presidenza'))
       $uri="/organi/";
-    echo link_to(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),$uri.$ramo."#".$carica->getSedeId())."</p>";
+    echo link_to('<span style="font-size:12px;">'.OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione().'</span>',$uri.$ramo."#".$carica->getSedeId())."</p>";
   }
 }
 

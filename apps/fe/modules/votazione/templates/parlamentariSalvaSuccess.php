@@ -4,8 +4,6 @@
 <div id="content" class="tabbed float-container">
   <div id="main">
     
-    <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
-    
     <?php echo include_partial('secondLevelVotiMaggioranzaSalva', 
                                array('current' => $ramo)); ?>
                                
@@ -78,15 +76,8 @@
         <?php endwhile; ?>
       </tbody>    
     </table>
-    
-    <?php else :?>
-      pagina in costruzione
-    <?php endif; ?>
-    
   </div>
 </div>    
-
-
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /

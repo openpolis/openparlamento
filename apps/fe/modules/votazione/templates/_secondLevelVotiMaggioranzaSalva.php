@@ -1,5 +1,4 @@
 <div class="float-container">
-  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
 	<ul class="second-level-tabs float-container">
     <li class="<?php echo($current=='lista' ? 'current' : '' ) ?>">
 		  <h5>
@@ -17,5 +16,4 @@
 		  </h5>
 		</li>
 	</ul>
-	<?php endif; ?>
 </div>
