@@ -41,7 +41,20 @@ class OppVotazione extends BaseOppVotazione
         return "[".$this->getTitoloAggiuntivo()."] " . parent::getTitolo();
     }    
     else
-      return parent::getTitolo();      
+    {
+      $c= new Criteria();
+      $c->add(OppVotazioneHasAttoPeer::VOTAZIONE_ID,$this->getId());
+      $r=OppVotazioneHasAttoPeer::doSelectOne($c);
+      if ($r)
+      {
+        if ($r->getOppAtto()->getTitoloAggiuntivo() && $r->getOppAtto()->getTitoloAggiuntivo() != '')
+          return $r->getOppAtto()->getTitoloAggiuntivo()." - ".parent::getTitolo();
+        else
+          return $r->getOppAtto()->getTitolo()." - ".parent::getTitolo();
+      }
+      else
+        return parent::getTitolo(); 
+    }    
   }
   
   
