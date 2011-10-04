@@ -1014,7 +1014,7 @@ class attoActions extends sfActions
      $this->documento = OppDocumentoPeer::retrieveByPk($this->getRequestParameter('id'));
      $this->forward404Unless($this->documento);
      
-     if ($this->getUser()->isAuthenticated() && !$this->getUser()->hasCredential('noemend') &&
+     if (!$this->getUser()->hasCredential('noemend') &&
       $this->documento->getOppAtto()->getTipoAttoId()!=12 && $this->documento->getOppAtto()->getTipoAttoId()!=15 &&
       $this->documento->getOppAtto()->getTipoAttoId()!=16 && $this->documento->getOppAtto()->getTipoAttoId()!=17)
      {
