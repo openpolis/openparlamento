@@ -48,9 +48,9 @@ class OppVotazione extends BaseOppVotazione
       if ($r)
       {
         if ($r->getOppAtto()->getTitoloAggiuntivo() && $r->getOppAtto()->getTitoloAggiuntivo() != '')
-          return $r->getOppAtto()->getTitoloAggiuntivo()." - ".parent::getTitolo();
+          return  $r->getOppAtto()->getTitoloAggiuntivo()." - <strong>".parent::getTitolo()."</strong>";
         else
-          return $r->getOppAtto()->getTitolo()." - ".parent::getTitolo();
+          return  $r->getOppAtto()->getTitolo()." - <strong>".parent::getTitolo()."</strong>";
       }
       else
         return parent::getTitolo(); 
