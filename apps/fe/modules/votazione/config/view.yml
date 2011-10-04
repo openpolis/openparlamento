@@ -4,7 +4,6 @@ indexSuccess:
   
 commentiSuccess:
   javascripts:    [-*, prototype]
-  stylesheets:    [-*, screen.min.css]
   
 parlamentariSalvaSuccess:
   javascripts:    ["/js/jquery-1.4.3.min.js", "/js/jquery.tablesorter.min.js"]

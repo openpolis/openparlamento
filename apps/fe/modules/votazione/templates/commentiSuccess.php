@@ -20,7 +20,7 @@
                                       'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
 
         <hr/>
-      </div>    
+      </div>
 
     </div>
   </div>
