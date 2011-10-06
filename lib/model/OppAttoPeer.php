@@ -75,7 +75,26 @@ class OppAttoPeer extends BaseOppAttoPeer
     return $val;
     
   }
-  
+
+
+  public static function getDaAggiornare($leg, $tipo_aggiornamento='daily')
+  {
+		$con = Propel::getConnection(self::DATABASE_NAME);
+		if ($tipo_aggiornamento == 'daily') {
+  		$one_year_ago = strftime('%Y-%m-%d', strtotime('1 year ago'));
+      $sql = sprintf("select a.*, ai.iter_id, ai.created_at from opp_atto a, opp_atto_has_iter ai, opp_iter i where ai.atto_id=a.id and ai.iter_id=i.id and a.tipo_atto_id = 1 and a.legislatura = %d and i.concluso != 1 and (ai.iter_id!=1 or ai.iter_id=1 and ai.created_at > '%s') and (ai.iter_id != 3 or ai.iter_id=3 and ai.created_at>'%s') group by a.id order by a.created_at desc;",
+                     $leg, $one_year_ago, $one_year_ago);
+		} elseif ($tipo_aggiornamento == 'weekly') {
+		  // in realtà si potrebbe prendere tutto quello che non viene preso nel daily
+      $sql = sprintf("select a.* from opp_atto a where a.legislatura = %d order by a.created_at desc;", $leg);		  
+		} else {
+		  throw new Exception('Wrong parameter: $tipo_aggiornamento may take the value: daily or weekly');
+		}
+
+    $stm = $con->createStatement(); 
+    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+    return $rs;
+  }
   
   public static function isUnifiedText($atto_id)
   {

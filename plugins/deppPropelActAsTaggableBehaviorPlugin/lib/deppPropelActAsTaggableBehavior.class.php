@@ -270,6 +270,29 @@ class deppPropelActAsTaggableBehavior
     $c->addJoin(TaggingPeer::TAG_ID, TagPeer::ID);
     return TagPeer::doSelect($c);    
   }
+
+  /**
+   * return Tagging objects related to the taggable object
+   *
+   * @param BaseObject $object 
+   * @return array of tagging objects
+   * @author Guglielmo Celata
+   */
+  public function getTagsAsTaggingObjects(BaseObject $object, $criteria = null, $con = null)
+  {
+		if ($con === null) {
+			$con = Propel::getConnection(TaggingPeer::DATABASE_NAME);
+		}
+
+    if (is_null($criteria))
+      $c = new Criteria();
+    else
+      $c = clone $criteria;
+      
+    $c->add(TaggingPeer::TAGGABLE_ID, $object->getPrimaryKey());
+    $c->add(TaggingPeer::TAGGABLE_MODEL, get_class($object));
+    return TaggingPeer::doSelect($c);    
+  }
   
   /**
    * Retrieves from the database tags that have been attached to the object by a user

@@ -315,6 +315,7 @@ class deppPropelActAsNewsGeneratorBehavior
     if ((isset($this->wasNew) && $this->wasNew === true) || 
         (isset($this->succNews) && $this->succNews === true))
     {
+      
       // allow news_generation_skipping
       if (isset($object->skip_news_generation) && $object->skip_news_generation == true) return;
 

@@ -402,8 +402,9 @@ propel:
 
 
   opp_teseo_mapping:
-    teseo_value:      { type: longvarchar }
-    sf_tag_id:        { type: integer, required: true, primaryKey: false, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
+    id:
+    teseo_value:      { type: varchar(512), index: true }
+    tag_id:           { type: integer, required: false, primaryKey: false, index: true, foreignTable: sf_tag, foreignReference: id, onDelete: CASCADE }
     
   opp_teseo:
     id:

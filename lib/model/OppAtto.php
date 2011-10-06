@@ -118,6 +118,38 @@ class OppAtto extends BaseOppAtto
     }
   }
   
+  
+  /**
+   * returns all relations for the given act
+   *
+   * @param string $type 'all', 'from', 'to'
+   * @return array of OppRelazioneAtto
+   * @author Guglielmo Celata
+   */
+  public function getRelazioni($type='all')
+  {
+    $c = new Criteria();
+    if ($type == 'all')
+    {
+      $c0 = $c->getNewCriterion(OppRelazioneAttoPeer::ATTO_FROM_ID, $this->getId());
+      $c1 = $c->getNewCriterion(OppRelazioneAttoPeer::ATTO_TO_ID, $this->getId());
+      $c0->addOr($c1);
+      $c->add($c0);
+    }
+    else if ($type == 'from')
+    {
+      $c->add(OppRelazioneAttoPeer::FROM_ID, $this->getId());
+    }
+    else if ($type == 'to')
+    {
+      $c->add(OppRelazioneAttoPeer::FROM_ID, $this->getId());
+    }
+    else
+      throw new Exception("Wrong parameter value: use all, from or to.");
+      
+    return OppRelazioneAttoPeer::doSelect($c);
+  }
+  
   public function getRamoNumfase()
   {
     return $this->getRamo().".".$this->getNumfase();
@@ -305,10 +337,11 @@ class OppAtto extends BaseOppAtto
     $c->addDescendingOrderByColumn(OppAttoHasIterPeer::DATA);
     $iters = $this->getOppAttoHasItersJoinOppIter($c);
     if (count($iters))
-      return strtolower($iters[0]);
+      return $iters[0];
     else
       return null;
   }
+
   
   /**
    * returns the Tags (TaggingsJoinTag) that makes the object indirectly monitored
@@ -516,9 +549,7 @@ class OppAtto extends BaseOppAtto
                                           'link' => $rs->getString(7), 'ramo' => $rs->getString(8), 
                                           'denominazione' => $rs->getString(9) );  	
   	}
-	
   	return $interventi;
-  
   }
   
   public function getInterventiCount()

@@ -16,6 +16,29 @@ class OppInterventoPeer extends BaseOppInterventoPeer
   }
   
   /**
+   * criterio per contare, selezionare, aggiornare o rimuovere
+   * tutti gli interventi di una carica, su un atto,
+   * in una data sede, in una data
+   *
+   * @param string $atto_id 
+   * @param string $carica_id 
+   * @param string $sede_id 
+   * @param string $data 
+   * @return Criteria
+   * @author Guglielmo Celata
+   */
+  public static function criterionByAttoCaricaSedeData($atto_id, $carica_id, $sede_id, $data)
+  {
+    $c = new Criteria();
+    $c->add(self::ATTO_ID, $atto_id);
+    $c->add(self::CARICA_ID, $carica_id);
+    $c->add(self::SEDE_ID, $sede_id);
+    $c->add(self::DATA, $data);
+    return $c;
+  }
+
+  
+  /**
    * torna i ddl collegati agli interventi delle cariche
    *
    * @param string $cariche_ids 

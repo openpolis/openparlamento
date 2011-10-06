@@ -1,15 +1,15 @@
 # Sqlfile -> Database map
-plugins.nahoWikiPlugin.lib.model.schema.sql=propel
+plugins.deppApiKeysManagementPlugin.lib.model.schema.sql=propel
+plugins.deppPropelActAsBookmarkableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.deppPropelActAsCommentableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.deppPropelActAsLaunchableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.deppPropelActAsPrioritisableBehaviorPlugin.lib.model.schema.sql=propel
 plugins.deppPropelActAsTaggableBehaviorPlugin.lib.model.schema.sql=propel
 plugins.deppPropelActAsVotableBehaviorPlugin.lib.model.schema.sql=propel
-plugins.sfSimpleBlogPlugin.lib.model.schema.sql=propel
-plugins.deppPropelActAsBookmarkableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.schema.sql=propel
+plugins.nahoWikiPlugin.lib.model.schema.sql=propel
 lib.model.schema.sql=propel
 plugins.sfEmendPlugin.lib.model.schema.sql=propel
-plugins.sfSupraVariablesPlugin.lib.model.schema.sql=propel
-plugins.deppPropelActAsCommentableBehaviorPlugin.lib.model.schema.sql=propel
-plugins.deppPropelMonitoringBehaviorsPlugin.lib.model.schema.sql=propel
 plugins.sfPropelActAsRatableBehaviorPlugin.lib.model.schema.sql=propel
-plugins.deppPropelActAsLaunchableBehaviorPlugin.lib.model.schema.sql=propel
-plugins.deppApiKeysManagementPlugin.lib.model.schema.sql=propel
-plugins.deppPropelActAsPrioritisableBehaviorPlugin.lib.model.schema.sql=propel
+plugins.sfSimpleBlogPlugin.lib.model.schema.sql=propel
+plugins.sfSupraVariablesPlugin.lib.model.schema.sql=propel
