@@ -166,7 +166,7 @@ class deppPropelActAsNewsGeneratorBehavior
         foreach ($callable as $method)
         {
           $res = $res->$method();
-          printf("  %s = (%d)\n", $method, count($res));
+          # printf("  %s = (%d)\n", $method, count($res));
         }
         
         // multiple results
