@@ -317,11 +317,11 @@ function run_opp_update_ddl_from_yaml($task, $args, $options)
   );
   foreach ($tipi_commissione as $key => $tipo_commissione){
     $trattazione_key = "trattazione_$key";
-    if (array_key_exists($trattazione_key, $up_ddl))
+    if (array_key_exists('trattazioni', $up_ddl))
     {
       print ("trattazione $tipo_commissione\n");
       print ("============" . str_repeat("=", strlen($tipo_commissione)) . "\n");
-      foreach ($up_ddl[$trattazione_key] as $seduta_id => $details) 
+      foreach ($up_ddl['trattazioni'][$trattazione_key] as $seduta_id => $details) 
       {
         list($seduta, $id) = explode("_", $seduta_id);
         $es = new OppEsitoSeduta();
