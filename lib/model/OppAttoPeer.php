@@ -572,7 +572,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	 // testo unificato o assorbito
 	$c = new Criteria();
 	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
-	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,array(1,2,4),Criteria::IN);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,array(1,2,4,5),Criteria::IN);
 	$unificati = OppRelazioneAttoPeer::doSelect($c);     
 	
 	foreach ($unificati as $unificato)
