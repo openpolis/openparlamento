@@ -572,7 +572,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	 // testo unificato o assorbito
 	$c = new Criteria();
 	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
-	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,array(1,2,4,5),Criteria::IN);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,array(1,2,4),Criteria::IN);
 	$unificati = OppRelazioneAttoPeer::doSelect($c);     
 	
 	foreach ($unificati as $unificato)
@@ -604,6 +604,17 @@ class OppAttoPeer extends BaseOppAttoPeer
              $rs = OppAttoPeer::doSelectOne($c);
              $sigla=$rs->getRamo().".".$rs->getNumfase();
 	    array_push($relazioni,array($to_stralcio->getAttoFromId(),$to_stralcio->getOppTipoRelazione()->getDenominazione(),$sigla,2));  
+	}
+	
+	// abbinato FROM
+        $c = new Criteria();
+	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,4);
+	$from_abb = OppRelazioneAttoPeer::doSelect($c);
+	
+	foreach ($from_stralci as $from_stralcio)
+    	{
+	    array_push($relazioni,array($from_abb->getAttoToId(),$from_abb->getOppTipoRelazione()->getDenominazione(),$from_abb->getDescrizione(),1));  
 	}
 	
 	
