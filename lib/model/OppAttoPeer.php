@@ -609,7 +609,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	// abbinato FROM
         $c = new Criteria();
 	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
-	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,4);
+	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,5);
 	$from_abb = OppRelazioneAttoPeer::doSelect($c);
 	
 	foreach ($from_stralci as $from_stralcio)
