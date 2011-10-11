@@ -1,5 +1,5 @@
 <?php if (count($relazioni)!=0) : ?>
-<p>
+<p style="font-size:14px;">
 <?php $count0=0; ?>
 <?php $count1=0; ?>
 <?php $count2=0; ?>
