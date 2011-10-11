@@ -610,9 +610,9 @@ class OppAttoPeer extends BaseOppAttoPeer
         $c = new Criteria();
 	$c->add(OppRelazioneAttoPeer::ATTO_FROM_ID,$id);
 	$c->add(OppRelazioneAttoPeer::TIPO_RELAZIONE_ID,5);
-	$from_abb = OppRelazioneAttoPeer::doSelect($c);
+	$from_abbs = OppRelazioneAttoPeer::doSelect($c);
 	
-	foreach ($from_stralci as $from_stralcio)
+	foreach ($from_abbs as $from_abb)
     	{
 	    array_push($relazioni,array($from_abb->getAttoToId(),$from_abb->getOppTipoRelazione()->getDenominazione(),$from_abb->getDescrizione(),1));  
 	}
