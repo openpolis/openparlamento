@@ -614,7 +614,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	
 	foreach ($from_abbs as $from_abb)
     	{
-	    array_push($relazioni,array($from_abb->getAttoToId(),$from_abb->getOppTipoRelazione()->getDenominazione(),$from_abb->getDescrizione(),1));  
+	    array_push($relazioni,array($from_abb->getAttoToId(),$from_abb->getOppTipoRelazione()->getDenominazione(),$from_abb->getDescrizione(),0));  
 	}
 	
 	
