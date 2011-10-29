@@ -5,7 +5,7 @@ require_once(sfConfigCache::getInstance()->checkConfig('config/api.yml'));
 
 dev:
   sf_guard_plugin:
-    is_social:            off # spento perché facebook auth da errore, controllare i domini nell'app
+    is_social:            on 
   
 # default values
 all:
@@ -275,7 +275,7 @@ all:
     from_tag:       "openparlamento"
     
   mail_per_redazione:
-    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'op_openparlamento.openpolis.it')?>"
+    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'local.parlamento.openpolis.it')?>"
   
   subscription:
     civicus_limit_reached_tags:       "se vuoi monitorare gli argomenti aderisci all'offerta premium"
