@@ -219,7 +219,7 @@ class BasesfGuardAuthActions extends sfActions
               $this->getContext()->getUser()->signIn($xml->user);
             } else {
               $this->redirect(sprintf("http://%s%s/aggiorna_profilo_fb/%s", 
-                                      $remote_guard_host, $script, $xml->user->hash));
+                                      $remote_guard_host, $remote_script, $xml->user->hash));
             }
             
             // redirect to the right place (same logic after login form's POST)
