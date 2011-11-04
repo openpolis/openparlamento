@@ -7,7 +7,7 @@
 <?php $tr_class = 'even' ?>	
 <?php $i=0 ?>			  
 <?php while($parlamentari->next()) : ?>
-  <?php if ($parlamentari->getString(5)!=$parlamentari->getString(7) && $i<3) : ?>
+  <?php if ($parlamentari->getString(5)!=$parlamentari->getString(7) && $i<$limit) : ?>
     <?php $i++ ?>
     <tr class="<?php echo $tr_class; ?>">
     <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
@@ -19,7 +19,11 @@
       </p>
       </th>
       <td>
-      <span class="small">il <?php echo date('d/m/Y',strtotime($parlamentari->getString(5))) ?> ha aderito al gruppo</span><br/><?php echo $parlamentari->getString(4)?>
+      <span class="small">il <?php echo date('d/m/Y',strtotime($parlamentari->getString(5))) ?> ha aderito al gruppo</span><br/><strong><?php echo $parlamentari->getString(4)?></strong>
+      <?php $gruppo= OppCaricaHasGruppoPeer::getGruppoPerParlamentareAllaData($parlamentari->getInt(8),date('Y-m-d',strtotime($parlamentari->getString(5)) -1)) ?>
+      <?php if (count($gruppo)==1) : ?>
+        <br/><span class="small"> abbandonando il gruppo</span><br/><?php echo OppGruppoPeer::retrieveByPk($gruppo['gruppo_id'])->getNome()?>
+      <?php endif; ?>
       </td>              
     </tr>
   <?php endif ?>  

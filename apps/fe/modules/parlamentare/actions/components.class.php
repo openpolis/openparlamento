@@ -25,6 +25,7 @@ class parlamentareComponents extends sfComponents
     $c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
     $c->addSelectColumn(OppCaricaPeer::TIPO_CARICA_ID);
     $c->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
+    $c->addSelectColumn(OppCaricaPeer::ID);
     $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
     $c->addJoin(OppGruppoPeer::ID,OppCaricaHasGruppoPeer::GRUPPO_ID);
     $c->addJoin(OppCaricaPeer::POLITICO_ID,OppPoliticoPeer::ID);
