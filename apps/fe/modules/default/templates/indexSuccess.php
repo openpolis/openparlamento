@@ -63,7 +63,12 @@
   <div id="main">
        
      <div class="W45_100 float-right">
+       
+       <!-- box cambio gruppo -->
+       	   <?php include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
           
+       <br/>
+       
        <!-- box Maggioranza sotto e salva -->
       	<?php include_component('votazione','widgetVotiMaggioranza', array('limit' => '2')) ?>
        
@@ -78,10 +83,6 @@
      			</ul>
          </div>	
        <?php endif; ?>
-
-         <!-- box cambio gruppo -->
-        	   <?php //include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
-        	   
        
 
        <div class="clear-both"></div>
@@ -95,14 +96,7 @@
 
        <div class="clear-both"></div>
 	  
-	     <!-- Box attivita' utenti -->
-       <div class="section-box" style="margin-top: 2em;">   
- 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
- 	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
-       </div>     
-
-
-       <div class="clear-both"></div>
+	     
  
        
    
@@ -112,7 +106,7 @@
   
         <!-- in evidenza dal blog -->
          <div class="section-box"  style="padding-bottom:20px;">
-           <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '/sfSimpleBlog/postsFeed/format/rss', array('class' => 'section-box-rss')) ?>
+           <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'http://feeds.feedburner.com/openpolis?format=xml', array('class' => 'section-box-rss')) ?>
            <h3>in evidenza dal blog di openpolis</h3>
            <?php include_partial('sfSimpleBlog/inevidenza', 
                                  array('feed' => sfFeedPeer::createFromWeb('http://blog.openpolis.it/category/openparlamento/feed/'),
@@ -124,6 +118,15 @@
        	<?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
      
         <div class="clear-both"></div>
+        
+        <!-- Box attivita' utenti -->
+         <div class="section-box" style="margin-top: 2em;">   
+   	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
+   	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
+         </div>     
+
+
+         <div class="clear-both"></div>
       
   	
      </div>
