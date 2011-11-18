@@ -251,6 +251,7 @@ foreach($array_diff as $k => $diff)
 
 <br/>
 </div>
+<!--
 <div class="W73_100 float-right" style="width:40%">
   <h5 class="subsection">Maggioranza VS Opposizione: chi guadagna e chi perde</h5>
   <br/>
@@ -281,6 +282,7 @@ foreach($array_diff as $k => $diff)
 <br/>
 
 </div>
+-->
 <div class="W73_100 float-left" style="width:60%">
 <h5 class="subsection">I <?php echo ($ramo==1?'deputati':'senatori')?> che hanno cambiato gruppo</h5>
 Dall'inizio della legislatura ad oggi, <strong><?php echo count($parlamentari_change) ?> <?php echo ($ramo==1?'deputati':'senatori')?></strong> hanno cambiato gruppo di appartenenza <?php echo ($ramo==1?'alla Camera':'al Senato')?>.
