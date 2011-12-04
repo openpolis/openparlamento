@@ -80,7 +80,7 @@ class BasesfGuardAuthActions extends sfActions
 
 
   /**
-   * Executes loginSocial action
+   * Executes login action
    * integrates Facebook login
    * (other social sign-ins in the future)
    *
@@ -105,7 +105,7 @@ class BasesfGuardAuthActions extends sfActions
 
     // sfRemoteGuardProvider env and scripts need some hacks
     $remote_script = str_replace('fe', 'be', $script);
-    if ($remote_script == '/be.php') $remote_script = '/index.php';
+    if ($remote_script == '/be.php' || $script == '') $remote_script = '/index.php';
 
 
     if ($this->getRequest()->getMethod() == sfRequest::POST) // username and password have been posted
@@ -168,6 +168,7 @@ class BasesfGuardAuthActions extends sfActions
         // logged into FB, implement the 'click FB_login btn flow'
         if (!is_null($this->fb_user)) 
         {
+          
           // check if op and fb accounts have already been linked
           $xml = simplexml_load_file(sprintf("http://%s%s/getUserByFBUserId/%s/%s", 
                                             $remote_guard_host, $remote_script, $apikey, $fb['id']));
@@ -191,10 +192,14 @@ class BasesfGuardAuthActions extends sfActions
                 
                   // add a user to the op_access db, (activated and verified)
                   // an email notification is sent to the new user and to the administrators
-                  $xml = simplexml_load_file(sprintf("http://%s%s/addUser/%s/%s/%s/%s/%s", 
-                                                      $remote_guard_host, $remote_script, $apikey, 
-                                                      $fb['first_name'], $fb['last_name'], $fb['email'],
-                                                      $fb['id']));
+                  $accesso_addUser_url = sprintf("http://%s%s/addUser/%s/%s/%s/%s/%s", 
+                                                  $remote_guard_host, $remote_script, 
+                                                  $apikey, 
+                                                  $fb['first_name'], $fb['last_name'], 
+                                                  $fb['email'], $fb['id']);
+                  $xml = simplexml_load_file($accesso_addUser_url);
+                  sfContext::getInstance()->getLogger()->info(sprintf("xxx: accesso_addUser_url: %s", $accesso_addUser_url));
+
                 } 
               } else {
                 $link_xml = simplexml_load_file(sprintf("http://%s%s/linkUserToFBAccount/%s/%s/%s", 
@@ -204,19 +209,76 @@ class BasesfGuardAuthActions extends sfActions
                   $this->setFlash('error', $link_xml->error);
                   return sfView::SUCCESS; // reload login page, displaying flash error messages
                 } else {
-                  $edit_profile_url = sprintf("http://%s%s/aggiorna_profilo", $remote_guard_host, $script);
+                  
+                  $edit_profile_url = sprintf("http://%s%s/aggiorna_profilo", $remote_guard_host, $remote_script);
                   $this->setFlash('notice', sprintf("Il tuo account è stato associato all'utenza facebook <a href=\"http://facebook.com/%s\">%s</a>, vai alla <a href=\"%s\">gestione del tuo profilo</a> per modificare questa impostazione.", $fb['id'], $fb['email'], $edit_profile_url));
+                  
+                  
                 }
               
               }             
             }
           }
 
+          //
+          // aggiunta nuova remember key (rimozione vecchie): serve per i cookie
+          //
+          
+          // rimozione remember keys expired
+          $clear_rks_url = sprintf("http://%s%s/clearOldRememberKeys/%s",
+                                   $remote_guard_host, $remote_script, $apikey);   
+          sfContext::getInstance()->getLogger()->info(sprintf("xxx: clear_rks_url: %s", $clear_rks_url));
+          $clear_rks_xml = simplexml_load_file($clear_rks_url);
+          if (count($clear_rks_xml->error))
+          {
+            $error = $clear_rks_xml->error;
+            $this->setFlash('error', $error);
+            return sfView::SUCCESS; 
+          }  	   
+
+          if (count($clear_rks_xml->success)) {
+            // set nuova remember key per l'utente
+            $set_rk_url = sprintf("http://%s%s/setNewUserRememberKey/%s/%s",
+                                  $remote_guard_host, $remote_script, $apikey, $xml->user->hash);   
+            sfContext::getInstance()->getLogger()->info(sprintf("xxx: set_rk_url: %s", $set_rk_url));
+            $set_rk_xml = simplexml_load_file($set_rk_url);
+            if (count($set_rk_xml->error))
+            {
+              $error = $set_rk_xml->error;
+              sfContext::getInstance()->getLogger()->error(sprintf("xxx: balking out: %s", $error));
+              $this->setFlash('error', $error);
+              return sfView::SUCCESS; 
+            }
+
+            if (count($set_rk_xml->remember_key)) {
+              $rk = $set_rk_xml->remember_key;
+
+              // richiesta xml utente completo, partendo dalla rk
+              $get_user_url = sprintf("http://%s%s/getUserByRememberKey/%s/%s", 
+                                      $remote_guard_host, $remote_script, $apikey, $rk);   
+              sfContext::getInstance()->getLogger()->info(sprintf("xxx: get_user_url: %s", $get_user_url));
+              $xml = simplexml_load_file($get_user_url);
+              if (count($xml->error))
+              {
+                $error = $xml->error;
+                $this->setFlash('error', $error);
+                return sfView::SUCCESS; // reload login page, displaying flash error messages
+              }
+
+            }
+          }
+          
+          //
+          // fine aggiunta nuova remember key
+          //
+          
+          
+
           if (count($xml->user))
           {
             // logs user in OP
             if ($xml->user->is_active == 'Y') {
-              $this->getContext()->getUser()->signIn($xml->user);
+              $this->getContext()->getUser()->signIn($xml->user, 'session');
             } else {
               $this->redirect(sprintf("http://%s%s/aggiorna_profilo_fb/%s", 
                                       $remote_guard_host, $remote_script, $xml->user->hash));
@@ -224,13 +286,12 @@ class BasesfGuardAuthActions extends sfActions
             
             // redirect to the right place (same logic after login form's POST)
             $redirect_url = $user->getAttribute('redirect_url', $this->getRequest()->getReferer());
-            sfContext::getInstance()->getLogger()->info(sprintf("xxx: post fb: redirect_url: %s", $redirect_url));
             $user->getAttributeHolder()->remove('redirect_url');
 
             $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $redirect_url);
-            sfContext::getInstance()->getLogger()->info(sprintf("xxx: post fb: will redirect to signin_url: %s", $signin_url));
+            sfContext::getInstance()->getLogger()->info(sprintf("xxx: post fb: will redirect to: %s", $signin_url));
 
-            $this->setFlash('notice', 'connessione attraverso fb riuscita');
+            sfContext::getInstance()->getLogger()->info(sprintf("xxx: flash notice: %s", $this->getFlash('notice')));
 
             $this->redirect('' != $signin_url ? $signin_url : '@homepage');
           } else {

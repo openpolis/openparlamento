@@ -75,11 +75,20 @@ function run_nltk_genera_categorie($task, $args, $options)
     $atto = OppAttoPeer::retrieveByPK($atto_id);
     $tags = $atto->getTags(array('is_triple' => true, 'return' => 'value', 'serialized' => true));
     if ($tags) {
-      $row = sprintf("%d,%s", $atto->getId(), implode(',', array_map('trim', explode(",", $tags))));
+      foreach ($tags_ar = explode(",", $tags) as $cnt => $tag) {
+        $tags_ar[$cnt] = '"'.trim($tag).'"';
+      }      
+      unset($tag);
+      
+      $row = sprintf("%d,%s", $atto->getId(), implode(',', $tags_ar));
       if (is_null($prefix)) {
-        printf("%s\n", $row);
+        printf("%s", $row);
       } else {
-        printf("%s/%s\n", $prefix, $row);
+        printf("%s/%s", $prefix, $row);
+      }
+      if (count($args) > 1)
+      {
+        print("\n");
       }
     }
 
@@ -145,12 +154,14 @@ function run_nltk_genera_files($task, $args, $options)
 
   // creazione del file di archivio
   $zip = new ZipArchive;
-  $zip_file_name = $files_path . DIRECTORY_SEPARATOR . "testi.zip";
+  $zip_file_name = sprintf("%s/testi.zip", $files_path);
   if (!file_exists($zip_file_name)) {
     $res = $zip->open($zip_file_name, ZIPARCHIVE::CREATE);
   } else {
     $res = $zip->open($zip_file_name);
   }
+  
+  echo $zip_file_name;
 
   if ($res !== TRUE) {
     throw new Exception("Impossibile creare l'archivio testi.zip: " . $res);
@@ -171,7 +182,7 @@ function run_nltk_genera_files($task, $args, $options)
       $docs = $atto->getOppDocumentos();
 
       // definizione nome nell'archivio (attoID_docID)
-      $file_name = $prefix . "/" . $atto_id;
+      $file_name = $atto_id;
 
       // pathc di tutti i testi dei doc relativi all'atto
       $atto_txt = "";
