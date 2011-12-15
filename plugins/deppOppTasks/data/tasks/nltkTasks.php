@@ -73,14 +73,9 @@ function run_nltk_genera_categorie($task, $args, $options)
     $tipo_atto_id = $a['tipo_atto_id'];
 
     $atto = OppAttoPeer::retrieveByPK($atto_id);
-    $tags = $atto->getTags(array('is_triple' => true, 'return' => 'value', 'serialized' => true));
+    $tags = $atto->getTagsIds();
     if ($tags) {
-      foreach ($tags_ar = explode(",", $tags) as $cnt => $tag) {
-        $tags_ar[$cnt] = '"'.trim($tag).'"';
-      }      
-      unset($tag);
-      
-      $row = sprintf("%d,%s", $atto->getId(), implode(',', $tags_ar));
+      $row = sprintf("%d,%s", $atto->getId(), implode(',', $tags));
       if (is_null($prefix)) {
         printf("%s", $row);
       } else {
@@ -152,21 +147,6 @@ function run_nltk_genera_files($task, $args, $options)
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
 
 
-  // creazione del file di archivio
-  $zip = new ZipArchive;
-  $zip_file_name = sprintf("%s/testi.zip", $files_path);
-  if (!file_exists($zip_file_name)) {
-    $res = $zip->open($zip_file_name, ZIPARCHIVE::CREATE);
-  } else {
-    $res = $zip->open($zip_file_name);
-  }
-  
-  echo $zip_file_name;
-
-  if ($res !== TRUE) {
-    throw new Exception("Impossibile creare l'archivio testi.zip: " . $res);
-  }
-  
   // loop principale
   $n_atti = $atti_rs->getRecordCount();
   $cnt = 0;
@@ -180,21 +160,19 @@ function run_nltk_genera_files($task, $args, $options)
     if ($n_docs = $atto->countOppDocumentos()) 
     {
       $docs = $atto->getOppDocumentos();
-
-      // definizione nome nell'archivio (attoID_docID)
-      $file_name = $atto_id;
-
-      // pathc di tutti i testi dei doc relativi all'atto
+      
+      // path di tutti i testi dei doc relativi all'atto
       $atto_txt = "";
       foreach ($docs as $doc) {
         $atto_txt .= $doc->getTesto();
       }
       
       unset($docs);
-
-      // aggiunta testo all'archivio zip
-      $zip->addFromString($file_name, $atto_txt);
-
+      
+      $fh = fopen($files_path."/".$atto_id, 'w');
+      fwrite($fh, $atto_txt);
+      fclose($fh);
+      
     }
     printf(" %d %d docs - ok (%d)\n", $atto_id, $n_docs, memory_get_usage());
     
@@ -204,9 +182,6 @@ function run_nltk_genera_files($task, $args, $options)
   }
 
   
-  // chiusura archivio e scrittura su file system
-  $zip->close();
-
 
   $msg = sprintf("%d atti elaborati\n", $cnt);
   echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));
