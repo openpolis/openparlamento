@@ -23,8 +23,7 @@ for y in $(expr $YEAR - 3) $(expr $YEAR - 2) $(expr $YEAR - 1)
     count=$(expr $count + 1)
     echo "--$count/$N_ATTI ($id_atto)"
     ./symfony nltk-genera-categorie --prefix=trained_set $id_atto >> $FILES_PATH/training/categorie.csv
-    ./symfony nltk-genera-files --path=$FILES_PATH/training/ $id_atto > /dev/null 2>&1
+    ./symfony nltk-genera-files --path=$FILES_PATH/training/testi $id_atto > /dev/null 2>&1
     done
  done
 
-done

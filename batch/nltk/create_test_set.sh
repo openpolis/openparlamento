@@ -7,7 +7,7 @@ mkdir -p data/nltk/interrogazioni/test
 APP=interrogazioni
 FILES_PATH=data/nltk/$APP
 YEAR=2011
-N_ATTI=10
+N_ATTI=430
 
 rm $FILES_PATH/test/testi.zip
  
@@ -19,5 +19,6 @@ for id_atto in $(mysql -uroot op_openparlamento -e"select id from opp_atto where
    count=$(expr $count + 1)
    echo "--$count/$N_ATTI ($id_atto)"
    # ./symfony nltk-genera-categorie --prefix=trained $id_atto >> $FILES_PATH/categorie.csv
-  ./symfony nltk-genera-files --path=$FILES_PATH/test $id_atto > /dev/null 2>&1
+  ./symfony nltk-genera-files --path=$FILES_PATH/test/testi $id_atto > /dev/null 2>&1
  done
+
