@@ -69,9 +69,10 @@
           
        <br/>
        
-       <!-- box Maggioranza sotto e salva -->
-      	<?php include_component('votazione','widgetVotiMaggioranza', array('limit' => '2')) ?>
-       
+       <!-- box Maggioranza sotto e salva 
+      	<?php //include_component('votazione','widgetVotiMaggioranza', array('limit' => '2')) ?>
+      	-->
+      	
        <!-- Box rotazione parlamentari -->    
         <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
        <!-- box atti in evidenza dal parlamento -->
