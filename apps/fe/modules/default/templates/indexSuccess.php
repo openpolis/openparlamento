@@ -5,7 +5,7 @@
   <div id="teasers">
 
     <div class="W33_100 float-right">
-      <a href="http://indice.openpolis.it"><img src="https://s3-eu-west-1.amazonaws.com/op-images/banner-rapporto-big.png" border=0 /></a> 
+      <!--<a href="http://indice.openpolis.it"><img src="https://s3-eu-west-1.amazonaws.com/op-images/banner-rapporto-big.png" border=0 /></a> -->
     </div>	
 
 
