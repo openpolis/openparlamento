@@ -84,8 +84,8 @@
   				<div class="politician-more-info">
   				    <?php if ($carica) : ?>	
   				    	<p><label>
-  				    	<?php echo ($carica->getTipoCaricaId()!=5 ? $carica->getLegislatura()."&#186; legislatura: " :"come Senatore a vita: ") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?>
-  				    	</label><span style="font-weight:normal;">(&egrave; parlamentare da <a href="http://openpolis.it/politico/'<?php echo $parlamentare->getId()?>#carriera" style="font-size:12px;"><?php echo $durata?></a>)</span></p>
+  				    	<?php echo ($carica->getTipoCaricaId()!=5 ? "" :"come Senatore a vita: ") ?>in carica dal <?php echo $carica->getDataInizio('d/m/Y') ?>
+  				    	</label><span style="font-weight:normal;">(in carriera parlamentare per <a href="http://openpolis.it/politico/<?php echo $parlamentare->getId()?>#carriera" style="font-size:12px;"><?php echo $durata?></a>)</span></p>
   				    	
   					<p><label>gruppo:</label>  
   					
