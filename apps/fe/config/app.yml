@@ -150,6 +150,7 @@ all:
 
   # varie
   monitored_acts_per_type_limit: 5
+  legislatura_data_inizio: '2008-04-29'
   legislatura_corrente: 16
   
   sfEmendPlugin:    
