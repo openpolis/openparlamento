@@ -52,18 +52,18 @@ jQuery(document).ready(function(){
 
   <script type="text/javascript" language="javascript">
   //<![CDATA[
- 
+
   /**
    * Funzione che assegna observer per eventi dei tag associati
    */
   refresh_tags_show_observers = function(){
     var removers = $$('div#tag_show div .remover');
-    
+
     removers.each( function(el) {
 
       // identifica remover e tag
       remover = el;
-            
+
       // click sulla X per rimuovere il tag dai miei tag
       if (remover)
         remover.observe('click', function(event) {
@@ -71,13 +71,13 @@ jQuery(document).ready(function(){
           remove_tag(elt.up().id);
         });  
     });
-    
+
   };
 
   // assegnazione degli observers ai tag associati
   refresh_tags_show_observers();
 
-  
+
   // gestione della rimozione di un tag dai tag associati
   // TODO: verificare problemi con onCreate e onComplete per l'indicatore
   remove_tag = function(tag_name){
@@ -91,7 +91,7 @@ jQuery(document).ready(function(){
     });
 
   };
-  
+
   //]]>
   </script>
 

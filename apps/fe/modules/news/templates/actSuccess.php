@@ -43,11 +43,11 @@
 <?php slot('breadcrumbs') ?>
     <?php echo link_to("home", "@homepage") ?> /
     <?php if ($act->getTipoAttoId()==1): ?>
-	<?php echo link_to("disegni di legge", "atto/disegnoList") ?>
+	<?php echo link_to("disegni di legge", "@attiDisegni") ?>
     <?php endif; ?> 
     	
     <?php if ($act->getTipoAttoId()==12): ?>
-	<?php echo link_to("decreti legge", "atto/decretoList") ?>
+	<?php echo link_to("decreti legge", "@attiDecretiLegge") ?>
     <?php endif; ?> 
     
     <?php if ($act->getTipoAttoId()==15 || $act->getTipoAttoId()==16 || $act->getTipoAttoId()==17): ?>
@@ -55,7 +55,7 @@
     <?php endif; ?> 
     
     <?php if (($act->getTipoAttoId()<12 && $act->getTipoAttoId()!=1) || $act->getTipoAttoId()==14): ?>
-	<?php echo link_to("atti non legislativi", "atto/attoNonLegislativoList") ?>
+	<?php echo link_to("atti non legislativi", "@attiNonLegislativi") ?>
     <?php endif; ?> 
 
     /

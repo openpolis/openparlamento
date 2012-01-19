@@ -320,7 +320,7 @@ public function executeAllvoteComparati()
   {
     $parlamentare1 = $this->getRequestParameter('parlamentare1');
     $parlamentare2 = $this->getRequestParameter('parlamentare2');
-    $this->redirect('votazione/list');
+    $this->redirect('@votazioni');
   }
   
   public function executeGruppiParlamentari()

@@ -22,7 +22,7 @@
 
       <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
-      <?php echo pager_navigation($pager, 'news/attiNonLegislativiList') ?>
+      <?php echo pager_navigation($pager, '@news_attiNonLegislativi') ?>
     </div>  
 
 
@@ -31,6 +31,6 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-    <?php echo link_to("atti non legislativi", "atto/attoNonLegislativoList") ?> /
+    <?php echo link_to("atti non legislativi", "@attiNonLegislativi") ?> /
    tutte le notizie
 <?php end_slot() ?>

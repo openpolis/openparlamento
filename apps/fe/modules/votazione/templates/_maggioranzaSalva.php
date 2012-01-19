@@ -43,7 +43,7 @@
   <tfoot>		  		  
     <tr>
       <td colspan="6" align="center">
-        <?php echo pager_navigation($pager, 'votazione/maggioranzaSalva') ?>
+        <?php echo pager_navigation($pager, '@maggioranzaSalva') ?>
       </td>	
     </tr>
     <tr>

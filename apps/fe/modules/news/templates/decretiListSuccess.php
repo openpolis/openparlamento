@@ -22,7 +22,7 @@
 
       <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
-      <?php echo pager_navigation($pager, 'news/decretiList') ?>
+      <?php echo pager_navigation($pager, '@news_attiDecreti') ?>
     </div>  
 
   </div>
@@ -30,6 +30,6 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-    <?php echo link_to("decreti legge", "atto/decretoList") ?> /
+    <?php echo link_to("decreti legge", "@attiDecretiLegge") ?> /
    tutte le notizie
 <?php end_slot() ?>

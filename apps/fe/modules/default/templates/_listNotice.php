@@ -7,7 +7,8 @@
     ai <b>filtri impostati</b>
     <?php 
       if (!isset($route)) 
-        $route = sfContext::getInstance()->getModuleName() . '/' . sfContext::getInstance()->getActionName(); 
+        //$route = sfContext::getInstance()->getModuleName() . '/' . sfContext::getInstance()->getActionName(); 
+		$route = '@'. sfRouting::getInstance()->getCurrentRouteName();
     ?>
     <?php echo link_to('rimuovi tutti i filtri',  "$route" .(strpos($route, '?')?'&':'?'). "reset_filters=true") ?>
   <?php endif ?>

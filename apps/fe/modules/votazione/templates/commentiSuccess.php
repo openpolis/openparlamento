@@ -1,4 +1,8 @@
-<?php use_helper('Date', 'I18N') ?>
+<?php use_helper('Date', 'I18N', 'Slugger');
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@commenti_votazione?slug='. slugify($votazione->getTitolo() ).'&id='. $votazione->getId() , true) ."\" />";
+end_slot();
+?>
 
 <?php include_partial('votazione_tabs', array(
                'votazione' => $votazione, 'current' => 'commenti', 'nb_comments' => $votazione->getNbPublicComments(), 'ramo' => $ramo)) ?>

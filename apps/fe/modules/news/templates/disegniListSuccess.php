@@ -24,7 +24,7 @@
 
     <?php echo include_partial('news/newslist', array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
     
-    <?php echo pager_navigation($pager, 'news/disegniList') ?>
+    <?php echo pager_navigation($pager, '@news_attiDisegni') ?>
    </div> 
 
   </div>
@@ -32,6 +32,6 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-    <?php echo link_to("disegni di legge", "atto/disegnoList") ?> /
+    <?php echo link_to("disegni di legge", "@attiDisegni") ?> /
    tutte le notizie
 <?php end_slot() ?>

@@ -42,14 +42,30 @@ class BasedeppLaunchingActions extends sfActions
   public function executePriorityUp()
   {
     $this->forward404Unless(in_array($this->namespace, $this->item->hasBeenLaunched()));
-    $this->item->increasePriority($this->namespace);
+    $this->item->increasePriority($this->namespace, $this->getRequestParameter('paths', 1) );
+
+	return $this->resultAjaxSuccess();
   }
 
   public function executePriorityDn()
   {
     $this->forward404Unless(in_array($this->namespace, $this->item->hasBeenLaunched()));
-    $this->item->decreasePriority($this->namespace);
+    $this->item->decreasePriority($this->namespace, $this->getRequestParameter('paths', 1));
+
+	return $this->resultAjaxSuccess();
   }
+
+	private function resultAjaxSuccess()
+	{
+		if ( !$this->getRequest()->isXmlHttpRequest() )
+		{
+			return;
+		}
+		$this->setLayout(false);    
+	    $this->response->setContent("");
+		sfConfig::set('sf_web_debug', false);
+		return sfView::NONE;
+	}
 
 
   /**
@@ -61,6 +77,8 @@ class BasedeppLaunchingActions extends sfActions
    **/
   public function postExecute()
   {
+	if ( $this->getRequest()->isXmlHttpRequest() )
+		return;
     // redirect back to referer
     $this->redirect($this->getRequest()->getReferer());        
   }

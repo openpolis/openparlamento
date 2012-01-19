@@ -8,12 +8,32 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
-
+	
+	<?php
+	// CANONICAL for _old-s 
+	$router = sfRouting::getInstance();
+	$currentRouteName = $router->getCurrentRouteName();
+	if ( preg_match("/^(.+)_old$/", $currentRouteName, $uriParts ) )
+	{
+		if ( has_slot('canonical_link') )
+		{
+			include_slot('canonical_link');
+		}
+		else
+		{
+			$newRouteURI = $uriParts[1];
+			if ( $router->hasRouteName($newRouteURI) )
+			{
+				$currentParams = $this->getContext()->getRequest()->extractParameters(array('sort','page','type', 'id', 'slug'));
+				echo '<link rel="canonical" href="'.rtrim($this->getContext()->getController()->genUrl('',true),'/'). $router->generate($newRouteURI, $currentParams)   .'" />';
+			}
+		}
+	}
+	?>	
     <link rel="icon" type="image/gif" href="/ico_op_32x32.gif" />
   </head>
-
   <body>
-    <div id="wrapper">
+	<div id="wrapper">
       <div id="header">
         <div id="tools" class="float-container">
           <?php include_partial('global/tools') ?>	  

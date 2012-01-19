@@ -253,21 +253,30 @@ news_parlamentare:
   url:  /news_parlamentare/:id/*
   param: { module: news, action: politician }
 
+news_attiDisegni_old:
+    url: /news_attiDisegni/*
+    param: { module: news, action: disegniList}
 news_attiDisegni:
-  url: /news_attiDisegni
-  param: { module: news, action: disegniList}
+    url: /disegni-di-legge-ultime-notizie/*
+    param: { module: news, action: disegniList}
 
+news_attiDecreti_old:
+  url: /news_attiDecreti/*
+  param: { module: news, action: decretiList}
 news_attiDecreti:
-  url: /news_attiDecreti
+  url: /decreti-legge-ultime-notizie/*
   param: { module: news, action: decretiList}
 
 news_attiDecretiLegislativi:
   url: /news_attiDecretiLegislativi
   param: { module: news, action: decretiLegislativiList}
 
+news_attiNonLegislativi_old:
+    url: /news_attiNonLegislativi/*
+    param: { module: news, action: attiNonLegislativiList}
 news_attiNonLegislativi:
-  url: /news_attiNonLegislativi
-  param: { module: news, action: attiNonLegislativiList}
+    url: /atti-non-legislativi-ultime-notizie/*
+    param: { module: news, action: attiNonLegislativiList}
 
 news_votazioni:
   url: /news_votazioni
@@ -282,25 +291,37 @@ attiSearch:
   url: /attiSearch/:type/*
   param: { module: sfSolr, action: attiSearch }
 
-attiEvidenza:
+attiEvidenza_old:
   url: /attiEvidenza/*
   param: { module: atto, action: evidenza }
+attiEvidenza:
+    url: /atti-parlamentari-importanti/*
+    param: { module: atto, action: evidenza }
   
-attiDisegni:
+attiDisegni_old:
   url: /attiDisegni/*
   param: { module: atto, action: disegnoList }
-  
+attiDisegni:
+    url: /disegni-di-legge-in-parlamento/*
+    param: { module: atto, action: disegnoList }
+
+attiDecretiLegge_old:
+    url: /attiDecretiLegge/*
+    param: { module: atto, action: decretoList }
 attiDecretiLegge:
-  url: /attiDecretiLegge/*
+  url: /decreti-legge/*
   param: { module: atto, action: decretoList }
 
 attiDecretiLegislativi:
   url: /attiDecretiLegislativi/*
   param: { module: atto, action: decretoLegislativoList }
 
-attiNonLegislativi:
-  url:   /attiNonLegislativi/:sort/:type
+attiNonLegislativi_old:
+  url:   /attiNonLegislativi/:sort/:type/*
   param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
+attiNonLegislativi:
+    url:   /atti-non-legislativi-in-parlamento/:sort/:type/*
+    param: { module: atto, action: attoNonLegislativoList, sort: data_pres, type: desc, display: false }
 
 singolo_atto:
   url: /singolo_atto/:id
@@ -378,42 +399,62 @@ votazioniSearch:
   url: /votazioniSearch/*
   param: { module: sfSolr, action: votazioniSearch }
   
-votichiave:
+votichiave_old:
   url:   /votazioni/keyvotes
   param: { module: votazione, action: keyvotes }
+votichiave:
+    url:   /votazioni-in-parlamento-importanti
+    param: { module: votazione, action: keyvotes }
 
 votiRilevanti:
   url:   /votazioniRilevanti
   param: { module: votazione, action: relevantVotes }
   
+maggioranzaSotto_old:
+    url:   /votazioni/maggioranzaSotto/:sort/:type/*
+    param: { module: votazione, action: maggioranzaSotto, sort: data, type: desc, display: false }
 maggioranzaSotto:
-  url:   /votazioni/maggioranzaSotto/:sort/:type/*
-  param: { module: votazione, action: maggioranzaSotto, sort: data, type: desc, display: false }  
+    url:   /maggioranza-battuta-in-parlamento-nelle-votazioni/:sort/:type/*
+    param: { module: votazione, action: maggioranzaSotto, sort: data, type: desc, display: false }  
 
-parlamentariSotto:
+parlamentariSotto_old:
     url:   /votazioni/parlamentariSotto/:ramo
     param: { module: votazione, action: parlamentariSotto, ramo: camera, display: false }
+parlamentariSotto:
+    url:   /parlamentari-che-fanno-battere-la-maggioranza-nelle-votazioni/:ramo
+    param: { module: votazione, action: parlamentariSotto, ramo: camera, display: false }
 
+maggioranzaSalva_old:
+    url:   /votazioni/maggioranzaSalva/:sort/:type/*
+    param: { module: votazione, action: maggioranzaSalva, sort: data, type: desc, display: false }  
 maggioranzaSalva:
-  url:   /votazioni/maggioranzaSalva/:sort/:type/*
-  param: { module: votazione, action: maggioranzaSalva, sort: data, type: desc, display: false }  
+    url:   /maggioranza-salvata-da-opposizione-in-parlamento-nelle-votazioni/:sort/:type/*
+    param: { module: votazione, action: maggioranzaSalva, sort: data, type: desc, display: false }
 
-parlamentariSalva:
+parlamentariSalva_old:
     url:   /votazioni/parlamentariSalva/:ramo
     param: { module: votazione, action: parlamentariSalva, ramo: camera, display: false }      
-  
-votazioni:
+parlamentariSalva:
+    url:   /parlamentari-di-opposizione-che-salvano-la-maggioranza-nelle-votazioni/:ramo
+    param: { module: votazione, action: parlamentariSalva, ramo: camera, display: false }
+
+votazioni_old:
   url:   /votazioni/:sort/:type/*
+  param: { module: votazione, action: list, sort: data, type: desc, display: false }
+votazioni:
+  url:   /tutte-le-votazioni-in-parlamento/:sort/:type/*
   param: { module: votazione, action: list, sort: data, type: desc, display: false }
 
 votazione:
-  url:   /votazione/:id
-  param: { module: votazione, action: index }
+    url: /votazione/:id
+    param: { module: votazione, action: index }
 
-commenti_votazione:
+commenti_votazione_old:
   url: /commenti_votazione/:id
   param: { module: votazione, action: commenti }
- 
+commenti_votazione:
+    url: /votazione/commenti-utenti/:slug/:id
+    param: { module: votazione, action: commenti }
 
 parlamentariSearch:
   url: /parlamentariSearch/*

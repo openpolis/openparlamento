@@ -51,7 +51,7 @@
     <?php endforeach; ?>
     <tr>
       <td align="center" colspan='4'>
-        <?php echo pager_navigation($pager, 'atto/attoNonLegislativoList') ?>
+        <?php echo pager_navigation($pager, '@attiNonLegislativi') ?>
       </td>
     </tr>
     <tr>

@@ -96,25 +96,31 @@ class deppPropelActAsLaunchableBehavior
     sfLaunchingPeer::resetPriorities($namespace);
   }
   
-  
-  public function increasePriority(BaseObject $object, $namespace = 'home')
+  public function increasePriority(BaseObject $object, $namespace = 'home', $paths = 1)
   {
     if (!is_string($namespace))
       throw new deppPropelActAsLaunchableException('Namespace can only be a string');
 
     $l = sfLaunchingPeer::retrieveByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
-    $next_l = sfLaunchingPeer::retrieveNextByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
-    deppPropelActAsLaunchableToolkit::swapPriorities($l, $next_l);
+	for ( $i = 1; $i <= $paths; $i++ )
+	{
+		$next_l = sfLaunchingPeer::retrieveNextByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
+	    deppPropelActAsLaunchableToolkit::swapPriorities($l, $next_l);
+	}
   }
 
-  public function decreasePriority(BaseObject $object, $namespace = 'home')
+  public function decreasePriority(BaseObject $object, $namespace = 'home', $paths = 1)
   {
     if (!is_string($namespace))
       throw new deppPropelActAsLaunchableException('Namespace can only be a string');
 
     $l = sfLaunchingPeer::retrieveByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
-    $prev_l = sfLaunchingPeer::retrievePrevByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
-    deppPropelActAsLaunchableToolkit::swapPriorities($prev_l, $l);
+	for ( $i = 1; $i <= $paths; $i++ )
+	{
+		//echo " $i/$paths ". $l->getPriority();
+		$prev_l = sfLaunchingPeer::retrievePrevByModelIdNamespace(get_class($object), $object->getPrimaryKey(), $namespace);
+	    deppPropelActAsLaunchableToolkit::swapPriorities($prev_l, $l);
+	}
   }
   
   /**

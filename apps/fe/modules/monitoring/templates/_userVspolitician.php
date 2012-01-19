@@ -134,7 +134,7 @@
 <?php else: ?>
   <div class="W100_100 float-left">
     <h5 class="subsection" >i parlamentari che pi&ugrave; ti rappresentano</h5>
-    <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','/attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
+    <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','@attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
       La tua classifica verr&agrave; immediatamente aggiornata!</p><br />
   </div>  
 <?php endif ?>
@@ -216,7 +216,7 @@
     <span><?php echo link_to('Vai alla <strong>tua</strong> classifica completa!','/monitoring_politicians/'.$sf_user->getToken()."#rappresentometro") ?></span>
     <br />
   <?php else: ?>
-  <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','/attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
+  <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','@attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
     La tua classifica verr&agrave; immediatamente aggiornata!</p>
     <br/>    
   <?php endif ?>

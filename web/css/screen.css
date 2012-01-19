@@ -22,7 +22,6 @@ table tbody td { text-align: center; }
 
 .input-text { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd; }
 
-
 /*
  * FLOAT
  *----------------------------------------------*/
@@ -1292,4 +1291,16 @@ a.fb_button, a.fb_button:hover {
   margin: 1px 1px 0 21px;
   text-shadow: none;
 }
+
+
+/* vote administration styles */
+h6.slider-button { cursor: pointer; padding: 5px 0; }
+.vote-administration { padding-top: 5px; }
+.vote-administration > * { font-size: 0.9em; min-height: 1.5em; cursor: move; margin-bottom:3px }
+.vote-administration > .vote-administration-highlight { background-color: #FBF9EE;
+    border: 1px solid #FCEFA1;
+    color: #444; height: 0.8em; line-height: 1.2em; }
+.vote-administration > *:first-child .moveup-vote { display: none; }
+.vote-administration > *:last-child .movedown-vote { display: none; }
+.vote-administration > *:hover { background-color:#CCC; }
 

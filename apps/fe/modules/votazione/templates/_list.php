@@ -41,7 +41,10 @@
   <tfoot>		  		  
     <tr>
       <td colspan="6" align="center">
-        <?php echo pager_navigation($pager, 'votazione/list?legislatura='.$sf_user->getAttribute('legislatura').'&ramo='.$sf_user->getAttribute('ramo')) ?>
+        <?php $paginationParams = array();
+				$sf_user->getAttribute('legislatura') AND ($paginationParams[] = 'legislatura='. $sf_user->getAttribute('legislatura'));
+				$sf_user->getAttribute('ramo') AND ($paginationParams[] = 'ramo='. $sf_user->getAttribute('ramo'));
+				echo pager_navigation($pager, '@votazioni?sort='. $sf_params->get('sort').'&type='. $sf_params->get('type'). ( !empty($paginationParams) ? '&'. implode('&', $paginationParams) : '' )) ?>
       </td>	
     </tr>
     <tr>

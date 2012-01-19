@@ -45,7 +45,7 @@
   <tfoot>		  		  
     <tr>
       <td colspan="6" align="center">
-        <?php echo pager_navigation($pager, 'votazione/maggioranzaSotto') ?>
+        <?php echo pager_navigation($pager, '@maggioranzaSotto') ?>
       </td>	
     </tr>
     <tr>

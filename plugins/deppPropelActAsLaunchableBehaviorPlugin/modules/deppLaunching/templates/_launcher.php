@@ -1,4 +1,10 @@
 <?php echo use_helper('deppLaunching') ?>
 
-<?php echo depp_launching_block($object, $namespace) ?>
+<?php 
+if ( empty($options) )
+{
+	$options = array();
+}
+	
+echo depp_launching_block($object, $namespace, $options) ?>
 

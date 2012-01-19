@@ -7,9 +7,9 @@
   <li>
     <?php if($this->getContext()->getModuleName() == 'atto' ||
              $this->getContext()->getModuleName() == 'sfLucene' && $this->getContext()->getActionName() == 'attiSearch'): ?>
-      <?php echo link_to('Atti', 'atto/evidenza', array('class' => 'current')) ?>
+      <?php echo link_to('Atti', '@attiEvidenza', array('class' => 'current')) ?>
     <?php else: ?>
-      <?php echo link_to('Atti', 'atto/evidenza') ?>
+      <?php echo link_to('Atti', '@attiEvidenza') ?>
     <?php endif; ?>
   </li>
   <li>

@@ -36,7 +36,7 @@
           <?php endforeach; ?>
           <tr>
             <td align="center" colspan='4'>
-              <?php echo pager_navigation($pager, 'atto/decretoList') ?>
+              <?php echo pager_navigation($pager, '@attiDecretiLegge') ?>
             </td>
           </tr>
           <tr>

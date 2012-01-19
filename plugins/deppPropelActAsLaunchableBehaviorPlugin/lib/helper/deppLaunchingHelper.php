@@ -9,8 +9,12 @@ sfLoader::loadHelpers(array('Tag', 'I18N'));
 $response = sfContext::getInstance()->getResponse();
 
 $css = '/deppPropelActAsLaunchableBehaviorPlugin/css/depp_launching';
-$response->addStylesheet($css);
+if ( !array_key_exists( $css, $response->getStylesheets() ) )
+	$response->addStylesheet($css);
 
+$js = '/js/jquery-ajaxsort.js';
+if ( !array_key_exists( $js, $response->getJavascripts() ) )
+	$response->addJavascript($js);
 
 /**
  * Return the HTML code of the div containing the launcher tool
@@ -57,6 +61,10 @@ function depp_launcher($object, $namespace, $options = array())
     {
       $options = array_merge($options, array('id' => 'launching-items'));
     }
+	if (!isset($options['class']))
+    {
+      $options = array_merge($options, array('class' => 'vote-administration'));
+    }
     
     $object_model = get_class($object);
     $object_id = $object->getPrimaryKey();
@@ -89,21 +97,29 @@ function depp_launcher($object, $namespace, $options = array())
       $l_obj_priority_dn_action = sprintf('deppLaunching/priorityDn?item_model=%s&item_pk=%s&namespace=%s',
                                           $l_obj_model, $l_obj_id, $namespace);
                                      
-      $l_obj_remove_link = link_to('X', $l_obj_remove_action, array('title' => __('Take the launch back')));
-      $l_obj_priority_up_link = link_to('+', $l_obj_priority_up_action, array('title' => __('Increase the priority')));
-      $l_obj_priority_dn_link = link_to('-', $l_obj_priority_dn_action, array('title' => __('Decrease the priority')));
+      $l_obj_remove_link = link_to('<img src="/images/ico-remove_alert.png" alt="X" title="Rimuovi" />', $l_obj_remove_action, array('title' => __('Take the launch back'), 'class' => 'remove-vote'));
+      $l_obj_priority_up_link = link_to('<img src="/images/ico-thumb-up.png" alt="+" title="Aumenta priorità" />', $l_obj_priority_up_action, array('title' => __('Increase the priority'), 'class' => 'moveup-vote'));
+      $l_obj_priority_dn_link = link_to('<img src="/images/ico-thumb-down.png" alt="-" title="Diminuisci priorità" />', $l_obj_priority_dn_action, array('title' => __('Decrease the priority'), 'class' => 'movedown-vote'));
       
       $l_obj_actions = "";
-      if ($i > 0) $l_obj_actions .= " [$l_obj_priority_up_link] ";
-      if ($i < count($launches) - 1 ) $l_obj_actions .= " [$l_obj_priority_dn_link] ";
-      $l_obj_actions .= " [$l_obj_remove_link] ";
+      /*if ($i > 0)*/ $l_obj_actions .= " $l_obj_priority_up_link ";
+      /*if ($i < count($launches) - 1 )*/ $l_obj_actions .= " $l_obj_priority_dn_link ";
+      $l_obj_actions .= " $l_obj_remove_link ";
       
-      $list_content .= content_tag('tr', 
-                                   content_tag('td', $l_obj_short_string, array('width' => '75%')) . 
-                                   content_tag('td', $l_obj_actions, array('style' => 'text-align:left')));
+
+      /*$list_content .= content_tag('tr', 
+                                   content_tag('td', '<input type="text" value="'. $l->getPriority().'" name="priority['. $l_obj_id.']" size="3">'. $l_obj_short_string) . 
+                                   content_tag('td', $l_obj_actions, array('style' => 'text-align:right; width:36px;display:inline-block;')));*/
+		$list_content .= content_tag('li', 
+				content_tag('span', $l_obj_actions, array('style' => 'text-align:right; width:36px;display:inline-block;float:right;')) .
+				 $l_obj_short_string 
+                         );
     }
-    $list = content_tag('table', $list_content);
+    $list = content_tag('ul', $list_content, $options);
     
+	// adding javascript for drag and drop
+	//use_javascript('/js/jquery-ui-1.8.16.sortable.min.js');
+
     return $action . $list;
   }
   catch (Exception $e)
