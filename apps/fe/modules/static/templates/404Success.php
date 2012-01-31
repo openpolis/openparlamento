@@ -6,24 +6,19 @@
   </li>
 </ul>
 
-<div id="content" class="tabbed float-container">
+<div class="row">
+	<div class="twelvecol">
+		<h3 style="color: #f00; padding: 1em 0;">OOPS! La pagina richiesta non &egrave; stata trovata.</h3>
+		<p>Potresti aver digitato un indirizzo errato, oppure aver fatto click su un link esterno non corretto.</p>
 
-  <div id="main"> 
-   
-    <h3 style="color: #f00; padding: 1em 0;">OOPS! La pagina richiesta non &egrave; stata trovata.</h3>
+	    	<p>Puoi aiutarci, <a href="/contatti" style="color: orange">contattandoci</a> per comunicare cosa stavi facendo quando si &egrave; verificato l'errore.</p>
 
-    <div class="W73_100 float-left message">
-      <p>Potresti aver digitato un indirizzo errato, oppure aver fatto click su un link esterno non corretto.</p>
-      
-    	<p>Puoi aiutarci, <a href="/contatti" style="color: orange">contattandoci</a> per comunicare cosa stavi facendo quando si &egrave; verificato l'errore.</p>
+	    	<p>Altrimenti, puoi <a href="#" style="color: orange" onclick="javascript:back(); return false;">tornare alla pagina che stavi visitando</a> prima di questo errore.</p>
 
-    	<p>Altrimenti, puoi <a href="#" style="color: orange" onclick="javascript:back(); return false;">tornare alla pagina che stavi visitando</a> prima di questo errore.</p>
-
-    	<p>Infine, puoi sempre tornare alla <a href="/" style="color: orange">home page</a> di <em class="open">open</em><em class="parlamento">parlamento</em>.</p>
-      
-    </div>
-  </div>
-
+	    	<p>Infine, puoi sempre tornare alla <a href="/" style="color: orange">home page</a> di <em class="open">open</em><em class="parlamento">parlamento</em>.</p>
+		
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

@@ -1,0 +1,181 @@
+/* CSS Resets */
+
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,address,cite,code,del,dfn,em,img,ins,q,small,strong,sub,sup,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{border:0;margin:0;padding:0}article,aside,figure,figure img,figcaption,hgroup,footer,header,nav,section,video,object{display:block}a img{border:0}figure{position:relative}figure img{width:100%}
+
+
+/* ==================================================================================================================== */
+/* ! The 1140px Grid V2 by Andy Taylor \ http://cssgrid.net \ http://www.twitter.com/andytlr \ http://www.andytlr.com   */
+/* ==================================================================================================================== */
+
+.container {
+padding-left: 20px;
+padding-right: 20px;
+}
+
+.row {
+width: 100%;
+max-width: 1140px;
+min-width: 755px;
+margin: 0 auto;
+overflow: hidden;
+}
+
+.row .prefixone { margin-left: 8.65%; }
+.row .prefixtwo { margin-left: 17.25%; }
+.row .prefixthree { margin-left: 25.85%; }
+.row .prefixfour { margin-left: 34.55%;; }
+.row .prefixfive { margin-left: 43.25%;; }
+.row .prefixsix { margin-left: 41.8%; }
+.row .prefixseven { margin-left: 60,55%; }
+.row .prefixeight { margin-left: 69.2%; }
+.row .prefixnive { margin-left:77.85%; }
+.row .prefixten { margin-left: 86.5%; }
+.row .prefixeleven { margin-left: 95.15%; }
+
+.row .suffixone { margin-right: 12.45%; }
+.row .suffixtwo { margin-right: 21.05%; }
+.row .suffixthree { margin-right: 29.65%; }
+.row .suffixfour { margin-right: 39.35%;; }
+.row .suffixfive { margin-right: 47.05%;; }
+.row .suffixsix { margin-right: 45.6%; }
+.row .suffixseven { margin-right: 64.35%; }
+.row .suffixeight { margin-right: 73%; }
+.row .suffixnive { margin-right:81.65%; }
+.row .suffixten { margin-right: 90.3%; }
+/*.row .suffixeleven { margin-right: 95.15%; }*/
+
+/*
+.row .prefixone { padding-left: 4.85%; }
+.row .prefixtwo { padding-left: 13.45%; }
+.row .prefixthree { padding-left: 22.05%; }
+.row .prefixfour { padding-left: 30.75%;; }
+.row .prefixfive { padding-left: 39.45%;; }
+.row .prefixsix { padding-left: 48%; }
+.row .prefixseven { padding-left: 56.75%; }
+.row .prefixeight { padding-left: 65.4%; }
+.row .prefixnive { padding-left:74.05%; }
+.row .prefixten { padding-left: 82.7%; }
+.row .prefixeleven { padding-left: 91.35%; }
+
+.row .suffixone { padding-right: 4.85%; }
+.row .suffixtwo { padding-right: 13.45%; }
+.row .suffixthree { padding-right: 22.05%; }
+.row .suffixfour { padding-right: 30.75%;; }
+.row .suffixfive { padding-right: 39.45%;; }
+.row .suffixsix { padding-right: 48%; }
+.row .suffixseven { padding-right: 56.75%; }
+.row .suffixeight { padding-right: 65.4%; }
+.row .suffixnive { padding-right:74.05%; }
+.row .suffixten { padding-right: 82.7%; }
+.row .suffixeleven { padding-right: 91.35%; }
+*/
+
+.onecol, .twocol, .threecol, .fourcol, .fivecol, .sixcol, .sevencol, .eightcol, .ninecol, .tencol, .elevencol {
+margin-right: 3.8%;
+float: left;
+min-height: 1px;
+}
+
+.row .onecol {
+width: 4.85%;
+}
+
+.row .twocol {
+width: 13.45%;
+}
+
+.row .threecol {
+width: 22.05%;
+}
+
+.row .fourcol {
+width: 30.75%;
+}
+
+.row .fivecol {
+width: 39.45%;
+}
+
+.row .sixcol {
+width: 48%;
+}
+
+.row .sevencol {
+width: 56.75%;
+}
+
+.row .eightcol {
+width: 65.4%;
+}
+
+.row .ninecol {
+width: 74.05%;
+}
+
+.row .tencol {
+width: 82.7%;
+}
+
+.row .elevencol {
+width: 91.35%;
+}
+
+.row .twelvecol {
+width: 100%;
+float: left;
+}
+
+.last {
+margin-right: 0px;
+}
+
+
+img, object, embed {
+max-width: 100%;
+}
+
+img {
+	height: auto;
+}
+
+
+/* Smaller screens */
+
+@media only screen and (max-width: 1023px) {
+
+	body {
+	font-size: 0.8em;
+	line-height: 1.5em;
+	}
+	
+	}
+
+
+/* Mobile */
+
+@media handheld, only screen and (max-width: 767px) {
+
+	body {
+	font-size: 16px;
+	-webkit-text-size-adjust: none;
+	}
+	
+	.row, body, .container {
+	width: 100%;
+	min-width: 0;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	}
+	
+	.row .onecol, .row .twocol, .row .threecol, .row .fourcol, .row .fivecol, .row .sixcol, .row .sevencol, .row .eightcol, .row .ninecol, .row .tencol, .row .elevencol, .row .twelvecol {
+	width: auto;
+	float: none;
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 20px;
+	padding-right: 20px;
+	}
+
+}

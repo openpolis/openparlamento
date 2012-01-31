@@ -1,3 +1,3 @@
 showSuccess:
   javascripts:    [fe/jquery.autocomplete.min.js]
-  stylesheets:    [-*, screen.css, monitoring, jquery.autocomplete.css]
+  stylesheets:    [-*, styles.css, menu.css, openparlamento.css, monitoring, jquery.autocomplete.css]

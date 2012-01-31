@@ -1,143 +1,168 @@
 <!-- Pagina monitoraggio utente - i miei parlamentari -->
 <?php if ($ambient=='monitor') : ?>
-  <?php if (count($vicini)>0 || count($lontani)>0): ?>
-    <h5 class="subsection">quanto ti rappresentano i parlamentari?
-      <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
-  		<div style="display: none;" class="help-box float-container">
-  			<div class="inner float-container">
+	
+	<?php if (count($vicini)>0 || count($lontani)>0): ?>
+	
+	<div class="row">
+		<div class="twelvecol">
+			
+			<h5 class="subsection">quanto ti rappresentano i parlamentari?
+		      <span class="tools-container"><a class="ico-help" href="#">&nbsp;</a></span>
+		  		<div style="display: none;" class="help-box float-container">
+		  			<div class="inner float-container">
 
-  				<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
-  				<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
-  Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
-  Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatori con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
-  			</div>
-  		</div>
-  	</h5>
-  	<p style="font-size:14px; padding:10px;">L'indice di rappresentanza &egrave; calcolato considerando <?php echo ($voti_utente==1 ? '<strong>il voto da TE espresso su un solo atto parlamentare</strong>.' : 'i <strong>voti da TE espressi su '.$voti_utente.' atti parlamentari</strong>.')?> Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sarà l'indice di rappresentanza.</p>
-<div class="W48_100 float-right">
-  <?php if (count($lontani)>0) : ?>
-     <?php if (!$sf_user->hasCredential('adhoc')) : ?>
-         <h5 class="subsection" >i <?php echo (count($lontani)>9 ? 'dieci' :count($lontani)) ?> parlamentari che ti rappresentano <span style="color: red;">di   meno:</span> 
-      <?php else : ?>     
-        <h5 class="subsection-alt" ><?php echo count($lontani) ?> parlamentari ti rappresentano <span style="color: red;">di   meno:</span>
-      <?php endif ?>    
-  </h5>
-  
-  <table class="disegni-decreti column-table lazyload">
-    <thead>
-      <tr>
-        <th scope="col">parlamentare:</th>
-        <th scope="col">indice negativo:</th>
-      </tr>
-    </thead>
-  <tbody>
-  <?php foreach ($lontani as $pos=>$lontano) : ?>
-  <tr class="even">
-    <th scope="row" style="padding-left: 5px;">
-    <h3 class="position-red" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
-     <p class="politician-id">
-      
-     <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
-                          'icona parlamentare') ?>
-      
-     <?php if ($lontano[1]->getTipoCaricaId()==1) : ?>
-      <?php echo "On. " ?>      
-     <?php endif; ?>  
-      <?php if ($lontano[1]->getTipoCaricaId()==4 || $lontano[1]->getTipoCaricaId()==5 ) : ?>
-       <?php echo "Sen. " ?>      
-      <?php endif; ?>     
-     <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
-     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
-     <?php foreach($gruppi as $nome => $gruppo): ?>
-     <?php if(!$gruppo['data_fine']): ?>
-      <?php print" (". $nome.")" ?>
-     <?php endif; ?> 
-     <?php endforeach; ?>
-    </p> 
-    </th>
-    <td style="text-align:center;">
-    <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px;">
-      			<div class="meter-bar-container" style="margin-bottom:0px; height:0px;">
+		  				<a class="ico-close" href="#">chiudi</a><h5>come &egrave; calcolato ?</h5>
+		  				<p style="padding: 5px; font-size: 12px;font-weight:normal; color:#333333;">L'indice di quanto ti rappresentano i parlamentari &egrave; calcolato sulla base dei voti (favorevoli e contrari) che hai espresso sugli atti parlamentari.
+		  Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sar&agrave; l'indice di rappresentanza. <br />
+		  Un calcolo quindi che non si basa su percezioni e dichiarazioni, ma su dati di fatto, confrontando le decisioni prese da deputati e senatori con le tue. Per approfondire <?php echo link_to('clicca qui','http://'.sfConfig::get('sf_site_url').'/blog/2010/01/19/la-distanza-tra-te-e-gli-eletti',true) ?>.</p>
+		  			</div>
+		  		</div>
+		  	</h5>
+		  	<p style="font-size:14px; padding:10px;">L'indice di rappresentanza &egrave; calcolato considerando <?php echo ($voti_utente==1 ? '<strong>il voto da TE espresso su un solo atto parlamentare</strong>.' : 'i <strong>voti da TE espressi su '.$voti_utente.' atti parlamentari</strong>.')?> Maggiore &egrave; il numero di atti su cui esprimi un giudizio, pi&ugrave; preciso sarà l'indice di rappresentanza.</p>
+			
+			
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="sixcol">
+			
+			<?php if (count($vicini)>0) : ?>
+			  	<?php if (!$sf_user->hasCredential('adhoc')) : ?>
+				<h5 class="subsection" >i <?php echo (count($vicini)>9 ? 'dieci' :count($vicini)) ?> parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+				  <?php else : ?>
+				  <h5 class="subsection-alt" ><?php echo count($vicini) ?> parlamentari ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
+				  <?php endif ?>  
+				</h5>
+				<table class="disegni-decreti column-table lazyload">
+				  <thead>
+				    <tr>
+				      <th scope="col">parlamentare:</th>
+				      <th scope="col">indice positivo:</th>
+				    </tr>
+				  </thead>
+				<tbody>
+				<?php foreach ($vicini as $pos=>$vicino) : ?>
+				<tr class="even">
+				  <th scope="row" style="padding-left: 5px;">
+				  <h3 class="position-green" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
+				   <p class="politician-id">
+				   <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
+				                        'icona parlamentare') ?>
+
+				  <?php if ($vicino[1]->getTipoCaricaId()==1) : ?>
+				   <?php echo "On. " ?>      
+				  <?php endif; ?>  
+				   <?php if ($vicino[1]->getTipoCaricaId()==4 || $vicino[1]->getTipoCaricaId()==5 ) : ?>
+				    <?php echo "Sen. " ?>      
+				   <?php endif; ?>
+				   <?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
+				   <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
+				   <?php foreach($gruppi as $nome => $gruppo): ?>
+				   <?php if(!$gruppo['data_fine']): ?>
+				    <?php print" (". $nome.")" ?>
+				   <?php endif; ?> 
+				   <?php endforeach; ?>
+				  </p> 
+				  </th>
+				  <td style="text-align:center;">
+				  <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
+				    			<div class="meter-bar-container" style="margin-bottom:0px; height:0px; text-align: center;">
+
+				    				<div class="green-meter-bar" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
+				    				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format(abs($vicino[0]),1) ?></label> </div>
+				    					<span class="meter-value" style="width: <?php echo number_format(abs($vicino[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; text-align: center; padding:3px"> </span>
+				    				</div> 
+				    			   </div>
+				    			</div>
+				  </td>
+				</tr>   
+				<?php endforeach; ?>
+				</tbody>  
+				</table>
+				<br/>
+			<?php endif ?>
+			
+		</div>
+		<div class="sixcol last">
+			
+			<?php if (count($lontani)>0) : ?>
+			     <?php if (!$sf_user->hasCredential('adhoc')) : ?>
+			         <h5 class="subsection" >i <?php echo (count($lontani)>9 ? 'dieci' :count($lontani)) ?> parlamentari che ti rappresentano <span style="color: red;">di   meno:</span> 
+			      <?php else : ?>     
+			        <h5 class="subsection-alt" ><?php echo count($lontani) ?> parlamentari ti rappresentano <span style="color: red;">di   meno:</span>
+			      <?php endif ?>    
+			  		</h5>
+
+			  <table class="disegni-decreti column-table lazyload">
+			    <thead>
+			      <tr>
+			        <th scope="col">parlamentare:</th>
+			        <th scope="col">indice negativo:</th>
+			      </tr>
+			    </thead>
+			  <tbody>
+			  <?php foreach ($lontani as $pos=>$lontano) : ?>
+			  <tr class="even">
+			    <th scope="row" style="padding-left: 5px;">
+			    <h3 class="position-red" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
+			     <p class="politician-id">
+
+			     <?php echo image_tag(OppPoliticoPeer::getThumbUrl($lontano[1]->getOppPolitico()->getId()), 
+			                          'icona parlamentare') ?>
+
+			     <?php if ($lontano[1]->getTipoCaricaId()==1) : ?>
+			      <?php echo "On. " ?>      
+			     <?php endif; ?>  
+			      <?php if ($lontano[1]->getTipoCaricaId()==4 || $lontano[1]->getTipoCaricaId()==5 ) : ?>
+			       <?php echo "Sen. " ?>      
+			      <?php endif; ?>     
+			     <?php echo link_to($lontano[1]->getOppPolitico()->getNome()." ".$lontano[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$lontano[1]->getOppPolitico()->getId()) ?>
+			     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($lontano[1]->getId()) ?>  	
+			     <?php foreach($gruppi as $nome => $gruppo): ?>
+			     <?php if(!$gruppo['data_fine']): ?>
+			      <?php print" (". $nome.")" ?>
+			     <?php endif; ?> 
+			     <?php endforeach; ?>
+			    </p> 
+			    </th>
+			    <td style="text-align:center;">
+			    <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px;">
+			      			<div class="meter-bar-container" style="margin-bottom:0px; height:0px;">
 
 
-      				<div class="red-meter-bar" style="text-align:left; margin-bottom:0px; height:0px;">
-      				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format($lontano[0],1) ?></label> </div>
-      					<span class="meter-value" style="width: <?php echo number_format(abs($lontano[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; padding:3px"> </span>
-      				</div> 
-      			   </div>
-      			</div>
-    </td>
-  </tr>   
-  <?php endforeach; ?>
-  </tbody>  
-  </table>
-<?php endif ?>  
-</div>  
+			      				<div class="red-meter-bar" style="text-align:left; margin-bottom:0px; height:0px;">
+			      				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format($lontano[0],1) ?></label> </div>
+			      					<span class="meter-value" style="width: <?php echo number_format(abs($lontano[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; padding:3px"> </span>
+			      				</div> 
+			      			   </div>
+			      			</div>
+			    </td>
+			  </tr>   
+			  <?php endforeach; ?>
+			  </tbody>  
+			  </table>
+			<?php endif ?>
+			
+		</div>
+	</div>
+	
+	<?php else: ?>
+		
+		<div class="row">
+			<div class="twelvecol">
+				
+				<h5 class="subsection" >i parlamentari che pi&ugrave; ti rappresentano</h5>
+			    <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','@attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
+			      La tua classifica verr&agrave; immediatamente aggiornata!</p><br />
+				
+				
+			</div>
+		</div>
 
-<div class="W48_100 float-left">
-<?php if (count($vicini)>0) : ?>
-  <?php if (!$sf_user->hasCredential('adhoc')) : ?>
-<h5 class="subsection" >i <?php echo (count($vicini)>9 ? 'dieci' :count($vicini)) ?> parlamentari che ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
-  <?php else : ?>
-  <h5 class="subsection-alt" ><?php echo count($vicini) ?> parlamentari ti rappresentano <span style="color: green;">di pi&ugrave;:</span>
-  <?php endif ?>  
-</h5>
-<table class="disegni-decreti column-table lazyload">
-  <thead>
-    <tr>
-      <th scope="col">parlamentare:</th>
-      <th scope="col">indice positivo:</th>
-    </tr>
-  </thead>
-<tbody>
-<?php foreach ($vicini as $pos=>$vicino) : ?>
-<tr class="even">
-  <th scope="row" style="padding-left: 5px;">
-  <h3 class="position-green" <?php echo ($sf_user->hasCredential('adhoc') ? ' style="width:40px;"' :'') ?> ><?php echo $pos+1 ?></h3>
-   <p class="politician-id">
-   <?php echo image_tag(OppPoliticoPeer::getThumbUrl($vicino[1]->getOppPolitico()->getId()), 
-                        'icona parlamentare') ?>
-   
-  <?php if ($vicino[1]->getTipoCaricaId()==1) : ?>
-   <?php echo "On. " ?>      
-  <?php endif; ?>  
-   <?php if ($vicino[1]->getTipoCaricaId()==4 || $vicino[1]->getTipoCaricaId()==5 ) : ?>
-    <?php echo "Sen. " ?>      
-   <?php endif; ?>
-   <?php echo link_to($vicino[1]->getOppPolitico()->getNome()." ".$vicino[1]->getOppPolitico()->getCognome(),'/parlamentare/'.$vicino[1]->getOppPolitico()->getId()) ?>
-   <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($vicino[1]->getId()) ?>  	
-   <?php foreach($gruppi as $nome => $gruppo): ?>
-   <?php if(!$gruppo['data_fine']): ?>
-    <?php print" (". $nome.")" ?>
-   <?php endif; ?> 
-   <?php endforeach; ?>
-  </p> 
-  </th>
-  <td style="text-align:center;">
-  <div class="meter-bar float-container" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
-    			<div class="meter-bar-container" style="margin-bottom:0px; height:0px; text-align: center;">
-    				
-    				<div class="green-meter-bar" style="text-align:left; margin-bottom:0px; height:0px; text-align: center;">
-    				<div class="meter-average" style="height:0px;"><label>indice: <?php echo number_format(abs($vicino[0]),1) ?></label> </div>
-    					<span class="meter-value" style="width: <?php echo number_format(abs($vicino[0]),1)*$normalize ?>px; margin-bottom:0px; height:0px; text-align: center; padding:3px"> </span>
-    				</div> 
-    			   </div>
-    			</div>
-  </td>
-</tr>   
-<?php endforeach; ?>
-</tbody>  
-</table>
-<br/>
-<?php endif ?>
-</div>
-<?php else: ?>
-  <div class="W100_100 float-left">
-    <h5 class="subsection" >i parlamentari che pi&ugrave; ti rappresentano</h5>
-    <p style="padding: 10px; font-size: 14px;">Per scoprire chi ti rappresenta, vota gli <?php echo link_to('atti parlamentari','@attiDisegni') ?> (disegni di legge, mozioni, interrogazioni, emendamenti ...) che ti interessano.<br />
-      La tua classifica verr&agrave; immediatamente aggiornata!</p><br />
-  </div>  
-<?php endif ?>
+	<?php endif ?>
+	
+	
 
 <?php endif; ?> 
 
@@ -222,6 +247,7 @@
   <?php endif ?>
  
  </div>
+<!-- end -->
 <?php endif; ?>
 
 <!-- Pagina parlamentare box personalizzato per utente -->

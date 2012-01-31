@@ -3,27 +3,28 @@
 <?php include_partial('tabs', array('emendamento' => $emendamento, 'current' => 'commenti', 
                                     'nb_comments' => $emendamento->getNbPublicComments())) ?>
 
-<div id="content" class="tabbed float-container">
-  <a name="top"></a>
-  <div id="main">
-    <div class="W73_100 float-left">
-    <p style="font-size:16px;">In questa pagina puoi lasciare commenti sull'emendamento.<br /></p>
-      <div id="comments-block">
-        <a name="comments"></a>
-        <?php include_partial('deppCommenting/commentsList', array('content' => $emendamento)) ?>
+<div class="row">
+	<div class="ninecol">
+		
+		<a name="top"></a>
+		
+		<p style="font-size:16px;">In questa pagina puoi lasciare commenti sull'emendamento.<br /></p>
+	      <div id="comments-block">
+	        <a name="comments"></a>
+	        <?php include_partial('deppCommenting/commentsList', array('content' => $emendamento)) ?>
 
-	      <hr/>
+		      <hr/>
 
-        <?php include_component('deppCommenting', 'addComment', 
-                                array('content' => $emendamento,
-                                      'read_only' => sfConfig::get('app_comments_enabled', false),
-                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
+	        <?php include_component('deppCommenting', 'addComment', 
+	                                array('content' => $emendamento,
+	                                      'read_only' => sfConfig::get('app_comments_enabled', false),
+	                                      'automoderation' => sfConfig::get('app_comments_automoderation', 'captcha')) ) ?>
 
-        <hr/>
-      </div>    
-
-    </div>
-  </div>
+	        <hr/>
+	      </div>
+		
+	</div>
+	<div class="threecol last"></div>
 </div>
 
 <?php slot('breadcrumbs') ?>

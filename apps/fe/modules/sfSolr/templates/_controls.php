@@ -6,7 +6,9 @@
                                'name' => 'query', 
                                'tabindex' => '1', 
                                'accesskey' => 'q') ) ?>
-    <?php echo submit_image_tag('btn-cerca.png', 
+    <?php 
+		echo submit_tag('Cerca',
+		/*echo submit_image_tag('btn-cerca.png', */
                                 array('id' => 'search-main-go', 
                                       'alt' => 'cerca', 
                                       'name' => 'search-go',

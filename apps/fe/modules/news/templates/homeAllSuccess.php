@@ -1,20 +1,17 @@
 <?php use_helper('PagerNavigation', 'DeppNews') ?>
 
-<div id="content" class="float-container">
-  <div id="main" class="monitored_acts monitoring">
+<div class="row">
+	<div class="twelvecol">
+		
+		<h4 class="subsection">Tutte le notizie dal Parlamento<?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '@feed', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
 
-    
-    <div class="W100_100 float-left">
-      <h4 class="subsection">Tutte le notizie dal Parlamento<?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '@feed', array('style' => 'vertical-align:middle; padding:5px;')) ?></h4>
-      
-      <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
+	      <p style="padding: 5px; font-size:14px;">Ci sono <strong><?php echo $pager->getNbResults() ?></strong> notizie. Sono visualizzate cronologicamente dalla <?php echo $pager->getFirstIndice() ?> alla  <?php echo $pager->getLastIndice() ?>.</p>
 
-      <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
+	      <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
-      <?php echo pager_navigation($pager, 'news/homeAll') ?>
-    </div>  
-
-  </div>
+	      <?php echo pager_navigation($pager, 'news/homeAll') ?>
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

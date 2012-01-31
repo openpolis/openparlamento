@@ -2,48 +2,49 @@
 
 <?php include_partial('tabs_nuovo_indice', array('ramo' => $ramo)) ?>
 
-<div id="content" class="tabbed float-container">
-  <div id="main">
-    <div class="W73_100 float-left">	
-      <?php include_partial('wiki') ?>       
-    </div>
+<div class="row">
+	<div class="ninecol">
+		<?php include_partial('wiki') ?>
+	</div>
+	<div class="threecol last"></div>
+</div>
 
-	  <div class="W100_100 float-left"> 
-      <table class="disegni-decreti column-table lazyload">
-        <thead>
-          <tr>
-            <th scope="col">parlamentare:</th>
-            <th scope="col">indice di attivit&agrave;:</th> 	
-          </tr>
-        </thead>
+<div class="row">
+	<div class="twelvecol">
+		
+		<table class="disegni-decreti column-table lazyload">
+	        <thead>
+	          <tr>
+	            <th scope="col">parlamentare:</th>
+	            <th scope="col">indice di attivit&agrave;:</th> 	
+	          </tr>
+	        </thead>
 
-        <tbody>
+	        <tbody>
 
-          <?php $tr_class = 'even' ?>				  
-          <?php while ($parlamentari_rs->next()): $p = $parlamentari_rs->getRow() ?>
-            <tr class="<?php echo $tr_class; ?>">
-            <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
-              <th scope="row">
-                <p class="politician-id">
-                  <?php echo link_to($p['nome'].' '.$p['cognome'],
-                                     '@parlamentare?id='.$p['p_id']) ?>
-                  <?php if ($ramo != 'governo'): ?>
-                    (<?php echo $p['acronimo'] ?>)                    
-                  <?php endif ?>
-                </p>
-              </th>
+	          <?php $tr_class = 'even' ?>				  
+	          <?php while ($parlamentari_rs->next()): $p = $parlamentari_rs->getRow() ?>
+	            <tr class="<?php echo $tr_class; ?>">
+	            <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
+	              <th scope="row">
+	                <p class="politician-id">
+	                  <?php echo link_to($p['nome'].' '.$p['cognome'],
+	                                     '@parlamentare?id='.$p['p_id']) ?>
+	                  <?php if ($ramo != 'governo'): ?>
+	                    (<?php echo $p['acronimo'] ?>)                    
+	                  <?php endif ?>
+	                </p>
+	              </th>
 
-              <td>
-      		      <?php printf('<b>%01.2f</b> ', $p['indice']) ?>  
-      	      </td>
-            </tr>
-          <?php endwhile; ?>
-        </tbody>    
-      </table>
-    </div>
-       
-    <div class="clear-both"></div>
-  </div>
+	              <td>
+	      		      <?php printf('<b>%01.2f</b> ', $p['indice']) ?>  
+	      	      </td>
+	            </tr>
+	          <?php endwhile; ?>
+	        </tbody>    
+	      </table>
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

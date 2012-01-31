@@ -1,56 +1,61 @@
 <?php echo use_helper('Javascript') ?>
 
-<?php include_partial('tabs', array('current' => 'interessi')) ?>
+<div class="row">
+	<div class="twelvecol">
+		
+		<?php include_partial('tabs', array('current' => 'interessi')) ?>
+		
+	</div>
+</div>
 
-<div id="content" class="tabbed float-container">
-  <a name="top"></a>
-  <div id="main">
-      <?php echo include_partial('datiStorici/searchWithAutocompleter', 
-                                 array('limit' => sfconfig::get('app_limit_interessi_argomento', 50),
-                                       'tags' => $tags,
-                                       'ramo' => $ramo,
-                                       'tag_count'=>TagPeer::getAllWithCount())); ?>
+<div class="row">
+	<div class="twelvecol">
+		<a name="top"></a>
+		<?php echo include_partial('datiStorici/searchWithAutocompleter', 
+	                                 array('limit' => sfconfig::get('app_limit_interessi_argomento', 50),
+	                                       'tags' => $tags,
+	                                       'ramo' => $ramo,
+	                                       'tag_count'=>TagPeer::getAllWithCount())); ?>
 
 
-      <?php if (count($tags_ids)): ?>
-        <div class="evidence-box float-container">
+	      <?php if (count($tags_ids)): ?>
+	        <div class="evidence-box float-container">
 
-          <h5 class="subsection">
-            I <?php echo sfconfig::get('app_limit_interessi_argomento', 50)  ?>
-            <?php if ($ramo == 'C'): ?>
-              deputati
-            <?php else: ?>
-              senatori
-            <?php endif ?>
-            che pi&ugrave; si occupano di <em><?php echo $tags ?></em>
-          </h5>
+	          <h5 class="subsection">
+	            I <?php echo sfconfig::get('app_limit_interessi_argomento', 50)  ?>
+	            <?php if ($ramo == 'C'): ?>
+	              deputati
+	            <?php else: ?>
+	              senatori
+	            <?php endif ?>
+	            che pi&ugrave; si occupano di <em><?php echo $tags ?></em>
+	          </h5>
 
-          <div class="pad10">
+	          <div class="pad10">
 
-            <?php if (isset($politici) && count($politici) > 0): ?>
-            	<ul>
-            	  <?php $cnt = 0; foreach ($politici as $carica_id => $politico): ?>
-           	      <li style="font-size:12px; padding:5px 0 0 0;" id="carica-<?php echo $carica_id ?>">
-           	        <?php echo ++$cnt ?>)
-           	        <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)
-           	        (<?php echo link_to('mostra dettaglio',
-           	                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
-           	                            array('class' => 'show-hide-dettaglio')) ?>)
-           	      </li>
-            	  <?php endforeach ?>
-              </ul>
+	            <?php if (isset($politici) && count($politici) > 0): ?>
+	            	<ul>
+	            	  <?php $cnt = 0; foreach ($politici as $carica_id => $politico): ?>
+	           	      <li style="font-size:12px; padding:5px 0 0 0;" id="carica-<?php echo $carica_id ?>">
+	           	        <?php echo ++$cnt ?>)
+	           	        <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)
+	           	        (<?php echo link_to('mostra dettaglio',
+	           	                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
+	           	                            array('class' => 'show-hide-dettaglio')) ?>)
+	           	      </li>
+	            	  <?php endforeach ?>
+	              </ul>
 
-            <?php else: ?>
-              Nessun politico trovato        
-            <?php endif ?>
-          </div> 
+	            <?php else: ?>
+	              Nessun politico trovato        
+	            <?php endif ?>
+	          </div> 
 
-        </div>
-        
-      <?php endif ?>
- 
+	        </div>
 
-  </div>
+	      <?php endif ?>
+		
+	</div>
 </div>
 
 <!-- slider jQuery per gli atti e le notizie relative -->

@@ -1,31 +1,15 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<?php include_partial('tabs', array('current' => 'disegni')) ?>
+<div class="row">
+	<div class="twelvecol">
+		<?php include_partial('tabs', array('current' => 'disegni')) ?>
+	</div>
+</div>
 
-<div id="content" class="tabbed float-container">
-
-  <div id="main">
-    <div class="W25_100 float-right">
-      <p class="last-update">data di ultimo aggiornamento: <strong><?php echo $last_updated_item->getDataAgg('d-m-Y') ?></strong></p>			
-
-      <?php 
-        echo include_partial('sfSolr/specialized_controls', 
-                            array('query' => $query, 
-                                  'type' => 'disegni', 
-                                  'title' => 'nei disegni di legge'));
-      ?>
-
-      <?php echo include_partial('news/newsbox', 
-                                 array('title' => 'Disegni di legge', 
-                                       'all_news_url' => '@news_attiDisegni', 
-                                       'news'   => oppNewsPeer::getAttiListNews(oppNewsPeer::ATTI_DDL_TIPO_IDS, 10),
-                                       'context' => 1,
-                                       'rss_link' => '@feed_disegni')); ?>
-
-	  </div>
-
-    <div class="W73_100 float-left">
-        <?php include_partial('disegnoWiki') ?>      		
+<div class="row">
+	<div class="ninecol">
+		
+		<?php include_partial('disegnoWiki') ?>      		
 
         <?php include_partial('disegnoFilter',
                               array('tags_categories' => $all_tags_categories,
@@ -41,10 +25,27 @@
    
         <?php include_partial('disegnoList', 
                               array('pager' => $pager)) ?>
-    </div>
+		
+	</div>
+	<div class="threecol last">
+		
+		<p class="last-update">data di ultimo aggiornamento: <strong><?php echo $last_updated_item->getDataAgg('d-m-Y') ?></strong></p>			
 
-    <div class="clear-both"></div>
-  </div>
+	      <?php 
+	        echo include_partial('sfSolr/specialized_controls', 
+	                            array('query' => $query, 
+	                                  'type' => 'disegni', 
+	                                  'title' => 'nei disegni di legge'));
+	      ?>
+
+	      <?php echo include_partial('news/newsbox', 
+	                                 array('title' => 'Disegni di legge', 
+	                                       'all_news_url' => '@news_attiDisegni', 
+	                                       'news'   => oppNewsPeer::getAttiListNews(oppNewsPeer::ATTI_DDL_TIPO_IDS, 10),
+	                                       'context' => 1,
+	                                       'rss_link' => '@feed_disegni')); ?>
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

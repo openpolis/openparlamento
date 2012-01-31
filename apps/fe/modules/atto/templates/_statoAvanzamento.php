@@ -99,7 +99,10 @@
     <?php foreach ($atto->getAllSucc() as $k=>$succ): ?>
       <?php $status_value= array_values($succ->getStatus()) ?>
       <?php $status_date= array_keys($succ->getStatus()) ?>
-      <?php if (OppIterPeer::retrieveByPk($status_value[0])->getConcluso()!=1 && $status_value[0]!=15) : ?>
+	  <?php $oppIter = OppIterPeer::retrieveByPk($status_value[0]); 
+		if ($oppIter ) :
+		?>
+      <?php if ( $oppIter->getConcluso()!=1 && $status_value[0]!=15) : ?>
         <li class="step-now"><span class="date">&nbsp;</span><strong><?php echo link_to($succ->getRamo().'.'.(strlen($succ->getNumfase())>13 ? substr($succ->getNumfase(), 0, 12).' ...' : $succ->getNumfase()),'atto/index?id='.$succ->getId()) ?></strong>
         <p><?php echo "da approvare".($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php if($dl==1) : ?>
@@ -124,6 +127,7 @@
             <p><?php echo OppIterPeer::retrieveByPk($status_value[0])->getShortName().($succ->getRamo()=='C' ? ' alla Camera':' al Senato') ?></p></li>
         <?php endif ?>
       <?php endif ?>
+	<?php endif ?>
     <?php endforeach ?>  
   <?php else: ?>
     <?php if (count($atto->getAllPred())>0): ?>

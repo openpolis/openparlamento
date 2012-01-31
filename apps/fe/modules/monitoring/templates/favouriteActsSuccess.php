@@ -1,48 +1,47 @@
 <?php use_helper('I18N', 'Date') ?>
 <?php echo include_component('monitoring', 'submenu', array('current' => 'acts')); ?>
 
-<div id="content" class="tabbed-orange float-container">
-  <div id="main">
-    <div class="W100_100 float-left">
-    <p class="tools-container"><a class="ico-help" href="#">cosa sono gli atti preferiti</a></p>
-  		<div style="display: none;" class="help-box float-container">
-  			<div class="inner float-container">
+<div class="row">
+	<div class="twelvecol">
+		
+		<p class="tools-container"><a class="ico-help" href="#">cosa sono gli atti preferiti</a></p>
+	  		<div style="display: none;" class="help-box float-container">
+	  			<div class="inner float-container">
 
-  				<a class="ico-close" href="#">chiudi</a><h5>cosa sono gli atti preferiti ?</h5>
-  				<p>Gli atti prefereti sono quelli che tu hai segnalato come importanti</p>
-  			</div>
-  		</div>
-    
-    <h5 id="type_<?php echo $type_id;?>"class="subsection">I tuoi atti preferiti</h5>
-    <div class="show-all-results">
-    <?php echo link_to('<strong>mostra tutti gli atti monitorati</strong>', 
-                       '@monitoring_acts?user_token='.$sf_user->getToken(), 
-                       array('post' => true)); ?>
-    </div>  
-    <table class="list-table column-table">
-		<thead>
-			<tr>
-			        <th class="evident" scope="col">aggiungi o rimuovi<br/>dai preferiti:</th>
-				<th class="evident" scope="col"><br/>sigla/titolo:</th>
-				<th class="evident" scope="col">stato di avanzamento</th>
-				<th class="evident" scope="col">argomenti</th>
-				<th class="evident W20_100" scope="col"><br/>notizie relative (<?php echo image_tag('ico-new.png', array('alt' => 'nuovo')) ?>):</th>
-				<th class="evident" scope="col">il tuo voto:</th>
-			</tr>
-		</thead>
-		<tbody>
-                <?php foreach ($favourite_acts as $act): ?>
-                  <?php  echo include_component('monitoring', 'actLine', 
-                                                array('act' => $act, 
-                                                      'user' => $user, 
-                                                      'user_id' => $user_id,
-                                                      'user_voting_act' => $act->getUserVoting($user_id))); ?>
-                  <?php endforeach ?>        
-                </tbody>
-      </table>
-    </div>
+	  				<a class="ico-close" href="#">chiudi</a><h5>cosa sono gli atti preferiti ?</h5>
+	  				<p>Gli atti prefereti sono quelli che tu hai segnalato come importanti</p>
+	  			</div>
+	  		</div>
 
-  </div>
+	    <h5 id="type_<?php echo $type_id;?>"class="subsection">I tuoi atti preferiti</h5>
+	    <div class="show-all-results">
+	    <?php echo link_to('<strong>mostra tutti gli atti monitorati</strong>', 
+	                       '@monitoring_acts?user_token='.$sf_user->getToken(), 
+	                       array('post' => true)); ?>
+	    </div>  
+	    <table class="list-table column-table">
+			<thead>
+				<tr>
+				        <th class="evident" scope="col">aggiungi o rimuovi<br/>dai preferiti:</th>
+					<th class="evident" scope="col"><br/>sigla/titolo:</th>
+					<th class="evident" scope="col">stato di avanzamento</th>
+					<th class="evident" scope="col">argomenti</th>
+					<th class="evident W20_100" scope="col"><br/>notizie relative (<?php echo image_tag('ico-new.png', array('alt' => 'nuovo')) ?>):</th>
+					<th class="evident" scope="col">il tuo voto:</th>
+				</tr>
+			</thead>
+			<tbody>
+	                <?php foreach ($favourite_acts as $act): ?>
+	                  <?php  echo include_component('monitoring', 'actLine', 
+	                                                array('act' => $act, 
+	                                                      'user' => $user, 
+	                                                      'user_id' => $user_id,
+	                                                      'user_voting_act' => $act->getUserVoting($user_id))); ?>
+	                  <?php endforeach ?>        
+	                </tbody>
+	      </table>
+		
+	</div>
 </div>
 
 <!-- slider jQuery per gli atti e le notizie relative -->

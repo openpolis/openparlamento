@@ -1,9 +1,12 @@
-<div class="tabbed float-container" id="content">
-	<div id="main">
-	  <div class="W73_100 float-left message" style="min-height: 100px; padding-top: 20px;">
-      <p>La tua ricerca del termine <strong><?php echo $query ?></strong> non ha prodotto alcun risultato</p>
-    </div>
-  </div>
+<div class="row">
+	<div class="ninecol">
+		
+		<div class="message" style="min-height: 100px; padding-top: 20px;">
+	      <p>La tua ricerca del termine <strong><?php echo $query ?></strong> non ha prodotto alcun risultato</p>
+	    </div>
+		
+	</div>
+	<div class="threecol last"></div>
 </div>
 
 <?php slot('breadcrumbs') ?>

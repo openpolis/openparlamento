@@ -34,7 +34,7 @@
       </tbody>
     </table>
     <div class="more-results-close">[ <?php echo link_to('chiudi', '#', array('class'=>'btn-close action') ) ?> ]</div>
-  </div>
+  <!--</div>-->
 <?php endif; ?>
 
 

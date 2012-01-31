@@ -1206,7 +1206,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         
         $taggable_model = $tagging->getTaggableModel();
         $taggable_id = $tagging->getTaggableId();
-        $tagged_obj = call_user_func_array(array($taggable_model.'Peer', 'retrieveByPK'), $taggable_id);
+        $tagged_obj = call_user_func_array(array($taggable_model.'Peer', 'retrieveByPK'), array($taggable_id));
         
         if ($taggable_model == 'OppAtto')
         {

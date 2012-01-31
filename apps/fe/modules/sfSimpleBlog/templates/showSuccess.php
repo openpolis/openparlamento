@@ -13,40 +13,37 @@
 </ul>
 
 
-<div class="tabbed float-container" id="content">
-	<div id="main">
-	  <div class="W25_100 float-right">
-      <?php include_partial('sfSimpleBlog/sidebar') ?>
-	  </div>
+<div class="row">
+	<div class="ninecol">
+		
+		<!-- post intero -->
+	      <a name="top"></a>
+	      <?php include_partial('sfSimpleBlog/post', array('post' => $post, 'in_list' => false)) ?>
 
-    <div class="W73_100 float-left">			
-      <!-- post intero -->
-      <a name="top"></a>
-      <?php include_partial('sfSimpleBlog/post', array('post' => $post, 'in_list' => false)) ?>
+	      <!-- commenti -->
+	      <br/>
+	      <br/>
 
-      <!-- commenti -->
-      <br/>
-      <br/>
-      
-      <div id="sfSimpleBlog_comment_list">
-      <a name="comments"></a>
-      
-      <?php if($nb_comments = count($comments)): ?>
-          <h4><strong><?php echo format_number_choice('[1]One comment so far|(1,+Inf]%1% comments so far', array('%1%' => $nb_comments), $nb_comments) ?></strong></h4>
-      
-          <p style="text-align:right; margin-right:6%;" ><a href="#leave">lascia il tuo commento</a>&nbsp;|&nbsp;<a href="#top" class="go-top">torna su</a></p>
-          <hr class="blog-comments-separator"/>
-      <?php endif; ?>
-        
-        
-        <?php include_partial('sfSimpleBlog/comment_list', array('post' => $post, 'comments' => $comments, 'user' => $user)) ?>
-      </div>
+	      <div id="sfSimpleBlog_comment_list">
+	      <a name="comments"></a>
 
-    </div>
+	      <?php if($nb_comments = count($comments)): ?>
+	          <h4><strong><?php echo format_number_choice('[1]One comment so far|(1,+Inf]%1% comments so far', array('%1%' => $nb_comments), $nb_comments) ?></strong></h4>
 
-    <div class="clear-both"/>			
-    </div>		
-  </div>
+	          <p style="text-align:right; margin-right:6%;" ><a href="#leave">lascia il tuo commento</a>&nbsp;|&nbsp;<a href="#top" class="go-top">torna su</a></p>
+	          <hr class="blog-comments-separator"/>
+	      <?php endif; ?>
+
+
+	        <?php include_partial('sfSimpleBlog/comment_list', array('post' => $post, 'comments' => $comments, 'user' => $user)) ?>
+	      </div>
+		
+	</div>
+	<div class="threecol last">
+		
+		<?php include_partial('sfSimpleBlog/sidebar') ?>
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

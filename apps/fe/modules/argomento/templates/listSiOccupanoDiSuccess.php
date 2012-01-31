@@ -2,11 +2,10 @@
   <li class="current"><h2>Argomento: <?php echo strtolower($argomento) ?></h2></li>
 </ul>
 
-<div class="tabbed float-container" id="content">
-	<div id="main">
-	  <div class="W73_100 float-left">
-
-	    <?php echo include_partial('secondlevelmenu', 
+<div class="row">
+	<div class="ninecol">
+		
+		<?php echo include_partial('secondlevelmenu', 
 	                               array('current' => $tipo_politici.'_sioccupano', 
 	                                     'triple_value' => $argomento_tv)); ?>
 
@@ -24,9 +23,10 @@
     
         </div>
       <?php endif ?>
-      
-    </div>
-  </div>
+		
+		
+	</div>
+	<div class="threecol last"></div>
 </div>
 
 <?php slot('breadcrumbs') ?>

@@ -1,0 +1,163 @@
+/* http://www.red-team-design.com/css3-dropdown-menu */
+/* Main menu */
+
+#menu
+{
+	width: 100%;
+	margin: 0;
+	padding: 5px 0 0 0;
+	list-style: none;  
+}
+
+#menu li
+{
+	float: left;
+	padding: 0 25px 5px 0;
+	position: relative;
+	line-height: 0;
+}
+
+#menu a 
+{
+	float: left;
+	height: 25px;
+	padding: 0;
+	color: #FFF;
+	font: bold 1.3em/25px Arial, Helvetica;
+	text-decoration: none;
+}
+
+#menu li:hover > a
+{
+	color: #fafafa;
+}
+
+* html #menu li a:hover /* IE6 */
+{
+	color: #fafafa;
+}
+
+#menu li:hover > ul
+{
+	display: block;
+}
+
+/* Sub-menu */
+
+#menu ul
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;    
+    display: none;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    z-index: 99999;    
+    background-color: #ccc;
+}
+
+#menu ul ul
+{
+  top: 0;
+  left: 150px;
+}
+
+#menu ul li
+{
+    float: none;
+    margin: 0;
+    padding: 0;
+    display: block;  
+}
+
+#menu ul a
+{    
+    padding: 10px;
+	height: 10px;
+	width: 170px;
+	height: auto;
+    line-height: 1;
+    display: block;
+    white-space: nowrap;
+    float: none;
+	text-transform: none;
+}
+
+* html #menu ul a /* IE6 */
+{    
+	height: 10px;
+}
+
+*:first-child+html #menu ul a /* IE7 */
+{    
+	height: 10px;
+}
+
+#menu ul a:hover
+{
+    background-color: #DEDEDE;
+}
+
+#menu ul li:first-child > a
+{
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+}
+
+#menu ul li:first-child > a:after
+{
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: -8px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid #DEDEDE;
+}
+
+#menu ul ul li:first-child a:after
+{
+    left: -8px;
+    top: 12px;
+    width: 0;
+    height: 0;
+    border-left: 0;	
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
+    border-right: 8px solid #DEDEDE;
+}
+
+#menu ul li:first-child a:hover:after
+{
+    border-bottom-color: #DEDEDE; 
+}
+
+#menu ul ul li:first-child a:hover:after
+{
+    border-right-color: #DEDEDE; 
+    border-bottom-color: transparent; 	
+}
+
+
+#menu ul li:last-child > a
+{
+    -moz-border-radius: 0 0 5px 5px;
+    border-radius: 0 0 5px 5px;
+}
+
+/* Clear floated elements */
+#menu:after 
+{
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
+}
+
+* html #menu             { zoom: 1; } /* IE6 */
+*:first-child+html #menu { zoom: 1; } /* IE7 */

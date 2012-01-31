@@ -4,13 +4,10 @@
 	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
 </ul>
 
-
-
-<div class="tabbed float-container" id="content">
-	<div id="main">
-			
-	  <div class="W100_100 float-left">
-	    <?php echo include_partial('secondlevelmenu', 
+<div class="row">
+	<div class="twelvecol">
+		
+		<?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'interventi', 
 	                                     'parlamentare_id' => $parlamentare->getId())); ?>
 	                                     	
@@ -34,16 +31,9 @@
 
       <?php include_partial('interventiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
-
-
-
-	  </div>
-
-
-    <div class="clear-both"/>			
-    </div>
 		
-  </div>
+		
+	</div>
 </div>
 
 <?php slot('breadcrumbs') ?>

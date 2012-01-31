@@ -6,19 +6,16 @@
   </li>
 </ul>
 
-<div id="content" class="tabbed float-container">
-
-  <div id="main"> 
-   
-    <div class="W73_100 float-left">
-      <p>
-        L'applicazione &egrave; stata temporaneamente sospesa.
-      </p>
-      <p>&nbsp;</p>
-      
-    </div>
-  </div>
-
+<div class="row">
+	<div class="ninecol">
+		
+		<p>
+	        L'applicazione &egrave; stata temporaneamente sospesa.
+	      </p>
+	      <p>&nbsp;</p>
+		
+	</div>
+	<div class="threecol last"></div>
 </div>
 
 <?php slot('breadcrumbs') ?>

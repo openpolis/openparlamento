@@ -2,261 +2,271 @@
 
 <?php include_partial('tabs',array('ramo' => $sf_params->get('ramo'),'gruppi'=> false, 'organi' => true)) ?>
 
-<div id="content" class="tabbed float-container">
-  <div id="main">
-    
-    <?php echo include_partial('secondLevelMenuOrgani', 
-                               array('current' => 'overview',
-                               'ramo' => $sf_params->get('ramo'))); ?>
-                               
-    <div class="W100_100 float-left">
-      <h3 class="subsection">Presidenza, Commissioni e Giunte: quanto contano i gruppi parlamentari</h3>
-      <p style="padding:5px">
-      L'insieme degli incarichi dei gruppi parlamentari nella Presidenza, in tutte le commissioni permanenti e bicamerali e nelle giunte.<br/>
-      La cartina dell'Italia mostra, a seconda dei colori, il numero di componenti della Presidenza, commissioni e giunte suddivisi per circoscrizione elettorale. 
-      </p>
-    </div>
-     
-     
-     <div class="W73_100 float-left" style="width:40%">
-       <table class="disegni-decreti column-table lazyload">
-         <thead>
-           <tr>
-             <th scope="col">Gruppo:</th>
-             <th scope="col">Presidenti:</th> 	
-             <th scope="col">Vicepresidenti:</th>
-             <th scope="col">Questori:</th>
-             <th scope="col">Segretari:</th>
-             <th scope="col">Membri:</th>
-             <th scope="col">Totale:</th>
-           </tr>
-         </thead>
+<div class="row">
+	<div class="twelvecol">
+		
+		<?php echo include_partial('secondLevelMenuOrgani', 
+	                               array('current' => 'overview',
+	                               'ramo' => $sf_params->get('ramo'))); ?>
 
-         <tbody>
-     <?php $tr_class = 'even'; ?>
-     <?php foreach ($gruppi_all as $k => $gruppo) : ?>
-       <?php $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d')); ?>
-       <tr class="<?php echo ($tr_class == 'even' ? 'odd' : 'even' ); ?>">
-       <?php if ($valore===null) : ?>
-         <?php $color_gruppo="#a29c9c"; ?>
-       <?php elseif($valore==1) : ?>   
-         <?php $color_gruppo="#022468"; ?>
-       <?php elseif($valore==0) : ?>
-         <?php $color_gruppo="#766d04"; ?>
-        <?php endif; ?>  
-       <th scope='row'><span style='background-color:<?php echo $color_gruppo ?>; color:white; margin:5px;'>&nbsp;</span><?php echo OppGruppoPeer::retrieveByPk($k)->getAcronimo(); ?></th>
-       <td>
-         <?php if (array_key_exists($k,$gruppi_p)) : ?>
-           <span style="font-weight:bold; background-color:yellow; padding:3px;"><?php echo $gruppi_p[$k]; ?></span>
-         <?php else : ?>  
-           <?php echo "0"; ?>
-         <?php endif; ?>
-       </td>
-       <td>
-         <?php if (array_key_exists($k,$gruppi_vp)) : ?>
-           <?php echo $gruppi_vp[$k]; ?>
-         <?php else :?>  
-           <?php echo "0"; ?>
-         <?php endif; ?>
-       </td>
-     
-         <td>
-           <?php if (array_key_exists($k,$gruppi_q)) : ?>
-             <?php echo $gruppi_q[$k]; ?>
-           <?php else :?>  
-             <?php echo "0"; ?>
-           <?php endif; ?>
-         </td>
-        
+		<h3 class="subsection">Presidenza, Commissioni e Giunte: quanto contano i gruppi parlamentari</h3>
+	      <p style="padding:5px">
+	      L'insieme degli incarichi dei gruppi parlamentari nella Presidenza, in tutte le commissioni permanenti e bicamerali e nelle giunte.<br/>
+	      La cartina dell'Italia mostra, a seconda dei colori, il numero di componenti della Presidenza, commissioni e giunte suddivisi per circoscrizione elettorale. 
+	      </p>
+	</div>
+</div>
 
-       <td>
-         <?php if (array_key_exists($k,$gruppi_s)) : ?>
-           <?php echo $gruppi_s[$k]; ?>
-         <?php else :?>  
-           <?php echo "0"; ?>
-         <?php endif; ?>
-       </td>
-      
-       <td>
-         <?php if (array_key_exists($k,$gruppi_c)) : ?>
-           <?php echo $gruppi_c[$k]; ?>
-         <?php else :?>  
-           <?php echo "0"; ?>
-         <?php endif; ?>
-       </td>
-       
-       <td class="evident">
-           <strong><?php echo $gruppo ?></strong>
-       </td>
-      </tr>
+<div class="row">
+	<div class="six">
+		
+		<table class="disegni-decreti column-table lazyload">
+	         <thead>
+	           <tr>
+	             <th scope="col">Gruppo:</th>
+	             <th scope="col">Presidenti:</th> 	
+	             <th scope="col">Vicepresidenti:</th>
+	             <th scope="col">Questori:</th>
+	             <th scope="col">Segretari:</th>
+	             <th scope="col">Membri:</th>
+	             <th scope="col">Totale:</th>
+	           </tr>
+	         </thead>
 
-     <?php endforeach; ?>  
-     
-     </tbody>
-     </table>
-     <br/>
-     <div><span style="background-color:#022468; color:white; padding: 3px; margin-right:10px; font-size:10px;">maggioranza</span><span style="background-color:#766d04; color:white; padding: 3px; margin-right:10px; font-size:10px">opposizione</span></div>
-     <br/>
+	         <tbody>
+	     <?php $tr_class = 'even'; ?>
+	     <?php foreach ($gruppi_all as $k => $gruppo) : ?>
+	       <?php $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d')); ?>
+	       <tr class="<?php echo ($tr_class == 'even' ? 'odd' : 'even' ); ?>">
+	       <?php if ($valore===null) : ?>
+	         <?php $color_gruppo="#a29c9c"; ?>
+	       <?php elseif($valore==1) : ?>   
+	         <?php $color_gruppo="#022468"; ?>
+	       <?php elseif($valore==0) : ?>
+	         <?php $color_gruppo="#766d04"; ?>
+	        <?php endif; ?>  
+	       <th scope='row'><span style='background-color:<?php echo $color_gruppo ?>; color:white; margin:5px;'>&nbsp;</span><?php echo OppGruppoPeer::retrieveByPk($k)->getAcronimo(); ?></th>
+	       <td>
+	         <?php if (array_key_exists($k,$gruppi_p)) : ?>
+	           <span style="font-weight:bold; background-color:yellow; padding:3px;"><?php echo $gruppi_p[$k]; ?></span>
+	         <?php else : ?>  
+	           <?php echo "0"; ?>
+	         <?php endif; ?>
+	       </td>
+	       <td>
+	         <?php if (array_key_exists($k,$gruppi_vp)) : ?>
+	           <?php echo $gruppi_vp[$k]; ?>
+	         <?php else :?>  
+	           <?php echo "0"; ?>
+	         <?php endif; ?>
+	       </td>
 
-     </div>
-     <div class="W73_100 float-right" style="width:56%;">
-     <?php  
-       $perc_magg=array();
-       $perc_min=array();
-       $perc_neutral=array();
-       $num_totale=0;
-       foreach ($gruppi_all as $k => $gruppo)
-       {
-         $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'));
-         if ($valore===null)
-          $perc_neutral[$k]=$gruppo;
-         elseif($valore==1)
-          $perc_magg[$k]=$gruppo;
-         elseif($valore==0) 
-          $perc_min[$k]=$gruppo;
-
-         $num_totale=$num_totale+$gruppo;  
-       }
-       $perc_grafico="50,";
-       $label_grafico="|";
-       $color_grafico="FFFFFF|";
-       foreach($perc_magg as $k => $perc)
-       {
-         $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
-         $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|";
-       }
-       
-       foreach($perc_neutral as $k => $perc)
-        {
-          $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
-          $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
-        }
-       
-       foreach($perc_min as $k => $perc)
-       {
-         $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
-         $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
-       }
-       
-       for ($x=0;$x<count($perc_magg);$x++)
-       {
-         switch ($x) {
-             case 0:
-                 $color_grafico=$color_grafico."022468|";
-                 break;
-             case 1:
-                 $color_grafico=$color_grafico."063cab|";
-                 break;
-             case 2:
-                 $color_grafico=$color_grafico."0b50dc|";
-                 break;
-             case 3:
-                 $color_grafico=$color_grafico."105dfb|";
-                 break;    
-             case 4:
-                 $color_grafico=$color_grafico."3c7af9|";
-                 break;
-             case 5:
-                 $color_grafico=$color_grafico."6f9df9|";
-                 break;    
-         }
-
-       }
-       
-       for ($x=0;$x<count($perc_neutral);$x++)
-       {
-         switch ($x) {
-             case 0:
-                 $color_grafico=$color_grafico."a29c9c|";
-                 break;
-             case 1:
-                 $color_grafico=$color_grafico."938f8f|";
-                 break;
-             case 2:
-                 $color_grafico=$color_grafico."8a8585|";
-                 break;
-             case 3:
-                 $color_grafico=$color_grafico."837e7e|";
-                 break;    
-             case 4:
-                 $color_grafico=$color_grafico."767373|";
-                 break;
-             case 5:
-                 $color_grafico=$color_grafico."636060|";
-                 break;    
-         }
-       }
-
-       for ($x=0;$x<count($perc_min);$x++)
-       {
-         switch ($x) {
-             case 0:
-                 $color_grafico=$color_grafico."766d04|";
-                 break;
-             case 1:
-                 $color_grafico=$color_grafico."ac9f09|";
-                 break;
-             case 2:
-                 $color_grafico=$color_grafico."e1cf0a|";
-                 break;
-             case 3:
-                 $color_grafico=$color_grafico."f9e50b|";
-                 break;    
-             case 4:
-                 $color_grafico=$color_grafico."f8e72b|";
-                 break;
-             case 5:
-                 $color_grafico=$color_grafico."f9ee70|";
-                 break;    
-         }
-
-       }
+	         <td>
+	           <?php if (array_key_exists($k,$gruppi_q)) : ?>
+	             <?php echo $gruppi_q[$k]; ?>
+	           <?php else :?>  
+	             <?php echo "0"; ?>
+	           <?php endif; ?>
+	         </td>
 
 
-       $chld="";
-        $color="";
-        $z=0;
-       arsort($membri_regione);
-       foreach ($membri_regione as $k => $m)
-       {
-         $chld=$chld."IT-".$k."|";
+	       <td>
+	         <?php if (array_key_exists($k,$gruppi_s)) : ?>
+	           <?php echo $gruppi_s[$k]; ?>
+	         <?php else :?>  
+	           <?php echo "0"; ?>
+	         <?php endif; ?>
+	       </td>
 
-           if ($m>=100)
-              $color=$color."ff0000|";
-            elseif ($m<100 && $m>=80)  
-              $color=$color."ff3200|";
-            elseif ($m<80 && $m>=60)  
-                $color=$color."ff4a00|";
-            elseif ($m<60 && $m>=50)  
-                $color=$color."ff6100|"; 
-             elseif ($m<50 && $m>=40)   
-                $color=$color."ff7d00|"; 
-            elseif ($m<40 && $m>=30)  
-               $color=$color."ff9600|";     
-           elseif ($m<30 && $m>=20)    
-                $color=$color."ffba00|";
-           elseif ($m<20 && $m>=10)   
-                $color=$color."ffb500|";     
-           elseif ($m<10)  
-                $color=$color."a0a0a0|";               
+	       <td>
+	         <?php if (array_key_exists($k,$gruppi_c)) : ?>
+	           <?php echo $gruppi_c[$k]; ?>
+	         <?php else :?>  
+	           <?php echo "0"; ?>
+	         <?php endif; ?>
+	       </td>
 
-         $z++;
-       }
+	       <td class="evident">
+	           <strong><?php echo $gruppo ?></strong>
+	       </td>
+	      </tr>
 
-       $color="FFFFFF|".$color;
+	     <?php endforeach; ?>  
 
-     ?>  
-     <img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?php echo rtrim($perc_grafico,',') ?>&chs=380x240&chl=<?php echo rtrim($label_grafico, '|') ?>&chco=<?php echo rtrim($color_grafico,'|') ?>">
+	     </tbody>
+	     </table>
+	     <br/>
+	     <div><span style="background-color:#022468; color:white; padding: 3px; margin-right:10px; font-size:10px;">maggioranza</span><span style="background-color:#766d04; color:white; padding: 3px; margin-right:10px; font-size:10px">opposizione</span></div>
+	     <br/>
+		
+		
+	</div>
+	<div class="six last">
+		
+		 <?php  
+	       $perc_magg=array();
+	       $perc_min=array();
+	       $perc_neutral=array();
+	       $num_totale=0;
+	       foreach ($gruppi_all as $k => $gruppo)
+	       {
+	         $valore=OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($k,date('Y-m-d'));
+	         if ($valore===null)
+	          $perc_neutral[$k]=$gruppo;
+	         elseif($valore==1)
+	          $perc_magg[$k]=$gruppo;
+	         elseif($valore==0) 
+	          $perc_min[$k]=$gruppo;
 
-     <img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
-     </div>
-                               
-    <?php if ($comm) : ?>                           
-      <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
-    <?php endif;?>  
-                         
-  </div>
-</div> 
+	         $num_totale=$num_totale+$gruppo;  
+	       }
+	       $perc_grafico="50,";
+	       $label_grafico="|";
+	       $color_grafico="FFFFFF|";
+	       foreach($perc_magg as $k => $perc)
+	       {
+	         $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
+	         $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|";
+	       }
+
+	       foreach($perc_neutral as $k => $perc)
+	        {
+	          $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
+	          $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
+	        }
+
+	       foreach($perc_min as $k => $perc)
+	       {
+	         $perc_grafico=$perc_grafico.(number_format($perc*100/$num_totale/2,2)).",";
+	         $label_grafico=$label_grafico.OppGruppoPeer::retrieveByPk($k)->getAcronimo()." [".$perc."]|"; 
+	       }
+
+	       for ($x=0;$x<count($perc_magg);$x++)
+	       {
+	         switch ($x) {
+	             case 0:
+	                 $color_grafico=$color_grafico."022468|";
+	                 break;
+	             case 1:
+	                 $color_grafico=$color_grafico."063cab|";
+	                 break;
+	             case 2:
+	                 $color_grafico=$color_grafico."0b50dc|";
+	                 break;
+	             case 3:
+	                 $color_grafico=$color_grafico."105dfb|";
+	                 break;    
+	             case 4:
+	                 $color_grafico=$color_grafico."3c7af9|";
+	                 break;
+	             case 5:
+	                 $color_grafico=$color_grafico."6f9df9|";
+	                 break;    
+	         }
+
+	       }
+
+	       for ($x=0;$x<count($perc_neutral);$x++)
+	       {
+	         switch ($x) {
+	             case 0:
+	                 $color_grafico=$color_grafico."a29c9c|";
+	                 break;
+	             case 1:
+	                 $color_grafico=$color_grafico."938f8f|";
+	                 break;
+	             case 2:
+	                 $color_grafico=$color_grafico."8a8585|";
+	                 break;
+	             case 3:
+	                 $color_grafico=$color_grafico."837e7e|";
+	                 break;    
+	             case 4:
+	                 $color_grafico=$color_grafico."767373|";
+	                 break;
+	             case 5:
+	                 $color_grafico=$color_grafico."636060|";
+	                 break;    
+	         }
+	       }
+
+	       for ($x=0;$x<count($perc_min);$x++)
+	       {
+	         switch ($x) {
+	             case 0:
+	                 $color_grafico=$color_grafico."766d04|";
+	                 break;
+	             case 1:
+	                 $color_grafico=$color_grafico."ac9f09|";
+	                 break;
+	             case 2:
+	                 $color_grafico=$color_grafico."e1cf0a|";
+	                 break;
+	             case 3:
+	                 $color_grafico=$color_grafico."f9e50b|";
+	                 break;    
+	             case 4:
+	                 $color_grafico=$color_grafico."f8e72b|";
+	                 break;
+	             case 5:
+	                 $color_grafico=$color_grafico."f9ee70|";
+	                 break;    
+	         }
+
+	       }
+
+
+	       $chld="";
+	        $color="";
+	        $z=0;
+	       arsort($membri_regione);
+	       foreach ($membri_regione as $k => $m)
+	       {
+	         $chld=$chld."IT-".$k."|";
+
+	           if ($m>=100)
+	              $color=$color."ff0000|";
+	            elseif ($m<100 && $m>=80)  
+	              $color=$color."ff3200|";
+	            elseif ($m<80 && $m>=60)  
+	                $color=$color."ff4a00|";
+	            elseif ($m<60 && $m>=50)  
+	                $color=$color."ff6100|"; 
+	             elseif ($m<50 && $m>=40)   
+	                $color=$color."ff7d00|"; 
+	            elseif ($m<40 && $m>=30)  
+	               $color=$color."ff9600|";     
+	           elseif ($m<30 && $m>=20)    
+	                $color=$color."ffba00|";
+	           elseif ($m<20 && $m>=10)   
+	                $color=$color."ffb500|";     
+	           elseif ($m<10)  
+	                $color=$color."a0a0a0|";               
+
+	         $z++;
+	       }
+
+	       $color="FFFFFF|".$color;
+
+	     ?>  
+	     <img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?php echo rtrim($perc_grafico,',') ?>&chs=380x240&chl=<?php echo rtrim($label_grafico, '|') ?>&chco=<?php echo rtrim($color_grafico,'|') ?>">
+
+	     <img src="http://chart.apis.google.com/chart?cht=map&chs=200x300&chld=<?php echo trim($chld,"|") ?>&chco=<?php echo trim($color,"|") ?>">
+		
+	</div>
+</div>
+
+<?php if ($comm) : ?> 
+	<div class="row">
+		<div class="twelvecol">
+			
+			<?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
+			
+		</div>
+	</div>                          
+  
+<?php endif;?>
+
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /

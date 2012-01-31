@@ -400,7 +400,8 @@ class datiStoriciActions extends sfActions
     if ($this->hasRequestParameter('triple_value'))
     {
       $triple_value = $this->getRequestParameter('triple_value');      
-      $this->tags_ids = array(TagPeer::retrieveFirstByTripleValue($triple_value));
+      $this->tags_ids = TagPeer::getIdsFromTagsValues($triple_value);
+		//array(TagPeer::retrieveFirstByTripleValue($triple_value));
     }
     else
     {
