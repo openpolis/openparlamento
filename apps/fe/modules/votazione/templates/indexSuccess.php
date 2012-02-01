@@ -1,96 +1,60 @@
-<?php use_helper('Date', 'sfRating') ?>
+<?php use_helper('Date', 'sfRating') ;
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@votazione?'. $votazione->getUrlParams() , true) ."\" />";
+end_slot();
+?>
 
 <?php include_partial('votazione_tabs', array('votazione' => $votazione, 'current' => 'votazione', 'nb_comments' => $votazione->getNbPublicComments(), 'ramo' => $ramo)) ?>
 
 <div class="row">
 	<div class="ninecol">
 		<a name="top"></a>
-		
+
 		<p class="synopsis">
-	        <?php echo $votazione->getTitolo() ?>
-	      </p>
+		<?php echo $votazione->getTitolo() ?>
+		</p>
 
-	      <ul class="presentation float-container"> 
-	        <li>
-	          <!-- bottone facebook -->
-	          <span style="vertical-align:top;"><a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">condividi</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></span>
-	        </li>  
-	        <?php if($votazione->getUrl()): ?>
-	          <li><?php echo link_to("link alla fonte ufficiale", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
-	        <?php endif; ?>		  
-	      </ul> 
+		<ul class="presentation float-container"> 
+			<li>
+			<!-- bottone facebook -->
+			<span style="vertical-align:top;"><a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php">condividi</a><script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script></span>
+			</li>  
+			<?php if($votazione->getUrl()): ?>
+			<li><?php echo link_to("link alla fonte ufficiale", $votazione->getUrl(), array('class' => 'external', 'target' => '_blank')) ?></li>
+			<?php endif; ?>		  
+		</ul> 
 
-	      <?php if ($voto_atti || $voto_ems): ?> 
-	          <?php if (count($voto_atti)>1 || $voto_ems>1): ?>
-	              <h5 class="subsection">la votazione si riferisce agli atti:</h5>
-	           <?php else : ?>   
-	              <h5 class="subsection">la votazione si riferisce all'atto:</h5>
-	           <?php endif; ?>    
-	           <?php include_partial('atti', array( 'voto_atti' => $voto_atti,'voto_ems' => $voto_ems)) ?>  
-	       <?php endif; ?> 
-
-
-	      <!-- DESCRIZIONE -->
-	      <div class="wiki-box-container">
-	    	<h5 class="description">descrivi insieme agli altri utenti questa votazione:</h5>
-	    	<p style="padding:5px;">qui sotto puoi inserire o modificare la descrizione per questa votazione.
-	    	<?php if ($sf_user->isAuthenticated()) : ?>
-	    	   <?php echo 'Clicca su "modifica"' ?>
-	    	<?php else : ?>
-	    	   Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
-	    	<?php endif ?>     
-	    	</p>
+		<?php if ($voto_atti || $voto_ems): ?> 
+			<?php if (count($voto_atti)>1 || $voto_ems>1): ?>
+			  <h5 class="subsection">la votazione si riferisce agli atti:</h5>
+			<?php else : ?>   
+			  <h5 class="subsection">la votazione si riferisce all'atto:</h5>
+			<?php endif; ?>    
+			<?php include_partial('atti', array( 'voto_atti' => $voto_atti,'voto_ems' => $voto_ems)) ?>  
+		<?php endif; ?> 
 
 
+		<!-- DESCRIZIONE -->
+		<div class="wiki-box-container">
+			<h5 class="description">descrivi insieme agli altri utenti questa votazione:</h5>
+			<p style="padding:5px;">qui sotto puoi inserire o modificare la descrizione per questa votazione.
+			<?php if ($sf_user->isAuthenticated()) : ?>
+				<?php echo 'Clicca su "modifica"' ?>
+			<?php else : ?>
+				Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
+			<?php endif ?>     
+			</p>
 
-	      <!-- partial per la descrizione wiki -->	
-	      <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
-
-	      </div>
-
-
-	      <h5 class="subsection">come hanno votato i gruppi</h5>
-	      <?php include_partial('gruppi', array('votazione' => $votazione, 'risultati' => $risultati)) ?> 
-
-	     </div>  
-
-
-
-	      <?php if ($ribelli): ?>
-
-	      <div class="W100_100 float-left">
-	        <div class="W40_100 float-right"> 
-	          <?php echo include_component('votazione','chartRibelli', array('votazione' => $votazione, 'ribelli' => $ribelli)) ?>
-	        </div>  
-
-	        <div class="W56_100 float-left">
-	        <a name="ribelli"></a>
-	           <?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?> 
-	         </div>
-	       </div>    
+			<!-- partial per la descrizione wiki -->	
+			<?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
+		</div>
 
 
-	       <?php endif; ?> 
+		<h5 class="subsection">come hanno votato i gruppi</h5>
+		<?php include_partial('gruppi', array('votazione' => $votazione, 'risultati' => $risultati)) ?> 
 
-
-	       <div class="W100_100 float-left"> 
-	         <div class="W40_100 float-right">
-	           <?php echo include_component('votazione','chartFavorevoli', array('votazione' => $votazione, 'risultati' => $risultati, 'votantiComponent' => $votantiComponent, 'ramo' => $ramo)) ?>
-	        </div>   
-	       <div class="W56_100 float-left">
-	      <h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
-	      <p style="margin-bottom:10px;">
-	      <?php echo ($votazione->getRibelli()>0?image_tag('ribelle_rosso.png', array('align'=>'middle')).'&nbsp;voto ribelle&nbsp;&nbsp;':'')?>
-	      <?php echo ($votazione->getIsMaggioranzaSottoSalva()==1?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;manda la maggioranza sotto':'')?>
-	      <?php echo ($votazione->getIsMaggioranzaSottoSalva()==2?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;salva la maggioranza':'')?>
-	      </p>
-	      <?php include_partial('votanti', array('votanti' => $votanti)) ?>
-
-
-	   </div>
-		
-		
-	</div>
+	</div>  
+	
 	<div class="threecol last">
 		
 		
@@ -225,9 +189,41 @@
 		
 		
 	</div>
+	
 </div>
 
+<?php if ($ribelli): ?>
+<div class="row">
+	<div class="sevencol">
+		<a name="ribelli"></a>
+		<?php include_partial('ribelli', array('ribelli' => $ribelli, 'voto_gruppi' => $voto_gruppi)) ?>
+		
+	</div>
+	<div class="fivecol last">
+		
+		<?php echo include_component('votazione','chartRibelli', array('votazione' => $votazione, 'ribelli' => $ribelli)) ?>
+	</div>
+</div>
+<?php endif; ?>
 
+<div class="row">
+	<div class="sevencol">
+		<h5 class="subsection">come hanno votato tutti i <?php echo ($ramo=='Camera' ? 'deputati' : 'senatori') ?></h5>
+		<p style="margin-bottom:10px;">
+		<?php echo ($votazione->getRibelli()>0?image_tag('ribelle_rosso.png', array('align'=>'middle')).'&nbsp;voto ribelle&nbsp;&nbsp;':'')?>
+		<?php echo ($votazione->getIsMaggioranzaSottoSalva()==1?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;manda la maggioranza sotto':'')?>
+		<?php echo ($votazione->getIsMaggioranzaSottoSalva()==2?image_tag('punto_esclamativo_rosso.png',array('align'=>'middle')).'&nbsp;salva la maggioranza':'')?>
+		</p>
+		<?php include_partial('votanti', array('votanti' => $votanti)) ?>	
+		
+	</div>
+	<div class="fivecol last">
+		<?php echo include_component('votazione','chartFavorevoli', array('votazione' => $votazione, 'risultati' => $risultati, 'votantiComponent' => $votantiComponent, 'ramo' => $ramo)) ?>
+		
+	</div>
+</div>
+
+ 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
   <?php echo link_to('votazioni', '@votazioni') ?>
