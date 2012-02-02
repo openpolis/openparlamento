@@ -111,7 +111,7 @@
         #sub-footer ul li { display: inline-block; padding:0; }
 	
 	footer ul, ul.dotted-list { list-style-type:none; }	
-	footer ul li, ul.dotted-list li { padding-left: 0.6em; background: transparent url('../img/dot.png') 0 .6em no-repeat; }
+	footer #global-navigation ul li, ul.dotted-list li { padding-left: 0.6em; background: transparent url('../img/dot.png') 0 .6em no-repeat; }
 	footer p, footer ul { margin-bottom:8px; line-height: 1.5em; }
     
     /* global styles : icons */		
