@@ -14,7 +14,7 @@
                    <li class="float-container">
                    	
 		<p>
-		<?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(), 'votazione/index?id='.$lancio[0]->getId()) ?>&nbsp;-&nbsp; 
+		<?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(), '@votazione?'.$lancio[0]->getUrlParams()) ?>&nbsp;-&nbsp; 
 		
 		<?php $voto_class=""; ?>
 		<?php if ($lancio[2]=="Favorevole") : ?>
@@ -47,7 +47,7 @@
                    <li class="float-container">
                    	
 		<p>
-		<?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(), 'votazione/index?id='.$lancio[0]->getId()) ?>&nbsp;-&nbsp; 
+		<?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(), '@votazione?'.$lancio[0]->getUrlParams()) ?>&nbsp;-&nbsp; 
 		
 		<?php $voto_class=""; ?>
 		<?php if ($lancio[2]=="Favorevole") : ?>

@@ -28,7 +28,9 @@
 
           <tbody>
 
-        	  <?php $tr_class = 'even'; $cnt = 0; foreach ($politici as $carica_id => $politico): ?>
+        	  <?php $tr_class = 'even'; $cnt = 0; 
+        	  use_helper('Slugger');
+        	  foreach ($politici as $carica_id => $politico): ?>
        	        
                 <tr class="<?php echo $tr_class; ?>" id="carica-<?php echo $carica_id ?>">
                 <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
@@ -37,7 +39,9 @@
                     <p class="politician-id">
                       <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politico['politico_id']), 
                                            array('width' => '40','height' => '53')) ?>
-                      <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2')); ?>
+                      <?php 
+                      $fullName = $politico['nome'] . " " . $politico['cognome'];
+                      echo link_to($fullName . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'] .'&slug='.slugify($fullName), array('class' => 'folk2')); ?>
                     </p>
                   </th>
                   <td>

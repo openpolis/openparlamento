@@ -24,11 +24,12 @@
 			$newRouteURI = $uriParts[1];
 			if ( $router->hasRouteName($newRouteURI) )
 			{
-				$currentParams = $this->getContext()->getRequest()->extractParameters(array('sort','page','type', 'id', 'slug'));
+				$currentParams = $this->getContext()->getRequest()->extractParameters(array('sort','page','type', 'id', 'slug', 'ramo'));
 				echo '<link rel="canonical" href="'.rtrim($this->getContext()->getController()->genUrl('',true),'/'). $router->generate($newRouteURI, $currentParams)   .'" />';
 			}
 		}
 	}
+	
 	?>	
     <link rel="icon" type="image/gif" href="/ico_op_32x32.gif" />
   </head>

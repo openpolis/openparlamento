@@ -1394,7 +1394,7 @@ class apiActions extends sfActions
 
   public function _get_most_something($crit, $tipo_carica, $field, $limit = null)
   {
-    sfLoader::loadHelpers(array('Url', 'Tag'));
+    sfLoader::loadHelpers(array('Url', 'Tag', 'Slugger'));
     
     // if limit was not passed, then get it from config file
     if (is_null($limit)) 
@@ -1411,7 +1411,7 @@ class apiActions extends sfActions
       $record = array();
       $record['img_src'] = OppPoliticoPeer::getThumbUrl($rs->getInt(2));
       $record['nome'] = $rs->getString(3).' '.$rs->getString(4);
-      $record['nome_link'] = url_for('@parlamentare?id='.$rs->getInt(2));
+      $record['nome_link'] = url_for('@parlamentare?id='.$rs->getInt(2).'&slug='. slugify($record['nome']) );
       
       $record['gruppi'] = '';
       $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($rs->getInt(1));

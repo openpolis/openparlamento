@@ -14,7 +14,7 @@
 <?php foreach ($pager->getResults() as $votazione) : ?>
 <tr>
         <th scope="row">
-          <p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p>
+          <p><?php echo link_to($votazione->getTitolo(), '@votazione?'.$votazione->getUrlParams()) ?></p>
          
        </th>
        <?php if ($arr1[$votazione->getId()]!=$arr2[$votazione->getId()]) : ?>

@@ -68,6 +68,7 @@ api_voti_maggioranza_:
 api_votazione:
   url: /votazione/:key/:id
   param: { module: api, action: votazione }
+  requirements: { id: \d+ }
   
 attivita_gruppo_argomento:
   url: /attivita_gruppo_argomento/:ramo/:gruppo_id/*
@@ -237,10 +238,13 @@ dati_storici_indice_presenze_export:
   
 
   
-news_home:
+news_home_old:
   url: /news_home/*
   param: { module: news, action: homeAll }
-  
+news_home:
+  url: /notizie-dal-parlamento/*
+  param: { module: news, action: homeAll }
+      
 news_tag:
   url: /news_tag/:id/*
   param: { module: news, action: tag }
@@ -343,8 +347,11 @@ documento:
   url: /atto/documento/id/:id
   param: { module: atto, action: documento }
 
-argomenti:
+argomenti_old:
   url:   /argomenti    
+  param: { module: argomento, action: list }
+argomenti:
+  url:   /lista-degli-argomenti-in-parlamento
   param: { module: argomento, action: list }
   
 argomento_search:
@@ -445,8 +452,12 @@ votazioni:
   url:   /tutte-le-votazioni-in-parlamento/:sort/:type/*
   param: { module: votazione, action: list, sort: data, type: desc, display: false }
 
-votazione:
+votazione_old:
     url: /votazione/:id
+    param: { module: votazione, action: index }
+    
+votazione:
+    url: /votazione/:ramo/:slug/:id
     param: { module: votazione, action: index }
 
 commenti_votazione_old:
@@ -465,41 +476,69 @@ parlamentari:
   url:   /parlamentari/:ramo/:sort/:type/*
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
-parlamentare:
+comparaDeputati:
+  url:   /parlamentare/comparaDeputati/:id1/:id2/:ramo/*
+  param: { module: parlamentare, action: comparaDeputati, id1: 0, id2: 0, ramo: 1, display: false }
+    
+parlamentare_old:
   url:   /parlamentare/:id
   param: { module: parlamentare, action: cosa }
+parlamentare:
+  url:   /parlamentare/:slug/:id
+  param: { module: parlamentare, action: cosa }
   
-gruppi_camera:
+gruppi_camera_old:
   url:   /gruppi_camera
   param: { module: parlamentare, action: gruppiCamera }
+gruppi_camera:
+  url: /i-gruppi-in-parlamento/camera
+  param: { module: parlamentare, action: gruppiCamera }
 
-gruppi_senato:
+gruppi_senato_old:
   url:   /gruppi_senato
-  param: { module: parlamentare, action: gruppiSenato }    
+  param: { module: parlamentare, action: gruppiSenato }
+gruppi_senato:   
+  url: /i-gruppi-in-parlamento/senato 
+  param: { module: parlamentare, action: gruppiSenato }
   
-commissioni_camera:
+commissioni_camera_old:
   url:   /commissioni_camera
   param: { module: parlamentare, action: commissioniCamera }
-
-commissioni_senato:
+commissioni_camera:
+  url:   /commissioni-in-parlamento/camera
+  param: { module: parlamentare, action: commissioniCamera }
+  
+commissioni_senato_old:
   url:   /commissioni_senato
   param: { module: parlamentare, action: commissioniSenato }    
+commissioni_senato:
+  url:   /commissioni-in-parlamento/senato
+  param: { module: parlamentare, action: commissioniSenato }
 
 commissioni_membri:
   url:   /commissioni_membri/:sede/:sort
   param: { module: parlamentare, action: commissioniMembri,  sede: 1, sort: carica }
 
-commissioni_bicamerali:
+commissioni_bicamerali_old:
   url:   /commissioni_bicamerali/:ramo
   param: { module: parlamentare, action: commissioniBicamerali, ramo: 'camera' }
+commissioni_bicamerali:
+  url:   /commissioni-bicamerali-in-parlamento/:ramo
+  param: { module: parlamentare, action: commissioniBicamerali, ramo: 'camera' }
 
-giunte:
+giunte_old:
   url: /giunte/:ramo
   param: { module: parlamentare, action: giunte, ramo: 'camera' }    
+giunte:
+  url: /giunte-in-parlamento/:ramo
+  param: { module: parlamentare, action: giunte, ramo: 'camera' }
 
-organi:
+organi_old:
   url: /organi/:ramo
   param: { module: parlamentare, action: organi, ramo: 'camera' }  
+organi:
+  url: /presidenza-commissioni-e-giunte-in-parlamento/:ramo
+  param: { module: parlamentare, action: organi, ramo: 'camera' }
   
 giorni_di_carica:
   url: /giorni_di_carica/:ramo
@@ -527,11 +566,7 @@ parlamentare_emendamenti:
 
 parlamentari_tabella_delta:
   url:   /tabella_delta/:data/:mesi/:ramo/:dato
-  param: { module: parlamentare, action: tabellaDelta }
-  
-comparaDeputati:
-  url:   /parlamentare/comparaDeputati/:id1/:id2/:ramo/*
-  param: { module: parlamentare, action: comparaDeputati, id1: 0, id2: 0, ramo: 1, display: false }    
+  param: { module: parlamentare, action: tabellaDelta }   
 
 get_logged_user:
   url: /get_logged_user
@@ -549,7 +584,14 @@ progetto:
 faq:
   url:  /faq
   param: { module: static, action: faq }
-
+  
+classifiche_parlamento:
+  url: /le-classifiche-di-openpolis-sul-parlamento
+  param: { module: default, action: classifiche }
+  
+static_page:
+  url: /static/:action
+  param: { module: static }    
 
 # default rules
 homepage:

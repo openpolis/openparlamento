@@ -1,4 +1,4 @@
-<?php use_helper('PagerNavigation', 'DeppNews') ?>
+<?php use_helper('PagerNavigation', 'DeppNews', 'Slugger') ?>
 <?php setlocale(LC_TIME,"it_IT") ?>
 
 <div class="row">
@@ -33,7 +33,7 @@
 	        <h6>Collegamenti</h6>
 	        <div class="float-container">
 	          <ul>
-	            <li><?php echo link_to('pagina di ' . $politician, '@parlamentare?id='.$politician_id) ?></li>
+	            <li><?php echo link_to('pagina di ' . $politician, '@parlamentare?id='.$politician_id.'&slug='.slugify($politician)) ?></li>
 	            <?php if ($sf_user->isAuthenticated()): ?>
 	              <li><?php echo link_to('i parlamentari monitorati', 'monitoring/politicians') ?></li>              
 	            <?php endif ?>
@@ -55,6 +55,6 @@
     On.
    <?php endif; ?>
    <?php endif; ?> 
-  <?php echo link_to($politician,'@parlamentare?id='.$politician_id) ?> /
+  <?php echo link_to($politician,'@parlamentare?id='.$politician_id.'&slug='.slugify($politician)) ?> /
    tutte le notizie
 <?php end_slot() ?>

@@ -1,3 +1,4 @@
+<?php use_helper('Slugger'); ?>
 <div class="evidence-box float-container">
 	<h5 class="subsection">Firma atti più spesso con...</h5>
 	<div class="pad10">
@@ -6,7 +7,7 @@
 		    <li>
 		      <?php echo $i ?>.
 		      <?php echo link_to($politico['nomecognome'] . " (".$politico['gruppo'].")", 
-		                        '@parlamentare?id='.$politico['id'], 
+		                        '@parlamentare?id='.$politico['id'].'&slug='. slugify($politico['nomecognome']), 
 		                          array( 'class' => 'folk1' . ($politico['samegroup']?' green':' violet'), 
 		                                 'title' => number_format($politico['similarita'], 2))) ?>
 		    </li>

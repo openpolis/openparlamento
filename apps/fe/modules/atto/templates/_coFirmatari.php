@@ -5,10 +5,10 @@
 
  <div class="more-results float-container W66_100" style="display: none;">
   <ul class="square-bullet no-interline">
-    <?php foreach($co_firmatari as $id => $co_firmatario): ?>  
+    <?php use_helper('Slugger'); foreach($co_firmatari as $id => $co_firmatario): ?>  
       <li>
 	    <?php $info_array = explode('*', $co_firmatario ); ?>
-	    <?php echo link_to($info_array[1], '@parlamentare?id='.$id) ?>
+	    <?php echo link_to($info_array[1], '@parlamentare?id='.$id.'&slug='.slugify($info_array[1])) ?>
       </li>
     <?php endforeach; ?>
   </ul>

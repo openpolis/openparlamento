@@ -21,13 +21,13 @@
 	  <li>
         <?php if($commissione->getOppSede()->getRamo()=='S'): ?>
           <?php $sede_comm="Senato" ?>
-          <?php $uri_comm="/commissioni_senato" ?>
+          <?php $uri_comm="@commissioni_senato" ?>
         <?php elseif ($commissione->getOppSede()->getRamo()=='C') : ?>
           <?php $sede_comm="Camera" ?>
-          <?php $uri_comm="/commissioni_camera" ?>
+          <?php $uri_comm="@commissioni_camera" ?>
         <?php elseif ($commissione->getOppSede()->getRamo()=='CS') : ?>
           <?php $sede_comm="Bicamerale" ?>
-          <?php $uri_comm="/commissioni_bicamerali" ?>
+          <?php $uri_comm="@commissioni_bicamerali" ?>
         <?php endif; ?>
         <?php echo "Sede ".$commissione->getTipo().": ".$sede_comm." ".link_to($commissione->getOppSede()->getDenominazione(),$uri_comm.'#'.$commissione->getOppSede()->getId()) ?>
       </li>
@@ -49,13 +49,13 @@
 	        <li>
               <?php if($commissione->getOppSede()->getRamo()=='S'): ?>
                 <?php $sede_comm="Senato" ?>
-                <?php $uri_comm="/commissioni_senato" ?>
+                <?php $uri_comm="@commissioni_senato" ?>
               <?php elseif ($commissione->getOppSede()->getRamo()=='C') : ?>
                 <?php $sede_comm="Camera" ?>
-                <?php $uri_comm="/commissioni_camera" ?>
+                <?php $uri_comm="@commissioni_camera" ?>
               <?php elseif ($commissione->getOppSede()->getRamo()=='CS') : ?>
                 <?php $sede_comm="Bicamerale" ?>
-                <?php $uri_comm="/commissioni_bicamerali" ?>
+                <?php $uri_comm="@commissioni_bicamerali" ?>
               <?php endif; ?>
               <?php echo $sede_comm." ".link_to($commissione->getOppSede()->getDenominazione(),$uri_comm.'#'.$commissione->getOppSede()->getId()) ?>
             </li>

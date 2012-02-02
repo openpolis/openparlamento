@@ -50,7 +50,7 @@
         font-size: 1.3em; font-weight: bold; 
         margin-top: 25px;
     }
-    header.container ul li { display: inline-block; margin-right: 10px; }
+    header.container ul li { display: inline-block; }
     header.container ul li a { }
     
     /* fixed height for navigation menu */
@@ -64,7 +64,12 @@
     section#payoff { padding-bottom: 20px; padding-top: 35px; }
     
     /* content */
-    section#main { padding-bottom: 20px; padding-top: 15px; }
+    section#main { padding-bottom: 20px; padding-top: 15px; background-color:#efefee; }
+    section#main .row { 
+        padding: 20px 10px 5px 10px;
+        background-color:#FFF; 
+        border:0 solid #dbdbdb; border-left:1px; border-right:1px; 
+    }
     
     /* global styles : FORMs */
     input {
@@ -96,14 +101,14 @@
     
     /* global styles : footer */
     footer.container { font-size: 0.9em; line-height: 1.5em; padding:15px 0; background-color: #e4e3de; }
-    footer.container a { color: #222; text-decoration: none; }
-    footer.container a:hover { color: #222; text-decoration: underline; }
-    footer.container h3, footer.container h4 { font-family: helvetica; margin-top: 20px;  }
-	footer.container h3 { margin-bottom: 5px; font-size: 1.2em; }
-	footer.container h4 { margin-top: 5px; font-size: 1.4em; }
+    footer.container a { color: #000; text-decoration: none; }
+    footer.container a:hover { color: #000; text-decoration: underline; }
+    footer.container h3, footer.container h4 { font-family: Georgia; margin-top: 20px;  }
+	footer.container h3 { margin-bottom: 5px; font-size: 14px; }
+	footer.container h4 { margin-top: 5px; font-size: 14px; }
         #sub-footer { text-align: center; margin-top: 25px; }
         #sub-footer ul { list-style: none inside; }
-        #sub-footer ul li { display: inline-block;}
+        #sub-footer ul li { display: inline-block; padding:0; }
 	
 	footer ul, ul.dotted-list { list-style-type:none; }	
 	footer ul li, ul.dotted-list li { padding-left: 0.6em; background: transparent url('../img/dot.png') 0 .6em no-repeat; }

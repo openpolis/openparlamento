@@ -1,12 +1,8 @@
-<?php use_helper('Date', 'I18N') ?>
+<?php use_helper('Date', 'I18N', 'Slugger') ?>
 
-<div class="row">
-	<div class="twelvecol">
-		<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'atto', 
-		                                         'nb_comments' => $atto->getNbPublicComments(),
-		                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
-	</div>
-</div>
+<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'atto', 
+                                         'nb_comments' => $atto->getNbPublicComments(),
+                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
 
 <div class="row">
 	<div class="ninecol">
@@ -43,7 +39,9 @@
 	                <?php else : ?>
 	                   <?php echo ' di ' ?>
 	                <?php endif; ?>    
-	                <?php echo link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'parlamentare/'.$f_signers->getInt(1)).($f_signers->next() ? ' e altri' : '') ?>
+	                <?php 
+	                $slugParlamentare = slugify($f_signers->getString(2).' '.$f_signers->getString(3));
+	                echo link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'@parlamentare?id='.$f_signers->getInt(1).'&slug='.$slugParlamentare).($f_signers->next() ? ' e altri' : '') ?>
 	             <?php endif; ?>   
 	        <?php else: ?>
 	          <?php if($atto->getRamo()): ?>

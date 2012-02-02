@@ -1,4 +1,8 @@
-<?php use_helper('Date', 'Number') ?>
+<?php use_helper('Date', 'Number'); 
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare?'. $parlamentare->getUrlParams() , true) ."\" />";
+end_slot();
+?>
 
 <ul class="float-container tools-container" id="content-tabs">
 	<li class="current"><h2><?php echo ($carica ? ($ramo=='camera' ? 'On. ' : 'Sen. '):'') ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
@@ -7,7 +11,7 @@
 <div class="row">
 	<div class="ninecol">
 		
-		<?php echo include_partial('secondlevelmenu', array('current' => 'cosa', 'parlamentare_id' => $parlamentare->getId())); ?>
+		<?php echo include_partial('secondlevelmenu', array('current' => 'cosa', 'parlamentare_slug' => $parlamentare->getSlug(), 'parlamentare_id' => $parlamentare->getId())); ?>
                          
 	    <?php if ($sf_flash->has('subscription_promotion')): ?>
 	      <div class="flash-messages">

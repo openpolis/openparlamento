@@ -1,4 +1,4 @@
-<?php use_helper('I18N', 'Date') ?>
+<?php use_helper('I18N', 'Date', 'Slugger') ?>
 
 <?php include_partial('tabs_nuovo_indice', array('ramo' => $ramo)) ?>
 
@@ -29,7 +29,7 @@
 	              <th scope="row">
 	                <p class="politician-id">
 	                  <?php echo link_to($p['nome'].' '.$p['cognome'],
-	                                     '@parlamentare?id='.$p['p_id']) ?>
+	                                     '@parlamentare?id='.$p['p_id'].'&slug='.slugify($p['nome'].' '.$p['cognome'])) ?>
 	                  <?php if ($ramo != 'governo'): ?>
 	                    (<?php echo $p['acronimo'] ?>)                    
 	                  <?php endif ?>

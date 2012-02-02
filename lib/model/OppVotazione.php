@@ -367,6 +367,21 @@ class OppVotazione extends BaseOppVotazione
     // ritorna il documento da aggiungere
     return $document;
   }
+
+	/**
+	 *
+	 * @author Daniele Faraglia
+	 * @return string parametri per completare l'url della route
+	 */
+	public function getUrlParams()
+	{
+		use_helper('Slugger');
+		
+		$str = 'id='. $this->getId();
+		$str .= '&slug='.slugify($this->getTitolo());
+		$str .= '&ramo='. ( $this->getOppSeduta()->getRamo() == 'C' ? 'camera' : 'senato');
+		return $str;
+	}
  
     
 }

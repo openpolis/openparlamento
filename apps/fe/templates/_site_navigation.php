@@ -38,7 +38,7 @@
     <?php endif; ?>
   </li>
   <li>
-    <a href="http://blog.openpolis.it/">Il blog di openpolis</a>
+    <a href="http://blog.openpolis.it/">Open blog</a>
   </li>
   <li></li>
 </ul>

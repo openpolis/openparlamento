@@ -23,6 +23,8 @@ class argomentoActions extends sfActions
 
   public function executeList()
   {
+	$this->getResponse()->setTitle('Gli argomenti discussi in Parlamento - '.sfConfig::get('app_main_title'));
+	
     // fetch teseo top_terms and add monitoring info
     $teseo_tts_with_counts = OppTeseottPeer::getAllWithCount();
     /*

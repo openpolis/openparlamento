@@ -9,7 +9,8 @@
 		
 		<?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'atti', 
-	                                     'parlamentare_id' => $parlamentare->getId())); ?>
+	                                     'parlamentare_id' => $parlamentare->getId(),
+	                                     'parlamentare_slug' => $parlamentare->getSlug())); ?>
 	                                     	
    		<p class="tools-container"><a class="ico-help" href="#">cosa sono</a></p>
    		<div style="display: none;" class="help-box float-container">

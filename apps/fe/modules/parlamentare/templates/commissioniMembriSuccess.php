@@ -1,3 +1,4 @@
+<?php use_helper('Slugger'); ?>
 <br/>
     <table class="disegni-decreti column-table lazyload">
       <thead>
@@ -19,10 +20,11 @@
     <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
       <th scope="row">  
       <p class="politician-id">
-        <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()), 
+          <?php $politico = OppCaricaPeer::retrieveByPk($k)->getOppPolitico(); ?>
+        <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politico->getId()), 
                              array('width' => '40','height' => '53')) ?>
       <?php echo link_to((OppSedePeer::retrieveByPk($sede_id)->getRamo()=='CS' ? (OppCaricaPeer::retrieveByPk($k)->getTipoCaricaId()==1?'On. ':'Sen. ') :'').
-      OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k)->getOppPolitico()->getId()) ?>
+      $politico->getNome()." ".$politico->getCognome(),'@parlamentare?'.$politico->getUrlParams()) ?>
       <?php echo ($tipo_carica!='componente'? ' ('.ucfirst($tipo_carica).')' :'') ?>
       </p>
       </th>
@@ -47,10 +49,11 @@
       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">  
         <p class="politician-id">
-          <?php echo image_tag(OppPoliticoPeer::getThumbUrl(OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()), 
+            <?php $politico = OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico(); ?>
+          <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politico->getId()), 
                                array('width' => '40','height' => '53')) ?>
                                <?php echo link_to((OppSedePeer::retrieveByPk($sede_id)->getRamo()=='CS' ? (OppCaricaPeer::retrieveByPk($k[0])->getTipoCaricaId()==1?'On. ':'Sen. ') :'').
-                               OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getNome()." ".OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getCognome(),'@parlamentare?id='.OppCaricaPeer::retrieveByPk($k[0])->getOppPolitico()->getId()) ?>
+                               $politico->getNome()." ".$politico->getCognome(),'@parlamentare?'.$politico->getUrlParams()) ?>
         <?php echo ($k[1]!="componente" ? " (".ucfirst($k[1]).")":"" ) ?>
         </p>
         </th>

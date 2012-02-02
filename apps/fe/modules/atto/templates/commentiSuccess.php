@@ -1,12 +1,8 @@
 <?php use_helper('Date', 'I18N') ?>
 
-<div class="row">
-	<div class="twelvecol">
-		<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'commenti', 
-		                                         'nb_comments' => $atto->getNbPublicComments(),
-		                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
-	</div>
-</div>
+<?php include_partial('atto_tabs', array('atto' => $atto, 'current' => 'commenti', 
+                                         'nb_comments' => $atto->getNbPublicComments(),
+                                         'nb_emendamenti' => $atto->countOppAttoHasEmendamentos())) ?>
 
 <div class="row">
 	<div class="ninecol">

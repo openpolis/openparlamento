@@ -16,6 +16,7 @@ class communityActions extends sfActions
    */
   public function executeIndex()
   {
+	$this->getResponse()->setTitle('Le attività della community - '.sfConfig::get('app_main_title'));
     // ultime 10 attivita' della community
     $this->latest_activities = CommunityNewsPeer::getLatestActivities(10);
     

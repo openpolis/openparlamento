@@ -368,6 +368,30 @@ class OppPolitico extends BaseOppPolitico
     // ritorna il documento da aggiungere
     return $document;
   }
+  
+  
+  	/**
+	 *
+	 * @author Daniele Faraglia
+	 * @return string parametri per completare l'url della route
+	 */
+	public function getUrlParams()
+	{
+		$str = 'id='. $this->getId();
+		$str .= '&slug='. $this->getSlug();
+		return $str;
+	}
+	
+	/**
+	 *
+	 * @author Daniele Faraglia
+	 * @return string torna lo slug NOME-COGNOME
+	 */
+	public function getSlug()
+	{
+	    use_helper('Slugger');
+	    return slugify($this->getNome() .' '. $this->getCognome());
+	}
     
 }
 

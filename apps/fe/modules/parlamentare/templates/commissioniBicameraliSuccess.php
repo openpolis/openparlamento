@@ -18,9 +18,9 @@
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
   <?php if ($ramo=='camera') :?>
-    <?php echo link_to("organi della camera", "/organi/camera") ?>/
+    <?php echo link_to("organi della camera", "@organi?ramo=camera") ?>/
   <?php else :?>  
-    <?php echo link_to("organi del senato", "/organi/camera") ?> /
+    <?php echo link_to("organi del senato", "@organi?ramo=senato") ?> /
   <?php endif; ?>  
     commissioni bicamerali  
 <?php end_slot() ?>          

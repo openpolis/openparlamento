@@ -1,10 +1,6 @@
 <?php use_helper('I18N', 'Date') ?>
 
-<div class="row">
-	<div class="twelvecol">
-		<?php include_partial('tabs', array('current' => 'decrleg')) ?>
-	</div>
-</div>
+<?php include_partial('tabs', array('current' => 'decrleg')) ?>
 
 <div class="row">
 	<div class="ninecol">

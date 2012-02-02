@@ -33,7 +33,7 @@ class attoComponents extends sfComponents
     switch(get_class($this->item)){
       case 'OppPolitico':
         $str = $this->item->__toString();
-        $url = '@parlamentare?id='.$this->item->getId();
+        $url = '@parlamentare?'.$this->item->getUrlParams();
         $this->title = '';
         break;
       case 'OppAtto':

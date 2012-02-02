@@ -12,14 +12,14 @@ if (count($cariche)>0)
     }
     echo strpos(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),"giunta");
     if (OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione permanente')
-      $uri="/commissioni_";
+      $uri="@commissioni_$ramo";
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione bicamerale'))
-      $uri="/commissioni_bicamerali/";
+      $uri="@commissioni_bicamerali?ramo=$ramo";
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Giunta'))
-      $uri="/giunte/";  
+      $uri="@giunte?ramo=$ramo";  
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Presidenza'))
-      $uri="/organi/";
-    echo link_to('<span style="font-size:12px;">'.OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione().'</span>',$uri.$ramo."#".$carica->getSedeId())."</p>";
+      $uri="@organi?ramo=$ramo";
+    echo link_to('<span style="font-size:12px;">'.OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione().'</span>',$uri."#".$carica->getSedeId())."</p>";
   }
 }
 
@@ -43,15 +43,15 @@ if(count($pasts)>0)
     }
     echo strpos(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),"giunta");
     if (OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione permanente')
-      $uri="/commissioni_";
+      $uri="@commissioni_$ramo";
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione bicamerale'))
-      $uri="/commissioni_bicamerali/";
+      $uri="@commissioni_bicamerali?ramo=$ramo";
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Giunta'))
-      $uri="/giunte/";  
+      $uri="@giunte?ramo=$ramo";  
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Presidenza'))
-      $uri="/organi/";
+      $uri="@organi?ramo=$ramo";
 
-    echo link_to(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),$uri.$ramo."#".$carica->getSedeId());
+    echo link_to(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),$uri."#".$carica->getSedeId());
     echo "</label></p>";
   }
   echo "</div>";

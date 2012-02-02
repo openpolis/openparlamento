@@ -17,7 +17,7 @@
 	  <?php if($limit_count < $limit): ?>
 	  <tr class="<?php echo $tr_class; ?>">
           <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
-          <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
+          <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?'.$votazione->getUrlParams() ) ?></p></th>
           <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
           <td>
             <?php if($votazione->getEsito()=='APPROVATA'): ?>
@@ -62,7 +62,7 @@
           <?php if ($limit_count >= $limit): ?>
 	    <tr class="<?php echo $tr_class; ?>">
             <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?> 
-              <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p></th>
+              <th scope="row"><p><?php echo link_to($votazione->getTitolo(), '@votazione?'.$votazione->getUrlParams()) ?></p></th>
               <td><p><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></p></td>				
               <td>
                 <?php if($votazione->getEsito()=='APPROVATA'): ?>

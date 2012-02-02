@@ -1,4 +1,4 @@
-<?php use_helper('Date', 'I18N') ?>
+<?php use_helper('Date', 'I18N', 'Slugger') ?>
 
 <?php include_partial('tabs', array('emendamento' => $emendamento, 'current' => 'emendamento', 
                                     'nb_comments' => $emendamento->getNbPublicComments())) ?>
@@ -34,7 +34,7 @@
 	           <?php $f_signers= OppEmendamentoPeer::getRecordsetFirmatari($emendamento->getId(),'P'); ?>
 
 	            <?php if ($f_signers->next()) :?>  
-	                 <?php echo ' da '.link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'/parlamentare/'.$f_signers->getInt(1)).($f_signers->next() ? ' e altri' : '') ?>
+	                 <?php echo ' da '.link_to($f_signers->getString(2).' '.$f_signers->getString(3).($f_signers->getString(6)!='' ? ' ('.$f_signers->getString(6).')' :''),'@parlamentare?id='.$f_signers->getInt(1).'&slug='.slugify($f_signers->getString(2).' '.$f_signers->getString(3))).($f_signers->next() ? ' e altri' : '') ?>
 	            <?php else :?>
 	              <?php if ($emendamento->getNota()) : ?>
 	                 <?php if ($emendamento->getNota()=='commissione') echo 'dalla' ?>
@@ -56,7 +56,7 @@
 	              {
 	                $i++;
 	                $pol = OppPoliticoPeer::retrieveByPk($key);
-	                echo link_to($pol->getNome()." ".$pol->getCognome(),'/parlamentare/'.$pol->getId()).($i<count($c_signers) ? ', ' :'.');
+	                echo link_to($pol->getNome()." ".$pol->getCognome(),'@parlamentare?'.$pol->getUrlParams()).($i<count($c_signers) ? ', ' :'.');
 	               } ?>
 	               </div>
 

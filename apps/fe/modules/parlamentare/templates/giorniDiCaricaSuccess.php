@@ -41,7 +41,8 @@
 		    <p class="politician-id">
 		      <?php echo image_tag(OppPoliticoPeer::getThumbUrl($k), 
 		                           array('width' => '40','height' => '53')) ?>
-		    <?php echo (OppCaricaPeer::retrieveByPk($c[1])->getTipoCaricaId()==1?'On. ':'Sen. '). link_to(OppPoliticoPeer::retrieveByPk($k)->getCognome()." ".OppPoliticoPeer::retrieveByPk($k)->getNome(), "@parlamentare?id=".$k) ?> (<?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($c[1])->getAcronimo() ?>)
+		    <?php $politico = OppPoliticoPeer::retrieveByPk($k); ?>
+		    <?php echo (OppCaricaPeer::retrieveByPk($c[1])->getTipoCaricaId()==1?'On. ':'Sen. '). link_to($politico->getCognome()." ".$politico->getNome(), "@parlamentare?".$politico->getUrlParams()) ?> (<?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($c[1])->getAcronimo() ?>)
 		    </p>
 		    </th>
 		    <td><?php echo $c[0] ?></td>
@@ -59,7 +60,7 @@
 	    <h5 class="subsection"><?php echo OppGruppoPeer::retrieveByPk($k)->getNome()?></h2>
 	    <img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con oltre 20 anni di incarichi: <?php echo $sg[4].' ('.round($sg[4]*100/array_sum($sg),2)?>%)|da 15 a 20 anni di incarichi: <?php echo $sg[3].' ('.round($sg[3]*100/array_sum($sg),2)?>%)|da 10 a 15 anni di incarichi: <?php echo $sg[2].' ('.round($sg[2]*100/array_sum($sg),2)?>%)|da 5 a 10 anni di incarichi: <?php echo $sg[1].' ('.round($sg[1]*100/array_sum($sg),2)?>%)|con+meno di 5 anni di incarichi: <?php echo $sg[0].' ('.round($sg[0]*100/array_sum($sg),2)?>%)&chd=t:<?php echo "$sg[4],$sg[3],$sg[2],$sg[1],$sg[0]" ?>&chco=FF0000,FFFF10">
 	    <p>
-	    Con maggior anni di incarichi: <?php echo link_to(OppPoliticoPeer::retrieveByPk($max_gruppi[$k][0])->getNome()." ".OppPoliticoPeer::retrieveByPk($max_gruppi[$k][0])->getCognome(), "@parlamentare?id=".$k).", ".$max_gruppi[$k][1] ?>.
+	    Con maggior anni di incarichi: <?php echo link_to(OppPoliticoPeer::retrieveByPk($max_gruppi[$k][0])->getNome()." ".OppPoliticoPeer::retrieveByPk($max_gruppi[$k][0])->getCognome(), "@parlamentare?". OppPoliticoPeer::retrieveByPk($max_gruppi[$k][0])->getUrlParams()).", ".$max_gruppi[$k][1] ?>.
 	    </p>
 	  <?php endforeach ?>
 		

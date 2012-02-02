@@ -521,8 +521,8 @@ p.wiki-form-submit { margin-left: 20px;}
  * CONTENT TABS
  *----------------------------------------------*/
  
-#content-tabs { margin: 0 12px 20px 12px; }
-#content-tabs li { float: left; background: #ccd4d5 url(../images/bg-tab-content.png) repeat-x top left; margin-right: 5px; padding: 0 18px;
+#content-tabs { margin: 0 12px 0 12px; }
+#content-tabs li { float: left; /*background: #ccd4d5 url(../images/bg-tab-content.png) repeat-x top left;*/ background-color: #CAD6D5; margin-right: 5px; padding: 0 18px;
 -moz-border-radius-topleft: 5px; -webkit-border-top-left-radius: 5px; border-top-left-radius: 5px; -moz-border-radius-topright: 5px; -webkit-border-top-right-radius: 5px; border-top-right-radius: 5px; }
 
 #content-tabs li a { line-height: 40px; }
@@ -543,7 +543,7 @@ p.wiki-form-submit { margin-left: 20px;}
  * 2ND LEVEL CONTENT TABS
  *----------------------------------------------*/
 
-.second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 1px; float: left; position: relative; left: -9px; top: -6px; }
+.second-level-tabs { background: transparent url(../images/bg-tabs-2nd-level.png) repeat-x top left; -moz-border-radius: 3px; -webkit-border-radius: 3px; border-radius: 3px; padding: 1px; float: left; position: relative; margin-bottom:5px; /*left: -9px; top: -6px;*/ }
 .second-level-tabs li, .second-level-tabs h5 { display: inline; }
 .second-level-tabs a, .second-level-tabs span { color: #4472AC; display: block; float: left; padding: 0 10px; height: 45px; line-height: 40px; border-right: 1px solid #fff; border-left: 1px solid #f0f0f0; }
 .second-level-tabs a:hover { color: #0066ff; }
@@ -1029,7 +1029,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
  * SEARCH MAIN
  *----------------------------------------------*/
 
-#search-main { float: right; position: relative; top: -2px; padding-right: 20px; }
+#search-main { float: right; position: relative; top: -2px; }
 #search-main-field { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd;  width: 70%; font-size: 16px; margin-right: 3px; }
 #search-main-go { vertical-align: bottom; }
 

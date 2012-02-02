@@ -41,7 +41,7 @@ class attoActions extends sfActions
     $this->session = $this->getUser();
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('Gli atti in evidenza - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Gli atti parlamentari di Camera e Senato più importanti. - '.sfConfig::get('app_main_title'));
     $this->response->addMeta('description','Gli atti che la redazione ritiene o ha ritenuto importanti ', true);
      
   
@@ -253,7 +253,7 @@ class attoActions extends sfActions
     
     $this->query = $this->getRequestParameter('query', '');
     
-    $this->getResponse()->setTitle('Tutti i disegni di legge - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Tutti i disegni di legge di Camera e al Senato - '.sfConfig::get('app_main_title'));
     $this->response->addMeta('description','La lista e gli aggiornamenti su tutti i disegni di legge presentati in Parlamento ',true);
     
     // estrae tutte le macrocategorie, per costruire la select

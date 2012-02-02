@@ -30,7 +30,7 @@
         <p class="content-meta">
         <span class="date"><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?></span>
         </p>
-        <p><?php echo link_to($votazione->getTitolo(), '@votazione?id='.$votazione->getId()) ?></p>
+        <p><?php echo link_to($votazione->getTitolo(), '@votazione?'.$votazione->getUrlParams()) ?></p>
         </th>
         <td><p><?php echo $voto_parlamentare ?></p></td>
         <td><p><?php echo "<small style='color:gray'>".$gruppo->getAcronimo()."</small><br/>"?><?php echo $voto_gruppo?></p></td>

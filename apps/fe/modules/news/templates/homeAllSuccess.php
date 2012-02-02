@@ -9,7 +9,7 @@
 
 	      <?php echo include_partial('news/newslist',array('pager' => $pager, 'context' => CONTEXT_LIST)); ?>
 
-	      <?php echo pager_navigation($pager, 'news/homeAll') ?>
+	      <?php echo pager_navigation($pager, '@news_home') ?>
 		
 	</div>
 </div>

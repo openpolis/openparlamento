@@ -19,7 +19,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  <?php echo link_to("organi della camera", "/organi/camera") ?>/
+  <?php echo link_to("organi della camera", "@organi?ramo=camera") ?>/
     commissioni permanenti  
 <?php end_slot() ?>           
                     

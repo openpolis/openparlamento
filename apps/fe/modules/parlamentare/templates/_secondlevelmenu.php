@@ -2,7 +2,7 @@
 	<ul class="second-level-tabs float-container">
     <li class="<?php echo($current=='cosa' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php echo link_to('Cosa fa', $current=='cosa'?'#':'@parlamentare?id='.$parlamentare_id) ?>
+	      <?php echo link_to('Cosa fa', $current=='cosa'?'#':'@parlamentare?id='.$parlamentare_id .'&slug='. $parlamentare_slug) ?>
 		  </h5>
 		</li>
     <li class="<?php echo($current=='atti' ? 'current' : '' ) ?>">

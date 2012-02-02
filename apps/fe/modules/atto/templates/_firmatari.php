@@ -43,11 +43,11 @@
       <?php foreach($primi_firmatari as $id => $primo_firmatario): ?> 	
       <?php $info_array = explode('*', $primo_firmatario ); //inizialmente era prevista anche la data (in $info_array[0]) ?>   
         <tr>
-          <td><?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$info_array[1], '@parlamentare?id='.$id) ?></td>	
+          <td><?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$info_array[1], '@parlamentare_old?'.$id) ?></td>	
           <td>
             <?php if($rel_index < count($relatori)): ?>
-		      <?php $ind = $rel_array_index[$rel_index] ?>
-		      <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($ind), array('width'=>'40')).$relatori[$ind], '@parlamentare?id='.$ind) ?>  
+		      <?php $ind = $rel_array_index[$rel_index]; ?>
+		      <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($ind), array('width'=>'40')).$relatori[$ind], '@parlamentare_old?id='.$ind) ?>  
 			  <?php $rel_index++; ?>
 		    <?php endif; ?>            	
           </td>
@@ -61,12 +61,12 @@
             <?php if($primi_index < count($primi_firmatari)): ?>
               <?php $ind = $primi_array_index[$primi_index] ?>			
 			  <?php $info_array = explode('*', $primi_firmatari[$ind] ); ?>
-			  <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($ind), array('width'=>'40')).$info_array[1], '@parlamentare?id='.$ind) ?>
+			  <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($ind), array('width'=>'40')).$info_array[1], '@parlamentare_old?id='.$ind) ?>
 			  <?php $primi_index++; ?>
 			<?php endif; ?>  	
           </td>
 		  <td>
-		    <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$relatore, '@parlamentare?id='.$id) ?>	
+		    <?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$relatore, '@parlamentare_old?id='.$id) ?>	
 		  </td>
 		</tr>  	       
 	  <?php endforeach; ?>		  	        

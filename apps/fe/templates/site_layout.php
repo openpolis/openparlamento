@@ -32,7 +32,9 @@
 				echo '<link rel="canonical" href="'.rtrim($this->getContext()->getController()->genUrl('',true),'/'). $router->generate($newRouteURI, $currentParams)   .'" />';
 			}
 		}
-	}
+	} 
+	if ( has_slot('force_canonical') )
+		include_slot('force_canonical');
 	?>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -50,9 +52,6 @@
 
     <!--modernizr-2.0.6.js - http://www.modernizr.com -  is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites. -->
     <script type="text/javascript" src="/js/modernizr-2.0.6.js"></script>
-    
-    <!--swfobject: code.google.com/p/swfobject/ -->
-    <script type="text/javascript" src="/js/swfobject.js"></script>
 
     <link rel="shortcut icon" href="favicon.ico" />
     
@@ -112,13 +111,9 @@
                 <h1 id="intervieni">Intervieni</h1>
                 <p>Commenta, proponi e vota gli atti che ti interessano, nella comunità Openpolis.</p>
             </div>
-            <div class="sixcol last">
+            <div class="sixcol last textright">
                 <h1><img src="/img/payoff/slogan_openparlamento.png" alt="Cosa fanno i tuoi parlamentari?" /></h1>
-                <form action="">
-                    <select name="" id=""><option value="">Deputati</option></select>
-                    <select name="" id=""><option value="">Gruppo</option></select>
-                    <select name="" id=""><option value="">Circoscrizione</option></select>
-                </form>
+                
             </div>
         </div>
     </section>

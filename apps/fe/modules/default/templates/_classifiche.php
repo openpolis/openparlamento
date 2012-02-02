@@ -15,7 +15,10 @@
    <p class="politician-id">
    <?php echo image_tag(OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2)), 
                         array('width' => '40','height' => '53' )) ?>	
-    <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
+    <?php 
+    use_helper('Slugger');
+    $slugParlamentare = slugify($parlamentari->getString(2).' '.$parlamentari->getString(3));
+    echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2).'&slug='.$slugParlamentare) ?>
     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>  	
     <?php foreach($gruppi as $nome => $gruppo): ?>
 	<?php if(!$gruppo['data_fine']): ?>

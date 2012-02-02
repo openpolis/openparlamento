@@ -1,6 +1,6 @@
-<?php use_helper('Date', 'I18N', 'Slugger');
+<?php use_helper('Date', 'I18N');
 slot('canonical_link');
-echo "\n<link rel=\"canonical\" href=\"". url_for('@commenti_votazione?slug='. slugify($votazione->getTitolo() ).'&id='. $votazione->getId() , true) ."\" />";
+echo "\n<link rel=\"canonical\" href=\"". url_for('@commenti_votazione?'. $votazione->getUrlParams() , true) ."\" />";
 end_slot();
 ?>
 

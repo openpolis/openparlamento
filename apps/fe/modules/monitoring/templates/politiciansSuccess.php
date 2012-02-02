@@ -35,7 +35,7 @@
 	  				<th scope="row"><p class="politician-id">
 	  				  <?php echo image_tag(OppPoliticoPeer::getThumbUrl($politician->getId()), 
 	                                 'icona parlamentare') ?>
-	  				  <?php echo link_to($politician, '@parlamentare?id='.$politician->getId()); ?></p>
+	  				  <?php echo link_to($politician, '@parlamentare?'.$politician->getUrlParams()); ?></p>
 	  				</th>
 	  				<td><p class="float-right"><a class="btn-open-table action" href="#">
 	  				  <?php echo format_number_choice( 

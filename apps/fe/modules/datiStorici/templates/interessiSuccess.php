@@ -35,10 +35,10 @@
 
 	            <?php if (isset($politici) && count($politici) > 0): ?>
 	            	<ul>
-	            	  <?php $cnt = 0; foreach ($politici as $carica_id => $politico): ?>
+	            	  <?php $cnt = 0; use_helper('Slugger'); foreach ($politici as $carica_id => $politico): ?>
 	           	      <li style="font-size:12px; padding:5px 0 0 0;" id="carica-<?php echo $carica_id ?>">
 	           	        <?php echo ++$cnt ?>)
-	           	        <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)
+	           	        <?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'] .'&slug='. slugify($politico['nome'] . " " . $politico['cognome'] ), array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)
 	           	        (<?php echo link_to('mostra dettaglio',
 	           	                            '@dati_storici_dettaglio_interessi?carica_id='.$carica_id.'&tags_ids='.implode(",", $tags_ids),
 	           	                            array('class' => 'show-hide-dettaglio')) ?>)

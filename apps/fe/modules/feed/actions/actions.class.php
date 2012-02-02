@@ -82,6 +82,7 @@ class feedActions extends sfActions
   
   public function executeLastPolitico()
   {
+      use_helper('Slugger');
     $id = $this->getRequestParameter('id');
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
@@ -91,7 +92,7 @@ class feedActions extends sfActions
 
     $feed = $this->_make_feed_from_pager(
       'Ultime per ' . $politico, 
-      '@parlamentare?id='.$id, 
+      '@parlamentare?id='.$id.'&slug='.slugify($politico), 
       $this->_get_newspager_from_criteria($c),
       2 // CONTEXT_POLITICO
     );
@@ -101,6 +102,7 @@ class feedActions extends sfActions
 
   public function executeLastPoliticoRadicali()
   {
+      use_helper('Slugger');
     $id = $this->getRequestParameter('id');
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
@@ -113,7 +115,7 @@ class feedActions extends sfActions
 
     $feed = $this->_make_feed_from_news(
       'Ultime per ' . $politico, 
-      '@parlamentare?id='.$id, 
+      '@parlamentare?id='.$id.'&slug='.slugify($politico), 
       $news, 
       2 // CONTEXT_POLITICO
     );
@@ -301,7 +303,7 @@ class feedActions extends sfActions
       if ($base_href == 'espresso') {
         $item_link = sprintf("http://espresso.repubblica.it/dal_parlamento/votazioni/%d", $voto->getId());        
       } else {
-        $item_link = url_for('@votazione?id='.$voto->getId(), true);        
+        $item_link = url_for('@votazione?'.$voto->getUrlParams(), true);        
       }
       $aggiuntivo_only = true;
       $item->initialize( array(

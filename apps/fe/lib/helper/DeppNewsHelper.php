@@ -610,7 +610,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
 
     $politico = $carica->getOppPolitico();
     $politico_link = link_to_in_mail($politico, 
-                        '@parlamentare?id=' . $politico->getId(),
+                        '@parlamentare?' . $politico->getUrlParams(),
                         array('title' => 'Vai alla scheda del politico'));
       
 
@@ -650,7 +650,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
 
       // link al politico
       $politico_link = link_to_in_mail($politico->getNome() . ' ' .$politico->getCognome(), 
-                           '@parlamentare?id=' . $politico->getId(),
+                           '@parlamentare?' . $politico->getUrlParams(),
                            array('title' => 'Vai alla scheda del politico'));
 
 
@@ -974,7 +974,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
       {
         $politico = $generator->getOppCarica()->getOppPolitico();
         $politico_link = link_to_in_mail($politico, 
-                             '@parlamentare?id=' . $politico->getId(),
+                             '@parlamentare?' . $politico->getUrlParams(),
                              array('title' => 'Vai alla scheda del politico'));
       
         $news_string .= "<p>".$politico_link . " <strong>interviene</strong>";
@@ -1026,7 +1026,7 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         }
         $politico = $generator->getOppCarica()->getOppPolitico();
         $politico_link = link_to_in_mail($politico, 
-                             '@parlamentare?id=' . $politico->getId(),
+                             '@parlamentare?' . $politico->getUrlParams(),
                              array('title' => 'Vai alla scheda del politico'));
         if ($tipo_firma!='&egrave; relatore' )
         {
@@ -1063,9 +1063,9 @@ function news_text(News $news, $generator_model, $pks, $generator, $options = ar
         $news_string .= "<p>";
         $news_string .= ($news->getRamoVotazione()=='C')?'Camera -  ' : 'Senato - '; 	
         if ($news->getPriority()==1) 
-             $news_string .= link_to(' <strong>si &egrave; svolta la votazione finale</strong>','/votazione/'.$generator->getOppVotazione()->getId());
+             $news_string .= link_to(' <strong>si &egrave; svolta la votazione finale</strong>','@votazione?'.$generator->getOppVotazione()->getUrlParams());
         else
-             $news_string .= " si &egrave; svolta la votazione per ".link_to($generator->getOppVotazione()->getTitolo(),'/votazione/'.$generator->getOppVotazione()->getId());     
+             $news_string .= " si &egrave; svolta la votazione per ".link_to($generator->getOppVotazione()->getTitolo(),'@votazione?'.$generator->getOppVotazione()->getUrlParams());     
         if ($context!=0)
         {
            $news_string .= " relativa a ".$tipo->getDescrizione() . "</p>";
@@ -1362,7 +1362,7 @@ function community_news_text($news)
       // link al politico
       $item_type = 'il parlamentare';
       $link = link_to_in_mail($item, 
-                             '@parlamentare?id=' . $related_id,
+                             '@parlamentare?' . $item->getUrlParams(),
                              array('title' => 'Vai alla scheda del politico'));
       break;
 
@@ -1406,7 +1406,7 @@ function community_news_text($news)
       // link alla votazione 
       $item_type = 'la votazione'; 
       $link = link_to_in_mail($item->getTitolo(),  
-                            '@votazione?id=' . $related_id, 
+                            '@votazione?' . $item->getUrlParams(), 
                             array('title' => 'Vai alla pagina della votazione')); 
       break; 
 

@@ -1229,18 +1229,18 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
 
  public function executeGruppiCamera()
  {
-   $this->getResponse()->setTitle('Il dettaglio dei gruppi della Camera dei Deputati - '.sfConfig::get('app_main_title'));
+   $this->getResponse()->setTitle('Componenti e statistiche sui gruppi parlamentari della Camera dei Deputati - '.sfConfig::get('app_main_title'));
    $this->response->addMeta('description','La composizione dei gruppi alla Camera, che perde deputati e chi li guadagna',true); 	  
  }   
  public function executeGruppiSenato()
  {
-  $this->getResponse()->setTitle('Il dettaglio dei gruppi del Senato della Repubblica - '.sfConfig::get('app_main_title')); 
+  $this->getResponse()->setTitle('Componenti e statistiche sui gruppi parlamentari della del Senato della Repubblica - '.sfConfig::get('app_main_title')); 
   $this->response->addMeta('description','La composizione dei gruppi al Senato, che perde deputati e chi li guadagna',true);
  }
  
  public function executeCommissioniCamera()
  {
-    $this->getResponse()->setTitle('Il dettaglio delle Commissioni della Camera - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Commissioni parlamentari della Camera - '.sfConfig::get('app_main_title'));
     $this->response->addMeta('description','La composizione delle commissioni alla Camera, qual\'&egrave; il potere dei gruppi parlamentari',true);
     //estrae le commissioni parmanenti camera
     $c=new Criteria();
@@ -1250,7 +1250,7 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
   }
   public function executeCommissioniSenato()
   {
-    $this->getResponse()->setTitle('Il dettaglio delle Commissioni del Senato - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Commissioni parlamentari del Senato - '.sfConfig::get('app_main_title'));
     $this->response->addMeta('description','La composizione delle commissioni al Senato, qual\'&egrave; il potere dei gruppi parlamentari',true);
     
     $compara_comm=array();
@@ -1263,7 +1263,7 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
   
   public function executeCommissioniBicamerali()
   {
-    $this->getResponse()->setTitle('Il dettaglio delle Commissioni Bicamerali - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Commissioni bicamerali in Parlamento - '.sfConfig::get('app_main_title'));
     $this->response->addMeta('description','La composizione delle commissioni bicamerali, qual\'&egrave; il potere dei gruppi parlamentari',true);
      $c=new Criteria();
      $c->add(OppSedePeer::RAMO,'CS');
@@ -1316,13 +1316,13 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
      $c=new Criteria();
      if ($this->getRequestParameter('ramo')=='camera')
      {
-       $this->getResponse()->setTitle('Il dettaglio delle Giunte della Camera - '.sfConfig::get('app_main_title'));
+       $this->getResponse()->setTitle('Giunte parlamentari della Camera - '.sfConfig::get('app_main_title'));
        $this->response->addMeta('description','La composizione delle giunte alla Camera, qual\'&egrave; il potere dei gruppi parlamentari',true);
        $c->add(OppSedePeer::RAMO,'C'); 
      }
      else
      {
-       $this->getResponse()->setTitle('Il dettaglio delle Giunte del Senato - '.sfConfig::get('app_main_title'));
+       $this->getResponse()->setTitle('Giunte parlamentari del Senato - '.sfConfig::get('app_main_title'));
        $this->response->addMeta('description','La composizione delle giunte al Senato, qual\'&egrave; il potere dei gruppi parlamentari',true);
        $c->add(OppSedePeer::RAMO,'S');
      }
@@ -1336,13 +1336,13 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
       $c=new Criteria();
       if ($this->getRequestParameter('ramo')=='camera')
       {
-        $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni della Camera - '.sfConfig::get('app_main_title'));
+        $this->getResponse()->setTitle('Componenti e statistiche di commissioni e giunte della Camera - '.sfConfig::get('app_main_title'));
         $this->response->addMeta('description','Il potere dei gruppi parlamentari in tutti gli organi della Camera dei Deputati',true);
         $c->add(OppSedePeer::RAMO,'C');
       }
       else
       {
-        $this->getResponse()->setTitle('Il dettaglio degli organi e commissioni del Senato - '.sfConfig::get('app_main_title'));
+        $this->getResponse()->setTitle('Componenti e statistiche di commissioni e giunte del Senato - '.sfConfig::get('app_main_title'));
         $this->response->addMeta('description','Il potere dei gruppi parlamentari in tutti gli organi del Senato',true);
         $c->add(OppSedePeer::RAMO,'S');
       }

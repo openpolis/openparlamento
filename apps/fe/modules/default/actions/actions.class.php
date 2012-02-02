@@ -187,11 +187,14 @@ class defaultActions extends sfActions
   public function executeClassifiche()
   {
    
-       $this->getResponse()->setTitle('le classifiche dei parlamentari - '.sfConfig::get('app_main_title'));   
+       $this->getResponse()->setTitle('Le classifiche di openpolis sui parlamentari - '.sfConfig::get('app_main_title'));   
   }
   
   public function executeIndex()
   {
+	$this->getResponse()->setTitle('Monitora i tuoi rappresentanti - '.sfConfig::get('app_main_title'));   
+	$this->getResponse()->addMeta('description','Cosa fanno i tuoi rappresentanti? Tutte le attività parlamentari aggiornate quotidianamente.',true);  
+	
     deppFiltersAndSortVariablesManager::resetVars($this->getUser(), 'module', 'module', 
                                                   array('acts_filter', 'sf_admin/opp_atto/sort',
                                                         'votes_filter', 'sf_admin/opp_votazione/sort',

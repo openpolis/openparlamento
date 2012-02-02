@@ -19,7 +19,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to("home", "@homepage") ?> /
-  <?php echo link_to("organi del senato", "/organi/senato") ?> /
+  <?php echo link_to("organi del senato", "@organi?ramo=senato") ?> /
     commissioni permanenti  
 <?php end_slot() ?>
 

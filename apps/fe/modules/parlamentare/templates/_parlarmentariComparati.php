@@ -1,6 +1,6 @@
 <div class="W45_100 float-left">
    <div class="float-container">
-   <p style="font-size:20px; font-weight:bold; padding: 5px;"><?php echo ($parlamentare1->getTipoCaricaId()==1 ? 'On. ' : 'Sen. '). link_to($parlamentare1->getOppPolitico()->getNome().'&nbsp;'.$parlamentare1->getOppPolitico()->getCognome(),'/parlamentare/'.$parlamentare1->getOppPolitico()->getId()) ?><?php echo ' ('.$parlamentare1->getOppPolitico()->getGruppoCorrente()->getAcronimo().')' ?></p>
+   <p style="font-size:20px; font-weight:bold; padding: 5px;"><?php echo ($parlamentare1->getTipoCaricaId()==1 ? 'On. ' : 'Sen. '). link_to($parlamentare1->getOppPolitico()->getNome().'&nbsp;'.$parlamentare1->getOppPolitico()->getCognome(),'@parlamentare?'.$parlamentare1->getOppPolitico()->getUrlParams()) ?><?php echo ' ('.$parlamentare1->getOppPolitico()->getGruppoCorrente()->getAcronimo().')' ?></p>
        <?php echo image_tag(OppPoliticoPeer::getPictureUrl($parlamentare1->getOppPolitico()->getId()), 
                                array('class' => 'portrait-91x126 float-left', 
    			                             'alt' => $parlamentare1->getOppPolitico()->getNome() . ' ' . $parlamentare1->getOppPolitico()->getCognome(),
@@ -38,7 +38,7 @@
 
 <div class="W45_100 float-left">
    <div class="float-container">
-   <p style="font-size:20px; font-weight:bold; padding: 5px;"><?php echo ($parlamentare1->getTipoCaricaId()==1 ? 'On. ' : 'Sen. '). link_to($parlamentare2->getOppPolitico()->getNome().'&nbsp;'.$parlamentare2->getOppPolitico()->getCognome(),'/parlamentare/'.$parlamentare2->getOppPolitico()->getId()) ?><?php echo ' ('.$parlamentare2->getOppPolitico()->getGruppoCorrente()->getAcronimo().')' ?></p>
+   <p style="font-size:20px; font-weight:bold; padding: 5px;"><?php echo ($parlamentare1->getTipoCaricaId()==1 ? 'On. ' : 'Sen. '). link_to($parlamentare2->getOppPolitico()->getNome().'&nbsp;'.$parlamentare2->getOppPolitico()->getCognome(),'@parlamentare?'.$parlamentare2->getOppPolitico()->getUrlParams()) ?><?php echo ' ('.$parlamentare2->getOppPolitico()->getGruppoCorrente()->getAcronimo().')' ?></p>
        <?php echo image_tag(OppPoliticoPeer::getPictureUrl($parlamentare2->getOppPolitico()->getId()), 
                                array('class' => 'portrait-91x126 float-left', 
    			                             'alt' => $parlamentare2->getOppPolitico()->getNome() . ' ' . $parlamentare2->getOppPolitico()->getCognome(),

@@ -1,4 +1,4 @@
-<?php use_helper('I18N', 'Date') ?>
+<?php use_helper('I18N', 'Date', 'Slugger') ?>
 
 <?php include_partial('tabs', array('current' => 'maggioranza_salva')) ?>
 
@@ -35,7 +35,7 @@
 	            <td style="text-align:left;">
 	              <p class="politician-id">
 
-	                <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
+	                <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2).'&slug='.slugify($parlamentari->getString(3).' '.$parlamentari->getString(4))) ?>
 	                (
 	                <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
 	                  <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>

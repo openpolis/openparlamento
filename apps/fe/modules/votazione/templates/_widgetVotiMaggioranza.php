@@ -36,7 +36,7 @@
 	      <?php endif; ?>	
 	      <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>      
 	      </div>					
-	      <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?id='.$votazione->getId()) ?></p>
+	      <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?'.$votazione->getUrlParams()) ?></p>
 	    </li>	
 	    <?php endif; ?>
 	  <?php endforeach; ?>
@@ -65,7 +65,7 @@
 	      <?php endif; ?>	
 	      <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>      
 	      </div>					
-	      <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?id='.$votazione->getId()) ?></p>
+	      <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?'.$votazione->getUrlParams()) ?></p>
 	    </li>	
 	    <?php endif; ?>
 	  <?php endforeach; ?>

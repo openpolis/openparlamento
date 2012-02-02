@@ -1,4 +1,4 @@
-<?php use_helper('I18N', 'Date') ?>
+<?php use_helper('I18N', 'Date', 'Slugger') ?>
 
 <?php include_partial('tabsDelta', array('data' => $data, 'mesi' => $mesi, 'ramo' => $ramo, 'dato' => $dato)) ?>
 
@@ -53,7 +53,7 @@
 	              <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
 	              <th scope="row">
 	                <p class="politician-id">
-	                  <?php echo link_to(sprintf("%s %s (%s)", $p['nome'], $p['cognome'], $p['gruppo_acronimo']), '@parlamentare?id='.$p['politico_id']) ?>
+	                  <?php echo link_to(sprintf("%s %s (%s)", $p['nome'], $p['cognome'], $p['gruppo_acronimo']), '@parlamentare?id='.$p['politico_id'].'&slug='.slugify($p['nome'] .' '. $p['cognome'])) ?>
 	                </p>
 	              </th>
 	              <td>

@@ -1,6 +1,7 @@
 <?php if ($n_firme_pr): ?>
+    <?php use_helper('Slugger'); ?>
   <li id="carica-<?php echo $carica_id ?>" class="dettaglio-carica">
-    <h5><?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'], array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)</h5>
+    <h5><?php echo link_to($politico['nome'] . " " . $politico['cognome'] . " (".$politico['acronimo'].")", '@parlamentare?id='.$politico['politico_id'].'&slug='.slugify($politico['nome'] . " " . $politico['cognome']), array('class' => 'folk2', 'title' => $politico['punteggio'])); ?> (<?php echo $politico['punteggio'] ?>)</h5>
 
     <div class="elenco-atti">
       <?php if (count($politico['firme_p'])): ?>

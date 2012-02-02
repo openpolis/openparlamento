@@ -15,13 +15,15 @@
             </ul>
         </nav>
         <nav class="threecol">
-            <h3>Progetti</h3>
+            <h3>Open parlamento</h3>
             <ul>
-                <li><a href="http://www.openparlamento.it/">Openparlamento</a></li>
-                <li><a href="http://www.openpolis.it/">Openpolis</a></li>
-                <li><a href="http://indice.openpolis.it/">Indice di produttività parlamentare</a></li>
-                <li><a href="http://www.voisietequi.it/">Voi siete qui</a></li>
-                <li><a href="">Openblog</a></li>
+                <li><?php echo link_to('Il progetto','@progetto'); ?></li>
+                <li><?php echo link_to('FAQ','@faq'); ?></li>
+                <li><?php echo link_to('Servizi premium','@sottoscrizioni_pro'); ?></li>
+                <li><?php echo link_to('Regolamento','@static_page?action=regolamento'); ?></li>
+                <li><?php echo link_to('Condizioni d\'uso','@static_page?action=condizioni'); ?></li>
+                <li><?php echo link_to('Informativa sui dati personali','@static_page?action=informativa'); ?></li>
+                <li><?php echo link_to('RSS/XML','@static_page?action=rssxml'); ?></li>
             </ul>
         </nav>
         <section class="threecol">
@@ -40,7 +42,7 @@
             <p>Per segnalazioni, suggerimenti, lamentele ma anche incoraggiamenti:</p>
             <h4>Associazione Openpolis</h4>
             <p>via dei Sabelli 215 - 00185 Roma<br />
-                T. 06.83608392 info@openpolis.it <br /> 
+                T. 06.83608392 associazione@openpolis.it <br /> 
                 C.I. 97532050586
             </p>
             <a href="http://www.facebook.com/openpolis"><span class="icon facebook">Facebook</span></a>
@@ -51,10 +53,10 @@
 
 
     <nav id="sub-footer" class="row">
-        <ul class="elevencol prefixone">
+        <ul class="twelvecol">
             <li><img src="/img/footers/openpolis.png" alt="Servizi offerti da OpenPolis" title="I Servizi" /></li>
             <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" /></a></li>
-            <li><a href="http://openpolis.it"><img src="/img/footers/openpolis-assoc.png" alt="Associazione OpenPolis" title="L'Associazione" /></a></li>
+            <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open Politici" title="Open Politici" /></a></li>
             <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" /></a></li>
             <li><a href="http://indice.openpolis.it/"><img src="/img/footers/indiceproduttivita.png" alt="L'Indice di Produttività Parlamentare" title="L'Indice di Produttività Parlamentare" /></a></li>
         </ul>            

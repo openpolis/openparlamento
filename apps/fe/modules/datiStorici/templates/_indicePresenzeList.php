@@ -26,12 +26,12 @@
             <p><?php echo link_to($parlamentare->getOppPolitico() . 
                                   " (" . $parlamentare->getGruppo($date)->getAcronimo() . ") ", 
                                   'http://' . sfConfig::get('sf_site_url', 'op_openparlamento') . 
-                                  "/parlamentare/" . $parlamentare->getPoliticoId(),
+                                  "@parlamentare?" . $parlamentare->getOppPolitico()->getUrlParams(),
                                   true) ?></p>            
           <?php else:?>
             <p><?php echo link_to($record->getChiId(), 
                                   'http://' . sfConfig::get('sf_site_url', 'op_openparlamento') . 
-                                  "/parlamentare/" . $record->getChiId(),
+                                  "@parlamentare_old?id=" . $record->getChiId(),
                                   true) ?></p>
           <?php endif ?>
         </th>

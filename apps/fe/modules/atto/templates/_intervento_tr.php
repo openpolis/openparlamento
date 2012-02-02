@@ -6,8 +6,11 @@
     <p><?php printf("%s %s", $intervento['denominazione'], ($intervento['ramo']=='C' ? 'Camera' : 'Senato')) ?></p>
   </td>
   <td>
-    <p><?php print link_to(sprintf("%s %s", $intervento['nome'], $intervento['cognome']), 
-                           '@parlamentare?id='.$intervento['politico_id']) ?></p>
+    <p><?php 
+    $fullName = sprintf("%s %s", $intervento['nome'], $intervento['cognome']);
+    use_helper('Slugger');
+    print link_to($fullName, 
+                           '@parlamentare?id='.$intervento['politico_id'] .'&slug='. slugify($fullName)) ?></p>
   </td>
   <td>  
     <?php echo link_to(image_tag('extlink.gif',

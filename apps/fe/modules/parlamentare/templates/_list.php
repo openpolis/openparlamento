@@ -19,15 +19,23 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
 
   <tbody>
   
-    <?php $tr_class = 'even' ?>				  
-    <?php while($parlamentari->next()): ?>
+    <?php
+     $tr_class = 'even'; 
+     empty($presidenti_ids) AND $presidenti_ids = array();
+     empty($membri_governo_ids) AND $membri_governo_ids = array();
+     ?>
+        
+     <?php while($parlamentari->next()): ?>
       <tr class="<?php echo $tr_class; ?>">
       <?php $tr_class = ($tr_class == 'even' ? 'odd' : 'even' )  ?>
         <th scope="row">
           <p class="politician-id">
             <?php echo image_tag('/images/ico-type-politico-portrait.png', 
                                  array('width' => '40','height' => '53', 'highsrc' => OppPoliticoPeer::getThumbUrl($parlamentari->getInt(2))  )) ?>	
-            <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
+            <?php 
+            use_helper('Slugger');
+            $slugParlamentare = slugify($parlamentari->getString(3).' '.$parlamentari->getString(4));
+            echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2) .'&slug='.$slugParlamentare) ?>
             <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>  	
 	        <?php foreach($gruppi as $nome => $gruppo): ?>
 	          <?php if(!$gruppo['data_fine']): ?>

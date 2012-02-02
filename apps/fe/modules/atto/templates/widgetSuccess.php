@@ -81,7 +81,7 @@
 	        	  <?php if ($firmatario) : ?>
   	        	  <li style="line-height:12px">
   	        	    <strong>presentato da:</strong> 
-	            <?php echo link_to($firmatario->getNome()." ".$firmatario->getCognome(),'/parlamentare/'.$firmatario->getId(), array('target' => '_top')) ?>
+	            <?php echo link_to($firmatario->getNome()." ".$firmatario->getCognome(),'@parlamentare?'.$firmatario->getUrlParams(), array('target' => '_top')) ?>
 	            </li>
 	             <?php endif ?>
 	             <li style="line-height:12px">

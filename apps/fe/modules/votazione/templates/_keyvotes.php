@@ -18,7 +18,7 @@
           <p class="content-meta">
             <span class="date"><?php echo format_date($votazione->getOppSeduta()->getData(), 'dd/MM/yyyy') ?> - <span style="color:black;"><?php echo ($votazione->getOppSeduta()->getRamo()=='C' ? 'Camera' : 'Senato' ) ?></span>, seduta n. <?php echo ($votazione->getOppSeduta()->getNumero() ) ?></span>
           </p>
-          <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?id='.$votazione->getId()) ?></p>
+          <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?'.$votazione->getUrlParams()) ?></p>
        </th>
         
 	    <td>
@@ -69,7 +69,7 @@
 	    <?php endif; ?>	
 	   <span class="<?php echo $class ?>"><?php echo $votazione->getEsito() ?></span>      
 	  </div>					
-	  <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?id='.$votazione->getId()) ?></p>
+	  <p><?php echo link_to(($votazione->getTitoloAggiuntivo() ? $votazione->getTitoloAggiuntivo() : $votazione->getTitolo()), '@votazione?'.$votazione->getUrlParams()) ?></p>
 	 </li>	
 	  <?php endforeach; ?>
 	</ul>

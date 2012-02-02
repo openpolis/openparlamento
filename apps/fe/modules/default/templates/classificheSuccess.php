@@ -1,4 +1,10 @@
-<ul id="content-tabs" class="float-container tools-container">
+<?php 
+if ( sfRouting::getInstance()->getCurrentRouteName() == 'default_symfony' ) {
+	slot('force_canonical');
+	echo "\n<link rel=\"canonical\" href=\"". url_for('@classifiche_parlamento', true) ."\" />";
+	end_slot();
+}
+?><ul id="content-tabs" class="float-container tools-container">
   <li class="current">
     <h2>
       <?php echo "Le classifiche" ?>  

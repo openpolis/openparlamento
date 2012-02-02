@@ -1,3 +1,4 @@
+<?php use_helper('Slugger'); ?>
 <?php $ribelli_gruppi=array() ?>
 <?php $valore="" ?>
 <?php $label="" ?>
@@ -33,7 +34,7 @@
             <?php echo image_tag(OppPoliticoPeer::getThumbUrl($ribelle['politico_id']), 
                                  'icona parlamentare') ?>	
             <?php echo link_to(sprintf("%s %s", $ribelle['politico_cognome'], $ribelle['politico_nome']), 
-                               '@parlamentare?id='.$ribelle['politico_id']) ?><?php echo ' ('.$ribelle['gruppo_acronimo'].')'  ?>
+                               '@parlamentare?id='.$ribelle['politico_id'].'&slug='.slugify($ribelle['politico_nome'].' '.$ribelle['politico_cognome'])) ?><?php echo ' ('.$ribelle['gruppo_acronimo'].')'  ?>
            </p>
           </th>
 	  <td><?php echo $ribelle['voto'] ?></td>

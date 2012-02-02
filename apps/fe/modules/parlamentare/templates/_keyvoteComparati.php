@@ -24,7 +24,7 @@
 <tr>
         <th scope="row">
           <p>
-          <?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(),       'votazione/index?id='.$lancio[0]->getId()) ?>
+          <?php echo link_to(($lancio[0]->getTitoloAggiuntivo()) ? $lancio[0]->getTitoloAggiuntivo() : $lancio[0]->getTitolo(),       '@votazione?'.$lancio[0]->getUrlParams()) ?>
           </p>         
        </th>
        <?php if ($lancio[2]!=$lancio[3]) : ?>

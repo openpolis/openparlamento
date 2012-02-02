@@ -1,0 +1,3 @@
+default:
+  stylesheets:    [styles.css, menu.css, openparlamento.css, /sfRemoteGuardConsumerPlugin/css/style]
+  
