@@ -29,12 +29,10 @@
         <section class="threecol">
             <h3>Software Libero</h3>
             <ul>
-                <li><a href="http://trac.openpolis.it/openpolis/browser/trunk">Codice Sorgente</a></li>
+                <li><a href="http://trac.openpolis.it/openparlamento/browser/trunk">Codice sorgente</a></li>
                 <li><a href="http://www.gnu.org/copyleft/gpl.html">Licenza GNU/GPL</a></li>
-                <li><a href="http://www.openpolis.it/software">I Software utilizzati</a></li>
             </ul>
-            <a href="http://trac.openpolis.it/openpolis/browser/trunk"><span class="icon trac">Trac</span></a>
-            <a href="#"><span class="icon google">Google</span></a>
+            <a href="http://trac.openpolis.it/openparlamento/"><span class="icon trac">Trac</span></a>
             <div class="clearfix"></div>
         </section>
         <section class="threecol last">
@@ -42,7 +40,7 @@
             <p>Per segnalazioni, suggerimenti, lamentele ma anche incoraggiamenti:</p>
             <h4>Associazione Openpolis</h4>
             <p>via dei Sabelli 215 - 00185 Roma<br />
-                T. 06.83608392 associazione@openpolis.it <br /> 
+                T. 06.83608392 <span class="email-nascosta">associazione[chioccia]openpolis[punto]it</span> <br /> 
                 C.I. 97532050586
             </p>
             <a href="http://www.facebook.com/openpolis"><span class="icon facebook">Facebook</span></a>
@@ -62,4 +60,7 @@
         </ul>            
     </nav>
 </footer>
+<script type="text/javascript">
+    jQuery('.email-nascosta').each(function(){ jQuery(this).text(jQuery(this).text().replace('[chioccia]', '@').replace('[punto]','.')); });
+</script>
 <!--  /Main Footer -->

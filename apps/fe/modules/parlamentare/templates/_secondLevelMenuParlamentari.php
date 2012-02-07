@@ -3,9 +3,9 @@
     <li class="<?php echo($current=='lista' ? 'current' : '' ) ?>">
 		  <h5>
 		    <?php if ($ramo=='camera' || $ramo==1) :?>
-	        <?php echo link_to('Tutti i deputati', $current=='lista'?'#':'/parlamentari/camera/nome/asc') ?>
+	        <?php echo link_to('Tutti i deputati', $current=='lista'?'#':'@parlamentari?ramo=camera') ?>
 	      <?php else :?>
-	        <?php echo link_to('Tutti i senatori', $current=='lista'?'#':'/parlamentari/senato/nome/asc') ?>
+	        <?php echo link_to('Tutti i senatori', $current=='lista'?'#':'@parlamentari?ramo=senato') ?>
 	      <?php endif; ?>    
 		  </h5>
 		</li>
@@ -18,12 +18,12 @@
 	      <?php endif; ?>
 		  </h5>
 		</li>
-		<li class="<?php echo($current=='giorni_di_carica' ? 'current' : '' ) ?>">
+		<li class="<?php echo($current=='giorni_di_carica'  ? 'current' : '' ) ?>">
 		  <h5>
 		    <?php if ($ramo=='camera' || $ramo==1) :?>
-	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=camera') ?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica_deputati') ?>
 	      <?php else :?>
-	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica?ramo=senato') ?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica_senatori') ?>
 	      <?php endif; ?>    
 		  </h5>
 		</li>

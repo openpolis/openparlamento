@@ -18,7 +18,7 @@
 </div>
 
 <div class="row">
-	<div class="six">
+	<div class="fivecol">
 		
 		<table class="disegni-decreti column-table lazyload">
 	         <thead>
@@ -101,7 +101,7 @@
 		
 		
 	</div>
-	<div class="six last">
+	<div class="sevencol last">
 		
 		 <?php  
 	       $perc_magg=array();

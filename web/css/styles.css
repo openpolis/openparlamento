@@ -59,6 +59,7 @@
     /* search box */
     section#navigation #search-box { padding-top: 4px; text-align: right; }
     section#navigation #search-box form { min-width: 190px }
+    section#navigation #search-box form p { margin-top: 1px; }
     
     /* payoff */
     section#payoff { padding-bottom: 20px; padding-top: 35px; }
@@ -70,7 +71,7 @@
         background-color:#FFF; 
         border:0 solid #dbdbdb; border-left:1px; border-right:1px; 
     }
-        #tabs-container { background-color: transparent; padding-bottom: 0; }
+    section#main #tabs-container.row { background-color: transparent; padding-bottom: 0; }
     
     /* global styles : FORMs */
     input {
@@ -101,10 +102,10 @@
     }
     
     /* global styles : footer */
-    footer.container { font-size: 0.9em; line-height: 1.5em; padding:15px 0; background-color: #e4e3de; }
+    footer.container { font-size: 0.9em; line-height: 16px; padding:15px 0 0 0; background-color: #e4e3de; }
     footer.container a { color: #000; text-decoration: none; }
     footer.container a:hover { color: #000; text-decoration: underline; }
-    footer.container h3, footer.container h4 { font-family: Georgia; margin-top: 20px;  }
+    footer.container h3, footer.container h4 { color: #000; font-family: Georgia; margin-top: 20px;  }
 	footer.container h3 { margin-bottom: 5px; font-size: 14px; }
 	footer.container h4 { margin-top: 5px; font-size: 14px; }
         #sub-footer { text-align: center; margin-top: 25px; }
@@ -113,7 +114,7 @@
 	
 	footer ul, ul.dotted-list { list-style-type:none; }	
 	footer #global-navigation ul li, ul.dotted-list li { padding-left: 0.6em; background: transparent url('../img/dot.png') 0 .6em no-repeat; }
-	footer p, footer ul { margin-bottom:8px; line-height: 1.5em; }
+	footer p, footer ul { color:#000; margin-bottom:8px; line-height: 16px; }
     
     /* global styles : icons */		
     span.icon {
@@ -127,10 +128,10 @@
     }
     a:hover span.icon { background-image: url(../img/icons/sprite-social-icons.png); }
     /* Sprite Row 1 */
-    span.trac {             background-position: -0px   -0px;   }
-    span.trac:hover {       background-position: -0px   -27px;  }
-    span.google {           background-position: -30px  -0px;   }
-    span.google:hover {     background-position: -30px  -27px;  }
+    span.git {             background-position: -0px   -0px;   }
+    span.git:hover {       background-position: -0px   -27px;  }
+    span.trac {           background-position: -30px  -0px;   }
+    span.trac:hover {     background-position: -30px  -27px;  }
     span.facebook {         background-position: -60px  -0px;   }
     span.facebook:hover {   background-position: -60px  -27px;  }
     span.feed {             background-position: -90px  -0px;   }

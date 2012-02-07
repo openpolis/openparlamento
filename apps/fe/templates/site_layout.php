@@ -53,7 +53,7 @@
     <!--modernizr-2.0.6.js - http://www.modernizr.com -  is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites. -->
     <script type="text/javascript" src="/js/modernizr-2.0.6.js"></script>
 
-    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     
 
 </head>

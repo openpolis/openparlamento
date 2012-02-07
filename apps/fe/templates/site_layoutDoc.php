@@ -15,7 +15,7 @@
 	
 	<?php
 	// CANONICAL for _old-s 
-	$router = sfRouting::getInstance();
+    $router = sfRouting::getInstance();
 	$currentRouteName = $router->getCurrentRouteName();
 	if ( preg_match("/^(.+)_old$/", $currentRouteName, $uriParts ) )
 	{
@@ -32,7 +32,9 @@
 				echo '<link rel="canonical" href="'.rtrim($this->getContext()->getController()->genUrl('',true),'/'). $router->generate($newRouteURI, $currentParams)   .'" />';
 			}
 		}
-	}
+	} 
+	if ( has_slot('force_canonical') )
+		include_slot('force_canonical');
 	?>
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -54,7 +56,7 @@
     <!--swfobject: code.google.com/p/swfobject/ -->
     <script type="text/javascript" src="/js/swfobject.js"></script>
 
-    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="shortcut icon" href="/favicon.ico" />
     
 
 </head>

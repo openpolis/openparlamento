@@ -74,7 +74,7 @@
 	  <?php endforeach; ?>
 	</ul>
 	<div class="section-box-scroller tools-container has-next" style="padding-top:10px; padding-bottom:20px;">
-          <a href="/votazioni/keyvotes" class="see-all"><strong>vai a tutti i voti chiave</strong></a>
+          <a href="<?php echo url_for('@votichiave'); ?>" class="see-all"><strong>vai a tutti i voti chiave</strong></a>
         </div>			
     </div>
    

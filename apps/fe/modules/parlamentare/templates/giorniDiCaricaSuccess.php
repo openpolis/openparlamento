@@ -1,4 +1,17 @@
-<?php include_partial('tabs',array('ramo' => $sf_params->get('ramo'),'gruppi'=> false)) ?>
+<?php include_partial('tabs',array('ramo' => $sf_params->get('ramo'),'gruppi'=> false)); ?>
+<?php 
+if ( sfRouting::getInstance()->getCurrentRouteName() == 'giorni_di_carica' ) {
+	slot('force_canonical');
+	if ( $sf_params->get('ramo') == 'senato') {
+	    echo "\n<link rel=\"canonical\" href=\"". url_for('@giorni_di_carica_senatori', true) ."\" />";
+	}
+	else
+	{
+	    echo "\n<link rel=\"canonical\" href=\"". url_for('@giorni_di_carica_deputati', true) ."\" />";
+	}
+	end_slot();
+}
+?>
 
 <div class="row">
 	<div class="twelvecol">
@@ -9,14 +22,14 @@
 	    <div class="intro-box"><p style="font-size:14px;">
 	      Non manca in Italia occasione in cui non si discuta, a torto o a ragione, della necessit&agrave; del ricambio della classe politica.<br/>
 	      Per quanto riguarda i <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> attualmente in carica abbiamo calcolato da quanto tempo ricoprono incarichi parlamentari, ovvero per quanti anni e giorni sono stati seduti sugli scranni di Montecitorio o Palazzo Madama. Il calcolo viene aggiornato quotidianamente.<br/>
-	      Oltre al riepilogo complessivo ed a quello diviso per gruppi parlamentari, di seguito la lista dei primi cinquanta <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> "pi&ugrave; esperti" (<?php echo link_to('clicca qui','@giorni_di_carica?ramo='.($ramo=='C'?'senato':'camera')).' se vuoi la lista dei '.($ramo=='C'?'senatori':'deputati')?>). <br/>Come al solito openparlamento fornisce i dati, a voi analizzarli e trarne le vostre conclusioni.<br/>
+	      Oltre al riepilogo complessivo ed a quello diviso per gruppi parlamentari, di seguito la lista dei primi cinquanta <?php echo ($ramo=='C')?'deputati':'senatori (esclusi quelli a a vita)'?> "pi&ugrave; esperti" (<?php echo link_to('clicca qui','@giorni_di_carica_'.($ramo=='C'?'senatori':'deputati')).' se vuoi la lista dei '.($ramo=='C'?'senatori':'deputati')?>). <br/>Come al solito openparlamento fornisce i dati, a voi analizzarli e trarne le vostre conclusioni.<br/>
 	      </p></div>
 	
 	</div>
 </div>
 
 <div class="row">
-	<div class="ninecol">
+	<div class="eightcol">
 		
 		 <h5 class="subsection">La lista dei cinquanta <?php echo ($ramo=='C')?'deputati':'senatori'?> con maggior anni di incarichi parlamentari</h2>
 		<table class="disegni-decreti column-table lazyload">
@@ -52,7 +65,7 @@
 		</table>
 		
 	</div>
-	<div class="threecol last">
+	<div class="fourcol last">
 		
 		<h5 class="subsection">I dati complessivi sui <?php echo ($ramo=='C')?'deputati':'senatori'?> attualmente in carica</h2>
 	    <img src="https://chart.googleapis.com/chart?cht=p3&chd=s:Uf9a&chs=400x130&chdl=con oltre 20 anni di incarichi: <?php echo $stat[4].' ('.round($stat[4]*100/array_sum($stat),2)?>%)|da 15 a 20 anni di incarichi: <?php echo $stat[3].' ('.round($stat[3]*100/array_sum($stat),2)?>%)|da 10 a 15 anni di incarichi: <?php echo $stat[2].' ('.round($stat[2]*100/array_sum($stat),2)?>%)|da 5 a 10 anni di incarichi: <?php echo $stat[1].' ('.round($stat[1]*100/array_sum($stat),2)?>%)|con+meno di 5 anni di incarichi: <?php echo $stat[0].' ('.round($stat[0]*100/array_sum($stat),2)?>%)&chd=t:<?php echo "$stat[4],$stat[3],$stat[2],$stat[1],$stat[0]" ?>&chco=FF0000,FFFF10">

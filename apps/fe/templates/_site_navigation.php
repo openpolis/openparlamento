@@ -11,9 +11,9 @@
   <li>
     <?php if($this->getContext()->getModuleName() == 'votazione' ||
              $this->getContext()->getModuleName() == 'sfLucene' && $this->getContext()->getActionName() == 'votazioniSearch'): ?>
-      <?php echo link_to('Voti', '/votazioni/keyvotes', array('class' => 'current')) ?>
+      <?php echo link_to('Voti', '@votichiave', array('class' => 'current')) ?>
     <?php else: ?>
-      <?php echo link_to('Voti', '/votazioni/keyvotes') ?>
+      <?php echo link_to('Voti', '@votichiave') ?>
     <?php endif; ?>
   </li>   
   <li>
