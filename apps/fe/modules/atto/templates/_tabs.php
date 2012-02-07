@@ -1,3 +1,4 @@
+<nav class="row" id="tabs-container">
 <ul id="content-tabs" class="float-container tools-container">
   <li class="<?php echo($current == 'evidenza' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('In evidenza', '@attiEvidenza') ?></h2>   
@@ -15,3 +16,4 @@
     <h2><?php echo link_to('Atti non legislativi', '@attiNonLegislativi') ?></h2>   
   </li>  
 </ul>
+</nav>

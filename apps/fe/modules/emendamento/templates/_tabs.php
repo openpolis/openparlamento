@@ -1,3 +1,4 @@
+<nav class="row" id="tabs-container">
 <ul id="content-tabs" class="float-container tools-container">
   <li class="<?php echo ($current == 'emendamento' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Emendamento ' . $emendamento->getShortenedTitle(32), '@singolo_emendamento?id='.$emendamento->getId()) ?></h2>
@@ -7,4 +8,4 @@
                            array('%1%' => $nb_comments), $nb_comments), '@commenti_emendamento?id='.$emendamento->getId()) ?></h5>
   </li>
 </ul>
-
+</nav>

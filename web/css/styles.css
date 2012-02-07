@@ -70,6 +70,7 @@
         background-color:#FFF; 
         border:0 solid #dbdbdb; border-left:1px; border-right:1px; 
     }
+        #tabs-container { background-color: transparent; padding-bottom: 0; }
     
     /* global styles : FORMs */
     input {

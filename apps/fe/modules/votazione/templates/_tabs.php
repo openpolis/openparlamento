@@ -1,4 +1,5 @@
-<ul id="content-tabs" class="float-container tools-container">
+<nav class="row" id="tabs-container">
+    <ul id="content-tabs" class="float-container tools-container">
   <li class="<?php echo($current == 'voti_chiave' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Voti chiave', '@votichiave') ?></h2>   
   </li>
@@ -13,3 +14,4 @@
     <h2><?php echo link_to('Tutte le votazioni', '@votazioni') ?></h2>   
   </li>
 </ul>
+</nav>
