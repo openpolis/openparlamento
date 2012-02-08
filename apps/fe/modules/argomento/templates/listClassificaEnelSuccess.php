@@ -1,8 +1,10 @@
 
 <?php if ($sf_user->hasCredential('amministratore') || $sf_user=='verde') : ?>
-<ul class="float-container tools-container" id="content-tabs">
-  <li class="current"><h2>Classifica <?php echo $tipo_politici=='dep'?'deputati':'senatori' ?> per pool di argomenti Enel</h2></li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul class="float-container tools-container" id="content-tabs">
+      <li class="current"><h2>Classifica <?php echo $tipo_politici=='dep'?'deputati':'senatori' ?> per pool di argomenti Enel</h2></li>
+    </ul>
+</div>
 
 <div class="row">
 	

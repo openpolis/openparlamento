@@ -1,8 +1,10 @@
 <?php use_helper('Date', 'I18N') ?>
 
-<ul class="float-container tools-container" id="content-tabs">
-	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul class="float-container tools-container" id="content-tabs">
+    	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="twelvecol">

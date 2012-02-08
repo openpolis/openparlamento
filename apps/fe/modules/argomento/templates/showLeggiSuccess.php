@@ -1,8 +1,9 @@
 <?php use_helper('Javascript', 'Date', 'I18N') ?>
-
-<ul class="float-container tools-container" id="content-tabs">
-  <li class="current"><h2>Argomento: <?php echo strtolower($argomento->getTripleValue()) ?></h2></li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul class="float-container tools-container" id="content-tabs">
+      <li class="current"><h2>Argomento: <?php echo strtolower($argomento->getTripleValue()) ?></h2></li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="twelvecol">

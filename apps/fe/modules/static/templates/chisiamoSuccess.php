@@ -1,10 +1,12 @@
-<ul id="content-tabs" class="float-container tools-container"> 
-  <li class="current">
-    <h2>
-      Chi siamo
-    </h2>
-  </li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul id="content-tabs" class="float-container tools-container"> 
+      <li class="current">
+        <h2>
+          Chi siamo
+        </h2>
+      </li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="ninecol">

@@ -8,9 +8,11 @@
 
 <?php use_helper('sfSolr', 'OppSolr', 'I18N', 'PagerNavigation') ?>
 
-<ul class="float-container tools-container" id="content-tabs">
-  <li class="current"><h2>Risultati della ricerca per <em><?php echo $query ?></em></h2></li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul class="float-container tools-container" id="content-tabs">
+      <li class="current"><h2>Risultati della ricerca per <em><?php echo $query ?></em></h2></li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="twelvecol">

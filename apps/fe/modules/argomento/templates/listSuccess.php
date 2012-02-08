@@ -1,12 +1,14 @@
 <?php echo use_helper('Javascript'); ?>
 
-<ul id="content-tabs" class="float-container tools-container">
-  <li class="current">
-    <h2>
-      Argomenti
-    </h2> 
-  </li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul id="content-tabs" class="float-container tools-container">
+      <li class="current">
+        <h2>
+          Argomenti
+        </h2> 
+      </li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="twelvecol">

@@ -1,6 +1,8 @@
-<ul class="float-container tools-container" id="content-tabs">
-  <li class="current"><h2><?php echo $documento->getTitolo() ?></h2></li>
-</ul>
+<div class="row" id="tabs-container">
+    <ul class="float-container tools-container" id="content-tabs">
+      <li class="current"><h2><?php echo $documento->getTitolo() ?></h2></li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="twelvecol">

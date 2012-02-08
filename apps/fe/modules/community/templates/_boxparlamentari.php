@@ -45,7 +45,7 @@
     <?php 
     $fullName = $parlamentari->getString(3).' '.$parlamentari->getString(4);
     
-    echo link_to(, '@parlamentare?id='.$parlamentari->getInt(2).'&slug='. slugify($fullName )) ?>
+    echo link_to($fullName , '@parlamentare?id='.$parlamentari->getInt(2).'&slug='. slugify($fullName )) ?>
     <?php $gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($parlamentari->getInt(1)) ?>  	
     <?php foreach($gruppi as $nome => $gruppo): ?>
 	<?php if(!$gruppo['data_fine']): ?>

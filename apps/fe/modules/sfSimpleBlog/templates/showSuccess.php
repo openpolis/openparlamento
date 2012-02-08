@@ -4,14 +4,15 @@
 <?php endif; ?>
 <?php $sf_context->getResponse()->setTitle($post->getTitle().' - blog - '.sfConfig::get('app_main_title')) ?>
 
-<ul id="content-tabs" class="float-container tools-container">
-  <li class="current">
-    <h2>
-      <?php echo link_to('Blog', '@blog_index') ?>
-    </h2>
-  </li>
-</ul>
-
+<div class="row" id="tabs-container">
+    <ul id="content-tabs" class="float-container tools-container">
+      <li class="current">
+        <h2>
+          <?php echo link_to('Blog', '@blog_index') ?>
+        </h2>
+      </li>
+    </ul>
+</div>
 
 <div class="row">
 	<div class="ninecol">
