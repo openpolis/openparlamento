@@ -767,6 +767,15 @@ class OppCaricaPeer extends BaseOppCaricaPeer
     {
       $all_constituencies[$rs->getString(1)]= $rs->getString(1);
     }
+
+    // Sort the multidimensional array
+    $foreigns = array('Europa', 'America meridionale', 'America settentrionale e centrale', 'Asia-Africa-Oceania-Antartide' ,'Europa');
+     uasort($all_constituencies, function($a,$b) use($foreigns) {
+         if ( in_array($a, $foreigns) )
+            return in_array($b, $foreigns) ? strnatcmp($a, $b) : 1;
+         return in_array($b, $foreigns) ? -1 : strnatcmp($a, $b);
+     });
+    
     return $all_constituencies;
   }
   

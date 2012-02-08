@@ -114,10 +114,45 @@
             <div class="sixcol last textright">
                 <h1><img src="/img/payoff/slogan_openparlamento.png" alt="Cosa fanno i tuoi parlamentari?" /></h1>
                 
+                <?php echo use_helper('AdvancedOptionsForSelect') ?>
+
+                <form action="<?php echo url_for('@parlamentari', true); ?>">
+                  <fieldset>
+                      <select name="type_of" id="selezione-tipo">
+                          <option value="camera">Camera</option>
+                          <option value="senato">Senato</option>
+                      </select>
+                      <select name="type_of" id="selezione-circoscrizione">
+                          <option value="">Circoscrizione</option>
+                      <?php foreach ( $camera_constituencies as $const ) : ?>
+                            <option value="<?php echo $const; ?>" class="camera"><?php echo $const; ?></option>
+                      <?php endforeach; ?> 
+                      <?php foreach ( $senato_constituencies as $const ) : ?>
+                            <option value="<?php echo $const; ?>" class="senato"><?php echo $const; ?></option>
+                        <?php endforeach; ?> 
+                      </select>
+                  </fieldset>
+                </form>
             </div>
         </div>
     </section>
     <!--  /Payoff Container  -->
+    <script type="text/javascript">
+        jQuery().ready(function(){
+
+              jQuery("#selezione-circoscrizione").chained("#selezione-tipo").change(function() {
+                  var circoscrizione = jQuery(this).val();
+                  if ( circoscrizione == '' )
+                    return;
+                  var base_url = jQuery(this).parents('form').attr('action');
+                  var tipo = jQuery('#selezione-tipo').val();
+                  if ( tipo == 'senato' )
+                    base_url = base_url.replace('/camera/', '/senato/');
+
+                  window.location.replace( base_url + '?filter_const=' + circoscrizione );
+              });
+          });
+    </script>
 	<?php endif; ?>
     
     <!--  Main Content -->
@@ -138,6 +173,7 @@
 
     <script type="text/javascript">
       jQuery().ready(function(){
+          
         function rImage() {
             var i = jQuery("#imgAd");
             i.animate({ opacity: 1 }, 5000, function() {

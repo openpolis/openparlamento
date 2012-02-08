@@ -476,7 +476,7 @@ parlamentari_old:
   url:   /parlamentari/:ramo/:sort/:type/*
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 parlamentari:
-  url: /lista-dei-parlamentari-in-carica/:sort/:type/*
+  url: /lista-dei-parlamentari-in-carica/:ramo/:sort/:type/*
   param: { module: parlamentare, action: list, ramo: camera, sort: nome, type: asc, display: false }
 
 comparaDeputati:
@@ -552,9 +552,7 @@ giorni_di_carica_deputati:
 giorni_di_carica_senatori: 
   url: /senatori/da-quanto-tempo-sono-in-parlamento
   param: { module: parlamentare, action: giorniDiCarica, ramo: 'senato' }
-  
-  "/DEPUTATI/da-quanto-tempo-sono-in-parlamento
-  /SENATORI/da-quanto-tempo-sono-in-parlamento"
+
 disegno_commissione:
   url:   /disegno_commissione/:sede/:stato/:leg
   param: { module: atto, action: disegnoCommissione,  sede: 1, stato: in corso di esame in commissione, leg: 16 }    

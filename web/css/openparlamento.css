@@ -735,8 +735,8 @@ img.prev-active, img.next-active { display: none; }
 #disegni-decreti-filter .labels { padding: 0 0 5px 60px; font-weight: bold; color: #999; }
 #disegni-decreti-filter label { display: block; float: left; width: 130px; margin-right: 7px; }
 #disegni-decreti-filter-apply { vertical-align: bottom; }
-#disegni-decreti-order a.ascending { background: #e5e7e8 url(../images/icons/ico-arrow-asc.png) no-repeat center right; }
-#disegni-decreti-order a.descending { background: #e5e7e8 url(../images/icons/ico-arrow-desc.png) no-repeat center right; }
+#disegni-decreti-order a.ascending { background: #e5e7e8 url(../images/ico-arrow-asc.png) no-repeat center right; }
+#disegni-decreti-order a.descending { background: #e5e7e8 url(../images/ico-arrow-desc.png) no-repeat center right; }
 /*#disegni-decreti-filter.active { background: #eaebec;}*/
 #disegni-decreti-filter { padding: 5px;}
 /*
@@ -930,8 +930,8 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .thumb-up, .thumb-down { font-size: 10px; padding-right: 11px; display: block; float: left; width: 5em; text-align: right; line-height: 24px;}
 .thumb-approved, .thumb-rejected { font-size: 10px; padding-right: 11px; display: block; text-align: right; line-height: 24px;}
-.thumb-approved, .thumb-up { background: transparent url(../images/icons/ico-thumb-up.png) no-repeat 100% 3px; }
-.thumb-rejected, .thumb-down { background: transparent url(../images/icons/ico-thumb-down.png) no-repeat 100% 7px; }
+.thumb-approved, .thumb-up { background: transparent url(../images/ico-thumb-up.png) no-repeat 100% 3px; }
+.thumb-rejected, .thumb-down { background: transparent url(../images/ico-thumb-down.png) no-repeat 100% 7px; }
 
 .disegni-decreti { margin-bottom: 1em; }
 .disegni-decreti thead th { padding: 0 5px 5px 5px; font-size: 11px; vertical-align: bottom; }
@@ -1018,7 +1018,7 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
 
 .topics-list li ul { margin: 10px 0; }
 .topics-list li ul li { background-image: none; display: inline; padding-right: 16px; margin: 0 5px; }
-.topics-list li ul li:hover, .topics-list li ul li.monitoring { background: transparent url(../images/icons/ico-monitoring.png) no-repeat center right; }
+.topics-list li ul li:hover, .topics-list li ul li.monitoring { background: transparent url(../images/ico-monitoring.png) no-repeat center right; }
 .topics-list li ul li.monitoring em { color: #888; border: 1px solid #f2bf9b; font-size: 10px; padding: 0 3px; }
 .topics-list li ul li.tags { margin: 0 !important; }
 .topics-list li ul li.tags:hover { background: none; }
@@ -1054,15 +1054,15 @@ ul.section-tab-switch li.current { background-color: #fff; background-image: non
  *----------------------------------------------*/
 
 .ico-type { background: transparent url(../images/bg-ico-type.png) no-repeat top left; width: 50px; height: 50px; padding: 4px 0 0 3px; }
-.ico-monitoring { background: transparent url(../images/icons/ico-monitoring.png) no-repeat center right; }
-.ico-monitoring-left { background: transparent url(../images/icons/ico-monitoring.png) no-repeat center left; padding-left: 14px; font-size: 10px; margin-left: 4px; color: #ee7f00; }
+.ico-monitoring { background: transparent url(../images/ico-monitoring.png) no-repeat center right; }
+.ico-monitoring-left { background: transparent url(../images/ico-monitoring.png) no-repeat center left; padding-left: 14px; font-size: 10px; margin-left: 4px; color: #ee7f00; }
 .ico-help { background: transparent url(../images/bg-ico-help.png) no-repeat center right; padding-right: 16px; margin-right: 8px; line-height: 18px; }
 .ico-first-signers { background: #faf8ef url(../images/bg-ico-first-signers.png) no-repeat 5px center; padding-left: 30px; }
 .ico-co-signers { background: #faf8ef url(../images/bg-ico-co-signers.png) no-repeat 5px center; padding-left: 45px; }
 
-.ico-star { background: transparent url(../images/icons/ico-star-off.png) no-repeat center center; display: block; width: 16px; height: 16px; color: #fff; padding: 5px 20px; font-size: 1px; margin: 0 auto; }
-.ico-star.bookmark { background: transparent url(../images/icons/ico-star-on.png) no-repeat center center; }
-.ico-star:hover { background: transparent url(../images/icons/ico-star-on.png) no-repeat center center; color: #fff; }
+.ico-star { background: transparent url(../images/ico-star-off.png) no-repeat center center; display: block; width: 16px; height: 16px; color: #fff; padding: 5px 20px; font-size: 1px; margin: 0 auto; }
+.ico-star.bookmark { background: transparent url(../images/ico-star-on.png) no-repeat center center; }
+.ico-star:hover { background: transparent url(../images/ico-star-on.png) no-repeat center center; color: #fff; }
 
 .ico-thumb-up-big, .ico-thumb-down-big, .ico-no-vote-yet { margin-top: 16px; }
 
