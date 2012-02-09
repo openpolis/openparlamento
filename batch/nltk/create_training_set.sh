@@ -7,7 +7,7 @@ mkdir -p data/nltk/interrogazioni/training
 APP=interrogazioni
 FILES_PATH=data/nltk/$APP
 YEAR=2011
-N_ATTI=10
+N_ATTI=2000
 
 rm  $FILES_PATH/training/categorie.csv
 rm $FILES_PATH/training/testi.zip

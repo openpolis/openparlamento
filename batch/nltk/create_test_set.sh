@@ -7,7 +7,7 @@ mkdir -p data/nltk/interrogazioni/test
 APP=interrogazioni
 FILES_PATH=data/nltk/$APP
 YEAR=2011
-N_ATTI=430
+N_ATTI=2000
 
 rm $FILES_PATH/test/testi.zip
  
