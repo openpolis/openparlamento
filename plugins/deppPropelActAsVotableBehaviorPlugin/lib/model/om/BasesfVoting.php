@@ -72,7 +72,9 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -86,7 +88,9 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	public function setVotableModel($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -100,7 +104,9 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	public function setVotableId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -114,7 +120,9 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	public function setUserId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -128,7 +136,9 @@ abstract class BasesfVoting extends BaseObject  implements Persistent {
 	public function setVoting($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

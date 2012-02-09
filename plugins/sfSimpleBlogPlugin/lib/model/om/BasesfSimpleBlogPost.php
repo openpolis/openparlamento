@@ -172,7 +172,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -186,7 +188,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setAuthorId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -204,7 +208,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setTitle($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -218,7 +224,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setStrippedTitle($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -232,7 +240,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setExtract($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -246,7 +256,9 @@ abstract class BasesfSimpleBlogPost extends BaseObject  implements Persistent {
 	public function setContent($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

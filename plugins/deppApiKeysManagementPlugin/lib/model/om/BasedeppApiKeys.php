@@ -176,7 +176,9 @@ abstract class BasedeppApiKeys extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -190,7 +192,9 @@ abstract class BasedeppApiKeys extends BaseObject  implements Persistent {
 	public function setReqName($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -204,7 +208,9 @@ abstract class BasedeppApiKeys extends BaseObject  implements Persistent {
 	public function setReqContact($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -218,7 +224,9 @@ abstract class BasedeppApiKeys extends BaseObject  implements Persistent {
 	public function setReqDescription($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -232,7 +240,9 @@ abstract class BasedeppApiKeys extends BaseObject  implements Persistent {
 	public function setValue($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

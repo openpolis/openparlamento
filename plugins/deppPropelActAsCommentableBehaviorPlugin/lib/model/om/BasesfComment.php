@@ -164,7 +164,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -178,7 +180,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setCommentableModel($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -192,7 +196,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setCommentableId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -206,7 +212,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setCommentNamespace($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -220,7 +228,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setTitle($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -234,7 +244,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setText($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -248,7 +260,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -262,7 +276,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorName($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -276,7 +292,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorEmail($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -290,7 +308,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setAuthorWebsite($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -321,7 +341,9 @@ abstract class BasesfComment extends BaseObject  implements Persistent {
 	public function setIsPublic($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

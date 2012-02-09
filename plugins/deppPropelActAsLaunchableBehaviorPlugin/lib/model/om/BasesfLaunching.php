@@ -98,7 +98,9 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -112,7 +114,9 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setObjectModel($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -126,7 +130,9 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setObjectId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -140,7 +146,9 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setLaunchNamespace($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -171,7 +179,9 @@ abstract class BasesfLaunching extends BaseObject  implements Persistent {
 	public function setPriority($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

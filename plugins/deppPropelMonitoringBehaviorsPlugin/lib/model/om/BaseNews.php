@@ -216,7 +216,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -247,7 +249,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setGeneratorModel($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -261,7 +265,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setGeneratorPrimaryKeys($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -275,7 +281,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setRelatedMonitorableModel($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -289,7 +297,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setRelatedMonitorableId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -320,7 +330,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setPriority($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -334,7 +346,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setTipoAttoId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -365,7 +379,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setRamoVotazione($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -379,7 +395,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setSedeInterventoId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -393,7 +411,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setSucc($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -407,7 +427,9 @@ abstract class BaseNews extends BaseObject  implements Persistent {
 	public function setTagId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 

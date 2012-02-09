@@ -68,7 +68,9 @@ abstract class BasesfSimpleBlogTag extends BaseObject  implements Persistent {
 	public function setSfBlogPostId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -86,7 +88,9 @@ abstract class BasesfSimpleBlogTag extends BaseObject  implements Persistent {
 	public function setTag($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 

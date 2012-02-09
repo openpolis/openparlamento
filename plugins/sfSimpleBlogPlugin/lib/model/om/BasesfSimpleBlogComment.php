@@ -123,7 +123,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -137,7 +139,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setSfBlogPostId($v)
 	{
 
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
+		
+		
+		if ($v !== null && !is_int($v) && is_numeric($v)) {
 			$v = (int) $v;
 		}
 
@@ -155,7 +159,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setAuthorName($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -169,7 +175,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setAuthorEmail($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -183,7 +191,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setAuthorUrl($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
@@ -197,7 +207,9 @@ abstract class BasesfSimpleBlogComment extends BaseObject  implements Persistent
 	public function setContent($v)
 	{
 
-						if ($v !== null && !is_string($v)) {
+		
+		
+		if ($v !== null && !is_string($v)) {
 			$v = (string) $v; 
 		}
 
