@@ -19,78 +19,16 @@
  #payoff.container .row > div.twocol { padding-top: 10px;}
  #payoff.container .row > div.twocol h1 { margin: 10px 0 5px 0; }
  #payoff.container form { margin-top: 20px; }
- #payoff.container select { width: 28%; margin-left: 5px; }
+ #payoff.container select { width: 185px; margin-left: 5px;  }
+ #payoff.container select#selezione-circoscrizione { margin-right: 10px; }
  
  #teaser { padding: 12px 10px 10px 12px; }
  
  #tools-container { margin-top: 20px; }
  #search-main-field { width: 70%; }
  
- .tabBox .tabs {
-     margin: 0;
-     padding: 0 10px;
-     overflow: hidden;
-     margin-bottom: -1px;
-     height: 2.25em;
- }
-
- .tabBox .tabs li {
-     float: left;
-     list-style: none;
-     margin: 0;
-     padding: .25em .25em 0;
-     height: 2em;
-     /*overflow: hidden;*/
-     position: relative;
-     z-index: 1;
-     border-bottom: 1px solid #FFF;
- }
-
- .tabBox .tabs li.current {
-     z-index: 3;
- }
-
- .tabBox .tabs a {
-     float: left;
-     height: 2em;
-     line-height: 2em;
-     -webkit-border-radius: 8px 8px 0 0;
-     -moz-border-radius: 8px 8px 0 0;
-     border-radius: 8px 8px 0 0;
-     background: #ccd4d5;
-     border: 1px solid #CCC;
-     border-bottom: 0;
-     padding: 0 15px;
-     color: #4472AC;
-     text-decoration: none;
-     behavior: url(PIE.htc);
- }
-
- .tabBox .tabs .current a {
-     background: #FFF;
-     -webkit-box-shadow: #CCC 0 0 .25em;
-     -moz-box-shadow: #CCC 0 0 .25em;
-     box-shadow: #CCC 0 0 .25em;
- }
-
- .tabBox .tabs a:hover {
-     background: -webkit-gradient(linear, 0 0, 0 70%, from(#EEF), to(#FFF));
-     background: -webkit-linear-gradient(#EEF, #FFF 70%);
-     background: -moz-linear-gradient(#EEF, #FFF 70%);
-     background: -ms-linear-gradient(#EEF, #FFF 70%);
-     background: -o-linear-gradient(#EEF, #FFF 70%);
-     background: linear-gradient(#EEF, #FFF 70%);
-     -pie-background: linear-gradient(#EEF, #FFF 70%);
- }
  #content-nav, #secondary-content-nav { font-size: 22px; font-weight:bold; border-bottom: 1px solid #CCC; margin-bottom: 20px; }
  #secondary-content-nav { font-size: 16px; }
-
- .tabBox.orange li { }
- .tabBox.orange li a { background-color: #e0b383; color: #f3f3f3; }
- .tabBox.orange li.current { background-image: none; color: #ee7f00; }
- 
- .tabBox.orange li.current a, .tabBox.orange li.current a:visited, .tabBox.orange li.current a:hover, .tabBox.orange li.current { color: #ee7f00; cursor: default; }
- .tabBox.orange .tabs a:hover { color: #e0b383; }
 
 #menu a.current { padding: 0 5px; background-color: #E43B45; border-radius: 5px; -moz-border-radius: 5px; }
 
@@ -113,7 +51,7 @@ table tbody th { text-align: left; font-weight: normal; }
 table tbody td { text-align: center; }
 
 .input-text { border: 1px solid #c3c3c3; border-top-color: #7c7c7c; border-bottom-color: #ddd; }
-
+.vote-administration-highlight { background-color: #CCC; min-height:10px; }
 
 /*
  * FLOAT

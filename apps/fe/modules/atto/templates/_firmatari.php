@@ -43,7 +43,7 @@
       <?php foreach($primi_firmatari as $id => $primo_firmatario): ?> 	
       <?php $info_array = explode('*', $primo_firmatario ); //inizialmente era prevista anche la data (in $info_array[0]) ?>   
         <tr>
-          <td><?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$info_array[1], '@parlamentare_old?'.$id) ?></td>	
+          <td><?php echo link_to(image_tag(OppPoliticoPeer::getThumbUrl($id), array('width'=>'40')).$info_array[1], '@parlamentare_old?id='.$id) ?></td>	
           <td>
             <?php if($rel_index < count($relatori)): ?>
 		      <?php $ind = $rel_array_index[$rel_index]; ?>

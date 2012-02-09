@@ -112,7 +112,8 @@ function depp_launcher($object, $namespace, $options = array())
                                    content_tag('td', $l_obj_actions, array('style' => 'text-align:right; width:36px;display:inline-block;')));*/
 		$list_content .= content_tag('li', 
 				content_tag('span', $l_obj_actions, array('style' => 'text-align:right; width:36px;display:inline-block;float:right;')) .
-				 $l_obj_short_string 
+				 $l_obj_short_string,
+				 array('style' => 'cursor:move; border-bottom: 1px dotted #CCC;') 
                          );
     }
     $list = content_tag('ul', $list_content, $options);
