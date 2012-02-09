@@ -15,6 +15,7 @@
 			</div>
     </div> 
 <?php endif; ?>
+<!-- 
 <?php if ($sotto>0) : ?>
   <div style="font-size:16px; margin-bottom:10px;">
       In <?php echo link_to($sotto.' votazioni', '@parlamentare_voti?id='.$carica->getPoliticoId().'&filter_vote_rebel=2') ?> ha <strong>fatto battere la maggioranza di Governo</strong> con assenze o voti diversi da quelli del proprio gruppo.
@@ -48,5 +49,6 @@
 			</div>
   </div>
 <?php endif; ?>
+-->
 
 <?php endif; ?>
