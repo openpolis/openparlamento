@@ -135,7 +135,7 @@ class parlamentareActions extends sfActions
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
       
       // altre cariche da openpolis
-      $xml= simplexml_load_file("http://openpolis.it/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
       $this->descrizione_cariche=array();
       if ($xml)
       {
@@ -144,7 +144,7 @@ class parlamentareActions extends sfActions
       
       // da quanti giorni è parlamentare da openpolis
       
-      $xml= simplexml_load_file("http://openpolis.it/api/parlamentareHowDays?id=".$this->parlamentare->getId());
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/parlamentareHowDays?id=".$this->parlamentare->getId());
       $this->giorni=array();
       if ($xml)
       {
@@ -185,13 +185,13 @@ class parlamentareActions extends sfActions
     }
     if($this->getRequestParameter('ramo')=='camera')
     {
-      $xml= simplexml_load_file("http://openpolis.it/api/parlamentareHowDays?id=0&ramo=C");
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/parlamentareHowDays?id=0&ramo=C");
       $this->ramo='C';
       $this->getResponse()->setTitle('Da quanto tempo sono in parlamento i deputati - '.sfConfig::get('app_main_title'));
     }
     else
     {
-      $xml= simplexml_load_file("http://openpolis.it/api/parlamentareHowDays?id=0&ramo=S");
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/parlamentareHowDays?id=0&ramo=S");
       $this->ramo='S';
       $this->getResponse()->setTitle('Da quanto tempo sono in parlamento i senatori - '.sfConfig::get('app_main_title'));
     }
@@ -1161,7 +1161,7 @@ class parlamentareActions extends sfActions
  	  $this->compara_ok='1';
  	   // da quanti giorni è parlamentare da openpolis
       
-      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$carica1->getOppPolitico()->getId());
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/parlamentareHowDays?id=".$carica1->getOppPolitico()->getId());
       $this->giorni=array();
       if ($xml)
       {
@@ -1178,7 +1178,7 @@ class parlamentareActions extends sfActions
         $durata=($durata.$giorni[0]%365)." giorni";
       
       $this->durata1=$durata;
-      $xml= simplexml_load_file("http://www.openpolis.it/api/parlamentareHowDays?id=".$carica2->getOppPolitico()->getId());
+      $xml= simplexml_load_file("http://politici.openpolis.it/api/parlamentareHowDays?id=".$carica2->getOppPolitico()->getId());
       $this->giorni=array();
       if ($xml)
       {
