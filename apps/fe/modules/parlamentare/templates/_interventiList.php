@@ -64,7 +64,7 @@
     
     <tr>
       <td align="center" colspan='6'>
-        <?php echo pager_navigation($pager, '@parlamentare_interventi?id='.$parlamentare_id) ?>
+        <?php echo pager_navigation($pager, '@parlamentare_interventi?id='.$parlamentare_id .'&slug='.$parlamentare_slug) ?>
       </td>
     </tr>
 

@@ -1,5 +1,9 @@
 <?php use_helper('Date', 'I18N') ?>
-
+<?php
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_interventi?'. $parlamentare->getUrlParams() , true) ."\" />";
+end_slot();
+?>
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
     	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
@@ -29,11 +33,11 @@
                                   'selected_ddls_collegati' => array_key_exists('ddls_collegati', $filters)?$filters['ddls_collegati']:0)) ?>
  
  
-   		<?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_interventi?id='.$parlamentare->getId())); ?>
+   		<?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_interventi?'.$parlamentare->getUrlParams())); ?>
 
 
       <?php include_partial('interventiList', 
-                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
+                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId(),'parlamentare_slug' => $parlamentare->getSlug())) ?>
 		
 		
 	</div>

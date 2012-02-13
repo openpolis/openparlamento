@@ -8,8 +8,8 @@ sfLoader::loadHelpers(array('Tag', 'I18N'));
 
 $response = sfContext::getInstance()->getResponse();
 
-$css = 'depp_omnibus';
-$response->addStylesheet($css);
+//$css = 'depp_omnibus';
+//$response->addStylesheet($css);
 
 
 /**

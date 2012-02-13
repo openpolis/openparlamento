@@ -1,4 +1,4 @@
-<?php use_helper('I18N', 'Date') ?>
+<?php use_helper('I18N', 'Date', 'Slugger') ?>
 
 <?php include_partial('tabs', array('current' => 'maggioranza_sotto')) ?>
 
@@ -35,7 +35,9 @@
 	            <td style="text-align:left;">
 	              <p class="politician-id">
 
-	                <?php echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2)) ?>
+	                <?php 
+	                $slugPolitico = slugify($parlamentari->getString(3).' '.$parlamentari->getString(4));
+	                echo link_to($parlamentari->getString(3).' '.$parlamentari->getString(4), '@parlamentare?id='.$parlamentari->getInt(2).'&slug='.$slugPolitico) ?>
 	                (
 	                <?php if (OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))) : ?>
 	                  <?php echo OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($parlamentari->getInt(1))->getAcronimo() ?>
@@ -60,10 +62,10 @@
 	            <td><?php echo $parlamentari->getString(8) ?></td>
 	            <?php if ($parlamentari->getString(9)==NULL) :?>
 	              <td><strong><?php echo link_to($parlamentari->getInt(5), 
-	  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2') ?></strong></td>
-	              <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></strong></td>            
+	  				                     '@parlamentare_voti?id='.$parlamentari->getInt(2).'&slug='.$slugPolitico.'&filter_vote_rebel=2') ?></strong></td>
+	              <td><strong><?php echo link_to($parlamentari->getInt(5)-$parlamentari->getInt(7),'@parlamentare_voti?id='.$parlamentari->getInt(2).'&slug='.$slugPolitico.'&filter_vote_rebel=2&filter_vote_vote=Presente') ?></strong></td>            
 	              <td><strong><?php echo link_to($parlamentari->getInt(7), 
-	                       				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></strong></td>
+	                       				'@parlamentare_voti?id='.$parlamentari->getInt(2).'&slug='.$slugPolitico.'&filter_vote_rebel=2&filter_vote_vote=Assente') ?></strong></td>
 	            <?php else : ?>
 	              <td><strong><?php echo $parlamentari->getInt(5) ?></strong></td>
 	              <td><strong><?php echo $parlamentari->getInt(5)-$parlamentari->getInt(7) ?></strong></td>            

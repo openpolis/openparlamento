@@ -9,7 +9,7 @@
 	   <p><label><?php echo $parlamentare1->getLegislatura()."&#186; legislatura: " ?></label>in carica dal
 		<?php echo $parlamentare1->getDataInizio('d/m/Y') ?></p>
        <p><label>voti ribelli:</label>    			                             	
-          <?php echo round($parlamentare1->getRibelle()*100/$parlamentare1->getPresenze(),1).'% ('.link_to($parlamentare1->getRibelle(),'@parlamentare_voti?id='.$parlamentare1->getOppPolitico()->getId().'&filter_vote_rebel=1').' volte su '.$parlamentare1->getPresenze().' votazioni )' ?>
+          <?php echo round($parlamentare1->getRibelle()*100/$parlamentare1->getPresenze(),1).'% ('.link_to($parlamentare1->getRibelle(),'@parlamentare_voti?id='.$parlamentare2->getOppPolitico()->getId().'&slug='.$parlamentare2->getOppPolitico()->getSlug().'&filter_vote_rebel=1').' volte su '.$parlamentare1->getPresenze().' votazioni )' ?>
        </p>
        <p><label>assente:</label>    			                             	
           <?php echo $assenze1.'% ('.$parlamentare1->getAssenze().' volte)' ?>
@@ -47,7 +47,7 @@
 			<p><label><?php echo $parlamentare2->getLegislatura()."&#186; legislatura: " ?></label>in carica dal
 				<?php echo $parlamentare2->getDataInizio('d/m/Y') ?></p>
        <p><label>voti ribelli:</label>    			                             	
-          <?php echo round($parlamentare2->getRibelle()*100/$parlamentare2->getPresenze(),1).'% ('.link_to($parlamentare2->getRibelle(),'@parlamentare_voti?id='.$parlamentare2->getOppPolitico()->getId().'&filter_vote_rebel=1').' volte su '.$parlamentare2->getPresenze().' votazioni )' ?>
+          <?php echo round($parlamentare2->getRibelle()*100/$parlamentare2->getPresenze(),1).'% ('.link_to($parlamentare2->getRibelle(),'@parlamentare_voti?id='.$parlamentare2->getOppPolitico()->getId().'&slug='.$parlamentare2->getOppPolitico()->getSlug().'&filter_vote_rebel=1').' volte su '.$parlamentare2->getPresenze().' votazioni )' ?>
        </p>
        <p><label>assente:</label>    			                             	
           <?php echo $assenze2.'% ('.$parlamentare2->getAssenze().' volte)' ?>

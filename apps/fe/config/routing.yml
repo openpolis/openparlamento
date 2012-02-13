@@ -557,21 +557,33 @@ disegno_commissione:
   url:   /disegno_commissione/:sede/:stato/:leg
   param: { module: atto, action: disegnoCommissione,  sede: 1, stato: in corso di esame in commissione, leg: 16 }    
  
-parlamentare_atti:
+parlamentare_atti_old:
   url:  /parlamentare_atti/:id/:sort/:type/*
   param: { module: parlamentare, action: atti, sort: stato_last_date, type: desc }
+parlamentare_atti:
+  url: /atti-presentati-in-parlamento/:slug/:id/:sort/:type/*
+  param: { module: parlamentare, action: atti, sort: stato_last_date, type: desc }
 
-parlamentare_voti:
+parlamentare_voti_old:
   url:  /parlamentare_voti/:id/*
   param: { module: parlamentare, action: voti }
+parlamentare_voti:
+  url: /votazioni-in-parlamento/:slug/:id/*
+  param: { module: parlamentare, action: voti }
 
-parlamentare_interventi:
+parlamentare_interventi_old:
   url:  /parlamentare_interventi/:id/*
   param: { module: parlamentare, action: interventi }
+parlamentare_interventi:
+  url:  /interventi-in-parlamento/:slug/:id/*
+  param: { module: parlamentare, action: interventi }
   
-parlamentare_emendamenti:
+parlamentare_emendamenti_old:
   url:  /parlamentare_emendamenti/:id/*
   param: { module: parlamentare, action: emendamenti }  
+parlamentare_emendamenti:
+  url:  /emendamenti-presentati-in-parlamento/:slug/:id/*
+  param: { module: parlamentare, action: emendamenti }
 
 parlamentari_tabella_delta:
   url:   /tabella_delta/:data/:mesi/:ramo/:dato

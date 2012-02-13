@@ -18,23 +18,23 @@
           <th scope="row" style="padding-left:3px;"><?php echo $tipo ?></th>
           <?php if ($values['P'] > 0): ?>
             <td><?php echo link_to($values['P'],
-                             sprintf('@parlamentare_atti?id=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=P',
-                                     $parlamentare->getId(), $values['id'] )) ?></td>
+                             sprintf('@parlamentare_atti?id=%s&slug=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=P',
+                                     $parlamentare->getId(), $parlamentare->getSlug(), $values['id'] )) ?></td>
           <?php else: ?>
             <td> - </td>                        
           <?php endif ?>
           
           <?php if ($values['C'] > 0): ?>
             <td><?php echo link_to($values['C'],                                                   
-                              sprintf('@parlamentare_atti?id=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=C',
-                                      $parlamentare->getId(), $values['id'] )) ?></td>
+                              sprintf('@parlamentare_atti?id=%s&slug=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=C',
+                                      $parlamentare->getId(), $parlamentare->getSlug(), $values['id'] )) ?></td>
           <?php else: ?>
             <td> - </td> 
           <?php endif ?>
            <?php if ($values['R'] > 0): ?>
             <td><?php echo link_to($values['R'],                                                   
-                              sprintf('@parlamentare_atti?id=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=R',
-                                      $parlamentare->getId(), $values['id'] )) ?></td>
+                              sprintf('@parlamentare_atti?id=%s&slug=%s&stato_last_date=desc&filter_act_type=%s&filter_act_firma=R',
+                                      $parlamentare->getId(), $parlamentare->getSlug(), $values['id'] )) ?></td>
           <?php else: ?>
             <td> - </td> 
           <?php endif ?>
@@ -43,12 +43,12 @@
       
       <th scope="row" style="padding-left:3px;"><?php echo 'emendamenti '.image_tag('/images/ico-new.png') ?></th>
         <?php if ($emen_primo > 0): ?>
-          <td><?php echo link_to($emen_primo,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&filter_act_firma=P') ?></td>
+          <td><?php echo link_to($emen_primo,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&slug='.$parlamentare->getSlug().'&filter_act_firma=P') ?></td>
         <?php else: ?>
           <td> - </td> 
         <?php endif ?>
         <?php if ($emen_co > 0): ?>  
-          <td><?php echo link_to($emen_co,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&filter_act_firma=C') ?></td>
+          <td><?php echo link_to($emen_co,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&slug='.$parlamentare->getSlug().'&filter_act_firma=C') ?></td>
         <?php else: ?>
           <td> - </td> 
         <?php endif ?>  

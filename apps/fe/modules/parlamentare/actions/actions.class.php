@@ -264,16 +264,20 @@ class parlamentareActions extends sfActions
   {
     $this->_getAndCheckParlamentare(); 
   
+    $title = 'Atti presentati in Parlamento da ';
+  
     if ($this->carica) {
       if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
       if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
       $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-      if ($this->ramo=='camera')
-        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
-     else
-        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+      $title .=  ($this->ramo=='camera') ? ' On. ' : ' Sen. ';
+//      if ($this->ramo=='camera')
+//        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+//     else
+//        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
     }
-    else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+//    else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - gli atti su cui lavora - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle($title . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
     
     $this->response->addMeta('description','Gli atti parlamentari e il loro iter, quotidianamente aggiornato, firmati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
   
@@ -299,7 +303,7 @@ class parlamentareActions extends sfActions
       $this->getRequestParameter('filter_act_firma') == '0' && 
       $this->getRequestParameter('filter_act_stato') == '0')
     {
-      $this->redirect('@parlamentare_atti?id='.$this->getRequestParameter('id'));
+      $this->redirect('@parlamentare_atti?id='.$this->getRequestParameter('id').'&slug='.$this->parlamentare->getSlug());
     }
   
     $this->processAttiSort();
@@ -435,10 +439,11 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
 
-    if ($this->ramo=='camera')
-       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
-    else
-       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Voti in Parlamento '. ($this->ramo=='camera' ? ' On. ' : ' Sen. ') . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
+//    if ($this->ramo=='camera')
+//       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
+//    else
+//       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
     
     $this->response->addMeta('description','I voti espressi in tutte le votazioni elettroniche di aula da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
      
@@ -459,7 +464,7 @@ class parlamentareActions extends sfActions
         $this->getRequestParameter('filter_vote_result') == '0' &&
         $this->getRequestParameter('filter_vote_rebel') == '0')
     {
-      $this->redirect('@parlamentare_voti?id='.$this->getRequestParameter('id'));
+      $this->redirect('@parlamentare_voti?id='.$this->getRequestParameter('id').'&slug='.$this->parlamentare->getSlug());
     }
 
     $this->processVotiSort();
@@ -607,7 +612,7 @@ class parlamentareActions extends sfActions
     // if all filters were reset, then restart
     if ($this->getRequestParameter('filter_ddls_collegati') == '0')
     {
-      $this->redirect('@parlamentare_interventi?id='.$this->getRequestParameter('id'));
+      $this->redirect('@parlamentare_interventi?id='.$this->getRequestParameter('id').'&slug='.$this->parlamentare->getSlug() );
     }
 
     if ($this->hasRequestParameter('itemsperpage'))
@@ -632,27 +637,27 @@ class parlamentareActions extends sfActions
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-    if ($this->ramo=='camera')
-       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
-    else
-       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
-	        $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli interventi in Parlamento, in aula e nelle commissioni, di '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
+    $this->getResponse()->setTitle('Interventi in Parlamento '. ($this->ramo=='camera' ? 'On. ' : 'Sen. '). $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
+//    if ($this->ramo=='camera')
+//       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
+//    else
+//       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - interventi parlamentari - '.sfConfig::get('app_main_title'));
+	$this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli interventi in Parlamento, in aula e nelle commissioni, di '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
   }
   
   public function executeEmendamenti()
   {
     $this->_getAndCheckParlamentare(); 
-  
+    
+    $title = 'Emendamenti presentati in Parlamento da ';
     if ($this->carica) {
       if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
       if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
       $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-      if ($this->ramo=='camera')
-        $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
-     else
-        $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
+      $title .=  ($this->ramo=='camera') ? ' On. ' : ' Sen. ';
     }
-    else $this->getResponse()->setTitle($this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - i suoi emendamenti - '.sfConfig::get('app_main_title'));
+      $this->getResponse()->setTitle($title . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
+
     
           $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli emendamenti presentati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
   
@@ -674,7 +679,7 @@ class parlamentareActions extends sfActions
     if ($this->getRequestParameter('filter_ddls_collegati') == '0' &&
         $this->getRequestParameter('filter_act_firma') == '0')
     {
-      $this->redirect('@parlamentare_emendamenti?id='.$this->getRequestParameter('id'));
+      $this->redirect('@parlamentare_emendamenti?id='.$this->getRequestParameter('id') .'&slug='. $this->parlamentare->getSlug() );
     }
   
     //$this->processEmendamentiSort();

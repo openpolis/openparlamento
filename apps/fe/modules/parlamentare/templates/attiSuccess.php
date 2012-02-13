@@ -1,8 +1,14 @@
 <?php use_helper('Date', 'I18N') ?>
+<?php
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_atti?'. $parlamentare->getUrlParams() , true) ."\" />";
+end_slot();
+$ramo = isset($ramo) ? $ramo : '';
+?>
 
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
-    	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+    	<li class="current"><h2><?php echo $ramo ? ($ramo=='camera' ? 'On. ' : 'Sen. ') : '' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
     </ul>
 </div>
 
@@ -11,6 +17,7 @@
 		
 		<?php echo include_partial('secondlevelmenu', 
 	                               array('current' => 'atti', 
+	                                    'tecnico' => $ramo == '',
 	                                     'parlamentare_id' => $parlamentare->getId(),
 	                                     'parlamentare_slug' => $parlamentare->getSlug())); ?>
 	                                     	
@@ -31,13 +38,13 @@
                                   'selected_act_firma' => array_key_exists('act_firma', $filters)?$filters['act_firma']:0,
                                   'selected_act_stato' => array_key_exists('act_stato', $filters)?$filters['act_stato']:0)) ?>
 
-      <?php include_partial('attiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
+      <?php include_partial('attiSort', array('parlamentare_id' => $parlamentare->getId(), 'parlamentare_slug' => $parlamentare->getSlug())) ?>
 
       <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
-                                                             'route' => '@parlamentare_atti?id='.$parlamentare->getId())); ?>
+                                                             'route' => '@parlamentare_atti?id='.$parlamentare->getId().'&slug='.$parlamentare->getSlug())); ?>
 
       <?php include_partial('attiList', 
-                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
+                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId(), 'parlamentare_slug' => $parlamentare->getSlug() )) ?>
 		
 	</div>
 </div>

@@ -1,4 +1,9 @@
 <?php use_helper('Date', 'I18N') ?>
+<?php
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_emendamenti?'. $parlamentare->getUrlParams() , true) ."\" />";
+end_slot();
+?>
 
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
@@ -34,7 +39,7 @@
       <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_emendamenti?id='.$parlamentare->getId())); ?>
 
       <?php include_partial('emendamentiList', 
-                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId())) ?>
+                            array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId(), 'parlamentare_slug' => $parlamentare->getSlug() )) ?>
 		
 	</div>
 </div>

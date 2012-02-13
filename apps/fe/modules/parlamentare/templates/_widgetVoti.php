@@ -5,7 +5,7 @@
 <br />	
 <?php if ($ribelle>0) : ?>
     <div style="font-size:16px; margin-bottom:10px;">
-      Ha votato <?php echo link_to($ribelle.' volte', '@parlamentare_voti?id='.$carica->getPoliticoId().'&filter_vote_rebel=1') ?> (<?php echo number_format($ribelli_perc, 2) ?>%&nbsp;sul totale dei voti) <strong>differentemente dal proprio gruppo</strong> parlamentare (voti ribelli).
+      Ha votato <?php echo link_to($ribelle.' volte', '@parlamentare_voti?id='.$carica->getPoliticoId().'&slug='.$parlamentare->getSlug().'&filter_vote_rebel=1') ?> (<?php echo number_format($ribelli_perc, 2) ?>%&nbsp;sul totale dei voti) <strong>differentemente dal proprio gruppo</strong> parlamentare (voti ribelli).
       <span class="tools-container"><a class="ico-help" href="#" style="text-decoration:none">&nbsp;</a></span>
 			<div style="display: none;" class="help-box float-container">
 				<div class="inner float-container">		
@@ -18,7 +18,7 @@
 <!-- 
 <?php if ($sotto>0) : ?>
   <div style="font-size:16px; margin-bottom:10px;">
-      In <?php echo link_to($sotto.' votazioni', '@parlamentare_voti?id='.$carica->getPoliticoId().'&filter_vote_rebel=2') ?> ha <strong>fatto battere la maggioranza di Governo</strong> con assenze o voti diversi da quelli del proprio gruppo.
+      In <?php echo link_to($sotto.' votazioni', '@parlamentare_voti?id='.$carica->getPoliticoId().'&slug='.$parlamentare->getSlug().'&filter_vote_rebel=2') ?> ha <strong>fatto battere la maggioranza di Governo</strong> con assenze o voti diversi da quelli del proprio gruppo.
       <span class="tools-container"><a class="ico-help" href="#" style="text-decoration:none">&nbsp;</a></span>
 			<div style="display: none;" class="help-box float-container">
 				<div class="inner float-container">		
@@ -33,7 +33,7 @@
 <?php endif; ?>  
 <?php if ($salva>0) : ?>
   <div style="font-size:16px; margin-bottom:10px;">
-      In <?php echo link_to($salva.' votazioni', '@parlamentare_voti?id='.$carica->getPoliticoId().'&filter_vote_rebel=3') ?> ha <strong>salvato la maggioranza di Governo</strong> con assenze o voti diversi da quelli del proprio gruppo.
+      In <?php echo link_to($salva.' votazioni', '@parlamentare_voti?id='.$carica->getPoliticoId().'&slug='.$parlamentare->getSlug().'&filter_vote_rebel=3') ?> ha <strong>salvato la maggioranza di Governo</strong> con assenze o voti diversi da quelli del proprio gruppo.
       <span class="tools-container"><a class="ico-help" href="#" style="text-decoration:none">&nbsp;</a></span>
 			<div style="display: none;" class="help-box float-container">
 				<div class="inner float-container">		

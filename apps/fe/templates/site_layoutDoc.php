@@ -51,10 +51,7 @@
     <script type="text/javascript" src="/js/css3-mediaqueries.js"></script>
 
     <!--modernizr-2.0.6.js - http://www.modernizr.com -  is an open-source JavaScript library that helps you build the next generation of HTML5 and CSS3-powered websites. -->
-    <script type="text/javascript" src="/js/modernizr-2.0.6.js"></script>
-    
-    <!--swfobject: code.google.com/p/swfobject/ -->
-    <script type="text/javascript" src="/js/swfobject.js"></script>
+    <script type="text/javascript" src="/js/modernizr-2.0.6.js"></script>    
 
     <link rel="shortcut icon" href="/favicon.ico" />
     

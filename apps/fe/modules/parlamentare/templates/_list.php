@@ -77,7 +77,7 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
         
         <td>
           <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
-                <b><?php echo link_to($parlamentari->getInt(12),'@parlamentare_voti?id='.$parlamentari->getInt(2)."&filter_vote_rebel=1") ?></b>
+                <b><?php echo link_to($parlamentari->getInt(12),'@parlamentare_voti?id='.$parlamentari->getInt(2)."&slug=".$slugParlamentare."&filter_vote_rebel=1") ?></b>
 	  <?php else: ?>
 	        <?php print('<b>0</b>') ?>
 	  <?php endif; ?>

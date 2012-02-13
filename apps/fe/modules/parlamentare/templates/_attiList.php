@@ -59,7 +59,7 @@
     <?php endforeach; ?>
     <tr>
       <td align="center" colspan='4'>
-        <?php echo pager_navigation($pager, '@parlamentare_atti?id='.$parlamentare_id) ?>
+        <?php echo pager_navigation($pager, '@parlamentare_atti?id='.$parlamentare_id.'&slug='. $parlamentare_slug) ?>
       </td>
     </tr>
 

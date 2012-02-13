@@ -1,5 +1,9 @@
 <?php use_helper('Date', 'I18N') ?>
-
+<?php
+slot('canonical_link');
+echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_voti?'. $parlamentare->getUrlParams() , true) ."\" />";
+end_slot();
+?>
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
     	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
@@ -31,14 +35,14 @@
                                   'selected_vote_result' => array_key_exists('vote_result', $filters)?$filters['vote_result']:0,
                                   'selected_vote_rebel'  => array_key_exists('vote_rebel', $filters)?$filters['vote_rebel']:0)) ?>
 
-      <?php include_partial('votiSort', array('parlamentare_id' => $parlamentare->getId())) ?>
+      <?php include_partial('votiSort', array('parlamentare_id' => $parlamentare->getId(),'parlamentare_slug' => $parlamentare->getSlug())) ?>
 
       <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),
-                                                             'route' => '@parlamentare_voti?id='.$parlamentare->getId())); ?>
+                                                             'route' => '@parlamentare_voti?id='.$parlamentare->getId().'&slug='.$parlamentare->getSlug())); ?>
 
       <?php include_partial('votiList', 
                             array('pager' => $pager, 
-                                  'parlamentare_id' => $parlamentare->getId(), 'id_gruppo_corrente' => $id_gruppo_corrente)) ?>
+                                  'parlamentare_id' => $parlamentare->getId(),'parlamentare_slug' => $parlamentare->getSlug(), 'id_gruppo_corrente' => $id_gruppo_corrente)) ?>
 
 		
 		

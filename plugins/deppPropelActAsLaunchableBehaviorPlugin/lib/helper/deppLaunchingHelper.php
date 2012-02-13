@@ -8,9 +8,9 @@ sfLoader::loadHelpers(array('Tag', 'I18N'));
 
 $response = sfContext::getInstance()->getResponse();
 
-$css = '/deppPropelActAsLaunchableBehaviorPlugin/css/depp_launching';
-if ( !array_key_exists( $css, $response->getStylesheets() ) )
-	$response->addStylesheet($css);
+//$css = '/deppPropelActAsLaunchableBehaviorPlugin/css/depp_launching';
+//if ( !array_key_exists( $css, $response->getStylesheets() ) )
+//	$response->addStylesheet($css);
 
 $js = '/js/jquery-ajaxsort.js';
 if ( !array_key_exists( $js, $response->getJavascripts() ) )

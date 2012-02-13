@@ -389,8 +389,7 @@ class OppPolitico extends BaseOppPolitico
 	 */
 	public function getSlug()
 	{
-	    use_helper('Slugger');
-	    return slugify($this->getNome() .' '. $this->getCognome());
+	    return Util::slugify($this->getNome() .' '. $this->getCognome());
 	}
     
 }

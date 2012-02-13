@@ -375,10 +375,8 @@ class OppVotazione extends BaseOppVotazione
 	 */
 	public function getUrlParams()
 	{
-		use_helper('Slugger');
-		
 		$str = 'id='. $this->getId();
-		$str .= '&slug='.slugify($this->getTitolo());
+		$str .= '&slug='.Util::slugify($this->getTitolo());
 		$str .= '&ramo='. ( $this->getOppSeduta()->getRamo() == 'C' ? 'camera' : 'senato');
 		return $str;
 	}

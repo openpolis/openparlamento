@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="/css/reset.css" />
 
     <!-- 1140px Grid styles for IE -->
-    <!--[if lte IE 9]><link rel="stylesheet" href="css/ie.css" type="text/css" media="screen" /><![endif]-->
+    <!--[if lte IE 9]><link rel="stylesheet" href="/css/ie.css" type="text/css" media="screen" /><![endif]-->
 
     <!-- The 1140px Grid - http://cssgrid.net/ -->
     <link rel="stylesheet" href="/css/1140.css" type="text/css" media="screen" />
