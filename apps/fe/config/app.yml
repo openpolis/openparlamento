@@ -128,7 +128,7 @@ all:
   # remote locations
   remote: 	 	 
     openpolis_api_key:                 "<?php echo sfConfig::get('api_openpolis_key', '--XXX(-:-)XXX--'); ?>"
-    politicians_images_service_url:    "http://<?php echo sfConfig::get('sf_remote_openpolis_host') ?>/getPolImage"
+    politicians_images_service_url:    "http://<?php echo sfConfig::get('sf_remote_openpolis_host') ?>/api/getPolImage"
   
   # json api
   api:
