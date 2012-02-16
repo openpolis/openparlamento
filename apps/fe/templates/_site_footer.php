@@ -5,7 +5,7 @@
             <h3>L'Associazione Openpolis</h3>
             <ul>
                 <li><a href="http://www.openpolis.it/chi-siamo/">Chi siamo e cosa facciamo</a></li>
-                <li><a href="http://www.openpolis.it/faq">FAQ</a></li>
+                <!-- <li><a href="http://www.openpolis.it/faq">FAQ</a></li> -->
             </ul>
             <h3>Sostienici</h3>
             <ul>
