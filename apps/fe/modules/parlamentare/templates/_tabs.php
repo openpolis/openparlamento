@@ -1,4 +1,6 @@
-<nav class="row" id="tabs-container">
+<?php
+$organi = isset($organi) $organi : false;
+?><nav class="row" id="tabs-container">
 <ul id="content-tabs" class="float-container tools-container">
     <li class="<?php echo( (($sf_params->get('ramo')=='camera' && !$gruppi && !$organi) || ($ramo==1 && !$gruppi && !$organi)) ? 'current' : '' ) ?>">
       <h2><?php echo link_to('Deputati', '@parlamentari?ramo=camera') ?></h2>   

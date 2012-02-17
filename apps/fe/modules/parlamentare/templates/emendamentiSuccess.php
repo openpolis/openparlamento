@@ -3,11 +3,12 @@
 slot('canonical_link');
 echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_emendamenti?'. $parlamentare->getUrlParams() , true) ."\" />";
 end_slot();
+$ramo = isset($ramo) ? $ramo : '';
 ?>
 
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
-    	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+    	<li class="current"><h2><?php echo $ramo ? ($ramo=='camera' ? 'On. ' : 'Sen. ') : '' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
     </ul>
 </div>
 

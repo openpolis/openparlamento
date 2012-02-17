@@ -431,21 +431,26 @@ class parlamentareActions extends sfActions
   
   public function executeVoti()
   {
-    $this->_getAndCheckParlamentare(); 
+    $this->_getAndCheckParlamentare();
+
+    $this->response->addMeta('description','I voti espressi in tutte le votazioni elettroniche di aula da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
+     
+    if ( $this->carica == null ) {
+        $this->getResponse()->setTitle('Voti in Parlamento '. $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
+        return;
+    }
+        
     $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
     $this->session = $this->getUser();
     
     if ($this->carica->getTipoCaricaId() == 1) $ramo = 'C';
     if ($this->carica->getTipoCaricaId() == 4 || $this->carica->getTipoCaricaId() == 5) $ramo = 'S';
     $this->ramo = $ramo=='C' ? 'camera' : 'senato';
-
-    $this->getResponse()->setTitle('Voti in Parlamento '. ($this->ramo=='camera' ? ' On. ' : ' Sen. ') . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
+    $this->getResponse()->setTitle('Voti in Parlamento '. ($this->ramo=='camera' ? ' On. ' : ' Sen. ') . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));    
 //    if ($this->ramo=='camera')
 //       $this->getResponse()->setTitle('On. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
 //    else
 //       $this->getResponse()->setTitle('Sen. '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - come ha votato - '.sfConfig::get('app_main_title'));
-    
-    $this->response->addMeta('description','I voti espressi in tutte le votazioni elettroniche di aula da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);
      
      // reset dei filtri se richiesto esplicitamente
      if ($this->getRequestParameter('reset_filters', 'false') == 'true')
@@ -597,8 +602,11 @@ class parlamentareActions extends sfActions
       $response->addJavascript('votazione_interventi', 'last');      
     }
 	  
-    $this->_getAndCheckParlamentare();  
-
+    $this->_getAndCheckParlamentare(); 
+    if ( $this->carica == NULL )
+    {
+        return;
+    }
     $this->session = $this->getUser();  
     
     // reset dei filtri se richiesto esplicitamente
@@ -657,9 +665,7 @@ class parlamentareActions extends sfActions
       $title .=  ($this->ramo=='camera') ? ' On. ' : ' Sen. ';
     }
       $this->getResponse()->setTitle($title . $this->parlamentare->getNome().' '.$this->parlamentare->getCognome().' - '.sfConfig::get('app_main_title'));
-
-    
-          $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli emendamenti presentati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
+      $this->response->addMeta('description','La lista aggiornata quotidianamente di tutti gli emendamenti presentati da '.$this->parlamentare->getNome().' '.$this->parlamentare->getCognome(),true);    
   
     $this->session = $this->getUser();
     
@@ -709,7 +715,7 @@ class parlamentareActions extends sfActions
          $this->ddls_collegati[]=$ddl;
     }
     */
-    $this->ddls_collegati = OppCaricaHasEmendamentoPeer::getDDLCollegatiCariche($cariche_ids);
+    $this->ddls_collegati = empty($cariche_ids) ? $cariche_ids : OppCaricaHasEmendamentoPeer::getDDLCollegatiCariche($cariche_ids);
    
     
     $c = new Criteria();

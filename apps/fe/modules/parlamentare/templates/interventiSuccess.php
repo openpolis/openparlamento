@@ -3,10 +3,11 @@
 slot('canonical_link');
 echo "\n<link rel=\"canonical\" href=\"". url_for('@parlamentare_interventi?'. $parlamentare->getUrlParams() , true) ."\" />";
 end_slot();
+$ramo = isset($ramo) ? $ramo : '';
 ?>
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
-    	<li class="current"><h2><?php echo $ramo=='camera' ? 'On. ' : 'Sen. ' ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
+    	<li class="current"><h2><?php echo $ramo ? ($ramo=='camera' ? 'On. ' : 'Sen. ') : ''  ?><?php echo $parlamentare->getNome() ?>&nbsp;<?php echo $parlamentare->getCognome() ?></h2></li>
     </ul>
 </div>
 
@@ -26,7 +27,7 @@ end_slot();
    				<p>In questa pagina trovi la lista degli interventi del parlamentare in aula e in commissione</p>
    			</div>
    		</div>
-   		
+   		    <?php if ( $carica !== NULL ) : ?>
    		<?php include_partial('interventiFilter',
                             array('ddls_collegati' => $ddls_collegati,
                                   'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                                                        
@@ -38,7 +39,9 @@ end_slot();
 
       <?php include_partial('interventiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId(),'parlamentare_slug' => $parlamentare->getSlug())) ?>
-		
+		                <?php else : ?>
+                        <br /><p>Nessun intervento disponibile per un politico che non ha mai avuto una carica di Senatore o Deputato.</p>
+                        <?php endif; ?>
 		
 	</div>
 </div>
