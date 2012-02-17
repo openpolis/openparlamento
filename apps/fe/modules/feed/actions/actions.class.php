@@ -82,7 +82,6 @@ class feedActions extends sfActions
   
   public function executeLastPolitico()
   {
-      use_helper('Slugger');
     $id = $this->getRequestParameter('id');
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
@@ -92,7 +91,7 @@ class feedActions extends sfActions
 
     $feed = $this->_make_feed_from_pager(
       'Ultime per ' . $politico, 
-      '@parlamentare?id='.$id.'&slug='.slugify($politico), 
+      '@parlamentare?id='.$id.'&slug='. Util::slugify($politico), 
       $this->_get_newspager_from_criteria($c),
       2 // CONTEXT_POLITICO
     );
@@ -102,7 +101,6 @@ class feedActions extends sfActions
 
   public function executeLastPoliticoRadicali()
   {
-      use_helper('Slugger');
     $id = $this->getRequestParameter('id');
     $politico = OppPoliticoPeer::retrieveByPk($id);
     $this->forward404Unless($politico instanceof OppPolitico);
@@ -115,7 +113,7 @@ class feedActions extends sfActions
 
     $feed = $this->_make_feed_from_news(
       'Ultime per ' . $politico, 
-      '@parlamentare?id='.$id.'&slug='.slugify($politico), 
+      '@parlamentare?id='.$id.'&slug='.Util::slugify($politico), 
       $news, 
       2 // CONTEXT_POLITICO
     );

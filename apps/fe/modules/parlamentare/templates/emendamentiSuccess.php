@@ -36,7 +36,7 @@ end_slot();
                                   'selected_act_firma' => array_key_exists('act_firma', $filters)?$filters['act_firma']:0)) ?>
  
       
-      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_emendamenti?id='.$parlamentare->getId())); ?>
+      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults(),'route' => '@parlamentare_emendamenti?'.$parlamentare->getUrlParams())); ?>
 
       <?php include_partial('emendamentiList', 
                             array('pager' => $pager, 'parlamentare_id' => $parlamentare->getId(), 'parlamentare_slug' => $parlamentare->getSlug() )) ?>
