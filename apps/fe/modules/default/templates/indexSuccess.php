@@ -1,21 +1,15 @@
 <?php echo use_helper('DeppNews', 'Date'); ?>
 
-<div class="row">
-	<div class="twelvecol">
-		
-		<?php if ($sf_user->isAuthenticated()): ?>
-	      <div class="W66_100 float-left">
-	        <?php echo include_component('monitoring', 'userVspolitician',
-	                                     array('user' => $sf_user, 'num' => 1, 
-	                                           'ambient' => 'home', 'legislatura' => 16)); ?>			
-	      </div>
+<?php if ($sf_user->isAuthenticated()): ?>
+ 
+    <?php echo include_component('monitoring', 'userVspolitician',
+                                 array('user' => $sf_user, 'num' => 1, 
+                                       'ambient' => 'home', 'legislatura' => 16)); ?>			
+  
 
-	      <div class="clear-both"></div>
+  <div class="clear-both"></div>
 
-	    <?php endif; ?>
-		
-	</div>
-</div>
+<?php endif; ?>
 
 <div class="row">
 	
@@ -64,6 +58,7 @@
 	     			<ul id="law-n-acts-proposals">				
 	     			<?php include_partial('default/lanci',array('lanci' => $lanci)) ?>
 	     			</ul>
+	     			<p align="right"><?php echo link_to('vai a tutti i voti in evidenza', '@attiEvidenza') ?></p>
 	         </div>	
 	       <?php endif; ?>
 
