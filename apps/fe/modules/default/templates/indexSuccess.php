@@ -58,7 +58,7 @@
 	     			<ul id="law-n-acts-proposals">				
 	     			<?php include_partial('default/lanci',array('lanci' => $lanci)) ?>
 	     			</ul>
-	     			<p align="right"><?php echo link_to('vai a tutti i voti in evidenza', '@attiEvidenza') ?></p>
+	     			<p align="right"><?php echo link_to('vai a tutti gli atti in evidenza', '@attiEvidenza') ?></p>
 	         </div>	
 	       <?php endif; ?>
 
