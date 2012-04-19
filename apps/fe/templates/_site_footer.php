@@ -5,6 +5,7 @@
             <h3>L'Associazione Openpolis</h3>
             <ul>
                 <li><a href="http://www.openpolis.it/chi-siamo/">Chi siamo e cosa facciamo</a></li>
+		<li><a href="http://www.openpolis.it/statuto/">Statuto</a></li>
                 <!-- <li><a href="http://www.openpolis.it/faq">FAQ</a></li> -->
             </ul>
             <h3>Sostienici</h3>
@@ -52,11 +53,11 @@
 
     <nav id="sub-footer" class="row">
         <ul class="twelvecol">
-            <li><img src="/img/footers/openpolis.png" alt="Servizi offerti da OpenPolis" title="I Servizi" /></li>
-            <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" /></a></li>
-            <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open Politici" title="Open Politici" /></a></li>
-            <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" /></a></li>
-            <li><a href="http://indice.openpolis.it/"><img src="/img/footers/indiceproduttivita.png" alt="L'Indice di Produttività Parlamentare" title="L'Indice di Produttività Parlamentare" /></a></li>
+<li><a href="http://www.openpolis.it"><img src="/img/footers/openpolis.png" alt="Sito dell'associazione OpenPolis" title="Associazione Openpolis" /></a></li>
+        <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" /></a></li>
+        <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open politici" title="Open politici" /></a></li>
+        <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" /></a></li>
+        <li><a href="http://indice.openpolis.it/"><img src="/img/footers/indiceproduttivita.png" alt="L'Indice di Produttività Parlamentare" title="L'Indice di Produttività Parlamentare" /></a></li>
         </ul>            
     </nav>
 </footer>
