@@ -321,6 +321,82 @@ class feedActions extends sfActions
     return sfView::NONE;    
   }
   
+  public function executeTagNews() {
+
+      // due righe modificate per la chiamata con id
+      $this->tag_id = $this->getRequestParameter('id');
+      $this->tag = TagPeer::retrieveByPK($this->tag_id);
+      
+      
+      $namespace = $this->getRequestParameter('namespace');
+
+//      setlocale(LC_TIME, 'it_IT');
+      sfLoader::loadHelpers(array('Tag', 'Url', 'DeppNews'));
+
+      $feed = new sfRss2ExtendedFeed();
+      $feed->initialize(array(
+        'title'       => 'Ultime notizie sull\'argomento '.$this->tag->getTripleValue(),
+        'link'        => url_for('@homepage', true),
+        'feedUrl'     => $this->getRequest()->getURI(),
+        'siteUrl'     => 'http://' . sfConfig::get('sf_site_url'),
+        'image'       => 'http://' . sfConfig::get('sf_site_url') . '/images/logo-openparlamento.png',
+        'language'    => 'it',
+        'authorEmail' => 'info@openparlamento.it',
+        'authorName'  => 'Openparlamento',
+        'description' => "Openparlamento.it - il progetto Openpolis per la trasparenza del Parlamento",
+        'sy_updatePeriod' => 'daily',
+        'sy_updateFrequency' => '1',
+        'sy_updateBase' => '2000-01-01T12:00+00:00'	    
+      ));
+      
+      $news = oppNewsPeer::getNewsForTagCriteria($this->tag_id);
+      $news->addDescendingOrderByColumn(NewsPeer::DATE);
+      
+      $itemsperpage =  $this->getRequestParameter('page', sfConfig::get('app_pagination_limit'));
+      $page = $this->getRequestParameter('page', 1);
+      
+        $pager = new deppNewsPager('News', $itemsperpage);
+        $pager->setCriteria($news);
+        $pager->setPage($this->getRequestParameter('page', 1));
+        $pager->init();
+        $this->pager = $pager;
+        
+        $url = url_for('@news_tag?id='.$this->tag_id, true) . '?' . urlencode('page=' . $page . '&itemsperpage=' . $itemsperpage);
+
+        foreach ($pager->getGroupedResults() as $date_ts => $news) {
+            foreach ($news as $cnt => $n) {
+                // fetch del modello e dell'oggetto che ha generato la notizia
+                $generator_model = $n->getGeneratorModel();
+                if ($n->getGeneratorPrimaryKeys())
+                {
+                  $pks = array_values(unserialize($n->getGeneratorPrimaryKeys()));
+                  $generator = call_user_func_array(array($generator_model.'Peer', 'retrieveByPK'), $pks);   
+                } else {
+                  $pks = array();
+                  $generator = null;
+                }
+                
+                $item = new sfRss2ExtendedItem();
+                $description = news_text($n, $generator_model, $pks, $generator, array('context' => CONTEXT_TAG));
+                  $item->initialize( array(
+                    'title' => strip_tags($description),
+                    'link'  => $url,
+                    'permalink' => $url,
+                    'pubDate' => $n->getDate('U'),
+                    'uniqueId' => $n->getId(),
+                    'description' => $description,
+                    'authorEmail' => 'info@openparlamento.it',
+                    'authorName'  => 'Openparlamento',        
+                  ));
+                  $feed->addItem($item);
+            }
+        }
+      
+
+      $this->_send_output($feed);
+      return sfView::NONE;
+  }
+  
   
   
   protected function _send_output($feed)

@@ -161,6 +161,10 @@ feed_user_news:
   url: /feed/news_utente/:token
   param: { module: feed, action: userNews, token: '' }
   
+feed_tag_news:
+  url: /feed/tag/:id
+  param: { module: feed, action: tagNews }
+  
   
 monitoring_news:
   url: /monitoring_news/*
