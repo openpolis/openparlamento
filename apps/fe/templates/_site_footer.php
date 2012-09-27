@@ -40,7 +40,7 @@
             <h3>Restiamo in contatto</h3>	
             <p>Per segnalazioni, suggerimenti, lamentele ma anche incoraggiamenti:</p>
             <h4>Associazione Openpolis</h4>
-            <p>via dei Sabelli 215 - 00185 Roma<br />
+            <p>via degli Equi 42 - 00185 Roma<br />
                 T. 06.83608392 <span class="email-nascosta">associazione[chioccia]openpolis[punto]it</span> <br /> 
                 C.I. 97532050586
             </p>
