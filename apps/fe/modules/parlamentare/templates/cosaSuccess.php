@@ -222,7 +222,7 @@ $ramo = isset($ramo) ? $ramo : '';
                         
         <?php include_component('parlamentare', 'attiPresentati', array('parlamentare' => $parlamentare)) ?> 
         <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
-        <?php echo include_component('parlamentare', 'firmacon',array('carica' => $carica, 'acronimo' => $acronimo_gruppo_corrente)); ?>
+        <?php //echo include_component('parlamentare', 'firmacon',array('carica' => $carica, 'acronimo' => $acronimo_gruppo_corrente)); ?>
         
     </div>
     <div class="sixcol last">
