@@ -364,8 +364,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     // l'iter è calcolato sempre per i primi firmatari
     // per atti non assorbiti e non unificati o unificati principali, per i relatori
+		/*
     if ($mode == 'presentazione' || 
         $mode == 'relazione' && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
+		*/
+    if ($mode == 'presentazione' || 
+        $mode == 'relazione' ) {
 
       // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
       // atti diventati legge non prendono il punteggio di approvazione
