@@ -192,6 +192,7 @@ function run_opp_build_cache_politici($task, $args, $options)
   $ramo = 'tutti';
   $tipo = 'P';
   $verbose = false;
+	$dry_run = false;
   if (array_key_exists('data', $options)) {
     $data = $options['data'];
   }
@@ -201,6 +202,10 @@ function run_opp_build_cache_politici($task, $args, $options)
   if (array_key_exists('verbose', $options)) {
     $verbose = true;
   }
+  if (array_key_exists('dry_run', $options)) {
+    $dry_run = true;
+  }
+
   
 
   // restrizione su un subset di atti/emendamenti per eventuale debug
@@ -266,33 +271,34 @@ function run_opp_build_cache_politici($task, $args, $options)
     $ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($id, $legislatura_corrente, $data);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'P', $id, $mio_ramo);
-    if (!$cache_record) {
-      $cache_record = new OppPoliticianHistoryCache();
-    }
-    $cache_record->setLegislatura($legislatura_corrente);
-    $cache_record->setChiTipo('P');
-    $cache_record->setChiId($id);
-    $cache_record->setRamo($mio_ramo);
-    $cache_record->setGruppoId($gruppo['id']);
-    $cache_record->setIndice($indice);
-    $cache_record->setPresenze($presenze);
-    $cache_record->setAssenze($assenze);
-    $cache_record->setMissioni($missioni);
-    $cache_record->setRibellioni($ribellioni);
-    $cache_record->setData($data);
-    $cache_record->setNumero(1); // il dato riguarda un solo soggetto
-    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
-    $cache_record->save();
+		if (!$dry_run) {
+	    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'P', $id, $mio_ramo);
+	    if (!$cache_record) {
+	      $cache_record = new OppPoliticianHistoryCache();
+	    }
+	    $cache_record->setLegislatura($legislatura_corrente);
+	    $cache_record->setChiTipo('P');
+	    $cache_record->setChiId($id);
+	    $cache_record->setRamo($mio_ramo);
+	    $cache_record->setGruppoId($gruppo['id']);
+	    $cache_record->setIndice($indice);
+	    $cache_record->setPresenze($presenze);
+	    $cache_record->setAssenze($assenze);
+	    $cache_record->setMissioni($missioni);
+	    $cache_record->setRibellioni($ribellioni);
+	    $cache_record->setData($data);
+	    $cache_record->setNumero(1); // il dato riguarda un solo soggetto
+	    $cache_record->setUpdatedAt(date('Y-m-d H:i')); // forza riscrittura updated_at, per tenere traccia esecuzioni
+	    $cache_record->save();
 
-    unset($cache_record);
+	    unset($cache_record);			
+		}
 
     $msg = sprintf("i: %7.2f   p:%4d    a:%4d   m:%4d,   r:%4d", $indice, $presenze, $assenze, $missioni, $ribellioni);
     echo pakeColor::colorize($msg, array('fg' => 'cyan', 'bold' => true));      
 
     $msg = sprintf(" [%4d sec] [%10d bytes]\n", time() - $start_time, memory_get_usage( ));
     echo pakeColor::colorize($msg, array('fg' => 'red', 'bold' => false));      
-
 
   }
 
