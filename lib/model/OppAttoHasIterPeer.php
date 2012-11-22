@@ -32,7 +32,7 @@ class OppAttoHasIterPeer extends BaseOppAttoHasIterPeer
 
   /**
    * legge gli itinera interessanti di un singolo atto
-   * interessanti sono quelli cui vengono sassegnati dei punti
+   * interessanti sono quelli cui vengono assegnati dei punti
    *
    * @param string $atto_id 
    * @param string $data 

@@ -106,6 +106,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
   public static function calcola_indice_politico($carica_id, $legislatura, $data = '', $verbose = '', $atti_ids = array(), $emendamenti_ids = array())
   {
     if ($data == '') throw new Exception("Date can not be null");
+
     
     // inizializzazion xml con dettaglio computazione
     $xml_node = new SimpleXMLElement(
@@ -118,22 +119,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $content_node = $xml_node->addChild('op:content', null, self::$op_ns);             
   
     // estrae atti firmati come Primo Firmatario, fino alla data specificata
-    if (count($atti_ids) == 0)
-    {
-      $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
-      
-    }
-    else
-    {
-      $attis = array();
-      foreach ($atti_ids as $atto_id) {
-        $atto  = OppAttoPeer::retrieveByPK($atto_id);
-        $is_presented_by = OppCaricaHasAttoPeer::isPresentedBy($carica_id, $atto_id);
-        if ($is_presented_by)
-          $attis []= array('id' => $atto->getId(), 'tipo_atto_id' => $atto->getTipoAttoId());
-        unset($atto);
-      }
-    }
+    $attis = OppCaricaPeer::getPresentedAttosIdsAndTiposByCaricaData($carica_id, $legislatura, $data);
 
     $punteggio = 0.;
   
@@ -144,6 +130,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     $d_punteggio = 0.;
     foreach ($attis as $atto) {
+			// --- skip atti da non analizzare, se passato elenco atti in linea di comando
+      if (!empty($atti_ids) && !in_array($atto['id'], $atti_ids)) {
+        continue;
+      }
       $dd_punteggio = self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
       $d_punteggio += $dd_punteggio;
     }
@@ -151,6 +141,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     if ($verbose)
       printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
     $punteggio += $d_punteggio;
+
 
     // --- componente indice dovuta alle firme come relatore
     $atti_relazionati = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
@@ -160,6 +151,10 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
     $d_punteggio = 0;
     foreach ($atti_relazionati as $atto_hash) {
+			// --- skip atti da non analizzare, se passato elenco atti in linea di comando
+      if (!empty($atti_ids) && !in_array($atto_hash['id'], $atti_ids)) {
+        continue;
+      }
       $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
       $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
       if ($primo_atto_relazionato_in_navetta_da_me)      
@@ -260,7 +255,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
  }
  
   /**
-   * calcola l'indice accumulato fino alla fine della settimana, per un atto, presentato da una carica 
+   * calcola l'indice per un atto, presentato da una carica 
    *
    * @param integer  $carica_id
    * @param integer  $atto_id
@@ -285,7 +280,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     // determina il tipo di atto (per quello che concerne il calcolo dell'indice)
     $tipo_atto = OppTipoAttoPeer::getTipoPerIndice($tipo_atto_id);
-
+		
     // determina se l'atto è parte di un Testo Unificato
     $is_unified = OppAttoPeer::isUnifiedText($atto_id);
     
@@ -298,9 +293,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     
     if (is_null($tipo_atto)) return 0;
     
-    if ($verbose)
-      printf("atto: %10s %15s\n", $atto_id, $tipo_atto);
-
+    if ($verbose) {
+      printf("  atto: %10s %15s\n", $atto_id, $tipo_atto);
+      printf("    unificato a: %s\n", $is_unified?$is_unified:'-');
+      printf("    assorbito da: %s\n", $is_absorbed?$is_absorbed:'-');	
+		}
+		
     $atto_node->addAttribute('tipo_atto', $tipo_atto);
     $atto_node->addAttribute('priorita', $priorita);
     $atto_node->addAttribute('id', $atto_id);    
@@ -386,6 +384,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       }
       unset($c);
       unset($atto);
+			if ($verbose)
+				printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
+
 
       foreach ($itinera_atto as $iter_atto) {
 

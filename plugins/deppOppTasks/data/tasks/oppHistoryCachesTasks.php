@@ -205,6 +205,7 @@ function run_opp_build_cache_politici($task, $args, $options)
 
   // restrizione su un subset di atti/emendamenti per eventuale debug
   $atti_ids = array();
+  
   if (array_key_exists('atti', $options)) {
     $atti_ids = explode(",", $options['atti']);
   }
@@ -260,7 +261,7 @@ function run_opp_build_cache_politici($task, $args, $options)
     $politico_stringa = sprintf("%s %s %s", $prefisso, $nome, strtoupper($cognome));
     printf("%4d) %40s %7s [%06d] ... ", $cnt, $politico_stringa, "(".$gruppo['acronimo'].")", $id);
 
-    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose);
+    $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose, $atti_ids);
     list($presenze, $assenze, $missioni) = OppVotazioneHasCaricaPeer::getDatiPresenzaCaricaData($id, $legislatura_corrente, $data);
     $ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($id, $legislatura_corrente, $data);
 
