@@ -190,7 +190,7 @@ class OppAtto extends BaseOppAtto
    * torna se l'atto è il primo nella navetta parlamentare relazionato da una carica
    *
    * @param string $carica_id 
-   * @return void
+   * @return boolean
    * @author Guglielmo Celata
    */
   public function getIsPrimoRelazionatoInNavettaDaCarica($carica_id)
@@ -209,7 +209,7 @@ class OppAtto extends BaseOppAtto
    * torna se l'atto è l'ultimo nella navetta parlamentare relazionato da una carica
    *
    * @param string $carica_id 
-   * @return void
+   * @return boolean
    * @author Guglielmo Celata
    */
   public function getIsUltimoRelazionatoInNavettaDaCarica($carica_id)

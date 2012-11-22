@@ -386,10 +386,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       unset($atto_succ);
 
       if ($verbose)
-	printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
+        printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
 
-      // NOTA del 22/11/2012 - Cassinelli Issue
+      // NOTA del 22/11/2012 - Anomalia Cassinelli
       //
+      //   $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
+      //   if (!$primo_atto_relazionato_in_navetta_da_me) return $punteggio;				
       // controlla se, per i relatori, si tratta del primo tra gli atti di navetta
       // se non è il primo non assegna punti, per evitare duplicazioni
       // TODO: in questo modo però si perde gli stralci 
@@ -402,12 +404,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       // relazionato dalla carica_id, tranne che per gli assorbiti, che continuano a dare i punti fino ad assorbimento.
       // L'ultimo atto è più importante perché da i punti di approvazione, se c'è.
       if ($mode == 'relazione') {
-	  $ultimo_atto_relazionato_in_navetta_da_me = $atto->getIsUltimoRelazionatoInNavettaDaCarica($carica_id);
-	  if ($verbose)
-	    printf("    ultimo relazionato da me:" .  $ultimo_atto_relazionato_in_navetta_da_me . ":\n");
-	  if (!$ultimo_atto_relazionato_in_navetta_da_me && !$is_absorbed) return $punteggio;				
+        $ultimo_atto_relazionato_in_navetta_da_me = $atto->getIsUltimoRelazionatoInNavettaDaCarica($carica_id);
+        if ($verbose)
+          printf("    ultimo relazionato da me:" .  $ultimo_atto_relazionato_in_navetta_da_me . ":\n");
+        if (!$ultimo_atto_relazionato_in_navetta_da_me && !$is_absorbed) return $punteggio;				
       }
-
 
       foreach ($itinera_atto as $iter_atto) {
 

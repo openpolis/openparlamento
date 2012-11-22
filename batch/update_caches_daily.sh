@@ -1,14 +1,18 @@
 #!/bin/sh
-./symfony opp-build-cache-politici --ramo=parlamento
+./symfony opp-build-cache-politici --ramo=camera
 ./symfony opp-build-pos-cache-politici --ramo=camera
-./symfony opp-build-pos-cache-politici --ramo=senato 
 ./symfony opp-upgrade-opp-carica-from-cache --ramo=camera
+
+./symfony opp-build-cache-politici --ramo=senato
+./symfony opp-build-pos-cache-politici --ramo=senato 
 ./symfony opp-upgrade-opp-carica-from-cache --ramo=senato
 
 ./symfony opp-build-cache-gruppi
 ./symfony opp-build-cache-rami
 
-./symfony opp-calcola-rilevanza-atti
-./symfony opp-calcola-rilevanza-tag
+./symfony opp-build-cache-atti
+./symfony opp-build-cache-tag
 
-#./symfony opp-rebuild-deltas
+./symfony opp-compute-delta-politici
+./symfony opp-compute-delta-atti
+./symfony opp-compute-delta-tags
