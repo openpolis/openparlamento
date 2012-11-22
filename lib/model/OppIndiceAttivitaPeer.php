@@ -156,8 +156,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         continue;
       }
       $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
-      $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
-      if ($primo_atto_relazionato_in_navetta_da_me)      
+      $ultimo_atto_relazionato_in_navetta_da_me = $atto->getIsUltimoRelazionatoInNavettaDaCarica($carica_id);
+      if ($ultimo_atto_relazionato_in_navetta_da_me)      
         $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 

@@ -205,6 +205,25 @@ class OppAtto extends BaseOppAtto
     return true;
   }
 
+  /**
+   * torna se l'atto è l'ultimo nella navetta parlamentare relazionato da una carica
+   *
+   * @param string $carica_id 
+   * @return void
+   * @author Guglielmo Celata
+   */
+  public function getIsUltimoRelazionatoInNavettaDaCarica($carica_id)
+  {
+    $atto_succs = $this->getAllSucc();
+    foreach ($atto_succs as $atto_succ) {
+      $relatori = $atto_succ->getFirmatariIds('R');
+      if (in_array($carica_id, $relatori)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   
   /**
    * returns an array with all pred and succ
