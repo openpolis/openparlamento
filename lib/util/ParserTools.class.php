@@ -28,6 +28,7 @@ class ParserTools
     
     for ($i = 1; $i <= $n_tentativi; $i++)
     {
+      echo $i . "\n";
   	  $html = file_get_html($uri, 0, $ctx);
   	  if ($html != '')
   	  {
