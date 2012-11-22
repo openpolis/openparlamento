@@ -373,32 +373,40 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $c = new Criteria();
       $c->add(OppAttoHasIterPeer::ITER_ID, 16);
       $c->add(OppAttoHasIterPeer::DATA, $data, Criteria::LESS_EQUAL);
-      while ($atto_succ_id = $atto->getSucc())
+      $atto_succ = clone $atto;
+      while ($atto_succ_id = $atto_succ->getSucc())
       {
-        $atto = OppAttoPeer::retrieveByPK($atto_succ_id);
-        if ($atto->countOppAttoHasIters($c) > 0)
+        $atto_succ = OppAttoPeer::retrieveByPK($atto_succ_id);
+        if ($atto_succ->countOppAttoHasIters($c) > 0)
         {
           $diventato_legge_in_altri_rami = true;
         }
       }
       unset($c);
+      unset($atto_succ);
 
-			if ($verbose)
-				printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
+      if ($verbose)
+	printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
 
-			// controlla se, per i relatori, si tratta del primo tra gli atti di navetta
-			// se non è il primo non assegna punti, per evitare duplicazioni
-			// TODO: in questo modo però si perde gli stralci 
-			// esempio: 
-			//    il 97379 (C.3900-bis, approvato) è stralcio del 62068 (C.3900)
-			//    con questo algoritmo il 97379 non prende punti,
-			//    mentre il 62068 prende i punti, che però sono meno
-			if ($mode == 'relazione') {
-	      $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
-				if ($verbose)
-					printf("    primo relazionato da me: %s\n", $primo_atto_relazionato_in_navetta_da_me?'y':'n');
-	      // if (!$primo_atto_relazionato_in_navetta_da_me) continue;				
-			}
+      // NOTA del 22/11/2012 - Cassinelli Issue
+      //
+      // controlla se, per i relatori, si tratta del primo tra gli atti di navetta
+      // se non è il primo non assegna punti, per evitare duplicazioni
+      // TODO: in questo modo però si perde gli stralci 
+      // esempio: 
+      //    il 97379 (C.3900-bis, approvato) è stralcio del 62068 (C.3900)
+      //    con questo algoritmo il 97379 non prende punti,
+      //    mentre il 62068 prende i punti, che però sono meno
+      // 
+      // Cambio la logica e blocco il calcolo del punteggio se l'atto non è l'ultimo in navetta,
+      // relazionato dalla carica_id, tranne che per gli assorbiti, che continuano a dare i punti fino ad assorbimento.
+      // L'ultimo atto è più importante perché da i punti di approvazione, se c'è.
+      if ($mode == 'relazione') {
+	  $ultimo_atto_relazionato_in_navetta_da_me = $atto->getIsUltimoRelazionatoInNavettaDaCarica($carica_id);
+	  if ($verbose)
+	    printf("    ultimo relazionato da me:" .  $ultimo_atto_relazionato_in_navetta_da_me . ":\n");
+	  if (!$ultimo_atto_relazionato_in_navetta_da_me && !$is_absorbed) return $punteggio;				
+      }
 
 
       foreach ($itinera_atto as $iter_atto) {
