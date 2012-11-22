@@ -155,10 +155,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       if (!empty($atti_ids) && !in_array($atto_hash['id'], $atti_ids)) {
         continue;
       }
-      $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
-      $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
-      if ($primo_atto_relazionato_in_navetta_da_me)      
-        $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
     }
 
     $atti_relazionati_node->addAttribute('totale', $d_punteggio);
@@ -368,13 +365,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     if ($mode == 'presentazione' || 
         $mode == 'relazione' && is_null($is_absorbed) && (is_null($is_unified) || $is_unificato_main)) {
 		*/
-    if ($mode == 'presentazione' || 
-        $mode == 'relazione' ) {
+    if ($mode == 'presentazione' || $mode == 'relazione' ) {
 
       // controlla se atti non assorbiti sono diventati legge dopo passaggi in altri rami
       // atti diventati legge non prendono il punteggio di approvazione
       $diventato_legge_in_altri_rami = false;
-      $atto = OppAttoPeer::retrieveByPK($atto_id);
       $c = new Criteria();
       $c->add(OppAttoHasIterPeer::ITER_ID, 16);
       $c->add(OppAttoHasIterPeer::DATA, $data, Criteria::LESS_EQUAL);
@@ -387,9 +382,23 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         }
       }
       unset($c);
-      unset($atto);
+
 			if ($verbose)
 				printf("    diventato legge in altri rami: %s\n", $diventato_legge_in_altri_rami?'y':'n');
+
+			// controlla se, per i relatori, si tratta del primo tra gli atti di navetta
+			// se non è il primo non assegna punti, per evitare duplicazioni
+			// TODO: in questo modo però si perde gli stralci 
+			// esempio: 
+			//    il 97379 (C.3900-bis, approvato) è stralcio del 62068 (C.3900)
+			//    con questo algoritmo il 97379 non prende punti,
+			//    mentre il 62068 prende i punti, che però sono meno
+			if ($mode == 'relazione') {
+	      $primo_atto_relazionato_in_navetta_da_me = $atto->getIsPrimoRelazionatoInNavettaDaCarica($carica_id);
+				if ($verbose)
+					printf("    primo relazionato da me: %s\n", $primo_atto_relazionato_in_navetta_da_me?'y':'n');
+	      // if (!$primo_atto_relazionato_in_navetta_da_me) continue;				
+			}
 
 
       foreach ($itinera_atto as $iter_atto) {
