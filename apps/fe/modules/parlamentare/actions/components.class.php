@@ -325,8 +325,8 @@ public function executeAllvoteComparati()
   
   public function executeGruppiParlamentari()
   {
-    if ($this->ramo==1) $this->tipo_carica=1;
-    else $this->tipo_carica=4;
+    if ($this->ramo==1) $this->tipo_carica=array(1);
+    else $this->tipo_carica=array(4,5);
   
     $array_diff=array();
     $gruppo_in=array();
@@ -345,9 +345,12 @@ public function executeAllvoteComparati()
       if (!array_key_exists($gruppo->getId(),$gruppo_now))  
         $gruppo_now[$gruppo->getId()]=0;
       $c= new Criteria();
-      $c->add(OppCaricaPeer::TIPO_CARICA_ID,$this->tipo_carica);
+      $c->add(OppCaricaPeer::TIPO_CARICA_ID,$this->tipo_carica, Criteria::IN);
       $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
-      $c->add(OppCaricaPeer::LEGISLATURA,$this->leg);
+      if (!in_array(5, $this->tipo_carica))
+      {
+         $c->add(OppCaricaPeer::LEGISLATURA,$this->leg);
+      }
       $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
       $c->add(OppCaricaHasGruppoPeer::GRUPPO_ID,$gruppo->getId());
       $rs=OppCaricaHasGruppoPeer::doSelect($c);
