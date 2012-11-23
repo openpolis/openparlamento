@@ -29,6 +29,9 @@ pake_task('opp-build-cache-rami', 'project_exists');
 pake_desc("costruisce cache per gli atti");
 pake_task('opp-build-cache-atti', 'project_exists');
 
+pake_desc("costruisce cache per gli argomenti");
+pake_task('opp-build-cache-tags', 'project_exists');
+
 pake_desc("calcola i dati dei delta per la cache dei politici (percentuali di presenze, indici, ribellioni)");
 pake_task('opp-compute-delta-politici', 'project_exists');
 
@@ -817,7 +820,7 @@ function run_opp_build_cache_atti($task, $args, $options)
  * Si può specificare il una data fino alla quale calcolare la rilevanza
  * Se sono passati degli ID (argomenti), sono interpretati come ID di argomenti e il calcolo è fatto solo per loro
  */
-function run_opp_build_cache_tag($task, $args, $options)
+function run_opp_build_cache_tags($task, $args, $options)
 {
   static $loaded;
 
