@@ -11,7 +11,7 @@
 ./symfony opp-build-cache-rami
 
 ./symfony opp-build-cache-atti
-./symfony opp-build-cache-tag
+./symfony opp-build-cache-tags
 
 ./symfony opp-compute-delta-politici
 ./symfony opp-compute-delta-atti
