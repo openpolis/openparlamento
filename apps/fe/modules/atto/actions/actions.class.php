@@ -703,11 +703,15 @@ class attoActions extends sfActions
 	      case '1':
 		      $this->tipo_iniziativa = 'Parlamentare';
 		      break;
-		    case '2':
-          $this->tipo_iniziativa = 'di Governo';
+              case '2':
+                      $this->tipo_iniziativa = 'di Governo';
 		      break;
-	      default:
-		    $this->tipo_iniziativa = 'Popolare'; 	  		  
+	      case '3':
+		      $this->tipo_iniziativa = 'Regionale';
+                      break;
+ 	      case '4':
+                      $this->tipo_iniziativa = 'Popolare';
+                      break;		  
 	    }
 	  }
 	
