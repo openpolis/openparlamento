@@ -447,6 +447,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         {
           break;
         }
+        
+        // break su interrogazioni e interpellanze concluse
+        if ($passaggio == 'concluso')
+        {
+          break;
+        }
 
         
         // --- bonus maggioranza ---
