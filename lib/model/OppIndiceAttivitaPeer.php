@@ -449,7 +449,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         }
         
         // break su interrogazioni e interpellanze concluse
-        if ($passaggio == 'concluso')
+        if ($passaggio == 'svolto')
         {
           break;
         }
