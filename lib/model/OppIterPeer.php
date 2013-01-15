@@ -19,7 +19,8 @@ class OppIterPeer extends BaseOppIterPeer
     20 => 'approvato', 22 => 'approvato', 25 => 'approvato', 61 => 'approvato', 37 => 'approvato',
     16 => 'diventato_legge' ,
     11 => 'assorbito',
-    13 => 'concluso', 40 => 'concluso', 41 => 'concluso', 42 => 'concluso', 45 => 'concluso', 50 => 'concluso', 56 => 'concluso'  
+    13 => 'concluso', 40 => 'concluso', 41 => 'concluso', 45 => 'concluso', 50 => 'concluso',
+    42 => 'svolto', 56 => 'svolto'    
   );
 
   /**
