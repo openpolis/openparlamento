@@ -16,7 +16,7 @@
 	<div class="sevencol">
            <!-- Banner Camere Aperte 2013 -->
    <!--       <div style="margin-bottom:20px;">
-    <?php //echo link_to(image_tag('ca2013_banner.png', array('alt' => 'Camere Aperte 2013')), 'http://feeds.feedburner.com/openpolis?format=xml') ?>
+    <?php //echo link_to(image_tag('ca2013_banner.png', array('alt' => 'Camere Aperte 2013')), 'https://s3-eu-west-1.amazonaws.com/camereaperte2013.openpolis.it/dossier_camereaperte2013.pdf') ?>
 </div> -->        
 
 	    <!-- in evidenza dal blog -->
