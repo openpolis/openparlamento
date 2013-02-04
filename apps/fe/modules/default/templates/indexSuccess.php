@@ -14,6 +14,10 @@
 <div class="row">
 	
 	<div class="sevencol">
+           <!-- Banner Camere Aperte 2013 -->
+   <!--       <div style="margin-bottom:20px;">
+    <?php //echo link_to(image_tag('ca2013_banner.png', array('alt' => 'Camere Aperte 2013')), 'http://feeds.feedburner.com/openpolis?format=xml') ?>
+</div> -->        
 
 	    <!-- in evidenza dal blog -->
 	     <div class="section-box"  style="padding-bottom:20px;">
