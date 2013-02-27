@@ -46,7 +46,10 @@ foreach ($cariche as $k => $votazione_carica) {
   $carica = $votazione_carica->getOppCarica();
   $gruppi_carica_votazione = $carica->getOppCaricaHasGruppos($c);
   $gruppo_votazione = $gruppi_carica_votazione[0];
+//  print_r($gruppi_carica_votazione);
   $voto = $votazione_carica->getVoto();
+  echo $carica->getId()."\n";
+  echo  $gruppo_votazione->getGruppoId()."\n";
   if ($gruppo_votazione->getGruppoId()!=13) //escludo il gruppo misto
   {
     $voto_gruppo = $votazione->getVotoGruppo($gruppo_votazione->getGruppoId());
