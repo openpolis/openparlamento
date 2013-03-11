@@ -1,0 +1,11 @@
+- YtsBasicTests
+- YtsBlockMapping
+- YtsFlowCollections
+- YtsTypeTransfers
+#- YtsFoldedScalars
+#- YtsAnchorAlias
+#- YtsDocumentSeparator
+- YtsNullsAndEmpties
+#- YtsSpecificationExamples
+- sfComments
+- sfTests

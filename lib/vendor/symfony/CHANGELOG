@@ -1,0 +1,676 @@
+Version 1.0.22PRE
+-------------
+
+This is a bug fix release.
+
+Version 1.0.21
+-------------
+
+This is a bug fix release.
+
+* r20606: fixed a Strict Standards warning under PHP 5.3 (closes #6933)
+* r19912: calling dataDir statically as it should be in sfCultureInfo (fixes #6604)
+* r19911: added check in sfActions that prefents infinite recursion in the execute method when the action name is empty (fixes #6710)
+* r18746: fixed test plan for CLI tasks (closes #6545)
+* r18866: updated lime to 1.0.6
+* r18492: fixed exception page should execute html/javascript code when using html format (closes #5743)
+* r17861: MCE Texteditor now can align images correctly (closes #5745)
+* r17468: fixed cache manager when the cache partial or component is not from the same module as the same action (closes #6265, #5814)
+* r17386: fixed confirm dialog does not work in ie6 (closes #4152)
+* r17357: doSelectWithI18n no longer accidentally modifies the Criteria passed to it (fixes #6243)
+* r17217: Added sf_lazy_cache_key setting to address possible backward compatibility break.
+* r17047: fixed autoloading configuration cache behaves differently on Windows and Linux (closes #6232)
+* r17045: added application/x-zip for Firefox 3 in the compat plugin (refs #6191)
+* r16348: fixed arg_separator.output used in sfRouting (closes #6084)
+
+Version 1.0.20
+-------------
+
+This is a bug fix release.
+
+* r16170: fixed typo (closes #6014)
+* r16165: added some missing PHPDoc (closes #6054)
+* r15765: fixed propel:schema-to-yml composite foreign-Keys wrongly converted (closes #5483)
+* r15263: fixed issue with cache file corruption due to heavy load. (closes #5729)
+* r15223: escaped variables in exceptions in the development environment (closes #5743)
+* r14385: fixed i18N and open_basedir restriction problem (closes #1445)
+* r14266: improvement in search_in performance of sfFinder when not searching symlinks (closes #5431)
+* r14120: fixed select_timezone_tag not possible to display city. (closes #5359)
+* r13893: backported performance patch for sfToolkit::stripComments. (closes #5237)
+* r13416: fixed sfRequest::getUri() when using Microsoft IIS (closes #4886)
+* r13408: fixed long line in a PHP doc (closes #4750)
+* r13386: added mime type for PDF (closes #4483)
+
+Version 1.0.19
+-------------
+
+This is a bug fix release.
+
+* r13098: fixed typo in autoload recursive setting
+* r12958: r12811 introduced a regression: fixtures order is totally random, as sfFinder returns directories entry in arbitrary order.
+* r12811: fixed order of data deleting in sfPropelData (closes #4783)
+* r12201: ixed select_tag() with sfOutputEscaperArrayDecorator: fatal error in template (closes #3923)
+* r12197: fixed Criteria::equals() needs to compare ->groupByColumns with operand's columns (closes #4623)
+* r11954: fixed fWebRequest::getPathInfo doesn't completely remove querystring
+
+Version 1.0.18
+-------------
+
+This is a bug fix release.
+
+* r11850: ignore doctrine schema in the propel tasks (closes #4027)
+* r11711: fixed Ukrainian language file. (closes #4440)
+* r10964: fixed sfFileLogger file closing
+* r10947: fixed sfDomCssSelector attribute regex (closes #3922)
+* r10841: fixed Hours & Minutes not parsed by sfI18N::getTimestampForCulture() (backported from r9853) (closes #2896)
+* r10833: fixed % causes escaping of single quotes in app.yml in some circumstances (closes #2849)
+* r10741: fixed _safe_cache_remove() generates 'No such file' error and fails (closes #4057)
+* r10739: fixed sfBrowser::restart() doesn't reset the session
+* r10726: fixed typo in Propel (needed for PHP 5.3)
+* r10701: fixed class autoload inclusion order
+* r10618: fixed sfBrowser::click throw unexpected PHP error
+* r10328: fixed plugin model overriding (closes #3227)
+* r10059: fixed opendir closed by fclose instead of closedir (closes #3880)
+* r10029: fixed argv may not be registered by PHP (closes #2943)
+
+Version 1.0.17
+-------------
+
+This is a bug fix release.
+
+* r9969: changed escaping of metas (and title) from htmlspecialchars to htmlentities to preserve intended encoding. fixes #2860.
+* r9959: fixed gpc_magic_qutes and array in cookie (closes #3458).
+* r9957: fixed convertUrlStringToParameters breaks urlencoded parameter (closes #3788).
+* r9892: fixed PHPMailer issue with UTF-8 subject being wrapped in middle of utf-8 char. fixes #2957.
+* r9861: fixed getColumnFilterTag() component type (closes #2861).
+* r9855: fixed generated admin returning to first page regardless on which page the edit was started. fixes #1280.
+* r9829: backported encoding fix for MySQLiConnection from creole trac. fixes #3017.
+* r9806: fixed i18n XLIFF do not handle entities correctly (closes #3792).
+* r9784: fixed autoload paths on windows (closes #1485).
+* r9668: fixed sfBrowser does not create DOMDocument when response is text/xml (closes #3766).
+* r9538: fixed sfFillInForm to work correctly with nested arrays like: article[description][].
+* r9260: fixed cache corruption in the production environment for admin generated content.
+* r9216: fillin: fixed bug with html documents having extra attributes in head tag.
+* r9209: added third mode for fillin xhtml, same as xml but without prolog (+test). fixes #3568.
+* r9182: fixed phpmailer EOL line style using now PHP_EOL constant. fixes #3313 #3562.
+* r9177: 1.0: backported fix from r8926. fixes #2161.
+.
+Version 1.0.16
+-------------
+
+This is a bug fix release.
+
+* r8922: fixed yml validator file can be overriden by a remote attacker (closes #1617)
+
+Version 1.0.15
+-------------
+
+This is a bug fix release.
+
+* r8861: fixed problem with PHP 5.2.6 and ini variables access value (closes #3466 - related to http://bugs.php.net/bug.php?id=44936)
+* r8836: fixed some issues with button_to helper (closes #3184)
+* r8831: fixed include_remove option not used in ObjectAdminHelper? (closes #2079)
+* r8827: remote_function will return a complete Javascript statement including the trailing semicolon. (closes #3135)
+* r8825: fixed I18N helper dependency (closes #1794)
+* r8823: fixed FCK editor not being populated by fillin filter. (closes #732)
+* r8819: corrected ID generation for TinyMCE rich editor when no id was given. (closes #3474)
+
+Version 1.0.14
+-------------
+
+This is a bug fix release.
+
+* r8763: fixed DateHelper distance_of_time_in_words() generates incorrect output for some dates (closes #3322) 
+* r8754: validation yml with fillin is used even without other validators defined in the file. (closes #3232)
+* r8720: fixed url validation bug by applied carls patch (1.1 backport). (closes #1373)
+* r8718: Add support for "paramName" option to _auto_complete_field() function (closes #2345)
+* r8716: sfFillInForm adds a content-type meta if non present so that dom->loadHTML works correctly. (closes #2653) 
+* r8709: fillin now handles array notations like <input type="text" name "textinput[]"/> correctly. (closes #2811)
+* r8707: fixed ajax response fillin, which does not include a doctype because it is returned without layout. (closes #1687)
+* r8699: added compat options to propel database  (fixes #3364)
+* r8695: made sfFillInForm work with checkbox arrays as well like checkbox_many[]. (closes #1776, #3399)
+* r8664: made sfMySQLSessionStorage more robust by using SQL date functions and no longer injecting php timestamps. (fixes #3394) 
+* r8651: corrected checking for Eaccelerator in sfProcessCache. (closes #3425)
+* r8445: fixed web debug toolbar in safari (closes #3328, #1673)
+* r8319: added some more information to non symfony exceptions. (closes #2864)
+* r8282: fixed autoloading with CVS (closes #2795)
+
+Version 1.0.13
+-------------
+
+This is a bug fix release.
+
+* r8176: Fixes #3206 - Simple quotes are no more escaped by Tag helper escaping
+* r8045: 1.0: added warning to sfPropelUniqueValidator (refs #2467)
+
+Version 1.0.12
+-------------
+
+This is a bug fix release.
+
+* r8019: sfWebRequest handles multi-dimensional file input fields (backported from 1.1) (closes #2009)
+* r8010: 1.0: merged fix for potential php notice (closes #3168)
+* r8006: fixed plugin-install command on windows (closes #2590)
+* r7999: button_to produces invalid XHTML (closes #3113)
+* r7997: admin generator handles plain fields (closes #2935)
+* r7977: fixed view cache doesn't accept zero client lifetime (closes #3141)
+* r7850: fixed default error_reporting values (PHP 5.2 has a new constant) (closes #3098)
+* r7831: fixed inclusion of generator.yml for every module (closes #1949)
+* r7802: fixed "Cannot unset string offsets" error
+* r7769: Etag was not checking correctly the enclosing quotes. (closes #3065)
+* r7762: fixed web debug toolbar segfaults PHP when debugging using xdebug
+* r7665: correction in DateFormHelper? (fixes #3023)
+* r7620: added instructions to allow periods in routes (closes #2295)
+* r7589: fixed sfNumberValidator to reject hexadecimal values (closes #2741)
+* r7547: fixed uri encoding / xhtml error (closes #2968)
+* r7541: fixed hebrew calender language file for 1.0 (closes #2970)
+
+Version 1.0.11
+-------------
+
+This is a bug fix release.
+
+* r6765, r6766: fixed error message in getPresentationFor() (closes #1527)
+* r6764: fixed logic error in sfPager class affects haveToPaginate() method (closes #1512)
+* r6768, r6769: added mime types caching in sfWebRequest (closes #1811, #1846)
+* r6761, r6762: fixed content type charset on non text/* content-type (closes #1811, #1968) 
+* r6743: doc: fixed typos (closes #2580, #2596, #2518)
+* r6740, r6741: fixed sequences bug for postgresql (closes #2584)
+* r6987, r6988: fixed caching-Bug of file sfWebresponse.class.php (#2764)
+* r6649: fixed value for 'Content-Type' HTTP meta header is repeated (closes #1756, #2557, #2402, #2398)
+* r6648: fixed call to undefined method sfResponse::sendHttpHeaders (closes #2412)
+
+Version 1.0.10
+-------------
+
+This is a bug fix release.
+
+* r6622: Problem with ProjectExport and directory structure change (#2606)
+* r6614: fixed magic_quotes_gpc() handling in sfRouting (#1801)
+* r6610: fixed non-sf exception handling (#2064)
+* r6607: fixed incorrect use of sfConfigCache:checkConfig(..., true) (#2123)
+* r6469: fixed sfOutputEscaperObjectDecorator::toString() as PHP 5.2.5 does not allow exception in toString() methods (#2630) 
+* r6398: fixed default log file permissions (#2145)
+* r6378: fixed typo in sfDebugConnection (#2524)
+* r6375: changed implementation of sfCultureInfo::simplify (#1821)
+* r6371: fixed connecting to a database using unix socket (#2539)
+* r6358: fixed sfProcessCache eaccelerator delete also cached scripts
+* r6337: reverted changes for default time and date format
+
+Version 1.0.9
+-------------
+
+This is a bug fix release.
+
+* r6203: fixed typo in the submit_tag() of the UrlHelper?.php (#2493)
+* r6129: sfBrowser : ->click() also search for HTML button elements (#2342)
+* r6125: sfRouting : allow numeric parameters (#2317)
+* r6019: fixed sfPropelData::dumpData()
+* r6014: fixed radio button ids
+* r6013: fixed templates of login & secure actions of default module are exchanged
+* r6003,r6004,r6007,r6010: merged bug fixes from creole 1.1 + propel 1.2.1 + fixed date
+* r5997: fixed admin generator filters HTML defect (#1891)
+* r5856: fixed through_class in admin_*_list tags (#1612)
+* r5851: fixed sfZendFrameworkBridge autoload (#2314)
+* r5847: fixed typo in JavascriptHelper?.php (#2464)
+* r5845: fixed incomplete error message in sfRouting.class.php (#2465)
+* r5776: fixed typo (#2480)
+* r5772: backported i18n fixes from Prado + improved DateTimeFormatInfo
+* r5771: fixed typo in sfMessageSource_MySQL.class.php (#2477)
+* r5749: reverted YAML schema confusion
+* r5704: only logged in users are now timed out due to sf_timeout
+* r5701: fixed propel-build-all-load task execution
+
+Version 1.0.8
+-------------
+
+This is a bug fix release.
+
+* r5471: fixed admin main.css - absolute to relative paths (#1889)
+* r5355: plugin-install tasks create relative symlink instead of absolute symlink
+* r5348: fixed EzComponents library inclusion (#2193)
+* r5344: allow using a custom form id (#1899)
+* r5339: fixed sfPropelData error message (#2218)
+* r5308: fixed sfFileCache::clean() when dir does not exist (#2294)
+* r5160: fixed double call to clearCredentials() in sfBasicSecurityUser
+* r5153: fixed code completion not working with sfTestBrowser
+* r5149: fixed bug in _get_options_from_objects (#1526)
+* r5145: fixed ETag to be compliant with the HTTP1.1 spec (#2216)
+* r5141: fixed consistent syntax of i18n helper function when i18n is off
+* r5061: fixed blank screen of death (#2231 and #1862)
+* r5001: fixed sfBasicSecurityFilter should not secure the "secure" action either
+
+Version 1.0.7
+-------------
+
+This is a bug fix release.
+
+* r4980: updated pake to 1.1.5 (#2125)
+* r4956: fixed magic_quotes checks from the symfony command line closes (#2155)
+* r4941: fixed sfPropelData doesn't use connection passed on data load (#2149)
+* r4904: fixed dumping Propel data to multiple files
+* r4891: fixed a typo in sfPostgreSQLSessionStorage::sessionGC()
+* r4883: fixed fillInFormFilter can't find form with content_type = xml (#1687)
+* r4834: fixed sfPropelData::dump() filenames when dumping to a directory
+* r4831: fixed propel-dump-data does not preserve data loading order (#1575)
+* r4829: fixed typo in sfPropelData
+* r4827: fixed propel-dump-data & sfGuard (#2019)
+* r4824: fixed propel-dump-data outputs model name when table is empty (#1577)
+
+Version 1.0.6
+-------------
+
+This is a bug fix release.
+
+* r4752: fixed sfZendPlugin is broken (#1941)
+* r4729: removed E_STRICT when using the plugin tasks
+* r4642: fixed sfWebRequest isSecure() bug for certain server configurations (#1931)
+* r4641: fixed sfWebDebug top css class name (#1982)
+* r4621: fixed untranslated message in _list_messages.php partial (#1969)
+* r4574: fixed typo in sfTestBrowser::getAndCheck()
+* r4559: fixed status code 404 may be transformed into 304 when using ETag (#1944)
+* r4404: fixed sfTestBrowser::isResponseHeader() method (#1900)
+
+Version 1.0.5
+-------------
+
+This is a bug fix release.
+
+* r4387: fixed input_date_range_tag - Illegal attributes in input tags (#1883)
+* r4385: fixed issue relating to lock files (#1874)
+* r4380: fixed vulnerability in phpmailer with sender (#1871)
+* r4323: fixed DOMDocument E_STRICT warning and trans-unit max id in XLIFF support
+* r4320: fixed sfToolkit::isUTF8() broken for strings larger than some number
+* r4305: added i18n schema for MySQL and SQLite in API documentation
+
+Version 1.0.4
+-------------
+
+This is a bug fix release.
+
+* r4286: fixed sfBrowser keeps previous Dom is response is not XHTML (#1853)
+* r4282: fixed sfValidatorManager refuses zero values as null values (#1649)
+* r4277: fixed generator themes in the project data directory do not override data in plugin directory (#1813)
+* r4266: fixed $request->hasError() should return true on errors with empty message (#1864)
+* r4264: fixed usage of components in admin generator generator.yml (#1809)
+* r4262: added some unit tests for symfony escaping mecanism
+* r4250: fixed include_blank being forced to 'true' in admin generator (#1739)
+* r4242: fixed a typo in MySQL i18n message source
+* r4240: added an exception when a YAML file contains tabs instead of spaces when tabs are mixed with spaces
+* r4238: replaced all occurences of deprecated function mysql_escape_string() by mysql_real_escape_string() (#1860)
+* r4236: fixed bug for adjacent CSS selector
+* r4228: fixed a bug in URL generation for route names having a star in the middle
+* r4205: fixed _edit_form.php in Admin Generator should have have an action of save, not edit (#1812)
+* r4203: fixed sf_check_lock and sf_check_symfony has no effect (#1675)
+* r4199, r4201: fixed input_date_tag with same name but different ids (#1568)
+* r4195: fixed link_to_if() inserts parameter in html (#1700)
+
+* updated lime to 1.0.4 (fixes php 5.2.2 support)
+
+Version 1.0.3
+-------------
+
+This is a bug fix release.
+
+Minor bug fixed:
+
+* r4098: fixed culture problem in sfI18N
+* r4017: fixed a typo in sfViewCacheManager
+* r3951: fixed admin_double_list for Doctrine (#1734)
+* r3935: fixed sfSQLiteCache schema 
+* r3862: fixed Zend::loadClass in sfZendFrameworkBridge (#1595)
+* r3815: fixed distance_of_time_in_words() helper (#1514)
+
+Version 1.0.2
+-------------
+
+This is a bug fix release.
+
+Minor bug fixed:
+
+* r3785: fixed getCookies() call in sfDebug when using sfConsoleResponse (#1666)
+* r3775: fixed _compute_public_path() when using a query string
+* r3754: updated Propel to 1.2.1 (http://propel.phpdb.org/trac/query?status=closed&milestone=1.2.1&resolution=fixed&order=priority)
+* r3746: fixed output escaping and _get_object_list() (#1593)
+* r3699: fixed highlight_text() doesn't work with / (#1621)
+* r3692: fixed i18n support for errors in sfRequest
+
+Version 1.0.1
+-------------
+
+This is a bug fix release.
+
+Major bugs fixed:
+
+* r3624: fixed security.yml case sensitivity
+
+Minor bug fixed:
+
+* r3599: fixed sfYaml::load() not returning correct values
+* r3598: removed unneeded usage of JavaScript helpers in the web debug toolbar
+* r3597: fixed sfConsoleRequest::initialize() signature
+* r3541: fixed typo in the cache classes when logging
+
+Version 1.0.0
+-------------
+
+No major changes since 1.0.0-rc2.
+
+* r3502: fixed sfFilter::isFirstCall() method
+* r3493: removed the DATABASE_NAME constants
+
+* fixed typos in the book
+
+Version 1.0.0-rc2
+-----------------
+
+No major changes since 1.0.0-rc1.
+
+* r3385: new propel-dump-data task
+* r3377: fixed PEAR installation problem with PEAR 1.5
+
+* new book is now bundled with symfony under the doc/ directory
+* added some phpdoc comments
+
+Version 1.0.0-rc1
+-----------------
+
+No major changes since beta4.
+
+* r3348: added "The Definitive guide to symfony"
+* r3325: better inheritance for admin generator templates
+* r3316: updated script.aculo.us to 1.7.0 and prototype to 1.5.0
+* r3313: added a new decorate_with() helper
+* r3312: added a new isForwardedTo() method to sfTestBrowser
+* r3298: fixed tests on windows
+
+* updated phpdoc comments
+* added more unit tests (> 3800 now)
+
+Version 1.0.0-beta4
+-------------------
+
+Major changes since beta3:
+
+* r3288, r3291, r3293, r3294: better date/time handling in admin generator
+* r3285: removed sfContext initialization when initializing symfony
+* r3277: added SSL support to sfBrowser
+* r3271: refactored rich text editors
+* r3258: refactored sfLogger configuration
+* r3245: fixed Creole i18n driver
+* r3237: added HTTP authentification support for sfBrowser
+* r3209: moved getPresentationFor() to the sfController class
+* updated phpdoc comments
+
+* fixed some minor bugs (see trac)
+* added more unit tests (> 3700 now)
+
+Version 1.0.0-beta3
+-------------------
+
+Major changes and major bug fixes since beta2:
+
+* r3172: fixed mailer.yml configuration file handling
+* r3166: FastCGI compatibility
+* r3165: re-introduced include_javascripts() and include_stylesheets()
+* r3163: fixed value escaping in tag attributes
+* r3160: added `hide` parameter to the admin generator
+* r3147: added a setViewClass() method to sfAction
+* r3140: fixed route generation when using requirements
+* r3134: added support for PUT, DELETE and HEAD HTTP methods
+* r3129: fixed symfony CLI when using open_basedir
+
+* fixed some minor bugs (see trac)
+
+Version 1.0.0-beta2
+-------------------
+
+Major changes and major bug fixes since beta1:
+
+* r3077: better error messages when initializing sfContext object
+* r3059: added a new sfSimpleYamlConfigHandler class for simple configuration file needs
+* r3047: removed exception when sfFillInFilter does not find the form
+* better date support (admin generator, helpers, i18n, calendar files, i18n files)
+* r2995: all Creole and Propel files are now under addon/
+* r2985: added all licenses in one place
+* r2984: removed PEAR dependence
+* r2980: added throwsException() method to the test browser
+* r2974-r2978: PHP 5.0.X compatibility
+* r2970: fixed permission problem when installing a plugin
+* r2957: fixed directory order for configuration files
+* r2950: ability to test internal modules
+* r2944: fixed action variable settings with __set()
+* r2936: added support for HTML and XML in sfFillIn class
+* r2928: more configurability for sfLoader class
+* r2917: added comments to the default settings.yml configuration file
+* r2903,r2966: slightly more powerful autoloading system for the symfony CLI
+* r2883: added a new setHeaderOnly() method to sfWebResponse
+* r2880: fixed autoloading for plugins
+* r2879: fixed glob() problem with PHP < 5.1
+* r2875: added simple autoloader to ease unit tests (for model classes for example)
+* updated script.aculo.us (1.7.0_beta2) and prototype (1.5.0_rc2)
+
+* fixed some bugs (see trac)
+* added more unit tests (> 3400 now)
+
+Version 1.0.0-beta1
+-------------------
+
+WARNING: All deprecated function, methods and tasks has been removed (see r1631, r1638 and r1799).
+
+If you try to use this release with 0.6.X projects, you must upgrade them with: symfony upgrade 1.0
+When you upgrade symfony, re-run the upgrade script (you can safely run the upgrade several times).
+
+* refactored admin generator templates
+* new sfLogger class (more flexible)
+* moved 500 and unavailable errors to web/errors (and changed .html extension to .php)
+* user filters can now be registered anywhere in the filter chain
+* minor changes to be compatible with PHP 5.2
+* new sfFillInForm class
+* added persistent connection support
+* added some sfMixer hooks in the core (for 404 and 500 error for example)
+* added behaviors for Propel classes
+* unified the way to configure symfony librairies (config/config.php)
+* symfony is now ORM independant
+* greater credential flexibility
+* symfony is now compatible with magic_quotes_gpc set to on
+* refactored sfFilter class (executeBeforeExecution, executeBeforeRendering)
+* new coverage script for symfony core
+* new encoding parameter in databases.yml
+* new functional and unit tests for the core framework (more than 2800)
+* new sfMixin class to allow adding methods to core classes without inheritance
+* new sfBrowser, sfTestBrowser and sfDomCssSelector classes to ease functional tests writing
+* new unit test library (lime)
+* major partial and component refactoring (big speed improvement)
+* output escaping is now a global setting
+* new helpers: use_stylesheet() and use_javascript()
+* new time information in the symfony log and debug toolbar
+* major performance improvements
+* new sfLoader class
+* symfony command line now works out the box (for PEAR, SVN or .tgz)
+* new plugin system
+* propel-build-all now works as expected
+* major cache refactoring (new settings: with_layout and contextual)
+* autoloading is now more flexible
+* AJAX actions have now layout to off by default
+* new slot support
+* added setLayout() method to sfComponent
+* better exception handling in symfony command line (try -t)
+* symfony command line now in color (only for *nix)
+* bundled pake and phing (symfony has no external dependancy)
+* better i18n support thanks to the new charset setting (FillInFilter, translations, ...)
+* added a new charset setting
+* updated creole, Propel, script.aculo.us (1.6.5) and prototype (1.5.0_rc1)
+* many-to-many relationship support in admin generator
+* removed my* classes from skeleton except myUser
+* new classes :sfProcessCache, sfLogManager, sfSQLiteCache
+* removed all deprecated functions, methods and tasks.
+* removed old php, css and js files that are not used anymore
+* strip comments in production environment by default
+* better sfTextBrowser with POST support and redirects
+* support for database schema in YAML format
+* updated calendar language files (js, ca)
+* new tasks: init-batch, propel-convert-yaml-schema, propel-load-data, propel-build-all, propel-build-all-load
+             init-controller, clear-controllers, log-rotate, log-purge, freeze, unfreeze, enable, disable,
+             plugin-list
+* new validators: sfDateValidator, sfUrlValidator, sfCallbackValidator
+* and more than 200 bug fixes and small enhancements
+
+For more detailed information on bugs fixed in this release, see the trac ticket list for 1.0.0:
+http://www.symfony-project.com/trac/report/10
+
+Version 0.6.3
+-------------
+
+WARNING: If you use i18n Propel support in your schema.xml or if you have problems
+         building you Propel model/sql (XML schema file (PATH/config/schema.xml) does not validate)
+         you can add a propel.schema.validate = false at the end of your config/propel.ini file.
+
+WARNING: Actions in the routing are now case sensitive. If you have a page with an 'index' action name,
+         your action must be named 'executeIndex' ('fooBar' => 'executeFooBar').
+
+* updated calendar language files (pl, zh, nl, no, it)
+* new options for the sfFillInFilter filter
+* major sfWebDebug refactoring (no more dependency on prototype)
+* position option to stylesheets in view.yml 
+* native support for JSON/AJAX actions
+* better exception layout
+* new sfPropelUniqueValidator validator
+* added component and partial cache
+* updated creole and propel
+* zend framework and ez components bridges
+* new hooks in admin generator generated classes
+* better date support in admin generator
+* lot of small tweaks and enhancements in admin generator
+* lot of bugs fixes and small enhancements
+
+For more detailed changelog, look at:
+http://www.symfony-project.com/trac/wiki/SymfonyWeek18
+http://www.symfony-project.com/trac/wiki/SymfonyWeek19
+http://www.symfony-project.com/trac/wiki/SymfonyWeek20
+http://www.symfony-project.com/trac/wiki/SymfonyWeek21
+http://www.symfony-project.com/trac/wiki/SymfonyWeek22
+http://www.symfony-project.com/trac/wiki/SymfonyWeek23
+http://www.symfony-project.com/trac/wiki/SymfonyWeek24
+http://www.symfony-project.com/trac/wiki/SymfonyWeek25
+
+or the trac ticket list for 0.6.3:
+http://www.symfony-project.com/trac/report/9
+
+Version 0.6.2
+-------------
+
+* lot of bugs fixes
+* new output escaping system (to automatically prevent XSS)
+* better form repopulation system
+* fixed sfMailView
+* cache system tweaks
+* better exception page in debug mode and internal server error page in production mode
+* added some more information in the debug toolbar
+
+Version 0.6.1
+-------------
+
+* [fabien] lot of bugs fixes
+* [faiben] updated scriptaculous to 1.5.3
+* [fabien] added a new sfFileValidator validator
+* [fabien] lots of bug fixes and new features in the admin generator (file upload, credentials, ...)
+* [fabien] stylesheets, javascripts, ... are now part of the sfWebResponse object
+           DEPRECATED methods:
+             $action->addStylesheet(), $action->addJavascript(), $action->setTitle()
+             $action->addHttpMeta(), $action->addMeta()
+* [fabien] debug environment is much faster now
+
+Version 0.6.0
+-------------
+
+WARNING: This release breaks backward compatibility.
+Please read the UPGRADE file before upgrading your projects.
+
+* [fabien] new symfony web server (alpha)
+* [fabien] support for etags, conditionnal get, vary headers...
+* [fabien] new sfResponse object
+* [fabien] new filtering system
+* [fabien] added new components system (slots are now deprecated)
+* [fabien] updated propel/creole
+* [fabien] updated script.aculo.us to 1.5.1
+* [rovert] console controller
+* [fabien] new sfFinder class to ease file and directories searching
+* [fabien] new quickstart package system
+* [rovert] use syck when available to speed yaml parsing
+* [fabien] new plugin system
+* [fabien] removed orm.yml configuration file in favor of databases.yml
+* [fabien] updated spyc library
+* [fabien] support to be able to pass some variables/objects to the next next request/forward
+* [fabien] more fine grained credentials
+* [fabien] application are now in an apps directory
+* [fabien] new validateXXX() method for action
+* [fabien] renamed all classes that are Propel dependant with Propel in their names
+* [fabien] symfony now automatically clear the cache when upgrading
+* [fabien] dynamic defaults to routing 
+* [fabien] module i18n translations
+* [fabien] new i18n.yml configuration file
+* [fabien] new sfPropelAdmin generator
+* [fabien] autoloading is now more configurable at runtime
+* [fabien] new build-db / insert-sql pakefile tasks
+* [fabien] more unit tests
+* [fabien] disabled logging by default in production environment
+* [fabien] new sfConfig object to deal with all symfony configuration (no more constant)
+
+Version 0.4.4
+-------------
+
+* [fabien]        bug fixes
+
+Version 0.4.3
+-------------
+
+* [jgchristopher] new input_in_place_editor_tag and input_auto_complete_tag helpers
+* [fabien]        new email support
+* [fabien]        modules can now be declared internal only (for slots and emails modules for example)
+* [fabien]        view classes are now configurable (per module)
+* [fabien]        all category in configuration files is now optional
+* [fabien]        added build-schema to pakefile
+* [fabien]        new RSS feed classes
+* [fabien]        cleaning cache is safer (based on a patch from jgchristopher)
+                  applications are now unavailable when you are in the process of cleaning the config cache
+                  WARNING: To use this new feature in your existing projects, you must override your
+                           config.php file with the one in 'data/symfony/skeleton/app/app/config/config.php'
+                           and create an unavailable.html file in your web directory
+                           (see an example in data/symfony/skeleton/project/web/unavailable.html)
+* [fabien]        added new shortcuts to help debugging
+* [fabien]        new class to easily load test datas from YAML files into databases (Propel)
+* [fabien]        better cache support
+* [fabien]        safeguard for recursive slots
+* [fabien]        added the possibility to disable the web debug sidebar for specific action (RSS, XML, SVG, ...)
+
+Version 0.4.2
+-------------
+
+* [fabien] changed default suffix from .html to / (breaks backward compatibility)
+* [fabien] added configurable suffix by route (with directory and no suffix support) and enforced one URL for one ressource
+* [fabien] dev environment is much faster
+* [fabien] better debug sidebar
+* [fabien] better i18n support (variable substitution)
+* [fabien] lot a small fixes for Windows users
+* [fabien] extended error messages support
+* [fabien] new helpers:
+           * objects_for_select
+           * button_to (patch from francois)
+* [fabien] automatic support for created_at and updated_at columns (Propel + generator)
+* [fabien] renamed internal Log class to sfLog to avoid class name collision
+* [fabien] removed tiny mce from symfony package
+* [fabien] rich text support (tinymce) for textarea_tag helper
+* [marc]   IIS support
+* [fabien] module helpers support (lib/helper directory of a module)
+* [fabien] many symfony generators enhancements:
+           * refactoring
+           * propel CRUD (primary id != id, foreign keys, multi primary keys, post link and confirm for delete, ...)
+* [fabien] better Ajax support (prototype and script.aculo.us)
+* [fabien] support for non virtual host configurations
+* [fabien] easier helpers debugging
+
+Version 0.4.1
+-------------
+
+Initial public release
