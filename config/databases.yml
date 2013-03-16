@@ -2,7 +2,7 @@ all:
   propel:
     class:          sfPropelDatabase
     param:
-      dsn:          "mysql://root@localhost/op_openparlamento"
+      dsn:          "mysql://root@localhost/opp17"
       persistent:   true
       encoding:     "utf8"
       compat_assoc_lower:  true
