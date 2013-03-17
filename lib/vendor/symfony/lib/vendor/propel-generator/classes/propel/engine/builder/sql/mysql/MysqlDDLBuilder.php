@@ -25,7 +25,7 @@ require_once 'propel/engine/builder/sql/DDLBuilder.php';
 /**
  * DDL Builder class for MySQL.
  *
- * @author     David Zülke
+ * @author     David Zï¿½lke
  * @author     Hans Lellelid <hans@xmpl.org>
  * @package    propel.engine.builder.sql.mysql
  */
@@ -142,7 +142,7 @@ CREATE TABLE ".$this->quoteIdentifier($table->getName())."
 			}
 		}
 
-		$script .= "Type=$mysqlTableType";
+		$script .= "ENGINE=$mysqlTableType";
 		if($table->getDescription()) {
 			$script .= " COMMENT='".$platform->escapeText($table->getDescription())."'";
 		}
