@@ -1,5 +1,7 @@
 .vagrant
 .idea
+.DS_Store
+batch/parser/*
 cache/
 config/generated*
 config/settings.yml
