@@ -54,10 +54,15 @@ class sfRemoteGuardLoginValidator extends sfValidator
     // inizio dialogo con op_access per validazione, set della remember key e retrieve xml info complete 
 
     // controllo validità utente e password in remoto
-    $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' ); 
-    $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
-    if ($script == '/be.php') $script = '/index.php';
-    
+    $remote_guard_host = sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it' );
+
+    // script can be forced in configuration settings.yml
+    $script = sfConfig::get('sf_remote_guard_script', '');
+    if ($script == ''){
+        $script = str_replace('fe', 'be', sfContext::getInstance()->getRequest()->getScriptName());
+        if ($script == '/be.php') $script = '/index.php';
+    }
+
     $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
     $verify_url = sprintf("http://%s%s/verifyUser/%s/%s/%s", 
                           $remote_guard_host, $script, $apikey, $username, $password);
