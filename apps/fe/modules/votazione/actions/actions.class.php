@@ -251,7 +251,7 @@ class votazioneActions extends sfActions
    $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
    
    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
    //$c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
    if ($this->getRequestParameter('ramo')=='camera')
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
@@ -286,7 +286,7 @@ class votazioneActions extends sfActions
    $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
    
    $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
-   $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+   $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
    //$c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
    if ($this->getRequestParameter('ramo')=='camera')
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
@@ -344,7 +344,7 @@ class votazioneActions extends sfActions
     $c = new Criteria();
 	  $this->addListSortCriteria($c);
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
-	  $c->add(OppSedutaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+	  $c->add(OppSedutaPeer::LEGISLATURA, '17', Criteria::EQUAL);
 	  $this->addFiltersCriteria($c);    
     $this->pager->setCriteria($c);
     $this->pager->setPage($this->getRequestParameter('page', 1));
@@ -414,7 +414,7 @@ class votazioneActions extends sfActions
 
      
       $this->pager = new sfPropelPager('OppVotazione', $itemsperpage);
-      //$c = OppVotazionePeer::maggioranzaSottoCriteria(16);
+      //$c = OppVotazionePeer::maggioranzaSottoCriteria(17);
       $c= OppVotazionePeer::getVotazioniMaggioranzaSotto();
       $this->addListSortCriteria($c);
       $this->addFiltersCriteria($c);    

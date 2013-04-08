@@ -169,62 +169,64 @@ $ramo = isset($ramo) ? $ramo : '';
         <?php endif ?>
     
     
-    <!-- BOX PRESENZE -->
-    <h5 class="subsection-alt" style="margin-top:10px;">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
-    <p class="float-right">ultima votazione: <strong>
-    <?php if ($ramo=='camera') : ?>
-       <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>
-    <?php elseif($ramo=='senato') : ?>
-       <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>
-    <?php endif; ?>   
-    </strong></p> 
-    <p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
-    <div style="display: none;" class="help-box float-container">
-        <div class="inner float-container">        
-            <a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le presenze ?</h5>
-            <p>I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit&agrave; parlamentari (lavori preparatori nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.</p>
+        <!-- BOX PRESENZE -->
+        <h5 class="subsection-alt" style="margin-top:10px;">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
+        <p class="float-right">ultima votazione: <strong>
+        <?php if ($ramo=='camera') : ?>
+           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>
+        <?php elseif($ramo=='senato') : ?>
+           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>
+        <?php endif; ?>   
+        </strong></p> 
+        <p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
+        <div style="display: none;" class="help-box float-container">
+            <div class="inner float-container">        
+                <a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le presenze ?</h5>
+                <p>I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit&agrave; parlamentari (lavori preparatori nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.</p>
+            </div>
         </div>
-    </div>
+
+        <!-- usare &nbsp; invece dello spazio, e' importante per il layout  !!  -->
+        <div class="meter-bar float-container">
+            <div class="meter-bar-container">
+               <div class="meter-label"><strong class="green"><?php echo number_format($presenze_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($presenze, 0) ?>)</div>
+                <label>presenze:</label>
+                <div class="green-meter-bar">
+                    <div style="left: <?php echo number_format($presenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($presenze_media_perc, 2) ?>%</label>&nbsp;</div>
+                    <div style="width: <?php echo number_format($presenze_perc, 2) ?>%;" class="meter-value">&nbsp;</div>
+                </div> 
+               </div>
+               <div class="meter-bar-container">
+                 <label>assenze:</label>
+                 <div class="meter-label"><strong class="red"><?php echo number_format($assenze_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($assenze, 0) ?>)</div>
+                <div class="red-meter-bar">
+                    <div style="left: <?php echo number_format($assenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($assenze_media_perc,2) ?>%</label>&nbsp;</div>                                
+                    <div style="width: <?php echo number_format($assenze_perc, 2) ?>%;" class="meter-value">&nbsp;</div>
+                </div>
+                </div>
+                <div class="meter-bar-container">    
+                <label>missioni:</label>
+                 <div class="meter-label"><strong class="blue"><?php echo number_format($missioni_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($missioni, 0) ?>)</div>
+                <div class="blue-meter-bar">
+                    <div style="left: <?php echo number_format($missioni_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($missioni_media_perc, 2) ?>%</label>&nbsp;</div>
+                    <div style="width: <?php echo $missioni_perc ?>%;" class="meter-value">&nbsp;</div>
+                </div>
+                </div>    
+                <p class="float-right">
+                  <?php echo link_to('vai alla classifica', 
+                                     '@parlamentari?ramo=' . $ramo .
+                                      '&sort=presenze&type=desc') ?> 
+                </p>
+                <span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
+            </div>
+
+            <?php include_component('parlamentare', 'attiPresentati', array('parlamentare' => $parlamentare)) ?> 
+            <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
+            <?php //echo include_component('parlamentare', 'firmacon',array('carica' => $carica, 'acronimo' => $acronimo_gruppo_corrente)); ?>
+
+        </div>
     
-    <!-- usare &nbsp; invece dello spazio, e' importante per il layout  !!  -->
-    <div class="meter-bar float-container">
-        <div class="meter-bar-container">
-           <div class="meter-label"><strong class="green"><?php echo number_format($presenze_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($presenze, 0) ?>)</div>
-            <label>presenze:</label>
-            <div class="green-meter-bar">
-                <div style="left: <?php echo number_format($presenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($presenze_media_perc, 2) ?>%</label>&nbsp;</div>
-                <div style="width: <?php echo number_format($presenze_perc, 2) ?>%;" class="meter-value">&nbsp;</div>
-            </div> 
-           </div>
-           <div class="meter-bar-container">
-             <label>assenze:</label>
-             <div class="meter-label"><strong class="red"><?php echo number_format($assenze_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($assenze, 0) ?>)</div>
-            <div class="red-meter-bar">
-                <div style="left: <?php echo number_format($assenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($assenze_media_perc,2) ?>%</label>&nbsp;</div>                                
-                <div style="width: <?php echo number_format($assenze_perc, 2) ?>%;" class="meter-value">&nbsp;</div>
-            </div>
-            </div>
-            <div class="meter-bar-container">    
-            <label>missioni:</label>
-             <div class="meter-label"><strong class="blue"><?php echo number_format($missioni_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($missioni, 0) ?>)</div>
-            <div class="blue-meter-bar">
-                <div style="left: <?php echo number_format($missioni_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($missioni_media_perc, 2) ?>%</label>&nbsp;</div>
-                <div style="width: <?php echo $missioni_perc ?>%;" class="meter-value">&nbsp;</div>
-            </div>
-            </div>    
-            <p class="float-right">
-              <?php echo link_to('vai alla classifica', 
-                                 '@parlamentari?ramo=' . $ramo .
-                                  '&sort=presenze&type=desc') ?> 
-            </p>
-            <span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
-        </div>
-                        
-        <?php include_component('parlamentare', 'attiPresentati', array('parlamentare' => $parlamentare)) ?> 
-        <?php echo include_component('parlamentare', 'sioccupadi', array('carica' => $carica)); ?>
-        <?php //echo include_component('parlamentare', 'firmacon',array('carica' => $carica, 'acronimo' => $acronimo_gruppo_corrente)); ?>
-        
-    </div>
+    
     <div class="sixcol last">
         
         <!-- BOX ATTI POLITICO_UTENTE FAVOREVOLE -->

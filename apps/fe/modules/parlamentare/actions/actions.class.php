@@ -95,6 +95,7 @@ class parlamentareActions extends sfActions
       
       $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
       $result=OppSedutaPeer::doSelectOne($c);
+
       $this->ultima_votazione=$result->getData();
       $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
@@ -828,7 +829,7 @@ class parlamentareActions extends sfActions
     $ramo = $this->getRequestParameter('ramo', 'camera');
 
     // estrae i gruppi del ramo
-    $this->all_groups = OppGruppoPeer::getAllGroups($ramo, 16, 'tutti');
+    $this->all_groups = OppGruppoPeer::getAllGroups($ramo, 17, 'tutti');
     
     // estrae le circoscrizioni, compreso il valore 0
     $this->all_constituencies = OppCaricaPeer::getAllConstituencies($ramo, 'tutte');
@@ -876,12 +877,12 @@ class parlamentareActions extends sfActions
       $this->getResponse()->setTitle('elenco dei deputati - '.sfConfig::get('app_main_title'));
       $this->response->addMeta('description','Elenco dei deputati della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
-      $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+      $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
  
       //conteggio numero deputati  
       $c1 = new Criteria();
-      $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+      $c1->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '1' , Criteria::EQUAL);
       $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
       $this->numero_parlamentari = OppCaricaPeer::doCount($c1);
@@ -891,7 +892,7 @@ class parlamentareActions extends sfActions
       $this->getResponse()->setTitle('elenco dei senatori - '.sfConfig::get('app_main_title'));
       $this->response->addMeta('description','Elenco dei senatori della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
-      $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+      $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
       //in questo modo considero i senatori a vita
       $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
       $cton->addOr($cton1);
@@ -904,7 +905,7 @@ class parlamentareActions extends sfActions
  
       //conteggio numero senatori
       $c1 = new Criteria();
-      $c1->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);
+      $c1->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '4' , Criteria::EQUAL);
       $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
       $numero_senatori = OppCaricaPeer::doCount($c1);
@@ -950,7 +951,7 @@ class parlamentareActions extends sfActions
     else
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
 
-    $c->add(OppCaricaPeer::LEGISLATURA, '16', Criteria::EQUAL);    
+    $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);    
     $c->add(OppCaricaPeer::DATA_FINE, 'NULL', Criteria::NOT_EQUAL); 
 	 
     $this->parlamentari_decaduti = OppCaricaPeer::doSelectRS($c);

@@ -46,7 +46,7 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
 		<br />cessato il <?php echo format_date($parlamentari->getDate(13, 'Y-m-d'), 'dd/MM/yyyy') ?> 
 	     <?php endif; ?>
 	     
-	     <?php if($parlamentari->getString(14)>'2008-04-29'): ?> 
+	     <?php if($parlamentari->getString(14)>'2013-03-15'): ?> 
 	       	<br /><small>in carica dal <?php echo format_date($parlamentari->getString(14), 'dd/MM/yyyy') ?></small>
 	       <?php endif; ?>
           </p>
@@ -64,11 +64,11 @@ Nota: i regolamenti non prevedono la registrazione del motivo dell'assenza al vo
   		    {
   		      printf('<b>%01.1f</b><br /><span class="small">(%d° su %d)</span>', 
                    $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari);
-                 if($parlamentari->getString(14)>'2008-04-29')
+                 if($parlamentari->getString(14)>'2013-03-15')
            	       	echo "<br /><small style='background-color:yellow;'>N.B subentrato il ".format_date($parlamentari->getString(14), 'dd/MM/yyyy')."</small>";       
           } else {
             printf('<b>%01.1f</b> ', $parlamentari->getFloat(9));
-            if($parlamentari->getString(14)>'2008-04-29')
+            if($parlamentari->getString(14)>'2013-03-15')
       	       	echo "<br /><small style='background-color:yellow;'>N.B subentrato il ".format_date($parlamentari->getString(14), 'dd/MM/yyyy')."</small>";  
           }		      
 		    }
