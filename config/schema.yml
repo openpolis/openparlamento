@@ -213,6 +213,7 @@ propel:
     ramo:             { type: varchar(1) }
     data_inizio:      { type: date, required: true }
     data_fine:        { type: date }
+    parlamento_id:    { type: integer }
     
   opp_gruppo_is_maggioranza:
     id:
