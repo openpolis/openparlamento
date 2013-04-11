@@ -29,7 +29,8 @@ class OppLegislaturaPeer
     13 => array('elezioni' => '1996-04-21', 'data_inizio' => '1996-05-09', 'data_fine' => '2001-05-29'),
     14 => array('elezioni' => '2001-05-13', 'data_inizio' => '2001-05-30', 'data_fine' => '2006-04-27'),
     15 => array('elezioni' => '2006-04-09', 'data_inizio' => '2006-04-28', 'data_fine' => '2008-04-28'),
-    16 => array('elezioni' => '2008-04-13', 'data_inizio' => '2008-04-29', 'data_fine' => null),
+    16 => array('elezioni' => '2008-04-13', 'data_inizio' => '2008-04-29', 'data_fine' => '2013-03-14'),
+    17 => array('elezioni' => '2013-02-25', 'data_inizio' => '2013-03-15', 'data_fine' => NULL),
   );
  
   /**
