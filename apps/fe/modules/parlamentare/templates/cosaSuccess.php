@@ -31,13 +31,13 @@ $ramo = isset($ramo) ? $ramo : '';
        
                 <?php if ($carica) : ?>                   
                            <?php if ($ramo=='camera') : ?> 
-                             <?php $url='http://www.camera.it/cartellecomuni/leg16/include/contenitore_dati.asp?tipopagina=&deputato=d'.$carica->getParliamentId().'&source=%2Fdeputatism%2F240%2Fdocumentoxml.asp&position=Deputati\La%20Scheda%20Personale&Pagina=Deputati/Composizione/SchedeDeputati/SchedeDeputati.asp%3Fdeputato=d'.$carica->getParliamentId() ?> 
+                             <?php $url='http://www.camera.it/cartellecomuni/leg17/include/contenitore_dati.asp?tipopagina=&deputato=d'.$carica->getParliamentId().'&source=%2Fdeputatism%2F240%2Fdocumentoxml.asp&position=Deputati\La%20Scheda%20Personale&Pagina=Deputati/Composizione/SchedeDeputati/SchedeDeputati.asp%3Fdeputato=d'.$carica->getParliamentId() ?> 
                              <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-camera-deputati.png', 
                                                                 array('alt' => 'vai al sito della camera dei deputati')), 
                                                                 $url,
                                                                 array('class' => 'jump-to-camera')) ?>   
                            <?php elseif ($ramo=='senato') : ?>
-                             <?php $url='http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=16&id='.$carica->getParliamentId() ?>
+                             <?php $url='http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=17&id='.$carica->getParliamentId() ?>
                              <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-senato.png', 
                                                                 array('alt' => 'vai al sito del senato')), 
                                                                 $url,
@@ -173,9 +173,9 @@ $ramo = isset($ramo) ? $ramo : '';
         <h5 class="subsection-alt" style="margin-top:10px;">Presenze in <?php echo $nvotazioni ?> votazioni elettroniche</h5>
         <p class="float-right">ultima votazione: <strong>
         <?php if ($ramo=='camera') : ?>
-           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','C'), 'dd/MM/yyyy') ?>
+           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','17','C'), 'dd/MM/yyyy') ?>
         <?php elseif($ramo=='senato') : ?>
-           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','16','S'), 'dd/MM/yyyy') ?>
+           <?php echo format_date(OppVotazionePeer::doSelectDataUltimaVotazione('','','17','S'), 'dd/MM/yyyy') ?>
         <?php endif; ?>   
         </strong></p> 
         <p class="tools-container"><a class="ico-help" href="#">come sono calcolate</a></p>
@@ -237,7 +237,7 @@ $ramo = isset($ramo) ? $ramo : '';
                              'num'=> 10, 
                              'ambient' =>'politico', 
                              'parlamentare' => $parlamentare,
-                              'legislatura' => 16));
+                              'legislatura' => 17));
             
               } ?>
    
