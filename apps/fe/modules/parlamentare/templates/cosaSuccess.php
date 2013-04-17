@@ -26,7 +26,7 @@ $ramo = isset($ramo) ? $ramo : '';
         
                 <?php echo link_to('la sua pagina su ' . image_tag('/images/op_logo_small.png', 
                                                                   array('alt' => 'vai al sito openpolis')), 
-                                                                  'http://politici.openpolis.it/politico/'.$parlamentare->getSlug().'/'.$parlamentare->getId(),
+                                                                  'http://politici.openpolis.it/politico/'.$parlamentare->getId(),
                                                                   array('class' => 'jump-to-camera')) ?>                 
        
                 <?php if ($carica) : ?>                   
