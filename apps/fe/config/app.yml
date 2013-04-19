@@ -155,8 +155,8 @@ all:
 
   # varie
   monitored_acts_per_type_limit: 5
-  legislatura_data_inizio: '2008-04-29'
-  legislatura_corrente: 16
+  legislatura_data_inizio: '2012-03-15'
+  legislatura_corrente: 17
   
   sfEmendPlugin:    
     user:
@@ -280,7 +280,7 @@ all:
     from_tag:       "openparlamento"
     
   mail_per_redazione:
-    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'local.parlamento.openpolis.it')?>"
+    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'parlamento17.openpolis.it')?>"
   
   subscription:
     civicus_limit_reached_tags:       "se vuoi monitorare gli argomenti aderisci all'offerta premium"
