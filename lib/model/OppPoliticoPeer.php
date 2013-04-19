@@ -49,8 +49,8 @@ class OppPoliticoPeer extends BaseOppPoliticoPeer
    */
   public static function getPresidentiCamereIds($ramo = null)
   {
-    $pres_camera = 406;  # fini
-    $pres_senato = 1723; # schifani
+    $pres_camera = 686427;  # boldrini
+    $pres_senato = 687024; # grasso
     if ($ramo == 'camera') {
       return array($pres_camera);
     }
