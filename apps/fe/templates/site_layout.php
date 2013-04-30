@@ -55,6 +55,9 @@
 
     <link rel="shortcut icon" href="/favicon.ico" />
     
+    <!-- social metatag -->
+    <?php include_partial('global/social_metas') ?>
+    
 
 </head>
 <body><section class="wrapper">    

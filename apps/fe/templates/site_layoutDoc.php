@@ -54,6 +54,9 @@
     <script type="text/javascript" src="/js/modernizr-2.0.6.js"></script>    
 
     <link rel="shortcut icon" href="/favicon.ico" />
+
+    <!-- social metatag -->
+    <?php include_partial('global/social_metas') ?>
     
 
 </head>

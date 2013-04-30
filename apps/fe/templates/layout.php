@@ -8,6 +8,8 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
+    
+    <?php include_partial('global/social_metas') ?>
 	
 	<?php
 	// CANONICAL for _old-s 
