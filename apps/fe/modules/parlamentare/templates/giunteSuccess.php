@@ -8,7 +8,7 @@
 	                               'ramo' => $ramo)); ?>
 	   <div id="accordion">                             
 	  <?php foreach ($comms as $comm) : ?>
-	    <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
+	    <?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 17)) ?>
 	  <?php endforeach; ?>  
 	  </div>
 		

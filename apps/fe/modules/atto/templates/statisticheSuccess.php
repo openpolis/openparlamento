@@ -12,15 +12,15 @@
 	<div class="ninecol">
 		
 		<?php include_component('atto', 'ddl2legge', 
-		                        array('leg' => '16','gruppo' => $gruppo) ) ?> 
+		                        array('leg' => '17','gruppo' => $gruppo) ) ?> 
 
 		<h2>Argomenti dei ddl</h2>                        
 
 		<?php include_component('atto', 'ddl2argomenti', 
-		                        array('leg' => '16', 'approvato' => false) ) ?>  
+		                        array('leg' => '17', 'approvato' => false) ) ?>  
 		<h2>Argomenti dei ddl APPROVATI</h2>                         
 		<?php include_component('atto', 'ddl2argomenti', 
-		                        array('leg' => '16', 'approvato' => true) ) ?>
+		                        array('leg' => '17', 'approvato' => true) ) ?>
 		
 	</div>
 </div>                        

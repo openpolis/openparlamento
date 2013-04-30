@@ -44,14 +44,14 @@ class defaultComponents extends sfComponents
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
     $c->add(OppCaricaPeer::DATA_FINE,NULL,Criteria::ISNULL);
     $c->add(OppCaricaPeer::TIPO_CARICA_ID,$tipo_carica);
-    // escludere schifani e fini
-    $c->add(OppPoliticoPeer::ID, array(406,1723), Criteria::NOT_IN);
+    // escludere boldrini e grasso
+    $c->add(OppPoliticoPeer::ID, array(686427, 687024), Criteria::NOT_IN);
     
     $this->quale_pagina=$this->classifica;
     
     // random sul cosa
     if ($this->classifica==0)
-      $random=rand(1,5);
+      $random=rand(1,4);
     else
        $random=$this->classifica;
        
@@ -71,8 +71,9 @@ class defaultComponents extends sfComponents
         $this->string='pi&ugrave; assenti';
         $this->cosa=2;
       break;
+
       
-      case 3:
+      case 5:
         $c->addDescendingOrderByColumn(OppCaricaPeer::INDICE);
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='blue';
@@ -80,7 +81,8 @@ class defaultComponents extends sfComponents
         $this->cosa=3;
       break;
       
-       case 4:
+
+       case 3:
         $c->addDescendingOrderByColumn(OppPoliticoPeer::N_MONITORING_USERS);
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='orange';
@@ -88,7 +90,7 @@ class defaultComponents extends sfComponents
         $this->cosa=4;
       break;
       
-       case 5:
+       case 4:
         $c->addDescendingOrderByColumn(OppCaricaPeer::RIBELLE);
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
         $this->color='violet';

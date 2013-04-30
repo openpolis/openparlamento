@@ -260,7 +260,7 @@
 	<div class="row">
 		<div class="twelvecol">
 			
-			<?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 16)) ?>
+			<?php echo include_component('parlamentare','commissioniPermanenti',array('sede_id' => $comm->getId(),'leg' => 17)) ?>
 			
 		</div>
 	</div>                          

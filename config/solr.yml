@@ -8,9 +8,9 @@ dev:
 all:
   query_debug_level: 0
   query_handler: dismax
-  index_dir: "/usr/local/solr-tomcat/solr_op_openparlamento17/data/index/"
+  index_dir: "/home/solr/openparlamento17/data/index/"
   connection:
     host: "localhost"
     port: "8080"
-    path: "/solr_op_openparlamento17"
+    path: "/openparlamento17"
     

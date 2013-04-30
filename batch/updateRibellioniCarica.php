@@ -10,7 +10,7 @@ sfContext::getInstance();
 
 print("Fetching data... \n\n");
 
-$legislatura_corrente = OppLegislaturaPeer::getCurrent();
+echo $legislatura_corrente = OppLegislaturaPeer::getCurrent();
 $data = date('Y-m-d');
 $parlamentari_rs = OppCaricaPeer::getParlamentariRamoDataRS('parlamento', $legislatura_corrente, $data);    
 
@@ -44,7 +44,7 @@ define('SF_DEBUG',       false);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
-$leg=OppLegislaturaPeer::getCurrent();
+echo $leg=OppLegislaturaPeer::getCurrent();
 
 print("Fetching data... \n");
 

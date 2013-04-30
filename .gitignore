@@ -7,10 +7,10 @@ config/generated*
 config/settings.yml
 data/sql/lib*
 data/sql/plugins*
-
+*.sql
 lib/model/map
 lib/model/om
 plugins/*/lib/model/map
 plugins/*/lib/model/om
-
+web/*_dev.php
 log/
