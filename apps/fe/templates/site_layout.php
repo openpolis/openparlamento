@@ -169,9 +169,9 @@
 
 	<?php include_partial('global/site_footer') ?>
 
-	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
+	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>    
       <?php include_partial('global/googleAnalytics') ?>	  
-    <?php endif ?>
+  <?php endif ?>
 
 
     <script type="text/javascript">
