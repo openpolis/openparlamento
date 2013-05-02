@@ -169,8 +169,15 @@
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e8da62', endColorstr='#d9c11c',GradientType=0 ); /* IE6-8 */
     }
 
-    
-    
+
+
+#banner {
+    background-color: #f0ea04;
+    height: 30px;
+    font-size: 20px;
+    padding: 4px 0 0 8px;
+}
+
 
 /* ============================= */
 /* ! Layout for mobile version   */

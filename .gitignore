@@ -15,4 +15,5 @@ plugins/*/lib/model/om
 web/*_dev.php
 web/images/parlamentari/thumb
 web/images/parlamentari/picture
+web/xml
 log/
