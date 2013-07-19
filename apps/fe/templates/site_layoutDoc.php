@@ -60,7 +60,9 @@
     
 
 </head>
-<body><section class="wrapper">    
+<body>
+<?php include_partial('global/banner') ?>
+<section class="wrapper">
     
     <!-- Main Header -->
     <header class="container">  
