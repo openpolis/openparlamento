@@ -24,7 +24,7 @@ if ( sfRouting::getInstance()->getCurrentRouteName() == 'default_symfony' ) {
 		  			<div class="inner float-container">
 
 		  				<a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le classifiche ?</h5>
-		  				<p>I dati sulle <strong>presenze</strong> e <strong>assenze</strong> si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. I dati dunque si riferiscono solo al totale delle presenze e assenze nelle votazioni elettroniche in Aula.<br />
+		  				<p>I dati sulle <strong>presenze</strong> e <strong>assenze</strong> si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. I dati dunque si riferiscono solo al totale delle presenze e assenze nelle votazioni elettroniche in Aula. Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota. Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute. <br />
 		  				  Il nuovo indice di produttivit&agrave; prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro. <strong>Per la descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong><br />
 		  				  Un parlamentare &egrave; considerato <strong>ribelle</strong> quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo.
 
@@ -46,8 +46,8 @@ if ( sfRouting::getInstance()->getCurrentRouteName() == 'default_symfony' ) {
 	     <hr class="bluebox" />
 	    <?php echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'3','limit'=>'3')); ?>
 	     <hr class="bluebox" />
-	    <?php echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'5','limit'=>'3')); ?>
-	     <hr class="bluebox" />
+	    <?php //echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'5','limit'=>'3')); ?>
+	   <!--  <hr class="bluebox" /> -->
 	    <?php echo include_component('default','classifiche', array('ramo'=>'1', 'classifica'=>'4','limit'=>'3')); ?>
 		
 	</div>
@@ -60,8 +60,8 @@ if ( sfRouting::getInstance()->getCurrentRouteName() == 'default_symfony' ) {
 		    <hr class="redbox" />
 		    <?php echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'3','limit'=>'3')); ?>
 		    <hr class="redbox" />
-		    <?php echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'5','limit'=>'3')); ?>
-		    <hr class="redbox" />
+		    <?php //echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'5','limit'=>'3')); ?>
+		  <!--  <hr class="redbox" /> -->
 		    <?php echo include_component('default','classifiche', array('ramo'=>'2', 'classifica'=>'4','limit'=>'3')); ?>
 		
 	</div>

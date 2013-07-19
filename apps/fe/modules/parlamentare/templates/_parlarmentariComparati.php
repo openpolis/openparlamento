@@ -9,7 +9,7 @@
 	   <p><label><?php echo $parlamentare1->getLegislatura()."&#186; legislatura: " ?></label>in carica dal
 		<?php echo $parlamentare1->getDataInizio('d/m/Y') ?></p>
        <p><label>voti ribelli:</label>    			                             	
-          <?php echo round($parlamentare1->getRibelle()*100/$parlamentare1->getPresenze(),1).'% ('.link_to($parlamentare1->getRibelle(),'@parlamentare_voti?id='.$parlamentare2->getOppPolitico()->getId().'&slug='.$parlamentare2->getOppPolitico()->getSlug().'&filter_vote_rebel=1').' volte su '.$parlamentare1->getPresenze().' votazioni )' ?>
+          <?php echo round($parlamentare1->getRibelle()*100/$parlamentare1->getPresenze(),1).'% ('.link_to($parlamentare1->getRibelle(),'@parlamentare_voti?id='.$parlamentare1->getOppPolitico()->getId().'&slug='.$parlamentare1->getOppPolitico()->getSlug().'&filter_vote_rebel=1').' volte su '.$parlamentare1->getPresenze().' votazioni )' ?>
        </p>
        <p><label>assente:</label>    			                             	
           <?php echo $assenze1.'% ('.$parlamentare1->getAssenze().' volte)' ?>
@@ -20,16 +20,17 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
+      <!--
        <p><label>indice di produttivit&agrave;:</label>    			                             	
-          <span style="font-size: 14px;"><?php echo $parlamentare1->getIndice() ?></span>
-          <?php if ($parlamentare1->getIndice()>$parlamentare2->getIndice()) : ?>
-             <?php echo image_tag('ico-thumb-up.png') ?>
-          <?php endif; ?>
-          <?php if ($parlamentare1->getIndice()<$parlamentare2->getIndice()) : ?>
-             <?php echo image_tag('ico-thumb-down.png') ?>
-          <?php endif; ?>
+          <span style="font-size: 14px;"><?php //echo $parlamentare1->getIndice() ?></span>
+          <?php //if ($parlamentare1->getIndice()>$parlamentare2->getIndice()) : ?>
+             <?php //echo image_tag('ico-thumb-up.png') ?>
+          <?php //endif; ?>
+          <?php //if ($parlamentare1->getIndice()<$parlamentare2->getIndice()) : ?>
+             <?php //echo image_tag('ico-thumb-down.png') ?>
+          <?php //endif; ?>
           <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info.html" style="font-size:11px;">come &egrave calcolato?</a>]</span>
-       </p>
+       </p> -->
        <p><label>&egrave; parlamentare da</label> <?php echo link_to($durata1,'http://www.openpolis.it/politico/'.$parlamentare1->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>
@@ -58,16 +59,17 @@
              <?php echo image_tag('ico-thumb-down.png') ?>
           <?php endif; ?>
        </p>
+       <!--
        <p><label>indice di produttivit&agrave;:</label>    			                             	
-          <span style="font-size: 14px;"><?php echo $parlamentare2->getIndice() ?></span>
-          <?php if ($parlamentare2->getIndice()>$parlamentare1->getIndice()) : ?>
-             <?php echo image_tag('ico-thumb-up.png') ?>
-          <?php endif; ?>
-          <?php if ($parlamentare2->getIndice()<$parlamentare1->getIndice()) : ?>
-             <?php echo image_tag('ico-thumb-down.png') ?>
-          <?php endif; ?>
+          <span style="font-size: 14px;"><?php //echo $parlamentare2->getIndice() ?></span>
+          <?php //if ($parlamentare2->getIndice()>$parlamentare1->getIndice()) : ?>
+             <?php //echo image_tag('ico-thumb-up.png') ?>
+          <?php //endif; ?>
+          <?php //if ($parlamentare2->getIndice()<$parlamentare1->getIndice()) : ?>
+             <?php //echo image_tag('ico-thumb-down.png') ?>
+          <?php //endif; ?>
           <span style="margin-left:5px;">[<a href="http://indice.openpolis.it/info.html" style="font-size:11px;">come &egrave; calcolato?</a>]</span>
-       </p>
+       </p> -->
        <p><label>&egrave; parlamentare da</label> <?php echo link_to($durata2,'http://www.openpolis.it/politico/'.$parlamentare2->getPoliticoId().'#carriera') ?></p>
        </div>   			                             
     </div>

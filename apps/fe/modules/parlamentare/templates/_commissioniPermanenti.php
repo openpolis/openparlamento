@@ -1,3 +1,10 @@
+<?php 
+$c=new Criteria();
+$c->add(OppCaricaInternaPeer::SEDE_ID,$sede_id);
+$c->add(OppCaricaInternaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+$result=OppCaricaInternaPeer::doSelectOne($c);
+?>
+<?php if ($result) : ?>
  <h3 class="subsection" id="#<?php echo $sede_id ?>" style="font-size: 16px;">
    <a href="#<?php echo $sede_id ?>" name="<?php echo $sede_id ?>"><?php echo OppSedePeer::retrieveByPk($sede_id)->getDenominazione() ?></a>
  </h3>
@@ -325,3 +332,5 @@
     </div>
     
  </div>
+
+<?php endif; ?>

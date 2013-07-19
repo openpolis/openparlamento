@@ -31,13 +31,13 @@ $ramo = isset($ramo) ? $ramo : '';
        
                 <?php if ($carica) : ?>                   
                            <?php if ($ramo=='camera') : ?> 
-                             <?php $url='http://www.camera.it/cartellecomuni/leg17/include/contenitore_dati.asp?tipopagina=&deputato=d'.$carica->getParliamentId().'&source=%2Fdeputatism%2F240%2Fdocumentoxml.asp&position=Deputati\La%20Scheda%20Personale&Pagina=Deputati/Composizione/SchedeDeputati/SchedeDeputati.asp%3Fdeputato=d'.$carica->getParliamentId() ?> 
+                             <?php $url="http://www.camera.it/leg17/29?tipoAttivita=&tipoVisAtt=&tipoPersona=&shadow_deputato=".$carica->getParliamentId()."&idLegislatura=17" ?> 
                              <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-camera-deputati.png', 
                                                                 array('alt' => 'vai al sito della camera dei deputati')), 
                                                                 $url,
                                                                 array('class' => 'jump-to-camera')) ?>   
                            <?php elseif ($ramo=='senato') : ?>
-                             <?php $url='http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=17&id='.$carica->getParliamentId() ?>
+                             <?php $url="http://www.senato.it/loc/link.asp?tipodoc=sattsen&leg=17&id=".$carica->getParliamentId() ?>
                              <?php echo link_to('la sua pagina su ' . image_tag('/images/logo-senato.png', 
                                                                 array('alt' => 'vai al sito del senato')), 
                                                                 $url,
@@ -62,7 +62,7 @@ $ramo = isset($ramo) ? $ramo : '';
                     
                             <p><label>gruppo:</label>  
                 
-                             <?php echo link_to($acronimo_gruppo_corrente, '@parlamentari?ramo='.$ramo.'&filter_group='.$id_gruppo_corrente) ?>
+                             <?php echo link_to($acronimo_gruppo_corrente.' ('.ucfirst(strtolower($incarico)).')', '@parlamentari?ramo='.$ramo.'&filter_group='.$id_gruppo_corrente) ?>
                               <?php if (count($gruppi) > 1): ?>
                                    (
                               <?php endif ?>
@@ -155,7 +155,7 @@ $ramo = isset($ramo) ? $ramo : '';
             </div>
             <div class="float-container" style="padding:2px 10px 10px 20px;">
                 <label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>
-                <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '322 senatori') ?>
+                <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '318 senatori') ?>
                   <?php if($carica->getDataInizio()>"2008-04-29") echo "<span style='background-color: yellow; font-weight:bold;'>(N.B. subentrato dal ".$carica->getDataInizio('d/m/Y').")</span>"; ?>
                    | <?php echo link_to('vai alla classifica completa', 
                                      'http://indice.openpolis.it') ?>
@@ -197,7 +197,7 @@ $ramo = isset($ramo) ? $ramo : '';
                 </div> 
                </div>
                <div class="meter-bar-container">
-                 <label>assenze:</label>
+                 <label>assenze*:</label>
                  <div class="meter-label"><strong class="red"><?php echo number_format($assenze_perc, 2) ?>%</strong>&nbsp;(<?php echo number_format($assenze, 0) ?>)</div>
                 <div class="red-meter-bar">
                     <div style="left: <?php echo number_format($assenze_media_perc, 2) ?>%;" class="meter-average"><label>valore medio: <?php echo number_format($assenze_media_perc,2) ?>%</label>&nbsp;</div>                                
@@ -217,7 +217,13 @@ $ramo = isset($ramo) ? $ramo : '';
                                      '@parlamentari?ramo=' . $ramo .
                                       '&sort=presenze&type=desc') ?> 
                 </p>
-                <span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
+                <span style="font-weight:normal; padding-top:5px; float:left; text-align:left;">
+<?php if ($carica->getPoliticoId()==687289) : ?>
+<strong>N.B. L'On. Quintarelli risulta assente per motivi di salute dal 29 aprile 2013.<br/></strong>
+<?php elseif ($carica->getPoliticoId()==687398) : ?>
+<strong>N.B. L'On. Romano risulta assente per motivi di salute dal 28/05/2013 al 01/06/2013.<br/></strong>
+<?php endif; ?>
+*Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota. Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
             </div>
 
             <?php include_component('parlamentare', 'attiPresentati', array('parlamentare' => $parlamentare)) ?> 
@@ -247,10 +253,11 @@ $ramo = isset($ramo) ? $ramo : '';
                         <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>
                  <!-- FINE VOTI CHIAVE -->
                  <?php if ($nvoti_validi>0): ?>                      
-                    <?php echo include_component('parlamentare', 'votacome', 
-                                          array('carica' => $carica,
-                                                'parlamentare' => $parlamentare,
-                                                'acronimo' => $acronimo_gruppo_corrente)); ?>          
+                    <?php //echo include_component('parlamentare', 'votacome', 
+                               //           array('carica' => $carica,
+                               //                 'parlamentare' => $parlamentare,
+                               //                 'acronimo' => $acronimo_gruppo_corrente)); 
+                    ?>          
                   <?php endif ?>
         
               <?php echo include_partial('news/newsbox',

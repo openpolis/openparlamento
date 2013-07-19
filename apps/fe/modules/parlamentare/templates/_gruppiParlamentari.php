@@ -187,6 +187,7 @@ for ($x=0;$x<count($perc_min);$x++)
   <img src="http://chart.apis.google.com/chart?cht=p&chd=t:<?php echo rtrim($perc_grafico,',') ?>&chs=400x240&chl=<?php echo rtrim($label_grafico, '|') ?>&chco=<?php echo rtrim($color_grafico,'|') ?>">
 </div>  
 <br/>
+
 <div class="W73_100 float-left" style="width:55%">
 <h5 class="subsection">Gruppo VS Gruppo: chi guadagna e chi perde da inizio legislatura ad oggi</h5>
 <br/>

@@ -8,7 +8,7 @@ indexSuccess:
 
 documentoSuccess:
   javascripts:    [-*]
-  stylesheets:    [-*, styles.css, menu.css, openparlamento.css, testo_atto]
+  stylesheets:    [-*, styles.css, menu.css, openparlamento.css, bgtxml.css, testo_atto]
   layout:         site_layoutDoc
 
 widgetSuccess:

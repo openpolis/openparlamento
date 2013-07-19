@@ -60,6 +60,7 @@ class parlamentareActions extends sfActions
     if ($this->carica)
     {
   	  $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
+          $this->incarico=OppChgIncaricoPeer::getIncaricoGruppoCorrente($this->carica->getId(),$this->id_gruppo_corrente);
   	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
   	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
   

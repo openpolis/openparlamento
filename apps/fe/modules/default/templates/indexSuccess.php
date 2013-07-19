@@ -25,8 +25,8 @@
 	       <h3>in evidenza dal blog di openpolis</h3>
 	       <?php include_partial('sfSimpleBlog/inevidenza', 
 	                             array('feed' => sfFeedPeer::createFromWeb('http://blog.openpolis.it/category/openparlamento/feed/'),
-	                                   'limit' => 8)) ?>
-	 		   <p align=right><strong><a href="http://blog.openpolis.it/category/openparlamento">vai al blog di openpolis</strong></p>
+	                                   'limit' => 3)) ?>
+	 		   <p align=right><strong><a href="http://blog.openpolis.it/category/openparlamento">vai al blog di openpolis</a></strong></p>
 	 	  </div>
 
 	    <!-- box keyvotes -->
@@ -47,7 +47,7 @@
 	<div class="fivecol last">
 
 		<!-- box cambio gruppo -->
-	       	<?php include_component('parlamentare','cambioGruppo', array('limit' => '5', 'pagina' => 'homepage', 'ramo' => '1')) ?>
+	       	<?php include_component('parlamentare','cambioGruppo', array('limit' => '3', 'pagina' => 'homepage', 'ramo' => '1')) ?>
 
 	       <br/>
 	       <!-- box Maggioranza sotto e salva -->

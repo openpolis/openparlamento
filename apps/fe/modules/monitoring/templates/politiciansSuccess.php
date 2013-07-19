@@ -42,8 +42,10 @@
 	              '[0]|[1]1 nuova|(1,+Inf]%1% nuove', 
 	              array('%1%' => $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))),
 	              $politician->getNNewNews($sf_user->getAttribute('last_login', null, 'subscriber'))) 
-	            ?> 
-	            - ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y') ?> 
+	            ?>
+                    <?php if ($politician->getLastNews()) : ?> 
+	            - ultima: <?php echo $politician->getLastNews()->getDate('d/m/Y') ?>
+                    <?php endif; ?> 
 	  				</a></p></td>
 	  				<td>
 	            <!-- rimozione dal monitoraggio -->

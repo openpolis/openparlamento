@@ -102,14 +102,22 @@ propel:
     created_at:
 
   opp_carica_has_gruppo:
-    carica_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
-    gruppo_id:        { type: integer, required: true, primaryKey: true, index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE } 
-    data_inizio:      { type: date, required: true, primaryKey: true }
+    id:
+    carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }
+    gruppo_id:        { type: integer, required: true,  index: true, foreignTable: opp_gruppo, foreignReference: id, onDelete: CASCADE } 
+    data_inizio:      { type: date, required: true }
     data_fine:        { type: date }
     presenze:         { type: integer }
     ribelle:          { type: integer }
     created_at:
- 
+  
+  opp_chg_incarico:
+    id:
+    chg_id:           { type: integer, required: true, index: true, foreignTable: opp_carica_has_gruppo, foreignReference: id, onDelete: CASCADE }
+    data_inizio:      { type: date, required: true }
+    data_fine:        { type: date }
+    incarico:         { type: varchar(60), required: true }
+
   opp_carica_interna:
     id:
     carica_id:        { type: integer, required: true, index: true, foreignTable: opp_carica, foreignReference: id, onDelete: CASCADE }

@@ -62,7 +62,7 @@ class communityComponents extends sfComponents
 		$con = Propel::getConnection(OppAttoPeer::DATABASE_NAME);
 		
     // estrazione degli atti (sia positivi che negativi)
-    $sql = sprintf("select id from opp_atto where legislatura=16 %s limit %d;",
+    $sql = sprintf("select id from opp_atto where legislatura=17 %s limit %d;",
                    $order_clause, $limit);
 
     $stm = $con->createStatement(); 
