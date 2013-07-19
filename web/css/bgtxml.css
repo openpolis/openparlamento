@@ -1,0 +1,260 @@
+/* 
+Stylesheet specifico per la BGT : integrazioni per la versione XML
+Versione 1.0.0 del 2012-09-14 - riorganizzati gli stili, corretti alcuni bug
+
+*/
+
+img{
+max-width: 100%;
+}
+
+.dxSmall{
+    margin:0px 0px 12px 0px;
+}
+
+.sxSmall{
+  width:95%;
+}
+
+span.Presentatore{
+    font-weight:normal;
+    /* padding-left:1ex;  2012-09-14 gestito da XSLT. Il padding right impatta sulle virgole successive
+      padding-right:1ex; */
+}
+
+p.Organo {
+  text-align:center;
+  font-size:120%;
+  font-variant:small-caps;
+      margin-top:15px;
+    margin-bottom:5px;
+}
+
+p.Titolo{
+  text-align:center;
+      margin-top:15px;
+    margin-bottom:5px;
+}
+
+div.SottoTitoloAtto,
+p.SottoTitoloAtto{
+  text-align:center;
+      margin-top:5px;
+    margin-bottom:5px;
+}
+
+p.qc {
+  text-align:center;
+}  
+
+span.smallcaps{
+     font-variant:small-caps;
+}
+/* */
+div.Frontespizio{
+   width:auto; 
+}
+
+div.Frontespizio table.Testatina{
+    width:100%;
+    border-width:0px 0px 1px 0px;
+    border-style:solid;
+}
+
+div.Frontespizio table.Testatina td{
+    padding:0px 0px 15px 0px;
+    font-size:90%;
+    border-width:0px 0px 1px 0px;
+    border-bottom-style:solid;
+}
+
+div.Frontespizio div.NumAtto{
+    text-align:right;
+    font-weight:bold;
+    font-size:200%;
+    margin-top:15px;
+    margin-bottom:5px;
+    font-family:Arial;
+}
+
+div.Frontespizio div.RelazioneOrale
+{
+    text-align:right;
+    font-weight:normal;
+    font-size:120%;
+    margin-top:5px;
+    margin-bottom:5px;
+}
+
+
+div.Frontespizio div.SubNumAtto{
+    text-align:right;
+    font-weight:bold;
+    font-size:180%;
+    margin-top:5px;
+    margin-bottom:5px;
+    font-family:Arial;
+}
+
+
+div.Frontespizio p.Nota{
+    margin-top:15px;
+    text-align:left;
+    font-style:italic;
+}
+
+div.Frontespizio div.Iniziativa{
+    line-height:180%;
+    padding-top:2px;
+    padding-right:8px;
+    padding-bottom:2px;
+    padding-left:2px;
+    margin-top:2px;
+    margin-right:0px;
+    margin-bottom:2px;
+    margin-left:2px;
+    font-weight:bold;
+}
+
+div.Frontespizio p.Titolo{
+    margin-top:20px;
+    margin-bottom:20px;
+    text-align:left;
+    font-size:130%;
+    font-style:normal;
+}
+
+div.Frontespizio p.TipoAtto,
+div.Frontespizio div.TipoAtto{
+    margin-top:10px;
+    margin-bottom:20px;
+    text-align:left;
+    font-size:200%;
+    font-style:normal;
+}
+
+div.Frontespizio p.TipoAttoSmall{
+    margin-top:10px;
+    margin-bottom:20px;
+    text-align:left;
+    font-size:150%;
+    font-style:normal;
+}
+
+div.Frontespizio p.Organo{
+    margin-top:10px;
+    margin-bottom:20px;
+    text-align:center;
+    font-size:200%;
+    font-style:normal;
+
+}
+
+div.Frontespizio div.Messaggio
+{
+    text-align:justify;
+    font-style:italic;
+}
+
+div.Frontespizio p.Relatore{
+    font-variant:small-caps;
+}
+
+div.Frontespizio p.Stampato,
+div.Frontespizio p.Approvazione,
+div.Frontespizio p.Trasmissione{
+    margin-top:10px;
+    margin-bottom:10px;
+    text-align:left;
+    font-size:100%;
+    font-style:italic;
+}
+
+div.Articolato
+{
+    margin-top:15px;
+}
+
+div.Articolato div.Libro,
+div.Articolato div.Parte,
+div.Articolato div.Titolo,
+div.Articolato div.Capo,
+div.Articolato div.Sezione,
+div.Articolato div.Articolo{
+    margin-top:20px;
+    margin-bottom:10px;
+}
+
+div.Articolato div.PresentazioneTAF
+{
+    text-align:left;
+}
+
+p.Num{
+    font-weight:bold;
+    text-align:center;
+}
+
+p.Num + div.Comma{
+    padding-top:3ex;
+}
+
+p.Rubrica{
+    text-align:center;
+    font-style:italic;
+}
+
+div.bgt p.Rubrica{
+    padding-bottom:2ex;
+}
+
+div.Lettera{
+    padding-left:3ex;
+}
+
+div.PresentazioneTAF tr.Intestazione td,
+div.PresentazioneTAF tr.Articolo td,
+div.PresentazioneTAF tr.Capo td
+{
+    text-align:center;
+    font-weight:bold;
+}
+
+div.PresentazioneTAF tr.Rubrica td,
+div.PresentazioneTAF tr.Versione td
+{
+    text-align:center;
+}
+
+div.Frontespizio div.Riquadro
+{
+    width:auto;
+    margin-top:25px;
+    margin-bottom:15px;
+    padding:15px;
+    border-width:1px;
+    border-style:solid;
+    border-color:#aaaaaa;
+}
+
+div.ParereCommissione
+{
+    margin-top:25px;
+    margin-bottom:15px;
+}
+
+div.RiquadroNotePieDiPagina{
+    margin-top:25px;
+    padding-left:3ex;
+    text-align:left;
+    font-size:70%;
+}
+
+p.NotaPieDiPagina{
+    padding-left:3ex;
+    text-align:left;
+    font-size:90%;
+}
+
+
+
