@@ -50,7 +50,7 @@ foreach ($cariche as $k => $votazione_carica) {
   $voto = $votazione_carica->getVoto();
   echo $carica->getId()."\n";
   echo  $gruppo_votazione->getGruppoId()."\n";
-  if ($gruppo_votazione->getGruppoId()!=13) //escludo il gruppo misto
+  if ($gruppo_votazione->getOppGruppo()->getNome()!="Gruppo Misto") //escludo il gruppo misto
   {
     $voto_gruppo = $votazione->getVotoGruppo($gruppo_votazione->getGruppoId());
     if ( ($voto_gruppo == 'Favorevole' || $voto_gruppo == 'Astenuto' || $voto_gruppo == 'Contrario' ) && 
