@@ -368,6 +368,12 @@ class OppVotazione extends BaseOppVotazione
     return $document;
   }
 
+
+  public function getSlug()
+  {
+      return Util::slugify($this->getTitolo());
+  }
+
 	/**
 	 *
 	 * @author Daniele Faraglia
@@ -376,7 +382,7 @@ class OppVotazione extends BaseOppVotazione
 	public function getUrlParams()
 	{
 		$str = 'id='. $this->getId();
-		$str .= '&slug='.Util::slugify($this->getTitolo());
+		$str .= '&slug='.$this->getSlug();
 		$str .= '&ramo='. ( $this->getOppSeduta()->getRamo() == 'C' ? 'camera' : 'senato');
 		return $str;
 	}
