@@ -30,7 +30,7 @@
         <section class="threecol">
             <h3>Software Libero</h3>
             <ul>
-                <li><a href="http://trac.openpolis.it/openparlamento/browser/trunk">Codice sorgente</a></li>
+                <li><a href="http://github.com/openpolis/openparlamento">Codice sorgente</a></li>
                 <li><a href="http://www.gnu.org/copyleft/gpl.html">Licenza GNU/GPL</a></li>
             </ul>
             <a href="http://trac.openpolis.it/openparlamento/"><span class="icon trac">Trac</span></a>

@@ -468,7 +468,7 @@ commenti_votazione_old:
   url: /commenti_votazione/:id
   param: { module: votazione, action: commenti }
 commenti_votazione:
-    url: /votazione/commenti-utenti/:slug/:id
+    url: /votazione-commenti-utenti/:slug/:id
     param: { module: votazione, action: commenti }
 
 parlamentariSearch:
