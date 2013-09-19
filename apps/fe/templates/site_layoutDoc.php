@@ -61,7 +61,7 @@
 
 </head>
 <body>
-<?php include_partial('global/banner') ?>
+<?php //include_partial('global/banner') ?>
 <section class="wrapper">
     
     <!-- Main Header -->

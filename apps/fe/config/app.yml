@@ -17,27 +17,27 @@ all:
     orm:                  Propel                 # possible values: auto, Propel, DbFinder. 'auto' is auto detection. Note: case sensitive!
     urls:                                        # define multiple static urls here
       homepage:                                  # just a name
-        url:              http://parlamento.openpolis.it  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
       disegnoList:
-        url:              http://parlamento.openpolis.it/attiDisegni  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it/attiDisegni  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
       decretiList:
-        url:              http://parlamento.openpolis.it/attiDecretiLegge  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it/attiDecretiLegge  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)  
       nonLegList:
-        url:              http://parlamento.openpolis.it/attiNonLegislativi/data_pres/desc  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it/attiNonLegislativi/data_pres/desc  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
       votazioni:
-        url:              http://parlamento.openpolis.it/votazioni/data/desc  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it/votazioni/data/desc  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
       argomenti:
-        url:              http://parlamento.openpolis.it/argomenti  # full URL, e.g.: with http:// prefix
+        url:              http://parlamento17.openpolis.it/argomenti  # full URL, e.g.: with http:// prefix
         freq:             weekly                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)      
     models:                                      # define multiple models to generate sitemap from

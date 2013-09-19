@@ -12,9 +12,9 @@
     <li class="<?php echo($current=='confronta' ? 'current' : '' ) ?>">
 		  <h5>
 	      <?php if ($ramo=='camera' || $ramo==1) :?>
-	        <?php echo link_to('Confronta i deputati', $current=='confronta'?'#':'/parlamentare/comparaDeputati?id1=4573&id2=161&ramo=1') ?>
+	        <?php echo link_to('Confronta i deputati', $current=='confronta'?'#':'/parlamentare/comparaDeputati?id1=0&id2=0&ramo=1') ?>
 	      <?php else :?>
-	        <?php echo link_to('Confronta i senatori', $current=='confronta'?'#':'/parlamentare/comparaDeputati?id1=303095&id2=332961&ramo=2') ?>
+	        <?php echo link_to('Confronta i senatori', $current=='confronta'?'#':'/parlamentare/comparaDeputati?id1=0&id2=0&ramo=2') ?>
 	      <?php endif; ?>
 		  </h5>
 		</li>

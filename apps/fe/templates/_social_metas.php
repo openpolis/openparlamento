@@ -1,9 +1,10 @@
+<!--
 <meta property="og:title" content="Openparlamento: Informati, monitora e intervieni nei lavori del parlamento"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="http://parlamento17.openpolis.it/img/fb_img.png"/>
 <meta property="og:description" content="Cosa fanno i tuoi rappresentanti? Tutte le attivit&agrave; parlamentari aggiornate quotidianamente."/>
-<meta property="og:url" content="http://parlamento.openpolis.it/"/>
-
+<meta property="og:url" content="http://parlamento17.openpolis.it/"/>
+-->
 
 
 
@@ -13,7 +14,7 @@
 <meta name="twitter:description" content="Cosa fanno i tuoi rappresentanti? Tutte le attivit&agrave; parlamentari aggiornate quotidianamente.">
 <meta name="twitter:creator" content="@openpolis">
 <meta name="twitter:image:src" content="http://parlamento17.openpolis.it/img/fb_img.png">
-<meta name="twitter:domain" content="http://parlamento.openpolis.it">
+<meta name="twitter:domain" content="http://parlamento17.openpolis.it">
 
 
 
