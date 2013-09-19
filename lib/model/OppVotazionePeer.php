@@ -9,7 +9,7 @@
  */ 
 class OppVotazionePeer extends BaseOppVotazionePeer
 {
-  public static function maggioranzaVariabileBipartizanCriteria($leg = 16, $votazione_id = 0)
+  public static function maggioranzaVariabileBipartizanCriteria($leg = 17, $votazione_id = 0)
   {
     $c = new Criteria();
     if ($votazione_id>0)
@@ -33,7 +33,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     }
     
   }
-  public static function maggioranzaSalva($leg = 16, $votazione_id = 0)
+  public static function maggioranzaSalva($leg = 17, $votazione_id = 0)
   {
     $maggioranza_salva=array();
     $c = new Criteria(); 
@@ -167,7 +167,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     return true;
   }  
   
-  public static function maggioranzaSottoCriteria($leg = 16, $votazione_id = 0)
+  public static function maggioranzaSottoCriteria($leg = 17, $votazione_id = 0)
   {
     
     $c = new Criteria();
@@ -176,8 +176,8 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     $c->addJoin(OppVotazionePeer::SEDUTA_ID,OppSedutaPeer::ID);
     
 
-    // Prendi il voto del Gruppo della PDL GRUPPO_ID=19;
-    $crit0 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::GRUPPO_ID, 19);
+    // Prendi il voto del Gruppo della PD GRUPPO_ID=71;
+    $crit0 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::GRUPPO_ID, 71);
     $crit1 = $c->getNewCriterion(OppVotazionePeer::ESITO, 'Appr.');
     $crit2 = $c->getNewCriterion(OppVotazioneHasGruppoPeer::VOTO, 'Contrario');
 
@@ -211,7 +211,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     return $c;
   }
   
-  public static function getVotazioniMaggioranzaSotto($leg=16)
+  public static function getVotazioniMaggioranzaSotto($leg=17)
   {
     $c = new Criteria();
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
@@ -221,7 +221,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     return $c;         
   }
   
-  public static function getVotazioniMaggioranzaSalva($leg=16)
+  public static function getVotazioniMaggioranzaSalva($leg=17)
   {
     $c = new Criteria();
     $c->addJoin(OppVotazionePeer::SEDUTA_ID, OppSedutaPeer::ID);
@@ -370,7 +370,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
   public static function doSelectDataUltimaVotazione($data_inizio, $data_fine, $legislatura, $ramo)
   {
     $c = new Criteria();
-	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID, Criteria::LEFT_JOIN);
+	$c->addJoin(OppSedutaPeer::ID, OppVotazionePeer::SEDUTA_ID);
 	//$c->add(OppSedutaPeer::DATA, $data_inizio, Criteria::GREATER_EQUAL);
 	$c->add(OppSedutaPeer::RAMO, $ramo, Criteria::EQUAL);
 	$c->add(OppSedutaPeer::LEGISLATURA, $legislatura, Criteria::EQUAL);
