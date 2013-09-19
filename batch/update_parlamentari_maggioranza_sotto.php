@@ -36,9 +36,9 @@ if (count($votazioni)>0)
   {
     echo $v->getOppSeduta()->getRamo().$v->getOppSeduta()->getData()."\n\n";
     
-    //controlla come ha votato la PDL (gruppo id=19)
+    //controlla come ha votato la PD (gruppo id=71)
     $c= new Criteria();
-    $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, 19);
+    $c->add(OppVotazioneHasGruppoPeer::GRUPPO_ID, 71);
     $c->add(OppVotazioneHasGruppoPeer::VOTAZIONE_ID, $v->getId());
     $voto_magg=OppVotazioneHasGruppoPeer::doSelectOne($c);
     
