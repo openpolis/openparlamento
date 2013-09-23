@@ -16,9 +16,15 @@ class KwComponents extends sfComponents
     public function executeWebtrekk_detail(){}
     public function executeWebtrekk_table(){}
     public function executeWebtrekk_forum(){}
+    public function executeWebtrekk_article(){}
     public function executeWebtrekk_searchresults()
     {
         $this->query = $this->getRequestParameter('query');
     }
+    public function executeWebtrekk_topicresults()
+    {
+        $this->query = $this->getRequestParameter('triple_value');
+    }
+
 
 }

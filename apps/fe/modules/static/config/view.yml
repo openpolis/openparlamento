@@ -1,2 +1,10 @@
+all:
+  components:
+    kwWebTrekk:   [kw, webtrekk_article]
+
 bloccoTemporaneoSuccess:
   layout: layoutDoc
+
+rssxmlSuccess:
+  components:
+    kwWebTrekk:   [kw, webtrekk_list]

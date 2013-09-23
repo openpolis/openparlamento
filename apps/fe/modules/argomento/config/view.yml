@@ -1,7 +1,22 @@
 all:
   metas:
     title:        argomenti - OpenParlamento
-  
+  components:
+    kwWebTrekk:   [kw, webtrekk_list]
+
 listSuccess:  
   javascripts:    [fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js]
   stylesheets:    [monitoring, jquery.autocomplete.css]
+
+showAggiornamentiSuccess:
+  components:
+    kwWebTrekk:   [kw, webtrekk_detail]
+
+
+showLeggiSuccess:
+  components:
+    kwWebTrekk:   [kw, webtrekk_topicresults]
+
+showNonlegSuccess:
+  components:
+    kwWebTrekk:   [kw, webtrekk_topicresults]

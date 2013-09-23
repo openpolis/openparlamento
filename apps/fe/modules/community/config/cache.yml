@@ -1,6 +1,7 @@
-index:
-  enabled: on
-
 all:
   with_layout: false
   lifetime: 3600
+
+index:
+  enabled: on
+
