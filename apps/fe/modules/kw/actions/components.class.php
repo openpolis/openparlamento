@@ -10,7 +10,9 @@
 class KwComponents extends sfComponents
 {
     public function executeWebtrekk_home(){}
-    public function executeWebtrekk_list(){}
+    public function executeWebtrekk_list(){
+        $this->page = $this->getRequestParameter('page');
+    }
     public function executeWebtrekk_detail(){}
     public function executeWebtrekk_table(){}
     public function executeWebtrekk_forum(){}
