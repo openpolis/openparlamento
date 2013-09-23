@@ -12,7 +12,12 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
-	
+
+    <?php
+        // variabili JS per il tracking WebTrekk di Kataweb (modulo kw)
+        include_component_slot('kwWebTrekk')
+    ?>
+
 	<?php
 	// CANONICAL for _old-s 
 	$router = sfRouting::getInstance();
@@ -173,9 +178,10 @@
 
 	<?php include_partial('global/site_footer') ?>
 
-	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>    
-      <?php include_partial('global/googleAnalytics') ?>	  
-  <?php endif ?>
+	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>
+        <?php include_partial('global/googleAnalytics') ?>
+        <?php include_partial('kw/webtrekk') ?>
+    <?php endif ?>
 
 
     <script type="text/javascript">

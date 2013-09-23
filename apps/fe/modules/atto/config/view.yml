@@ -1,10 +1,24 @@
+all:
+  javascripts:    
+    - fe/jquery.bgiframe.min.js
+    - fe/jquery.ajaxQueue.js
+    - fe/jquery.autocomplete.min.js
+  stylesheets:    [monitoring, jquery.autocomplete.css]
+  components:
+    kwWebTrekk:   [kw, webtrekk_list]
+
+
 commentiSuccess:
   javascripts:    [-*, prototype]
   stylesheets:    [-*, styles.css, menu.css, openparlamento.css]
+  components:
+    kwWebTrekk:   [kw, webtrekk_forum]
 
 
 indexSuccess:
   stylesheets:    [-*, styles.css, menu.css, openparlamento.css, monitoring, jquery.autocomplete.css]
+  components:
+    kwWebTrekk:   [kw, webtrekk_detail]
 
 documentoSuccess:
   javascripts:    [-*]
@@ -13,11 +27,3 @@ documentoSuccess:
 
 widgetSuccess:
   has_layout: false
-
-all:
-  javascripts:    
-    - fe/jquery.bgiframe.min.js
-    - fe/jquery.ajaxQueue.js
-    - fe/jquery.autocomplete.min.js
-  stylesheets:    [monitoring, jquery.autocomplete.css]
-

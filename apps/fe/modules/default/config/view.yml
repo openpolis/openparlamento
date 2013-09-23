@@ -3,6 +3,8 @@ blankIndexSuccess:
   
 indexSuccess:
   javascripts: [jquery.chained.mini.js]
+  components:
+    kwWebTrekk:   [kw, webtrekk_home]
 
 sottoscrizionePremiumDemoSuccess:
   metas:

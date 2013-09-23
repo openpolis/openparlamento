@@ -12,8 +12,15 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
     <?php include_title() ?>
-	
-	<?php
+
+    <!-- classificazione WebTrekk per Kataweb -->
+    <script type="text/javascript">
+        kwWebtrekk = new Object()
+        kwWebtrekk.pageType = 'dettaglio_articolo'
+    </script>
+
+
+    <?php
 	// CANONICAL for _old-s 
     $router = sfRouting::getInstance();
 	$currentRouteName = $router->getCurrentRouteName();
@@ -104,10 +111,9 @@
     <!--  /Main Content -->
 
 
-	<?php include_partial('global/site_footer') ?>
-
-	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>    
-      <?php include_partial('global/googleAnalytics') ?>	  
+	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>
+        <?php include_partial('global/googleAnalytics') ?>
+        <?php include_partial('kw/webtrekk') ?>
     <?php endif ?>
 
 

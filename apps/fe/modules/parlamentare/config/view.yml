@@ -1,10 +1,15 @@
+all:
+  components:
+    kwWebTrekk:   [kw, webtrekk_list]
+
+
 tabellaDeltaSuccess:
   javascripts:    [-*, "/js/jquery-1.4.3.min.js", "/js/jquery-ui-1.8.1.custom.min.js"]
   stylesheets:    ["/css/ui-lightness/jquery-ui-1.8.1.custom.css"]
   
 listSuccess:
   javascripts:    [/js/fe/jquery.morelazyload.js]
-  
+
 commissioniCameraSuccess:
     metas:
     javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
@@ -24,3 +29,8 @@ giunteSuccess:
     metas:
     javascripts:    [-*, "/js/jquery-1.4.3.min.js", fe/jquery.bgiframe.min.js, fe/jquery.ajaxQueue.js, fe/jquery.autocomplete.min.js, "jquery-ui-1.8.5.custom.accordion.min.js"]
     stylesheets:    [monitoring, jquery.autocomplete.css]    
+
+
+cosaSuccess:
+  components:
+    kwWebTrekk:   [kw, webtrekk_detail]

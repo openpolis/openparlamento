@@ -1,10 +1,19 @@
+all:
+  components:
+    kwWebTrekk:   [kw, webtrekk_list]
+
+
 indexSuccess:
   javascripts:    ["/js/jquery-1.4.3.min.js", "/js/jquery.tablesorter.min.js"]
   stylesheets:    ["/css/tablesorter_themes/blue/style.css"]
-  
+  components:
+    kwWebTrekk:   [kw, webtrekk_table]
+
 commentiSuccess:
   javascripts:    [-*, prototype]
-  
+  components:
+    kwWebTrekk:   [kw, webtrekk_forum]
+
 parlamentariSalvaSuccess:
   javascripts:    ["/js/jquery-1.4.3.min.js", "/js/jquery.tablesorter.min.js"]
   stylesheets:    ["/css/tablesorter_themes/blue/style.css"]
