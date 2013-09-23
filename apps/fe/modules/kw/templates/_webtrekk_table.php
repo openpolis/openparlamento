@@ -1,5 +1,2 @@
-<!-- classificazione WebTrekk per Kataweb -->
-<script type="text/javascript">
-    var kwWebtrekk = new Object()
-    kwWebtrekk.pageType = 'dettaglio_tabelle'
-</script>
+<?php include_partial("kw/webtrekk_js_vars", array('pageType' => 'dettaglio_tabelle')) ?>
+
