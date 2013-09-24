@@ -60,6 +60,12 @@
         <li><a href="http://indice.openpolis.it/"><img src="/img/footers/indiceproduttivita.png" alt="L'Indice di Produttività Parlamentare" title="L'Indice di Produttività Parlamentare" /></a></li>
         </ul>            
     </nav>
+
+    <nav id="sub-sub-footer" class="row">
+        <ul class="twelvecol">
+            <li>Openparlamento.it è partner de l'Espresso</li>
+        </ul>
+    </nav>
 </footer>
 <script type="text/javascript">
     jQuery('.email-nascosta').each(function(){ jQuery(this).text(jQuery(this).text().replace('[chioccia]', '@').replace('[punto]','.')); });

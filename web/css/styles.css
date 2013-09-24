@@ -109,6 +109,7 @@
 	footer.container h3 { margin-bottom: 5px; font-size: 14px; }
 	footer.container h4 { margin-top: 5px; font-size: 14px; }
         #sub-footer { text-align: center; margin-top: 25px; }
+        #sub-sub-footer { text-align: center; padding-bottom: 20px; font-weight: bold; }
         #sub-footer ul { list-style: none inside; }
         #sub-footer ul li { display: inline-block; padding:0; }
 	
