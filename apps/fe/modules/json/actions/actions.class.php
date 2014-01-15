@@ -11,6 +11,29 @@
 class jsonActions extends sfActions
 {
 
+    var $regioni = array(
+        "piemonte", "piemonte 1", "piemonte 2",
+        "valle-d-aosta",
+        "lombardia", "lombardia 1", "lombardia 2", "lombardia 3",
+        "trentino-alto-adige",
+        "veneto", "veneto 1", "veneto 2",
+        "friuli-venezia-giulia",
+        "liguria",
+        "emilia-romagna",
+        "toscana",
+        "umbria",
+        "marche",
+        "lazio", "lazio 1", "lazio 2",
+        "abruzzo",
+        "molise",
+        "campania", "campania 1", "campania 2",
+        "puglia",
+        "basilicata",
+        "calabria",
+        "sicilia",
+        "sardegna"
+    );
+
   public function executeGetLastDateForPoliticianHistoryCache($value='')
   {
     $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
@@ -105,7 +128,7 @@ class jsonActions extends sfActions
     $circoscrizione_is_valid = false;
     foreach ($regioni as $regione) {
       if (strpos($circoscrizione, $regione) !== false) {
-        $circoscrizione_is_valid = true; 
+        $circoscrizione_is_valid = true;
         break;
       }
     }
@@ -127,13 +150,34 @@ class jsonActions extends sfActions
     $this->forward404Unless($this->hasRequestParameter('data'));
     $data = $this->getRequestParameter('data', '');
     $this->forward404Unless(strtotime($data));
-    
+
     $this->forward404Unless($this->hasRequestParameter('limit'));
     $limit = (int)$this->getRequestParameter('limit', '');
     $this->forward404Unless(is_integer($limit));
 
-    $items = OppPoliticianHistoryCachePeer::getIndexChartsTopPoliticians($ramo, $data, $limit);
-    $this->_send_json_output(json_encode($items));    
+    $group_acr = $this->getRequestParameter('group', '');
+    $group_id = null;
+    if ($group_acr != '')
+    {
+        $c = new Criteria();
+        $c->add(OppGruppoPeer::ACRONIMO, $group_acr);
+        $group = OppGruppoPeer::doSelectOne($c);
+        $this->forward404If(is_null($group));
+        $group_id = $group->getId();
+    }
+
+    foreach ($this->regioni as $reg) {
+        sfContext::getInstance()->getLogger()->info($reg);
+    }
+
+    $constituency = $this->getRequestParameter('circoscrizione', '');
+    if ($constituency != '')
+    {
+      $constituency_is_valid = in_array(strtolower($constituency), $this->regioni);
+      $this->forward404Unless($constituency_is_valid);
+    }
+    $items = OppPoliticianHistoryCachePeer::getIndexChartsTopPoliticians($ramo, $data, $limit, $group_id, $constituency);
+    $this->_send_json_output(json_encode($items));
     return sfView::NONE;
   }
 

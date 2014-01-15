@@ -131,10 +131,22 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     }
   }
   
-  public static function getIndexChartsTopPoliticians($ramo, $data, $limit, $con = null)
+  public static function getIndexChartsTopPoliticians($ramo, $data, $limit, $group_id = null, $constituency = null, $con = null)
   {
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
+
+    $group_filter = "";
+    if (!is_null($group_id))
+    {
+      $group_filter = " and g.id = $group_id ";
+    }
+
+    $constituency_filter = "";
+    if ($constituency != '')
+    {
+        $constituency_filter = " and c.circoscrizione = '$constituency' ";
+    }
 
     $sql = sprintf(
       "select pc.id, p.id as politico_id, p.nome, p.cognome, p.sesso," .
@@ -152,6 +164,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
       "  pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and " .
       "  p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and " .
       "  p.id not in (686427, 687024) " .
+      $group_filter . $constituency_filter .
       "order by pc.indice desc limit %s",
       $data, $ramo, $limit
     );
