@@ -136,8 +136,28 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select pc.id, p.id as politico_id, p.nome, p.cognome, g.acronimo, c.circoscrizione, pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, (pc.presenze+pc.missioni+pc.assenze) as votazioni, pc.indice from opp_politician_history_cache pc, opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and cg.data_fine is null and c.data_fine is null and pc.chi_tipo='P' and pc.data='%s' and pc.ramo='%s' and p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and p.id not in (406, 1723) order by pc.indice desc limit %s", $data, $ramo, $limit);
-    $stm = $con->createStatement(); 
+    $sql =
+      "select pc.id, p.id as politico_id, p.nome, p.cognome, p.sesso," .
+      "  g.acronimo, g.nome, " .
+      "  c.circoscrizione, " .
+      "  pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, " .
+      "  pc.presenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_presenze, pc.presenze as presenze, " .
+      "  pc.missioni/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_missioni, pc.missioni as missioni, " .
+      "  (pc.presenze+pc.missioni+pc.assenze) as votazioni, " .
+      "  pc.indice " .
+      "from opp_politician_history_cache pc, " .
+      "  opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g " .
+      "where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and " .
+      "  cg.data_fine is null and c.data_fine is null and " .
+      "  pc.chi_tipo='P' and pc.data=? and pc.ramo=? and " .
+      "  p.id not in (select politico_id from opp_carica where tipo_carica_id in (2,3,5,6,7) and data_fine is null) and " .
+      "  p.id not in (686427, 687024) " .
+      "order by pc.indice desc limit ?";
+
+    $stm = $con->prepareStatement($sql);
+    $stm->setString(1, $data);
+    $stm->setString(2, $ramo);
+    $stm->setInt(3, $limit);
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
     $items = array();
@@ -155,9 +175,10 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
     if (is_null($con))
 		  $con = Propel::getConnection(self::DATABASE_NAME);
 		  
-		$sql = sprintf("select count(*) as num from opp_politician_history_cache where chi_tipo='P' and ramo='%s' and data='%s'", 
-		               $ramo, $data);
-    $stm = $con->createStatement(); 
+	$sql = "select count(*) as num from opp_politician_history_cache where chi_tipo='P' and ramo=? and data=?";
+    $stm = $con->prepareStatement($sql);
+    $stm->setString(1, $ramo);
+    $stm->setString(1, $data);
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     
     $rs->next();
