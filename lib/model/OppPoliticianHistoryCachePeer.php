@@ -150,7 +150,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
 
     $sql = sprintf(
       "select pc.id, p.id as politico_id, p.nome, p.cognome, p.sesso," .
-      "  g.acronimo, g.nome, " .
+      "  g.acronimo, g.nome as nome_gruppo, " .
       "  c.circoscrizione, " .
       "  pc.assenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_assenze, pc.assenze as assenze, " .
       "  pc.presenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_presenze, pc.presenze as presenze, " .

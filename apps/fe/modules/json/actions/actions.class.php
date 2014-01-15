@@ -12,6 +12,8 @@ class jsonActions extends sfActions
 {
 
     var $regioni = array(
+        "europa", "america meridionale", "america settentrionale e centrale",
+        "asia-africa-oceania-antartide",
         "piemonte", "piemonte 1", "piemonte 2",
         "valle-d-aosta",
         "lombardia", "lombardia 1", "lombardia 2", "lombardia 3",
