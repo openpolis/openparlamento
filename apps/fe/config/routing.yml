@@ -7,6 +7,10 @@ json_get_last_date_for_politician_history_cache:
   url: /json_getLastDateForPoliticianHistoryCache
   param: { module: json, action: getLastDateForPoliticianHistoryCache }
 
+json_get_dates_for_politician_history_cache:
+  url: /json_getDatesForPoliticianHistoryCache/*
+  param: { module: json, action: getDatesForPoliticianHistoryCache }
+
 json_get_index_charts_politicians:
   url: /json_getIndexChartsPoliticians/*
   param: { module: json, action: getIndexChartsPoliticians }

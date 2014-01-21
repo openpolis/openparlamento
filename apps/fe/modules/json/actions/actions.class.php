@@ -36,13 +36,26 @@ class jsonActions extends sfActions
         "sardegna"
     );
 
-  public function executeGetLastDateForPoliticianHistoryCache($value='')
+  public function executeGetLastDateForPoliticianHistoryCache()
   {
-    $last_date = OppPoliticianHistoryCachePeer::fetchLastData();
+    $ramo = $this->getRequestParameter('ramo', null);
+    if (!is_null($ramo))
+        $this->forward404Unless(in_array(strtoupper($ramo), array('C', 'S')));
+
+    $last_date = OppPoliticianHistoryCachePeer::fetchLastData('P', $ramo);
     $this->_send_json_output(json_encode(array('last_date' => $last_date)));    
     return sfView::NONE;
   }
-  
+
+  public function executeGetDatesForPoliticianHistoryCache()
+  {
+      $dates = array_values(OppPoliticianHistoryCachePeer::extractDates('P'));
+      $this->_send_json_output(json_encode(array('dates' => $dates)));
+      return sfView::NONE;
+  }
+
+
+
   public function executeGetIndexChartsPoliticians()
   {
     $this->forward404Unless($this->hasRequestParameter('ramo'));

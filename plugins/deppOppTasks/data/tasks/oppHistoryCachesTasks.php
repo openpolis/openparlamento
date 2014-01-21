@@ -230,7 +230,11 @@ function run_opp_build_cache_politici($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P');
+    if ($ramo == 'tutti')
+        $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P');
+    else
+        $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P', $ramo);
+
   }
 
   $msg = sprintf("calcolo cache per politici data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
@@ -274,7 +278,7 @@ function run_opp_build_cache_politici($task, $args, $options)
     $ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($id, $legislatura_corrente, $data);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache
-		if (!$dry_run) {
+	if (!$dry_run) {
 	    $cache_record = OppPoliticianHistoryCachePeer::retrieveByDataChiTipoChiIdRamo($data_lookup, 'P', $id, $mio_ramo);
 	    if (!$cache_record) {
 	      $cache_record = new OppPoliticianHistoryCache();
@@ -363,7 +367,10 @@ function run_opp_build_pos_cache_politici($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData($tipo);
+      if ($ramo == 'tutti')
+          $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData($tipo);
+      else
+          $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData($tipo, $ramo);
   }
 
   $msg = sprintf("calcolo indici posizionamento per politici data: %10s, ramo: %10s\n", $data?$data:'-', $ramo);
