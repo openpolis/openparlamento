@@ -1153,9 +1153,9 @@ class apiActions extends sfActions
     $order_by = $this->getRequestParameter('orderby');
     $order_type = $this->getRequestParameter('ordertype');
     
-		$con = Propel::getConnection('propel');
+	$con = Propel::getConnection('propel');
 
-    $current_data = OppPoliticianHistoryCachePeer::fetchLastData('P', $con);
+    $current_data = OppPoliticianHistoryCachePeer::fetchLastData('P', null, $con);
 
     $is_valid_key = deppApiKeysPeer::isValidKey($key);
 
