@@ -129,7 +129,7 @@ $ramo = isset($ramo) ? $ramo : '';
 <div class="row">
     <div class="sixcol">
         
-        <?php if ($carica->getDataInizio('Y-m-d') > date("Y-m-d", strtotime('today - 365 days')) ||
+        <?php if ($carica->getDataInizio('Y-m-d') > date("Y-m-d", strtotime('today - 1000 days')) ||
                   in_array($carica->getPoliticoId(), 
                             array_merge(OppPoliticoPeer::getPresidentiCamereIds(), 
                                         OppPoliticoPeer::getMembriGovernoIds()))): ?>
