@@ -128,9 +128,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $atti_node = $content_node->addChild('atti_presentati', null, self::$opp_ns);
     $atti_node->addAttribute('n_atti_presentati', $n_atti);
     
+    if ($verbose)
+      printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
+
     $d_punteggio = 0.;
     foreach ($attis as $atto) {
-			// --- skip atti da non analizzare, se passato elenco atti in linea di comando
+
+      // --- skip atti da non analizzare, se passato elenco atti in linea di comando
       if (!empty($atti_ids) && !in_array($atto['id'], $atti_ids)) {
         continue;
       }
@@ -138,8 +142,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $d_punteggio += $dd_punteggio;
     }
     $atti_node->addAttribute('totale', $d_punteggio);
-    if ($verbose)
-      printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
     $punteggio += $d_punteggio;
 
 
@@ -352,7 +354,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
       $consenso_node->addAttribute('totale', $d_punteggio);
     }
-      
+    
+  
     // --- iter ---
     $itinera_atto = OppAttoHasIterPeer::getItinera($atto_id, $data);
     $iter_node = $atto_node->addChild('iter', null, self::$opp_ns);
