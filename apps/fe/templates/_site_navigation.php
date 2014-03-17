@@ -40,5 +40,5 @@
   <li>
     <a href="http://blog.openpolis.it/">Open blog</a>
   </li>
-  <li></li>
+  <li><span style="font-size:10px;"><a href="http://parlamento16.openpolis.it/">Precedente legislatura 2008-13</a></span></li>
 </ul>
