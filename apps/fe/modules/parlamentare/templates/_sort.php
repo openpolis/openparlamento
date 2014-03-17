@@ -27,9 +27,9 @@
 	</li>
 	<li>
 	  <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'indice'): ?>
-        <?php echo link_to('indice di attivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
+        <?php echo link_to('indice di produttivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
       <?php else: ?>
-        <?php echo link_to('indice di attivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type=desc') ?>
+        <?php echo link_to('indice di produttivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type=desc') ?>
       <?php endif; ?>
 	</li>
     <li>
