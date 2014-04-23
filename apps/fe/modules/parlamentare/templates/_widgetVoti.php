@@ -1,6 +1,6 @@
 <?php if ($sotto>0 || $salva>0 || $ribelle>0) : ?>
 
-<h5 class="subsection-alt" style="margin-top:0px;">Il comportamento nelle votazioni <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?></span></h5>
+<h5 class="subsection-alt" style="margin-top:0px;">Il comportamento nelle votazioni</h5>
 
 <br />	
 <?php if ($ribelle>0) : ?>

@@ -1,6 +1,6 @@
 <p>Nota: l'indice di produttività non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato). <strong>Per la spiegazione dettagliata dei criteri di valutazione del nuovo indice di produttività <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong>
 <br/>
-<strong>Nota: Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota. Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</strong>
+<a id="nota">*</a><br/><strong><FONT style="BACKGROUND-COLOR: yellow">Nota: Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota e non partecipa a determinare il numero legale nella votazione</font>. Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</strong>
 <br/><br/>
 </p>
 <table class="disegni-decreti column-table lazyload">
@@ -100,7 +100,7 @@
           </td>
           <td class="evident">
             
-            <b><?php echo number_format($parlamentari->getInt(7)*100/$num_votazioni,2) ?>%</b><br /><span class="small"><?php echo "(".$parlamentari->getInt(7)." su ". $num_votazioni.")" ?></span>
+            <b><?php echo number_format($parlamentari->getInt(7)*100/$num_votazioni,2) ?>%</b> <a href="#nota">*</a><br /><span class="small"><?php echo "(".$parlamentari->getInt(7)." su ". $num_votazioni.")" ?></span>
           </td>
           <td class="evident">
              <b><?php echo number_format($parlamentari->getInt(8)*100/$num_votazioni,2) ?>%</b><br /><span class="small"><?php echo "(".$parlamentari->getInt(8)." su ". $num_votazioni.")" ?></span>
