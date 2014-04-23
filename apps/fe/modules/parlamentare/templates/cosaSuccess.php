@@ -129,7 +129,7 @@ $ramo = isset($ramo) ? $ramo : '';
 <div class="row">
     <div class="sixcol">
         
-        <?php if ($carica->getDataInizio('Y-m-d') > date("Y-m-d", strtotime('today - 365 days')) ||
+        <?php if ($carica->getDataInizio('Y-m-d') > date("Y-m-d", strtotime('today - 1000 days')) ||
                   in_array($carica->getPoliticoId(), 
                             array_merge(OppPoliticoPeer::getPresidentiCamereIds(), 
                                         OppPoliticoPeer::getMembriGovernoIds()))): ?>
@@ -182,7 +182,9 @@ $ramo = isset($ramo) ? $ramo : '';
         <div style="display: none;" class="help-box float-container">
             <div class="inner float-container">        
                 <a class="ico-close" href="#">chiudi</a><h5>come sono calcolate le presenze ?</h5>
-                <p>I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit&agrave; parlamentari (lavori preparatori nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.</p>
+                <p>I dati sulle presenze si riferiscono alle votazioni elettroniche che si svolgono nell'Assemblea di Camera e Senato dall'inizio della legislatura. Le presenze dunque non si riferiscono a tutte le possibili attivit&agrave; parlamentari (lavori preparatori nelle Commissioni) ma solo al totale delle presenze nelle votazioni elettroniche in Aula.
+<FONT style="BACKGROUND-COLOR: yellow">Nota: Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota e non partecipa a determinare il numero legale nella votazione</font>
+</p>
             </div>
         </div>
 
@@ -223,7 +225,8 @@ $ramo = isset($ramo) ? $ramo : '';
 <?php elseif ($carica->getPoliticoId()==687398) : ?>
 <strong>N.B. L'On. Romano risulta assente per motivi di salute dal 28/05/2013 al 01/06/2013.<br/></strong>
 <?php endif; ?>
-*Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota. Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
+<FONT style="BACKGROUND-COLOR: yellow">* Con assenza si intendono i casi di non partecipazione al voto: sia quello in cui il parlamentare è fisicamente assente (e non in missione) sia quello in cui è presente ma non vota e non partecipa a determinare il numero legale nella votazione</font>
+ Purtroppo attualmente i sistemi di documentazione dei resoconti di Camera e Senato non consentono di distinguere un caso dall'altro. I regolamenti non prevedono la registrazione del motivo dell'assenza al voto del parlamentare. Non si può distinguere, pertanto, l'assenza ingiustificata da quella, ad esempio, per ragioni di salute.</span>
             </div>
 
             <?php include_component('parlamentare', 'attiPresentati', array('parlamentare' => $parlamentare)) ?> 
@@ -252,6 +255,11 @@ $ramo = isset($ramo) ? $ramo : '';
                <!-- BOX PER I VOTI CHIAVE -->
                         <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>
                  <!-- FINE VOTI CHIAVE -->
+
+                <!-- DICHIARAZIONI PATRIMONIALI -->
+                <?php echo include_component('parlamentare','taxDeclaration', array('parlamentare' => $parlamentare)) ?>
+                <!-- FINE DICHIARAZIONI PATRIMONIALI -->
+
                  <?php if ($nvoti_validi>0): ?>                      
                     <?php //echo include_component('parlamentare', 'votacome', 
                                //           array('carica' => $carica,

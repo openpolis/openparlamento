@@ -1,6 +1,16 @@
 <?php
 class parlamentareComponents extends sfComponents
 {
+
+public function executeTaxDeclaration()
+{
+	$this->tax=array();
+	$xml=simplexml_load_file("http://politici.openpolis.it/api/taxDeclaration?id=".$this->parlamentare->getId());
+	foreach($xml->taxs->tax->declaration as $declaration)
+	{
+		$this->tax[intval($declaration->year)]=$this->parlamentare->getId();
+	}
+}
   
   public function executeWidgetVoti()
    {
