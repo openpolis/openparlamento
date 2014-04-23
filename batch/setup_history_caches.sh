@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # togli il commento per generare anche i dati correnti
 # ./symfony opp-build-cache-politici --ramo=parlamento;
@@ -8,12 +8,18 @@
 # ./symfony opp-build-cache-rami;
 # ./symfony opp-build-cache-atti
 
+declare -a KEY_DATES=(\
+ '2013-03-31' '2013-04-30' '2013-05-31' '2013-06-30' '2013-07-31' '2013-08-31' '2013-09-30' '2013-10-31' '2013-11-30' '2013-12-31' \
+ '2014-01-31' '2014-02-28' '2014-03-31'\
+)
+
 # dati storici
-for data in '2010-12-31' '2010-11-30' '2010-10-31' '2010-09-30' '2010-08-31' '2010-07-31' '2010-06-30' '2010-05-31' '2010-04-30' '2010-03-31' '2010-02-28' '2010-01-31' '2009-12-31' '2009-11-30' '2009-10-31' '2009-09-30' '2009-08-31' '2009-07-31' '2009-06-30' '2009-05-31' '2009-04-30' '2009-03-31' '2009-02-28' '2009-01-31' '2008-12-31' '2008-11-30' '2008-10-31' '2008-09-30' '2008-08-31' '2008-07-31' '2008-06-30' '2008-05-31' '2008-04-30'; 
+for data in ${KEY_DATES[@]}
 do 
-  ./symfony opp-build-cache-politici --ramo=parlamento --data=$data; 
+  ./symfony opp-build-cache-politici --ramo=camera --data=$data;
   ./symfony opp-build-pos-cache-politici --ramo=camera --data=$data; 
-  ./symfony opp-build-pos-cache-politici --ramo=senato --data=$data; 
+  ./symfony opp-build-cache-politici --ramo=senato --data=$data;
+  ./symfony opp-build-pos-cache-politici --ramo=senato --data=$data;
   ./symfony opp-build-cache-gruppi --data=$data;
   ./symfony opp-build-cache-rami --data=$data;  
   ./symfony opp-build-cache-atti --data=$data
@@ -26,7 +32,7 @@ done
 # ./symfony opp-compute-delta-atti
 
 # dati storici
-for data in '2010-12-31' '2010-11-30' '2010-10-31' '2010-09-30' '2010-08-31' '2010-07-31' '2010-06-30' '2010-05-31' '2010-04-30' '2010-03-31' '2010-02-28' '2010-01-31' '2009-12-31' '2009-11-30' '2009-10-31' '2009-09-30' '2009-08-31' '2009-07-31' '2009-06-30' '2009-05-31' '2009-04-30' '2009-03-31' '2009-02-28' '2009-01-31' '2008-12-31' '2008-11-30' '2008-10-31' '2008-09-30' '2008-08-31' '2008-07-31' '2008-06-30'; 
+for data in ${KEY_DATES[@]}
 do 
   ./symfony opp-compute-delta-politici --data=$data
   ./symfony opp-compute-delta-atti --data=$data
