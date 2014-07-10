@@ -24,7 +24,7 @@
         <th scope="row">
           <?php if (!is_null($parlamentare)): ?>
             <p><?php echo link_to($parlamentare->getOppPolitico() . 
-                                  " (" . $parlamentare->getGruppo($date)->getAcronimo() . ") ", 
+                                  " (" . ($parlamentare->getGruppo($date) ? $parlamentare->getGruppo($date)->getAcronimo() : '') . ") ", 
                                   'http://' . sfConfig::get('sf_site_url', 'op_openparlamento') . 
                                   "@parlamentare?" . $parlamentare->getOppPolitico()->getUrlParams(),
                                   true) ?></p>            

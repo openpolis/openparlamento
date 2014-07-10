@@ -39,9 +39,10 @@ public function executeTaxDeclaration()
     $c->addJoin(OppCaricaPeer::ID,OppCaricaHasGruppoPeer::CARICA_ID);
     $c->addJoin(OppGruppoPeer::ID,OppCaricaHasGruppoPeer::GRUPPO_ID);
     $c->addJoin(OppCaricaPeer::POLITICO_ID,OppPoliticoPeer::ID);
+    //$c->add(OppCaricaPeer::DATA_INIZIO,OppCaricaHasGruppoPeer::DATA_INIZIO, Criteria::NOT_EQUAL);
     $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL, Criteria::ISNULL);
     $c->addDescendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
-    $c->setLimit(10);
+    $c->setLimit(20);
     $parlamentari=OppCaricaHasGruppoPeer::doSelectRS($c);  
     $this->parlamentari=$parlamentari;  
     

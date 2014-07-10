@@ -57,7 +57,7 @@ class datiStoriciActions extends sfActions
       $parlamentare = OppCaricaPeer::retrieveByPK($item->getChiId());
       if (!is_null($parlamentare)) {
         $parlamentare_string = $parlamentare->getOppPolitico();
-        $gruppo =  $parlamentare->getGruppo($date)->getAcronimo();
+        $gruppo =  $parlamentare->getGruppo($date) ? $parlamentare->getGruppo($date)->getAcronimo() : '';
         $sesso = $parlamentare->getOppPolitico()->getSesso();
       } else {
         $parlamentare_string = $parlamentare->getId();

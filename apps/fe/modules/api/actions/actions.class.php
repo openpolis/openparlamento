@@ -49,7 +49,7 @@ class apiActions extends sfActions
    {
      $c= new Criteria();
      $c->addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
-     $c->add(OppSedutaPeer::LEGISLATURA,16,Criteria::GREATER_EQUAL);
+     $c->add(OppSedutaPeer::LEGISLATURA,17,Criteria::GREATER_EQUAL);
      $number=OppVotazionePeer::doCount($c);
      $resp_node = new SimpleXMLElement('<openparlamento_response></openparlamento_response>');
      $number_node = $resp_node->addChild('numero_voti',$number);

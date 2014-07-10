@@ -65,20 +65,7 @@
 		                            "http://".sfConfig::get('sf_remote_guard_host', 'op_accesso.openpolis.it').
 		                            (SF_ENVIRONMENT!='prod'?'/be_'.SF_ENVIRONMENT.'.php':'').
 		                            "/aggiungi_utente" , 
-		                           array('class' => 'sign-on')) ?>	
-
-
-		     <?php if (sfConfig::get('app_sf_guard_plugin_is_social', false)): ?>    
-		       <h2 style="margin-top: 2em;">Hai un account Facebook?</h2>
-		       <br>
-		       <div class="connect_widget">
-		         <?php if (is_null($fb_user)): ?>
-		           <a class="fb_button" href="<?php echo $facebook->getLoginUrl(array('scope' => 'email')) ?>">
-		             <span class="fb_button_text">Connettiti col tuo account Facebook</span>
-		           </a>        
-		         <?php endif ?>
-		       </div>
-		     <?php endif; ?>
+		                           array('class' => 'sign-on')) ?>
 
 
 		      </div>
