@@ -66,11 +66,11 @@ $ramo = isset($ramo) ? $ramo : '';
                               <?php if (count($gruppi) > 1): ?>
                                    (
                               <?php endif ?>
-                              <?php foreach ($gruppi as $acronimo => $gruppo): ?>
-                             <?php if ($acronimo != $acronimo_gruppo_corrente): ?>
+                              <?php foreach ($gruppi as  $gruppo): ?>
+                             <?php if ($gruppo['data_fine'] != NULL): ?>
                                dal <?php echo format_date($gruppo['data_inizio'],'dd/MM/yyyy') ?>
                                al <?php echo format_date($gruppo['data_fine'],'dd/MM/yyyy') ?>:
-                               <?php echo link_to($acronimo, 
+                               <?php echo link_to($gruppo['acronimo'], 
                                                   '@parlamentari?ramo='.$ramo.'&filter_group='.$gruppo['gruppo_id']) ?>
                              <?php endif ?>
                              <?php endforeach ?>
@@ -251,6 +251,7 @@ $ramo = isset($ramo) ? $ramo : '';
               } ?>
    
                <!-- box Maggioranza sotto e salva -->
+             
                   <?php include_component('parlamentare','widgetVoti', array('carica' => $carica, 'ribelli_perc' => $ribelli_perc, 'parlamentare' => $parlamentare)) ?>
                <!-- BOX PER I VOTI CHIAVE -->
                         <?php echo include_component('parlamentare','keyvote', array('carica' => $carica, 'ramo' => $ramo)) ?>

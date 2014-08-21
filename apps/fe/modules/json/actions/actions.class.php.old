@@ -62,12 +62,11 @@ class jsonActions extends sfActions
     $ramo = $this->getRequestParameter('ramo', '');
     $this->forward404Unless(in_array($ramo, array('C', 'S')));
 
-    //$this->forward404Unless($this->hasRequestParameter('data'));
+    $this->forward404Unless($this->hasRequestParameter('data'));
     $data = $this->getRequestParameter('data', '');
-    
     $this->forward404Unless(strtotime($data));    
-    $items = call_user_func_array('OppPoliticianHistoryCachePeer::getIndexChartsPoliticians', array($ramo, $data));
 
+    $items = call_user_func_array('OppPoliticianHistoryCachePeer::getIndexChartsPoliticians', array($ramo, $data));
     $items = $this->_add_data_inizio_incarico($items, $ramo, $data);
     $this->_send_json_output(json_encode($items));    
     return sfView::NONE;
@@ -109,7 +108,7 @@ class jsonActions extends sfActions
   {
     $regioni = array(
       "piemonte",
-      "valle d\'aosta",
+      "valle d'aosta",
       "lombardia",
       "trentino-alto adige",
       "veneto",
@@ -137,8 +136,7 @@ class jsonActions extends sfActions
 
     $this->forward404Unless($this->hasRequestParameter('data'));
     $data = $this->getRequestParameter('data', '');
-    if ($data!='')
-       $this->forward404Unless(strtotime($data));
+    $this->forward404Unless(strtotime($data));
 
     $this->forward404Unless($this->hasRequestParameter('circoscrizione'));
     $circoscrizione = $this->getRequestParameter('circoscrizione', '');
@@ -150,11 +148,8 @@ class jsonActions extends sfActions
       }
     }
     $this->forward404Unless($circoscrizione_is_valid);
-    if ($data!='')
-      $politicians = OppPoliticianHistoryCachePeer::getIndexChartsPoliticiansInConstituency($ramo, $data, $circoscrizione);
-    else
-      $politicians = OppCaricaPeer::getIndexChartsPoliticiansInConstituencyRealTime($ramo, $data, $circoscrizione);
 
+    $politicians = OppPoliticianHistoryCachePeer::getIndexChartsPoliticiansInConstituency($ramo, $data, $circoscrizione);
     $items = $this->_add_data_inizio_incarico($politicians, $ramo, $data);
     $this->_send_json_output(json_encode($items));    
     return sfView::NONE;
@@ -167,10 +162,9 @@ class jsonActions extends sfActions
     $ramo = $this->getRequestParameter('ramo', '');
     $this->forward404Unless(in_array($ramo, array('C', 'S')));
 
-    //$this->forward404Unless($this->hasRequestParameter('data'));
+    $this->forward404Unless($this->hasRequestParameter('data'));
     $data = $this->getRequestParameter('data', '');
-    if ($data!='')
-       $this->forward404Unless(strtotime($data));
+    $this->forward404Unless(strtotime($data));
 
     $this->forward404Unless($this->hasRequestParameter('limit'));
     $limit = (int)$this->getRequestParameter('limit', '');
@@ -197,10 +191,7 @@ class jsonActions extends sfActions
       $constituency_is_valid = in_array(strtolower($constituency), $this->regioni);
       $this->forward404Unless($constituency_is_valid);
     }
-    if ($data!='')
-        $items = OppPoliticianHistoryCachePeer::getIndexChartsTopPoliticians($ramo, $data, $limit, $group_id, $constituency);
-    else
-        $items = OppCaricaPeer::getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit, $group_id, $constituency);
+    $items = OppPoliticianHistoryCachePeer::getIndexChartsTopPoliticians($ramo, $data, $limit, $group_id, $constituency);
     $this->_send_json_output(json_encode($items));
     return sfView::NONE;
   }
@@ -234,4 +225,3 @@ class jsonActions extends sfActions
     $this->response->setContent($content);
   }
   
-}

@@ -99,7 +99,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
 	                                       'ribelle'     => $rs->getInt(5),
 	                                       'presenze'    => $rs->getInt(6)>0?$rs->getInt(6):0);
 	  }	
-    
+          
 	  return $gruppi;
   }
   
@@ -118,21 +118,30 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
     $gruppi = array();
   	$c = new Criteria();
   	$c->clearSelectColumns();
+        $c->addSelectColumn(OppGruppoPeer::ACRONIMO);
   	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
   	$c->addSelectColumn(OppCaricaHasGruppoPeer::DATA_FINE);
   	$c->addSelectColumn(OppCaricaHasGruppoPeer::GRUPPO_ID);
+        $c->addSelectColumn(OppCaricaHasGruppoPeer::RIBELLE);
+        $c->addSelectColumn(OppCaricaHasGruppoPeer::PRESENZE);
   	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
+        $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
     if ($order==0)
       $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);
-    else
+    elseif($order==1)
       $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
+    elseif($order==2)
+      $c->addDescendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO); 
     $rs = OppCaricaHasGruppoPeer::doSelectRS($c);
 	
 	  while ($rs->next())
     {
-	    $gruppi[] = array('data_inizio' => $rs->getDate(1, 'Y-m-d'), 
-	                                       'data_fine'   => $rs->getDate(2, 'Y-m-d'), 
-	                                       'gruppo_id'   => $rs->getInt(3));
+	    $gruppi[] = array('data_inizio' => $rs->getDate(2, 'Y-m-d'),
+                                               'data_fine'   => $rs->getDate(3, 'Y-m-d'),
+                                               'gruppo_id'   => $rs->getInt(4),
+                                               'ribelle'     => $rs->getInt(5),
+                                               'acronimo'    => $rs->getString(1),
+                                               'presenze'    => $rs->getInt(6)>0?$rs->getInt(6):0);
 	  }	
     
 	  return $gruppi;

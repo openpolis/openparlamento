@@ -10,6 +10,116 @@
 class OppCaricaPeer extends BaseOppCaricaPeer
 {
 
+public static function getIndexChartsPoliticiansInConstituencyRealTime($ramo, $data, $circoscrizione, $con = null)
+ {
+	 $items=array();
+          $circoscrizione = self::getCircoscrizioneNameFromSlug($circoscrizione);
+	 
+	 $c=new Criteria();
+	 $c->addJoin(OppPoliticoPeer::ID, OppCaricaPeer::POLITICO_ID);
+	 //esclude i presidenti di camera e senato
+	 $c->add(OppPoliticoPeer::ID, array(686427, 687024), Criteria::NOT_IN);
+	 // prende solo i parlamentari in carica
+	 $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+	 
+	 $c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID, OppCaricaPeer::ID);
+	 $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
+	 // prende il gruppo corrente
+	 $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
+
+	 if ($constituency!='')
+		 $c->add(OppCaricaPeer::CIRCOSCRIZIONE, $constituency);
+	 
+	 if ($ramo=='C')
+		 $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
+	 elseif($ramo=='S')
+		  $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(4,5), Criteria::IN);
+	 
+	 $c->setLimit($limit);
+	 $results=OppCaricaPeer::doSelect($c);
+	 foreach($results as $k => $r)
+	 {
+                 $gruppi=$r->getOppCaricaHasGruppos();
+	 	 $items[$k]['id']=$r->getId();
+		 $items[$k]['politico_id']=$r->getPoliticoId();
+		 $items[$k]['nome']=$r->getOppPolitico()->getNome();
+		 $items[$k]['cognome']=$r->getOppPolitico()->getCognome();
+		 $items[$k]['sesso']=$r->getOppPolitico()->getSesso();
+		 $items[$k]['acronimo']=$gruppi[0]->getOppGruppo()->getAcronimo();
+		 $items[$k]['nome_gruppo']=$gruppi[0]->getOppGruppo()->getNome();
+		 $items[$k]['circoscrizione']=$r->getCircoscrizione();
+		 $items[$k]['perc_assenze']=($r->getAssenze()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['assenze']=$r->getAssenze();
+		 $items[$k]['perc_presenze']=($r->getPresenze()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['presenze']=$r->getPresenze();
+		 $items[$k]['perc_missioni']=($r->getMissioni()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['missioni']=$r->getMissioni();
+		 $items[$k]['votazioni']=$r->getAssenze()+$r->getPresenze()+$r->getMissioni();
+		 $items[$k]['indice']=$r->getIndice();
+	 }	 
+	 
+	 return $items;
+	 	
+ }
+
+
+
+
+
+public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit, $group_id = null, $constituency = null, $con = null)
+ {
+	 $items=array();
+	 
+	 $c=new Criteria();
+	 $c->addJoin(OppPoliticoPeer::ID, OppCaricaPeer::POLITICO_ID);
+	 //esclude i presidenti di camera e senato
+	 $c->add(OppPoliticoPeer::ID, array(686427, 687024), Criteria::NOT_IN);
+	 // prende solo i parlamentari in carica
+	 $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
+	 
+	 $c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID, OppCaricaPeer::ID);
+	 $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
+	 // prende il gruppo corrente
+	 $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
+	 if (!is_null($group_id))
+		 $c->add(OppGruppoPeer::ID,$group_id);
+
+	 if ($constituency!='')
+		 $c->add(OppCaricaPeer::CIRCOSCRIZIONE, $constituency);
+	 
+	 if ($ramo=='C')
+		 $c->add(OppCaricaPeer::TIPO_CARICA_ID, 1);
+	 elseif($ramo=='S')
+		  $c->add(OppCaricaPeer::TIPO_CARICA_ID, array(4,5), Criteria::IN);
+	 
+	 $c->setLimit($limit);
+	 $results=OppCaricaPeer::doSelect($c);
+	 foreach($results as $k => $r)
+	 {
+                 $gruppi=$r->getOppCaricaHasGruppos();
+	 	 $items[$k]['id']=$r->getId();
+		 $items[$k]['politico_id']=$r->getPoliticoId();
+		 $items[$k]['nome']=$r->getOppPolitico()->getNome();
+		 $items[$k]['cognome']=$r->getOppPolitico()->getCognome();
+		 $items[$k]['sesso']=$r->getOppPolitico()->getSesso();
+		 $items[$k]['acronimo']=$gruppi[0]->getOppGruppo()->getAcronimo();
+		 $items[$k]['nome_gruppo']=$gruppi[0]->getOppGruppo()->getNome();
+		 $items[$k]['circoscrizione']=$r->getCircoscrizione();
+		 $items[$k]['perc_assenze']=($r->getAssenze()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['assenze']=$r->getAssenze();
+		 $items[$k]['perc_presenze']=($r->getPresenze()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['presenze']=$r->getPresenze();
+		 $items[$k]['perc_missioni']=($r->getMissioni()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
+		 $items[$k]['missioni']=$r->getMissioni();
+		 $items[$k]['votazioni']=$r->getAssenze()+$r->getPresenze()+$r->getMissioni();
+		 $items[$k]['indice']=$r->getIndice();
+	 }	 
+	 
+	 return $items;
+	 	
+ }
+
+
     public static $foreignConstituencies = array('Europa', 'America meridionale', 'America settentrionale e centrale', 'Asia-Africa-Oceania-Antartide' ,'Europa');
 
 
