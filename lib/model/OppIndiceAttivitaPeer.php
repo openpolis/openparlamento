@@ -128,9 +128,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $atti_node = $content_node->addChild('atti_presentati', null, self::$opp_ns);
     $atti_node->addAttribute('n_atti_presentati', $n_atti);
     
-    if ($verbose)
-      printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
-
     $d_punteggio = 0.;
     foreach ($attis as $atto) {
 
@@ -144,8 +141,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $atti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
 
+    if ($verbose)
+        printf("\ntotale atti presentati: %d - punteggio: %7.2f\n", $n_atti, $d_punteggio);
 
-    // --- componente indice dovuta alle firme come relatore
+
+
+
+      // --- componente indice dovuta alle firme come relatore
     $atti_relazionati = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
     $n_atti_relazionati = count($atti_relazionati);
     $atti_relazionati_node = $content_node->addChild('atti_relazionati', null, self::$opp_ns);
