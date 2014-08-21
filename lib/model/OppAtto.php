@@ -303,7 +303,8 @@ class OppAtto extends BaseOppAtto
   {
     return OppCaricaHasAttoPeer::getFirme($this->getId(), $data);
   }
-  
+
+
   public function getFirmatariIds($tipo = null)
   {
     $con = Propel::getConnection(OppAttoPeer::DATABASE_NAME);
@@ -321,7 +322,8 @@ class OppAtto extends BaseOppAtto
       $row = $rs->getRow();
       $ids []= $row['carica_id'];
     }
-		return $ids;		
+
+    return $ids;
   }
   
   /**

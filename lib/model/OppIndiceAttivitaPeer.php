@@ -147,7 +147,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
 
-      // --- componente indice dovuta alle firme come relatore
+    // --- componente indice dovuta alle firme come relatore
     $atti_relazionati = OppCaricaHasAttoPeer::getRelazioni($carica_id, $legislatura, $data);
     $n_atti_relazionati = count($atti_relazionati);
     $atti_relazionati_node = $content_node->addChild('atti_relazionati', null, self::$opp_ns);
@@ -159,7 +159,13 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       if (!empty($atti_ids) && !in_array($atto_hash['id'], $atti_ids)) {
         continue;
       }
-      $d_punteggio += self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+
+      $d_punteggio_atto = self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+      $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
+      $n_relatori_atto = count($atto->getFirmatariIds('R'));
+      $d_punteggio += $d_punteggio_atto / $n_relatori_atto;
+
+
     }
 
     $atti_relazionati_node->addAttribute('totale', $d_punteggio);
