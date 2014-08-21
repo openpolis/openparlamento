@@ -300,12 +300,12 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
   public static function fetchLastData($type = 'P', $ramo=null, $con = null)
   {
     if (is_null($con))
-		$con = Propel::getConnection(self::DATABASE_NAME);
+        $con = Propel::getConnection(self::DATABASE_NAME);
 
-        if (is_null($ramo))
-	    	$sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' order by data desc");
-        else
-            $sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' and ramo='$ramo' order by data desc");
+    if (is_null($ramo))
+        $sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' order by data desc");
+    else
+        $sql = sprintf("select distinct data from opp_politician_history_cache where chi_tipo='$type' and ramo='$ramo' order by data desc");
 
     $stm = $con->createStatement(); 
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);

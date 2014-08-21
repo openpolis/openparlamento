@@ -200,7 +200,7 @@ function run_opp_build_cache_politici($task, $args, $options)
     $data = $options['data'];
   }
   if (array_key_exists('ramo', $options)) {
-    $ramo = strtolower($options['ramo']);
+    $ramo = strtoupper($options['ramo']{0});
   }
   if (array_key_exists('verbose', $options)) {
     $verbose = true;
@@ -230,10 +230,11 @@ function run_opp_build_cache_politici($task, $args, $options)
   } else {
     $legislatura_corrente = OppLegislaturaPeer::getCurrent();
     $data = date('Y-m-d');
-    if ($ramo == 'tutti')
+    if ($ramo == 'tutti') {
         $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P');
-    else
+    } else {
         $data_lookup = OppPoliticianHistoryCachePeer::fetchLastData('P', $ramo);
+    }
 
   }
 
