@@ -164,6 +164,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
       $n_relatori_atto = count($atto->getFirmatariIds('R'));
       $d_punteggio += $d_punteggio_atto / $n_relatori_atto;
+      $atto_node = $xml_node->xpath('//atto[@id=' + $atto_hash['id'] + ']');
+      $atto_node->totale = $d_punteggio_atto / $n_relatori_atto;
 
 
     }
@@ -445,6 +447,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
           $passaggio_node->addAttribute('tipo', $passaggio);
         }
 
+        // il break su atti assorbiti avviene prima dell'assegnazione del punteggio di relazione
+        if ($mode == 'relazione' && $passaggio == 'assorbito')
+        {
+            break;
+        }
+
         $carica_in_maggioranza_al_passaggio = OppCaricaPeer::inMaggioranza($carica_id, $iter_atto['data']);
         $d_punteggio += $dd_punteggio = self::getPunteggio($tipo_atto, $passaggio, $carica_in_maggioranza_al_passaggio);
         if ($verbose)
@@ -453,7 +461,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
         $passaggio_node->addAttribute('totale', $dd_punteggio);
 
-        // il break su atti assorbiti avviene dopo l'assegnazione del punteggio
+        // il break su atti assorbiti avviene dopo l'assegnazione del punteggio di presentazione
         if ($mode == 'presentazione' && $passaggio == 'assorbito')
         {
           break;

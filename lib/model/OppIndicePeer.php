@@ -123,7 +123,7 @@ class OppIndicePeer
                                'cofirme_opp_hi'      => array('m' => 1.5, 'o' =>  2.0),
                                'discusso_in_comm'    => array('m' =>   0, 'o' =>    0),
                                'discusso_in_ass'     => array('m' =>   0, 'o' =>    0),
-                               'votato'              => array('m' => 0.5, 'o' =>  1.0),
+                               'votato'              => array('m' => 0.1, 'o' =>  0.2),
                                'approvato'           => array('m' => 1.0, 'o' =>  2.0),
                                'diventato_legge'     => array('m' =>   0, 'o' =>    0),
                                'svolto'              => array('m' =>   0, 'o' =>    0),
