@@ -998,7 +998,7 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
   public static function getParlamentariRamoDataRS($ramo, $legislatura, $data, $offset = null, $limit = null)
   {
 
-    switch ($ramo) {
+    switch (strtolower($ramo)) {
       case 'camera':
       case 'c':
         $tipi_carica_ids = array(1);

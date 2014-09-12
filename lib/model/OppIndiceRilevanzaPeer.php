@@ -83,7 +83,7 @@ class OppIndiceRilevanzaPeer extends OppIndicePeer
  
 
   /**
-   * calcola l'indice di rilevanza accumulato fino alla fine della settimana, per un atto, nel suo complesso 
+   * calcola l'indice di rilevanza, per un atto, nel suo complesso
    *
    * @param integer $atto_id
    * @param integer $tipo_atto_id 
