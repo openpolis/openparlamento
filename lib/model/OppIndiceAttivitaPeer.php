@@ -135,8 +135,17 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       if (!empty($atti_ids) && !in_array($atto['id'], $atti_ids)) {
         continue;
       }
-      $dd_punteggio = self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atti_node, $verbose);
+      $atto_node = $atti_node->addChild('atto', null, self::$opp_ns);
+      $dd_punteggio = self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atto_node, $verbose);
       $d_punteggio += $dd_punteggio;
+
+      // $punteggio = $priorita * $punteggio;
+      $atto_node->addAttribute('totale', $dd_punteggio);
+
+      if ($verbose)
+          printf(" totale atto - punteggio: %7.2f\n",
+                 $dd_punteggio);
+
     }
     $atti_node->addAttribute('totale', $d_punteggio);
     $punteggio += $d_punteggio;
@@ -160,13 +169,23 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
         continue;
       }
 
-      $d_punteggio_atto = self::calcolaIndiceAtto($carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atti_relazionati_node, $verbose, 'relazione');
+      $atto_node = $atti_relazionati_node->addChild('atto', null, self::$opp_ns);
+
+      $d_punteggio_atto = self::calcolaIndiceAtto(
+          $carica_id, $atto_hash['id'], $atto_hash['tipo_atto_id'], $data, $atto_node, $verbose, 'relazione'
+      );
       $atto = OppAttoPeer::retrieveByPK($atto_hash['id']);
       $n_relatori_atto = count($atto->getFirmatariIds('R'));
-      $d_punteggio += $d_punteggio_atto / $n_relatori_atto;
-      $atto_node = $xml_node->xpath('//atto[@id=' + $atto_hash['id'] + ']');
-      $atto_node->totale = $d_punteggio_atto / $n_relatori_atto;
+      $dd_punteggio = $d_punteggio_atto / $n_relatori_atto;
+      $d_punteggio += $dd_punteggio;
 
+      // $punteggio = $priorita * $punteggio;
+      $atto_node->addAttribute('totale', $dd_punteggio);
+      $atto_node->addAttribute('n_relatori', $n_relatori_atto);
+
+      if ($verbose)
+          printf(" totale atto dopo divisione (%d relatori) - punteggio: %7.2f\n",
+                 $n_relatori_atto, $dd_punteggio);
 
     }
 
@@ -276,10 +295,8 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
    * @return float
    * @author Guglielmo Celata
    */
-  public static function calcolaIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $xml_node, $verbose = false, $mode = 'presentazione')
+  public static function calcolaIndiceAtto($carica_id, $atto_id, $tipo_atto_id, $data, $atto_node, $verbose = false, $mode = 'presentazione')
   {
-    $atto_node = $xml_node->addChild('atto', null, self::$opp_ns);
-    
     $atto = OppAttoPeer::retrieveByPK($atto_id);
     $priorita = is_null($atto->getPriorityValue()) ? 1 : $atto->getPriorityValue();
     $atto_is_ratifica = $atto->isRatifica();
@@ -535,11 +552,6 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $punteggio = $punteggio / self::$punteggi['fattore_diminuzione_ratifica'];
     }
 
-    // $punteggio = $priorita * $punteggio;
-    $atto_node->addAttribute('totale', $punteggio);
-
-    if ($verbose)
-      printf(" totale atto   %7.2f\n", $punteggio);
 
     unset($c);
     unset($atto);
@@ -766,6 +778,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $larghezza = self::$punteggi['emendamenti_larghezza']; 
     $soglia = self::$punteggi['emendamenti_soglia'];
 
+    // calcolo se appartiene alla maggioranza o all'opposizione
+    // (al momento della presentazione dell'atto, che è l'unico momento certo)
+    $atto = OppAttoPeer::retrieveByPK($atto_id);
+    $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
+
+
     // calcolo valore emendamenti presentati per atto, con soglia discendente
     // 1 + tanh(0.01*(s-x))
     // integrale indefinito è x - 100 * log(cosh(0.01*s - 0.01*x)) (Wolfram Alpha)
@@ -775,11 +793,12 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $d_punteggio = 0;
     $punteggio_em_presentati = 0;
     if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
-      $punteggio_em_presentati = self::getPunteggio('emendamenti', "presentazione", 'm') * $n_emendamenti;
+      $punteggio_em_presentati = self::getPunteggio('emendamenti', "presentazione", $in_maggioranza) * $n_emendamenti;
     else
     {
       if ($n_emendamenti > 0)
-        $punteggio_em_presentati =  self::getPunteggio('emendamenti', "presentazione", 'm') * ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
+        $punteggio_em_presentati =  self::getPunteggio('emendamenti', "presentazione", $in_maggioranza) *
+          ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
     }
 
     if ($punteggio_em_presentati > 0)
@@ -796,15 +815,32 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $n_emendamenti_votati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1,2), $carica_id, $atto_id, $data);
     $n_emendamenti_approvati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1), $carica_id, $atto_id, $data);
 
-    if ($n_emendamenti_votati + $n_emendamenti_approvati > 0)
+    if ($n_emendamenti_votati)
     {
-      $d_punteggio += $punteggio_em_votati = $n_emendamenti_votati * self::getPunteggio('emendamenti', 'votato', 'm');
-      $d_punteggio += $punteggio_em_approvati = $n_emendamenti_approvati * self::getPunteggio('emendamenti', 'approvato', 'm');
+        if ($n_emendamenti_votati <= $soglia)
+            $punteggio_em_votati = self::getPunteggio('emendamenti', "votato", $in_maggioranza) * $n_emendamenti_votati;
+        else
+        {
+            $punteggio_em_votati =  self::getPunteggio('emendamenti', "votato", $in_maggioranza) *
+                ($n_emendamenti_votati - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti_votati))));
+        }
+
+        $d_punteggio += $punteggio_em_votati = $n_emendamenti_votati * self::getPunteggio('emendamenti', 'votato', $in_maggioranza);
+        if ($verbose)
+        {
+            printf("    votazione %d emendamenti %7.2f\n", $n_emendamenti_votati, $punteggio_em_votati);
+        }
+
+
+    }
+
+    if ($n_emendamenti_approvati > 0)
+    {
+      $d_punteggio += $punteggio_em_approvati = $n_emendamenti_approvati * self::getPunteggio('emendamenti', 'approvato', $in_maggioranza);
 
       if ($verbose)
       {
-        printf("    votazione %d emendamenti %7.2f\n", $n_emendamenti_votati, $punteggio_em_votati);
-        printf("    approvazione %d emendamenti %7.2f\n", $n_emendamenti_approvati, $punteggio_em_approvati);        
+        printf("    approvazione %d emendamenti %7.2f\n", $n_emendamenti_approvati, $punteggio_em_approvati);
       }
 
     }
