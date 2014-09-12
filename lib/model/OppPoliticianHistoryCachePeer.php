@@ -156,7 +156,7 @@ class OppPoliticianHistoryCachePeer extends BaseOppPoliticianHistoryCachePeer
       "  pc.presenze/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_presenze, pc.presenze as presenze, " .
       "  pc.missioni/(pc.presenze+pc.missioni+pc.assenze)*100.0 as perc_missioni, pc.missioni as missioni, " .
       "  (pc.presenze+pc.missioni+pc.assenze) as votazioni, " .
-      "  pc.indice " .
+      "  pc.indice  " .
       "from opp_politician_history_cache pc, " .
       "  opp_carica c, opp_politico p, opp_carica_has_gruppo cg, opp_gruppo g " .
       "where p.id=c.politico_id and c.id=pc.chi_id and cg.carica_id=c.id and cg.gruppo_id=g.id and " .

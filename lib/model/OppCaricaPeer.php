@@ -56,8 +56,7 @@ public static function getIndexChartsPoliticiansInConstituencyRealTime($ramo, $d
 		 $items[$k]['missioni']=$r->getMissioni();
 		 $items[$k]['votazioni']=$r->getAssenze()+$r->getPresenze()+$r->getMissioni();
 		 $items[$k]['indice']=$r->getIndice();
-	 }	 
-	 
+	 }	 	 
 	 return $items;
 	 	
  }
@@ -96,14 +95,15 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
 	 $results=OppCaricaPeer::doSelect($c);
 	 foreach($results as $k => $r)
 	 {
-                 $gruppi=$r->getOppCaricaHasGruppos();
+                 //$gruppi=$r->getOppCaricaHasGruppos();
+                 $gruppo=OppCaricaHasGruppoPeer::getGruppoCorrentePerCarica($r->getId());
 	 	 $items[$k]['id']=$r->getId();
 		 $items[$k]['politico_id']=$r->getPoliticoId();
 		 $items[$k]['nome']=$r->getOppPolitico()->getNome();
 		 $items[$k]['cognome']=$r->getOppPolitico()->getCognome();
 		 $items[$k]['sesso']=$r->getOppPolitico()->getSesso();
-		 $items[$k]['acronimo']=$gruppi[0]->getOppGruppo()->getAcronimo();
-		 $items[$k]['nome_gruppo']=$gruppi[0]->getOppGruppo()->getNome();
+                 $items[$k]['acronimo'] =$gruppo->getAcronimo();  
+		 $items[$k]['nome_gruppo']=$gruppo->getNome();
 		 $items[$k]['circoscrizione']=$r->getCircoscrizione();
 		 $items[$k]['perc_assenze']=($r->getAssenze()*100)/($r->getAssenze()+$r->getPresenze()+$r->getMissioni());
 		 $items[$k]['assenze']=$r->getAssenze();
@@ -113,6 +113,8 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
 		 $items[$k]['missioni']=$r->getMissioni();
 		 $items[$k]['votazioni']=$r->getAssenze()+$r->getPresenze()+$r->getMissioni();
 		 $items[$k]['indice']=$r->getIndice();
+                 $items[$k]['ribelle']=$r->getRibelle();
+                 $items[$k]['perc_ribelle']=($r->getRibelle()*100)/$r->getPresenze();
 	 }	 
 	 
 	 return $items;
