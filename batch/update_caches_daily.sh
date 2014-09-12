@@ -15,4 +15,4 @@
 
 ./symfony opp-compute-delta-politici
 ./symfony opp-compute-delta-atti
-./symfony opp-compute-delta-tags
+# ./symfony opp-compute-delta-tags

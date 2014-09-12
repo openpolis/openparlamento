@@ -825,7 +825,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                 ($n_emendamenti_votati - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti_votati))));
         }
 
-        $d_punteggio += $punteggio_em_votati = $n_emendamenti_votati * self::getPunteggio('emendamenti', 'votato', $in_maggioranza);
+        $d_punteggio += $punteggio_em_votati;
         if ($verbose)
         {
             printf("    votazione %d emendamenti %7.2f\n", $n_emendamenti_votati, $punteggio_em_votati);
