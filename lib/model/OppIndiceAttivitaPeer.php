@@ -137,6 +137,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       }
       $atto_node = $atti_node->addChild('atto', null, self::$opp_ns);
       $dd_punteggio = self::calcolaIndiceAtto($carica_id, $atto['id'], $atto['tipo_atto_id'], $data, $atto_node, $verbose);
+
       $d_punteggio += $dd_punteggio;
 
       // $punteggio = $priorita * $punteggio;
@@ -552,6 +553,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
       $punteggio = $punteggio / self::$punteggi['fattore_diminuzione_ratifica'];
     }
 
+
+    // moltiplicatore priorità
+    $dd_punteggio = $priorita * $punteggio;
 
     unset($c);
     unset($atto);
