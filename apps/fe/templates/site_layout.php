@@ -15,7 +15,7 @@
 
     <?php
         // variabili JS per il tracking WebTrekk di Kataweb (modulo kw)
-        include_component_slot('kwWebTrekk')
+        // include_component_slot('kwWebTrekk')
     ?>
 
 	<?php
