@@ -555,7 +555,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
     // moltiplicatore priorità
-    $dd_punteggio = $priorita * $punteggio;
+    $punteggio = $priorita * $punteggio;
 
     unset($c);
     unset($atto);
