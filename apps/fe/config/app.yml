@@ -155,7 +155,7 @@ all:
 
   # varie
   monitored_acts_per_type_limit: 5
-  legislatura_data_inizio: '2012-03-15'
+  legislatura_data_inizio: '2013-03-15'
   legislatura_corrente: 17
   
   sfEmendPlugin:    
