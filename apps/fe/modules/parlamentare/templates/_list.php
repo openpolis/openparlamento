@@ -55,7 +55,7 @@
         <td>
           
 		  <?php 
-		    if ($parlamentari->getString(14) > date("Y-m-d", strtotime('today - 1000 days')) ||
+		    if ($parlamentari->getString(14) > date("Y-m-d", strtotime('today - 365 days')) ||
 		        in_array($parlamentari->getInt(2), array_merge($presidenti_ids, $membri_governo_ids))) 
 		    {
 		      print "Non applicabile";
