@@ -155,14 +155,13 @@ $ramo = isset($ramo) ? $ramo : '';
             </div>
             <div class="float-container" style="padding:2px 10px 10px 20px;">
                 <label style="color:#888888; font-weight:bold; font-size:16px;">classifica:</label>
-                <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '318 senatori') ?>
-                  <?php if($carica->getDataInizio()>"2008-04-29") echo "<span style='background-color: yellow; font-weight:bold;'>(N.B. subentrato dal ".$carica->getDataInizio('d/m/Y').")</span>"; ?>
-                   | <?php echo link_to('vai alla classifica completa', 
-                                     'http://indice.openpolis.it') ?>
+                <span style="text-align:left; color:#4E8480;  font-weight:bold; font-size:20px;"><?php echo $carica->getPosizione()."&deg;" ?></span> su <?php echo ($ramo=='camera' ? '630 deputati' : '315 senatori') ?>
+                  <?php if($carica->getDataInizio()>"2013-05-15") echo "<span style='background-color: yellow; font-weight:bold;'>(N.B. subentrato dal ".$carica->getDataInizio('d/m/Y').")</span>"; ?>
+                   | <?php //echo link_to('vai alla classifica completa', 
+                             //        'http://indice.openpolis.it') ?>
                   </span>
 
                 <span style="font-weight:normal; padding-top:7px; float:left; text-align:left;">L'indice di produttivit&agrave; non prende in considerazione il lavoro, anche rilevante, che alcuni parlamentari svolgono per gli incarichi necessari al funzionamento della macchina politica e amministrativa del Parlamento (Commissioni, Gruppi, Comitati, Giunte, Collegi e Uffici di Camera e Senato).
-                  Per una spiegazione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html"><strong>vai qui</strong></a>.
                   </span>
             </div>
       
