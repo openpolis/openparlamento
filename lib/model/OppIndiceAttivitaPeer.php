@@ -789,11 +789,11 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
 
 
     // calcolo valore emendamenti presentati per atto, con soglia discendente
-    // 1 + tanh(0.01*(s-x))
-    // integrale indefinito è x - 100 * log(cosh(0.01*s - 0.01*x)) (Wolfram Alpha)
-    // in questo modo, fino a 40 emendamenti il peso è uniforme, poi scende, fino a 400, quando
+    // 1 + tanh((1/larghezza)*(soglia-x))
+    // integrale indefinito è x - larghezza * log(cosh(soglia - x)/larghezza)) (Wolfram Alpha)
+    // in questo modo, fino a circa $soglia emendamenti la crescita per emendamento è lineare, 
+    // poi scende, in un intervallo di larghezza 20, quando oltre sessante, la crescita è zero
     // gli emendamenti in più non pesano niente
-    // descritto in: http://trac.openpolis.it/openparlamento/wiki/NuovoIndice
     $d_punteggio = 0;
     $punteggio_em_presentati = 0;
     if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
@@ -802,7 +802,7 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     {
       if ($n_emendamenti > 0)
         $punteggio_em_presentati =  self::getPunteggio('emendamenti', "presentazione", $in_maggioranza) *
-          ($n_emendamenti - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti))));
+          ($n_emendamenti - $larghezza * log(cosh(1. - (1./$larghezza * ($soglia - $n_emendamenti))));
     }
 
     if ($punteggio_em_presentati > 0)

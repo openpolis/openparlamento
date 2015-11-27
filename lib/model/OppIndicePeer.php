@@ -114,7 +114,7 @@ class OppIndicePeer
                               'bonus_bi_partisan'   => array('m' =>   0, 'o' =>    0),
                              ),
 
-     'emendamenti'    => array('presentazione'       => array('m' => 0.05, 'o' => 0.05),
+     'emendamenti'    => array('presentazione'       => array('m' => 0.01, 'o' => 0.01),
                                'cofirme_gruppo_lo'   => array('m' => 0.5, 'o' =>  0.2),
                                'cofirme_gruppo_hi'   => array('m' => 0.5, 'o' =>  0.2),
                                'cofirme_altri_lo'    => array('m' => 0.8, 'o' =>  0.8),
@@ -137,9 +137,9 @@ class OppIndicePeer
      'presenze_voti_finali'       => 0.1,
      'presenze_voti_magg_battuta' => 0.3,
      'emendamenti_soglia'         => 40.,
-     'emendamenti_larghezza'      => 100.,
+     'emendamenti_larghezza'      => 20.,
      'emendamenti_soglia_rilevanza' => 40.,
-     'emendamenti_larghezza_rilevanza' => 100.,
+     'emendamenti_larghezza_rilevanza' => 20.,
      'fattore_diminuzione_ratifica' => 10.
   );
  
