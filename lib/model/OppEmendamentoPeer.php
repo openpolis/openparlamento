@@ -85,6 +85,7 @@ class OppEmendamentoPeer extends BaseOppEmendamentoPeer
   	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
   	$c->add(OppCaricaHasEmendamentoPeer::TIPO, $tipo, Criteria::EQUAL);
   	$c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
+	$c->addDescendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_INIZIO);
   	$rs = OppCaricaHasEmendamentoPeer::doSelectRS($c);
 	
 	  return $rs;

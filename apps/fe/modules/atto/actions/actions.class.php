@@ -665,25 +665,26 @@ class attoActions extends sfActions
     $this->response->addMeta('description','Tutti le notizie e gli ultimi aggiornamenti su '.$this->atto->getOppTipoAtto()->getDescrizione().' '.$this->atto->getRamo().'. '.$this->atto->getNumfase().' '.Text::denominazioneAtto($this->atto, 'index'),true);
     
     //individuazione link fonte
-    if($this->atto->getTipoAttoId() == '1')
+    if($this->atto->getTipoAttoId() == 1)
       $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/Ddliter/'.$this->atto->getParlamentoId().'.htm';
-    elseif($this->atto->getTipoAttoId() > '1' && $this->atto->getTipoAttoId() < '12' )
-      $this->link = 'http://banchedati.camera.it/sindacatoispettivo_'.$this->atto->getLegislatura().'/showXhtml.Asp?idAtto='.$this->atto->getParlamentoId().'&stile=6&highLight=1';
-    elseif($this->atto->getTipoAttoId() == '12' )
+    elseif($this->atto->getTipoAttoId() > 1 && $this->atto->getTipoAttoId() < 12 )
+      $this->link =
+	'http://aic.camera.it/aic/scheda.html?core=aic&numero='.$this->atto->getNumfase().'&ramo='.$this->atto->getRamo().'&leg='.$this->atto->getLegislatura();
+    elseif($this->atto->getTipoAttoId() == 12 )
     {
       $anno=explode("-",$this->atto->getDataPres());
       $numero=explode("/",$this->atto->getNumfase());
       $this->link="http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legge:".$anno[0].";".$numero[0];
     }
    
-    elseif($this->atto->getTipoAttoId() == '14' )
+    elseif($this->atto->getTipoAttoId() == 14 )
     {
 	  if($this->atto->getRamo()=='C')
         $this->link = 'http://www.camera.it/_dati/leg'.$this->atto->getLegislatura().'/lavori/stencomm/'.$this->atto->getNumfase().'/s010.htm';
       else
         $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/ProcANL/ProcANLscheda'.$this->atto->getParlamentoId().'.htm';
     }  
-    elseif($this->atto->getTipoAttoId() > '14' && $this->atto->getTipoAttoId() < '18' )
+    elseif($this->atto->getTipoAttoId() > 14 && $this->atto->getTipoAttoId() < '18' )
     {
       $str = $this->atto->getParlamentoId();
       $len = 5 - strlen($str);
@@ -692,7 +693,7 @@ class attoActions extends sfActions
       
 	  $this->link = 'http://www.camera.it/parlam/leggi/deleghe/'.$str.'dl.htm';
     }
-    if($this->atto->getTipoAttoId() == '13') $this->link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$this->atto->getParlamentoId();   
+    if($this->atto->getTipoAttoId() == 13 ) $this->link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$this->atto->getParlamentoId();   
     
 	  //tipo di iniziativa
 	  $this->tipo_iniziativa = '';

@@ -30,10 +30,11 @@ public function getColor()
     case 61:
     case 63:
     case 65:
+    case 11:
        $color="green";
         break;
         
-    case 11:    
+    //case 11:    
     case 12:
     case 13:
     case 14:
@@ -76,7 +77,7 @@ public function getColor()
         $short_name='modificato';
         break; 
       case 14:
-        $short_name='DL decatuto';
+        $short_name='DL decaduto';
         break;
       case 16:
         $short_name='Rinv. Pres. Rep.';

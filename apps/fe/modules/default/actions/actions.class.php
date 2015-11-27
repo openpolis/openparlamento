@@ -236,7 +236,7 @@ class defaultActions extends sfActions
       sfConfig::get('app_sfSimpleBlog_post_max_per_page', 10),
       $this->getRequestParameter('page', 1)
        );
-       
+
     // estrae le circoscrizioni, compreso il valore 0
     $this->senato_constituencies = OppCaricaPeer::getAllConstituencies('senato', false);
     $this->camera_constituencies = OppCaricaPeer::getAllConstituencies('camera', false);

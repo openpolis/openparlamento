@@ -638,7 +638,7 @@ class OppAttoPeer extends BaseOppAttoPeer
 	  $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::LEFT_JOIN);
 	  $c->addJoin(OppCaricaPeer::ID, OppCaricaHasGruppoPeer::CARICA_ID, Criteria::LEFT_JOIN);
 	  $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
-	  //$c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
+	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE, NULL, Criteria::ISNULL);
 	  $c->add(OppCaricaHasAttoPeer::TIPO, $tipo, Criteria::EQUAL);
 	  $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
 	  $c->addAscendingOrderByColumn(OppCaricaHasGruppoPeer::DATA_FINE);

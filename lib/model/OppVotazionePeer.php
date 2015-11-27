@@ -45,6 +45,8 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     $c->add($crit0);
     $c->add(OppSedutaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
     $c->add(OppVotazionePeer::TITOLO, '%annullata%' , Criteria::NOT_LIKE);
+	// Prendi solo votazioni durante il Governo Renzi
+	$c->add(OppSedutaPeer::DATA, '2014-02-22', Criteria::GREATER_EQUAL);
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
     if ($votazione_id>0)
        $c->add(OppVotazionePeer::ID, $votazione_id);
@@ -52,7 +54,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     
     foreach ($votazioni_magg_su as $votazione)
     {
-      echo $votazione->getId();
+      //echo $votazione->getId();
       if ($votazione->getOppSeduta()->getRamo()=='C')
         $ramo='camera';
       else
@@ -130,7 +132,7 @@ class OppVotazionePeer extends BaseOppVotazionePeer
       $cn=OppVotazioneHasCaricaPeer::doCount($c);
       if ($cn>=$votazione->getMargine())
       {
-         echo "!!!!!!!$cn  ".$votazione->getId()."\n";
+         //echo "!!!!!!!$cn  ".$votazione->getId()."\n";
          $maggioranza_salva[]=$votazione;
       }
     }  
@@ -204,6 +206,8 @@ class OppVotazionePeer extends BaseOppVotazionePeer
     $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
     $c->add(OppSedutaPeer::LEGISLATURA, $leg, Criteria::EQUAL);
     $c->add(OppVotazionePeer::TITOLO, '%annullata%' , Criteria::NOT_LIKE);
+	// Prendi solo votazioni durante il Governo Renzi
+	 $c->add(OppSedutaPeer::DATA, '2014-02-22', Criteria::GREATER_EQUAL);
     
     if ($votazione_id>0)
        $c->add(OppVotazionePeer::ID, $votazione_id);

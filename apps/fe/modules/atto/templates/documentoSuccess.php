@@ -13,13 +13,17 @@
 		<p><?php echo image_tag('/images/emend-help.png') ?></p>                
 		<?php endif ?>
 		
-		<?php if($documento->getUrlTesto()): ?>
-		<div><b><?php echo link_to('link alla fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
-		<?php if($documento->getUrlPdf()): ?>
-		&nbsp;|&nbsp;
-		<b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf(), array('class' => 'external')) ?></b>
-		<?php endif; ?>
-		</div>
+		<?php if($documento->getUrlTesto() && ($documento->getOppAtto()->getTipoAttoId()==1 || $documento->getOppAtto()->getTipoAttoId()>11)): ?>
+			<div><b><?php echo link_to('link alla fonte', $documento->getUrlTesto(), array('class' => 'external')) ?></b>
+			<?php if($documento->getUrlPdf()): ?>
+				&nbsp;|&nbsp;
+				<b><?php echo link_to('scarica il documento in PDF', $documento->getUrlPdf(), array('class' => 'external')) ?></b>
+			<?php endif; ?>
+			</div>
+		<?php elseif ($documento->getOppAtto()->getTipoAttoId()>1 && $documento->getOppAtto()->getTipoAttoId()<=11):?>
+			<div><b><?php echo link_to('link alla fonte', 'http://aic.camera.it/aic/scheda.html?core=aic&numero='.$documento->getOppAtto()->getNumfase().'&ramo='.$documento->getOppAtto()->getRamo().'&leg='.$documento->getOppAtto()->getLegislatura(), array('class' => 'external')) ?></b>
+			<b><?php echo link_to('scarica il documento in PDF', 'http://aic.camera.it/aic/scheda.pdf?core=aic&numero='.$documento->getOppAtto()->getNumfase().'&ramo='.$documento->getOppAtto()->getRamo().'&leg='.$documento->getOppAtto()->getLegislatura(), array('class' => 'external')) ?></b>
+			</div>
 		<?php endif; ?>
 		
 		<br />

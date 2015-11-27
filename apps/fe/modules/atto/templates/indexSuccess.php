@@ -31,7 +31,14 @@
 	       </span>
 	       <?php include_partial('attoWiki', array('titolo_wiki' => $titolo_wiki)) ?>
 	       <span style="color:#888888;font-size:16px;font-weight:bolder">
-
+			    
+				<?php if ($atto->getIniziativa()==3) : ?>
+					<?php echo ' di iniziativa regionale'?>
+				<?php elseif ($atto->getIniziativa()==4) :?>
+					<?php echo ' di iniziativa popolare'?>
+				<?php elseif ($atto->getIniziativa()==5) :?>
+					<?php echo ' di iniziativa del CNEL'?>
+				<?php endif; ?>	
 	            <?php $f_signers= OppAttoPeer::getRecordsetFirmatari($atto->getId(),'P'); ?>
 	            <?php if ($f_signers->next()) : ?>
 	                <?php if($atto->getTipoAttoId()==1 ): ?>
@@ -72,7 +79,7 @@
 	        <?php if($tipo_iniziativa != ''): ?>
 	          <li><h6>tipo di iniziativa: <em><?php echo $tipo_iniziativa ?></em></h6></li>
 	        <?php endif; ?>			  
-	        <?php if($link != '#' && $atto->getParlamentoID()!=NULL): ?>
+	        <?php if($link != '#'): ?>
 	          <li><?php echo link_to("link alla fonte", $link, array('class' => 'external', 'target' => '_blank')) ?></li>
 	        <?php endif; ?>		  
 	      </ul>

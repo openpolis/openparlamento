@@ -375,6 +375,10 @@ propel:
     legislatura:      { type: integer }
     tipologia:        { type: varchar(255) }
     codice:           { type: varchar(255) }
+    data_inizio:      { type: date }
+    data_fine:        { type: date }
+    parlamento_id:    { type: integer }
+	
 
   opp_seduta:
     id:
@@ -395,6 +399,7 @@ propel:
   opp_tipo_carica:
    id:  
    nome:              { type: varchar(255) }
+   parlamento_id:     { type: integer }
    
   opp_tipo_relazione:
    id:  
