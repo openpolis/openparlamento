@@ -23,8 +23,9 @@ if (count($votazioni)>0)
   {
     //if (OppVotazionePeer::isMaggioranzaUnitaSuVotazione($v->getId()))
     //{
-      $v->setIsMaggioranzaSottoSalva(1);
-      $v->save();
+      	$v->setIsMaggioranzaSottoSalva(1);
+      	$v->save();
+		echo $v->getId()."\n";
     //}
   }
 }
