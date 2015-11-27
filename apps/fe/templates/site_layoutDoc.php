@@ -13,13 +13,6 @@
     <?php include_metas() ?>
     <?php include_title() ?>
 
-    <!-- classificazione WebTrekk per Kataweb -->
-    <script type="text/javascript">
-        kwWebtrekk = new Object()
-        kwWebtrekk.pageType = 'dettaglio_articolo'
-    </script>
-
-
     <?php
 	// CANONICAL for _old-s 
     $router = sfRouting::getInstance();

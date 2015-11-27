@@ -33,7 +33,6 @@
                 <li><a href="http://github.com/openpolis/openparlamento">Codice sorgente</a></li>
                 <li><a href="http://www.gnu.org/copyleft/gpl.html">Licenza GNU/GPL</a></li>
             </ul>
-            <a href="http://trac.openpolis.it/openparlamento/"><span class="icon trac">Trac</span></a>
             <div class="clearfix"></div>
         </section>
         <section class="threecol last">
@@ -61,11 +60,6 @@
         </ul>            
     </nav>
 
-    <nav id="sub-sub-footer" class="row">
-        <ul class="twelvecol">
-            <li>Openparlamento.it è partner de l'Espresso</li>
-        </ul>
-    </nav>
 </footer>
 <script type="text/javascript">
     jQuery('.email-nascosta').each(function(){ jQuery(this).text(jQuery(this).text().replace('[chioccia]', '@').replace('[punto]','.')); });
