@@ -61,6 +61,10 @@ api_parlamentari_id:
   url: /elenco_parlamentari_id/:ramo
   param: { module: api, action: getParlamentoIdParlamentariInCarica }  
 
+api_parlamentari_dimessi_id:
+  url: /elenco_parlamentari_dimessi_id/:ramo
+  param: { module: api, action: getParlamentoIdParlamentariNonInCarica }  
+
 api_voti_chiave:
   url: /elenco_voti_chiave/:key/*
   param: { module: api, action: elencoVotiChiave }

@@ -1478,29 +1478,69 @@ class apiActions extends sfActions
       '<opp xmlns="'.$this->opp_ns.'" '.
             ' xmlns:opp="'.$this->op_ns.'" '.
             ' xmlns:xlink="'.$this->xlink_ns.'" >'.
-      '</opp>');
+      '</opp>'
+    );
       
-  		// start producing xml
-      $content_node = $resp_node->addChild('opp:content', null, $this->op_ns);    
+    // start producing xml
+    $content_node = $resp_node->addChild('opp:content', null, $this->op_ns);    
            
-      $c= new Criteria();
-      if ($ramo=='C')
-        $arr_tipo_id=array(1);
-      else
-         $arr_tipo_id=array(4,5);
-      $c->add(OppCaricaPeer::TIPO_CARICA_ID,$arr_tipo_id, Criteria::IN);
-      $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
-      $parlamentari= OppCaricaPeer::doSelect($c);
-      foreach($parlamentari as $p)
-      {
-       $p_node = $content_node->addChild('parlamentare',$p->getId());
-       $p_node->addAttribute('parlamento_id', $p->getParliamentId());       
-      }
+    $c= new Criteria();
+    if ($ramo=='C')
+      $arr_tipo_id=array(1);
+    else
+      $arr_tipo_id=array(4,5);
+    $c->add(OppCaricaPeer::TIPO_CARICA_ID,$arr_tipo_id, Criteria::IN);
+    $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
+    $parlamentari= OppCaricaPeer::doSelect($c);
+    foreach($parlamentari as $p)
+    {
+      $p_node = $content_node->addChild('parlamentare',$p->getId());
+      $p_node->addAttribute('parlamento_id', $p->getParliamentId());       
+    }
        
     $xmlContent = $resp_node->asXML();
     $this->_send_output($xmlContent);
     return sfView::NONE;
   }
+
+
+  public function executeGetParlamentoIdParlamentariNonInCarica()
+  {
+    
+    $ramo = $this->getRequestParameter('ramo');
+    
+    $resp_node = new SimpleXMLExtended(
+      '<opp xmlns="'.$this->opp_ns.'" '.
+            ' xmlns:opp="'.$this->op_ns.'" '.
+            ' xmlns:xlink="'.$this->xlink_ns.'" >'.
+      '</opp>'
+    );
+      
+    // start producing xml
+    $content_node = $resp_node->addChild('opp:content', null, $this->op_ns);    
+           
+    $c= new Criteria();
+    if ($ramo=='C')
+      $arr_tipo_id=array(1);
+    else
+      $arr_tipo_id=array(4,5);
+    $c->add(OppCaricaPeer::TIPO_CARICA_ID,$arr_tipo_id, Criteria::IN);
+    $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNOTNULL);
+    $parlamentari= OppCaricaPeer::doSelect($c);
+    foreach($parlamentari as $p)
+    {
+      $p_node = $content_node->addChild('parlamentare',$p->getId());
+      $p_node->addAttribute('parlamento_id', $p->getParliamentId());       
+    }
+       
+    $xmlContent = $resp_node->asXML();
+    $this->_send_output($xmlContent);
+    return sfView::NONE;
+  }
+
+
+
+
 
 
   /**
