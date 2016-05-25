@@ -39,7 +39,7 @@
             <h3>Restiamo in contatto</h3>	
             <p>Per segnalazioni, suggerimenti, lamentele ma anche incoraggiamenti:</p>
             <h4>Associazione Openpolis</h4>
-            <p>via degli Equi 42 - 00185 Roma<br />
+            <p>via Merulana 19 - 00185 Roma<br />
                 T. 06.83608392 <span class="email-nascosta">associazione[chioccia]openpolis[punto]it</span> <br /> 
                 C.I. 97532050586
             </p>
@@ -56,7 +56,7 @@
         <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" /></a></li>
         <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open politici" title="Open politici" /></a></li>
         <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" /></a></li>
-        <li><a href="http://indice.openpolis.it/"><img src="/img/footers/indiceproduttivita.png" alt="L'Indice di Produttività Parlamentare" title="L'Indice di Produttività Parlamentare" /></a></li>
+        <li><a href="http://www.openbilanci.it/"><img src="/img/footers/openbilanci.png" alt="Open Bilanci" title="Open Bilanci" /></a></li>
         </ul>            
     </nav>
 
