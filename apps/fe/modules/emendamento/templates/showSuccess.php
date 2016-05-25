@@ -96,6 +96,19 @@
 	        <!-- partial per la descrizione wiki -->	
 	        <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'emendamento_' . $emendamento->getId() )) ?>
 	      </div>
+		  <div class="row">
+		  	<div class="twelvecol">
+		
+		  		<!-- testo dell'emendamento -->
+		  	      <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
+		  	      <div class="coo-mind float-container">
+		  	        <h4 class="subsection"><?php echo $text->getTitolo()." del ".format_date($text->getData(),'dd/MM/yy') ?></h4>
+		  	          <div style="margin:5px;"><?php echo $text->getTesto() ?></div>        
+		  	      </div>
+		  	      <?php endforeach ?>
+		
+		  	</div>
+		  </div>
 		
 	</div>
 	<div class="threecol last">
@@ -106,19 +119,7 @@
 	
 </div>
 
-<div class="row">
-	<div class="twelvecol">
-		
-		<!-- testo dell'emendamento -->
-	      <?php foreach ($emendamento->getOppEmTestos() as $cnt => $text): ?>
-	      <div class="coo-mind float-container">
-	        <h4 class="subsection"><?php echo $text->getTitolo()." del ".format_date($text->getData(),'dd/MM/yy') ?></h4>
-	          <div style="margin:5px;"><?php echo $text->getTesto() ?></div>        
-	      </div>
-	      <?php endforeach ?>
-		
-	</div>
-</div>
+
 
 <?php slot('breadcrumbs') ?>
     <?php echo link_to("home", "@homepage") ?> /

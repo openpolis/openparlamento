@@ -23,6 +23,9 @@ $ramo = isset($ramo) ? $ramo : '';
                                              
         <div class="W100_100">
             <div class="W25_100 float-right" style="width:23%"> 
+	            <?php echo link_to(image_tag('/images/banner-patrimoni-small.png', 
+	                                               array('alt' => 'vai al sito Patrimoni Trasparenti')), 
+	                                              'http://patrimoni.openpolis.it/#/scheda/'. 											$parlamentare->getCognome().'-'.$parlamentare->getNome().'/'.$parlamentare->getId()) ?>
         
                 <?php echo link_to('la sua pagina su ' . image_tag('/images/op_logo_small.png', 
                                                                   array('alt' => 'vai al sito openpolis')), 

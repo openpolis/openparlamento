@@ -20,7 +20,7 @@
   <?php if ($ramo=='camera') :?>
     <?php echo link_to("organi della camera", "@organi?ramo=camera") ?>/
   <?php else :?>  
-    <?php echo link_to("organi del senato", "@organi?ramo=camera") ?> /
+    <?php echo link_to("organi del senato", "@organi?ramo=senato") ?> /
   <?php endif; ?>  
     giunte  
 <?php end_slot() ?>

@@ -312,8 +312,8 @@ if (count($parlamentari_change)>0)
     echo "<td>";
     foreach ($res as $k => $rs)
     {
-      
-      if (substr_count($rs['data_fine'],"-")>0)
+	  $data_fine_incarico=OppCaricaPeer::retrieveByPk($rs['carica_id'])->getDataFine();
+      if (substr_count($rs['data_fine'],"-")>0 AND $data_fine_incarico!=$rs['data_fine'])
         $date_check=true;
       else
         $date_check=false;

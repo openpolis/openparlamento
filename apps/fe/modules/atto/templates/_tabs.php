@@ -9,11 +9,9 @@
   <li class="<?php echo($current == 'decreti' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Decreti legge', '@attiDecretiLegge') ?></h2>   
   </li>
-  <!--
   <li class="<?php echo($current == 'decrleg' ? 'current' : '' ) ?>">
-    <h2><?php //echo link_to('Decreti legislativi', '@attiDecretiLegislativi') ?></h2>   
+    <h2><?php echo link_to('Decreti legislativi', '@attiDecretiLegislativi') ?></h2>   
   </li>
-  -->
   <li class="<?php echo($current == 'nonleg' ? 'current' : '' ) ?>">
     <h2><?php echo link_to('Atti non legislativi', '@attiNonLegislativi') ?></h2>   
   </li>  

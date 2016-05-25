@@ -684,14 +684,10 @@ class attoActions extends sfActions
       else
         $this->link = 'http://www.senato.it/leg/'.$this->atto->getLegislatura().'/BGT/Schede/ProcANL/ProcANLscheda'.$this->atto->getParlamentoId().'.htm';
     }  
-    elseif($this->atto->getTipoAttoId() > 14 && $this->atto->getTipoAttoId() < '18' )
+    elseif($this->atto->getTipoAttoId() > 14 && $this->atto->getTipoAttoId() < 18 )
     {
-      $str = $this->atto->getParlamentoId();
-      $len = 5 - strlen($str);
-      for($i=0; $i<$len; $i++)
-        $str = '0'.$str;
-      
-	  $this->link = 'http://www.camera.it/parlam/leggi/deleghe/'.$str.'dl.htm';
+      $parl_id=strval( $this->atto->getParlamentoId());
+      $this->link = "http://www.normattiva.it/uri-res/N2Ls?urn:nir:stato:decreto.legislativo:".substr($parl_id, 0, 4).";".substr($parl_id, 4);
     }
     if($this->atto->getTipoAttoId() == 13 ) $this->link = 'http://www.governo.it/GovernoInforma/Comunicati/testo_int.asp?d='.$this->atto->getParlamentoId();   
     

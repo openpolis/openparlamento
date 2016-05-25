@@ -14,14 +14,14 @@
 <div class="row">
 	
 	<div class="sevencol">
-           <!-- Banner Camere Aperte 2013 -->
+           <!-- Banner -->
            <div style="margin-bottom:20px;">
-              <?php echo link_to(image_tag('ca2014_banner.png', array('alt' => 'Indice  2014')), 'http://blog.openpolis.it/2014/11/03/pubblicato-il-minidossier-indice-di-produttivita-parlamentare/') ?>
+              <?php echo link_to(image_tag('patrimoni_banner.jpg', array('alt' => 'Patrimoni Trasparenti')),'http://patrimoni.openpolis.it') ?>
 </div>        
 
 	    <!-- in evidenza dal blog -->
 	     <div class="section-box"  style="padding-bottom:20px;">
-	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'http://feeds.feedburner.com/openpolis?format=xml', array('class' => 'section-box-rss')) ?>
+	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'http://blog.openpolis.it/categorie/inparlamento/feed/', array('class' => 'section-box-rss')) ?>
 	       <h3>in evidenza dal blog di openpolis</h3>
 	       <?php include_partial('sfSimpleBlog/inevidenza', 
 	                             array('feed' => sfFeedPeer::createFromWeb('http://blog.openpolis.it/categorie/inparlamento/feed/'),

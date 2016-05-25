@@ -788,21 +788,16 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $in_maggioranza = OppCaricaPeer::inMaggioranza($carica_id, $atto->getDataPres());
 
 
-    // calcolo valore emendamenti presentati per atto, con soglia discendente
-    // 1 + tanh((1/larghezza)*(soglia-x))
-    // integrale indefinito è x - larghezza * log(cosh(soglia - x)/larghezza)) (Wolfram Alpha)
-    // in questo modo, fino a circa $soglia emendamenti la crescita per emendamento è lineare, 
-    // poi scende, in un intervallo di larghezza 20, quando oltre sessante, la crescita è zero
-    // gli emendamenti in più non pesano niente
     $d_punteggio = 0;
     $punteggio_em_presentati = 0;
-    if ($n_emendamenti > 0 and $n_emendamenti <= $soglia)
-      $punteggio_em_presentati = self::getPunteggio('emendamenti', "presentazione", $in_maggioranza) * $n_emendamenti;
-    else
+
+    if ($n_emendamenti > 0) 
     {
-      if ($n_emendamenti > 0)
-        $punteggio_em_presentati =  self::getPunteggio('emendamenti', "presentazione", $in_maggioranza) *
-          ($n_emendamenti - $larghezza * log(cosh(1. - (1./$larghezza * ($soglia - $n_emendamenti))));
+      $punteggio_em_presentati = self::getPunteggioEmendamenti(
+          $n_emendamenti,
+          self::getPunteggio("emendamenti", "presentazione", $in_maggioranza),
+          $larghezza, $soglia
+      );
     }
 
     if ($punteggio_em_presentati > 0)
@@ -819,22 +814,18 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
     $n_emendamenti_votati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1,2), $carica_id, $atto_id, $data);
     $n_emendamenti_approvati = OppAttoHasEmendamentoPeer::countEmendamentiFaseAttoCaricaData(array(1), $carica_id, $atto_id, $data);
 
-    if ($n_emendamenti_votati)
+    if ($n_emendamenti_votati > 0)
     {
-        if ($n_emendamenti_votati <= $soglia)
-            $punteggio_em_votati = self::getPunteggio('emendamenti', "votato", $in_maggioranza) * $n_emendamenti_votati;
-        else
-        {
-            $punteggio_em_votati =  self::getPunteggio('emendamenti', "votato", $in_maggioranza) *
-                ($n_emendamenti_votati - $larghezza * log(cosh(1./$larghezza * ($soglia - $n_emendamenti_votati))));
-        }
+       $punteggio_em_votati = self::getPunteggioEmendamenti(
+          $n_emendamenti_votati,
+          self::getPunteggio("emendamenti", "presentazione", $in_maggioranza),
+          $larghezza, $soglia
+      );
 
-        $d_punteggio += $punteggio_em_votati;
-        if ($verbose)
-        {
+      $punteggio_em_votati = round($punteggio_em_votati, 2);
+      $d_punteggio += $punteggio_em_votati;
+      if ($verbose)
             printf("    votazione %d emendamenti %7.2f\n", $n_emendamenti_votati, $punteggio_em_votati);
-        }
-
 
     }
 

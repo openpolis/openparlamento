@@ -312,7 +312,7 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
 
   	$c->add(OppVotazioneHasCaricaPeer::VOTAZIONE_ID, $votazione_id);
   	$c->add(OppCaricaHasGruppoPeer::DATA_INIZIO, $data, Criteria::LESS_EQUAL);
-  	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data, Criteria::GREATER_EQUAL);
+  	$cton1 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, $data, Criteria::GREATER_THAN);
   	$cton2 = $c->getNewCriterion(OppCaricaHasGruppoPeer::DATA_FINE, null, Criteria::ISNULL);
     $cton1->addOr($cton2);
     $c->add($cton1);

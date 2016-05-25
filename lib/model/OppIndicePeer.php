@@ -151,6 +151,30 @@ class OppIndicePeer
     return self::$filesystem;
   }
  
+
+  /**
+   * Static function used to compute the points assigned to voted or presented amendments,
+   * using a treshold function.
+   * 
+   * The treshold function is f(x) = a * 1/2 * (1 + tanh((1/w)*(t-x)))
+   * (see: http://www.wolframalpha.com/input/?i=0.01+*+1%2F2+*+%281+%2B+tanh%28%281%2F5%29*%2840-x%29%29%29)
+   * with:
+   * a = the full point for a single emendment, when below the treshold
+   * w = the with of the switch from a to 0
+   * t = the treshold at which the switch is performed
+   *
+   * The indefinite integral for the formula is 
+   * F(X) = a/2. * (x - (1/w)*log(cosh((t-x)/w))) + C,
+   * 
+   * so, to know the total points assigned, the value F(x) - F(0) must be returned 
+   *
+   **/
+  public static function getPunteggioEmendamenti($x, $a, $w, $t)
+  {
+    $I0 = -$a/2. * (1./$w) * log(cosh($t/$w));
+    $IX = $a/2. * ($x - (1./$w) * log(cosh(($t-$x)/$w)));
+    return $IX - $I0;
+  }
   
   /**
    * genera una processing instruction per includere link all'xsl nell'xml

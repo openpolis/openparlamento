@@ -124,6 +124,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
   	$c->addSelectColumn(OppCaricaHasGruppoPeer::GRUPPO_ID);
         $c->addSelectColumn(OppCaricaHasGruppoPeer::RIBELLE);
         $c->addSelectColumn(OppCaricaHasGruppoPeer::PRESENZE);
+		$c->addSelectColumn(OppCaricaHasGruppoPeer::CARICA_ID);
   	$c->add(OppCaricaHasGruppoPeer::CARICA_ID, $carica_id , Criteria::EQUAL);
         $c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID, Criteria::LEFT_JOIN);
     if ($order==0)
@@ -141,7 +142,8 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
                                                'gruppo_id'   => $rs->getInt(4),
                                                'ribelle'     => $rs->getInt(5),
                                                'acronimo'    => $rs->getString(1),
-                                               'presenze'    => $rs->getInt(6)>0?$rs->getInt(6):0);
+                                               'presenze'    => $rs->getInt(6)>0?$rs->getInt(6):0,
+											   'carica_id'   => $rs->getInt(7));
 	  }	
     
 	  return $gruppi;

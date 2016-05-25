@@ -8,8 +8,11 @@ public function executeTaxDeclaration()
 	$xml=simplexml_load_file("http://politici.openpolis.it/api/taxDeclaration?id=".$this->parlamentare->getId());
 	foreach($xml->taxs->tax->declaration as $declaration)
 	{
-		$this->tax[intval($declaration->year)]=$this->parlamentare->getId();
+		//$this->tax[intval($declaration->year)]=$this->parlamentare->getId();
+		$this->tax[intval($declaration->year)]=$declaration->url;
 	}
+	$json=json_decode("http://patrimoni.openpolis.it/api/politici/".$this->parlamentare->getId());
+	$this->patrimoni= count($json);
 }
   
   public function executeWidgetVoti()
@@ -362,7 +365,7 @@ public function executeAllvoteComparati()
       {
          $c->add(OppCaricaPeer::LEGISLATURA,$this->leg);
       }
-      $c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
+      //$c->add(OppCaricaPeer::DATA_FINE,NULL, Criteria::ISNULL);
       $c->add(OppCaricaHasGruppoPeer::GRUPPO_ID,$gruppo->getId());
       $rs=OppCaricaHasGruppoPeer::doSelect($c);
       foreach($rs as $r)
@@ -372,11 +375,12 @@ public function executeAllvoteComparati()
         else
         {
          
-          if (!in_array($r->getCaricaId(),$parlamentari_change))
+          if (!in_array($r->getCaricaId(),$parlamentari_change) AND $r->getDataFine()!=$r->getOppCarica()->getDataFine())
             $parlamentari_change[]=$r->getCaricaId();
-            
-          $gruppo_out[$gruppo->getId()]=$gruppo_out[$gruppo->getId()]+1;
-          $c2= new Criteria();
+          if ($r->getDataFine()!=$r->getOppCarica()->getDataFine())  
+          	$gruppo_out[$gruppo->getId()]=$gruppo_out[$gruppo->getId()]+1;
+          
+		  $c2= new Criteria();
           $c2->add(OppCaricaHasGruppoPeer::CARICA_ID,$r->getCaricaId());
           $c2->add(OppCaricaHasGruppoPeer::DATA_INIZIO,$r->getDataFine());
           $diff=OppCaricaHasGruppoPeer::doSelectOne($c2);
