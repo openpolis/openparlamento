@@ -46,9 +46,7 @@
                 <br /><small>in carica dal <?php echo format_date($parlamentari->getString(14), 'dd/MM/yyyy') ?></small>
                <?php endif; ?>
 <?php echo $parlamentari->getInt(11) ?>
-	       <?php if($parlamentari->getString(15)!=NULL): ?> 
-		<br /><small>cessato il <?php echo format_date($parlamentari->getDate(15, 'Y-m-d'), 'dd/MM/yyyy') ?></small>
-	     <?php endif; ?>
+	      
 	    
           </p>
         </th>

@@ -60,9 +60,9 @@ class parlamentareActions extends sfActions
     if ($this->carica)
     {
   	  $this->id_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getId();
-          $this->incarico=OppChgIncaricoPeer::getIncaricoGruppoCorrente($this->carica->getId(),$this->id_gruppo_corrente);
   	  $this->acronimo_gruppo_corrente = $this->parlamentare->getGruppoCorrente()->getAcronimo();
-  	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($this->carica->getId(),2);
+  	  //$this->gruppi = OppCaricaHasGruppoPeer::doSelectGruppiPerCarica($this->carica->getId());
+	  $this->gruppi = OppCaricaHasGruppoPeer::doSelectTuttiGruppiPerCarica($this->carica->getId());
   
   	  $this->circoscrizione = $this->carica->getCircoscrizione();	  
       // $this->cariche = $this->parlamentare->getAltreCariche();
@@ -96,7 +96,6 @@ class parlamentareActions extends sfActions
       
       $c->addDescendingOrderByColumn(OppSedutaPeer::DATA);
       $result=OppSedutaPeer::doSelectOne($c);
-
       $this->ultima_votazione=$result->getData();
       $nparl = OppCaricaPeer::getNParlamentari($ramo);
 
@@ -164,7 +163,16 @@ class parlamentareActions extends sfActions
       
       $this->durata=$durata;
       
-      	
+      // Incarico nel gruppo corrente
+	  $c= new Criteria();
+	  $c->addJoin(OppChgIncaricoPeer::CHG_ID,OppCaricaHasGruppoPeer::ID);
+	  $c->add(OppCaricaHasGruppoPeer::DATA_FINE,NULL,Criteria::ISNULL);
+	  $c->add(OppChgIncaricoPeer::DATA_FINE,NULL,Criteria::ISNULL);
+	  $c->add(OppCaricaHasGruppoPeer::CARICA_ID,$this->carica->getId());
+	  $c->add(OppCaricaHasGruppoPeer::GRUPPO_ID,$this->id_gruppo_corrente);
+	  $incarico=OppChgIncaricoPeer::doSelectOne($c);
+	  $this->incarico=$incarico->getIncarico();
+	  
     }   
     
     
@@ -559,7 +567,7 @@ class parlamentareActions extends sfActions
     if (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] != 'Presente')
       $c->add(OppVotazioneHasCaricaPeer::VOTO, $this->filters['vote_vote']);
     elseif (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] == 'Presente')
-     $c->add(OppVotazioneHasCaricaPeer::VOTO, array('favorevole','contrario','astenuto','Presidente di turno','Richiedente la votazione e non votante', 'Voto segreto'), Criteria::IN);  
+     $c->add(OppVotazioneHasCaricaPeer::VOTO, array('favorevole','contrario','astenuto'), Criteria::IN);  
     
     // filtro per esito
     if (array_key_exists('vote_result', $this->filters) && $this->filters['vote_result'] != '0')
@@ -870,8 +878,8 @@ class parlamentareActions extends sfActions
     $c->addSelectColumn(OppCaricaPeer::RIBELLE);
     $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
     $c->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
-    $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
-
+	$c->addSelectColumn(OppCaricaPeer::DATA_FINE);
+   
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 
     if ($ramo == 'camera')
@@ -942,9 +950,8 @@ class parlamentareActions extends sfActions
     $c->addSelectColumn(OppCaricaPeer::POSIZIONE);
     $c->addSelectColumn(OppCaricaPeer::MEDIA);
     $c->addSelectColumn(OppCaricaPeer::RIBELLE);
-    $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
-    $c->addSelectColumn(OppCaricaPeer::DATA_INIZIO);
     $c->addSelectColumn(OppCaricaPeer::DATA_FINE);
+     $c->addSelectColumn(OppPoliticoPeer::N_MONITORING_USERS);
      
     $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID, Criteria::INNER_JOIN);
 

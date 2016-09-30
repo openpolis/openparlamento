@@ -25,6 +25,9 @@
   <?php if ($i==2): ?>
     <?php echo "Popolare" ?>
   <?php endif ?>
+  <?php if ($i==3): ?>
+    <?php echo "Regionale" ?>
+  <?php endif ?>
   </td>
   <td><?php echo $arr[0] ?></td>
   <td><?php echo $arr[1] ?></td>

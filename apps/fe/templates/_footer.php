@@ -11,8 +11,7 @@
 
 <ul>
   <li class="footer-title">servizi</li>
-  <li><?php echo link_to('»&nbsp;premium','/sottoscrizioni_pro',array('lang'=>'it')) ?></li>
-  <li><?php echo link_to('»&nbsp;diventa socio di openpolis','http://associazione.openpolis.it/contribuisci/diventa-socio',array('lang'=>'it')) ?></li>
+  <li><?php echo link_to('»&nbsp;dona il tuo 5xmille!','http://www.openpolis.it/5xmille/">Dona il tuo 5xmille!',array('lang'=>'it')) ?></li>
   <li><?php echo link_to('»&nbsp;fai una donazione','http://associazione.openpolis.it/contribuisci/fai-una-donazione',array('lang'=>'it')) ?></li>
   <li><?php echo link_to('»&nbsp;rss/xml','/static/rssxml',array('lang'=>'it')) ?></li>
 </ul>

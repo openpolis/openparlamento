@@ -209,7 +209,7 @@ class attoComponents extends sfComponents
     
     $arrs=array();
     $arr_alls=array();
-    foreach(array(1,2,4) as $i)
+    foreach(array(1,2,3,4) as $i)
     {
       $c=new Criteria();
       if ($this->gruppo!=NULL)
