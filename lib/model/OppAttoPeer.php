@@ -100,14 +100,18 @@ class OppAttoPeer extends BaseOppAttoPeer
   {
     
 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select a.is_main_unified, ra.tipo_relazione_id, ra.atto_to_id from opp_atto a, opp_relazione_atto ra where (ra.atto_from_id=a.id) and ra.tipo_relazione_id=1 and a.id=%d group by a.id;",
-                   $atto_id);
+        $sql = sprintf("select a.is_main_unified, ra.tipo_relazione_id, ra.atto_to_id from opp_atto a, opp_relazione_atto ra where (ra.atto_from_id=a.id) and ra.tipo_relazione_id=1 and a.id=%d group by a.id;",
+                        $atto_id);
 
-    $stm = $con->createStatement(); 
-    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+        $stm = $con->createStatement();
+        $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
 
-    if (!$rs->next()) return null;
-    else return $rs->getRow();
+        if (!$rs->next()) return null;
+        else {
+
+            $row = $rs->getRow();
+            return  $row;
+        }
     
   }
 
@@ -120,20 +124,20 @@ class OppAttoPeer extends BaseOppAttoPeer
    */
   public static function isAbsorbed($atto_id)
   {
-    
-		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select ra.atto_to_id from opp_atto a, opp_relazione_atto ra, opp_tipo_relazione r where ra.atto_from_id=a.id and ra.tipo_relazione_id=r.id and a.id=%d and r.id=4;",
-                   $atto_id);
 
-    $stm = $con->createStatement(); 
-    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+      $con = Propel::getConnection(self::DATABASE_NAME);
+      $sql = sprintf("select ra.atto_to_id from opp_atto a, opp_relazione_atto ra, opp_tipo_relazione r where ra.atto_from_id=a.id and ra.tipo_relazione_id=r.id and a.id=%d and r.id=4;",
+                     $atto_id);
 
-    if (!$rs->next()) return null;
-    else 
-    {
-      $row = $rs->getRow();
-      return $row['atto_to_id'];      
-    }
+      $stm = $con->createStatement();
+      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+
+      if (!$rs->next()) return null;
+        else
+        {
+            $row = $rs->getRow();
+            return $row['atto_to_id'];
+        }
     
   }
   

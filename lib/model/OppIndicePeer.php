@@ -20,7 +20,7 @@ class OppIndicePeer
   
   public static $punteggi = array(
      'ddl'           => array('presentazione'       => array('m' => 0.08, 'o' =>   0.08),
-                              'relazione'           => array('m' => 5.00, 'o' =>  10.00),
+                              'relazione'           => array('m' => 10.00, 'o' =>  5.00),
                               'cofirme_gruppo_lo'   => array('m' => 0.10,  'o' =>  0.10),
                               'cofirme_gruppo_hi'   => array('m' => 0.20,  'o' =>  0.20),
                               'cofirme_altri_lo'    => array('m' => 0.20,  'o' =>  0.20),
