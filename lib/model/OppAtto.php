@@ -325,6 +325,34 @@ class OppAtto extends BaseOppAtto
 
     return $ids;
   }
+
+  /*
+   * estrae i gruppi che hanno firmato, e se fanno parte della maggioranza o dell'opposizione
+   *
+   * @param string $tipo ('P', 'R', 'C')
+   * @return array di due array ($schiers, $grups)
+   *   $schiers contiene 1/0 (magg/opp)
+   *   $grups  contiene l'elenco di id dei gruppi
+   */
+  public function getSchierGrup($tipo = null)
+  {
+      return OppCaricaHasAttoPeer::getSchierGrupAtto($this->getId(), $this->getDataPres(), $tipo);
+  }
+
+  /*
+   * ritorna se l'atto è bi-partisan o meno, rispetto al tipo di firma
+   *
+   * @param string tipo ('P', 'R', 'C')
+   * @return boolean
+   */
+  public function isBipartisan($tipo = null)
+  {
+      list($schiers, $grups) = $this->getSchierGrup($tipo);
+      if (in_array(0, $schiers) and in_array(1, $schiers))
+          return true;
+      else
+          return false;
+  }
   
   /**
    * estrae tutti gli iter di un atto fino a una certa data

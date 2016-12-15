@@ -178,8 +178,7 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
     $con = Propel::getConnection(self::DATABASE_NAME);
     $sql = sprintf("select g.id, g.nome, g.acronimo from opp_carica_has_gruppo cg, opp_gruppo g where g.id=cg.gruppo_id and cg.carica_id=%d and cg.data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
                     $carica_id, $data, $data);
-
-    $stm = $con->createStatement(); 
+    $stm = $con->createStatement();
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     if ($rs->next()) {
       $row = $rs->getRow();
@@ -214,6 +213,7 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
       $gruppo_ar = self::getGruppo($carica_id, $data);
       $gruppo_id = $gruppo_ar['id'];
     }
+
 
     if ($gruppo_id) {
       return OppGruppoIsMaggioranzaPeer::isGruppoMaggioranza($gruppo_id, $data);

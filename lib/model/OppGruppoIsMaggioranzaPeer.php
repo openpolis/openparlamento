@@ -19,15 +19,15 @@ class OppGruppoIsMaggioranzaPeer extends BaseOppGruppoIsMaggioranzaPeer
    */
   public static function isGruppoMaggioranza($gruppo_id, $data)
   {
- 		$con = Propel::getConnection(self::DATABASE_NAME);
-    $sql = sprintf("select * from opp_gruppo_is_maggioranza gm where gm.gruppo_id=%d and data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
+      $con = Propel::getConnection(self::DATABASE_NAME);
+      $sql = sprintf("select * from opp_gruppo_is_maggioranza gm where gm.gruppo_id=%d and data_inizio <= '%s' and (data_fine > '%s' or data_fine is null);",
                     $gruppo_id, $data, $data);
 
-    $stm = $con->createStatement(); 
-    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
-    $rs->next();
-    $row = $rs->getRow();
-    return $row['maggioranza'];
+      $stm = $con->createStatement();
+      $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+      $rs->next();
+      $row = $rs->getRow();
+      return $row['maggioranza'];
   }
   
   /**
