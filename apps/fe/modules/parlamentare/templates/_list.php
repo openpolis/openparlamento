@@ -7,7 +7,9 @@
   <thead>
     <tr>
       <th scope="col">parlamentare:</th>
-      <th scope="col">indice di produttivit&agrave;: <?php echo image_tag('ico-new.png')?></th> 	
+      <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+      <th scope="col">indice di produttivit&agrave;: <?php echo image_tag('ico-new.png')?></th>
+      <?php endif; ?>
       <th scope="col">voti ribelli:</th>			
       <th scope="col" class="evident">presenze:</th>			
       <th scope="col" class="evident">assenze:</th>
@@ -50,29 +52,30 @@
 	    
           </p>
         </th>
-        
+
+        <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
         <td>
-          
 		  <?php 
 		    if ($parlamentari->getString(14) > date("Y-m-d", strtotime('today - 365 days')) ||
 		        in_array($parlamentari->getInt(2), array_merge($presidenti_ids, $membri_governo_ids))) 
 		    {
 		      print "Non applicabile";
 		    } else {
-  		    if($parlamentari->getInt(10)!='-1')
-  		    {
-  		      printf('<b>%01.1f</b><br /><span class="small">(%d° su %d)</span>', 
-                   $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari);
-                 if($parlamentari->getString(14)>'2013-03-15')
+  		      if($parlamentari->getInt(10)!='-1')
+  		      {
+  		        printf('<b>%01.1f</b><br /><span class="small">(%d° su %d)</span>',
+                       $parlamentari->getFloat(9), $parlamentari->getInt(10), $numero_parlamentari);
+                if($parlamentari->getString(14)>'2013-03-15')
            	       	echo "<br /><small style='background-color:yellow;'>N.B subentrato il ".format_date($parlamentari->getString(14), 'dd/MM/yyyy')."</small>";       
-          } else {
-            printf('<b>%01.1f</b> ', $parlamentari->getFloat(9));
-            if($parlamentari->getString(14)>'2013-03-15')
-      	       	echo "<br /><small style='background-color:yellow;'>N.B subentrato il ".format_date($parlamentari->getString(14), 'dd/MM/yyyy')."</small>";  
-          }		      
+              } else {
+                printf('<b>%01.1f</b> ', $parlamentari->getFloat(9));
+                if($parlamentari->getString(14)>'2013-03-15')
+                  echo "<br /><small style='background-color:yellow;'>N.B subentrato il ".format_date($parlamentari->getString(14), 'dd/MM/yyyy')."</small>";
+              }
 		    }
-      ?>
-	</td>
+          ?>
+	    </td>
+        <?php endif; ?>
         
         <td>
           <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
