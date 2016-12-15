@@ -183,60 +183,25 @@ class attoComponents extends sfComponents
   
   public function executeDdl2legge()
   {
-    if ($this->gruppo!=NULL)
-    {
-      $c= new Criteria;
-      $c->add(OppGruppoPeer::ACRONIMO,$this->gruppo);
-      $gruppo=OppGruppoPeer::doSelectOne($c);
-      $cariche=OppCaricaHasGruppoPeer::getCarichePerGruppo($gruppo->getId(),1);
-      foreach($cariche as $carica)
-      {
-        $componenti_gruppo[]=$carica->getCaricaId();
-      }
-    }
-    
-    if ($this->gruppo!=NULL)
-    {
-      $c= new Criteria;
-      $c->add(OppGruppoPeer::ACRONIMO,$this->gruppo);
-      $gruppo=OppGruppoPeer::doSelectOne($c);
-      $cariche=OppCaricaHasGruppoPeer::getCaricheGovernoPerGruppo($gruppo->getId(),1);
-      foreach($cariche as $carica)
-      {
-        $componenti_gruppo[]=$carica;
-      }
-    }
     
     $arrs=array();
     $arr_alls=array();
     foreach(array(1,2,3,4) as $i)
     {
-      $c=new Criteria();
-      if ($this->gruppo!=NULL)
-      {
-        $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
-        $c->add(OppCaricaHasAttoPeer::CARICA_ID,$componenti_gruppo,Criteria::IN);
-        $c->add(OppCaricaHasAttoPeer::TIPO,'P');
-      }  
-      $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
-      $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
-      $c->add(OppAttoPeer::INIZIATIVA,$i);
-      $c->setDistinct(OppAttoPeer::ID);
-      $atti=OppAttoPeer::doSelect($c); 
-      
-
-      $c=new Criteria();
-       if ($this->gruppo!=NULL)
-        {
-          $c->addJoin(OppAttoPeer::ID,OppCaricaHasAttoPeer::ATTO_ID);
-          $c->add(OppCaricaHasAttoPeer::CARICA_ID,$componenti_gruppo,Criteria::IN);
-          $c->add(OppCaricaHasAttoPeer::TIPO,'P');
-        }
+        $c=new Criteria();
+        $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
+        $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
+        $c->add(OppAttoPeer::INIZIATIVA,$i);
+        $c->setDistinct(OppAttoPeer::ID);
+        $atti=OppAttoPeer::doSelect($c); 
+		
+	  $c= new Criteria();
       $c->addJoin(OppAttoPeer::ID,OppAttoHasIterPeer::ATTO_ID);
       $c->add(OppAttoPeer::TIPO_ATTO_ID,1);
       $c->add(OppAttoPeer::LEGISLATURA,$this->leg);
       $c->add(OppAttoPeer::INIZIATIVA,$i);
-      $c->add(OppAttoHasIterPeer::ITER_ID,16);
+      $c->add(OppAttoHasIterPeer::ITER_ID,array(16), Criteria::IN);
+	  $c->addAscendingOrderByColumn(OppAttoHasIterPeer::DATA);
       $c->setDistinct(OppAttoPeer::ID);
       $leggi=OppAttoHasIterPeer::doSelect($c);
       $tempo_medio=0;
@@ -250,7 +215,14 @@ class attoComponents extends sfComponents
         //$this->data_pres=$ddl->getDataPres();
         //$this->data_appr=$legge->getData();
         $data_pres=strtotime($ddl->getDataPres());
-        $data_appr=strtotime($legge->getData());
+		$k = new Criteria();
+		$k->add(OppAttoHasIterPeer::ATTO_ID,$legge->getOppAtto()->getId());
+		$k->add(OppAttoHasIterPeer::ITER_ID,15);
+		$data_no_leg=OppAttoHasIterPeer::doSelectOne($k);
+		if ($data_no_leg)
+			$data_appr=strtotime($data_no_leg->getData());
+		else
+        	$data_appr=strtotime($legge->getData());
 
 
         $tempo_medio=$tempo_medio + ($data_appr-$data_pres)/86400;
