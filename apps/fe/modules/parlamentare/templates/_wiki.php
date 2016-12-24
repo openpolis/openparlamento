@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+  <?php // if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
   <p class="tools-container float-left float-container"><?php echo link_to('Cos\'&egrave; l\'indice di produttivit&agrave;', '#', array( 'class'=>'ico-help')) ?></p>
   <div class="help-box float-container clear-both" style="display: none;">
     <div class="inner float-container"> 
@@ -18,8 +18,8 @@
       <p>&Egrave; il nuovo indice che prende in esame il numero, la tipologia, il consenso e l'iter degli atti presentati dai parlamentari in modo da poterli confrontare tra di loro.<br /> <strong>Per una descrizione dettagliata della metodologia di valutazione <a href="http://indice.openpolis.it/info.html">vai qui</a>.</strong></p>
     </div>
   </div>
-  <?php endif; ?>
-		
+  <?php // endif; ?>
+
   <p class="tools-container float-left float-container"><?php echo link_to('Cosa sono i voti ribelli', '#', array( 'class'=>'ico-help')) ?></p>
   <div class="help-box float-container clear-both" style="display: none;">
     <div class="inner float-container">

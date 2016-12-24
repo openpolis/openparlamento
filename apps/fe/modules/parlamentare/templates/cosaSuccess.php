@@ -217,8 +217,8 @@ $ramo = isset($ramo) ? $ramo : '';
                         OppPoliticoPeer::getPresidentiCamereIds(),
                         OppPoliticoPeer::getMembriGovernoIds()
                     )
-                ) ||
-                ! ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore'))
+                )
+                // || ! ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore'))
             ): ?>
                 <!-- il box non viene proprio visualizzato -->
             <?php else: ?>
