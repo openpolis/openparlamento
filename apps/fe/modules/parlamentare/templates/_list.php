@@ -7,9 +7,9 @@
   <thead>
     <tr>
       <th scope="col">parlamentare:</th>
-      <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
-      <th scope="col">indice di produttivit&agrave;: <?php echo image_tag('ico-new.png')?></th>
-      <?php endif; ?>
+      <?php // if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+      <th scope="col">indice di produttivit&agrave;: <?php // echo image_tag('ico-new.png')?></th>
+      <?php // endif; ?>
       <th scope="col">voti ribelli:</th>			
       <th scope="col" class="evident">presenze:</th>			
       <th scope="col" class="evident">assenze:</th>
@@ -53,7 +53,7 @@
           </p>
         </th>
 
-        <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+        <?php // if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
         <td>
 		  <?php 
 		    if ($parlamentari->getString(14) > date("Y-m-d", strtotime('today - 365 days')) ||
@@ -75,7 +75,7 @@
 		    }
           ?>
 	    </td>
-        <?php endif; ?>
+        <?php // endif; ?>
         
         <td>
           <?php if($parlamentari->getInt(6)!=0 && $parlamentari->getInt(12)!=0): ?>
