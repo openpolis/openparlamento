@@ -118,6 +118,7 @@ $ramo = isset($ramo) ? $ramo : '';
                                 <label>gruppo:</label>
 
                                 <?php
+								
                                     echo link_to(
                                         $acronimo_gruppo_corrente . ' (' .
                                         ucfirst(strtolower($incarico)) . ')',

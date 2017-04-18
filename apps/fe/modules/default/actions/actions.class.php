@@ -225,10 +225,12 @@ class defaultActions extends sfActions
      $c->setLimit(8);
      $c->addDescendingOrderByColumn(sfLaunchingPeer::PRIORITY);
      $evidences=sfLaunchingPeer::doSelect($c);
+	 
      foreach ($evidences as $evidence) {
      	    $atto=OppAttoPeer::retrieveByPk($evidence->getObjectId());
          	$this->lanci[]=$atto->getId();
      }	
+	 
      
      // post del blog
      $this->post_pager = sfSimpleBlogPostPeer::getTaggedPager(
