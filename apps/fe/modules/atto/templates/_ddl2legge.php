@@ -1,4 +1,4 @@
-<h5 class="subsection">Progetti che sono diventati legge <?php echo ($gruppo!=null?'presentati  dai membri del Governo e parlamentari del gruppo '.$gruppo:'')?></h5>
+<h5 class="subsection">Progetti che sono diventati legge e pubblicati in Gazzetta Ufficiale</h5>
 <table class="disegni-decreti column-table">
   <thead>
     <tr> 
@@ -6,9 +6,7 @@
       <th scope="col">ddl presentati:</th>  
       <th scope="col">ddl diventati legge:</th>
       <th scope="col">% di successo:</th>
-      <?php if ($gruppo==null): ?>
-        <th scope="col">media giorni per l'approvazione:</th>
-      <?php endif ?>  
+	  <th scope="col">media giorni per l'approvazione:</th>
     </tr>
   </thead>
 
@@ -23,24 +21,22 @@
     <?php echo "Governativa" ?>
   <?php endif ?>
   <?php if ($i==2): ?>
-    <?php echo "Popolare" ?>
+    <?php echo "Regionale" ?>
   <?php endif ?>
   <?php if ($i==3): ?>
-    <?php echo "Regionale" ?>
+    <?php echo "Popolare" ?>
   <?php endif ?>
   </td>
   <td><?php echo $arr[0] ?></td>
   <td><?php echo $arr[1] ?></td>
   <td><?php echo number_format($arr[1]*100/$arr[0],2) ?></td>
-  <?php if ($gruppo==null): ?>
-     <td><?php echo $arr[2] ?></td>
-   <?php endif ?>
+  <td><?php echo $arr[2] ?></td>
   </tr>
 <?php endforeach ?>
 </tbody>
 </table>
 <br /><br />
-<h5 class="subsection">Quanto tempo impiegano i progetti <?php echo ($gruppo!=null?'presentati dai membri del Governo e parlamentari del gruppo '.$gruppo:'')?> a diventare leggi: dal più veloce al più lento</h5>
+<h5 class="subsection">Quanto tempo impiegano i progetti a diventare leggi: dal più veloce al più lento</h5>
 <?php //$veloci=array_slice($arr_alls, 0, 20) ?>
 <?php $veloci=$arr_alls ?>
 <table class="disegni-decreti column-table">
@@ -76,8 +72,12 @@
        <td><p>
        <?php if ($veloce[0]->getIniziativa()==1) :?>
         Parlamentare
-        <?php else :?>
+        <?php elseif ($veloce[0]->getIniziativa()==2) :?>
           Governativa
+        <?php elseif ($veloce[0]->getIniziativa()==3) :?>
+          Regionale
+        <?php elseif ($veloce[0]->getIniziativa()==4) :?>
+          Popolare
         <?php endif ?>  
        </p></td>
        
