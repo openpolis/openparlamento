@@ -77,7 +77,15 @@ api_votazione:
   url: /votazione/:key/:id
   param: { module: api, action: votazione }
   requirements: { id: \d+ }
-  
+
+api_cariche_interne:
+  url: /cariche_interne/:key
+  param: { module: api, action: getCaricheInterneCSV }
+
+api_incarichi_gruppi:
+  url: /incarichi_gruppi/:key
+  param: { module: api, action: getIncarichiGruppiCSV }
+
 attivita_gruppo_argomento:
   url: /attivita_gruppo_argomento/:ramo/:gruppo_id/*
   param: { module: monitoring, action: attivitaGruppoArgomento }
