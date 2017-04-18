@@ -1593,7 +1593,7 @@ class apiActions extends sfActions
                 $c->addJoin(OppChgIncaricoPeer::CHG_ID, OppCaricaHasGruppoPeer::ID, Criteria::INNER_JOIN);
                 $c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
                 $cariche = OppChgIncaricoPeer::doSelect($c);
-                $csvContent="pollitico_id,chg_id,incarico,data_inizio,data_fine\n";
+                $csvContent="politico_id,chg_id,incarico,data_inizio,data_fine\n";
                 foreach($cariche as $c)
                 {
                     $csvContent .= sprintf(
