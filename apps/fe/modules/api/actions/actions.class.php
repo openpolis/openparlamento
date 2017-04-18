@@ -1539,7 +1539,100 @@ class apiActions extends sfActions
   }
 
 
+    public function executeGetCaricheInterneCSV()
+    {
+        $key = $this->getRequestParameter('key');
+        $is_valid_key = deppApiKeysPeer::isValidKey($key);
 
+
+        if ($is_valid_key)
+        {
+            // retrieve delle cariche interne
+            try {
+                $c = new Criteria();
+                $c->addJoin(OppCaricaInternaPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
+                $cariche = OppCaricaInternaPeer::doSelect($c);
+
+                $csvContent = "politico_id,carica_id,tipo_carica_id,sede_id,data_inizio,data_fine\n";
+                foreach ($cariche as $c) {
+                    $csvContent .= sprintf(
+                        "%s,%s,%s,%s,%s,%s\n",
+                        $c->getOppCarica()->getPoliticoId(),
+                        $c->getCaricaId(),
+                        $c->getTipoCaricaId(),
+                        $c->getSedeId(),
+                        $c->getDataInizio(),
+                        $c->getDataFine()
+                    );
+                }
+            } catch (Exception $e) {
+                $csvContent = sprintf("Errore. %s\n", $e->getMessage());
+            }
+        }
+        else
+        {
+            $csvContent = "Errore. Chiave di accesso non valida\n";
+        }
+
+
+        $this->_send_csv_output($csvContent, 'cariche_interne.csv');
+        return sfView::NONE;
+    }
+
+    public function executeGetIncarichiGruppiCSV()
+    {
+        $key = $this->getRequestParameter('key');
+        $is_valid_key = deppApiKeysPeer::isValidKey($key);
+
+
+        if ($is_valid_key)
+        {
+            // retrieve degli incarichi
+            try {
+                $c = new Criteria();
+                $c->addJoin(OppChgIncaricoPeer::CHG_ID, OppCaricaHasGruppoPeer::ID, Criteria::INNER_JOIN);
+                $c->addJoin(OppCaricaHasGruppoPeer::CARICA_ID, OppCaricaPeer::ID, Criteria::INNER_JOIN);
+                $cariche = OppChgIncaricoPeer::doSelect($c);
+                $csvContent="pollitico_id,chg_id,incarico,data_inizio,data_fine\n";
+                foreach($cariche as $c)
+                {
+                    $csvContent .= sprintf(
+                        "%s,%s,%s,%s,%s\n",
+                        $c->getOppCaricaHasGruppo()->getOppCarica()->getPoliticoId(),
+                        $c->getChgId(),
+                        $c->getIncarico(),
+                        $c->getDataInizio(),
+                        $c->getDataFine()
+                    );
+                }
+            } catch (Exception $e) {
+                $csvContent = sprintf("Errore. %s\n", $e->getMessage());
+            }
+        }
+        else
+        {
+            $csvContent = "Errore. Chiave di accesso non valida\n";
+        }
+
+
+        $this->_send_csv_output($csvContent, 'incarichi_gruppi.csv');
+        return sfView::NONE;
+    }
+
+    /**
+     * send csv output to http response
+     *
+     * @param string $content
+     * @return void
+     * @author Guglielmo Celata
+     */
+    protected function _send_csv_output($content, $filename='results.csv')
+    {
+        $this->setLayout(false);
+        $this->response->setContentType('text/csv');
+        $this->response->setHttpHeader('Content-Disposition', 'inline;filename='+$filename);
+        $this->response->setContent($content);
+    }
 
 
 
