@@ -95,7 +95,7 @@ class defaultActions extends sfActions
           $controller = 'be_dev.php';
         else
           $controller = 'index.php';
-        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUserDemo/$token/$opaccesso_key");
+        $xml = simplexml_load_file("https://$remote_guard_host/$controller/promoteUserDemo/$token/$opaccesso_key");
 
         // show message if something really wrong happens (could not write last_login to db)
         if (!$xml->ok instanceof SimpleXMLElement)
@@ -153,7 +153,7 @@ class defaultActions extends sfActions
           $controller = 'be_dev.php';
         else
           $controller = 'index.php';
-        $xml = simplexml_load_file("http://$remote_guard_host/$controller/promoteUser/$token/$opaccesso_key");
+        $xml = simplexml_load_file("https://$remote_guard_host/$controller/promoteUser/$token/$opaccesso_key");
 
         // go home if something really wrong happens (could not write last_login to db)
         if (!$xml->ok instanceof SimpleXMLElement)

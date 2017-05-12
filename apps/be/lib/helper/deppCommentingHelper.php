@@ -21,7 +21,7 @@ function link_to_commentable_item($comment)
   
   $env = sfConfig::get('sf_environment', 'prod');
   $controller = $env=='prod'?'index.php':"fe_$env.php";
-  $url = 'http://' . sfConfig::get('sf_site_url') . "/$controller/$module/commenti/id/$id";
+  $url = 'https://' . sfConfig::get('sf_site_url') . "/$controller/$module/commenti/id/$id";
   
   return "<a href=\"$url\">$module: $id</a>";
 }

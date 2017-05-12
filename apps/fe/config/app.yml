@@ -17,27 +17,27 @@ all:
     orm:                  Propel                 # possible values: auto, Propel, DbFinder. 'auto' is auto detection. Note: case sensitive!
     urls:                                        # define multiple static urls here
       homepage:                                  # just a name
-        url:              http://parlamento17.openpolis.it  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
       disegnoList:
-        url:              http://parlamento17.openpolis.it/attiDisegni  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it/attiDisegni  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)
       decretiList:
-        url:              http://parlamento17.openpolis.it/attiDecretiLegge  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it/attiDecretiLegge  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)  
       nonLegList:
-        url:              http://parlamento17.openpolis.it/attiNonLegislativi/data_pres/desc  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it/attiNonLegislativi/data_pres/desc  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
       votazioni:
-        url:              http://parlamento17.openpolis.it/votazioni/data/desc  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it/votazioni/data/desc  # full URL, e.g.: with http:// prefix
         freq:             daily                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%) 
       argomenti:
-        url:              http://parlamento17.openpolis.it/argomenti  # full URL, e.g.: with http:// prefix
+        url:              https://parlamento17.openpolis.it/argomenti  # full URL, e.g.: with http:// prefix
         freq:             weekly                 # must be either: always, hourly, daily, weekly, monthly, yearly, never
         priority:         1.0                    # 1.0 is top priority (100%) compared to 0.2 which is less priority (20%)      
     models:                                      # define multiple models to generate sitemap from
@@ -128,7 +128,7 @@ all:
   # remote locations
   remote: 	 	 
     openpolis_api_key:                 "<?php echo sfConfig::get('api_openpolis_key', '--XXX(-:-)XXX--'); ?>"
-    politicians_images_service_url:    "http://<?php echo sfConfig::get('sf_remote_openpolis_host') ?>/api/getPolImage"
+    politicians_images_service_url:    "https://<?php echo sfConfig::get('sf_remote_openpolis_host') ?>/api/getPolImage"
   
   # json api
   api:
@@ -214,7 +214,7 @@ all:
     sidebar:       [recent_posts, tags, feeds, blogroll, meta]
 
     blogroll:
-      - { title: "Openpolis", url: 'http://www.openpolis.it' }
+      - { title: "Openpolis", url: 'https://www.openpolis.it' }
       - { title: "Voisietequi", url: 'http://www.voisietequi.it' }
 
     comment_automoderation: captcha  # triggers the automoderation of comments. Possible values are:
@@ -280,7 +280,7 @@ all:
     from_tag:       "openparlamento"
     
   mail_per_redazione:
-    site_address:         "http://<?php echo sfConfig::get('sf_site_url', 'parlamento17.openpolis.it')?>"
+    site_address:         "https://<?php echo sfConfig::get('sf_site_url', 'parlamento17.openpolis.it')?>"
   
   subscription:
     civicus_limit_reached_tags:       "se vuoi monitorare gli argomenti aderisci all'offerta premium"
