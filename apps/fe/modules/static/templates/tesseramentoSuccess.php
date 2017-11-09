@@ -12,12 +12,12 @@
 	<div class="ninecol">
 		
 		<div style="font-size:14px; padding:5px; line-height:1,5em;"> 
-		<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://associazione.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
+		<p><em class="open">open</em><em class="parlamento">parlamento</em> &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','https://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.</p>
 		<p>&nbsp;</p>
 		
 		<p style="font-size:18px; padding-top:5px;">Contribuisci a sostenere openpolis, openparlamento e tutte le nuove iniziative.<br/><br/>
-		  <a href="http://openpolis.it/sostienici/dona/"><strong>Dona ad Openpolis</strong></a><br/><br/>
-		  <a href="http://openpolis.it/5xmille/"><strong>Il tuo 5xmille a Openpolis</strong></a>
+		  <a href="https://www.openpolis.it/sostienici/dona/"><strong>Dona ad Openpolis</strong></a><br/><br/>
+		  <a href="https://www.openpolis.it/5xmille/"><strong>Il tuo 5xmille a Openpolis</strong></a>
 	  </p>
 		</div>
 		

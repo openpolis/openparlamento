@@ -72,7 +72,7 @@
         <div class="row">            
             <h1 class="ninecol">
                 <a href="/"><img src="/img/logo-openparlamento.png" alt="Titolo" id="logo" /></a>
-                <a href="http://openpolis.it"><img src="/img/openpolis-tool.png" alt="OpenPolis" id="op-logo" /></a>
+                <a href="https://www.openpolis.it"><img src="/img/openpolis-tool.png" alt="OpenPolis" id="op-logo" /></a>
             </h1>           
 			<div class="threecol last" id="tools-container">
 				<?php include_partial('global/tools') ?>	
