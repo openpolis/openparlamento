@@ -24,6 +24,7 @@
 <div id="blog-post-content">
 
   <?php if (sfConfig::get('app_sfSimpleBlog_use_post_extract', false)): ?>
+	  
     <?php echo $post->getExtract()?>
     <br /><br />
     <?php echo $post->getContent(ESC_RAW)?>

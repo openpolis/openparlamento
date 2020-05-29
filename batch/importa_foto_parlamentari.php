@@ -12,13 +12,14 @@ $c= new Criteria();
 $pols=OppPoliticoPeer::doSelect($c);
 foreach($pols as $pol)
 {
- shell_exec("cd /root/op/op_openparlamento17/");
- shell_exec("/root/op/op_openparlamento17/./symfony opp-sync-polimages ". $pol->getId());
- shell_exec ("s3cmd --add-header 'Cache-control: max-age=86400' --acl-public \
-            sync web/images/parlamentari/picture/".$pol->getId().".jpeg \
+	echo $pol->getId()."\n";
+ shell_exec("cd /root/op/op_openparlamento18/");
+ shell_exec("/root/op/op_openparlamento18/./symfony opp-sync-polimages ". $pol->getId());
+ echo shell_exec ("s3cmd --add-header 'Cache-control: max-age=86400' --acl-public \
+            sync /root/op/op_openparlamento18/web/images/parlamentari/picture/".$pol->getId().".jpeg \
             s3://op_openparlamento_images/parlamentari/picture/".$pol->getId().".jpeg");
  shell_exec("s3cmd --add-header 'Cache-control: max-age=86400' --acl-public \
-             sync web/images/parlamentari/thumb/".$pol->getId().".jpeg \
+             sync /root/op/op_openparlamento18/web/images/parlamentari/thumb/".$pol->getId().".jpeg \
              s3://op_openparlamento_images/parlamentari/thumb/".$pol->getId().".jpeg");
 }
 

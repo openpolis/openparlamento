@@ -2,7 +2,7 @@ all:
   propel:
     class:          sfPropelDatabase
     param:
-      dsn:          "mysql://root@localhost/opp17"
+      dsn:          "mysql://root@localhost/opp18"
       persistent:   true
       encoding:     "utf8"
       compat_assoc_lower:  true

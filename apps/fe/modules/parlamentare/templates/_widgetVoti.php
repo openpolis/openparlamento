@@ -1,6 +1,6 @@
 <?php if ($sotto>0 || $salva>0 || $ribelle>0) : ?>
 
-<h5 class="subsection-alt" style="margin-top:0px;">Il comportamento nelle votazioni</h5>
+
 
 <br />	
 <?php if ($ribelle>0) : ?>
@@ -50,5 +50,17 @@
   </div>
 <?php endif; ?>
 -->
+
+<?php elseif ($ribelle==0) : ?>
+    <div style="font-size:16px; margin-bottom:10px;">
+  Ha votato sempre come il proprio gruppo parlamentare di appartenenza (<strong>0% di voti ribelli</strong>).
+ <span class="tools-container"><a class="ico-help" href="#" style="text-decoration:none">&nbsp;</a></span>
+      <div style="display: none;" class="help-box float-container">
+        <div class="inner float-container">   
+          <a class="ico-close" href="#">chiudi</a><h5>quando un parlamentare &egrave; ribelle ?</h5>
+          <p>Un parlamentare &egrave; considerato ribelle quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo.</p>
+        </div>
+      </div>
+</div>
 
 <?php endif; ?>

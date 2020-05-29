@@ -72,7 +72,7 @@
         <div class="row">            
             <h1 class="ninecol">
                 <a href="/"><img src="/img/logo-openparlamento.png" alt="Titolo" id="logo" /></a>
-                <a href="https://www.openpolis.it"><img src="/img/openpolis-tool.png" alt="OpenPolis" id="op-logo" /></a>
+                <a href="https://www.openpolis.it"><img src="/img/op_logo_header.png" alt="Openpolis" id="op-logo" /></a>
             </h1>           
 			<div class="threecol last" id="tools-container">
 				<?php include_partial('global/tools') ?>	
@@ -173,7 +173,7 @@
 
 	<?php include_partial('global/site_footer') ?>
 
-	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento17.openpolis.it'): ?>
+	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento18.openpolis.it'): ?>
         <?php include_partial('global/googleAnalytics') ?>
     <?php endif ?>
 

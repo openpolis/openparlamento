@@ -178,7 +178,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
      * @author Ettore Di Cesare
      */
 
-    public static function getCarichePerGruppo($gruppo_id, $data_fine = 0, $leg = 17)
+    public static function getCarichePerGruppo($gruppo_id, $data_fine = 0, $leg = 18)
     {
     	$c = new Criteria();
     	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);

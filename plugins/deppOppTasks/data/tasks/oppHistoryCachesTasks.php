@@ -275,7 +275,10 @@ function run_opp_build_cache_politici($task, $args, $options)
     printf("%4d) %40s %7s [%06d] ... ", $cnt, $politico_stringa, "(".$gruppo['acronimo'].")", $id);
 
     $indice = OppIndiceAttivitaPeer::calcola_indice_politico($id, $legislatura_corrente, $data, $verbose, $atti_ids);
+
     list($presenze, $assenze, $missioni) = OppVotazioneHasCaricaPeer::getDatiPresenzaCaricaData($id, $legislatura_corrente, $data);
+
+
     $ribellioni = OppVotazioneHasCaricaPeer::countRibellioniCaricaData($id, $legislatura_corrente, $data);
 
     // inserimento o aggiornamento del valore in opp_politician_history_cache

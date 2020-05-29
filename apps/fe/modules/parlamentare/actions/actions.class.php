@@ -74,7 +74,7 @@ class parlamentareActions extends sfActions
       $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_atti/sort');
       $this->session->getAttributeHolder()->removeNamespace('votes_filter');
       $this->session->getAttributeHolder()->removeNamespace('opp_parlamentare_voti/sort');
-
+	  
       $c= new Criteria();
       $c->addJoin(OppSedutaPeer::ID,OppVotazionePeer::SEDUTA_ID);
       
@@ -98,7 +98,7 @@ class parlamentareActions extends sfActions
       $result=OppSedutaPeer::doSelectOne($c);
       $this->ultima_votazione=$result->getData();
       $nparl = OppCaricaPeer::getNParlamentari($ramo);
-
+	  
       $this->presenze = $this->carica->getPresenze();
       $this->assenze = $this->carica->getAssenze();
       $this->missioni = $this->carica->getMissioni();
@@ -567,7 +567,7 @@ class parlamentareActions extends sfActions
     if (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] != 'Presente')
       $c->add(OppVotazioneHasCaricaPeer::VOTO, $this->filters['vote_vote']);
     elseif (array_key_exists('vote_vote', $this->filters) && $this->filters['vote_vote'] != '0' && $this->filters['vote_vote'] == 'Presente')
-     $c->add(OppVotazioneHasCaricaPeer::VOTO, array('favorevole','contrario','astenuto'), Criteria::IN);  
+     $c->add(OppVotazioneHasCaricaPeer::VOTO, array('favorevole','contrario','astenuto','presente non votante','presidente di turno','richiedente la votazione e non votante'), Criteria::IN);  
     
     // filtro per esito
     if (array_key_exists('vote_result', $this->filters) && $this->filters['vote_result'] != '0')
@@ -838,7 +838,7 @@ class parlamentareActions extends sfActions
     $ramo = $this->getRequestParameter('ramo', 'camera');
 
     // estrae i gruppi del ramo
-    $this->all_groups = OppGruppoPeer::getAllGroups($ramo, 17, 'tutti');
+    $this->all_groups = OppGruppoPeer::getAllGroups($ramo, 18, 'tutti');
     
     // estrae le circoscrizioni, compreso il valore 0
     $this->all_constituencies = OppCaricaPeer::getAllConstituencies($ramo, 'tutte');
@@ -887,12 +887,12 @@ class parlamentareActions extends sfActions
       $this->getResponse()->setTitle('elenco dei deputati - '.sfConfig::get('app_main_title'));
       $this->response->addMeta('description','Elenco dei deputati della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
-      $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+      $c->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
       $c->add(OppCaricaPeer::TIPO_CARICA_ID, '1', Criteria::EQUAL);
  
       //conteggio numero deputati  
       $c1 = new Criteria();
-      $c1->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+      $c1->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '1' , Criteria::EQUAL);
       $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
       $this->numero_parlamentari = OppCaricaPeer::doCount($c1);
@@ -902,7 +902,7 @@ class parlamentareActions extends sfActions
       $this->getResponse()->setTitle('elenco dei senatori - '.sfConfig::get('app_main_title'));
       $this->response->addMeta('description','Elenco dei senatori della legislatura con assenze, indice di produttivit&agrave; e voti ribelli',true);
       
-      $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+      $cton = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
       //in questo modo considero i senatori a vita
       $cton1 = $c->getNewCriterion(OppCaricaPeer::LEGISLATURA, null, Criteria::EQUAL);
       $cton->addOr($cton1);
@@ -915,7 +915,7 @@ class parlamentareActions extends sfActions
  
       //conteggio numero senatori
       $c1 = new Criteria();
-      $c1->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+      $c1->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
       $c1->add(OppCaricaPeer::TIPO_CARICA_ID, '4' , Criteria::EQUAL);
       $c1->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL);
       $numero_senatori = OppCaricaPeer::doCount($c1);
@@ -961,7 +961,7 @@ class parlamentareActions extends sfActions
     else
      $c->add(OppCaricaPeer::TIPO_CARICA_ID, '4', Criteria::EQUAL);
 
-    $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);    
+    $c->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);    
     $c->add(OppCaricaPeer::DATA_FINE, 'NULL', Criteria::NOT_EQUAL); 
 	 
     $this->parlamentari_decaduti = OppCaricaPeer::doSelectRS($c);
@@ -1285,11 +1285,22 @@ $this->response->addMeta('description','Confronto tra le attivit&agrave; parlame
   
   public function executeCommissioniBicamerali()
   {
-    $this->getResponse()->setTitle('Commissioni bicamerali in Parlamento - '.sfConfig::get('app_main_title'));
-    $this->response->addMeta('description','La composizione delle commissioni bicamerali, qual\'&egrave; il potere dei gruppi parlamentari',true);
+    $this->getResponse()->setTitle('Commissioni bicamerali e speciali in Parlamento - '.sfConfig::get('app_main_title'));
+    $this->response->addMeta('description','La composizione delle commissioni bicamerali e speciali, qual\'&egrave; il potere dei gruppi parlamentari',true);
+	if ($this->getRequestParameter('ramo')=='camera')
+		$ramo_organo='C';
+	else
+		$ramo_organo='S';
+	
      $c=new Criteria();
-     $c->add(OppSedePeer::RAMO,'CS');
-     $c->add(OppSedePeer::TIPOLOGIA,'Commissione bicamerale');
+	 $criterion = $c->getNewCriterion(OppSedePeer::TIPOLOGIA,'Commissione speciale');
+	 $criterion->addAnd($c->getNewCriterion(OppSedePeer::RAMO,$ramo_organo));
+	 $criterion->addOr($c->getNewCriterion(OppSedePeer::TIPOLOGIA,'Commissione bicamerale'));
+	 
+	 $c->add($criterion);
+     
+	 //$c->add(OppSedePeer::RAMO,'CS');
+     //$c->add(OppSedePeer::TIPOLOGIA,'Commissione bicamerale');
      $this->comms=OppSedePeer::doSelect($c);
      $this->ramo=$this->getRequestParameter('ramo');
     

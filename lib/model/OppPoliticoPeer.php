@@ -10,14 +10,14 @@
 class OppPoliticoPeer extends BaseOppPoliticoPeer
 {
   
-  public static function getPictureUrl($id)
+	public static function getPictureUrl($id)
 	{
-	  return sfConfig::get('sf_pol_images_host', "http://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/picture/" . $id . '.jpeg';
+		return sfConfig::get('sf_pol_images_host', "https://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/picture/" . $id . '.jpeg';
 	}
 
-	public static function getThumbUrl($id)
+  	public static function getThumbUrl($id)
 	{
-	  return sfConfig::get('sf_pol_images_host', "http://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/thumb/" . $id . '.jpeg';
+	  return sfConfig::get('sf_pol_images_host', "https://op_openparlamento_images.s3.amazonaws.com/") . "parlamentari/thumb/" . $id . '.jpeg';
 	}
 	
 	/**
@@ -49,8 +49,8 @@ class OppPoliticoPeer extends BaseOppPoliticoPeer
    */
   public static function getPresidentiCamereIds($ramo = null)
   {
-    $pres_camera = 686427;  # boldrini
-    $pres_senato = 687024; # grasso
+    $pres_camera = 494864;  # fico
+    $pres_senato = 1449; # casellati
     if ($ramo == 'camera') {
       return array($pres_camera);
     }

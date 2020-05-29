@@ -1316,7 +1316,7 @@ function news_icon_name($generator_model, $generator)
 
   // attos are special
   if ($generator_model == 'OppAtto')
-  {
+  {	
     $tipo_atto_id = $generator->getOppTipoAtto()->getId();
     
     // distinction between legislative and non-legislative acts

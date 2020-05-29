@@ -7,7 +7,8 @@
   </p>
   <p class="box">
    <span class="arrow-up"></span>
-   <?php echo $post->getDescription()?>
+   <?php $content=explode("L'articolo", strip_tags($post->getDescription()))?>
+   <?php echo $content[0] ?>
   </p>   
   </div>
 </li> 

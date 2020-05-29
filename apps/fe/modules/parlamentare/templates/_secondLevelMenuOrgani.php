@@ -16,7 +16,7 @@
 		</li>
 		<li class="<?php echo($current=='bicamerali' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php echo link_to('Commissioni bicamerali', $current=='bicamerali'?'#':'@commissioni_bicamerali?ramo='.$ramo) ?>
+	      <?php echo link_to('Commissioni bicamerali e speciali', $current=='bicamerali'?'#':'@commissioni_bicamerali?ramo='.$ramo) ?>
 		 </h5>
 		</li>
 		

@@ -8,7 +8,7 @@ define('SF_DEBUG',       false);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 $messaggio="link tra voti e atti da foglio google\n";
-$rows=file("https://docs.google.com/spreadsheet/pub?key=0AiZ65N5BuOCtdE5xaDg3THR2WlpMdjNkelRQM241WFE&single=true&gid=0&output=csv");
+$rows=file("https://docs.google.com/spreadsheets/u/1/d/1FHXPqe_B8N_aqwte32DcfjU2QK3gsl42PmBW9zpf5R8/export?format=csv&id=1FHXPqe_B8N_aqwte32DcfjU2QK3gsl42PmBW9zpf5R8&gid=0");
 
 foreach ($rows as $k=>$row)
 {

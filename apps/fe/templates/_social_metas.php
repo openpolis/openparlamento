@@ -1,9 +1,9 @@
 <!--
 <meta property="og:title" content="Openparlamento: Informati, monitora e intervieni nei lavori del parlamento"/>
 <meta property="og:type" content="website"/>
-<meta property="og:image" content="http://parlamento17.openpolis.it/img/fb_img.png"/>
+<meta property="og:image" content="http://parlamento18.openpolis.it/img/fb_img.png"/>
 <meta property="og:description" content="Cosa fanno i tuoi rappresentanti? Tutte le attivit&agrave; parlamentari aggiornate quotidianamente."/>
-<meta property="og:url" content="http://parlamento17.openpolis.it/"/>
+<meta property="og:url" content="http://parlamento18.openpolis.it/"/>
 -->
 
 
@@ -13,8 +13,8 @@
 <meta name="twitter:title" content="Informati, monitora e intervieni nei lavori del parlamento">
 <meta name="twitter:description" content="Cosa fanno i tuoi rappresentanti? Tutte le attivit&agrave; parlamentari aggiornate quotidianamente.">
 <meta name="twitter:creator" content="@openpolis">
-<meta name="twitter:image:src" content="http://parlamento17.openpolis.it/img/fb_img.png">
-<meta name="twitter:domain" content="http://parlamento17.openpolis.it">
+<meta name="twitter:image:src" content="http://parlamento18.openpolis.it/img/fb_img.png">
+<meta name="twitter:domain" content="http://parlamento18.openpolis.it">
 
 
 
@@ -24,4 +24,4 @@
 <!-- Add the following three tags inside head. -->
 <meta itemprop="name" content="Openparlamento: Informati, monitora e intervieni nei lavori del parlamento">
 <meta itemprop="description" content="Cosa fanno i tuoi rappresentanti? Tutte le attivit&agrave; parlamentari aggiornate quotidianamente.">
-<meta itemprop="image" content="http://parlamento17.openpolis.it/img/fb_img.png">
+<meta itemprop="image" content="http://parlamento18.openpolis.it/img/fb_img.png">

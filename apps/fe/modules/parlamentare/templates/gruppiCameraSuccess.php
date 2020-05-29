@@ -5,7 +5,7 @@
 		
 		<div>
 			<?php //include_partial('wikiGruppi') ?>      
-		<?php echo include_component('parlamentare','gruppiParlamentari',array('ramo' => 1, 'leg'=> 17)) ?>
+		<?php echo include_component('parlamentare','gruppiParlamentari',array('ramo' => 1, 'leg'=> 18)) ?>
 		</div>
 		
 	</div>

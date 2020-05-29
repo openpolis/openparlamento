@@ -5,8 +5,9 @@
 <div class="row">
 	<div class="ninecol">
 		
-		<?php include_partial('wiki') ?>  	  		
-
+		<?php include_partial('wiki') ?>
+		
+		<br/>
 	      <?php include_partial('filter',
 	                            array('tags_categories' => $all_tags_categories,
 	                                  'active' => deppFiltersAndSortVariablesManager::arrayHasNonzeroValue(array_values($filters)),                            
@@ -18,6 +19,7 @@
 	      <?php include_partial('sort') ?>      
 
 	      <?php echo include_partial('default/listNotice', array('filters' => $filters, 'results' => $pager->getNbResults())); ?>
+		  
 
 	      <?php include_partial('list', array('pager' => $pager)) ?>
 		

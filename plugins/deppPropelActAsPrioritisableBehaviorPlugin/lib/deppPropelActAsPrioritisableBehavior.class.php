@@ -166,8 +166,10 @@ class deppPropelActAsPrioritisableBehavior
     
     $max_priority = sfConfig::get(
       sprintf('propel_behavior_deppPropelActAsPrioritisableBehavior_%s_max_priority', 
-             get_class($object)));
- 
+             get_class($object)
+      )
+    );
+
     if (is_null($max_priority))
     {
       $max_priority = @constant(get_class($object).'::DEFAULT_MAX_PRIORITY');
