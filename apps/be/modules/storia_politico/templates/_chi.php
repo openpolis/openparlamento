@@ -6,7 +6,7 @@
   </a>
   -
   <?php echo link_to($parlamentare->getPoliticoId(), 
-                     'http://' . sfConfig::get('sf_site_url', 'op_openpolis') . "/parlamentare/" . $parlamentare->getPoliticoId(),
+                     'https://' . sfConfig::get('sf_site_url', 'op_openpolis') . "/parlamentare/" . $parlamentare->getPoliticoId(),
                      true) ?>
   (<?php echo $parlamentare->getId() ?>)  
 <?php endif ?>

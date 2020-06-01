@@ -126,7 +126,7 @@ class attoComponents extends sfComponents
   
   public function executeVotazioni()
   {
-    $this->limit = 2;
+  $this->limit = 2;
 	$this->limit_count = 0;
 	
 	$this->votazioni_count = count($this->votazioni);

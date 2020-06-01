@@ -13,7 +13,7 @@ if (count($cariche)>0)
     echo strpos(OppSedePeer::retrieveByPk($carica->getSedeId())->getDenominazione(),"giunta");
     if (OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione permanente')
       $uri="@commissioni_$ramo";
-    elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione bicamerale'))
+    elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione bicamerale') or (OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Commissione speciale'))
       $uri="@commissioni_bicamerali?ramo=$ramo";
     elseif((OppSedePeer::retrieveByPk($carica->getSedeId())->getTipologia()=='Giunta'))
       $uri="@giunte?ramo=$ramo";  

@@ -37,8 +37,5 @@
       <?php echo link_to('Comunit&agrave;', 'community') ?>
     <?php endif; ?>
   </li>
-  <li>
-    <a href="http://blog.openpolis.it/">Open blog</a>
-  </li>
-  <li><span style="font-size:10px;"><a href="http://parlamento16.openpolis.it/">Precedente legislatura 2008-13</a></span></li>
+  <li><span style="font-size:10px;"><a href="http://parlamento17.openpolis.it/">Precedente legislatura 2013-2018</a></span></li>
 </ul>

@@ -19,10 +19,7 @@
 	    <a href="faq#1">»&nbsp;Cos'&egrave; openparlamento?</a><br /> 
 	    <a href="faq#2">»&nbsp;Che cos'&egrave; il monitoraggio di openparlamento?</a><br />  
 	    <a href="faq#3">»&nbsp;A cosa serve?</a><br />  
-	    <a href="faq#4">»&nbsp;Chi siete?</a><br />  
-	    <a href="faq#5">»&nbsp;E' gratuito?</a><br /> 
-	    <a href="faq#6">»&nbsp;Che tipo di software avete utilizzato?</a><br />  
-	    <a href="faq#7">»&nbsp;Come posso contattarvi?</a><br /><br /> 
+	    <a href="faq#4">»&nbsp;Chi siete?</a><br /><br /> 
 
 	    <em class="open"><strong>Domande sui contenuti</strong></em><br /><br />
 
@@ -30,15 +27,8 @@
 	    <a href="faq#9">»&nbsp;Come sono ricavate le presenze dei parlamentari?</a><br />  
 	    <a href="faq#10">»&nbsp;Cos'&egrave; l'indice di attivit&agrave; di un parlamentare?</a><br />  
 	    <a href="faq#11">»&nbsp;Chi sono i parlamentari ribelli?</a><br />
-	    <a href="faq#11a">»&nbsp;Come vengono calcolate le posizioni dei parlamentari all'interno del grafico delle distanze?</a><br /> 
 	    <a href="faq#12">»&nbsp;Che sono i titoli degli atti nelle parentesi quadre?</a><br /> 
 	    <a href="faq#13">»&nbsp;Perch&eacute; a volte il testo del disegno di legge non c'&egrave;?</a><br /> <br />
-
-	    <em class="open"><strong>Domande sui contributi degli utenti</strong></em><br /><br />
-
-	    <a href="faq#14">»&nbsp;Come posso descrivere un atto o una votazione?</a><br />  
-	    <a href="faq#15">»&nbsp;Che differenza c'&egrave; tra commenti all'atto e note al testo?</a><br /> 
-	    <a href="faq#16">»&nbsp;Perch&eacute; dovrei darvi i miei soldi?</a><br /><br /> 
 
 	    <em class="open"><strong>Domande sul monitoraggio e sulla pagina personale</strong></em><br /><br />
 
@@ -49,9 +39,6 @@
 	    <a href="faq#21">»&nbsp;Cosa trovo in "le mie notizie"?</a><br /> 
 	    <a href="faq#22">»&nbsp;Cosa trovo in "i miei atti"?</a><br />  
 	    <a href="faq#23">»&nbsp;Cosa trovo in "i miei parlamentari"?</a><br /> 
-	    <a href="faq#24">»&nbsp;Cos'&egrave; la newsletter di openparlamento?</a><br /> 
-	    <a href="faq#25">»&nbsp;Quanti parlamentari o atti posso monitorare?</a><br /> 
-	    <a href="faq#26">»&nbsp;Quanti argomenti posso monitorare?</a><br /> 
 	    <br /> 
 
 
@@ -72,20 +59,7 @@
 	     </div>
 	     <div style="padding-top:8px; line-height:1,5em;">
 	     <a name="4"></a><p><strong>Chi siete?</strong></p>
-	     openparlamento &egrave; un'iniziativa del progetto <?php echo link_to('openpolis','http://www.openpolis.it') ?> gestito dall'associazione omonima che &egrave; indipendente, apartitica, aconfessionale e senza scopo di lucro.
-	     <p>La sostenibilit&agrave; dei progetti viene perseguita attraverso i <?php echo link_to('contributi','http://www.openpolis.it/contribuisci') ?> di utenti e soci dell'associazione.</p>
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="5"></a><p><strong>E' gratuito?</strong></p>
-	     S&igrave;. La consultazione completa di tutti i dati, la registrazione al sito e i servizi di monitoraggio principali sono gratuiti. <?php echo link_to('Contribuisci','http://www.openpolis.it/contribuisci') ?> anche tu a mantenere liberi, gratuiti e indipendenti i nostri progetti. I soci di openpolis hanno inoltre accesso ai <?php echo link_to('servizi premium','/sottoscrizioni_pro') ?>.
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="6"></a><p><strong>Che tipo di software avete utilizzato?</strong></p>
-	     Per realizzare e sviluppare i progetti di openpolis usiamo software libero e open source. <?php echo link_to('Qui la lista dei software','http://www.openpolis.it/index.php/static/software') ?> utilizzati. 
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="7"></a><p><strong>Come posso contattarvi?</strong></p>
-	     associazione openpolis - via dei sabelli 215 00185 roma - tel: +39 06.83608392 - e-mail: info@openpolis.it 
+		 openparlamento è un’iniziativa della <?php echo link_to('Fondazione openpolis','https://www.openpolis.it') ?> che è indipendente e senza scopo di lucro.
 	     </div>
 
 	     <h5 class="subsection">Domande sui contenuti</h5>
@@ -100,15 +74,11 @@
 	     </div>
 	     <div style="padding-top:8px; line-height:1,5em;">
 	     <a name="10"></a><p><strong>Cos'&egrave; l'indice di attivit&agrave; di un parlamentare?</strong></p>
-	     E' un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro. Per dettagli e commenti vai nel <a href="/blog/2009/06/16/l-indice-di-attivita-parlamentare">post del blog</a>.
+	     E’ un indice puramente quantitativo che prende in esame il numero e la tipologia e di atti prodotti dai parlamentari in modo da poterli confrontare tra di loro. La metodologia del calcolo è aggiornata nel tempo, <a href="https://www.openpolis.it/esercizi/far-emergere-le-differenze/">qui</a> trovi descritta quella usata per il rapporto del 2017.
 	     </div>
 	     <div style="padding-top:8px; line-height:1,5em;">
 	     <a name="11"></a><p><strong>Chi sono i parlamentari ribelli? </strong></p>
 	     Un parlamentare &egrave; considerato ribelle quando esprime un voto diverso da quello del gruppo parlamentare a cui appartiene. Si tratta di un indicatore puramente quantitativo del grado di ribellione alla "disciplina" del gruppo. 
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="11a"></a><p><strong>Come vengono calcolate le posizioni dei parlamentari all'interno del grafico delle distanze?</strong></p>
-	     Per il calcolo delle distanze tra Deputati e Senatori e quindi per la loro collocazione all'interno dello spazio utilizziamo la tecnica del <?php echo link_to('Multidimensional Scaling','http://en.wikipedia.org/wiki/Multidimensional_scaling') ?>.
 	     </div>
 	     <div style="padding-top:8px; line-height:1,5em;">
 	     <a name="12"></a><p><strong>Che sono i titoli degli atti nelle parentesi quadre?</strong></p>
@@ -119,21 +89,6 @@
 	     Quando un Deputato un Senatore deposita il proprio progetto di legge questo viene solitamente passato agli uffici di Camera e Senato che esaminano il testo e propongono modifiche all'autore per renderlo conforme ai principi e alle norme giuridiche del nostro ordinamento. Questa fase dura circa un mese durante la quale il disegno di legge risulta depositato - con un codice e un titolo - ma privo di testo e articoli che sono appunto in via di perfezionamento. 
 	     </div>
 
-	     <h5 class="subsection">Domande sui contributi degli utenti</h5>
-
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="14"></a><p><strong>Come posso descrivere un atto o una votazione? </strong></p>
-	     Per aggiungere o modificare la descrizione di un atto o di una votazione devi cliccare sul tasto "modifica" posto a destra sotto la scritta "decrivi questo atto (o votazione)". Si apre un modulo dove puoi inserire un nuovo testo o modificare quello presente, eventualmente inserito da altri. Per verificare e confrontare le diverse versioni della descrizione elaborata dagli utenti &egrave; sufficiente selezionare il tasto "Cronologia delle versioni" nella parte alta dell'area di inserimento del testo. 
-	     </div>
-	      <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="15"></a><p><strong>Che differenza c'&egrave; tra commenti all'atto e note al testo? </strong></p>
-	     I "commenti" che si trovano nella pagina di ogni atto (linguetta "lascia un commento") sono le valutazioni che gli utenti possono lasciare come commento generale (condivido / non condivido questo atto, perch&eacute;...). Alle "note" si accede invece andando nel testo dell'atto e hanno il senso di un'osservazione o di un appunto specifici (sorta di emendamenti) che gli utenti possono aggiungere al singolo articolo, comma o frase del testo. I "commenti" e le "note" - insieme ai voti - permettono di raccogliere le opinioni e le osservazioni degli utenti cos&igrave; da affiancare alla discussione parlamentare degli atti la conversazione dei cittadini. 
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="16"></a><p><strong>Perch&eacute; dovrei darvi i miei soldi? </strong></p>
-	     Per aiutare a sostenere i costi necessari per mantenere e sviluppare i servizi che vengono messi a disposizione di tutti in maniera gratuita con openparlamento e le altre iniziative di openpolis.<br/>
-	     Per promuovere la trasparenza e partecipare personalmente a mantenere liberi, gratuiti e indipendenti i nostri progetti! Per effettuare una donazione o diventare socio dell'associazione <?php echo link_to('<strong>clicca qui</strong>','http://www.openpolis.it/contribuisci') ?>.
-	     </div>
 
 	     <h5 class="subsection">Domande sul monitoraggio e sulla pagina personale</h5>
 
@@ -168,18 +123,6 @@
 	     <a name="23"></a><p><strong>Cosa trovo in "i miei parlamentari"? </strong></p>
 	     Nella sezione "i tuoi parlamentari" sono elencati i senatori e deputati che stai monitorando. Nella colonna "Notizie" per ogni parlamentare sono raccolte tutte le notizie che lo riguardano (fare click sul quadratino azzurro). Se poi selezioni la crocetta rossa a fianco l'icona della lente di ingrandimento puoi smettere di monitorare il parlamentare. 
 	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="24"></a><p><strong>Cos'&egrave; la newsletter di openparlamento? </strong></p>
-	     E' il notiziario che viene inviato quotidianamente nella tua casella e-mail per aggiornarti sulle novit&agrave; che riguardano i parlamentari, gli atti e gli argomenti che stai monitorando. Le stesse informazioni sono contemporaneamente disponibili nelle pagine personali del tuo "monitoraggio" dove vengono via via archiviate e restano disponibili per successive consultazioni. 
-	     </div>
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="25"></a><p><strong>Quanti parlamentari o atti posso monitorare? </strong></p>
-	     Ogni utente pu&ograve; monitorare gratuitamente un massimo di 5 elementi in totale tra parlamentari (senatori e deputati) e atti (ddl, mozioni, ordini del giorno, interrogazioni, etc.). Per monitorare un numero superiore di elementi si pu&ograve; aderire all'associazione openpolis. Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?>
-	     </div> 
-	     <div style="padding-top:8px; line-height:1,5em;">
-	     <a name="26"></a><p><strong>Quanti argomenti posso monitorare? </strong></p>
-	     Il monitoraggio degli argomenti &egrave; un servizio premium a disposizione di tutti gli iscritti all'associazione openpolis. Promuovi la trasparenza e la partecipazione: <?php echo link_to('prenota anche tu la tessera 2010 dell\'associazione!','@tesseramento') ?>
-	     </div> 
 	   </div>
 		
 	</div>

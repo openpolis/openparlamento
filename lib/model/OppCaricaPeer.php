@@ -18,7 +18,7 @@ public static function getIndexChartsPoliticiansInConstituencyRealTime($ramo, $d
 	 $c=new Criteria();
 	 $c->addJoin(OppPoliticoPeer::ID, OppCaricaPeer::POLITICO_ID);
 	 //esclude i presidenti di camera e senato
-	 $c->add(OppPoliticoPeer::ID, array(686427, 687024), Criteria::NOT_IN);
+	 $c->add(OppPoliticoPeer::ID, array(1449, 494864), Criteria::NOT_IN);
 	 // prende solo i parlamentari in carica
 	 $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
 	 
@@ -72,7 +72,7 @@ public static function getIndexChartsTopPoliticiansRealTime($ramo, $data, $limit
 	 $c=new Criteria();
 	 $c->addJoin(OppPoliticoPeer::ID, OppCaricaPeer::POLITICO_ID);
 	 //esclude i presidenti di camera e senato
-	 $c->add(OppPoliticoPeer::ID, array(686427, 687024), Criteria::NOT_IN);
+	 $c->add(OppPoliticoPeer::ID, array(1449, 494864), Criteria::NOT_IN);
 	 // prende solo i parlamentari in carica
 	 $c->add(OppCaricaPeer::DATA_FINE, NULL, Criteria::ISNULL);
 	 

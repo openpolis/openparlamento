@@ -178,7 +178,7 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
      * @author Ettore Di Cesare
      */
 
-    public static function getCarichePerGruppo($gruppo_id, $data_fine = 0, $leg = 16)
+    public static function getCarichePerGruppo($gruppo_id, $data_fine = 0, $leg = 18)
     {
     	$c = new Criteria();
     	$c->addJoin(OppCaricaHasGruppoPeer::GRUPPO_ID, OppGruppoPeer::ID);
@@ -232,7 +232,27 @@ class OppCaricaHasGruppoPeer extends BaseOppCaricaHasGruppoPeer
           return $rs;
         else
           return NULL;
-      }    
+      }
+	  
+	  
+	  public static function getNumeroParlamentariGruppoRamoData($gruppo_id, $data, $ramo, $con = null)
+	  {
+	    if ($con === null) {
+				$con = Propel::getConnection(self::DATABASE_NAME);
+			}
+		
+			$sql = sprintf("select count(*) from opp_carica_has_gruppo ca, opp_gruppo_ramo rm where ca.gruppo_id=rm.gruppo_id and ca.gruppo_id=%d and ca.data_inizio <= '%s' and (ca.data_fine > '%s' or ca.data_fine is null) and rm.ramo='S';",
+	                    $gruppo_id, $data, $data,$ramo);
+
+	    $stm = $con->createStatement(); 
+	    $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
+	    if ($rs->next()) {
+	      $row = $rs->getRow();
+	      return $row; 		
+	    }
+	    return null;
+    
+	  }
    
   	
 }

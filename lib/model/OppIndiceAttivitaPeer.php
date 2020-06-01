@@ -426,6 +426,9 @@ class OppIndiceAttivitaPeer extends OppIndicePeer
                 if ($verbose)
                     printf("  atto unificato (principale: %d)\n", $is_unified['atto_to_id']);
                 $iter_node->addAttribute('unificato_in', $is_unified['atto_to_id']);
+
+                // il computo del punteggio per l'iter non parte nel caso di relazioni di atti unificati (non prinvipali)
+                if ($mode == 'relazione') return $punteggio;
             }
 
 

@@ -21,10 +21,18 @@
 	  <li>
         <?php if($commissione->getOppSede()->getRamo()=='S'): ?>
           <?php $sede_comm="Senato" ?>
-          <?php $uri_comm="@commissioni_senato" ?>
+		  <?php if($commissione->getOppSede()->getTipologia()!='Commissione speciale'): ?>
+          	<?php $uri_comm="@commissioni_senato" ?>
+		   <?php else : ?>
+			   <?php $uri_comm="@commissioni_bicamerali" ?>
+			<?php endif; ?>
         <?php elseif ($commissione->getOppSede()->getRamo()=='C') : ?>
           <?php $sede_comm="Camera" ?>
-          <?php $uri_comm="@commissioni_camera" ?>
+		  <?php if($commissione->getOppSede()->getTipologia()!='Commissione speciale'): ?>
+          	<?php $uri_comm="@commissioni_camera" ?>
+		   <?php else : ?>
+			   <?php $uri_comm="@commissioni_bicamerali" ?>
+			<?php endif; ?>
         <?php elseif ($commissione->getOppSede()->getRamo()=='CS') : ?>
           <?php $sede_comm="Bicamerale" ?>
           <?php $uri_comm="@commissioni_bicamerali" ?>

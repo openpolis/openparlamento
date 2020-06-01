@@ -25,7 +25,7 @@
         <?php echo link_to('assenze', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=assenze&type=desc') ?>
       <?php endif; ?>
 	</li>
-    <?php // if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
+    <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <li>
 	  <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'indice'): ?>
         <?php echo link_to('indice di produttivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>
@@ -33,7 +33,7 @@
         <?php echo link_to('indice di produttivit&agrave;', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=indice&type=desc') ?>
       <?php endif; ?>
 	</li>
-    <?php // endif; ?>
+    <?php endif; ?>
     <li>
 	  <?php if ($sf_user->getAttribute('sort', null, 'sf_admin/opp_carica/sort') == 'ribelle'): ?>
         <?php echo link_to('voti ribelli', '@parlamentari?ramo='.$sf_params->get('ramo', 'camera').'&sort=ribelle&type='.($sf_user->getAttribute('type', 'asc', 'sf_admin/opp_carica/sort') == 'asc' ? 'desc' : 'asc'), array('class' => 'current '.$current_class)) ?>

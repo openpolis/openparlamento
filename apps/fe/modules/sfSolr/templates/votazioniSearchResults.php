@@ -8,7 +8,7 @@
 		<?php echo include_partial('sfSolr/addAlert', array('query' => $query)); ?>
 
 	      <p style="margin: 10px 0; text-align: right; padding: 5px">Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
-	         <?php echo $num ?> per <strong><?php echo $query ?></strong> <?php echo $title ?> (<?php echo $qTime ?>ms)</p>
+	         <?php echo $num ?> per <strong><?php echo htmlspecialchars($query) ?></strong> <?php echo $title ?> (<?php echo $qTime ?>ms)</p>
 
 	    <table class="search-results-table">
 	    <?php $num_item=0 ?>
@@ -61,5 +61,5 @@
 <?php slot('breadcrumbs') ?>
   <?php echo link_to('Home', '@homepage') ?> /
   <?php echo link_to('Votazioni', '@votazioni') ?> / 
-  Ricerca per <i><?php echo $query ?></i>
+  Ricerca per <i><?php echo htmlspecialchars($query) ?></i>
 <?php end_slot() ?>

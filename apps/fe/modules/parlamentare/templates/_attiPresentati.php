@@ -41,7 +41,7 @@
         </tr>
       <?php endforeach; ?>
       
-      <th scope="row" style="padding-left:3px;"><?php echo 'emendamenti '.image_tag('/images/ico-new.png') ?></th>
+      <th scope="row" style="padding-left:3px;"><?php echo 'emendamenti' ?></th>
         <?php if ($emen_primo > 0): ?>
           <td><?php echo link_to($emen_primo,'@parlamentare_emendamenti?id='.$parlamentare->getId().'&slug='.$parlamentare->getSlug().'&filter_act_firma=P') ?></td>
         <?php else: ?>

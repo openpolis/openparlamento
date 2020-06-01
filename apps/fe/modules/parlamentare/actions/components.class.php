@@ -303,7 +303,7 @@ public function executeAllvoteComparati()
 	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
 	$c->addSelectColumn(OppPoliticoPeer::NOME);   
         $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
-        $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+        $c->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
         $c->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica, Criteria::EQUAL);
         $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL); 
         $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);
@@ -322,7 +322,7 @@ public function executeAllvoteComparati()
   	$c->addSelectColumn(OppPoliticoPeer::COGNOME);
   	$c->addSelectColumn(OppPoliticoPeer::NOME);   
           $c->addJoin(OppCaricaPeer::POLITICO_ID, OppPoliticoPeer::ID);
-          $c->add(OppCaricaPeer::LEGISLATURA, '17', Criteria::EQUAL);
+          $c->add(OppCaricaPeer::LEGISLATURA, '18', Criteria::EQUAL);
           $c->add(OppCaricaPeer::TIPO_CARICA_ID, $this->tipo_carica, Criteria::EQUAL);
           $c->add(OppCaricaPeer::DATA_FINE, null, Criteria::EQUAL); 
           $c->addAscendingOrderByColumn(OppPoliticoPeer::COGNOME);

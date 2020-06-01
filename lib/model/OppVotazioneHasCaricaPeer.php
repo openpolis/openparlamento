@@ -192,23 +192,24 @@ class OppVotazioneHasCaricaPeer extends BaseOppVotazioneHasCaricaPeer
 
     $con = Propel::getConnection(self::DATABASE_NAME);
 
-    $sql = sprintf("select vc.voto from opp_votazione_has_carica vc, opp_votazione v, opp_seduta s where vc.votazione_id=v.id and v.seduta_id=s.id and vc.carica_id=%d and s.data < '%s' and s.legislatura=%d",
+    $sql = sprintf("select vc.voto, count(*) as n from opp_votazione_has_carica vc, opp_votazione v, opp_seduta s where vc.votazione_id=v.id and v.seduta_id=s.id and vc.carica_id=%d and s.data < '%s' and s.legislatura=%d group by vc.voto",
                    $carica_id, $data, $legislatura);
-    $stm = $con->createStatement(); 
+
+    $stm = $con->createStatement();
     $rs = $stm->executeQuery($sql, ResultSet::FETCHMODE_ASSOC);
     while ($rs->next()) {
       $row = $rs->getRow();
       switch ($row['voto']) {
         case 'Assente':
-          $n_assenze++;
+          $n_assenze = $row['n'];
           break;
         case 'In missione':
-          $n_missioni++;
+          $n_missioni = $row['n'];
           break;
         case 'Votazione annullata':
           break;
         default:
-          $n_presenze++;
+          $n_presenze += $row['n'];
           break;
       }
 

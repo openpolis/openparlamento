@@ -29,6 +29,7 @@
   <?php else: ?>
     <div id="login">
       <div class="inner">
+        <?php /*
         <?php echo link_to('Registrati', 
                             "http://".sfConfig::get('sf_remote_guard_host',
                                                     'op_accesso.openpolis.it').
@@ -36,7 +37,8 @@
                             "/aggiungi_utente" , 
                            array('class' => 'sign-on')) ?>	
         <span> | </span>
-        <?php echo link_to('Entra', 'login', array('class' => 'sign-in')) ?>      
+        */ ?>
+        <?php echo link_to('Entra', 'login', array('class' => 'sign-in')) ?>
       </div>	
     </div>
   <?php endif; ?>

@@ -14,32 +14,40 @@
 <div class="row">
 	
 	<div class="sevencol">
-           <!-- Banner -->
-           <div style="margin-bottom:20px;">
-              <?php echo link_to(image_tag('patrimoni_banner.jpg', array('alt' => 'Patrimoni Trasparenti')),'http://patrimoni.openpolis.it') ?>
-</div>        
+           
 
 	    <!-- in evidenza dal blog -->
 	     <div class="section-box"  style="padding-bottom:20px;">
-	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'http://blog.openpolis.it/categorie/inparlamento/feed/', array('class' => 'section-box-rss')) ?>
-	       <h3>in evidenza dal blog di openpolis</h3>
+	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'https://www.openpolis.it/dove/parlamento/feed/', array('class' => 'section-box-rss')) ?>
+	       <h3>ultime sul parlamento da openpolis.it</h3>
 	       <?php include_partial('sfSimpleBlog/inevidenza', 
-	                             array('feed' => sfFeedPeer::createFromWeb('http://blog.openpolis.it/categorie/inparlamento/feed/'),
-	                                   'limit' => 3)) ?>
-	 		   <p align=right><strong><a href="http://blog.openpolis.it/">vai al blog di openpolis</a></strong></p>
+	                             array('feed' => sfFeedPeer::createFromWeb('https://www.openpolis.it/dove/parlamento/feed/'),
+	                                   'limit' => 20)) ?>
+	 		   <p align=right><strong><a href="https://www.openpolis.it/">vai su openpolis.it</a></strong></p>
 	 	  </div>
 
-	    <!-- box keyvotes -->
-	   	<?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
+	    
 
 	    <div class="clear-both"></div>
 
 	    <!-- Box attivita' utenti -->
+		<!--
 	     <div class="section-box" style="margin-top: 2em;">   
 	       <h3 class="section-box-no-rss">ultime dalla comunit&agrave;</h3>
-	       <?php include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
-	     </div>     
+	       <?php //include_partial('news/newslistcomm', array('latest_activities' => $latest_activities)) ?>
+	     </div>
+		-->
 
+		<!-- box keyvotes -->
+	   	<?php include_component('votazione','keyvotes', array('limit' => '5', 'pagina' => 'homepage', 'type' => 'key')) ?>
+
+			<div class="clear-both"></div>
+       <!-- Box news dal parlamento -->
+       <div class="section-box">
+         <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
+    	   <h3>ultime dal parlamento</h3>
+         <?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
+		   </div>
 
 	     <div class="clear-both"></div>
 
@@ -54,7 +62,9 @@
 	      	<?php // include_component('votazione','widgetVotiMaggioranza', array('limit' => '2')) ?>
 
 	       <!-- Box rotazione parlamentari -->    
-	        <?php echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+		   
+	        <?php //echo include_component('default','classifiche', array('ramo'=>'0', 'classifica'=>'0','limit'=>'3')); ?>
+			
 	       <!-- box atti in evidenza dal parlamento -->
 	       <?php if (count($lanci)>0) : ?>
 	         <div class="section-box" style="padding-bottom:20px;">
@@ -65,18 +75,11 @@
 	     			<p align="right"><?php echo link_to('vai a tutti gli atti in evidenza', '@attiEvidenza') ?></p>
 	         </div>	
 	       <?php endif; ?>
-
+	       
+	   
 
 	       <div class="clear-both"></div>
 
-	       <!-- Box news dal parlamento -->
-	       <div class="section-box">
-	         <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
-	    	   <h3>ultime dal parlamento</h3>
-	         <?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
-			   </div>
-
-			<div class="clear-both"></div>
 	</div>
 	
 </div> 

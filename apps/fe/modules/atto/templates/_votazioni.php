@@ -1,4 +1,4 @@
-<h5 class="subsection">i voti relativi al disegno di legge:</h5>
+<h5 class="subsection">i voti relativi all'atto:</h5>
 <h5 class="subsection-spec">i pi&ugrave; recenti:</h5>
 
 <table class="disegni-decreti column-table">

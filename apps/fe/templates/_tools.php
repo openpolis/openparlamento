@@ -28,7 +28,9 @@
       </div>
 	</div>    
   <?php else: ?>
-	<ul class="inline-list">
+
+	<ul>
+        <?php /*
 		<li class="first">
 			<?php echo link_to('Registrati', 
 	                            "http://".sfConfig::get('sf_remote_guard_host',
@@ -37,6 +39,7 @@
 	                            "/aggiungi_utente" , 
 	                           array('class' => 'sign-on')) ?>
 		</li>
+        */ ?>
 		<li>
 			<?php echo link_to('Entra', 'login', array('class' => 'sign-in')) ?>
 		</li>
