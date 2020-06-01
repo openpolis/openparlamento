@@ -95,7 +95,7 @@ class BasesfGuardAuthActions extends sfActions
     if (sfConfig::get('sf_no_script_name') && $script == '/index.php') 
       $script = '';
 
-    $login_url = sprintf("http://%s%s/login", $host, $script);
+    $login_url = sprintf("https://%s%s/login", $host, $script);
     $user = $this->getUser();
 
     // some variables used in connecting to access APIs
