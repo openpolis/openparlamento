@@ -26,6 +26,13 @@
 ?>
 <?php
 
+$context = stream_context_create(array('ssl'=>array(
+    'verify_peer' => false,
+    "verify_peer_name"=>false
+    )));
+
+libxml_set_streams_context($context);
+
 class sfRemoteGuardLoginValidator extends sfValidator
 {
 
