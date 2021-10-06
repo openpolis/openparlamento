@@ -134,7 +134,7 @@ class parlamentareActions extends sfActions
 
       $this->ribelli_media = OppCaricaHasGruppoPeer::getSomma('ribelle', $ramo) / $nparl;
       $this->ribelli_media_perc = $this->ribelli_media * 100 / $pres_ribelli_media;
-      
+      /*
       // altre cariche da openpolis
       $xml= simplexml_load_file("http://politici.openpolis.it/api/chargeFindByPolitician/3114a2d106054d26c364c4cfff85910f97f7e29a/".$this->parlamentare->getId());
       $this->descrizione_cariche=array();
@@ -162,7 +162,7 @@ class parlamentareActions extends sfActions
         $durata=($durata.$giorni[0]%365)." giorni";
       
       $this->durata=$durata;
-      
+      */
       // Incarico nel gruppo corrente
 	  $c= new Criteria();
 	  $c->addJoin(OppChgIncaricoPeer::CHG_ID,OppCaricaHasGruppoPeer::ID);

@@ -5,8 +5,8 @@
     <tr> 
       <th scope="col">disegno di legge:</th>
       <th scope="col">ultimo<br />aggiornamento:</th>  
-      <th scope="col">interventi in<br />Parlamento:</th>
-      <th scope="col">voti e commenti<br />degli utenti:</th>
+      <!--<th scope="col">interventi in<br />Parlamento:</th>-->
+      <!--<th scope="col">voti e commenti<br />degli utenti:</th>-->
     </tr>
   </thead>
 
@@ -40,13 +40,6 @@
             <p class="<?php echo $iter->getColor() ?>"><?php echo $iter->getFase() ?></p>
           <?php endforeach; ?>
         </td>
-        <td><p><?php echo $atto->getNInterventi() ?></p></td>
-        <td>
-          <div class="user-stats-column">
-            <span class="green thumb-up"><?php echo $atto->getUtFav() ?></span><span class="red thumb-down"><?php echo $atto->getUtContr() ?></span>
-            <p><?php echo link_to($atto->getNbCommenti().' <strong>commenti</strong>', '@commenti_atto?id='.$atto->getId()) ?></p>
-          </div>
-        </td>	
       </tr>
     <?php endforeach; ?>
     <tr>

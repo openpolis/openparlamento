@@ -1,7 +1,7 @@
 <?php use_helper('deppVotingYesNo', 'deppPrioritising', 'deppLaunching', 'deppOmnibus'); ?>
 
 <div id="monitor-n-vote">
-
+<!--
   <h6>monitora questo atto</h6>
   <p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
           <div style="display: none;" class="help-box float-container">
@@ -12,17 +12,16 @@
                   </p>
               </div>
           </div>
-  <!-- component per la gestione del monitoring di questo atto -->
-  <?php echo include_component('monitoring', 'manageItem', 
-                               array('item' => $atto, 'item_type' => 'atto')); ?>
+  
+  <?php //echo include_component('monitoring', 'manageItem', array('item' => $atto, 'item_type' => 'atto')); ?>
   <hr class="dotted" />            
 
   <h6>sei favorevole o contrario?</h6>
 
-  <!-- blocco voting -->
-  <?php include_component('deppVoting', 'votingBlock', array('object' => $atto)) ?>
+ 
+  <?php //include_component('deppVoting', 'votingBlock', array('object' => $atto)) ?>
   <hr class="dotted" />
-  
+-->
    <!-- blocco lanci home x admin, priorita atti e flag omnibus -->
   <?php if ($sf_user->isAuthenticated() && $sf_user->hasCredential('amministratore')): ?>
     <div>

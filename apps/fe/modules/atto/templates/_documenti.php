@@ -1,12 +1,12 @@
 <?php if($atto->countOppDocumentos() != 0): ?>
 
 <div class="coo-mind float-container">
-  <h4 class="subsection">leggi i testi ufficiali dell'atto e aggiungi le tue note :</h4>
+  <h4 class="subsection">leggi i testi ufficiali dell'atto  :</h4>
   <table>
     <thead>
       <tr> 
         <th scope="col">&nbsp;</th>
-        <th scope="col">note degli utenti <?php echo image_tag('ico-coo-mind.png', array('alt' => 'coo-mind' )) ?></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     <!-- per activity-meter la larghezza max e' 75px ....
@@ -19,9 +19,9 @@
           <tr>
             <th><?php echo link_to('<strong>'.$i.'</strong>&nbsp;'.$documento->getTitolo(), 'atto/documento?id='.$documento->getId() ) ?></th>
             <td>
-            <?php $num_comm=count(sfEmendCommentPeer::getAllCommentsForResource('atto_documento_id_'.$documento->getId())) ?>
-            <?php echo link_to($num_comm,'atto/documento?id='.$documento->getId()) ?>
-            <?php switch($num_comm) : 
+            <?php //$num_comm=count(sfEmendCommentPeer::getAllCommentsForResource('atto_documento_id_'.$documento->getId())) ?>
+            <?php //echo link_to($num_comm,'atto/documento?id='.$documento->getId()) ?>
+            <?php /* switch($num_comm) : 
                case 0 : 
                   $actvitity=0; 
                   break; 
@@ -43,7 +43,7 @@
                case $num_comm>30 : 
                   $actvitity=75; 
                   break;   ?>   
-             <?php endswitch ?>                    
+             <?php endswitch */ ?>                    
             <span class="activity-meter" style="width: <?php echo $actvitity ?>px;">&nbsp;</span></td>
           </tr>
           <?php $limit_count++; ?>

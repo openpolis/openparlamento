@@ -2,7 +2,7 @@
 
 <div class="evidence-box float-container">
  
-	<h5 class="subsection">Confronta  <?php echo $parlamentare->getNome().' '.$parlamentare->getCognome() ?> con <?php echo ($ramo==1 ?'l\'onorevole':'il senatore') ?> ... <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?></span></h5>
+	<h5 class="subsection">Confronta  <?php echo $parlamentare->getNome().' '.$parlamentare->getCognome() ?> con <?php echo ($ramo==1 ?'l\'onorevole':'il senatore') ?> ... <span class="tools-container"><?php echo image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')) ?></span></h5>
 	<div class="pad10">
 
 <?php $arr_tendina=array(); ?>

@@ -9,7 +9,7 @@
 	        <?php echo $act->getOppTipoAtto()->getDescrizione() . ' ' . 
 	                   $act->getRamo().'.'.$act->getNumfase() . ' ' . 
 	                   $act->getTitolo() ?>
-	        <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), 
+	        <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), 
 	                           '@feed_atto?id='.$act_id, 
 	                           array('style' => 'vertical-align:middle; padding:5px;')) ?>
 	      </h4>

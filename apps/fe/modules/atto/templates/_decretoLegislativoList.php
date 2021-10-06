@@ -5,7 +5,7 @@
     <tr> 
       <th scope="col">decreto legislativo:</th>
     <!--  <th scope="col">DDL<br />collegato:</th> -->
-      <th scope="col">voti e commenti<br />degli utenti:</th>
+      
     </tr>
   </thead>
 
@@ -24,12 +24,7 @@
           </p>  
         </th>  	
        <!-- <td>da fare</td> -->
-        <td>
-          <div class="user-stats-column">
-            <span class="green thumb-up"><?php echo $ddl->getUtFav() ?></span><span class="red thumb-down"><?php echo $ddl->getUtContr() ?></span>
-            <p><?php echo link_to($ddl->getNbCommenti().' <strong>commenti</strong>', '@commenti_atto?id='.$ddl->getId()) ?></p>
-          </div>
-        </td>	
+        
       </tr>
     <?php endforeach; ?>
     <tr>

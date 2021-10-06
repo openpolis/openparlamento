@@ -112,24 +112,7 @@
 	      <!-- component per l'elenco dei documenti -->
 	      <a name="documenti"></a>
 	      <?php echo include_component('atto', 'documenti', array('atto' => $atto, 'titolo_wiki' => $titolo_wiki) ); ?>
-
-
-	      <!-- DESCRIZIONE -->
-	      <div class="wiki-box-container">
-	    	<h5 class="description" style="padding-bottom: 0px;">descrivi insieme agli altri utenti questo atto:</h5>
-	    	<p style="padding-left:5px;">qui sotto puoi inserire o modificare la descrizione per questa votazione.
-	    	<?php if ($sf_user->isAuthenticated()) : ?>
-	    	   <?php echo 'Clicca su "modifica"' ?>
-	    	<?php else : ?>
-	    	   Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
-	    	<?php endif ?>     
-	    	</p>
-
-	      <!-- partial per la descrizione wiki -->	
-	      <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'atto_' . $atto->getId() )) ?>
-	      </div>	
-		
-		
+			
 		
 		
 		<!-- Firmatari -->
@@ -155,13 +138,13 @@
 	      <?php endif; ?> 	  
 
 	      <a name="monitoringusersdo"></a>
-	      <?php echo include_component('atto', 'monitoringusersdo', array('item' => $atto)); ?>
+	      <?php //echo include_component('atto', 'monitoringusersdo', array('item' => $atto)); ?>
 
 	      <a name="prousersdo"></a>
-	      <?php echo include_component('atto', 'prousersdo', array('item' => $atto)); ?>
+	      <?php //echo include_component('atto', 'prousersdo', array('item' => $atto)); ?>
 
 	      <a name="antiusersdo"></a>
-	      <?php echo include_component('atto', 'antiusersdo', array('item' => $atto)); ?>
+	      <?php //echo include_component('atto', 'antiusersdo', array('item' => $atto)); ?>
 
 		
 		

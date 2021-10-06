@@ -114,23 +114,28 @@ sottoscrizione_premium:
 
 grafico_distanze:
   url: /grafico_distanze/:tipo
-  param: { module: default, action: graficoDistanze, tipo: 'votes_16_C' }
+  param: { module: static, action: unavailable }
+  # param: { module: default, action: graficoDistanze, tipo: 'votes_16_C' }
 
 blog_index:
   url: /blog
-  param: { module: sfSimpleBlog, action: index }
+  param: { module: static, action: unavailable }
+  #param: { module: sfSimpleBlog, action: index }
 
 blog_article_with_date:
   url: /blog/:year/:month/:day/:stripped_title
-  param: { module: sfSimpleBlog, action: show }
+  param: { module: static, action: unavailable }
+  #param: { module: sfSimpleBlog, action: show }
 
 blog_article:
   url: /blog/:stripped_title
-  param: { module: sfSimpleBlog, action: show }
+  param: { module: static, action: unavailable }
+  #param: { module: sfSimpleBlog, action: show }
 
 blog_tag:
   url: /blog/tag/:tag
-  param: { module: sfSimpleBlog, action: showByTag }
+  param: { module: static, action: unavailable }
+  #param: { module: sfSimpleBlog, action: showByTag }
 
 
 feed:
@@ -361,7 +366,8 @@ widget_atto:
   
 commenti_atto:
   url: /commenti_atto/:id
-  param: { module: atto, action: commenti }
+  param: { module: static, action: unavailable }
+  #param: { module: atto, action: commenti }
 
 documento:
   url: /atto/documento/id/:id
@@ -416,7 +422,8 @@ singolo_emendamento:
 
 commenti_emendamento:
   url: /commenti_emendamento/:id
-  param: { module: emendamento, action: commenti }
+  param: { module: static, action: unavailable }
+  # param: { module: emendamento, action: commenti }
   
 teseo:
   url:   /teseo/:id
@@ -480,12 +487,13 @@ votazione:
     url: /votazione/:ramo/:slug/:id
     param: { module: votazione, action: index }
 
-commenti_votazione_old:
-  url: /commenti_votazione/:id
-  param: { module: votazione, action: commenti }
+#commenti_votazione_old:
+#  url: /commenti_votazione/:id
+#  param: { module: votazione, action: commenti }
 commenti_votazione:
-    url: /votazione-commenti-utenti/:slug/:id
-    param: { module: votazione, action: commenti }
+  url: /votazione-commenti-utenti/:slug/:id
+  param: { module: static, action: unavailable }
+  # param: { module: votazione, action: commenti }
 
 parlamentariSearch:
   url: /parlamentariSearch/*

@@ -24,13 +24,13 @@
   </form>
 
   <div class="section-box">
-    <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), '/', array('class' => 'section-box-rss')) ?>
+    <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), '/', array('class' => 'section-box-rss')) ?>
     <h6>News - Atti non legislativi</h6>
     <div class="news-disegni-decreti float-container"> 
     <ul>
       <li>
         <strong>23-10-2008</strong>
-        <p><a href="#">C.1386-B</a> <?php echo image_tag('ico-new.png', array('alt' => 'nuovo')) ?><br />
+        <p><a href="#">C.1386-B</a> <?php echo image_tag('ico-new.png', array('alt' => 'nuovo', 'width' => '18', 'height' => '10')) ?><br />
         interventi in commissione cultura della <a href="#" class="tools-container">Camera</a></p>
       </li>
       <li>

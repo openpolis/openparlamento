@@ -1,7 +1,7 @@
 <?php if (count($tax)>0) : ?>
 
   <?php $cn=0; ?>
-  <h5 class="subsection-alt" style="margin-top:0px;">Dichiarazioni patrimoniali: redditi, beni e spese elettorali  <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?></span></h5>
+  <h5 class="subsection-alt" style="margin-top:0px;">Dichiarazioni patrimoniali: redditi, beni e spese elettorali  <span class="tools-container"><?php echo image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')) ?></span></h5>
   <div style="font-size:14px; margin-bottom:20px;">
   <?php if ($patrimoni>0) :?>
      <p style="padding-top:5px;padding-bottom: 10px;">

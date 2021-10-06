@@ -8,9 +8,8 @@ dev:
 all:
   query_debug_level: 0
   query_handler: dismax
-  index_dir: "/home/solr/openparlamento17/data/index/"
+  index_dir: "/var/solr/data/openparlamento18/data/index/"
   connection:
     host: "localhost"
-    port: "8080"
-    path: "/openparlamento17"
-    
+    port: "8983"
+    path: "/solr/openparlamento18"

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 php symfony solr-delete-propel-model fe OppPolitico
 php symfony solr-update-propel-model fe OppPolitico 1000

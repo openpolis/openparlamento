@@ -12,7 +12,7 @@
 	<div class="ninecol">
 		
 		<p>
-	        L'applicazione &egrave; stata temporaneamente sospesa.
+	        L'applicazione &egrave; stata sospesa.
 	      </p>
 	      <p>&nbsp;</p>
 		

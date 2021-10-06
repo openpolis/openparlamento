@@ -13,7 +13,7 @@
 	          <?php endif; ?> 
 	        <?php endif; ?>   
 	        <?php echo $politician ?>          
-	        <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 
+	        <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), 
 	                           '@feed_politico?id='.$politician_id, 
 	                           array('style' => 'vertical-align:middle; padding:5px;')) ?>
 	      </h4>

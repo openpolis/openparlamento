@@ -41,7 +41,7 @@
       <th scope="col" class="evident">assenze:</th>
       <th scope="col" class="evident">missioni:</th>
       <th scope="col">circoscrizione:</th>
-      <th scope="col">utenti che lo seguono:</th>
+      <!--<th scope="col">utenti che lo seguono:</th>-->
     </tr>
   </thead>
 
@@ -70,7 +70,8 @@
 		        <?php print" (". $nome.")" ?>
 	          <?php endif; ?> 
 	     <?php endforeach; ?> 
-            <?php if($parlamentari->getString(14)>'2018-03-05'): ?>
+            <?php if($parlamentari->getString(14)>'2018-03-05' and $parlamentari->getString(14)!=3 and $parlamentari->getString(14)!=4): ?>
+              
                 <br /><small>in carica dal <?php echo format_date($parlamentari->getString(14), 'dd/MM/yyyy') ?></small>
                <?php endif; ?>
 <?php echo $parlamentari->getInt(11) ?>
@@ -148,13 +149,13 @@
          <?php else: ?>
          <td><span class="small"><?php echo '* Senatore a vita' ?></span></td>
         <?php endif; ?>
-       <td><p>
+       <!--<td><p>
        <?php if($parlamentari->getInt(10)!='-1'): ?>
           <?php echo $parlamentari->getInt(13) ?>
        <?php else : ?>
           <?php echo $parlamentari->getInt(14) ?>
        <?php endif; ?>
-       </p></td> 
+       </p></td>-->
       </tr>
     <?php endwhile; ?>
   </tbody>    

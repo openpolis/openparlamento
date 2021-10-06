@@ -36,7 +36,7 @@
         <?php endif ?>        
 	    </h5>
 	    
-      <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), 
+      <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), 
                          '@feed_user_news?token=' . $sf_user->getToken(), 
                          array('style' => 'float:right', 'target' => '_blank')) ?>      
       

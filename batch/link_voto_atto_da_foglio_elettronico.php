@@ -7,6 +7,7 @@ define('SF_DEBUG',       false);
  
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
+include ("utility/notify.php");
 $messaggio="link tra voti e atti da foglio google\n";
 $rows=file("https://docs.google.com/spreadsheets/u/1/d/1FHXPqe_B8N_aqwte32DcfjU2QK3gsl42PmBW9zpf5R8/export?format=csv&id=1FHXPqe_B8N_aqwte32DcfjU2QK3gsl42PmBW9zpf5R8&gid=0");
 
@@ -42,7 +43,7 @@ foreach ($rows as $k=>$row)
 echo $messaggio;
 
 if (substr_count($messaggio, '!!')>0) 
-  mail("e.dicesare@depp.it", "ERRORE - Votazioni/atto", $messaggio, "From: ScriptVotazioniCamera");
+  notify("e.dicesare@depp.it", "ERRORE - Votazioni/atto", $messaggio, "From: ScriptVotazioniCamera");
 else
-   mail("e.dicesare@depp.it", "OK - Votazioni/atto", $messaggio, "From: ScriptVotazioniCamera");
+   notify("e.dicesare@depp.it", "OK - Votazioni/atto", $messaggio, "From: ScriptVotazioniCamera");
 ?>

@@ -10,7 +10,7 @@
 <?php $differenza = (strtotime($data_scadenza) - strtotime(date("Y-m-d", time())))/(86400); ?>      
 <?php $status = $ddl->getStatus(); ?>
 
-<?php foreach ($status as $data => $status_iter): ?> 
+<?php foreach ($status as $data => $status_iter): ?>
  <?php if($status_iter!=65 ) : ?>
     <?php if($data): ?>
 	  <p class="date"><?php echo format_date($data, 'dd/MM/yyyy') ?></p>

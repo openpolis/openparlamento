@@ -1,6 +1,6 @@
   <?php if (count($sotto)>0 || count($salva)>0) : ?>		  
   <div class="section-box" style="padding-bottom:20px;">
-      <h3 class="section-box-no-rss">Ultimi voti con maggioranza <span style="color:red;">battuta</span> o <span style="color:green;">salvata</span> <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?><a class="ico-help" href="#">&nbsp;</a></span>	 
+      <h3 class="section-box-no-rss">Ultimi voti con maggioranza <span style="color:red;">battuta</span> o <span style="color:green;">salvata</span> <span class="tools-container"><?php echo image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')) ?><a class="ico-help" href="#">&nbsp;</a></span>	 
 			<div style="display: none;" class="help-box float-container">
 				<div class="inner float-container" style="font-size:12px;">		
 					<a class="ico-close" href="#">chiudi</a><h5>cosa sono i voti con maggioranza battuta o salvata ?</h5>

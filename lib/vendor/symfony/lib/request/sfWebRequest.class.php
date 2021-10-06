@@ -429,7 +429,7 @@ class sfWebRequest extends sfRequest
       unset($host[1]);
     }
 
-    return $protocol.'://'.implode(':', $host);;
+    return $protocol.'://'.implode(':', $host);
   }
 
   /**

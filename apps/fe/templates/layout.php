@@ -62,7 +62,7 @@
     <!--
     <script type="text/javascript">jQuery.noConflict();</script>
     -->
-    <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
+    <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento18.bis.openpolis.it'): ?>    
       <?php include_partial('global/googleAnalytics') ?>	  
     <?php endif ?>
 

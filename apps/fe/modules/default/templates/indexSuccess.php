@@ -1,15 +1,5 @@
 <?php echo use_helper('DeppNews', 'Date'); ?>
 
-<?php if ($sf_user->isAuthenticated()): ?>
- 
-    <?php echo include_component('monitoring', 'userVspolitician',
-                                 array('user' => $sf_user, 'num' => 1, 
-                                       'ambient' => 'home', 'legislatura' => 16)); ?>			
-  
-
-  <div class="clear-both"></div>
-
-<?php endif; ?>
 
 <div class="row">
 	
@@ -17,8 +7,9 @@
            
 
 	    <!-- in evidenza dal blog -->
+             <?php /*
 	     <div class="section-box"  style="padding-bottom:20px;">
-	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), 'https://www.openpolis.it/dove/parlamento/feed/', array('class' => 'section-box-rss')) ?>
+	       <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), 'https://www.openpolis.it/dove/parlamento/feed/', array('class' => 'section-box-rss')) ?>
 	       <h3>ultime sul parlamento da openpolis.it</h3>
 	       <?php include_partial('sfSimpleBlog/inevidenza', 
 	                             array('feed' => sfFeedPeer::createFromWeb('https://www.openpolis.it/dove/parlamento/feed/'),
@@ -26,7 +17,7 @@
 	 		   <p align=right><strong><a href="https://www.openpolis.it/">vai su openpolis.it</a></strong></p>
 	 	  </div>
 
-	    
+	    */?>
 
 	    <div class="clear-both"></div>
 
@@ -44,7 +35,7 @@
 			<div class="clear-both"></div>
        <!-- Box news dal parlamento -->
        <div class="section-box">
-         <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'rss')), '@feed', array('class' => 'section-box-rss')) ?>
+         <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), '@feed', array('class' => 'section-box-rss')) ?>
     	   <h3>ultime dal parlamento</h3>
          <?php include_partial('news/newslisthome',array('pager' => $pager,'context' => 1)); ?>
 		   </div>

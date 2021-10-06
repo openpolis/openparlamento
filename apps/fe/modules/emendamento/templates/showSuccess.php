@@ -82,20 +82,6 @@
 
 	      <br/>
 
-	      <!-- DESCRIZIONE -->
-	      <div class="wiki-box-container">
-	      	<h5 class="description" style="padding-bottom: 0px;">descrivi insieme agli altri utenti questo emendamento:</h5>
-	      	<p style="padding-left:5px;">qui sotto puoi inserire o modificare la descrizione.
-	        	<?php if ($sf_user->isAuthenticated()) : ?>
-	        	   <?php echo 'Clicca su "modifica"' ?>
-	        	<?php else : ?>
-	        	   Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
-	        	<?php endif ?>     
-	      	</p>
-
-	        <!-- partial per la descrizione wiki -->	
-	        <?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'emendamento_' . $emendamento->getId() )) ?>
-	      </div>
 		  <div class="row">
 		  	<div class="twelvecol">
 		

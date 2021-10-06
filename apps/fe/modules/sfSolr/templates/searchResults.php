@@ -10,7 +10,7 @@
 
 <div class="row" id="tabs-container">
     <ul class="float-container tools-container" id="content-tabs">
-      <li class="current"><h2>Risultati della ricerca per <em><?php echo $query ?></em></h2></li>
+      <li class="current"><h2>Risultati della ricerca per <em><?php echo htmlspecialchars($query) ?></em></h2></li>
     </ul>
 </div>
 
@@ -132,7 +132,7 @@
 	        <?php if ($num > 0): ?>
 	          <p style="margin: 10px 0; padding: 5px; ">
 	            Risultati <?php echo $start ?> - <?php echo $start + $rows - 1 ?> su 
-	            <?php echo $num ?> per <strong><?php echo $query ?></strong> 
+	            <?php echo $num ?> per <strong><?php echo htmlspecialchars($query) ?></strong>
 	            (<?php echo $qTime ?>ms)
 	          </p>           
 
@@ -182,7 +182,7 @@
 	        <?php else: ?>
 	          <div style="font-size: 14px;">
 	            <p style="margin-top: 0.33em;">
-	              La ricerca di - <b><?php echo $query ?></b> - non ha prodotto risultati. 
+	              La ricerca di - <b><?php echo htmlspecialchars($query) ?></b> - non ha prodotto alcun risultato.
 	              <?php echo link_to('Reimposta gli strumenti di ricerca.', $base_search_route, array()) ?>
 	            </p>
 	            <p style="margin-top: 1em;">Suggerimenti:</p>
@@ -209,7 +209,7 @@
 
 <?php slot('breadcrumbs') ?>
   <?php echo link_to('Home', '@homepage') ?> /
-  Ricerca per <i><?php echo $query ?></i>
+  Ricerca per <i><?php echo htmlspecialchars($query) ?></i>
 <?php end_slot() ?>
 
 

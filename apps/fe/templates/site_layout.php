@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento.openpolis.it'): ?>    
+    <?php if ($this->getContext()->getRequest()->getHost() == 'parlamento18.openpolis.it'): ?>    
       <meta name="verify-v1" content="NkhveoVfinSZhsdVK8a+kN89DuYfXmo4BDwljNkry2M=" />
     <?php endif ?>
     <?php include_http_metas() ?>
@@ -71,8 +71,8 @@
 
         <div class="row">            
             <h1 class="ninecol">
-                <a href="/"><img src="/img/logo-openparlamento.png" alt="Titolo" id="logo" /></a>
-                <a href="https://www.openpolis.it"><img src="/img/op_logo_header.png" alt="Openpolis" id="op-logo" /></a>
+                <a href="/"><img src="/img/logo-openparlamento.png" alt="Titolo" id="logo" width="302" height="72" /></a>
+                <a href="https://www.openpolis.it"><img src="/img/op_logo_header.png" alt="Openpolis" id="op-logo" width="106" height="26" /></a>
             </h1>           
 			<div class="threecol last" id="tools-container">
 				<?php include_partial('global/tools') ?>	
@@ -101,8 +101,10 @@
 		<?php //include_partial('global/breadcrumbs')  ?>
 	<?php else : ?>
     <!--  Payoff Container  -->
+    
     <section id="payoff" class="container">   
         <div class="row">
+          <!--
             <div class="twocol">
                 <img src="/img/payoff/informati.png" />
                 <h1 id="informati">Informati</h1>
@@ -118,8 +120,9 @@
                 <h1 id="intervieni">Intervieni</h1>
                 <p>Commenta, proponi e vota gli atti che ti interessano, nella comunità Openpolis.</p>
             </div>
+          -->
             <div class="sixcol last textright">
-                <h1><img src="/img/payoff/slogan_openparlamento.png" alt="Cosa fanno i tuoi parlamentari?" /></h1>
+                <h1><img src="/img/payoff/slogan_openparlamento.png" alt="Cosa fanno i tuoi parlamentari?" width="391" height="91" /></h1>
                 
                 <?php echo use_helper('AdvancedOptionsForSelect') ?>
 
@@ -143,6 +146,7 @@
             </div>
         </div>
     </section>
+
     <!--  /Payoff Container  -->
     <script type="text/javascript">
         jQuery().ready(function(){
@@ -174,8 +178,8 @@
 	<?php include_partial('global/site_footer') ?>
 
 	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento18.openpolis.it'): ?>
-        <?php include_partial('global/googleAnalytics') ?>
-    <?php endif ?>
+	        <?php include_partial('global/googleAnalytics') ?>
+    	<?php endif ?>
 
   <!-- 5xmille  -->
   <!-- script src="https://s3.eu-central-1.amazonaws.com/op-5xmille/5xmille-nojquery.js"></script -->
@@ -200,5 +204,13 @@
 
     </script>
 
-</section></body>
+</section>
+<!-- EOL POPUP - inserire a fine pagina prima di chiusura del body -->
+<!--
+  <script src="/js/glightbox.js" type="text/javascript" charset="utf-8"></script>
+  <link href="/css/glightbox.min.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="/js/eol-popup.js"></script>
+-->
+<!-- /EOL POPUP  -->
+</body>
 </html>

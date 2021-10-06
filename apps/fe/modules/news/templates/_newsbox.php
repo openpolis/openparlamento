@@ -3,7 +3,7 @@
 <?php if (count($news)>0): ?>
   <div class="section-box">
     <?php if (isset($rss_link)): ?>
-      <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS')), $rss_link, array('class' => 'section-box-rss')) ?>      
+      <?php echo link_to(image_tag('ico-rss.png', array('alt' => 'RSS', 'width' => '32', 'height' => '13')), $rss_link, array('class' => 'section-box-rss')) ?>      
     <?php endif ?>
     <h6>News - <?php echo $title ?></h6>
     <div class="news-disegni-decreti float-container"> 

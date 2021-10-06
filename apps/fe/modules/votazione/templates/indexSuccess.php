@@ -34,20 +34,7 @@ end_slot();
 		<?php endif; ?> 
 
 
-		<!-- DESCRIZIONE -->
-		<div class="wiki-box-container">
-			<h5 class="description">descrivi insieme agli altri utenti questa votazione:</h5>
-			<p style="padding:5px;">qui sotto puoi inserire o modificare la descrizione per questa votazione.
-			<?php if ($sf_user->isAuthenticated()) : ?>
-				<?php echo 'Clicca su "modifica"' ?>
-			<?php else : ?>
-				Per modificare <?php echo link_to('effettua il login', '@sf_guard_signin') ?> 
-			<?php endif ?>     
-			</p>
 
-			<!-- partial per la descrizione wiki -->	
-			<?php echo include_component('nahoWiki', 'showContent', array('page_name' => 'votazione_' . $votazione->getId() )) ?>
-		</div>
 
 
 		<h5 class="subsection">come hanno votato i gruppi</h5>

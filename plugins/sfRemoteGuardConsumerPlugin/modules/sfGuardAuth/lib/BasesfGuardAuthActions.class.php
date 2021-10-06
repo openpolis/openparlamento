@@ -107,24 +107,24 @@ class BasesfGuardAuthActions extends sfActions
     $remote_script = str_replace('fe', 'be', $script);
     if ($remote_script == '/be.php' || $script == '') $remote_script = '/index.php';
 
-
     if ($this->getRequest()->getMethod() == sfRequest::POST) // username and password have been posted
     {
-      $redirect_url = $user->getAttribute('redirect_url', $this->getRequest()->getReferer());
-      sfContext::getInstance()->getLogger()->info(sprintf("xxx: redirect_url: %s", $redirect_url));
-      $user->getAttributeHolder()->remove('redirect_url');
+        $redirect_url = $user->getAttribute('redirect_url', $this->getRequest()->getReferer());
 
-      $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $redirect_url);
-      sfContext::getInstance()->getLogger()->info(sprintf("xxx: will redirect to signin_url: %s", $signin_url));
+        sfContext::getInstance()->getLogger()->info(sprintf("xxx: redirect_url: %s", $redirect_url));
+        $user->getAttributeHolder()->remove('redirect_url');
 
-      $this->redirect('' != $signin_url ? $signin_url : '@homepage');
+        $signin_url = sfConfig::get('app_sf_guard_plugin_success_signin_url', $redirect_url);
+        $signin_url = str_replace($signin_url, ":80", "");
+        $this->redirect('' != $signin_url ? $signin_url : '@homepage');
     }
     else if ($user->isAuthenticated()) // user was immediately authenticated by filters
     {
-      if ($this->getRequest()->getUri() != $login_url)
-        $this->redirect($this->getRequest()->getURI());
-      else
-        $this->redirect('@homepage');
+        # patch a cazzo di cane per evitare redirect su :80
+        if (str_replace($this->getRequest()->getUri(), ':80', '') != $login_url)
+            $this->redirect(str_replace($this->getRequest()->getUri(), ':80', ''));
+        else
+            $this->redirect('@homepage');
     }
     else // first time form is displayed, or returned after FB authentication
     {

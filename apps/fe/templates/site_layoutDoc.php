@@ -105,9 +105,8 @@
 
 
 	<?php if ($this->getContext()->getRequest()->getHost() == 'parlamento18.openpolis.it'): ?>
-        <?php include_partial('global/googleAnalytics') ?>
-        <?php include_partial('kw/webtrekk') ?>
-    <?php endif ?>
+        	<?php include_partial('global/googleAnalytics') ?>
+    	<?php endif ?>
 
 
 </section></body>

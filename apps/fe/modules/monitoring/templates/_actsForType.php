@@ -15,7 +15,7 @@
 				<th class="evident" scope="col"><br/>sigla/titolo:</th>
 				<th class="evident" scope="col">stato di avanzamento</th>
 				<th class="evident" scope="col">argomenti</th>
-				<th class="evident W20_100" scope="col"><br/>notizie relative (<?php echo image_tag('ico-new.png', array('alt' => 'nuovo')) ?>):</th>
+				<th class="evident W20_100" scope="col"><br/>notizie relative (<?php echo image_tag('ico-new.png', array('alt' => 'nuovo', 'width' => '18', 'height' => '10')) ?>):</th>
 				<th class="evident" scope="col">il tuo voto:</th>
 				<th class="evident" scope="col"><br/>smetti di monitorare:</th>
 				</tr>

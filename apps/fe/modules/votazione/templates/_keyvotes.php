@@ -43,7 +43,7 @@
 <?php if ($pagina=='homepage') : ?>
   <?php if (count($votazioni)>0) : ?>
     <div class="section-box">
-      <h3 class="section-box-no-rss">voti chiave <span class="tools-container"><?php echo image_tag('/images/ico-new.png') ?><a class="ico-help" href="#">&nbsp;</a></span>	
+      <h3 class="section-box-no-rss">voti chiave <span class="tools-container"><?php echo image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')) ?><a class="ico-help" href="#">&nbsp;</a></span>	
       
   			<div style="display: none;" class="help-box float-container">
   				<div class="inner float-container" style="font-size:12px;">		

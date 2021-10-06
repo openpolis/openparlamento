@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 batch/parser/*
+batch/build
 cache/
 config/generated*
 config/settings.yml

@@ -30,12 +30,5 @@
       <?php echo link_to('Argomenti', '@argomenti') ?>
     <?php endif; ?>
   </li>
-  <li>
-    <?php if($this->getContext()->getModuleName() == 'community'): ?>
-      <?php echo link_to('Comunit&agrave;', 'community', array('class' => 'current')) ?>
-    <?php else: ?>
-      <?php echo link_to('Comunit&agrave;', 'community') ?>
-    <?php endif; ?>
-  </li>
   <li><span style="font-size:10px;"><a href="http://parlamento17.openpolis.it/">Precedente legislatura 2013-2018</a></span></li>
 </ul>

@@ -64,7 +64,7 @@ class sfRemoteGuardLoginValidator extends sfValidator
     }
 
     $apikey = sfConfig::get('sf_internal_api_key', 'xxx');
-    $verify_url = sprintf("http://%s%s/verifyUser/%s/%s/%s", 
+    $verify_url = sprintf("https://%s%s/verifyUser/%s/%s/%s", 
                           $remote_guard_host, $script, $apikey, $username, $password);
     sfContext::getInstance()->getLogger()->info(sprintf("xxx: verify_url: %s", $verify_url));
     $xml = simplexml_load_file($verify_url);
@@ -78,7 +78,7 @@ class sfRemoteGuardLoginValidator extends sfValidator
     if (count($xml->user))
     {
       // rimozione remember keys expired
-      $clear_rks_url = sprintf("http://%s%s/clearOldRememberKeys/%s",
+      $clear_rks_url = sprintf("https://%s%s/clearOldRememberKeys/%s",
                                $remote_guard_host, $script, $apikey);   
       sfContext::getInstance()->getLogger()->info(sprintf("xxx: clear_rks_url: %s", $clear_rks_url));
       $clear_rks_xml = simplexml_load_file($clear_rks_url);
@@ -90,7 +90,7 @@ class sfRemoteGuardLoginValidator extends sfValidator
 
       if (count($clear_rks_xml->success)) {
         // set nuova remember key per l'utente
-        $set_rk_url = sprintf("http://%s%s/setNewUserRememberKey/%s/%s",
+        $set_rk_url = sprintf("https://%s%s/setNewUserRememberKey/%s/%s",
                               $remote_guard_host, $script, $apikey, $xml->user->hash);   
         sfContext::getInstance()->getLogger()->info(sprintf("xxx: set_rk_url: %s", $set_rk_url));
         $set_rk_xml = simplexml_load_file($set_rk_url);
@@ -104,7 +104,7 @@ class sfRemoteGuardLoginValidator extends sfValidator
           $rk = $set_rk_xml->remember_key;
           
           // richiesta xml utente completo, partendo dalla rk
-          $get_user_url = sprintf("http://%s%s/getUserByRememberKey/%s/%s", 
+          $get_user_url = sprintf("https://%s%s/getUserByRememberKey/%s/%s", 
                                   $remote_guard_host, $script, $apikey, $rk);   
           sfContext::getInstance()->getLogger()->info(sprintf("xxx: get_user_url: %s", $get_user_url));
           $user_xml = simplexml_load_file($get_user_url);

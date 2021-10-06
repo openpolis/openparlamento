@@ -773,11 +773,9 @@ class Apache_Solr_Service
 	 */
 	public function commit($optimize = true, $waitFlush = true, $waitSearcher = true, $timeout = 3600)
 	{
-		$optimizeValue = $optimize ? 'true' : 'false';
-		$flushValue = $waitFlush ? 'true' : 'false';
 		$searcherValue = $waitSearcher ? 'true' : 'false';
 
-		$rawPost = '<commit optimize="' . $optimizeValue . '" waitFlush="' . $flushValue . '" waitSearcher="' . $searcherValue . '" />';
+		$rawPost = '<commit waitSearcher="' . $searcherValue . '" />';
 
 		return $this->_sendRawPost($this->_updateUrl, $rawPost, $timeout);
 	}
@@ -855,10 +853,9 @@ class Apache_Solr_Service
 	 */
 	public function optimize($waitFlush = true, $waitSearcher = true, $timeout = 3600)
 	{
-		$flushValue = $waitFlush ? 'true' : 'false';
 		$searcherValue = $waitSearcher ? 'true' : 'false';
 
-		$rawPost = '<optimize waitFlush="' . $flushValue . '" waitSearcher="' . $searcherValue . '" />';
+		$rawPost = '<optimize waitSearcher="' . $searcherValue . '" />';
 
 		return $this->_sendRawPost($this->_updateUrl, $rawPost, $timeout);
 	}
@@ -901,8 +898,16 @@ class Apache_Solr_Service
 		// string by changing foo[#]=bar (# being an actual number) parameter strings to just
 		// multiple foo=bar strings. This regex should always work since '=' will be urlencoded
 		// anywhere else the regex isn't expecting it
-		$queryString = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $queryString);
+ 		$queryString = preg_replace('/%5B(?:[0-9]|[1-9][0-9]+)%5D=/', '=', $queryString);
+                // we forward select to 'dismax' and 'dismaxAlerts' query, if forced by the 'qt' param, in
+                // order to have this work on Solr >4
+                if (array_key_exists('qt', $params)) {
+                  $qt = $params['qt'];
+                  if (in_array($qt, array('dismax', 'dismaxAlerts'))){
+                    return $this->_sendRawGet($this->_constructUrl($qt) . $this->_queryDelimiter . $queryString);
+                  }
+                }
+                return $this->_sendRawGet($this->_searchUrl . $this->_queryDelimiter . $queryString);
 
-		return $this->_sendRawGet($this->_searchUrl . $this->_queryDelimiter . $queryString);
 	}
 }

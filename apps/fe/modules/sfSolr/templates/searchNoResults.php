@@ -2,7 +2,7 @@
 	<div class="ninecol">
 		
 		<div class="message" style="min-height: 100px; padding-top: 20px;">
-	      <p>La tua ricerca del termine <strong><?php echo $query ?></strong> non ha prodotto alcun risultato</p>
+	      <p>La tua ricerca del termine <strong><?php echo htmlspecialchars($query) ?></strong> non ha prodotto alcun risultato</p>
 	    </div>
 		
 	</div>

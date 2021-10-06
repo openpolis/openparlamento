@@ -21,20 +21,22 @@
 		<li class="<?php echo($current=='giorni_di_carica'  ? 'current' : '' ) ?>">
 		  <h5>
 		    <?php if ($ramo=='camera' || $ramo==1) :?>
-	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica_deputati') ?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')), $current=='giorni_di_carica'?'#':'@giorni_di_carica_deputati') ?>
 	      <?php else :?>
-	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png'), $current=='giorni_di_carica'?'#':'@giorni_di_carica_senatori') ?>
+	        <?php echo link_to('Da quanto tempo sono in parlamento '.image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')), $current=='giorni_di_carica'?'#':'@giorni_di_carica_senatori') ?>
 	      <?php endif; ?>    
 		  </h5>
 		</li>
-		<li class="<?php echo($current=='distanze' ? 'current' : '' ) ?>">
+		<!--
+		<li class="<?php //echo($current=='distanze' ? 'current' : '' ) ?>">
 		  <h5>
-	      <?php if ($ramo=='camera' || $ramo==1) :?>
-	        <?php echo link_to('Le distanze tra i deputati', $current=='distanze'?'#':'/grafico_distanze/votes_16_C') ?>
-	      <?php else :?>
-	        <?php echo link_to('Le distanze tra i senatori', $current=='distanze'?'#':'/grafico_distanze/votes_16_S') ?>
-	      <?php endif; ?>
+	      <?php //if ($ramo=='camera' || $ramo==1) :?>
+	        <?php //echo link_to('Le distanze tra i deputati', $current=='distanze'?'#':'/grafico_distanze/votes_16_C') ?>
+	      <?php //else :?>
+	        <?php //echo link_to('Le distanze tra i senatori', $current=='distanze'?'#':'/grafico_distanze/votes_16_S') ?>
+	      <?php //endif; ?>
 		 </h5>
+		-->
 		</li>
 		
 	</ul>

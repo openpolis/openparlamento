@@ -47,11 +47,11 @@
 
     <nav id="sub-footer" class="row">
         <ul class="twelvecol">
-<li><a href="http://www.openpolis.it"><img src="/img/footers/op_logo_footer.png" alt="Sito della Fondazione Openpolis" title="Fondazione Openpolis" /></a></li>
-        <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" /></a></li>
-        <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open politici" title="Open politici" /></a></li>
-        <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" /></a></li>
-        <li><a href="http://www.openbilanci.it/"><img src="/img/footers/openbilanci.png" alt="Open Bilanci" title="Open Bilanci" /></a></li>
+<li><a href="http://www.openpolis.it"><img src="/img/footers/op_logo_footer.png" alt="Sito della Fondazione Openpolis" title="Fondazione Openpolis" width="103" height="23" /></a></li>
+        <li><a href="http://parlamento.openpolis.it"><img src="/img/footers/openparlamento.png" alt="Open Parlamento" title="Open Parlamento" width="127" height="23" /></a></li>
+        <li><a href="http://politici.openpolis.it"><img src="/img/footers/openpolitici.png" alt="Open politici" title="Open politici" width="101" height="23" /></a></li>
+        <li><a href="http://voisietequi.openpolis.it"><img src="/img/footers/voisietequi.png" alt="Voi Siete Qui" title="Voi Siete Qui" width="95" height="23" /></a></li>
+        <li><a href="http://www.openbilanci.it/"><img src="/img/footers/openbilanci.png" alt="Open Bilanci" title="Open Bilanci" width="101" height="23" /></a></li>
         </ul>            
     </nav>
 

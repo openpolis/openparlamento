@@ -7,6 +7,8 @@ define('SF_DEBUG',       false);
 require_once(SF_ROOT_DIR.DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.SF_APP.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php');
 sfContext::getInstance();
 
+include ("utility/notify.php");
+
 $leg=$argv[1];
 
 print("Fetching data... \n");
@@ -91,7 +93,7 @@ foreach ($cariche as $carica)
 }
 
 
-mail("e.dicesare@depp.it", "OK - Update Presenze", "aggiornamento a buon fine", "From: BatchOpp");
+notify("e.dicesare@depp.it", "OK - Update Presenze", "aggiornamento a buon fine", "From: BatchOpp");
 
 ?>
 

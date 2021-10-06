@@ -13,7 +13,7 @@
         </li>    
         <li class="<?php echo($current=='emendamenti' ? 'current' : '' ) ?>">
           <h5>
-          <?php echo link_to('I suoi emendamenti '.image_tag('/images/ico-new.png'), $current=='emendamenti'?'#':'@parlamentare_emendamenti?id='.$parlamentare_id .'&slug='. $parlamentare_slug) ?>
+          <?php echo link_to('I suoi emendamenti '.image_tag('/images/ico-new.png', array('width' => '18', 'height' => '10')), $current=='emendamenti'?'#':'@parlamentare_emendamenti?id='.$parlamentare_id .'&slug='. $parlamentare_slug) ?>
          </h5>
         </li>
         

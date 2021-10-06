@@ -44,15 +44,7 @@ $ramo = isset($ramo) ? $ramo : '';
                         $parlamentare->getId()
                 ) */?>
 
-                <?php echo link_to(
-                    'la sua pagina su ' .
-                    image_tag(
-                        '/images/op_logo_small.png',
-                        array('alt' => 'vai al sito openpolis')
-                    ),
-                    'http://politici.openpolis.it/politico/' . $parlamentare->getId(),
-                    array('class' => 'jump-to-camera')
-                ) ?>
+
 
                 <?php if ($carica) : ?>
 
@@ -107,10 +99,12 @@ $ramo = isset($ramo) ? $ramo : '';
                                     <?php echo ($carica->getTipoCaricaId() != 5 ? "" : "come Senatore a vita: ") ?>in
                                     carica dal <?php echo $carica->getDataInizio('d/m/Y') ?>
                                 </label>
+                                <!--
                                 <span style="font-weight:normal;">(in carriera parlamentare per <a
-                                        href="http://politici.openpolis.it/politico/<?php echo $parlamentare->getId() ?>#carriera"
-                                        style="font-size:12px;"><?php echo $durata ?></a>)
+                                        href="http://politici.openpolis.it/politico/<?php //echo $parlamentare->getId() ?>#carriera"
+                                        style="font-size:12px;"><?php //echo $durata ?></a>)
                                 </span>
+                            -->
                             </p>
 
                             <p>
@@ -166,7 +160,7 @@ $ramo = isset($ramo) ? $ramo : '';
     </div>
 
     <div class="threecol last">
-
+        <!--
         <div id="monitor-n-vote" style="margin-bottom:10px;">
             <h6>monitora questo politico</h6>
             <p class="tools-container"><a class="ico-help" href="#">che significa monitorare</a></p>
@@ -181,9 +175,10 @@ $ramo = isset($ramo) ? $ramo : '';
                     </p>
                 </div>
             </div>
-
-            <!-- partial per la gestione del monitoring di questo politico -->
-            <?php include_component(
+        -->
+        <!--
+            
+            <?php /* include_component(
                 'monitoring', 'manageItem',
                 array('item' => $parlamentare, 'item_type' => 'politico')
             ); ?>
@@ -191,9 +186,10 @@ $ramo = isset($ramo) ? $ramo : '';
             <?php include_component(
                 'parlamentare', 'monitoringalso',
                 array('item' => $parlamentare)
-            ); ?>
+            ); */ ?>
 
         </div>
+       -->
     </div>
 
 </div>
